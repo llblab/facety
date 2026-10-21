@@ -1,0 +1,37 @@
+{
+  "experiment": {
+    "seed": "inspection-shock",
+    "scenario": "sybil-cone",
+    "initialSize": 20,
+    "attackerShare": 0.2,
+    "days": 24,
+    "activity": {
+      "honest": { "inspect": 2, "respond": 0.9 },
+      "attackers": { "invite": 0.1 }
+    }
+  },
+  "comparison": {
+    "parameters": {
+      "perturbations": [
+        {
+          "id": "inspection-blackout",
+          "startDay": 8,
+          "endDay": 12,
+          "activity": {
+            "honest": { "inspect": 0, "respond": 0 }
+          }
+        }
+      ]
+    },
+    "trials": 8,
+    "seed": "confirmation-1",
+    "holdDays": 3,
+    "metrics": [
+      "subjects",
+      "xp.gini",
+      "xp.attackerShare",
+      "falseConversions",
+      "cohorts.honest.byAction.inspect.accepted"
+    ]
+  }
+}

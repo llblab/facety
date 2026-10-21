@@ -1,0 +1,322 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { FacetyModel, DAY, policyFrom } from '../src/model.mjs';
+import { DirectedGraph } from '../src/graph.mjs';
+
+function fixture(policy = {}, genesis = ['a', 'b', 'c']) {
+  return new FacetyModel({ genesis, policy: { guarantorEligibility: 'accepted', ...policy } });
+}
+function guarantee(model, a, b) {
+  const relation = model.proposeGuarantee(a, b);
+  model.confirmGuarantee(b, relation);
+  return relation;
+}
+function identify(model, id) {
+  return model.createSelfId(id, model.registerArtifact(id));
+}
+function protocolState(model) {
+  return {
+    subjects: model.subjects(), acts: model.selfIds(), invitations: model.invitations(), relations: model.guaranteeRelations(),
+    events: model.events(), ledger: model.audit(), lineage: model.lineage.toJSON(), guarantees: model.guarantees.toJSON(),
+  };
+}
+
+test('3/7-day transitions consume exactly one own right and never mint on conversion', () => {
+  const model = fixture();
+  guarantee(model, 'b', 'a');
+  const own = identify(model, 'a');
+  assert.equal(model.subject('a').xp, 0);
+  model.advanceTo(3 * DAY - 1);
+  assert.throws(() => model.createInvitation('a', own, 'new'));
+  model.advanceTo(3 * DAY);
+  const invitation = model.createInvitation('a', own, 'new');
+  model.acceptInvitation(invitation, 'new');
+  assert.equal(model.subject('a').xp, 1);
+  assert.equal(model.subject('b').xp, 1);
+  assert.equal(model.guarantees.edge('a', 'new'), undefined);
+  assert.equal(model.lineage.edge('a', 'new').to, 'new');
+  assert.throws(() => model.acceptInvitation(invitation, 'new'));
+  assert.throws(() => model.cancelSelfId('b', own));
+  assert.throws(() => model.convertToCollector('a', own));
+  const next = identify(model, 'a');
+  model.advanceTo(10 * DAY - 1);
+  assert.throws(() => model.convertToCollector('a', next));
+  model.advanceTo(10 * DAY);
+  model.convertToCollector('a', next);
+  assert.throws(() => model.convertToCollector('a', next));
+  assert.deepEqual(model.audit(), { minted: 2, burned: 1, supply: 1, emitterVault: 0, collector: 1, feeVault: 0, debt: 0 });
+});
+
+test('shared artifacts flag different subjects, not submission order, and preserve independent rewards', () => {
+  const model = fixture();
+  const artifact = model.registerArtifact('a', { faceCount: 2 });
+  const a = model.createSelfId('a', artifact, 0);
+  const b = model.createSelfId('b', artifact, 0);
+  const c = model.createSelfId('c', artifact, 1);
+  assert.equal(model.selfId(a).collision, true);
+  assert.equal(model.selfId(b).collision, true);
+  assert.equal(model.selfId(c).collision, false);
+  assert.equal(model.audit().minted, 3);
+  assert.throws(() => model.createSelfId('a', artifact, 1));
+  model.rotateKey('a', 'rotated');
+  assert.throws(() => model.createSelfId('a', artifact, 1));
+  model.advanceTo(DAY);
+  model.createSelfId('a', artifact, 1);
+  model.advanceTo(DAY + 1);
+  assert.throws(() => model.createSelfId('b', artifact));
+  assert.throws(() => identify(model, 'missing'));
+});
+
+test('same subject repeating a face at exactly 24 hours is not a cross-subject collision', () => {
+  const model = fixture();
+  const artifact = model.registerArtifact('a');
+  model.createSelfId('a', artifact);
+  model.advanceTo(DAY);
+  const repeated = model.createSelfId('a', artifact);
+  assert.equal(model.selfId(repeated).collision, false);
+});
+
+test('dispute locks block every disposition without resetting age', () => {
+  const model = fixture();
+  guarantee(model, 'b', 'a');
+  const act = identify(model, 'a');
+  model.freezeSelfId(act, 'case');
+  model.advanceTo(10 * DAY);
+  assert.throws(() => model.cancelSelfId('b', act));
+  assert.throws(() => model.createInvitation('a', act, 'new'));
+  assert.throws(() => model.convertToCollector('a', act));
+  assert.throws(() => model.unfreezeSelfId(act, 'other-case'));
+  model.unfreezeSelfId(act, 'case');
+  model.convertToCollector('a', act);
+  assert.equal(model.audit().collector, 1);
+});
+
+test('unspent emissions remain cancellable after day seven, but converted rights do not', () => {
+  const model = fixture();
+  guarantee(model, 'b', 'a');
+  const first = identify(model, 'a');
+  model.advanceTo(20 * DAY);
+  model.cancelSelfId('b', first);
+  assert.equal(model.subject('a').xp, 0);
+  assert.equal(model.subject('b').xp, 0);
+  assert.equal(model.audit().burned, 1);
+  assert.throws(() => model.cancelSelfId('b', first));
+});
+
+test('guarantees require matching authorization; a unilateral break transfers a fee, not a burn', () => {
+  const model = fixture();
+  const relation = model.proposeGuarantee('a', 'b');
+  assert.equal(model.guarantees.edgeCount, 0);
+  assert.throws(() => model.confirmGuarantee('c', relation));
+  model.confirmGuarantee('b', relation);
+  assert.equal(model.guarantees.edgeCount, 1);
+  assert.equal(model.guarantees.edge('b', 'a'), undefined);
+  assert.throws(() => model.proposeGuarantee('a', 'b'));
+  assert.throws(() => model.endGuarantee('b', relation));
+  const reward = identify(model, 'b');
+  model.advanceTo(7 * DAY);
+  model.convertToCollector('b', reward);
+  model.endGuarantee('b', relation);
+  assert.equal(model.guarantees.edgeCount, 0);
+  assert.equal(model.guaranteeRelations()[0].status, 'ended');
+  assert.equal(model.audit().feeVault, 1);
+  assert.equal(model.audit().burned, 0);
+});
+
+test('graph capacity rejection preserves funded confirmation and termination before collecting fees', () => {
+  for (const [operation, counter] of [['confirm', 'nextEdge'], ['confirm', 'revision'], ['end', 'revision']]) {
+    for (const room of [0, 1]) {
+      const model = fixture({ guaranteeFee: operation === 'confirm' ? 1 : 0 }, ['a', 'b']);
+      const act = identify(model, 'a');
+      model.advanceTo(7 * DAY);
+      model.convertToCollector('a', act);
+      const relation = operation === 'confirm' ? model.proposeGuarantee('a', 'b') : guarantee(model, 'a', 'b');
+      model.guarantees = DirectedGraph.fromJSON({ ...model.guarantees.toJSON(), [counter]: Number.MAX_SAFE_INTEGER - room });
+      const before = protocolState(model);
+      const transition = () => operation === 'confirm' ? model.confirmGuarantee('b', relation) : model.endGuarantee('a', relation);
+      if (!room) {
+        assert.throws(transition, RangeError);
+        assert.deepEqual(protocolState(model), before);
+        assert.throws(transition, RangeError);
+        assert.deepEqual(protocolState(model), before);
+      } else {
+        transition();
+        assert.equal(model.subject('a').liquidFacy, 0);
+        assert.equal(model.audit().feeVault, 1);
+        assert.equal(model.guaranteeRelations()[0].status, operation === 'confirm' ? 'active' : 'ended');
+        assert.equal(Boolean(model.guarantees.edge('a', 'b')), operation === 'confirm');
+      }
+    }
+  }
+});
+
+test('admission preflights complete lineage and guarantee capacity before inserting any subject state', () => {
+  for (const [field, counter, required] of [['lineage', 'revision', 2], ['lineage', 'nextEdge', 1], ['guarantees', 'revision', 1], ['guarantees', 'nextEdge', 0]]) {
+    for (const room of required ? [required - 1, required] : [0]) {
+      const model = new FacetyModel({ genesis: ['a', 'b'] });
+      guarantee(model, 'b', 'a');
+      identify(model, 'b');
+      const own = identify(model, 'a');
+      model.advanceTo(3 * DAY);
+      const invitation = model.createInvitation('a', own, 'new');
+      model[field] = DirectedGraph.fromJSON({ ...model[field].toJSON(), [counter]: Number.MAX_SAFE_INTEGER - room });
+      const before = protocolState(model);
+      if (room < required) {
+        assert.throws(() => model.acceptInvitation(invitation, 'new'), RangeError);
+        assert.deepEqual(protocolState(model), before);
+        assert.throws(() => model.acceptInvitation(invitation, 'new'), RangeError);
+        assert.deepEqual(protocolState(model), before);
+      } else {
+        model.acceptInvitation(invitation, 'new');
+        assert.equal(model.size, 3);
+        assert.equal(model.invitations()[0].status, 'accepted');
+        assert.equal(model.guarantees.hasNode('new'), true);
+        assert.equal(model.lineage.edge('a', 'new').to, 'new');
+        assert.deepEqual(model.audit(), before.ledger);
+      }
+    }
+  }
+});
+
+for (const cancellationAuthority of ['snapshot', 'current']) {
+  test('cancellation authority is explicit: ' + cancellationAuthority, () => {
+    const model = fixture({ cancellationAuthority });
+    const relation = guarantee(model, 'a', 'b');
+    const act = identify(model, 'b');
+    const feeSource = identify(model, 'a');
+    model.advanceTo(7 * DAY);
+    model.convertToCollector('a', feeSource);
+    model.endGuarantee('a', relation);
+    if (cancellationAuthority === 'snapshot') model.cancelSelfId('a', act);
+    else assert.throws(() => model.cancelSelfId('a', act));
+    model.audit();
+  });
+}
+
+test('market-transferred FACY cannot replace an own Emitter right for invitations', () => {
+  const model = fixture();
+  guarantee(model, 'a', 'b');
+  const a = identify(model, 'a');
+  const c = identify(model, 'c');
+  model.advanceTo(7 * DAY);
+  model.convertToCollector('a', a);
+  model.transferFacy('a', 'b', 1);
+  assert.throws(() => model.createInvitation('b', a, 'new'));
+  assert.throws(() => model.createInvitation('b', c, 'new'));
+  assert.equal(model.subject('b').liquidFacy, 1);
+  assert.equal(model.audit().supply, 2);
+});
+
+test('XP events preserve halving chronology and cancellation replays rather than subtracts one', () => {
+  const model = fixture({ xpFinality: 'immediate' });
+  guarantee(model, 'a', 'b');
+  const first = identify(model, 'b');
+  model.advanceTo(DAY);
+  identify(model, 'b');
+  model.advanceTo(2 * DAY);
+  identify(model, 'b');
+  assert.equal(model.subject('a').xp, 3);
+  model.penalize('a');
+  assert.equal(model.subject('a').xp, 1);
+  model.advanceTo(3 * DAY);
+  identify(model, 'b');
+  assert.equal(model.subject('a').xp, 2);
+  model.cancelSelfId('a', first);
+  assert.equal(model.subject('a').xp, 2);
+  model.penalize('a');
+  assert.equal(model.subject('a').xp, 1);
+  assert.equal(model.subject('b').xp, 3);
+  model.audit();
+});
+
+test('fines burn only collectible money and persist as debt across key changes', () => {
+  const model = fixture();
+  const first = identify(model, 'a');
+  model.advanceTo(7 * DAY);
+  model.convertToCollector('a', first);
+  assert.deepEqual(model.penalize('a', { fine: 3, halveXp: false }), { collected: 1, debtAdded: 2 });
+  assert.equal(model.audit().burned, 1);
+  model.rotateKey('a', 'new-key');
+  identify(model, 'a');
+  assert.equal(model.subject('a').debt, 1);
+  model.advanceTo(8 * DAY);
+  identify(model, 'a');
+  assert.equal(model.subject('a').debt, 0);
+  model.advanceTo(9 * DAY);
+  identify(model, 'a');
+  assert.deepEqual(model.audit(), { minted: 4, burned: 3, supply: 1, emitterVault: 1, collector: 0, feeVault: 0, debt: 0 });
+});
+
+test('fines preserve safe aggregate debt and reject overflow before balances, XP or events change', () => {
+  for (const target of ['a', 'b']) {
+    const model = fixture({ xpFinality: 'immediate' });
+    guarantee(model, 'a', 'b');
+    const first = identify(model, 'b');
+    model.advanceTo(DAY);
+    const second = identify(model, 'b');
+    model.advanceTo(7 * DAY);
+    model.convertToCollector('b', first);
+    model.penalize('a', { fine: Number.MAX_SAFE_INTEGER, halveXp: false });
+    assert.equal(model.audit().debt, Number.MAX_SAFE_INTEGER);
+    const state = () => ({ subjects: model.subjects(), selfIds: model.selfIds(), events: model.events(), ledger: model.audit() });
+    const before = state();
+    const fine = target === 'a' ? 1 : 2;
+    assert.throws(() => model.penalize(target, { fine, halveXp: true }), RangeError);
+    assert.deepEqual(state(), before);
+    model.cancelSelfId('a', second);
+    assert.equal(model.subject('a').xp, 1);
+    assert.equal(model.subject('b').xp, 1);
+    model.advanceTo(8 * DAY);
+    identify(model, 'a');
+    assert.equal(model.audit().debt, Number.MAX_SAFE_INTEGER - 1);
+    assert.deepEqual(model.penalize(target, { fine, halveXp: false }), { collected: target === 'a' ? 0 : 1, debtAdded: 1 });
+    assert.equal(model.audit().debt, Number.MAX_SAFE_INTEGER);
+    assert.ok(Object.values(model.audit()).every(Number.isSafeInteger));
+  }
+});
+
+test('N28 counts distinct accepted subjects and expires at the rolling boundary', () => {
+  const ids = Array.from({ length: 10 }, (_, i) => 's' + i);
+  const model = fixture({}, ids);
+  guarantee(model, 's1', 's0');
+  const acts = ids.map(id => identify(model, id));
+  assert.equal(model.requiredGuarantors(), 2);
+  model.advanceTo(3 * DAY);
+  assert.throws(() => model.createInvitation('s0', acts[0], 'new'));
+  guarantee(model, 's2', 's0');
+  model.createInvitation('s0', acts[0], 'new');
+  identify(model, 's0');
+  assert.equal(model.activeCount(), 10);
+  model.invalidateIdentity('s9');
+  assert.equal(model.activeCount(), 9);
+  assert.equal(model.requiredGuarantors(), 1);
+  model.advanceTo(28 * DAY);
+  assert.equal(model.activeCount(), 1);
+  model.advanceTo(31 * DAY);
+  assert.equal(model.activeCount(), 0);
+  assert.equal(model.requiredGuarantors(), 1);
+});
+
+test('default guarantor eligibility depends on activity and cannot mint XP through inactive edges', () => {
+  const model = new FacetyModel({ genesis: ['a', 'b'] });
+  guarantee(model, 'a', 'b');
+  const before = identify(model, 'b');
+  assert.deepEqual(model.selfId(before).guarantors, []);
+  identify(model, 'a');
+  model.advanceTo(DAY);
+  const after = identify(model, 'b');
+  assert.deepEqual(model.selfId(after).guarantors, ['a']);
+});
+
+test('research policies reject unknown knobs and cannot be silently changed mid-run', () => {
+  assert.throws(() => policyFrom({ invented: true }));
+  assert.throws(() => policyFrom({ toString: 'bad' }));
+  assert.throws(() => policyFrom({ xpFinality: 'never' }));
+  assert.throws(() => policyFrom({ guaranteeFee: -1 }));
+  const model = fixture();
+  assert.throws(() => { model.policy = policyFrom(); }, TypeError);
+  assert.throws(() => { model.policy.xpFinality = 'immediate'; }, TypeError);
+  assert.throws(() => model.advanceTo(-1));
+  model.advanceTo(1);
+  assert.throws(() => model.advanceTo(0));
+});

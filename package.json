@@ -1,0 +1,11 @@
+{
+  "name": "facety-simulator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reproducible graph and adversarial experiments for the proposed Facety protocol",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test"
+  }
+}
