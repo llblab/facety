@@ -1,14 +1,19 @@
 // Owns: Bounded parameter landscapes and exploratory trajectory diagnostics, not proofs of emergence.
 import { DAY } from './model.mjs';
-import { experimentConfig, withExperimentParameters } from './experiment.mjs';
-import { runTrials, describeValues } from './trials.mjs';
+import { experimentConfig, withExperimentParameters, runExperiment } from './experiment.mjs';
+import { describeValues, summarizeOutcomes, replicaSeed } from './trials.mjs';
+import { mapTasks } from './parallel.mjs';
+import { provenance } from './provenance.mjs';
 
 export const OBSERVABLES = Object.freeze({
   subjects: 1, activeSubjects: 1, requiredGuarantors: 1, humanOperators: 1,
   attackerShare: 0.05, falseShare: 0.05,
   'xp.total': 1, 'xp.gini': 0.05, 'xp.topDecileShare': 0.05, 'xp.attackerShare': 0.05,
+  'xp.attackerExcessShare': 0.05, 'xp.outDegreeSpearman': 0.1,
   'council.attackerShare': 0.05, 'council.membershipChurn': 0.05,
-  'graph.density': 0.02, 'graph.degreeGini': 0.05,
+  'graph.density': 0.02, 'graph.degreeGini': 0.05, 'graph.reciprocity': 0.05,
+  'graph.largestWeakComponentFraction': 0.05, 'graph.attackEdges': 1, 'graph.attackEdgesPerAttacker': 0.5,
+  'lineage.maxDepth': 1, 'lineage.meanDepth': 0.25,
   'graph.mixing.excessWithinCohortFraction': 0.05, 'graph.mixing.directedAssortativity': 0.05,
   'connectivity.rootedFraction': 0.05, 'connectivity.honestFraction': 0.05, 'connectivity.honestNonRootFraction': 0.05,
   'admission.guaranteeQualifiedFraction': 0.05, 'admission.inviteReadyFraction': 0.05,
@@ -281,8 +286,8 @@ export function diagnoseLandscape(cells, axes, overrides = {}) {
   };
 }
 
-export function runLandscape(overrides = {}, options = {}) {
-  const allowed = ['axes', 'trials', 'seed', 'maxCells', 'maxRecordedSamples', 'diagnostics'];
+function planLandscape(overrides, options, extra = []) {
+  const allowed = ['axes', 'trials', 'seed', 'maxCells', 'maxRecordedSamples', 'diagnostics', ...extra];
   checkedRecord(options, allowed, 'landscape option');
   const { axes, trials = 8, seed = 'landscape', maxCells = 64, maxRecordedSamples = 100000, diagnostics = {} } = options;
   positiveInteger(trials, 'trials', 10000);
@@ -299,18 +304,43 @@ export function runLandscape(overrides = {}, options = {}) {
   const variants = coordinates.map(point => withExperimentParameters(config, point));
   const plannedSamples = variants.reduce((sum, variant) => sum + (variant.days + 2) * trials, 0);
   if (!Number.isSafeInteger(plannedSamples) || plannedSamples > maxRecordedSamples) throw new RangeError('landscape exceeds maxRecordedSamples');
-  const cells = variants.map((variant, index) => {
-    const batch = runTrials(variant, { trials, seed, includeRuns: true });
-    return {
-      id: 'cell:' + index, coordinates: coordinates[index], config: variant,
-      probability: batch.probability,
-      samples: batch.runs.map(run => ({ seed: run.config.seed, randomness: run.randomness, outcome: run.outcome, history: run.history })),
-    };
-  });
+  return { config, dimensions, settings, coordinates, variants, trials, seed: String(seed), limits: { maxCells, maxRecordedSamples, plannedSamples } };
+}
+
+function assembleLandscape(plan, samplesByCell) {
+  const cells = plan.variants.map((variant, index) => ({
+    id: 'cell:' + index, coordinates: plan.coordinates[index], config: variant,
+    probability: summarizeOutcomes(samplesByCell[index].map(sample => sample.outcome.success)),
+    samples: samplesByCell[index],
+  }));
   return {
-    schema: 'facety-landscape/v1', config, axes: dimensions, trials, masterSeed: String(seed), randomness: cells[0].samples[0].randomness,
-    limits: { maxCells, maxRecordedSamples, plannedSamples },
-    cells, diagnostics: diagnoseLandscape(cells, dimensions, settings),
+    schema: 'facety-landscape/v1', config: plan.config, axes: plan.dimensions, trials: plan.trials, masterSeed: plan.seed, randomness: cells[0].samples[0].randomness, provenance: provenance(),
+    limits: plan.limits,
+    cells, diagnostics: diagnoseLandscape(cells, plan.dimensions, plan.settings),
     interpretation: 'Bounded exploratory ensemble with recorded decision-keyed randomness. Matching logical decisions share draws; changed populations, candidate sets and paths need not match.',
   };
+}
+
+// One retained landscape sample; exported for worker threads.
+export function landscapeSampleTask({ config }) {
+  const run = runExperiment(config);
+  return { seed: run.config.seed, randomness: run.randomness, outcome: run.outcome, history: run.history };
+}
+
+function sampleConfigs(plan) {
+  return plan.variants.map(variant => Array.from({ length: plan.trials }, (_, index) => ({ ...variant, seed: replicaSeed(plan.seed, variant.seed, index), includeState: false })));
+}
+
+export function runLandscape(overrides = {}, options = {}) {
+  const plan = planLandscape(overrides, options);
+  return assembleLandscape(plan, sampleConfigs(plan).map(configs => configs.map(config => landscapeSampleTask({ config }))));
+}
+
+// Same result as runLandscape, with replicas distributed over worker threads.
+export async function runLandscapeParallel(overrides = {}, options = {}) {
+  const { workers = 'auto', ...rest } = options;
+  const plan = planLandscape(overrides, rest);
+  const configs = sampleConfigs(plan);
+  const flat = await mapTasks(configs.flat().map(config => ({ config })), { workers, module: import.meta.url, exportName: 'landscapeSampleTask' });
+  return assembleLandscape(plan, configs.map((cell, index) => flat.slice(index * plan.trials, (index + 1) * plan.trials)));
 }

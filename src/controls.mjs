@@ -3,6 +3,7 @@ import { DAY } from './model.mjs';
 import { experimentConfig, runExperiment, withExperimentParameters } from './experiment.mjs';
 import { DEFAULT_OBSERVABLES, OBSERVABLES, metricSeries } from './discovery.mjs';
 import { replicaSeed, describeValues, summarizeOutcomes } from './trials.mjs';
+import { provenance } from './provenance.mjs';
 
 function integer(value, name, minimum, maximum = Number.MAX_SAFE_INTEGER) {
   if (!Number.isSafeInteger(value) || value < minimum || value > maximum) throw new RangeError(name + ' is outside its integer bounds');
@@ -219,7 +220,7 @@ export function compareExperiments(overrides = {}, options = {}) {
   }
   return {
     schema: 'facety-controls/v1', baseline, treatment, parameters: structuredClone(parameters),
-    masterSeed: String(seed), randomness: pairs[0].baseline.randomness,
+    masterSeed: String(seed), randomness: pairs[0].baseline.randomness, provenance: provenance(),
     limits: { trials, maxRecordedSamples, plannedSamples },
     pairs, analysis: analyzePairs(pairs, settings),
     cautions: [

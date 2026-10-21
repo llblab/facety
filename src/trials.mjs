@@ -1,5 +1,6 @@
 // Owns: Seeded trial aggregation, uncertainty and parameter sweeps; excludes real-world calibration.
 import { experimentConfig, runExperiment, withExperimentParameters } from './experiment.mjs';
+import { provenance } from './provenance.mjs';
 
 export function wilsonInterval(successes, trials) {
   if (!Number.isSafeInteger(trials) || trials < 1 || !Number.isSafeInteger(successes) || successes < 0 || successes > trials) throw new RangeError('invalid Bernoulli counts');
@@ -61,7 +62,7 @@ export function runTrials(overrides = {}, { trials = 100, seed = 'batch', includ
   for (let index = 0; index < trials; index++) runs.push(runExperiment({ ...config, seed: replicaSeed(masterSeed, config.seed, index), includeState: includeRuns && config.includeState }));
   const successful = runs.filter(run => run.outcome.success === true);
   return {
-    schema: 'facety-trials/v1', config, masterSeed, randomness: runs[0].randomness,
+    schema: 'facety-trials/v1', config, masterSeed, randomness: runs[0].randomness, provenance: provenance(),
     interpretation: 'Conditional scenario frequency across seeded trials, not real-world attack probability. Unresolved safety-capped runs are not failures.',
     probability: summarizeOutcomes(runs.map(run => run.outcome.success)),
     censoredTrials: runs.filter(run => run.outcome.censored).length,
@@ -84,7 +85,7 @@ export function sweepParameter(overrides, { parameter, values, trials = 100, see
   const config = experimentConfig(overrides);
   const checked = values.map(value => withExperimentParameters(config, { [parameter]: value }));
   return {
-    schema: 'facety-sweep/v1', parameter, seed: String(seed),
+    schema: 'facety-sweep/v1', parameter, seed: String(seed), provenance: provenance(),
     results: checked.map((candidate, index) => ({ value: values[index], experiment: runTrials(candidate, { trials, seed }) })),
   };
 }

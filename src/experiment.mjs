@@ -1,13 +1,17 @@
 // Owns: Cohort scheduling, noisy observations and scenario evaluation; excludes a truth court.
-import { FacetyModel, DAY, policyFrom, ProtocolRejection } from './model.mjs';
-import { Random, RANDOM_GENERATOR } from './random.mjs';
+import { FacetyModel, DAY, policyFrom, ablationsFrom, DEFAULT_ABLATIONS, ProtocolRejection } from './model.mjs';
+import { Random, RANDOM_GENERATOR, pickIndexExcluding } from './random.mjs';
 import { generateGraph, TOPOLOGIES } from './generators.mjs';
 import { EffortLedger, DEFAULT_WEIGHTS, effortWeights, COHORTS, SimulationLimit } from './effort.mjs';
 import { modelMetrics } from './metrics.mjs';
 import { measureNetwork, measureWork } from './observables.mjs';
 import { reachableNodes } from './proofs.mjs';
+import { provenance } from './provenance.mjs';
 
 export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-cartel']);
+// Model ablations remove protocol mechanisms; behavior ablations remove scripted agent choices.
+// Both are labeled counterfactual controls, never protocol options.
+export const EXPERIMENT_ABLATIONS = Object.freeze({ ...DEFAULT_ABLATIONS, randomGuaranteeTargets: false });
 export const RANDOMNESS_POLICY = Object.freeze({ generator: RANDOM_GENERATOR, decisions: 'decision-keyed-v1' });
 export const DEFAULT_ACTIVITY = Object.freeze({
   honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, convert: 1 }),
@@ -34,6 +38,7 @@ export const EXPERIMENT_ASSUMPTIONS = Object.freeze([
   'Random draws are keyed by logical decision/observation context, not a shared consumed stream; seed replay requires the recorded randomness policy.',
   'Scheduled perturbations alter daily activity only, not protocol rules, genesis trust or automatic counterparty matching.',
   'XP Gini and normalized XP shares are undefined (null) when total effective XP is zero; equal positive XP has Gini zero.',
+  'Configured ablations are counterfactual mechanism removals for evidence experiments; any enabled ablation is not Facety protocol behavior.',
 ]);
 
 function mergeRecord(defaults, overrides, label) {
@@ -99,7 +104,7 @@ export function activityAtDay(overrides, day) {
 }
 
 export function experimentConfig(overrides = {}) {
-  const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, perturbations: [] };
+  const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, ablations: {}, perturbations: [] };
   const config = mergeRecord({ ...DEFAULTS, ...nested }, overrides, 'experiment');
   if (!SCENARIOS.includes(config.scenario)) throw new Error('unknown scenario');
   if (!Object.hasOwn(overrides, 'attackerShare') && config.scenario === 'honest-growth') config.attackerShare = 0;
@@ -124,6 +129,9 @@ export function experimentConfig(overrides = {}) {
   config.budgets = Object.freeze(mergeRecord({ honest: 100_000, attackers: 100_000 }, config.budgets, 'budgets'));
   config.weights = effortWeights(mergeRecord(DEFAULT_WEIGHTS, config.weights, 'weights'));
   config.policy = policyFrom(config.policy);
+  const ablations = mergeRecord(EXPERIMENT_ABLATIONS, config.ablations, 'ablations');
+  if (typeof ablations.randomGuaranteeTargets !== 'boolean') throw new TypeError('randomGuaranteeTargets must be boolean');
+  config.ablations = Object.freeze({ ...ablationsFrom(Object.fromEntries(Object.keys(DEFAULT_ABLATIONS).map(key => [key, ablations[key]]))), randomGuaranteeTargets: ablations.randomGuaranteeTargets });
   new EffortLedger({ weights: config.weights, budgets: config.budgets, maxActions: config.maxActions });
   return Object.freeze(config);
 }
@@ -150,6 +158,17 @@ function observationEnvironment(truth, random, config) {
   return (id, context) => Object.freeze({ suspicious: random.fork(JSON.stringify([id, context])).chance(truth.get(id).genuine ? config.falsePositiveRate : config.sensitivity) });
 }
 
+// Uniform choice from `list` without `excluded` members; identical to picking from the filtered
+// list with the same draw, without rebuilding that list for every opportunity.
+function pickExcluding(list, positions, excluded, random) {
+  const skipped = new Set();
+  for (const id of excluded) {
+    const position = positions.get(id);
+    if (position !== undefined) skipped.add(position);
+  }
+  return list.length === skipped.size ? null : list[pickIndexExcluding(list.length, skipped, random)];
+}
+
 function respondToObservation(model, observer, act, observation) {
   if (!observation.suspicious) return { attempted: false, noAuthority: false };
   const authorized = model.policy.cancellationAuthority === 'snapshot'
@@ -167,7 +186,18 @@ export function runExperiment(overrides = {}) {
   const attackerCount = Math.round(config.initialSize * config.attackerShare);
   const initialAttackers = new Set(roles.shuffle(ids).slice(0, attackerCount));
   const truth = new Map(ids.map(id => [id, { id, cohort: initialAttackers.has(id) ? 'attackers' : 'honest', genuine: true, operator: id }]));
-  const model = new FacetyModel({ genesis: ids, policy: config.policy });
+  // Admission-ordered rosters mirror guarantee-graph node order for fast uniform target choice.
+  const rosters = { all: [], attackers: [] };
+  const rosterPositions = { all: new Map(), attackers: new Map() };
+  const enroll = id => {
+    for (const roster of truth.get(id).cohort === 'attackers' ? ['all', 'attackers'] : ['all']) {
+      rosterPositions[roster].set(id, rosters[roster].length);
+      rosters[roster].push(id);
+    }
+  };
+  ids.forEach(enroll);
+  const modelAblations = Object.fromEntries(Object.keys(DEFAULT_ABLATIONS).map(key => [key, config.ablations[key]]));
+  const model = new FacetyModel({ genesis: ids, policy: config.policy, ablations: modelAblations });
   const effort = new EffortLedger({ weights: config.weights, budgets: config.budgets, maxActions: config.maxActions });
   const observe = observationEnvironment(truth, sensing, config);
   const pendingInvitations = [];
@@ -223,10 +253,11 @@ export function runExperiment(overrides = {}) {
   }
   function noteSuccess() {
     if (firstSuccess !== null) return;
-    const council = model.council();
-    const success = config.successCriterion === 'false-liquidity'
-      ? falseConversionCount >= config.targetFalseConversions
-      : council.filter(member => truth.get(member.id).cohort === 'attackers').length > council.length / 2;
+    let success = falseConversionCount >= config.targetFalseConversions;
+    if (config.successCriterion === 'council-majority') {
+      const council = model.council();
+      success = council.filter(member => truth.get(member.id).cohort === 'attackers').length > council.length / 2;
+    }
     if (!success) return;
     const costs = effort.summary().cohorts;
     firstSuccess = { atHour: model.now, attackerEffort: costs.attackers.effort, defenderEffort: costs.honest.effort };
@@ -253,34 +284,65 @@ export function runExperiment(overrides = {}) {
     for (const actor of actors) {
       const cohort = truth.get(actor).cohort;
       for (let i = 0, count = workCount(activity[cohort].guarantee, decision('guarantee-count', actor)); i < count; i++) {
-        let candidates = [...model.guarantees.nodeIds()].filter(id => id !== actor && !model.guarantees.edge(actor, id));
-        if (cohort === 'attackers') candidates = candidates.filter(id => truth.get(id).cohort === 'attackers');
+        const choice = decision('guarantee-target', actor, i);
+        const excluded = [actor, ...[...model.guarantees.outEdges(actor)].map(edge => edge.to)];
+        let target;
+        // The randomGuaranteeTargets ablation is uniform public matching without coalition or lineage preference.
+        if (!config.ablations.randomGuaranteeTargets && cohort === 'attackers') target = pickExcluding(rosters.attackers, rosterPositions.attackers, excluded, choice);
         else {
-          const children = candidates.filter(id => Boolean(model.lineage.edge(actor, id)));
-          if (children.length) candidates = children;
+          const children = config.ablations.randomGuaranteeTargets ? [] : [...model.lineage.outEdges(actor)].map(edge => edge.to).filter(id => !model.guarantees.edge(actor, id));
+          target = children.length ? choice.pick(children) : pickExcluding(rosters.all, rosterPositions.all, excluded, choice);
         }
-        if (candidates.length) establish(actor, decision('guarantee-target', actor, i).pick(candidates), 'maintenance', false, i);
+        if (target !== null) establish(actor, target, 'maintenance', false, i);
       }
     }
   }
   function responseChoice(actor, act) {
     return decision('inspection-response', actor, [act.subject, act.recordedAt]);
   }
+  // Candidate acts are the phase-start unspent acts, minus own, already inspected and vetoed acts.
+  // Honest choices use index arithmetic over that ordered list; draws match filtering the list.
   function inspectionWork(actors) {
-    const available = new Map(model.selfIds().filter(act => act.status === 'unspent').map(act => [act.id, act]));
+    const list = model.selfIds().filter(act => act.status === 'unspent');
+    const available = new Map(list.map(act => [act.id, act]));
+    const positions = new Map(list.map((act, index) => [act.id, index]));
+    const bySubject = new Map();
+    const byGuarantor = new Map();
+    for (const act of list) {
+      if (!bySubject.has(act.subject)) bySubject.set(act.subject, []);
+      bySubject.get(act.subject).push(act.id);
+      for (const guarantor of act.guarantors) {
+        if (!byGuarantor.has(guarantor)) byGuarantor.set(guarantor, []);
+        byGuarantor.get(guarantor).push(act.id);
+      }
+    }
+    const vetoed = new Set();
+    const candidatesFor = (actor, cohort, inspected) => {
+      if (cohort === 'attackers') {
+        const candidates = [...available.values()].filter(act => act.subject !== actor && !inspected.has(act.id) && truth.get(act.subject).cohort !== 'attackers');
+        const local = candidates.filter(act => model.policy.cancellationAuthority === 'snapshot'
+          ? act.guarantors.includes(actor) : Boolean(model.guarantees.edge(actor, act.subject)));
+        return { size: candidates.length, local, pick: random => random.pick(candidates) };
+      }
+      const excluded = new Set([...(bySubject.get(actor) ?? []), ...vetoed]);
+      for (const id of inspected) if (positions.has(id)) excluded.add(id);
+      const authorized = model.policy.cancellationAuthority === 'snapshot' ? byGuarantor.get(actor) ?? []
+        : [...model.guarantees.outEdges(actor)].flatMap(edge => bySubject.get(edge.to) ?? []).sort((a, b) => positions.get(a) - positions.get(b));
+      return {
+        size: list.length - excluded.size,
+        local: authorized.filter(id => !excluded.has(id)).map(id => available.get(id)),
+        pick: random => list[pickIndexExcluding(list.length, [...excluded].map(id => positions.get(id)), random)],
+      };
+    };
     for (const actor of actors) {
       const cohort = truth.get(actor).cohort;
       const inspected = seen.get(actor) ?? new Set();
       seen.set(actor, inspected);
       for (let i = 0, count = workCount(activity[cohort].inspect, decision('inspection-count', actor)); i < count; i++) {
-        let candidates = [...available.values()].filter(act => act.subject !== actor && !inspected.has(act.id));
-        if (cohort === 'attackers') candidates = candidates.filter(act => truth.get(act.subject).cohort !== 'attackers');
-        if (!candidates.length) break;
-        const local = candidates.filter(act => model.policy.cancellationAuthority === 'snapshot'
-          ? act.guarantors.includes(actor) : Boolean(model.guarantees.edge(actor, act.subject)));
+        const candidates = candidatesFor(actor, cohort, inspected);
+        if (!candidates.size) break;
         const choice = decision('inspection-target', actor, i);
-        if (local.length && choice.chance(config.localInspectionShare)) candidates = local;
-        const act = choice.pick(candidates);
+        const act = candidates.local.length && choice.chance(config.localInspectionShare) ? choice.pick(candidates.local) : candidates.pick(choice);
         const inspection = attempt(actor, 'inspect', () => {
           inspected.add(act.id);
           return cohort === 'attackers' ? { suspicious: true } : observe(act.subject, ['act-inspection', model.now, actor, act.recordedAt]);
@@ -297,7 +359,10 @@ export function runExperiment(overrides = {}) {
         }
         if (!veto.attempted || !responseChoice(actor, act).chance(activity[cohort].respond)) continue;
         const response = attempt(actor, 'respond', () => model.cancelSelfId(actor, act.id));
-        if (response.ok) available.delete(act.id);
+        if (response.ok) {
+          available.delete(act.id);
+          vetoed.add(act.id);
+        }
       }
     }
   }
@@ -333,6 +398,7 @@ export function runExperiment(overrides = {}) {
         if (model.size >= config.maxSubjects) throw new SimulationLimit('maxSubjects');
         model.acceptInvitation(pending.invitation, pending.candidate.id);
         truth.set(pending.candidate.id, pending.candidate);
+        enroll(pending.candidate.id);
       });
       if (accepted.ok) {
         pendingInvitations.splice(i, 1);
@@ -394,7 +460,8 @@ export function runExperiment(overrides = {}) {
     return [cohort, {
       inviteBurns: ownActs.filter(act => act.disposition === 'invitation').length,
       vetoBurns: ownActs.filter(act => act.status === 'cancelled').length,
-      guaranteeFeesPaid: model.guaranteeRelations().filter(relation => relation.status === 'active' && truth.get(relation.guarantor).cohort === cohort).length * config.policy.guaranteeFee,
+      guaranteeFeesPaid: model.guaranteeRelations().filter(relation => relation.activatedAt !== null && truth.get(relation.guarantor).cohort === cohort).length * config.policy.guaranteeFee,
+      linkBreakFeesPaid: model.events().filter(event => event.type === 'guarantee-ended' && truth.get(event.actor).cohort === cohort).length,
       convertedRewards: ownActs.filter(act => act.status === 'converted').length,
       liquidFacy: ownSubjects.reduce((sum, subject) => sum + subject.liquidFacy, 0),
       debt: ownSubjects.reduce((sum, subject) => sum + subject.debt, 0),
@@ -402,7 +469,7 @@ export function runExperiment(overrides = {}) {
   }));
   return {
     schema: 'facety-experiment/v1',
-    config, randomness: RANDOMNESS_POLICY, assumptions: [...EXPERIMENT_ASSUMPTIONS],
+    config, randomness: RANDOMNESS_POLICY, provenance: provenance(), assumptions: [...EXPERIMENT_ASSUMPTIONS],
     outcome: {
       success: firstSuccess !== null ? true : censoredReason ? null : false,
       firstSuccess, censored: censoredReason !== null, censoredReason, completedDays, elapsedHours: model.now,

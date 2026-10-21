@@ -63,7 +63,7 @@ test('every funded action is charged, funded admission burns own rights, and mon
   const ledger = run.metrics.ledger;
   assert.equal(ledger.supply, ledger.emitterVault + ledger.collector + ledger.feeVault);
   assert.equal(run.money.honest.inviteBurns + run.money.attackers.inviteBurns + run.money.honest.vetoBurns + run.money.attackers.vetoBurns, ledger.burned);
-  assert.equal(run.money.honest.guaranteeFeesPaid + run.money.attackers.guaranteeFeesPaid, ledger.feeVault);
+  assert.equal(run.money.honest.guaranteeFeesPaid + run.money.attackers.guaranteeFeesPaid + run.money.honest.linkBreakFeesPaid + run.money.attackers.linkBreakFeesPaid, ledger.feeVault);
   assert.ok(run.state.selfIds.filter(act => act.disposition === 'invitation').length >= run.state.lineage.edges.length);
   for (const cohort of Object.values(run.effort.cohorts)) {
     const expected = Object.entries(cohort.byAction).reduce((sum, [action, row]) => sum + row.attempts * run.config.weights[action], 0);

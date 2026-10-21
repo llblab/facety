@@ -1,5 +1,5 @@
 // Owns: Passive macro-state and activity measurements; excludes agent decisions and emergence claims.
-import { xpMetrics, graphMetrics } from './metrics.mjs';
+import { xpMetrics, graphMetrics, reciprocity, largestWeakComponentFraction, spearman, rootDepths } from './metrics.mjs';
 import { reachableNodes } from './proofs.mjs';
 import { COHORTS } from './effort.mjs';
 
@@ -74,6 +74,10 @@ export function measureNetwork(model, truth, { previousCouncilIds = null } = {})
   const roots = new Set(model.roots);
   const nonRootHonest = honest.filter(subject => !roots.has(subject.id));
   const graph = graphMetrics(model.guarantees, model.roots, { blockedNodes: blocked });
+  const mixing = cohortMixing(model.guarantees, truth);
+  const attackEdges = mixing.counts.honest.attackers + mixing.counts.attackers.honest;
+  const attackerXpShare = totalXp ? attackerSubjects.reduce((sum, subject) => sum + subject.xp, 0) / totalXp : null;
+  const lineage = rootDepths(model.lineage, model.roots);
   return {
     subjects: subjects.length,
     activeSubjects: active.size,
@@ -86,7 +90,9 @@ export function measureNetwork(model, truth, { previousCouncilIds = null } = {})
     xp: {
       ...xp,
       topDecileShare: totalXp ? rankedXp.slice(0, Math.ceil(subjects.length / 10)).reduce((sum, xp) => sum + xp, 0) / totalXp : null,
-      attackerShare: totalXp ? attackerSubjects.reduce((sum, subject) => sum + subject.xp, 0) / totalXp : null,
+      attackerShare: attackerXpShare,
+      attackerExcessShare: attackerXpShare === null ? null : attackerXpShare - attackerSubjects.length / subjects.length,
+      outDegreeSpearman: spearman(subjects.map(subject => subject.xp), subjects.map(subject => [...model.guarantees.outEdges(subject.id)].length)),
     },
     council: {
       memberIds: councilIds,
@@ -97,8 +103,13 @@ export function measureNetwork(model, truth, { previousCouncilIds = null } = {})
       edges: graph.edges,
       density: subjects.length > 1 ? graph.edges / (subjects.length * (subjects.length - 1)) : 0,
       meanDegree: graph.meanDegree, maxDegree: graph.maxDegree, degreeGini: graph.degreeGini,
-      mixing: cohortMixing(model.guarantees, truth),
+      reciprocity: reciprocity(model.guarantees),
+      largestWeakComponentFraction: largestWeakComponentFraction(model.guarantees),
+      attackEdges,
+      attackEdgesPerAttacker: attackerSubjects.length ? attackEdges / attackerSubjects.length : null,
+      mixing,
     },
+    lineage,
     admission: {
       guaranteeQualified, guaranteeQualifiedFraction: guaranteeQualified / subjects.length,
       inviteReady, inviteReadyFraction: inviteReady / subjects.length,

@@ -8,7 +8,14 @@ export const DEFAULT_POLICY = Object.freeze({
   guarantorEligibility: 'active',
   guaranteeFee: 0,
   councilSize: 101,
+  debtRecovery: 'reserve-until-mature',
 });
+// Counterfactual mechanism removals for evidence experiments. They are not protocol options.
+export const DEFAULT_ABLATIONS = Object.freeze({
+  withholdGuarantorXp: false,
+  fixedInvitationThreshold: null,
+});
+export const DEBT_RESERVATION_AGE = 3 * 24;
 
 function natural(value, label, minimum = 0) {
   if (!Number.isSafeInteger(value) || value < minimum) throw new RangeError(label + ' must be an integer >= ' + minimum);
@@ -23,10 +30,20 @@ export function policyFrom(overrides = {}) {
     xpFinality: ['terminal', 'immediate'],
     cancellationAuthority: ['snapshot', 'current'],
     guarantorEligibility: ['active', 'accepted'],
+    debtRecovery: ['reserve-until-mature', 'immediate-burn'],
   })) if (!allowed.includes(policy[key])) throw new Error('invalid policy: ' + key);
   natural(policy.guaranteeFee, 'guaranteeFee');
   natural(policy.councilSize, 'councilSize', 1);
   return Object.freeze(policy);
+}
+
+export function ablationsFrom(overrides = {}) {
+  if (!overrides || typeof overrides !== 'object' || Array.isArray(overrides)) throw new TypeError('ablations must be an object');
+  for (const key of Object.keys(overrides)) if (!Object.hasOwn(DEFAULT_ABLATIONS, key)) throw new Error('unknown ablation: ' + key);
+  const ablations = { ...DEFAULT_ABLATIONS, ...overrides };
+  if (typeof ablations.withholdGuarantorXp !== 'boolean') throw new TypeError('withholdGuarantorXp must be boolean');
+  if (ablations.fixedInvitationThreshold !== null) natural(ablations.fixedInvitationThreshold, 'fixedInvitationThreshold', 1);
+  return Object.freeze(ablations);
 }
 
 export class ProtocolRejection extends Error {
@@ -45,6 +62,9 @@ export class FacetyModel {
   #invitations = new Map();
   #claims = new Map();
   #xpSources = new Set();
+  #debtReservations = new Set();
+  #activityVersion = 0;
+  #activeCache = null;
   #events = [];
   #now = 0;
   #sequence = 0;
@@ -52,9 +72,10 @@ export class FacetyModel {
   #burned = 0;
   #vault = 0;
   #fees = 0;
-  constructor({ genesis = ['root'], policy = {} } = {}) {
+  constructor({ genesis = ['root'], policy = {}, ablations = {} } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
     Object.defineProperty(this, 'policy', { value: policyFrom(policy), enumerable: true });
+    Object.defineProperty(this, 'ablations', { value: ablationsFrom(ablations), enumerable: true });
     this.lineage = new DirectedGraph('invitation-lineage');
     this.guarantees = new DirectedGraph('guarantees');
     Object.defineProperty(this, 'roots', { value: Object.freeze([...genesis]), enumerable: true });
@@ -103,6 +124,20 @@ export class FacetyModel {
     natural(hour, 'hour');
     if (hour < this.now) throw new ProtocolRejection('simulation time cannot move backwards');
     this.#now = hour;
+    this.#settleDebtReservations();
+  }
+  // Reserved debt-recovery rights burn once their guarantor veto window has elapsed.
+  #settleDebtReservations() {
+    for (const act of [...this.#debtReservations]) {
+      if (act.disputeLock !== null || this.now - act.recordedAt < DEBT_RESERVATION_AGE) continue;
+      const subject = this.#subject(act.subject);
+      act.debtReserved = false;
+      this.#debtReservations.delete(act);
+      if (subject.debt < 1) continue;
+      subject.debt--;
+      this.#dispose(act, 'consumed', 'debt-repayment');
+      this.#event('debt-recovered', { selfId: act.id, subject: act.subject });
+    }
   }
   rotateKey(id, key) {
     if (typeof key !== 'string' || !key.length) throw new ProtocolRejection('key must be non-empty');
@@ -156,13 +191,26 @@ export class FacetyModel {
   }
   isActive(id) {
     if (this.#subject(id).identityStatus !== 'accepted') return false;
-    return this.#subjectActs.get(id).some(actId => {
-      const act = this.#acts.get(actId);
-      return act.status !== 'cancelled' && this.now - act.recordedAt < 28 * DAY;
-    });
+    const acts = this.#subjectActs.get(id);
+    // Acts are recorded chronologically, so the scan can stop at the first expired act.
+    for (let i = acts.length - 1; i >= 0; i--) {
+      const act = this.#acts.get(acts[i]);
+      if (this.now - act.recordedAt >= 28 * DAY) return false;
+      if (act.status !== 'cancelled') return true;
+    }
+    return false;
   }
-  activeCount() { return this.subjects().filter(subject => this.isActive(subject.id)).length; }
-  requiredGuarantors() { return String(Math.max(1, this.activeCount())).length; }
+  activeCount() {
+    const cache = this.#activeCache;
+    if (cache && cache.now === this.now && cache.version === this.#activityVersion) return cache.count;
+    let count = 0;
+    for (const id of this.#subjects.keys()) if (this.isActive(id)) count++;
+    this.#activeCache = { now: this.now, version: this.#activityVersion, count };
+    return count;
+  }
+  requiredGuarantors() {
+    return this.ablations.fixedInvitationThreshold ?? String(Math.max(1, this.activeCount())).length;
+  }
   eligibleGuarantors(id) {
     this.#subject(id);
     return [...this.guarantees.inEdges(id)].map(edge => edge.from).filter(guarantor =>
@@ -198,17 +246,22 @@ export class FacetyModel {
     const faceRef = JSON.stringify([artifactId, 'abstract-detector-v1', faceIndex]);
     const claims = this.#claims.get(faceRef) ?? [];
     const collision = claims.some(claim => this.#acts.get(claim).subject !== subjectId);
-    const act = { id, subject: subjectId, artifact: artifactId, faceIndex, recordedAt: this.now, guarantors, xpRecipients: [subjectId, ...guarantors], xpCredited: false, status: 'unspent', disposition: null, disputeLock: null, collision };
+    const xpRecipients = this.ablations.withholdGuarantorXp ? [subjectId] : [subjectId, ...guarantors];
+    const reservedDebt = this.#subjectActs.get(subjectId).filter(actId => this.#acts.get(actId).debtReserved).length;
+    const debtReserved = this.policy.debtRecovery === 'reserve-until-mature' && subject.debt > reservedDebt;
+    const act = { id, subject: subjectId, artifact: artifactId, faceIndex, recordedAt: this.now, guarantors, xpRecipients, xpCredited: false, status: 'unspent', disposition: null, disputeLock: null, collision, debtReserved };
     if (collision) for (const claim of claims) this.#acts.get(claim).collision = true;
     claims.push(id);
     this.#claims.set(faceRef, claims);
     this.#acts.set(id, act);
+    if (debtReserved) this.#debtReservations.add(act);
     this.#subjectActs.get(subjectId).push(id);
+    this.#activityVersion++;
     subject.lastRewardAt = this.now;
     this.#minted++;
     this.#vault++;
     if (this.policy.xpFinality === 'immediate') this.#credit(act);
-    if (subject.debt > 0) {
+    if (this.policy.debtRecovery === 'immediate-burn' && subject.debt > 0) {
       subject.debt--;
       this.#dispose(act, 'consumed', 'debt-repayment');
     }
@@ -220,12 +273,15 @@ export class FacetyModel {
   }
   #dispose(act, status, disposition) {
     this.#requireUnspent(act);
+    act.debtReserved = false;
+    this.#debtReservations.delete(act);
     act.status = status;
     act.disposition = disposition;
     this.#vault--;
     if (status === 'converted') this.#subject(act.subject).liquidFacy++;
     else this.#burned++;
     if (status === 'cancelled') {
+      this.#activityVersion++;
       this.#xpSources.delete(act.id);
       if (act.xpCredited) for (const id of act.xpRecipients) this.#replayXp(this.#subject(id));
     } else this.#credit(act);
@@ -241,13 +297,14 @@ export class FacetyModel {
   eligibleEmissions(subjectId, minimumAge = 3 * DAY) {
     this.#subject(subjectId);
     return this.#subjectActs.get(subjectId).map(id => this.#acts.get(id)).filter(act =>
-      act.status === 'unspent' && act.disputeLock === null && this.now - act.recordedAt >= minimumAge).map(act => act.id);
+      act.status === 'unspent' && act.disputeLock === null && !act.debtReserved && this.now - act.recordedAt >= minimumAge).map(act => act.id);
   }
   createInvitation(creatorId, selfIdId, target) {
     const creator = this.#subject(creatorId, true);
     const act = this.#act(selfIdId);
     this.#requireUnspent(act);
     if (act.subject !== creator.id || this.now - act.recordedAt < 3 * DAY) throw new ProtocolRejection('invitation requires own mature Emitter right');
+    if (act.debtReserved) throw new ProtocolRejection('emission is reserved for debt recovery');
     if (this.eligibleGuarantors(creatorId).length < this.requiredGuarantors()) throw new ProtocolRejection('insufficient eligible guarantors');
     if (typeof target !== 'string' || !target.length || this.#subjects.has(target)) throw new ProtocolRejection('invitation must target a new subject');
     const id = this.#id('invitation');
@@ -269,6 +326,7 @@ export class FacetyModel {
     this.#subject(owner, true);
     const act = this.#act(selfIdId);
     if (act.subject !== owner || this.now - act.recordedAt < 7 * DAY) throw new ProtocolRejection('conversion requires own seven-day emission');
+    if (act.debtReserved) throw new ProtocolRejection('emission is reserved for debt recovery');
     this.#dispose(act, 'converted', 'collector');
     this.#event('collector-converted', { selfId: selfIdId, subject: owner });
   }
@@ -284,6 +342,7 @@ export class FacetyModel {
     if (act.disputeLock !== lockId || act.disputeLock === null) throw new ProtocolRejection('wrong dispute lock');
     act.disputeLock = null;
     this.#event('self-id-unfrozen', { selfId: selfIdId, lockId });
+    this.#settleDebtReservations();
   }
   transferFacy(from, to, amount) {
     natural(amount, 'amount', 1);
@@ -313,13 +372,15 @@ export class FacetyModel {
   }
   invalidateIdentity(id) {
     this.#subject(id).identityStatus = 'false';
+    this.#activityVersion++;
     this.#event('identity-invalidated', { subject: id });
   }
   council() {
-    return this.subjects().filter(subject => subject.identityStatus === 'accepted').sort((a, b) => b.xp - a.xp || idOrder(a.id, b.id)).slice(0, this.policy.councilSize).map(subject => ({ id: subject.id, xp: subject.xp }));
+    return [...this.#subjects.values()].filter(subject => subject.identityStatus === 'accepted').map(subject => ({ id: subject.id, xp: subject.xp }))
+      .sort((a, b) => b.xp - a.xp || idOrder(a.id, b.id)).slice(0, this.policy.councilSize);
   }
   ledger() {
-    const subjects = this.subjects();
+    const subjects = [...this.#subjects.values()];
     return { minted: this.#minted, burned: this.#burned, supply: this.#minted - this.#burned, emitterVault: this.#vault, collector: subjects.reduce((sum, subject) => sum + subject.liquidFacy, 0), feeVault: this.#fees, debt: subjects.reduce((sum, subject) => sum + subject.debt, 0) };
   }
   audit() {

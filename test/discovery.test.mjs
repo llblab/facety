@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { runLandscape, diagnoseLandscape, describeTrajectory, metricSeries } from '../src/discovery.mjs';
+import { runLandscape, runLandscapeParallel, diagnoseLandscape, describeTrajectory, metricSeries } from '../src/discovery.mjs';
 import { describeValues } from '../src/trials.mjs';
 import { DEFAULT_ACTIVITY } from '../src/experiment.mjs';
 
@@ -218,4 +218,10 @@ test('descriptive statistics retain replicate dispersion without pretending it i
   assert.equal(summary.p50, 2);
   assert.equal(describeValues([]), null);
   assert.throws(() => describeValues([NaN]));
+});
+
+test('parallel landscapes reproduce the sequential result exactly', async () => {
+  const experiment = { seed: 'parallel', initialSize: 6, days: 4 };
+  const options = { axes: { initialDegree: [1, 2], 'ablations.withholdGuarantorXp': [false, true] }, trials: 3, seed: 'p' };
+  assert.deepEqual(await runLandscapeParallel(experiment, { ...options, workers: 2 }), runLandscape(experiment, options));
 });

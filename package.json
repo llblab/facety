@@ -4,8 +4,14 @@
   "private": true,
   "description": "Reproducible graph and adversarial experiments for the proposed Facety protocol",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "facety": "node bin/facety.mjs"
+  },
+  "bin": {
+    "facety": "bin/facety.mjs"
   }
 }

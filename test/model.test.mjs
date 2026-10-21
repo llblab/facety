@@ -229,8 +229,8 @@ test('XP events preserve halving chronology and cancellation replays rather than
   model.audit();
 });
 
-test('fines burn only collectible money and persist as debt across key changes', () => {
-  const model = fixture();
+test('fines burn only collectible money and persist as debt across key changes (immediate-burn comparison policy)', () => {
+  const model = fixture({ debtRecovery: 'immediate-burn' });
   const first = identify(model, 'a');
   model.advanceTo(7 * DAY);
   model.convertToCollector('a', first);
@@ -249,7 +249,7 @@ test('fines burn only collectible money and persist as debt across key changes',
 
 test('fines preserve safe aggregate debt and reject overflow before balances, XP or events change', () => {
   for (const target of ['a', 'b']) {
-    const model = fixture({ xpFinality: 'immediate' });
+    const model = fixture({ xpFinality: 'immediate', debtRecovery: 'immediate-burn' });
     guarantee(model, 'a', 'b');
     const first = identify(model, 'b');
     model.advanceTo(DAY);
@@ -319,4 +319,68 @@ test('research policies reject unknown knobs and cannot be silently changed mid-
   assert.throws(() => model.advanceTo(-1));
   model.advanceTo(1);
   assert.throws(() => model.advanceTo(0));
+});
+
+test('default debt recovery keeps the guarantor veto window before burning a reserved right', () => {
+  const model = fixture();
+  guarantee(model, 'a', 'b');
+  model.penalize('b', { fine: 2, halveXp: false });
+  const vetoed = identify(model, 'b');
+  assert.equal(model.selfId(vetoed).debtReserved, true);
+  assert.equal(model.subject('b').xp, 0);
+  assert.deepEqual(model.eligibleEmissions('b', 0), []);
+  model.cancelSelfId('a', vetoed);
+  assert.equal(model.subject('b').debt, 2);
+  model.advanceTo(DAY);
+  const first = identify(model, 'b');
+  model.advanceTo(2 * DAY);
+  const second = identify(model, 'b');
+  model.advanceTo(3 * DAY);
+  const third = identify(model, 'b');
+  assert.equal(model.selfId(third).debtReserved, false, 'only outstanding debt is reserved');
+  model.advanceTo(4 * DAY - 1);
+  assert.equal(model.subject('b').debt, 2);
+  assert.throws(() => model.createInvitation('b', first, 'new'));
+  model.advanceTo(4 * DAY);
+  assert.equal(model.selfId(first).disposition, 'debt-repayment');
+  assert.equal(model.subject('b').debt, 1);
+  assert.equal(model.subject('b').xp, 1);
+  assert.equal(model.subject('a').xp, 1);
+  model.freezeSelfId(second, 'case');
+  model.advanceTo(9 * DAY);
+  assert.equal(model.selfId(second).status, 'unspent', 'a locked reservation does not settle');
+  model.unfreezeSelfId(second, 'case');
+  assert.equal(model.selfId(second).disposition, 'debt-repayment');
+  assert.equal(model.subject('b').debt, 0);
+  assert.equal(model.selfId(third).status, 'unspent');
+  model.advanceTo(10 * DAY);
+  model.convertToCollector('b', third);
+  assert.deepEqual(model.audit(), { minted: 4, burned: 3, supply: 1, emitterVault: 0, collector: 1, feeVault: 0, debt: 0 });
+});
+
+test('immediate-burn debt recovery removes the veto window and is only a comparison policy', () => {
+  const model = fixture({ debtRecovery: 'immediate-burn' });
+  guarantee(model, 'a', 'b');
+  model.penalize('b', { fine: 1, halveXp: false });
+  const act = identify(model, 'b');
+  assert.equal(model.selfId(act).disposition, 'debt-repayment');
+  assert.equal(model.subject('a').xp, 1);
+  assert.throws(() => model.cancelSelfId('a', act), /spent/);
+});
+
+test('mechanism ablations are explicit and leave cancellation authority intact', () => {
+  assert.throws(() => new FacetyModel({ ablations: { unknown: true } }), /unknown ablation/);
+  assert.throws(() => new FacetyModel({ ablations: { fixedInvitationThreshold: 0 } }), RangeError);
+  const model = new FacetyModel({ genesis: ['a', 'b'], policy: { guarantorEligibility: 'accepted' }, ablations: { withholdGuarantorXp: true, fixedInvitationThreshold: 3 } });
+  assert.equal(model.requiredGuarantors(), 3);
+  guarantee(model, 'a', 'b');
+  const act = identify(model, 'b');
+  assert.deepEqual(model.selfId(act).xpRecipients, ['b']);
+  assert.deepEqual(model.selfId(act).guarantors, ['a']);
+  model.advanceTo(7 * DAY);
+  model.convertToCollector('b', act);
+  assert.equal(model.subject('a').xp, 0);
+  assert.equal(model.subject('b').xp, 1);
+  const vetoed = identify(model, 'b');
+  model.cancelSelfId('a', vetoed);
 });
