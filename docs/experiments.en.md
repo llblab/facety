@@ -71,11 +71,19 @@ Initial graph setup is charged to the setup phase. Daily work, including prepara
 Money remains separate:
 
 - Invitation burns and cancelled-emission burns.
-- Guarantee fees transferred to fee custody.
+- Guarantee fees transferred to fee custody, counted for every relation ever activated (ended relations included), and link-break fees by the ending party.
 - Converted rewards and liquid FACY.
 - Outstanding debt, never counted as a burn.
 
 The current experiment applies no judicial fine or XP-halving verdict; the underlying model supports explicit penalties for future adjudication experiments. Token market prices, Treasury D spending and realized fiat profit are not modeled.
+
+## Ablations and provenance
+
+`ablations` accepts the model ablations from [the model contract](simulator.en.md#counterfactual-ablations) plus `randomGuaranteeTargets`, which replaces coalition and lineage-preferring guarantee targets with uniform public matching. Dotted paths such as `ablations.withholdGuarantorXp` work in sweeps, landscapes, controls and hypothesis arms. Enabled ablations appear in the recorded configuration and assumptions.
+
+Every run, batch, landscape and control result carries `provenance.implementation`, a SHA-256 digest of all `src/*.mjs` files, together with the `randomness` manifest. Keep both: a seed replays a run only under the same implementation and randomness policy.
+
+Scheduler optimizations choose targets by index arithmetic over admission-ordered rosters instead of filtering candidate lists. They consume the same keyed draws and produce bit-identical runs, which was checked against the filter-based reference and is covered by `pickIndexExcluding` equivalence tests.
 
 ## Observation and defense boundary
 

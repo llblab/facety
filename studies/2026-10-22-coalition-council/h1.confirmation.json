@@ -1,0 +1,2660 @@
+{
+  "schema": "facety-confirmation/v1",
+  "registrationHash": "4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749",
+  "hypothesis": "coalition-xp-coupling-amplifies-council-share",
+  "statement": "In the sybil-cone scenario, guarantor-XP coupling raises the attacker coalition's Council seat share, the amplification requires coalition-level guarantee intensity, and it is not produced by the attackers' higher Self-ID rate.",
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "40ed56a70fd447e294f15b21cba2320309f2371f12e1070772c51876a6076a2a",
+    "files": 21
+  },
+  "implementationMatched": true,
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "values": {
+    "random-bootstrap": {
+      "equal-selfid": [
+        {
+          "value": 0.5544554455445545,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.5643564356435643,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.5247524752475248,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.5742574257425742,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.5742574257425742,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.5445544554455446,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.5247524752475248,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.5643564356435643,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.5742574257425742,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "equal-selfid-no-gxp": [
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.38613861386138615,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.5247524752475248,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.3465346534653465,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.38613861386138615,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.36633663366336633,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "full": [
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.5643564356435643,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.5742574257425742,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.5544554455445545,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.5346534653465347,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "full-no-gxp": [
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.5445544554455446,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.5346534653465347,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.5247524752475248,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "low-intensity": [
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.5445544554455446,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.3465346534653465,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "low-intensity-no-gxp": [
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.5346534653465347,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.38613861386138615,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.33663366336633666,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ]
+    },
+    "preferential-bootstrap": {
+      "equal-selfid": [
+        {
+          "value": 0.5445544554455446,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.5247524752475248,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.5643564356435643,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.5742574257425742,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.6831683168316832,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.5742574257425742,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.5247524752475248,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.5445544554455446,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "equal-selfid-no-gxp": [
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.36633663366336633,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.38613861386138615,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.32673267326732675,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "full": [
+        {
+          "value": 0.5643564356435643,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.5742574257425742,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.5841584158415841,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.5445544554455446,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.6831683168316832,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.6831683168316832,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.594059405940594,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.6633663366336634,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.6534653465346535,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.7128712871287128,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.7029702970297029,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.6534653465346535,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.6633663366336634,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.6237623762376238,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.6633663366336634,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.6633663366336634,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.6534653465346535,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.5544554455445545,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.6534653465346535,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.6435643564356436,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.6633663366336634,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.6138613861386139,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.6336633663366337,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.6039603960396039,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.7029702970297029,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.5346534653465347,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "full-no-gxp": [
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.5346534653465347,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.5247524752475248,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.5445544554455446,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.36633663366336633,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.5346534653465347,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.38613861386138615,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "low-intensity": [
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.38613861386138615,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.5445544554455446,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.38613861386138615,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ],
+      "low-intensity-no-gxp": [
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",0]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",1]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",2]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",3]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",4]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",5]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",6]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",7]"
+        },
+        {
+          "value": 0.46534653465346537,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",8]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",9]"
+        },
+        {
+          "value": 0.38613861386138615,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",10]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",11]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",12]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",13]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",14]"
+        },
+        {
+          "value": 0.5148514851485149,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",15]"
+        },
+        {
+          "value": 0.43564356435643564,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",16]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",17]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",18]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",19]"
+        },
+        {
+          "value": 0.44554455445544555,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",20]"
+        },
+        {
+          "value": 0.504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",21]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",22]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",23]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",24]"
+        },
+        {
+          "value": 0.37623762376237624,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",25]"
+        },
+        {
+          "value": 0.45544554455445546,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",26]"
+        },
+        {
+          "value": 0.40594059405940597,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",27]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",28]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",29]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",30]"
+        },
+        {
+          "value": 0.49504950495049505,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",31]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",32]"
+        },
+        {
+          "value": 0.48514851485148514,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",33]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",34]"
+        },
+        {
+          "value": 0.4158415841584158,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",35]"
+        },
+        {
+          "value": 0.3465346534653465,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",36]"
+        },
+        {
+          "value": 0.39603960396039606,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",37]"
+        },
+        {
+          "value": 0.4752475247524752,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",38]"
+        },
+        {
+          "value": 0.42574257425742573,
+          "censored": false,
+          "seed": "[\"confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749\",\"coalition-council\",39]"
+        }
+      ]
+    }
+  },
+  "analysis": {
+    "alpha": 0.05,
+    "method": "Exact one-sided binomial test per claim and context of P(contrast satisfies the claim) > declared probability; replicas are independent seeds; unknown values count against the tested direction. The hypothesis is an intersection-union test: its p-value is the maximum component p-value, valid at alpha without within-hypothesis correction.",
+    "tests": [
+      {
+        "context": "random-bootstrap",
+        "claim": "coupling-amplifies",
+        "role": "presence",
+        "replicas": 40,
+        "held": 40,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9278424754944854,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.094947017729282e-13,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 40,
+          "mean": 0.1433168316831684,
+          "standardDeviation": 0.032644983026308146,
+          "standardError": 0.005161625027033509,
+          "min": 0.07920792079207922,
+          "p10": 0.09900990099009904,
+          "p50": 0.14851485148514848,
+          "p90": 0.1891089108910891,
+          "max": 0.2178217821782178,
+          "bootstrapMean95": {
+            "lower": 0.13341584158415848,
+            "upper": 0.15346534653465355,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "random-bootstrap",
+        "claim": "requires-coalition-intensity",
+        "role": "necessity",
+        "replicas": 40,
+        "held": 40,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9278424754944854,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.094947017729282e-13,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 40,
+          "mean": 0.12747524752475253,
+          "standardDeviation": 0.03357121176493673,
+          "standardError": 0.005308074649452064,
+          "min": 0.06930693069306931,
+          "p10": 0.07920792079207922,
+          "p50": 0.1287128712871287,
+          "p90": 0.16930693069306932,
+          "max": 0.20792079207920794,
+          "bootstrapMean95": {
+            "lower": 0.11707920792079214,
+            "upper": 0.1376237623762377,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "random-bootstrap",
+        "claim": "survives-equal-selfid",
+        "role": "alternative",
+        "replicas": 40,
+        "held": 40,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9278424754944854,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.094947017729282e-13,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 40,
+          "mean": 0.1475247524752476,
+          "standardDeviation": 0.03578994511346788,
+          "standardError": 0.005658887194548596,
+          "min": 0.07920792079207922,
+          "p10": 0.1089108910891089,
+          "p50": 0.13861386138613863,
+          "p90": 0.18910891089108914,
+          "max": 0.24752475247524752,
+          "bootstrapMean95": {
+            "lower": 0.1366336633663367,
+            "upper": 0.157920792079208,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "preferential-bootstrap",
+        "claim": "coupling-amplifies",
+        "role": "presence",
+        "replicas": 40,
+        "held": 40,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9278424754944854,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.094947017729282e-13,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 40,
+          "mean": 0.16633663366336643,
+          "standardDeviation": 0.043661181605109844,
+          "standardError": 0.0069034389603196715,
+          "min": 0.07920792079207922,
+          "p10": 0.1089108910891089,
+          "p50": 0.15841584158415845,
+          "p90": 0.22772277227722776,
+          "max": 0.24752475247524752,
+          "bootstrapMean95": {
+            "lower": 0.1537128712871288,
+            "upper": 0.1792079207920793,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "preferential-bootstrap",
+        "claim": "requires-coalition-intensity",
+        "role": "necessity",
+        "replicas": 40,
+        "held": 39,
+        "violated": 1,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.8868116390552625,
+        "holdProbabilityUpperBound": 0.9987184894771248,
+        "pValue": 3.728928277268998e-11,
+        "contradictionPValue": 0.9999999999990953,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 40,
+          "mean": 0.15024752475247533,
+          "standardDeviation": 0.04312172722475489,
+          "standardError": 0.006818143733535849,
+          "min": 0.04950495049504949,
+          "p10": 0.09900990099009899,
+          "p50": 0.14851485148514854,
+          "p90": 0.20891089108910899,
+          "max": 0.23762376237623756,
+          "bootstrapMean95": {
+            "lower": 0.13737623762376244,
+            "upper": 0.1631188118811882,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "preferential-bootstrap",
+        "claim": "survives-equal-selfid",
+        "role": "alternative",
+        "replicas": 40,
+        "held": 40,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9278424754944854,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.094947017729282e-13,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 40,
+          "mean": 0.1646039603960397,
+          "standardDeviation": 0.042404622581363544,
+          "standardError": 0.006704759533845876,
+          "min": 0.07920792079207922,
+          "p10": 0.11782178217821777,
+          "p50": 0.1584158415841584,
+          "p90": 0.2188118811881188,
+          "max": 0.2772277227722772,
+          "bootstrapMean95": {
+            "lower": 0.1522277227722773,
+            "upper": 0.17722772277227733,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      }
+    ],
+    "pValue": 3.728928277268998e-11,
+    "verdict": "supported",
+    "evidence": "mechanism-supported-within-model",
+    "contradicted": [],
+    "cautions": [
+      "Support is conditional on the declared scenario, policies, ablation semantics, horizon, contexts and replica distribution; it is not a real-world claim.",
+      "A supported mechanism means the effect appeared, required the ablated mechanism and survived the named alternative controls; unnamed explanations remain untested.",
+      "Inconclusive is not evidence of absence. A contradicted claim refutes the registered design in this model only.",
+      "Combine several hypotheses only with a study-level correction such as adjustStudy (Holm)."
+    ]
+  }
+}

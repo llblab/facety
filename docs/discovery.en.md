@@ -47,6 +47,8 @@ Each history point retains the earlier population/cost fields and adds:
 - Guarantees: actual edge count, directed density, degree concentration and cohort mixing.
 - Admission: current N28-derived guarantor threshold, subjects qualifying on guarantees, and subjects also holding an eligible own Emitter right.
 - Connectivity: rooted fraction, honest rooted fraction and honest non-root rooted fraction. No honest non-root subjects means the last fraction is `null`.
+- Structure: guarantee reciprocity and the largest weak-component fraction (`null` without edges or nodes), cross-cohort attack edges and attack edges per attacker subject (`null` without attackers), and invitation-lineage maximum and mean depth from the genesis roots.
+- XP coupling: `xp.attackerExcessShare` (attacker XP share minus attacker subject share) and `xp.outDegreeSpearman`, the tie-averaged rank correlation between effective XP and guarantee out-degree (`null` when either is constant).
 - Realized work: cumulative effort and per-action attempted/accepted/rejected/denied work since the preceding sample, separately for both cohorts. The initial sample includes funded topology setup; subsequent increments do not count setup twice.
 
 The existing `defenderEffort` field measures **all honest-cohort work**, including Self-ID and growth. It is not exclusively defensive review labor. Use inspection/response action measurements when studying review costs specifically.
@@ -75,6 +77,8 @@ All initial subjects are trusted roots in the current scenario model. This can m
 - `maxCells`: Explicit grid bound, default 64.
 - `maxRecordedSamples`: Bound on planned history points, default 100000. It accounts for every cell's horizon before any simulation runs.
 - `diagnostics`: Selected metric paths and declared descriptor settings.
+
+`runLandscapeParallel(experiment, { ...options, workers })` and CLI `landscape --workers` distribute replicas over worker threads. They return exactly the sequential result.
 
 All cell configurations validate before execution. Metadata fields `seed` and `includeState` cannot be axes. A landscape retains histories rather than full protocol snapshots; use a separate `runExperiment({ includeState: true })` for a particular witness graph.
 
@@ -125,7 +129,7 @@ Economic budget exhaustion is a modeled constraint, not computational censoring.
 2. Treat automated candidates as pointers for investigation. The number of candidates is **not** a count of emergent properties.
 3. Check direct explanations: 3/7-day maturity, 28-day expiry, decimal invitation thresholds, rounding of initial cohort sizes, XP tie-breaking, budgets and onboarding.
 4. Replay the witness seed and vary one mechanism at a time under an explicitly labeled control. A selected strategy is not an optimal attacker.
-5. Check a hypothesis on new seed labels and relevant alternate topologies; do not reuse exploratory selection as independent confirmation.
-6. Make a mechanism claim only after counterexamples and competing explanations survive those checks.
+5. Register the hypothesis, with presence, necessity and named-alternative claims plus robustness contexts, before confirming it on reserved seeds. See [confirmatory evidence](evidence.en.md). Do not reuse exploratory selection as independent confirmation.
+6. Make a mechanism claim only when a registered confirmation supports it, and list the alternatives it did not test.
 
 Diagnostics perform no significance test, multiple-comparison correction or causal identification. The recorded decision-keyed random policy shares draws for matching logical contexts, not for arbitrarily different agents, targets or candidate sets. See [paired-control coupling and replay limits](controls.en.md#counterfactual-random-coupling). A sharp sampled contrast is not by itself a mathematical phase transition; stabilization, capture, oscillation and recovery remain hypotheses to test.

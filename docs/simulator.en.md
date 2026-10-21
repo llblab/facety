@@ -37,6 +37,7 @@ The model never receives a hidden label saying that a subject is an attacker or 
 - `guarantorEligibility: "active"` (default) requires an accepted subject with a non-cancelled Self-ID inside the preceding 28 days. `"accepted"` removes the activity requirement. Frozen acts still count for activity. At the exact 28-day boundary an act expires.
 - `guaranteeFee: 0` (default) models an unfunded two-sided guarantee. A configured positive integer fee is paid by the guarantor from liquid FACY on confirmation and held in a fee vault, not burned. This is not the still-unspecified Emitter guarantee commitment.
 - `councilSize: 101` (default) ranks accepted subjects by effective XP, breaking ties by JavaScript string order. Zero-XP accepted subjects qualify; fewer subjects produce a smaller Council. A snapshot is an observation, not an implemented Council case.
+- `debtRecovery: "reserve-until-mature"` (default) marks a debtor's new Self-ID right as reserved while outstanding debt exceeds the debtor's already reserved rights. The reserved right stays in Emitter custody, where guarantors can still cancel it, and the owner cannot spend or convert it. When it reaches 72 hours without a dispute lock, the next clock advance (or unlock) burns it, reduces debt by one and applies terminal XP. A cancelled reservation repays nothing. `"immediate-burn"` burns at acceptance and credits XP at once. It is retained only as a comparison policy, because it removes the selected free guarantor veto for debtors and makes their XP final sooner than everyone else's.
 
 Other explicit assumptions:
 
@@ -46,8 +47,12 @@ Other explicit assumptions:
 - A link break costs exactly one liquid FACY, paid by the party ending the link, and transfers it to fee custody. No hardship exception is assumed.
 - A dispute lock prohibits both owner disposition and guarantor cancellation. Unlocking does not reset age. Opening a lock does not itself prove admissibility.
 - XP halving rounds down. Credits and halvings are chronological. Cancelling an immediate credit replays current XP without that source; historical votes or decisions are not rolled back. The foundation intentionally has no final court decisions.
-- A monetary fine burns collectible liquid FACY first and assigns the remainder to subject debt. Existing Emitter balances are not seized. Future Self-ID mints and immediately burns one FACY per debt unit; its valid identity work can still earn XP. Nominal debt is never counted as an actual burn.
+- A monetary fine burns collectible liquid FACY first and assigns the remainder to subject debt. Existing Emitter balances are not seized. Future Self-ID repays one unit of debt per mature uncancelled right under the selected `debtRecovery` policy; its valid identity work can still earn XP. Nominal debt is never counted as an actual burn. The 72-hour reservation age is an experiment assumption for an OPEN seizure-order question.
 - Monetary amounts use safe-integer FACY units, not production token precision. `penalize` rejects a fine that would make accumulated individual or aggregate debt unrepresentable before changing money, XP history or events. This is a numeric representation limit, not a calibrated economic ceiling. Signatures, key possession, media capture/detection, publication rights and lawful identity judgments are abstract inputs, not validated here.
+
+## Counterfactual ablations
+
+`ablations` (constructor option, `ablationsFrom`) removes a protocol mechanism for evidence experiments: `withholdGuarantorXp` limits Self-ID XP to its owner while keeping guarantor cancellation authority, and `fixedInvitationThreshold` replaces the N28 digit rule. Defaults are off. Any enabled ablation is a labeled counterfactual, not Facety behavior, and [evidence](evidence.en.md) owns how it supports necessity claims.
 
 ## Graphs and certificates
 

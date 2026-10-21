@@ -1,0 +1,22 @@
+{
+  "alpha": 0.05,
+  "method": "Holm step-down family-wise error control over hypothesis-level intersection-union p-values",
+  "hypotheses": [
+    {
+      "hypothesis": "coalition-xp-coupling-amplifies-council-share",
+      "registrationHash": "4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749",
+      "pValue": 3.728928277268998e-11,
+      "adjustedPValue": 3.728928277268998e-11,
+      "supported": true,
+      "unadjustedVerdict": "supported"
+    },
+    {
+      "hypothesis": "sybil-growth-council-shield-is-transient",
+      "registrationHash": "5478eeecab6063cb9fcdd0256f3b93594dfbc432977f3e594476247b5439733e",
+      "pValue": 9.094947017729282e-13,
+      "adjustedPValue": 1.8189894035458565e-12,
+      "supported": true,
+      "unadjustedVerdict": "supported"
+    }
+  ]
+}

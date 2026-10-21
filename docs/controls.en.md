@@ -55,14 +55,14 @@ The current manifest is:
 
 ```json
 {
-  "generator": "fnv1a32-mulberry32-v1",
+  "generator": "sha256-xoshiro128starstar-v2",
   "decisions": "decision-keyed-v1"
 }
 ```
 
 Daily decision draws are derived from the seed, logical clock, decision channel, actor and slot/context. Ordering, submission, guarantee work, inspection, response, invitation work and conversion do not consume one another's stream offsets. Observations also use explicit contexts; more inspections cannot shift unrelated guarantee-vetting errors.
 
-Matching contexts share draws. Different candidate sets, entities or histories can still yield different actions; those are not forced to remain identical. Initial roles and topology use their separately seeded generation paths. Randomness remains non-cryptographic and is a research sampling mechanism, not a security primitive.
+Matching contexts share draws. Different candidate sets, entities or histories can still yield different actions; those are not forced to remain identical. Initial roles and topology use their separately seeded generation paths. Randomness remains non-cryptographic and is a research sampling mechanism, not a security primitive. Seed labels are hashed with SHA-256 into a 128-bit xoshiro128** state. The former `fnv1a32-mulberry32-v1` generator had only 2^32 seed states, so distinct decision keys shared identical streams within one large run; its results are not interchangeable with v2 replays.
 
 Regression tests require exact protocol-state equality when inspections cannot cause a response or exhaust a budget. They separately verify that a future intervention cannot change its pre-intervention history, that no-op schedules have no economic effect, and that real veto behavior remains possible.
 
