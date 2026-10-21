@@ -1,0 +1,127 @@
+{
+  "schema": "facety-hypothesis/v1",
+  "hash": "4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749",
+  "spec": {
+    "id": "coalition-xp-coupling-amplifies-council-share",
+    "statement": "In the sybil-cone scenario, guarantor-XP coupling raises the attacker coalition's Council seat share, the amplification requires coalition-level guarantee intensity, and it is not produced by the attackers' higher Self-ID rate.",
+    "kind": "mechanism",
+    "base": {
+      "scenario": "sybil-cone",
+      "seed": "coalition-council",
+      "initialSize": 40,
+      "attackerShare": 0.1,
+      "days": 30,
+      "maxSubjects": 4000
+    },
+    "statistic": {
+      "metric": "council.attackerShare",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    },
+    "arms": {
+      "equal-selfid": {
+        "activity.attackers.selfId": 0.8
+      },
+      "equal-selfid-no-gxp": {
+        "activity.attackers.selfId": 0.8,
+        "ablations.withholdGuarantorXp": true
+      },
+      "full": {},
+      "full-no-gxp": {
+        "ablations.withholdGuarantorXp": true
+      },
+      "low-intensity": {
+        "activity.attackers.guarantee": 0.3
+      },
+      "low-intensity-no-gxp": {
+        "activity.attackers.guarantee": 0.3,
+        "ablations.withholdGuarantorXp": true
+      }
+    },
+    "contexts": [
+      {
+        "id": "random-bootstrap",
+        "parameters": {
+          "initialTopology": "random"
+        }
+      },
+      {
+        "id": "preferential-bootstrap",
+        "parameters": {
+          "initialTopology": "preferential"
+        }
+      }
+    ],
+    "claims": [
+      {
+        "id": "coupling-amplifies",
+        "role": "presence",
+        "contrast": {
+          "full": 1,
+          "full-no-gxp": -1
+        },
+        "direction": "greater",
+        "margin": 0.05,
+        "probability": 0.5,
+        "rationale": "XP never feeds back into agent behavior, so under shared replica seeds the two arms have identical populations and graphs; the contrast isolates the XP-coupling rule's effect on seats."
+      },
+      {
+        "id": "requires-coalition-intensity",
+        "role": "necessity",
+        "contrast": {
+          "full": 1,
+          "full-no-gxp": -1,
+          "low-intensity": -1,
+          "low-intensity-no-gxp": 1
+        },
+        "direction": "greater",
+        "margin": 0.05,
+        "probability": 0.5,
+        "rationale": "Difference-in-differences: lowering attacker guarantee intensity to the honest rate (2 to 0.3 proposals per subject-day) removes most of the amplification."
+      },
+      {
+        "id": "survives-equal-selfid",
+        "role": "alternative",
+        "contrast": {
+          "equal-selfid": 1,
+          "equal-selfid-no-gxp": -1
+        },
+        "direction": "greater",
+        "margin": 0.05,
+        "probability": 0.5,
+        "rationale": "With attacker Self-ID probability equal to the honest 0.8, coupling still amplifies seat share."
+      }
+    ],
+    "alternatives": [
+      {
+        "id": "selfid-rate",
+        "explanation": "The attackers' higher scripted Self-ID probability (1.0 versus 0.8) alone creates the extra guarantor XP.",
+        "claim": "survives-equal-selfid"
+      }
+    ],
+    "replicas": 40,
+    "alpha": 0.05,
+    "exploration": {
+      "seeds": [
+        "explore-A",
+        "explore-B",
+        "explore-C",
+        "explore-F"
+      ],
+      "source": "studies/2026-10-22-coalition-council/README.md#exploration"
+    },
+    "declaredOn": "2026-10-22"
+  },
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "40ed56a70fd447e294f15b21cba2320309f2371f12e1070772c51876a6076a2a",
+    "files": 21
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "confirmationSeed": "confirm:4ecebfd44be2fdb7733ac4633854e68ba31862e20432173a7dc993bbbc390749",
+  "plannedRuns": 480
+}

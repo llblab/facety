@@ -1,0 +1,122 @@
+{
+  "schema": "facety-hypothesis/v1",
+  "hash": "5478eeecab6063cb9fcdd0256f3b93594dfbc432977f3e594476247b5439733e",
+  "spec": {
+    "id": "sybil-growth-council-shield-is-transient",
+    "statement": "In the sybil-cone scenario, the attacker coalition's Council seat share stays well below its subject share while it keeps growing; halting its admissions removes this shield, and the shield is not produced by terminal XP finality.",
+    "kind": "mechanism",
+    "base": {
+      "scenario": "sybil-cone",
+      "seed": "coalition-council",
+      "initialSize": 40,
+      "attackerShare": 0.1,
+      "days": 30,
+      "maxSubjects": 4000
+    },
+    "statistic": {
+      "metric": "council.attackerShare",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": "attackerShare"
+    },
+    "arms": {
+      "full": {},
+      "growth-halt": {
+        "perturbations": [
+          {
+            "id": "growth-halt",
+            "startDay": 15,
+            "endDay": 30,
+            "activity": {
+              "attackers": {
+                "invite": 0
+              }
+            }
+          }
+        ]
+      },
+      "immediate-xp": {
+        "policy.xpFinality": "immediate"
+      }
+    },
+    "contexts": [
+      {
+        "id": "random-bootstrap",
+        "parameters": {
+          "initialTopology": "random"
+        }
+      },
+      {
+        "id": "preferential-bootstrap",
+        "parameters": {
+          "initialTopology": "preferential"
+        }
+      }
+    ],
+    "claims": [
+      {
+        "id": "shielded",
+        "role": "presence",
+        "contrast": {
+          "full": 1
+        },
+        "direction": "less",
+        "margin": 0.15,
+        "probability": 0.5,
+        "rationale": "Seat share minus subject share is below -0.15: a young, exponentially admitted coalition holds far fewer top-101 XP seats than its numbers."
+      },
+      {
+        "id": "growth-transient",
+        "role": "necessity",
+        "contrast": {
+          "full": -1,
+          "growth-halt": 1
+        },
+        "direction": "greater",
+        "margin": 0.15,
+        "probability": 0.5,
+        "rationale": "Stopping coalition invitations at day 15 lets its age structure mature; the seat-minus-subject gap rises by more than 0.15."
+      },
+      {
+        "id": "survives-immediate-xp",
+        "role": "alternative",
+        "contrast": {
+          "immediate-xp": 1
+        },
+        "direction": "less",
+        "margin": 0.05,
+        "probability": 0.5,
+        "rationale": "With XP credited at Self-ID acceptance instead of terminal disposition, the gap remains below -0.05."
+      }
+    ],
+    "alternatives": [
+      {
+        "id": "finality-lag",
+        "explanation": "Terminal XP finality delays every newcomer's XP by 3 to 7 days, which alone could keep a growing cohort under-represented.",
+        "claim": "survives-immediate-xp"
+      }
+    ],
+    "replicas": 40,
+    "alpha": 0.05,
+    "exploration": {
+      "seeds": [
+        "explore-A",
+        "explore-E",
+        "explore-G"
+      ],
+      "source": "studies/2026-10-22-coalition-council/README.md#exploration"
+    },
+    "declaredOn": "2026-10-22"
+  },
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "40ed56a70fd447e294f15b21cba2320309f2371f12e1070772c51876a6076a2a",
+    "files": 21
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "confirmationSeed": "confirm:5478eeecab6063cb9fcdd0256f3b93594dfbc432977f3e594476247b5439733e",
+  "plannedRuns": 240
+}

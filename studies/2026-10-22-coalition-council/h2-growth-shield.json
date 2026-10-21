@@ -1,0 +1,43 @@
+{
+  "id": "sybil-growth-council-shield-is-transient",
+  "statement": "In the sybil-cone scenario, the attacker coalition's Council seat share stays well below its subject share while it keeps growing; halting its admissions removes this shield, and the shield is not produced by terminal XP finality.",
+  "kind": "mechanism",
+  "declaredOn": "2026-10-22",
+  "base": { "scenario": "sybil-cone", "seed": "coalition-council", "initialSize": 40, "attackerShare": 0.1, "days": 30, "maxSubjects": 4000 },
+  "statistic": { "metric": "council.attackerShare", "summary": "endpoint", "subtract": "attackerShare" },
+  "arms": {
+    "full": {},
+    "growth-halt": { "perturbations": [{ "id": "growth-halt", "startDay": 15, "endDay": 30, "activity": { "attackers": { "invite": 0 } } }] },
+    "immediate-xp": { "policy.xpFinality": "immediate" }
+  },
+  "contexts": [
+    { "id": "random-bootstrap", "parameters": { "initialTopology": "random" } },
+    { "id": "preferential-bootstrap", "parameters": { "initialTopology": "preferential" } }
+  ],
+  "claims": [
+    {
+      "id": "shielded", "role": "presence", "direction": "less", "margin": 0.15,
+      "contrast": { "full": 1 },
+      "rationale": "Seat share minus subject share is below -0.15: a young, exponentially admitted coalition holds far fewer top-101 XP seats than its numbers."
+    },
+    {
+      "id": "growth-transient", "role": "necessity", "direction": "greater", "margin": 0.15,
+      "contrast": { "growth-halt": 1, "full": -1 },
+      "rationale": "Stopping coalition invitations at day 15 lets its age structure mature; the seat-minus-subject gap rises by more than 0.15."
+    },
+    {
+      "id": "survives-immediate-xp", "role": "alternative", "direction": "less", "margin": 0.05,
+      "contrast": { "immediate-xp": 1 },
+      "rationale": "With XP credited at Self-ID acceptance instead of terminal disposition, the gap remains below -0.05."
+    }
+  ],
+  "alternatives": [
+    { "id": "finality-lag", "explanation": "Terminal XP finality delays every newcomer's XP by 3 to 7 days, which alone could keep a growing cohort under-represented.", "claim": "survives-immediate-xp" }
+  ],
+  "replicas": 40,
+  "alpha": 0.05,
+  "exploration": {
+    "seeds": ["explore-A", "explore-E", "explore-G"],
+    "source": "studies/2026-10-22-coalition-council/README.md#exploration"
+  }
+}
