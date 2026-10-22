@@ -115,3 +115,10 @@ test('timed Chekharda freezes the accused, waits for the window after the last m
   assert.throws(() => experimentConfig({ disputes: { roundsPerDay: 0 } }), RangeError);
   assert.throws(() => experimentConfig({ activity: { attackers: { defend: 2 } } }), RangeError);
 });
+
+test('dispute records accumulate and settings validate', () => {
+  assert.throws(() => experimentConfig({ disputes: { trackRecordWeight: 1.5 } }), RangeError);
+  const run = runExperiment({ ...base, seed: 'records', days: 24, activity: { honest: { inspect: 3, challenge: 1, review: 1 } },
+    disputes: { enabled: true, procedure: 'chekharda-timed', disputeWindowHours: 48, trackRecordWeight: 0.5, regularsNotice: 0.5, roundsPerDay: 5, entrantChoice: 'highest' } });
+  assert.ok(run.system.sanctions.disputesResolved > 0);
+});

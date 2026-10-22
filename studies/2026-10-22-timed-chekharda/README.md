@@ -54,3 +54,9 @@ Levers to test next:
 - **Coalition behavior as a strategy.** Make `defend` and `challenge` respond to observed losses and attention rather than run as scripts.
 
 The owner's hypotheses (§26.5: few defend an obviously wrong side, losing a dispute halves XP, and every accomplice who joins draws more attention) are not refuted. They depend on these levers, which the current model does not yet give them.
+
+## Follow-up: dispute-resolution reputation (`game-reputation.json`)
+
+The owner observed that dispute regulars form their own community and that each person's dispute history is public, so their statistical record of standing on the right side becomes a reputation. Two settings implement this: `regularsNotice: 0.5` (regulars notice disputes) and `trackRecordWeight: 0.5` (a candidate weighs the opposed entrant's win/loss record).
+
+The equilibrium is unchanged: lax honest people, `farm-and-defend`, coalition 865 versus 44. Against a defended farm, honest payoffs are about −90 whether vigilant or lax. Few disputes are opened, and each defended dispute keeps a fake alive for at least a week. At this horizon the bottleneck is dispute volume and duration, not who wins a dispute. Reputation and attention only matter once disputes are opened and resolved fast enough.

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added dispute-resolution reputation (`disputes.trackRecordWeight`, `disputes.regularsNotice`) from public win/loss records. Recorded the owner's notes on regulars' community, the explorer view of dispute chains, senior call-in and stake fairness. The reputation follow-up did not change the timed-Chekharda equilibrium (F18): dispute volume and duration are the bottleneck.
 - Added timed Chekharda (`disputes.procedure: "chekharda-timed"`): a 7-day finality window restarted by every entry, frozen rights of the accused, attention and evidence growing with dispute height, `roundsPerDay` and `entrantChoice` for fast escalation, coalition defense as a strategy (`activity.attackers.defend`) and attention on entrants. Recorded the 7-day finality rule as SELECTED, and fast escalation plus "few defend the wrong side" as hypotheses. Design principle: easy and profitable to follow the rules, hard and unprofitable to break them.
 - Exploratory timed-Chekharda game (`studies/2026-10-22-timed-chekharda`): with coalition defense and harassment, fraud pays about 20× rule-following under both slow and fast escalation. The study lists the design levers the owner hypotheses depend on (targeted attention, decisive evidence, defender liability, larger stakes, early Council).
 - **Protocol is now a living specification** with a dated decision log (Appendix A). It records the owner decisions of 2026-10-22:

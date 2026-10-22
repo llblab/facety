@@ -39,6 +39,9 @@ export const DEFAULT_DISPUTES = Object.freeze({
   // Who takes the next position among willing candidates, and how many entries a timed dispute can
   // take per day (owner: many entrants a day, XP jumping by multiples toward the most senior people).
   entrantChoice: 'lowest', roundsPerDay: 1,
+  // Dispute-resolution reputation: public win/loss records. Regulars notice disputes more often, and a
+  // candidate weighs the record of the entrant it would oppose.
+  trackRecordWeight: 0, regularsNotice: 0,
 });
 // 'inviter-chain' adds the inviter's own guarantors, who could have cancelled the invitation right.
 export const LIABILITY_POLICIES = Object.freeze(['subject', 'guarantors', 'guarantors-and-inviter', 'inviter-chain']);
@@ -114,6 +117,8 @@ function disputesFrom(overrides) {
   integer(disputes.disputeWindowHours, 'disputes.disputeWindowHours', 1, 10000);
   integer(disputes.roundsPerDay, 'disputes.roundsPerDay', 1, 1000);
   if (!['lowest', 'highest', 'random'].includes(disputes.entrantChoice)) throw new Error('disputes.entrantChoice must be lowest, highest or random');
+  probability(disputes.trackRecordWeight, 'disputes.trackRecordWeight');
+  probability(disputes.regularsNotice, 'disputes.regularsNotice');
   probability(disputes.noticeBase, 'disputes.noticeBase');
   for (const key of ['evidenceGain', 'civicValue']) if (!Number.isFinite(disputes[key]) || disputes[key] < 0) throw new RangeError('disputes.' + key + ' must be non-negative');
   for (const key of ['signalAccuracy', 'closeSignalAccuracy']) probability(disputes[key], 'disputes.' + key);
@@ -337,6 +342,12 @@ export function runExperiment(overrides = {}) {
   const attention = new Set();
   const openDisputes = [];
   let disputeSequence = 0;
+  // Public dispute history per subject: positions won and lost.
+  const disputeRecords = new Map();
+  const reliability = id => {
+    const record = disputeRecords.get(id) ?? { won: 0, lost: 0 };
+    return (record.won + 1) / (record.won + record.lost + 2);
+  };
   // Undirected social neighborhood over guarantees and invitation lineage.
   function neighborhood(id, hops) {
     const seenIds = new Set([id]);
@@ -656,10 +667,19 @@ export function runExperiment(overrides = {}) {
     };
   }
   // Posterior that the accusation is true after a private signal of the given accuracy.
-  function fraudBelief(dispute, accuracy, saysFraud) {
-    const fraud = (saysFraud ? accuracy : 1 - accuracy) * (1 - dispute.genuinePrior);
-    const real = (saysFraud ? 1 - accuracy : accuracy) * dispute.genuinePrior;
+  function fraudBelief(dispute, accuracy, saysFraud, priorFraud = 1 - dispute.genuinePrior) {
+    const fraud = (saysFraud ? accuracy : 1 - accuracy) * priorFraud;
+    const real = (saysFraud ? 1 - accuracy : accuracy) * (1 - priorFraud);
     return fraud / (fraud + real);
+  }
+  // Prior that the accusation is true, blending public reputation with the opposed entrant's record.
+  function candidatePrior(dispute) {
+    const weight = config.disputes.trackRecordWeight;
+    const base = 1 - dispute.genuinePrior;
+    if (!weight) return base;
+    const last = dispute.entrants.at(-1);
+    const lastRight = reliability(last.id);
+    return (1 - weight) * base + weight * (last.side === 'fraud' ? lastRight : 1 - lastRight);
   }
   function nextPosition(dispute) {
     const last = dispute.entrants.at(-1);
@@ -680,7 +700,7 @@ export function runExperiment(overrides = {}) {
     }
     const accuracy = Math.min(0.99, (dispute.close.has(id) ? rules.closeSignalAccuracy : rules.signalAccuracy) + evidenceBoost);
     const correct = sensing.fork(JSON.stringify(['ladder-signal', dispute.id, id, model.now])).chance(accuracy);
-    const pFraud = fraudBelief(dispute, accuracy, dispute.genuine ? !correct : correct);
+    const pFraud = fraudBelief(dispute, accuracy, dispute.genuine ? !correct : correct, candidatePrior(dispute));
     if ((next.side === 'fraud') !== (pFraud > 0.5)) return false;
     const confidence = Math.max(pFraud, 1 - pFraud);
     return confidence * next.below - (1 - confidence) * (next.stake + rules.xpValue * model.subject(id).xp / 2) + rules.civicValue > 0;
@@ -740,6 +760,11 @@ export function runExperiment(overrides = {}) {
       } else if (!upper) model.penalize(lower.id, { fine: amount, halveXp: false });
     }
     for (const entrant of entrants) if (entrant.side !== winner) model.penalize(entrant.id, { fine: 0, halveXp: rules.loserHalvesXp });
+    for (const entrant of entrants) {
+      const record = disputeRecords.get(entrant.id) ?? { won: 0, lost: 0 };
+      record[entrant.side === winner ? 'won' : 'lost']++;
+      disputeRecords.set(entrant.id, record);
+    }
     sanctions.ladderDepth = Math.max(sanctions.ladderDepth, entrants.length);
     return winner === 'fraud';
   }
@@ -807,6 +832,12 @@ export function runExperiment(overrides = {}) {
         const chooser = decision('dispute-notice', dispute.id, round);
         const picks = new Set();
         while (picks.size < count) picks.add(chooser.int(accepted.length));
+        // Dispute regulars know each other and notice more often.
+        if (rules.regularsNotice > 0) {
+          accepted.forEach((id, index) => {
+            if (disputeRecords.has(id) && decision('regular-notice', id, [dispute.id, round]).chance(rules.regularsNotice)) picks.add(index);
+          });
+        }
         const next = nextPosition(dispute);
         sanctions.disputeNotices += count;
         let joined = false;
