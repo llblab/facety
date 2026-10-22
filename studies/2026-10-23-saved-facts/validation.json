@@ -1,0 +1,87 @@
+{
+  "schema": "facety-saved-facts-validation/v1",
+  "level": "diagnostic",
+  "date": "2026-10-23",
+  "baseCommit": "de0365b7b3344bcac2a4a2da91e986bd95e6bf62",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "3e9d46868e90541b66d7456e00c56ec78787b18ce0c8782a3fd00c5517ce1adc",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "sourceSha256": "18cb1443daaf52d21c39fdfeb27c1160f600ac07fc905169a71a1e31e6a37b00",
+  "testSha256": "7da3ebe7258ac553e41085e3ecea390c769cfb5ee8548943827cceb71f6acc0b",
+  "tests": {
+    "focusedPassed": 11,
+    "newRegressions": 4,
+    "newRegressionsFailedBefore": 4,
+    "fullPassed": 206,
+    "failed": 0,
+    "raw": "tests.txt"
+  },
+  "completeData": {
+    "profiles": 4,
+    "deviations": 8,
+    "nativeRuns": 36,
+    "analysisDigest": "25d1ed0ca1b69581316b2ef6ae58c46d4032997165a10a22b0966fbb76b30d21",
+    "summaryDigest": "ec9a29341e360a8cfc4831ff99bbde40fa1fbfe35915497ba4046555fa0ab62e",
+    "analysisEqual": true,
+    "summaryEqual": true,
+    "viabilityEqual": true
+  },
+  "historicalPreservation": {
+    "rawBlobsEqual": true,
+    "studyFiles": 124,
+    "unchangedSourceModules": 24
+  },
+  "scheduler": {
+    "contexts": 12,
+    "equivalent": true,
+    "comparison": "all retained fields except provenance and full ordered native events",
+    "raw": "scheduler-preservation.json"
+  },
+  "dag": {
+    "modules": 25,
+    "edges": 57,
+    "errors": 0,
+    "warnings": 0,
+    "raw": "dag.txt"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 26,
+    "raw": "context.txt",
+    "reviewedWarnings": "24 existing wide tables and two generic context-structure suggestions; no broken links/orphans/phantoms. Removed a new blank line inside the changelog list before final pass."
+  },
+  "whitespace": "git diff --check passed",
+  "review": {
+    "run": "saved-facts-review",
+    "reviewersUsable": 2,
+    "reviewersRequired": 2,
+    "rawBodies": [
+      "review-005.txt",
+      "review-006.txt",
+      "review-007.txt",
+      "review-008.txt",
+      "review-009.txt",
+      "review-010.txt"
+    ],
+    "rawBodiesMatchCapturedBytes": true,
+    "status": "No introduced material defect established in reviewed source. Judge/normalizer degraded for missing underlying body access; raw reports read and retained by coordinator. Integrated full suite is separate.",
+    "residuals": [
+      "Declared-replica completeness is enforced only for budget means, not mandatory payoff/sanction summaries; reproduce before next repair.",
+      "Partial raw-sanction missingness remains nonuniform and may throw; make the admitted-record contract consistent.",
+      "Probe per-replica valued-fact missingness before using known-subset payoff means for equilibrium/viability."
+    ]
+  },
+  "scope": "Offline safety reporting repair only. No protocol default, native transition, random-key policy, historical artifact or confirmation status changed.",
+  "next": "Resolve recorded retained-data completeness residuals in one bounded cohort, then native transition/provenance audit; no broad research continuation."
+}

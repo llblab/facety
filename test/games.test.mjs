@@ -122,3 +122,102 @@ test('fraud budgets measure false minted money and coalition Council share and c
   assert.equal(open.criteria.maxFalseMintedShare, 1);
   assert.ok(strict.failures.length >= open.failures.length);
 });
+
+async function savedBudgetFixture() {
+  const result = await runGame({ id: 'saved-budget', base: { initialSize: 6, attackerShare: 0.5, days: 3 },
+    roles: { honest: { strategies: { watch: { activity: { invite: 0 } } } },
+      attackers: { strategies: { abstain: { activity: { invite: 0 } }, farm: { activity: { invite: 0 } } } } },
+    replicas: 2, reference: { attackers: 'abstain' } });
+  // Synthetic retained measurements isolate offline missingness; they are not a simulated outcome claim.
+  for (const entry of result.facts) for (const replica of entry.replicas) Object.assign(replica.system,
+    { falseMintedShare: 0.2, falseCirculatingShare: 0.3, councilSeats: 4, councilAttackerSeats: 1 });
+  return result;
+}
+const budgetValuation = { honest: { facts: { subjects: 1 } }, attackers: { facts: { subjects: 1 } } };
+
+test('saved-game budget means require every declared replica and valid observed shares/counts', async () => {
+  const result = await savedBudgetFixture();
+  const expected = { falseMintedShare: 0.2, falseCirculatingShare: 0.3, coalitionCouncilShare: 0.25 };
+  assert.deepEqual(analyzeGame(result, budgetValuation).profiles[0].fraudBudget, expected);
+  for (const [field, metric] of [['falseMintedShare', 'falseMintedShare'], ['falseCirculatingShare', 'falseCirculatingShare'],
+    ['councilSeats', 'coalitionCouncilShare'], ['councilAttackerSeats', 'coalitionCouncilShare']]) {
+    for (const value of [undefined, null, NaN, Infinity, '0', -1]) {
+      const incomplete = structuredClone(result);
+      if (value === undefined) delete incomplete.facts[0].replicas[0].system[field];
+      else incomplete.facts[0].replicas[0].system[field] = value;
+      assert.equal(analyzeGame(incomplete, budgetValuation).profiles[0].fraudBudget[metric], null, field + ':' + value);
+    }
+  }
+  const partial = structuredClone(result);
+  partial.facts[0].replicas.pop();
+  assert.deepEqual(analyzeGame(partial, budgetValuation).profiles[0].fraudBudget,
+    { falseMintedShare: null, falseCirculatingShare: null, coalitionCouncilShare: null });
+  const emptyCouncil = structuredClone(result);
+  for (const replica of emptyCouncil.facts[0].replicas) Object.assign(replica.system, { councilSeats: 0, councilAttackerSeats: 0 });
+  assert.equal(analyzeGame(emptyCouncil, budgetValuation).profiles[0].fraudBudget.coalitionCouncilShare, 0);
+  emptyCouncil.facts[0].replicas[0].system.councilAttackerSeats = 1;
+  assert.equal(analyzeGame(emptyCouncil, budgetValuation).profiles[0].fraudBudget.coalitionCouncilShare, null);
+});
+
+test('saved-game equilibrium measurements ignore zero mass, never positive-mass missing data', async () => {
+  const result = await savedBudgetFixture();
+  const analysis = analyzeGame(result, budgetValuation);
+  const unused = analysis.profiles.find(row => row.profile.attackers === 'farm');
+  unused.fraudBudget.falseMintedShare = null;
+  delete unused.fraudBudget.coalitionCouncilShare;
+  delete unused.sanctions.wrongfulInvalidated;
+  analysis.mixedEquilibria = [{ honest: { watch: 1 }, attackers: { abstain: 1, farm: 0 }, values: { honest: 1, attackers: 1 } }];
+  const zero = deterrenceSummary(result, analysis).equilibria[0];
+  assert.equal(zero.falseMintedShare, 0.2);
+  assert.equal(zero.coalitionCouncilShare, 0.25);
+  assert.equal(zero.wrongfulInvalidations, 0);
+  for (const mass of [0.25, 1e-12]) {
+    analysis.mixedEquilibria[0].attackers = { abstain: 1 - mass, farm: mass };
+    const supported = deterrenceSummary(result, analysis).equilibria[0];
+    assert.equal(supported.falseMintedShare, null);
+    assert.equal(supported.coalitionCouncilShare, null);
+    assert.equal(supported.wrongfulInvalidations, null);
+  }
+});
+
+function knownDeterrence() {
+  return { verdict: 'deterred', honestWithoutFraud: 10,
+    equilibria: [{ honestValue: 10, wrongfulInvalidations: 0, falseMintedShare: 0.1, coalitionCouncilShare: 0.25 }] };
+}
+
+test('saved-game viability cannot approve unknown mandatory or enabled-budget measurements', () => {
+  const strict = { maxFalseMintedShare: 0.2, maxCoalitionCouncilShare: 0.5 };
+  assert.equal(assessViability(knownDeterrence(), strict).viable, true);
+  for (const [field, failure] of [['falseMintedShare', 'fraud-budget-money'], ['coalitionCouncilShare', 'fraud-budget-council'],
+    ['honestValue', 'honest-retention'], ['wrongfulInvalidations', 'wrongful-invalidations']]) {
+    for (const value of [undefined, null, NaN, Infinity, '0']) {
+      const missing = knownDeterrence();
+      missing.equilibria[0][field] = value;
+      const verdict = assessViability(missing, strict);
+      assert.equal(verdict.viable, false, field + ':' + value);
+      assert.ok(verdict.failures.includes(failure));
+    }
+  }
+  for (const baseline of [0, -1, null, NaN, Infinity]) {
+    const missing = knownDeterrence(); missing.honestWithoutFraud = baseline;
+    assert.equal(assessViability(missing).honestRetention, null);
+    assert.ok(assessViability(missing).failures.includes('honest-retention'));
+  }
+  const disabled = knownDeterrence(); delete disabled.equilibria[0].falseMintedShare;
+  const open = assessViability(disabled);
+  assert.equal(open.falseMintedShare, null);
+  assert.equal(open.viable, true, 'cap=1 disables this criterion, not missing-data reporting');
+  disabled.equilibria.push({ ...knownDeterrence().equilibria[0] });
+  assert.equal(assessViability(disabled, strict).falseMintedShare, null, 'do not drop an incomplete equilibrium');
+  const zero = knownDeterrence(); zero.equilibria[0].falseMintedShare = 0;
+  assert.equal(assessViability(zero, { maxFalseMintedShare: 0 }).viable, true);
+});
+
+test('saved-game viability criteria reject non-finite, negative and out-of-range limits', () => {
+  for (const key of ['minHonestRetention', 'maxWrongfulInvalidations', 'maxFalseMintedShare', 'maxCoalitionCouncilShare']) {
+    for (const value of [null, NaN, Infinity, -1, '0', true]) assert.throws(() => assessViability(knownDeterrence(), { [key]: value }), /viability/);
+  }
+  for (const key of ['maxFalseMintedShare', 'maxCoalitionCouncilShare']) assert.throws(() => assessViability(knownDeterrence(), { [key]: 1.1 }), /viability/);
+  assert.equal(assessViability(knownDeterrence(), { minHonestRetention: 2 }).viable, false, 'higher-than-baseline utility targets remain legal');
+  assert.equal(assessViability(knownDeterrence(), { maxWrongfulInvalidations: 0.5 }).viable, true);
+});

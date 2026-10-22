@@ -1,0 +1,76 @@
+ACTOR_REVIEW_RESULT
+
+## Status / identity
+
+**Complete for the bounded semantic-preservation review; approve with a residual compatibility note.** No introduced defect established. Read-only inspection and independent probes completed; no edits, commits, or publishing.
+
+Reviewed against HEAD `de0365b7b3344bcac2a4a2da91e986bd95e6bf62`.
+
+Inspected source SHA-256:
+- `src/games.mjs`: `18cb1443daaf52d21c39fdfeb27c1160f600ac07fc905169a71a1e31e6a37b00`
+- `test/games.test.mjs`: `7da3ebe7258ac553e41085e3ecea390c769cfb5ee8548943827cceb71f6acc0b`
+
+Both digests were unchanged after validation.
+
+## Supported defects with minimal probes
+
+**No regression established in the changed code.**
+
+**Residual, pre-existing compatibility limitation — partial raw sanction records are not uniformly represented as unknown.**  
+`src/games.mjs:459–461`, `describeSanctions`, derives keys from the first replica and passes subsequent values directly to `describeValues`.
+
+Independent two-replica probe:
+- `wrongfulInvalidated` absent from replica 0 → profile measurement absent/unknown.
+- Same field absent from replica 1 → throws `descriptive values must be finite numbers`.
+- Explicit `null` in either replica → same exception.
+
+This helper is unchanged against HEAD. The new equilibrium aggregation correctly handles unknown *profile-level* observations, but that does not establish uniform handling of unknown *raw sanction* observations.
+
+**Risk:** Some incomplete historical files still abort offline analysis rather than produce an unknown measurement. This probe did **not** demonstrate false approval or a newly introduced regression.
+
+**Recommended action:** Keep this as an explicit compatibility limit or bounded follow-up; do not describe the cohort as comprehensive missingness repair for every retained measurement.
+
+## Tested invariants and commands
+
+Independently executed:
+
+1. `git status --short`, `git rev-parse HEAD`, and `git diff de0365b -- src/games.mjs test/games.test.mjs`.
+2. Read `AGENTS.md`, the complete game implementation and game tests, and relevant canonical backlog entries.
+3. `node --test test/games.test.mjs`:
+   - **11 passed; 0 failed.**
+4. In-memory old/new comparison using `git show de0365b:src/games.mjs`; relative imports were resolved to the current unchanged dependency modules, without writing files:
+   - **24 simulated-run fact records were deep-identical** between old and new `runGame`.
+   - For two explicit valuations with positive finite honest baselines, complete `analyzeGame` outputs, `deterrenceSummary` outputs, and default/enabled-budget viability outputs were deep-identical.
+   - Observed baselines: `1` and `2.1999999999999997`; equilibrium counts: `2` and `1`.
+5. Synthetic baseline probes:
+   - Baseline `0`, honest value `1`: old retention `Infinity`, viable `true`; new retention `null`, viable `false`.
+   - Baseline `-10`, honest value `-20`: old retention `2`, viable `true`; new retention `null`, viable `false`.
+
+The baseline changes are explicit analyst-criterion corrections: a share-of-baseline retention criterion is not meaningful for a nonpositive utility baseline. They do not change protocol transitions or assert that negative utility is itself prohibited.
+
+Source inspection and passing targeted tests support the intended distinctions:
+- Missing/out-of-range budget observations → `null`, not measured zero.
+- Validated empty Council `(0, 0)` → explicit zero.
+- Exactly zero equilibrium mass → excluded observation.
+- Positive mass, including tested `1e-12`, with missing measurement → unknown.
+- Budget cap `1` → disabled criterion, while unknown remains visible.
+- Invalid analyst limits → rejection rather than silent permissiveness.
+
+## Compatibility / measurement limits
+
+- Full `npm test` was **not run by this reviewer**.
+- Differential results cover one bounded game and two valuations, not all finite games or numerical extremes.
+- The diff changes offline aggregation and assessment; no simulation task, scheduler, random-key layout, or protocol-economic transition was changed. The direct fact comparison corroborates behavioral preservation only for the tested game.
+- Source changes alter implementation fingerprint identity even where simulation behavior is preserved.
+- Neither these tests nor the resulting `viable` flag establish calibrated viability, endogenous adoption, governance correctness, or a real-world equilibrium.
+- Coordinator-written documentation and diagnostic artifacts were outside this review snapshot.
+
+## Dissent
+
+No other reviewers’ substantive findings were supplied, so no consensus is claimed. Preserve the raw-sanction compatibility limitation separately from the narrower, supported missing-budget repair.
+
+## Next bounded actions
+
+1. Complete the required full-suite validation.
+2. Ensure documentation explicitly states positive-baseline retention applicability, disabled cap semantics, and the narrower retained-data coverage.
+3. Retain the raw-sanction edge as a follow-up unless the coordinator intentionally includes that adjacent compatibility repair in this cohort.

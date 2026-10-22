@@ -93,6 +93,20 @@ export function gameRunTask({ config }) {
 
 function profileKey(profile) { return `${profile.honest}|${profile.attackers}`; }
 
+function isShare(value) { return Number.isFinite(value) && value >= 0 && value <= 1; }
+function meanShare(values, expected) {
+  return values.length === expected && values.every(isShare) ? describeValues(values)?.mean ?? null : null;
+}
+function councilShare(system) {
+  const seats = system?.councilSeats;
+  const attackers = system?.councilAttackerSeats;
+  if (!Number.isSafeInteger(seats) || !Number.isSafeInteger(attackers) || seats < 0 || attackers < 0 || attackers > seats) return null;
+  return seats === 0 ? 0 : attackers / seats;
+}
+function observedExtreme(values, extreme) {
+  return values.length && values.every(Number.isFinite) ? extreme(...values) : null;
+}
+
 function gamePlans(game) {
   const profiles = [];
   for (const honest of Object.keys(game.roles.honest)) for (const attackers of Object.keys(game.roles.attackers)) profiles.push({ honest, attackers });
@@ -172,18 +186,24 @@ export const DEFAULT_VIABILITY = Object.freeze({ minHonestRetention: 0.5, maxWro
 // invalidations of genuine people stay below a bound. The thresholds are analyst choices.
 export function assessViability(deterrence, criteria = {}) {
   record(criteria, Object.keys(DEFAULT_VIABILITY), 'viability criteria');
-  const { minHonestRetention, maxWrongfulInvalidations, maxFalseMintedShare, maxCoalitionCouncilShare } = { ...DEFAULT_VIABILITY, ...criteria };
+  const limits = { ...DEFAULT_VIABILITY, ...criteria };
+  for (const [key, value] of Object.entries(limits)) if (!Number.isFinite(value) || value < 0
+    || (['maxFalseMintedShare', 'maxCoalitionCouncilShare'].includes(key) && value > 1)) fail('invalid viability limit: ' + key);
+  const { minHonestRetention, maxWrongfulInvalidations, maxFalseMintedShare, maxCoalitionCouncilShare } = limits;
   const equilibria = deterrence.equilibria ?? [];
-  const retention = equilibria.length ? Math.min(...equilibria.map(eq => eq.honestValue / deterrence.honestWithoutFraud)) : null;
-  const wrongful = equilibria.length ? Math.max(...equilibria.map(eq => eq.wrongfulInvalidations)) : null;
+  const baseline = deterrence.honestWithoutFraud;
+  const retention = Number.isFinite(baseline) && baseline > 0 ? observedExtreme(equilibria.map(eq =>
+    Number.isFinite(eq.honestValue) ? eq.honestValue / baseline : null), Math.min) : null;
+  const wrongful = observedExtreme(equilibria.map(eq => Number.isFinite(eq.wrongfulInvalidations)
+    && eq.wrongfulInvalidations >= 0 ? eq.wrongfulInvalidations : null), Math.max);
   const failures = [];
   if (deterrence.verdict !== 'deterred') failures.push(deterrence.verdict);
   if (retention === null || retention < minHonestRetention) failures.push('honest-retention');
   if (wrongful === null || wrongful > maxWrongfulInvalidations) failures.push('wrongful-invalidations');
-  const falseMinted = equilibria.length ? Math.max(...equilibria.map(eq => eq.falseMintedShare ?? 0)) : null;
-  const coalitionCouncil = equilibria.length ? Math.max(...equilibria.map(eq => eq.coalitionCouncilShare ?? 0)) : null;
-  if (falseMinted !== null && falseMinted > maxFalseMintedShare) failures.push('fraud-budget-money');
-  if (coalitionCouncil !== null && coalitionCouncil > maxCoalitionCouncilShare) failures.push('fraud-budget-council');
+  const falseMinted = observedExtreme(equilibria.map(eq => isShare(eq.falseMintedShare) ? eq.falseMintedShare : null), Math.max);
+  const coalitionCouncil = observedExtreme(equilibria.map(eq => isShare(eq.coalitionCouncilShare) ? eq.coalitionCouncilShare : null), Math.max);
+  if (maxFalseMintedShare < 1 && (falseMinted === null || falseMinted > maxFalseMintedShare)) failures.push('fraud-budget-money');
+  if (maxCoalitionCouncilShare < 1 && (coalitionCouncil === null || coalitionCouncil > maxCoalitionCouncilShare)) failures.push('fraud-budget-council');
   return {
     criteria: { minHonestRetention, maxWrongfulInvalidations, maxFalseMintedShare, maxCoalitionCouncilShare },
     honestRetention: retention, wrongfulInvalidations: wrongful, falseMintedShare: falseMinted, coalitionCouncilShare: coalitionCouncil,
@@ -207,17 +227,26 @@ export function deterrenceSummary(result, analysis, { alpha = analysis.alpha } =
   const mixed = analysis.mixedEquilibria;
   const equilibria = mixed === null ? null : mixed.map(eq => {
     const referenceValue = names.honest.reduce((sum, honest) => sum + eq.honest[honest] * profile(honest, reference).payoffs.attackers.mean, 0);
-    const weightedBudget = key => names.honest.reduce((sum, honest) => sum + names.attackers.reduce((inner, attackers) => inner + eq.honest[honest] * eq.attackers[attackers] * (profile(honest, attackers).fraudBudget?.[key] ?? 0), 0), 0);
-    const weighted = key => names.honest.reduce((sum, honest) => sum + names.attackers.reduce((inner, attackers) => inner + eq.honest[honest] * eq.attackers[attackers] * (profile(honest, attackers).sanctions[key] ?? 0), 0), 0);
+    const weighted = (field, key) => {
+      let known = true;
+      const value = names.honest.reduce((sum, honest) => sum + names.attackers.reduce((inner, attackers) => {
+        const mass = eq.honest[honest] * eq.attackers[attackers];
+        if (mass === 0) return inner;
+        const observation = profile(honest, attackers)[field]?.[key];
+        if (!Number.isFinite(mass) || mass < 0 || !Number.isFinite(observation)) { known = false; return inner; }
+        return inner + mass * observation;
+      }, 0), 0);
+      return known && Number.isFinite(value) ? value : null;
+    };
     return {
       honest: eq.honest, attackers: eq.attackers,
       fraudProbability: 1 - eq.attackers[reference],
       fraudPremium: eq.values.attackers - referenceValue,
       honestValue: eq.values.honest,
-      wrongfulInvalidations: weighted('wrongfulInvalidated'),
-      falseInvalidations: weighted('falseInvalidated'),
-      falseMintedShare: weightedBudget('falseMintedShare'),
-      coalitionCouncilShare: weightedBudget('coalitionCouncilShare'),
+      wrongfulInvalidations: weighted('sanctions', 'wrongfulInvalidated'),
+      falseInvalidations: weighted('sanctions', 'falseInvalidated'),
+      falseMintedShare: weighted('fraudBudget', 'falseMintedShare'),
+      coalitionCouncilShare: weighted('fraudBudget', 'coalitionCouncilShare'),
     };
   });
   const honestWithoutFraud = Math.max(...names.honest.map(honest => profile(honest, reference).payoffs.honest.mean));
@@ -356,9 +385,9 @@ export function analyzeGame(result, valuationInput, { alpha = 0.05 } = {}) {
     payoffs: Object.fromEntries(COHORTS.map(role => [role, summarize(payoffsOf(entry, role, INITIAL_GROUPS), `${profileKey(entry.profile)}:${role}`)])),
     sanctions: describeSanctions(entry.replicas),
     fraudBudget: {
-      falseMintedShare: describeValues(entry.replicas.map(replica => replica.system.falseMintedShare ?? 0))?.mean ?? null,
-      falseCirculatingShare: describeValues(entry.replicas.map(replica => replica.system.falseCirculatingShare ?? 0))?.mean ?? null,
-      coalitionCouncilShare: describeValues(entry.replicas.map(replica => (replica.system.councilSeats ? replica.system.councilAttackerSeats / replica.system.councilSeats : 0)))?.mean ?? null,
+      falseMintedShare: meanShare(entry.replicas.map(replica => replica.system?.falseMintedShare), game.replicas),
+      falseCirculatingShare: meanShare(entry.replicas.map(replica => replica.system?.falseCirculatingShare), game.replicas),
+      coalitionCouncilShare: meanShare(entry.replicas.map(replica => councilShare(replica.system)), game.replicas),
     },
   }));
   const mean = (profile, role) => profiles.find(row => profileKey(row.profile) === profileKey(profile)).payoffs[role].mean ?? null;

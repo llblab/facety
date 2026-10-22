@@ -115,6 +115,12 @@ All findings are conditional on the simulator's declared assumptions, horizons a
 
 **F29 — DIAGNOSTIC, dead-code removal.** The alternative `relay`/`trace`/`walkthroughs` component had no executable consumers outside itself. Removing its three modules and dead controls changes the content fingerprint (28→25 modules), not the checked native behavior: ten named walkthroughs and all 288 paired runs match commit `7124262` except provenance. All 116 existing study files remain byte-identical. Evidence and exact source-retention assertions are in the [cleanup study](../studies/2026-10-23-dead-code/README.md). This establishes bounded preservation, not universal compatibility or inherited confirmation; future source changes must pass their own regression/provenance checks.
 
+## Saved-data findings (2026-10-23)
+
+**F30 — DIAGNOSTIC, false-safe offline analysis.** On `de0365b`, absent game fraud-budget observations became zero at profile, mixture and viability layers, allowing explicit limits to pass without observations. Another witness approved mandatory criteria with `NaN` retention/wrongful counts; JSON serialization hid those values as null without changing the favorable verdict. The [saved-facts diagnostic](../studies/2026-10-23-saved-facts/README.md) retains both and four new regressions. The repair requires complete valid budget observations, propagates unknown positive-support profile measurements, and fails mandatory/enabled criteria without data; zero support and a disabled cap remain distinct. Non-positive utility baselines leave retention undefined, and invalid analyst limits reject. This deliberately changes incomplete/undefined-input analysis, not native protocol behavior or owner-selected policy.
+
+**Preservation and limit:** four profiles/eight deviations over 36 common native runs preserve complete-data analysis, summary and positive-baseline viability against the old pure analyzer. This bounded differential uses unchanged support modules; it is not historical full-model replay, calibrated welfare, confirmation or societal deterrence evidence. Historical artifacts remain unchanged. Reviewer-found mandatory-summary completeness and raw-sanction compatibility remain next in `BACKLOG.md`, before the native transition/provenance audit; this is not comprehensive saved-record missingness coverage. Broader calibration/robustness work remains open.
+
 ## Simplification candidates (proposals awaiting owner decision)
 
 | Candidate | Rationale | Evidence |

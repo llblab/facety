@@ -1,0 +1,103 @@
+ACTOR_REVIEW_RESULT
+
+## Status / identity
+
+**Complete bounded synthesis; targeted repair supported, checkpoint acceptance pending full validation.**
+
+The supplied verifier reports **2/2 usable reviewer branches**, meeting the declared minimum. No introduced material defect is established within the reviewed boundary. This is **not** a comprehensive correctness, saved-record compatibility, or readiness verdict.
+
+This synthesis relies on supplied evidence; I did not rerun commands or independently inspect the implementation. The verifier reports inspection against HEAD `de0365b7b3344bcac2a4a2da91e986bd95e6bf62`, with source digests matching both reviewers:
+
+- `src/games.mjs`: `18cb1443daaf52d21c39fdfeb27c1160f600ac07fc905169a71a1e31e6a37b00`
+- `test/games.test.mjs`: `7da3ebe7258ac553e41085e3ecea390c769cfb5ee8548943827cceb71f6acc0b`
+
+No edits, commits, or publishing were performed by this synthesis.
+
+## Supported defects with minimal probes
+
+### 1. Declared-replica completeness does not cover mandatory viability summaries
+
+**Residual boundary; not established as an introduced regression.**
+
+Budget summaries require the declared replica count, while payoff and sanction summaries still aggregate retained observations without that completeness check.
+
+Reviewer 1 reports a synthetic record declaring 20 replicas but retaining six: budget means became `null`, yet default viability remained `true`, with known retention and wrongful-invalidation summaries.
+
+- **Verifier-confirmed:** Source-level completeness asymmetry.
+- **Reviewer-reported only:** Exact six-of-twenty probe and resulting `viable: true`.
+- **Consequence:** Unknown budget observations and disabled budget criteria do not establish complete mandatory-measurement coverage.
+
+Evidence: `execution.json#command-005`, `execution.json#command-007`.
+
+### 2. Incomplete raw sanction records can abort analysis
+
+**Pre-existing compatibility limitation; not an established new regression.**
+
+`describeSanctions` selects keys from the first replica and passes subsequent values directly to `describeValues`. Both reviewers report that deleting `wrongfulInvalidated` from a later replica produces:
+
+```text
+RangeError: descriptive values must be finite numbers
+```
+
+Reviewer 2 additionally reports that first-replica absence becomes an absent profile measurement, whereas explicit `null` throws.
+
+- **Verifier-confirmed:** The unchanged helper and asymmetric key selection.
+- **Reviewer-reported only:** Exception probes.
+- **Consequence:** Some incomplete records abort before profile-level unknown handling; this is not evidence of false approval.
+
+Evidence: `execution.json#command-005`, `execution.json#command-006`, `execution.json#command-007`.
+
+## Tested invariants and commands
+
+The verifier reports independently running:
+
+```text
+git rev-parse HEAD
+git status --short
+git diff de0365b -- src/games.mjs test/games.test.mjs
+node --test test/games.test.mjs
+git diff --name-only de0365b -- src
+sha256sum src/games.mjs test/games.test.mjs
+```
+
+**Targeted tests: 11 passed, 0 failed.**
+
+The reported inspection and tests support:
+
+- Missing or invalid budget observations remain `null`, not imputed zero.
+- Incomplete declared replica sets produce unknown budget means.
+- Validated empty Council `(0, 0)` produces known zero.
+- Exactly zero equilibrium mass excludes an observation; positive mass, including `1e-12`, propagates missingness.
+- Unknown mandatory viability measurements fail their criteria; retention requires a positive finite baseline.
+- Enabled budget caps (`<1`) fail on unknown data; cap `1` disables the criterion while preserving unknown measurements.
+- Invalid analyst limits are rejected.
+
+Reviewer 2 also reports deep-identical old/new results for 24 run-fact records and complete analyses under two valuations. The verifier did not repeat that differential experiment.
+
+Evidence: `execution.json#command-006`, `execution.json#command-007`.
+
+## Compatibility / measurement limits
+
+- **Missing acceptance evidence:** Full `npm test` has not been reported.
+- Documentation and coordinator-written diagnostic artifacts remain unverified.
+- Comprehensive saved-record missingness coverage is **not** established: mandatory-summary replica completeness and raw-sanction handling remain limited.
+- The verifier reports only `src/games.mjs` in the source diff, with changed hunks concerning offline analysis. No native transition, scheduler, or random-key policy edit was observed; exhaustive behavioral equivalence was not established.
+- The implementation fingerprint changes even if simulation behavior is preserved.
+- Analyst viability criteria are not protocol law. A static review, synthetic probe, or `viable` flag does not establish calibrated viability, endogenous adoption, governance effectiveness, or equilibrium validity outside the declared strategy menu and valuation.
+
+## Dissent
+
+No substantive reviewer contradiction is reported. Reviewer 1’s partial-replica limitation remains material alongside Reviewer 2’s raw-sanction compatibility limitation; neither should be discarded through consensus wording.
+
+## Next bounded actions
+
+1. Run the required full `npm test` before checkpoint acceptance.
+2. Verify documentation explicitly covers positive-baseline retention applicability, disabled-cap semantics, and retained-data coverage limits.
+3. Preserve **both** residual boundaries as documented limitations or bounded follow-ups.
+4. Accept the targeted repair only within its tested scope if integrated validation passes.
+
+Retained evidence:
+
+- ACTOR_EVIDENCE_REF: execution.json#command-005
+- ACTOR_EVIDENCE_REF: execution.json#command-006
+- ACTOR_EVIDENCE_REF: execution.json#command-007

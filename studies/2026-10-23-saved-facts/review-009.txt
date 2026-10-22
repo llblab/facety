@@ -1,0 +1,79 @@
+ACTOR_REVIEW_RESULT
+
+## Status / identity
+
+**Status: degraded — synthesis is well calibrated, but source-to-merge fidelity is not independently checkable from the supplied material.**
+
+The merged report preserves uncertainty, separates reviewer-reported probes from verifier-confirmed inspection, and does not turn targeted test success into comprehensive acceptance.
+
+Only the merged report and evidence references were supplied here; the underlying reviewer and verifier outputs were not included. Consequently, the reported **2/2 usable branches** and preservation of their complete findings remain attributed claims, not independently verified facts. This limitation concerns this judgment’s evidence access; it does not establish that the underlying review workflow was degraded.
+
+**Verdict: accept the synthesis provisionally, with an explicit evidence-access qualification. Checkpoint acceptance remains pending integrated validation.**
+
+No implementation inspection, test execution, edits, or publishing were performed in this judgment.
+
+## Supported defects with minimal probes
+
+Both residual boundaries are appropriately retained:
+
+1. **Declared-replica completeness asymmetry.**  
+   The report distinguishes source-level asymmetry from the reviewer-only six-of-twenty probe. It correctly avoids classifying the limitation as an introduced regression.
+   - Minimal confirmation: declare 20 replicas, retain six, and inspect budget, mandatory payoff/sanction summaries, and final viability together.
+   - References: `execution.json#command-005`, `execution.json#command-007`.
+
+2. **Incomplete raw-sanction records can abort analysis.**  
+   The report preserves the distinction between an analysis exception and false approval. Calling this a compatibility limitation rather than an introduced regression is appropriately cautious.
+   - Minimal confirmation: omit `wrongfulInvalidated` from a later replica; separately test first-replica omission and explicit `null`.
+   - References: `execution.json#command-005`, `execution.json#command-006`, `execution.json#command-007`.
+
+These probes are proposed confirmations here, not commands executed by this judge.
+
+**Wording correction:** “Supported defects” should not imply newly introduced defects. “Supported residual limitations” would better match the report’s own classifications.
+
+## Tested invariants and commands
+
+The synthesis reports **11 targeted tests passed, 0 failed**, alongside HEAD, diff, status, and digest inspection. It explicitly attributes those commands to the verifier.
+
+Evidence handling is sound in two important respects:
+
+- The 24-record/two-valuation differential comparison remains **reviewer-reported**, not verifier-repeated.
+- Full `npm test` remains **missing acceptance evidence**.
+
+The listed missingness, equilibrium-mass, retention-baseline, cap-disablement, and analyst-limit invariants are appropriately scoped to reported targeted evidence. This judgment does not independently confirm their coverage or results.
+
+Reference: `execution.json#command-007`; reviewer differential evidence attributed to `execution.json#command-006`.
+
+## Compatibility / measurement limits
+
+The synthesis avoids the principal overclaims:
+
+- No comprehensive saved-record compatibility verdict.
+- No exhaustive simulation-equivalence claim.
+- No inference that static analysis or `viable: true` establishes calibrated viability, adoption, or governance effectiveness.
+- No conflation of implementation fingerprint preservation with behavioral preservation.
+- No claim that documentation or diagnostic artifacts have been verified.
+
+One qualification should remain explicit: **full-suite success is necessary for the stated checkpoint, but does not by itself resolve either residual missingness limitation or prove documentation accuracy.**
+
+The evidence references are traceability pointers, not independently inspected evidence in this judgment.
+
+## Dissent
+
+No substantive contradiction is described in the supplied synthesis. **Absence of dissent cannot be independently confirmed without the underlying outputs.**
+
+Both residual findings remain visible; neither is erased by consensus wording. No material consensus or merge bias is apparent in the supplied text, although completeness of preservation is not checkable.
+
+## Next bounded actions
+
+1. Retain the report’s narrow acceptance boundary; do not convert “no introduced material defect established” into “no defects.”
+2. Make underlying reviewer and verifier outputs available before claiming independently judged source-to-merge fidelity.
+3. Run full `npm test` against the intended checkpoint and record the tested revision.
+4. Verify the documentation covers positive-baseline retention applicability, disabled-cap semantics, and retained-data coverage limits.
+5. Preserve both residual limitations as explicit documentation or bounded follow-ups, regardless of full-suite outcome.
+
+**Retained source references — not independently opened in this judgment:**
+
+- ACTOR_EVIDENCE_REF: execution.json#command-005
+- ACTOR_EVIDENCE_REF: execution.json#command-006
+- ACTOR_EVIDENCE_REF: execution.json#command-007
+- ACTOR_EVIDENCE_REF: execution.json#command-008

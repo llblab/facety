@@ -1,0 +1,117 @@
+{
+  "schema": "facety-saved-facts-diagnostic/v1",
+  "level": "diagnostic",
+  "previousRevision": "de0365b7b3344bcac2a4a2da91e986bd95e6bf62",
+  "oldAnalyzerSha256": "22084308547eece71403c2eb7647dc7aaf9205b42b3c33dcb01a050c5af8c54f",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "3e9d46868e90541b66d7456e00c56ec78787b18ce0c8782a3fd00c5517ce1adc",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "method": "Old pure analyzer imported from git with unchanged current support modules; one common newly generated fact set. Not a historical full-model replay or confirmation.",
+  "historicalPreservation": {
+    "rawBlobsEqual": true,
+    "studyFiles": 124,
+    "unchangedSourceModules": 24
+  },
+  "completeControl": {
+    "profiles": 4,
+    "deviations": 8,
+    "nativeRuns": 36,
+    "analysisDigest": "25d1ed0ca1b69581316b2ef6ae58c46d4032997165a10a22b0966fbb76b30d21",
+    "summaryDigest": "ec9a29341e360a8cfc4831ff99bbde40fa1fbfe35915497ba4046555fa0ab62e",
+    "analysisEqual": true,
+    "summaryEqual": true,
+    "viabilityEqual": true
+  },
+  "missingProfile": {
+    "before": {
+      "falseMintedShare": 0,
+      "falseCirculatingShare": 0,
+      "coalitionCouncilShare": 0
+    },
+    "after": {
+      "falseMintedShare": null,
+      "falseCirculatingShare": null,
+      "coalitionCouncilShare": null
+    }
+  },
+  "missingEnabledBudget": {
+    "before": {
+      "criteria": {
+        "minHonestRetention": 0.5,
+        "maxWrongfulInvalidations": 1,
+        "maxFalseMintedShare": 0.2,
+        "maxCoalitionCouncilShare": 0.5
+      },
+      "honestRetention": 1,
+      "wrongfulInvalidations": 0,
+      "falseMintedShare": 0,
+      "coalitionCouncilShare": 0,
+      "viable": true,
+      "failures": []
+    },
+    "after": {
+      "criteria": {
+        "minHonestRetention": 0.5,
+        "maxWrongfulInvalidations": 1,
+        "maxFalseMintedShare": 0.2,
+        "maxCoalitionCouncilShare": 0.5
+      },
+      "honestRetention": 1,
+      "wrongfulInvalidations": 0,
+      "falseMintedShare": null,
+      "coalitionCouncilShare": null,
+      "viable": false,
+      "failures": [
+        "fraud-budget-money",
+        "fraud-budget-council"
+      ]
+    }
+  },
+  "undefinedMandatoryMetrics": {
+    "before": {
+      "criteria": {
+        "minHonestRetention": 0.5,
+        "maxWrongfulInvalidations": 1,
+        "maxFalseMintedShare": 1,
+        "maxCoalitionCouncilShare": 1
+      },
+      "honestRetention": null,
+      "wrongfulInvalidations": null,
+      "falseMintedShare": 0,
+      "coalitionCouncilShare": 0,
+      "viable": true,
+      "failures": []
+    },
+    "retentionWasNaN": true,
+    "wrongfulWasNaN": true,
+    "after": {
+      "criteria": {
+        "minHonestRetention": 0.5,
+        "maxWrongfulInvalidations": 1,
+        "maxFalseMintedShare": 1,
+        "maxCoalitionCouncilShare": 1
+      },
+      "honestRetention": null,
+      "wrongfulInvalidations": null,
+      "falseMintedShare": null,
+      "coalitionCouncilShare": null,
+      "viable": false,
+      "failures": [
+        "honest-retention",
+        "wrongful-invalidations"
+      ]
+    }
+  },
+  "limit": "Synthetic incomplete records isolate analysis safety. No fraud probability, calibrated welfare, new equilibrium or protocol-rule claim."
+}
