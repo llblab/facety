@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Removed three unused alternative relay/trace/walkthrough modules (638 source lines) and their dead inventory controls, retaining the shared native-transition path. Ten walkthroughs and 288 paired runs match the previous committed implementation except provenance; all 116 pre-existing study files stay byte-identical. Historical results retain their original fingerprints. Routine verified dead-code removal and validated commit/push checkpoints are now explicit engineering instructions.
 - Recorded the owner's coordination framing (D31) without turning directed-guarantee consent into reciprocity. Consolidated the mechanism chapter around 15 code-tied records, a tested parameter/state/measurement inventory and explicit missing behavioral returns; generated text diagrams reuse those records.
 - Removed redundant participant tracking and shared existing challenge/stake/verdict consequences with a small evidence/sponsor reference. Twelve declared procedure/backing/social contexts preserve retained run fields and ordered native events except provenance. No defaults or historical confirmations changed.
 - Added costed public-event evidence, independent supplied sponsor review, refusal/conflict/rerouting, capacity and optional bounded causal journaling. Ten named native variants and a matched-resource exploratory comparison retain false-allegation harm, pending stages, costs and an actual later failed XP gate. No compensation, autonomous adoption, new court or institutional learning is inferred.

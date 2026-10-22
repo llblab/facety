@@ -113,6 +113,8 @@ All findings are conditional on the simulator's declared assumptions, horizons a
 
 **F28 — DIAGNOSTIC measurement interpretation, no schema deletion.** The source inventory distinguishes XP, structural rank, procedural record and familiarity; historical exported names are not interchangeable causal quantities. `rewardsReceived` includes all incoming transfers, `flowFlagged` also includes attention, an “unmodeled” challenge opportunity may be modeled, exact `inviteBurns` is not all historical invitation-origin burn, and raw/blocked connectivity differ. Evidence: retained inventory reports and [annotated register](mechanisms.json), bound to the audited implementation. Follow-up: complete the historical consumer census before aliases/removals; do not value gross inflow and retained wealth as the same net gain accidentally. Low sensitivity does not authorize deleting distinct controls.
 
+**F29 — DIAGNOSTIC, dead-code removal.** The alternative `relay`/`trace`/`walkthroughs` component had no executable consumers outside itself. Removing its three modules and dead controls changes the content fingerprint (28→25 modules), not the checked native behavior: ten named walkthroughs and all 288 paired runs match commit `7124262` except provenance. All 116 existing study files remain byte-identical. Evidence and exact source-retention assertions are in the [cleanup study](../studies/2026-10-23-dead-code/README.md). This establishes bounded preservation, not universal compatibility or inherited confirmation; future source changes must pass their own regression/provenance checks.
+
 ## Simplification candidates (proposals awaiting owner decision)
 
 | Candidate | Rationale | Evidence |

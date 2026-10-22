@@ -1,0 +1,68 @@
+{
+  "schema": "facety-dead-code-validation/v1",
+  "status": "verified-bounded",
+  "documentedOn": "2026-10-23",
+  "previousRevision": "71242626e532f0a3e08aa7c3bd987d962afef000",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "5affbad3eda494794d9aea8308cccaaca6a8c14bf43229cf76a8bf94afb556b5",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "fullScheduler": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "decision-keyed-v1"
+    },
+    "relay": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "causal-relay-input-keyed-v1"
+    }
+  },
+  "removed": [
+    {
+      "path": "src/relay.mjs",
+      "sha256": "c3f98e29e9dcce4e6fd7ec1e5988018063d407f358f48ebf58a3c2db393562c5",
+      "lines": 198
+    },
+    {
+      "path": "src/trace.mjs",
+      "sha256": "9b52d9bc73bb0648345ce9dacfb210a0b69f13d88350d8d110b9d25fb7f8247b",
+      "lines": 118
+    },
+    {
+      "path": "src/walkthroughs.mjs",
+      "sha256": "e0da11d7b2fd3a86f142d0a95d0becd737679cb80b6f1897c5bbfda404b9b7ea",
+      "lines": 322
+    }
+  ],
+  "checks": {
+    "tests": {
+      "command": "npm test",
+      "passed": 202,
+      "failed": 0
+    },
+    "walkthroughs": 10,
+    "pairedRuns": 288,
+    "equivalentExceptProvenance": true,
+    "schedulerContexts": 12,
+    "schedulerEquivalent": true,
+    "historicalFilesUnchanged": 116,
+    "dag": {
+      "files": 25,
+      "edges": 57,
+      "errors": 0,
+      "warnings": 0
+    },
+    "context": {
+      "errors": 0,
+      "warnings": 26
+    },
+    "diffCheck": 0
+  },
+  "limits": "No protocol/default/random-policy change; no old study edits or transferred confirmation. Exact source/provenance guards remain enforced. Private repo entrypoints/consumers inspected; no universal external API compatibility claim."
+}

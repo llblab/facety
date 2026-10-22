@@ -1558,84 +1558,7 @@
         "purpose": "Pinned historical 72/168/0-hour fixture, not duplicate current 24-hour policy; preserve historical dependency until a new study is run.",
         "owner": "src/incentives.mjs; docs/incentives.en.md"
       }
-    ],
-    "unintegratedPrototypes": {
-      "status": "Preserved untracked work outside this checkpoint; not imported by the canonical examples/cohort scheduler. Authorship/acceptance not established here; no deletion or migration is authorized.",
-      "files": [
-        "src/relay.mjs",
-        "src/trace.mjs",
-        "src/walkthroughs.mjs"
-      ],
-      "controls": [
-        {
-          "paths": [
-            "RELAY_POLICY.discoveryCost",
-            "RELAY_POLICY.packageCost",
-            "RELAY_POLICY.reviewCost"
-          ],
-          "units": "work/action",
-          "scope": "prototype observer",
-          "status": "research-assumption",
-          "meaning": "Separate uncalibrated work prices",
-          "provenance": "src/relay.mjs"
-        },
-        {
-          "paths": [
-            "RELAY_POLICY.sponsorMinXp",
-            "RELAY_POLICY.acceptStrength"
-          ],
-          "units": "XP; ordinal 0..3",
-          "scope": "prototype sponsor",
-          "status": "research-assumption",
-          "meaning": "Minimum-XP/declared-strength gate differs from canonical target-relative XP and independent supplied review",
-          "provenance": "src/relay.mjs"
-        },
-        {
-          "paths": [
-            "RELAY_POLICY.maxRoutes",
-            "RELAY_POLICY.conflict"
-          ],
-          "units": "attempts; enum",
-          "scope": "prototype routing",
-          "status": "research-assumption",
-          "meaning": "Alternative route limit/graph-conflict refusal, not selected",
-          "provenance": "src/relay.mjs"
-        },
-        {
-          "paths": [
-            "RELAY_POLICY.stake",
-            "RELAY_POLICY.fine",
-            "RELAY_POLICY.hearingHours"
-          ],
-          "units": "FACY; FACY; hours",
-          "scope": "prototype hearing",
-          "status": "research-assumption",
-          "meaning": "Separate sanction/hearing reference, not the shared one-step consequences",
-          "provenance": "src/relay.mjs"
-        },
-        {
-          "paths": [
-            "Trace.maxEntries"
-          ],
-          "units": "entries",
-          "scope": "prototype logging",
-          "status": "intervention",
-          "meaning": "Separate trace bound/vocabulary; canonical slice uses CausalJournal",
-          "provenance": "src/trace.mjs"
-        },
-        {
-          "paths": [
-            "walkthrough function options"
-          ],
-          "units": "scenario-specific days, counts, booleans",
-          "scope": "prototype scenes",
-          "status": "intervention",
-          "meaning": "Unintegrated schedules/role inputs; no complete historical-consumer census",
-          "provenance": "src/walkthroughs.mjs"
-        }
-      ],
-      "followUp": "Establish ownership, then reconcile/archive with explicit reference labels and preservation tests; never silently merge different gates, sanctions or mechanism IDs."
-    }
+    ]
   },
   "simplifications": [
     {
@@ -1665,6 +1588,13 @@
       "change": "Reject public null actors; preflight whole-verdict aggregate-debt arithmetic before reference custody settlement; journal unexpected failures and rethrow.",
       "why": "Independent review reproduced free unregistered work and a numeric overflow that partially settled/stranded a case.",
       "evidence": "Targeted negative and exact-headroom regressions. Ordinary twelve-context results remain equivalent; numeric failure semantics deliberately improve. Exclusive book ownership and normalized coherent model state remain limits."
+    },
+    {
+      "id": "S5",
+      "kind": "semantic-preserving dead-code removal",
+      "change": "Removed unreachable src/relay.mjs, src/trace.mjs and src/walkthroughs.mjs (638 source lines) and their unused inventory controls.",
+      "why": "Their only code consumers were inside the same discarded component; no CLI, example, test or retained study imported it. The private package declares no library exports.",
+      "evidence": "studies/2026-10-23-dead-code/preservation.mjs compares the previous committed implementation and all 10 walkthroughs/288 paired runs, excluding only provenance; all 116 pre-existing study files remain byte-identical. A changed source fingerprint is not historical confirmation."
     }
   ]
 }
