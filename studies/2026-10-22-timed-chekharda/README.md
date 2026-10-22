@@ -60,3 +60,33 @@ The owner's hypotheses (§26.5: few defend an obviously wrong side, losing a dis
 The owner observed that dispute regulars form their own community and that each person's dispute history is public, so their statistical record of standing on the right side becomes a reputation. Two settings implement this: `regularsNotice: 0.5` (regulars notice disputes) and `trackRecordWeight: 0.5` (a candidate weighs the opposed entrant's win/loss record).
 
 The equilibrium is unchanged: lax honest people, `farm-and-defend`, coalition 865 versus 44. Against a defended farm, honest payoffs are about −90 whether vigilant or lax. Few disputes are opened, and each defended dispute keeps a fake alive for at least a week. At this horizon the bottleneck is dispute volume and duration, not who wins a dispute. Reputation and attention only matter once disputes are opened and resolved fast enough.
+
+## Assumption audit (`assumption-audit.json`)
+
+The owner suspected wrong parameters, unrealistic behavior, or both. Each suspect assumption of the fast game was changed one at a time; everything else stayed as above.
+
+| Change | Verdict | Fraud premium | Coalition equilibrium | Honest value / fraud-free |
+| --- | --- | --- | --- | --- |
+| None (fast game) | fraud pays | 865 − 44 | defend 0.83, harass 0.17 | −104 / 38 |
+| **Fabricating a fresh Self-ID costs 10× an honest one** (`weights.fakeSelfId: 10`) | **deterred** | 0 | **abstain 1.0** | **38.2 / 38.2** |
+| Realistic operator capacity (`budgets.attackers: 5000`) | fraud pays, barely | 17 | farm | 32.3 / 38.2 |
+| Honest people invite four times as often (`activity.honest.invite: 0.2`) | premium-free | 0 | defend 0.92 | −80 / 30 |
+| Ten times more noticers per dispute | fraud pays | 823 | defend | −89 / 38 |
+| Civic value 20 | fraud pays | 638 | defend / harass | −104 / 38 |
+
+The decisive assumption was the economics of faking. Earlier games charged a fabricated daily Self-ID the same single effort unit as an honest one, and let four operators run thousands of fakes. Once fresh, never-reused fake media costs ten times an honest act, farming disappears entirely and honest people keep their full value without even inspecting. This is exactly the barrier the protocol builds through daily presence and the ban on media reuse (§14.4). Dispute-side levers (attention, civic motivation) do not matter while faking is cheap. A growing honest network removes the fraud premium but not the fraud.
+
+## Fake-cost threshold and the honest network effect (`grid-fake-cost.json`)
+
+| Fake Self-ID cost (× honest) | No gossip | Gossip within 2 hops |
+| --- | --- | --- |
+| 2 | fraud pays (+668) | fraud pays (+530) |
+| 3 | fraud pays (+310) | fraud pays (+296) |
+| 5 | premium 0; fraud 22%; honest value −0.9 / 38.2 | **premium 0; fraud 2%; honest 36.8 / 38.2** |
+| 10 (audit) | fully deterred | — |
+
+From about five times the cost of an honest Self-ID, the honest network effect (information traveling through acquaintance) decides the outcome: fraud almost disappears, and honest people keep 96% of their value. Below that threshold, gossip helps catch undefended farms (−3129 instead of −1497 against vigilant people) but also helps a coalition: the accused's own acquaintances, who are the coalition, hear of the dispute first.
+
+## Why violators can win a dispute in the model (`grid-public-proof.json`)
+
+With public proof and cluster follow-ups enabled, cheap fakes still won every resolved dispute in a diagnostic run (89 of 89, all at depth 2). The defender was the highest-XP coalition noticer. The farm had grown to about 2,900 fakes whose mutual guarantees inflated their XP above every honest person's, so the XP gate let nobody honest top them, even though the public proof showed the truth. As the owner argued, the violating side can win only when it prevails in XP. In the model it prevailed only because fakes were cheap. With realistic fake costs the coalition cannot grow, and the dispute question does not arise.

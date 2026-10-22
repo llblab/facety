@@ -41,6 +41,11 @@ Without sanctions, inspection costs effort and earns nothing, so no rational age
 - The next position goes to a willing eligible noticer chosen by `entrantChoice`: `lowest`, `highest` (the most senior first) or `random`. Coalition members join to defend with probability `activity.attackers.defend`, and with `social.attentionFeedback` every entrant becomes a screening target.
 - Disputes still open at the horizon are counted as `sanctions.disputesOpen`; mooted ones (the accused removed meanwhile) as `disputesMooted`.
 
+**Evidence and clusters:**
+
+- `evidence: "public-proof"` replaces private signals with one public proof per dispute, correct with `proofStrength`, that every noticer and Council member sees.
+- `clusterFollowUp: true` makes the most senior winning entrant of an upheld dispute challenge each entrant who defended the proven fake, subject to the XP gate.
+
 The default `procedure` stays `"one-step"`, with its `accuracy` parameter, so that threshold studies can vary accuracy directly. The ladder derives accuracy instead; see insight F13.
 
 The one-step procedure deliberately abstracts Chekharda to one step: no escalation, Council review, appeal or evidence procedure. All sanctions go through `FacetyModel`. A wrong verdict can invalidate a genuine person, and that harm is counted (`sanctions.wrongfulInvalidated`).

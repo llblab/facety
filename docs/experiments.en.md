@@ -100,6 +100,8 @@ The current experiment applies no judicial fine or XP-halving verdict; the under
 - Flow tracing (`social.flowTracing`): recipients of ordinary transfers from at least `flowHubThreshold` distinct senders are hubs; hubs and their senders become screening targets. Dispute settlements and challenge rewards carry their own memos and are excluded.
 - Attention (`social.attentionFeedback`): a subject who opens a challenge becomes a screening target, inviting counter-scrutiny. The counter `trust.flowFlagged` includes these targets; `trust.flowFlaggedCoalition` measures evaluator-only precision.
 
+- Gossip (`social.gossipHops`, `gossipShare`): information travels through acquaintance. In timed disputes, everyone within `gossipHops` of the accused or of any entrant notices the dispute. A verified suspicion, or a proven fake's inviter cluster, enters the watch lists of the reporter's honest acquaintances within `gossipHops`, and they inspect watched subjects with probability `gossipShare`. Any network effect therefore comes from graph structure, not from an imposed formula. Counters: `trust.gossipShares`, `trust.gossipInspections`.
+
 These are behavioral assumptions, not protocol rules. Verification quality in particular is a declared input for a human process the simulator does not model.
 
 ## Ablations and provenance

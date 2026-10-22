@@ -42,6 +42,9 @@ export const DEFAULT_DISPUTES = Object.freeze({
   // Dispute-resolution reputation: public win/loss records. Regulars notice disputes more often, and a
   // candidate weighs the record of the entrant it would oppose.
   trackRecordWeight: 0, regularsNotice: 0,
+  // Evidence: each noticer's private noisy signal, or public proof that every noticer and Council member
+  // sees (correct with proofStrength). Cluster follow-up challenges everyone who defended a proven fake.
+  evidence: 'private-signal', proofStrength: 0.98, clusterFollowUp: false,
 });
 // 'inviter-chain' adds the inviter's own guarantors, who could have cancelled the invitation right.
 export const LIABILITY_POLICIES = Object.freeze(['subject', 'guarantors', 'guarantors-and-inviter', 'inviter-chain']);
@@ -56,6 +59,10 @@ export const DEFAULT_SOCIAL = Object.freeze({
   exitOnFraud: false,
   flowTracing: false, flowHubThreshold: 3, honestTransferRate: 0,
   attentionFeedback: false,
+  // Network effect as a mechanism, not a formula: information travels gossipHops through acquaintance.
+  // People near a dispute's participants hear of it; a confirmed suspicion reaches the reporter's
+  // acquaintances, who then inspect that subject with probability gossipShare.
+  gossipHops: 0, gossipShare: 0.5,
 });
 export const EXPERIMENT_ASSUMPTIONS = Object.freeze([
   'Initial subjects are genuine accepted human operators and trusted roots; their prior acquisition cost is not estimated.',
@@ -118,6 +125,9 @@ function disputesFrom(overrides) {
   integer(disputes.roundsPerDay, 'disputes.roundsPerDay', 1, 1000);
   if (!['lowest', 'highest', 'random'].includes(disputes.entrantChoice)) throw new Error('disputes.entrantChoice must be lowest, highest or random');
   probability(disputes.trackRecordWeight, 'disputes.trackRecordWeight');
+  if (!['private-signal', 'public-proof'].includes(disputes.evidence)) throw new Error('disputes.evidence must be private-signal or public-proof');
+  probability(disputes.proofStrength, 'disputes.proofStrength');
+  if (typeof disputes.clusterFollowUp !== 'boolean') throw new TypeError('disputes.clusterFollowUp must be boolean');
   probability(disputes.regularsNotice, 'disputes.regularsNotice');
   probability(disputes.noticeBase, 'disputes.noticeBase');
   for (const key of ['evidenceGain', 'civicValue']) if (!Number.isFinite(disputes[key]) || disputes[key] < 0) throw new RangeError('disputes.' + key + ' must be non-negative');
@@ -165,6 +175,8 @@ function socialFrom(overrides) {
   integer(social.maxFollowUps, 'social.maxFollowUps', 0, 1000);
   integer(social.bribePrice, 'social.bribePrice', 0);
   integer(social.flowHubThreshold, 'social.flowHubThreshold', 2, 1000);
+  integer(social.gossipHops, 'social.gossipHops', 0, 6);
+  probability(social.gossipShare, 'social.gossipShare');
   for (const key of ['strangerRate', 'screeningQuantile', 'screeningShare', 'verificationSensitivity', 'verificationFalsePositiveRate', 'bribeAcceptance', 'honestTransferRate']) probability(social[key], 'social.' + key);
   return Object.freeze(social);
 }
@@ -335,12 +347,26 @@ export function runExperiment(overrides = {}) {
   }
   const genesisOperators = new Set(ids);
   const operatorEffort = new Map();
-  const sanctions = { challenges: 0, upheld: 0, rejected: 0, falseInvalidated: 0, wrongfulInvalidated: 0, excluded: 0, missedFalse: 0, voidedActs: 0, ladderEntries: 0, ladderDepth: 0, councilInterventions: 0, disputesResolved: 0, disputesMooted: 0, disputesOpen: 0, disputeNotices: 0 };
-  const trustWork = { strangerRefusals: 0, verificationsCleared: 0, followUps: 0, bribesOffered: 0, bribesAccepted: 0, invitationsCancelled: 0, guardianExits: 0, cashouts: 0, flowFlagged: 0, flowFlaggedCoalition: 0 };
+  const sanctions = { challenges: 0, upheld: 0, rejected: 0, falseInvalidated: 0, wrongfulInvalidated: 0, excluded: 0, missedFalse: 0, voidedActs: 0, ladderEntries: 0, ladderDepth: 0, councilInterventions: 0, disputesResolved: 0, disputesMooted: 0, disputesOpen: 0, disputeNotices: 0, clusterChallenges: 0 };
+  const trustWork = { strangerRefusals: 0, verificationsCleared: 0, followUps: 0, bribesOffered: 0, bribesAccepted: 0, invitationsCancelled: 0, guardianExits: 0, cashouts: 0, flowFlagged: 0, flowFlaggedCoalition: 0, gossipShares: 0, gossipInspections: 0 };
   const bribes = new Map();
+  // Per-observer watch lists filled by gossip from acquaintances.
+  const watchLists = new Map();
+  function spreadSuspicion(reporter, subjects) {
+    if (!config.social.gossipHops || truth.get(reporter).cohort !== 'honest') return;
+    for (const id of [reporter, ...neighborhood(reporter, config.social.gossipHops)]) {
+      if (truth.get(id).cohort !== 'honest') continue;
+      if (!watchLists.has(id)) watchLists.set(id, new Set());
+      for (const subject of subjects) if (subject !== id && !watchLists.get(id).has(subject)) {
+        watchLists.get(id).add(subject);
+        trustWork.gossipShares++;
+      }
+    }
+  }
   // Subjects who opened a challenge draw public attention to themselves (attentionFeedback).
   const attention = new Set();
   const openDisputes = [];
+  const pendingClusters = [];
   let disputeSequence = 0;
   // Public dispute history per subject: positions won and lost.
   const disputeRecords = new Map();
@@ -606,6 +632,7 @@ export function runExperiment(overrides = {}) {
     const upheld = rules.procedure === 'chekharda' ? ladder(challenger, subject, genuine) : result.value.upheld;
     if (!upheld && rules.procedure === 'one-step') model.penalize(challenger, { fine: rules.stake, halveXp: rules.loserHalvesXp });
     applyVerdict(challenger, subject, genuine, upheld, onInvalidated, budget);
+    while (pendingClusters.length) clusterFollowUp(pendingClusters.shift(), onInvalidated);
   }
   // Sanctions after a verdict; the ladder procedures have already settled stakes and loser XP.
   function applyVerdict(challenger, subject, genuine, upheld, onInvalidated, budget) {
@@ -617,6 +644,7 @@ export function runExperiment(overrides = {}) {
     }
     sanctions.upheld++;
     sanctions[genuine ? 'wrongfulInvalidated' : 'falseInvalidated']++;
+    spreadSuspicion(challenger, [...model.lineage.inEdges(subject)].map(edge => edge.from).flatMap(inviter => [inviter, ...[...model.lineage.outEdges(inviter)].map(edge => edge.to)]));
     const liable = [subject];
     const inviters = [...model.lineage.inEdges(subject)].map(edge => edge.from);
     if (rules.liability !== 'subject') liable.push(...[...model.guarantees.inEdges(subject)].map(edge => edge.from));
@@ -664,6 +692,9 @@ export function runExperiment(overrides = {}) {
       id: 'dispute:' + disputeSequence++, challenger, subject, genuine, genuinePrior,
       coalitionSubject: truth.get(subject).cohort === 'attackers', close: neighborhood(subject, 2),
       entrants: [{ id: challenger, side: 'fraud', stake: rules.stake }], taken: new Set([challenger, subject]), lastMoveAt: model.now, frozen: [],
+      proofSaysFraud: rules.evidence === 'public-proof' ? (truth.get(subject).genuine
+        ? !sensing.fork(JSON.stringify(['public-proof', challenger, subject, model.now])).chance(rules.proofStrength)
+        : sensing.fork(JSON.stringify(['public-proof', challenger, subject, model.now])).chance(rules.proofStrength)) : null,
     };
   }
   // Posterior that the accusation is true after a private signal of the given accuracy.
@@ -698,9 +729,13 @@ export function runExperiment(overrides = {}) {
       return (next.side === 'genuine') === dispute.coalitionSubject
         && decision('ladder-defend', id, [dispute.id, dispute.entrants.length]).chance(activityOf(id).defend);
     }
-    const accuracy = Math.min(0.99, (dispute.close.has(id) ? rules.closeSignalAccuracy : rules.signalAccuracy) + evidenceBoost);
-    const correct = sensing.fork(JSON.stringify(['ladder-signal', dispute.id, id, model.now])).chance(accuracy);
-    const pFraud = fraudBelief(dispute, accuracy, dispute.genuine ? !correct : correct, candidatePrior(dispute));
+    let pFraud;
+    if (dispute.proofSaysFraud !== null) pFraud = fraudBelief(dispute, rules.proofStrength, dispute.proofSaysFraud, candidatePrior(dispute));
+    else {
+      const accuracy = Math.min(0.99, (dispute.close.has(id) ? rules.closeSignalAccuracy : rules.signalAccuracy) + evidenceBoost);
+      const correct = sensing.fork(JSON.stringify(['ladder-signal', dispute.id, id, model.now])).chance(accuracy);
+      pFraud = fraudBelief(dispute, accuracy, dispute.genuine ? !correct : correct, candidatePrior(dispute));
+    }
     if ((next.side === 'fraud') !== (pFraud > 0.5)) return false;
     const confidence = Math.max(pFraud, 1 - pFraud);
     return confidence * next.below - (1 - confidence) * (next.stake + rules.xpValue * model.subject(id).xp / 2) + rules.civicValue > 0;
@@ -739,6 +774,7 @@ export function runExperiment(overrides = {}) {
       for (const member of members) {
         let votesFraud;
         if (truth.get(member.id).cohort === 'attackers') votesFraud = !dispute.coalitionSubject;
+        else if (dispute.proofSaysFraud !== null) votesFraud = fraudBelief(dispute, rules.proofStrength, dispute.proofSaysFraud) > 0.5;
         else {
           const accuracy = dispute.close.has(member.id) ? rules.closeSignalAccuracy : rules.signalAccuracy;
           const correct = sensing.fork(JSON.stringify(['council-signal', dispute.id, member.id])).chance(accuracy);
@@ -766,7 +802,20 @@ export function runExperiment(overrides = {}) {
       disputeRecords.set(entrant.id, record);
     }
     sanctions.ladderDepth = Math.max(sanctions.ladderDepth, entrants.length);
+    dispute.defenders = winner === 'fraud' ? entrants.filter(entrant => entrant.side === 'genuine').map(entrant => entrant.id) : [];
+    dispute.lead = entrants.filter(entrant => entrant.side === winner).reduce((top, entrant) => (model.subject(entrant.id).xp > model.subject(top.id).xp ? entrant : top)).id;
     return winner === 'fraud';
+  }
+  // Everyone who defended a proven fake becomes a suspect: the winning side's most senior member
+  // challenges each of them (XP gate and stake permitting).
+  function clusterFollowUp(dispute, onInvalidated) {
+    if (!config.disputes.clusterFollowUp || !dispute.defenders?.length) return;
+    for (const defender of dispute.defenders) {
+      if (model.subject(defender).identityStatus !== 'accepted' || model.subject(dispute.lead).identityStatus !== 'accepted') continue;
+      if (model.subject(dispute.lead).xp <= model.subject(defender).xp || truth.get(dispute.lead).cohort !== 'honest') continue;
+      sanctions.clusterChallenges++;
+      challenge(dispute.lead, defender, onInvalidated);
+    }
   }
   // Instant procedure: everyone notices at once; candidates are scanned from the lowest eligible XP.
   function ladder(challenger, subject, genuine) {
@@ -784,7 +833,9 @@ export function runExperiment(overrides = {}) {
       }
       if (joined === null || !enter(dispute, joined, next)) break;
     }
-    return settleDispute(dispute);
+    const upheld = settleDispute(dispute);
+    pendingClusters.push(dispute);
+    return upheld;
   }
   // Timed procedure (owner rule): the dispute freezes the accused's unspent rights; the last move wins
   // after disputeWindowHours without a counter-entry; every entry restarts the clock.
@@ -810,6 +861,7 @@ export function runExperiment(overrides = {}) {
     const upheld = settleDispute(dispute);
     sanctions.disputesResolved++;
     applyVerdict(dispute.challenger, dispute.subject, dispute.genuine, upheld, () => {}, { followUps: config.social.maxFollowUps });
+    clusterFollowUp(dispute, () => {});
   }
   // Daily attention: the higher the dispute relative to the network, the more people notice it and the
   // more evidence surfaces. The lowest-XP willing noticer takes the next position.
@@ -832,6 +884,13 @@ export function runExperiment(overrides = {}) {
         const chooser = decision('dispute-notice', dispute.id, round);
         const picks = new Set();
         while (picks.size < count) picks.add(chooser.int(accepted.length));
+        // Gossip: acquaintances of the accused and of every entrant hear of the dispute.
+        if (config.social.gossipHops > 0) {
+          const indexOf = new Map(accepted.map((id, index) => [id, index]));
+          for (const party of [dispute.subject, ...dispute.entrants.map(entrant => entrant.id)]) {
+            for (const id of neighborhood(party, config.social.gossipHops)) if (indexOf.has(id)) picks.add(indexOf.get(id));
+          }
+        }
         // Dispute regulars know each other and notice more often.
         if (rules.regularsNotice > 0) {
           accepted.forEach((id, index) => {
@@ -914,14 +973,17 @@ export function runExperiment(overrides = {}) {
         const candidates = [...available.values()].filter(act => act.subject !== actor && !inspected.has(act.id) && truth.get(act.subject).cohort !== 'attackers');
         const local = candidates.filter(act => model.policy.cancellationAuthority === 'snapshot'
           ? act.guarantors.includes(actor) : Boolean(model.guarantees.edge(actor, act.subject)));
-        return { size: candidates.length, local, pick: random => random.pick(candidates) };
+        return { size: candidates.length, local, watched: [], pick: random => random.pick(candidates) };
       }
       const excluded = new Set([...(bySubject.get(actor) ?? []), ...vetoed]);
       for (const id of inspected) if (positions.has(id)) excluded.add(id);
       const authorized = model.policy.cancellationAuthority === 'snapshot' ? byGuarantor.get(actor) ?? []
         : [...model.guarantees.outEdges(actor)].flatMap(edge => bySubject.get(edge.to) ?? []).sort((a, b) => positions.get(a) - positions.get(b));
       const screenExcluded = [...excluded].filter(id => screenPositions.has(id)).map(id => screenPositions.get(id));
+      const watched = [...(watchLists.get(actor) ?? [])].flatMap(subject => bySubject.get(subject) ?? []).filter(id => !excluded.has(id))
+        .sort((a, b) => positions.get(a) - positions.get(b)).map(id => available.get(id));
       return {
+        watched,
         size: list.length - excluded.size,
         local: authorized.filter(id => !excluded.has(id)).map(id => available.get(id)),
         pick: random => list[pickIndexExcluding(list.length, [...excluded].map(id => positions.get(id)), random)],
@@ -938,7 +1000,10 @@ export function runExperiment(overrides = {}) {
         const candidates = candidatesFor(actor, cohort, inspected);
         if (!candidates.size) break;
         const choice = decision('inspection-target', actor, i);
+        const heard = candidates.watched.length > 0 && decision('gossip', actor, i).chance(config.social.gossipShare);
+        if (heard) trustWork.gossipInspections++;
         const act = candidates.local.length && choice.chance(config.localInspectionShare) ? choice.pick(candidates.local)
+          : heard ? choice.pick(candidates.watched)
           : candidates.screened > 0 && decision('screening', actor, i).chance(config.social.screeningShare) ? candidates.pickScreened(choice) : candidates.pick(choice);
         const inspection = attempt(actor, 'inspect', () => {
           inspected.add(act.id);
@@ -957,6 +1022,7 @@ export function runExperiment(overrides = {}) {
             continue;
           }
         }
+        if (cohort === 'honest') spreadSuspicion(actor, [act.subject]);
         const veto = respondToObservation(model, actor, act, observation);
         if (veto.noAuthority) {
           observations.noVetoAuthority++;

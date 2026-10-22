@@ -192,6 +192,8 @@ Facety aims to create conditions in which:
 
 **[DIRECTION] Who earns what.** Facety is a distribution mechanism for emission that rewards the network effect. An ordinary participant earns a modest, steady income from daily presence. People who invest effort over a long time — guaranteeing, inviting, checking and resolving disputes — accumulate XP and receive large returns from the network. The design goal is that the most committed rule-followers hold the most XP.
 
+**[HYPOTHESIS, 2026-10-22] The honest network effect prevails.** Honest people's network is denser: information spreads faster through acquaintance and they see more. Its efficiency grows roughly quadratically with the network, so the honest network effect should dominate a coalition's.
+
 **[MODEL FINDING]** In the simulator, fraud does not earn more than playing by the rules whenever the network is viable. The coalition is indifferent between fraud and honest participation, so any fraud that remains earns no premium, and honest people pay a policing cost. See the [insight register](insights.en.md).
 
 ---
@@ -332,7 +334,7 @@ Each media class needs a deterministic method for addressing a person's image. A
 - **The same media cannot be reused.** A registered content hash may not be registered again, and a perceptual near-duplicate is a reason to dispute. This is cheap to check.
 - **[DIRECTION]** Optional varied formats (text, short video, group media) and small challenges derived from public randomness at the time of the act (for example, words to say or a code to show) can strengthen freshness without forcing a format. They raise the daily cost of fabricating a fake.
 
-**[MODEL FINDING]** The daily cost of producing fresh, non-duplicate fabricated media for every fake identity is a primary economic barrier against farms. The simulator prices it separately (`fakeSelfId`).
+**[MODEL FINDING]** The daily cost of producing fresh, non-duplicate fabricated media for every fake identity is the primary economic barrier against farms. The simulator prices it separately (`fakeSelfId`). When it costs ten times an honest Self-ID, farming disappears entirely in the timed-dispute game, and dispute-side measures stop mattering. See the [assumption audit](../studies/2026-10-22-timed-chekharda/README.md#assumption-audit-assumption-auditjson).
 
 ## 15. Deterministic face references
 
@@ -857,6 +859,12 @@ On money alone this needs only slightly better than even confidence (about 52–
 **[DIRECTION, 2026-10-22] Dispute-resolution reputation.** People who take part in disputes differ from ordinary participants, and many never take part at all. Regulars know one another, may befriend one another and may form their own coalitions. Each person's chain of disputes is visible in an explorer, so it is statistically clear who tends to stand on the right side. This is a second reputation, separate from identity reputation.
 
 **[HYPOTHESIS, 2026-10-22] Calling seniors.** A dispute participant can call a more senior acquaintance for help, one with, say, ten times the XP. With some probability (for example 10%), such a person joins if one exists in the graph, so stakes and seniority rise in jumps.
+
+**[DIRECTION, 2026-10-22] Cluster disputes.** A participant who defends a proven violator without evidence draws attention to itself and may be part of the same scheme. After a violation is proven, disputes can be opened automatically and in parallel against the cluster that defended it.
+
+**[CANDIDATE] Other markets for resolving sides.** Parimutuel pools on the claim, automated market makers, and Schelling-point juries are alternatives to the alternating ladder that deserve comparison.
+
+**[MODEL FINDING]** The violating side won disputes only when its identities out-ranked honest people in XP. That happened only when fakes were so cheap that the coalition dominated the network's XP. With realistic fake costs it could not. The XP gate is safe exactly as long as no coalition can dominate XP; see insight F21.
 
 **[OPEN]** Whether a position's stake must only be at least the stake below rather than a fixed +g, and how winnings are then distributed fairly.
 

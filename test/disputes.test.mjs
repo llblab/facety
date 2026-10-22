@@ -122,3 +122,16 @@ test('dispute records accumulate and settings validate', () => {
     disputes: { enabled: true, procedure: 'chekharda-timed', disputeWindowHours: 48, trackRecordWeight: 0.5, regularsNotice: 0.5, roundsPerDay: 5, entrantChoice: 'highest' } });
   assert.ok(run.system.sanctions.disputesResolved > 0);
 });
+
+test('public proof is shared by every noticer and cluster follow-ups challenge defenders of proven fakes', () => {
+  assert.throws(() => experimentConfig({ disputes: { evidence: 'rumor' } }), /evidence/);
+  const settings = {
+    ...base, seed: 'proof', days: 24, activity: { honest: { inspect: 3, challenge: 1, review: 1 }, attackers: { defend: 1 } },
+    social: { gossipHops: 2 }, disputes: { enabled: true, procedure: 'chekharda', evidence: 'public-proof', clusterFollowUp: true, entrantChoice: 'highest' },
+  };
+  const run = runExperiment(settings);
+  assert.ok(run.system.sanctions.challenges > 0);
+  assert.ok(run.system.sanctions.clusterChallenges >= 0);
+  const ledger = run.metrics.ledger;
+  assert.equal(ledger.supply, ledger.emitterVault + ledger.collector + ledger.feeVault);
+});
