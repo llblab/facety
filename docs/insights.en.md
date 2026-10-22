@@ -66,6 +66,20 @@ All findings are conditional on the simulator's declared assumptions, horizons a
 | F21 | Violators win disputes only when their identities out-rank honest people in XP. With cheap fakes the farm reached about 2,900 identities whose mutual guarantees put their XP above every honest person, so one top-XP fake defender ended every dispute at depth 2, even under public proof. The XP gate is safe only while the coalition cannot dominate XP, which realistic fake costs ensure. | Diagnostic | same study |
 | F16 | A debtor's immediate-burn repayment would bypass the guarantor veto and finalize XP sooner. This was fixed as D4. | Diagnostic | `test/model.test.mjs` |
 
+## Comparative analysis: Facety and Bitcoin
+
+| Aspect | Bitcoin | Facety |
+| --- | --- | --- |
+| What secures it | Physical cost: energy and hardware (proof of work) | Social cost: daily fresh presence, guarantees with liability, public scrutiny |
+| Sybil resistance | One unit of hashpower, one vote; identity irrelevant | One person, one identity; identity is the point |
+| Unit of value | Scarce coin (21M cap, halvings) | Emission per active person per day: supply grows with the population; burns and buyback counteract |
+| Main asset | The coin itself | The trust graph and XP (who is a real, accountable person); FACY is the distribution mechanism |
+| Trust assumption | Honest majority of hashpower | Honest Council majority and an honest network that is denser than any coalition |
+| Privacy | Pseudonymous | Deliberately public and accountable |
+| What it enables | Neutral, censorship-resistant money and settlement | One-person-one-vote, Sybil-resistant distribution, reputation, human verification in a world of AI agents |
+
+**Key structural difference (analysis insight A1):** in Bitcoin, a higher price buys more security, because mining revenue attracts more hashpower. In Facety, a higher FACY price raises the incentive to farm fake identities, while the defense (human attention, guarantees, liability) does not scale automatically with price. Value and security pull in opposite directions. Sanctions, fabrication cost and Treasury D pause policy must scale with value, and FACY should not be positioned as a scarce store of value. Facety's lasting value lies in the verified trust graph, which other applications reuse.
+
 ## Method lessons
 
 - Random scripted runs cannot model incentives. Use strategy menus, payoff facts and equilibrium or deviation analysis ([games](games.en.md)).
