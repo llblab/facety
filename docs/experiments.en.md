@@ -9,7 +9,7 @@ This document owns the research runner in `src/experiment.mjs`, effort accountin
 - `runTrials(config, { trials, seed, includeRuns })`: Runs pseudo-random replicas with replayable derived seed labels. Full individual runs are optional.
 - `sweepParameter(config, { parameter, values, trials, seed })`: Sweeps a known dotted configuration path such as `attackerShare`, `activity.honest.inspect` or `budgets.attackers`. Every candidate validates before the sweep runs.
 
-See [the root example](../README.md#cohort-and-attack-experiments). The CLI is not implemented yet; these native ESM APIs require no installation.
+See [the root example](../README.md#cohort-and-attack-experiments). Both native ESM APIs and CLI `run`, `trials`, `sweep`, `landscape` and `compare` require no installation.
 
 ## Population and ownership
 
@@ -77,12 +77,13 @@ Money remains separate:
 - Guarantee fees transferred to fee custody, counted for every relation ever activated (ended relations included), and link-break fees by the ending party.
 - Converted rewards and liquid FACY.
 - Outstanding debt, never counted as a burn.
+- Reserved dispute stakes, when the unselected `disputes.stakeBacking: "reserved"` reference is enabled: separate model custody, never liquid money or a realized loss while pending. Actual stake transfer, burn, refund and unpaid unsecured commitment are retained separately.
 
-The current experiment applies no judicial fine or XP-halving verdict; the underlying model supports explicit penalties for future adjudication experiments. Token market prices, Treasury D spending and realized fiat profit are not modeled.
+Optional dispute references apply fines/XP penalties through the model; they do not select the protocol's OPEN merits procedure. Token market prices, Treasury D spending and realized fiat profit are not modeled.
 
 ## Disputes, deviants and payoff facts
 
-`disputes` enables a one-step public challenge layer: an XP gate, a stake, a verdict of declared accuracy, fines, liability scope, a challenger reward share and optional exclusion of liable guarantors. `activity.<cohort>.challenge` is the probability of challenging an eligible suspicious act. `deviants` marks a seeded subset of initial operators that follow an alternative profile. Every run reports per-group payoff facts (`agents`), `system` facts and cumulative `sanctions` in history. [Strategy games](games.en.md) owns their semantics. With disputes disabled and no deviants, behavior is bit-identical to the previous scheduler.
+`disputes` enables a one-step public challenge layer: an XP gate, a stake, a verdict of declared accuracy, fines, liability scope, a challenger reward share and optional exclusion of liable guarantors. `activity.<cohort>.challenge` is the probability of challenging an eligible suspicious act. `deviants` marks a seeded subset of initial operators that follow an alternative profile. Every run reports per-group payoff facts (`agents`), `system` facts and cumulative `sanctions` in history. [Strategy games](games.en.md) owns their semantics. With disputes disabled and no deviants, action/economic behavior is unchanged. Runs now also retain explicit `disputes.cases`, cumulative `history[].stakes`, final stake accounting and optional `state.disputeStakes`. Funding references and priority assumptions are defined in [the model contract](simulator.en.md#dispute-stake-custody-reference); these records are not a complete evidence or human merits procedure.
 
 ## Social trust behavior
 
@@ -93,13 +94,10 @@ The current experiment applies no judicial fine or XP-halving verdict; the under
 - `verification`: a suspicious honest observation triggers a second-stage check, such as a call or a meeting. It costs one `verify` effort and flags fakes with `verificationSensitivity` and genuine people with `verificationFalsePositiveRate`. Only a confirmed suspicion leads to a veto or a challenge (`trust.verificationsCleared` counts cleared suspicions).
 - `investigation`: after an honest challenger's upheld verdict, the challenger verifies the false subject's inviter, the inviter's other invitees and the false subject's own invitees. A confirmed suspect is challenged, subject to the XP gate. This is bounded by `maxFollowUps` per root challenge and counted in `trust.followUps`.
 - Bribery: coalition actors make `activity.attackers.bribe` offers per day to random honest people who don't already guarantee them. A target accepts with probability `bribeAcceptance`, proposes a guarantee and becomes liable for it. The `bribePrice` is paid off-protocol and recorded as `bribesPaid` and `bribesReceived` payoff facts, not as FACY.
-
 - Invitation review: when the `policy.invitationFreezeHours` freeze is positive, each honest current guarantor of an inviter reviews a pending invitation each day with probability `activity.honest.review`. A review observes the invited candidate with the ordinary detector and, if `verification` is on, verifies it. A confirmed suspicion cancels the invitation; with `exitOnFraud`, the guarantor also ends the relation (paying the 1 FACY link-break fee) and so escapes later `inviter-chain` liability. Leaving also removes that guarantor's oversight of the inviter. Counters: `trust.invitationsCancelled`, `trust.guardianExits`.
-
 - Fabricated media: a false subject's daily Self-ID is charged as `fakeSelfId` work, the price of producing fresh, never-reused fake media, separately from an honest `selfId`.
 - Flow tracing (`social.flowTracing`): recipients of ordinary transfers from at least `flowHubThreshold` distinct senders are hubs; hubs and their senders become screening targets. Dispute settlements and challenge rewards carry their own memos and are excluded.
 - Attention (`social.attentionFeedback`): a subject who opens a challenge becomes a screening target, inviting counter-scrutiny. The counter `trust.flowFlagged` includes these targets; `trust.flowFlaggedCoalition` measures evaluator-only precision.
-
 - Gossip (`social.gossipHops`, `gossipShare`): information travels through acquaintance. In timed disputes, everyone within `gossipHops` of the accused or of any entrant notices the dispute. A verified suspicion, or a proven fake's inviter cluster, enters the watch lists of the reporter's honest acquaintances within `gossipHops`, and they inspect watched subjects with probability `gossipShare`. Any network effect therefore comes from graph structure, not from an imposed formula. Counters: `trust.gossipShares`, `trust.gossipInspections`.
 
 These are behavioral assumptions, not protocol rules. Verification quality in particular is a declared input for a human process the simulator does not model.
@@ -120,7 +118,7 @@ The baseline assumes conditionally independent observation draws. There is no sh
 
 Attackers with inspection/response activity may deliberately veto non-coalition acts when they have authority. This can hurt genuine people without proving identity fraud.
 
-Only **authorized guarantor veto** is implemented. Suspicious outsider observations without that authority are counted, including cases that pass the ordinary XP gate. They do not magically open or win an unimplemented court case. Even perfect observation quality cannot manufacture cancellation authority.
+Without enabled disputes, suspicious observations lacking veto authority are counted but cannot cause a sanction. With disputes enabled, an accepted observer can initiate a reference challenge if it exceeds the target's XP and passes activity, work-budget and liquid-stake checks. External unregistered observers and evidence-package relay were absent at the audit baseline. Perfect observation cannot manufacture veto authority, XP or a fair merits procedure.
 
 Consequently, an attack success estimate measures this declared defense subset. It must not be advertised as the probability of defeating Facety with full Chekharda or Council proceedings.
 

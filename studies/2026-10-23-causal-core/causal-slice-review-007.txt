@@ -1,0 +1,174 @@
+ACTOR_REVIEW_RESULT
+
+## Status and inspected identity
+
+**Status: complete for bounded verification; changes requested.** Both usable reviewer reports were considered (`usable: 2`, `minimum: 2`). Two material defects reported by branch 1 were independently reproduced. Branch 2’s passing checks do not contradict those counterexamples.
+
+Read-only verification; **no source writes, commits, or publication**.
+
+Independently observed:
+
+```text
+HEAD: af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5
+Runtime: Node v26.8.1
+Implementation method: sha256-src-mjs-v1
+Implementation digest:
+aaf2b02b9173bf57628c41ef0c72ecabb46bf3ad4e77e1dcb15e26aeb2c6f4d4
+Source modules: 28
+```
+
+Target SHA-256 hashes matched both reviewers:
+
+```text
+src/accountability.mjs
+78bd845ee1295da23a6ea4d251c776870de294811be503ab26fd88d9d660a172
+src/disputes.mjs
+8510b340d74efa02890fa084a3f956d1ce916acf6b4b4b4a7549c796f91528ca
+```
+
+Read `AGENTS.md`. Existing dirty work was treated as baseline. Excluded prototypes were not inspected as reference rules; the implementation digest includes them by definition.
+
+## Supported findings, ranked by concrete impact
+
+### 1. Medium — Verdict overflow partially enforces sanctions and strands an unresolved case
+
+**Proven by independent reproduction.**
+
+Relevant execution order:
+
+- `src/accountability.mjs:212–217`: Settle custody, enforce verdict, then mark case resolved.
+- `src/disputes.mjs:36–45`: Apply sanctions sequentially.
+- `src/model.mjs:434–448`: Reject aggregate debt overflow before applying the current penalty.
+- `src/accountability.mjs:44–51`: Propagate non-`ProtocolRejection` errors without producing a journal record.
+
+Smallest verified configuration uses `causalWorld()` and normalized dispute overrides:
+
+```js
+{
+  enabled: true,
+  stakeBacking: 'reserved',
+  fineMode: 'fixed',
+  fine: Number.MAX_SAFE_INTEGER,
+  liability: 'inviter-chain',
+  rewardShare: 0,
+}
+```
+
+Observe/package/route/review Mira through Bela, sponsor, then resolve upheld. Independent output:
+
+```text
+RangeError: aggregate debt must be an integer >= 0
+Journal records: 5 before, 5 after
+Stake: released 1; openCases=0
+Mira penalty: collected=1; debtAdded=9007199254740990
+Relay case: resolvedAt=null; upheld=null
+Retry: ok=false; reason="stake case is not open"
+```
+
+**Impact:** Accepted numeric inputs cause partial economic mutation, missing decision-journal evidence, and an unresolved case that cannot finish on retry. Protocol events do retain the settlement and first penalty; the failure is not total absence of evidence.
+
+**Recommended direction:** Preflight whole-verdict arithmetic before settlement or other mutation. Add the boundary regression and preserve explicit failure evidence where mutation can precede an unexpected exception. Do not merely swallow programming errors.
+
+### 2. Medium — Public actor inputs can invoke budget-free adjudicator execution
+
+**Proven by independent reproduction.**
+
+`src/accountability.mjs:105–113` interprets `actorId === null` as privileged execution. Public `observe`, `package`, and `route` forward this sentinel without registered-actor validation (`118–155`).
+
+With only a zero-budget Bela actor registered:
+
+```js
+const o = relay.observe(null, acts.Mira, {
+  suspicious: true, sourceGroup: 'media',
+});
+const p = relay.package(null, [o.value]);
+const r = relay.route(null, p.value, 'Bela');
+```
+
+Independent output:
+
+```text
+All three operations: ok=true; work=0
+Bela: spent=0; denied=0
+All three journal actors: reference-adjudicator
+```
+
+**Impact:** Public evidence creation and routing bypass declared work accounts and acquire misleading adjudicator provenance. This does **not** demonstrate bypass of the sponsor XP or stake gates.
+
+**Recommended direction:** Require registered actors at public actor-taking boundaries; keep privileged adjudication internal. Regressions should establish that rejected sentinel inputs do not mutate relay records, routing, or work state.
+
+## Tested invariants and commands
+
+Independently executed:
+
+```text
+node --test test/accountability.test.mjs test/causal-relay.test.mjs \
+  test/disputes.test.mjs test/dispute-stakes.test.mjs
+
+tests 29
+pass 29
+fail 0
+cancelled 0
+skipped 0
+```
+
+Also independently executed:
+
+```text
+node studies/2026-10-23-causal-core/preservation.mjs
+```
+
+Observed:
+
+```text
+equivalent: true
+checks: 12
+baseline implementation:
+9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504
+current implementation:
+aaf2b02b9173bf57628c41ef0c72ecabb46bf3ad4e77e1dcb15e26aeb2c6f4d4
+```
+
+The two in-memory counterexample probes above were independently executed against this implementation.
+
+**Full-suite attribution:** Branch 2 reports `npm test`: 196 passed, zero failed. I did **not** independently rerun the full suite. Likewise, branch 2’s 360-run probe and 720 additional replays remain reviewer-supplied evidence, not verifier-executed checks.
+
+## Paired-design / trace limits
+
+- Twelve-context preservation is supported; universal equivalence and historical confirmation are not established.
+- Passing preservation does not exercise the two boundary counterexamples.
+- Journal ancestry and mechanism tags explain execution; they do not independently identify causation.
+- Source-group separation is declared acquisition separation, not proof of statistically independent errors.
+- Member/external-relay equality supports a bounded routing-path placebo, not better investigation, adoption, equilibrium, or calibrated resource costs.
+- Safety summaries must retain genuine-party XP and financial consequences, unresolved packages, and the distinction between debt and burn. Zero wrongful invalidations alone does not mean zero harm.
+- Exclusive stake-book ownership and supplied one-step verdicts remain declared integration/model limits, not newly demonstrated defects.
+
+## Minority findings
+
+Branch 1 requested changes; branch 2 approved its bounded lens with limits. **No unanimous approval or correctness quorum exists.**
+
+The disagreement resolves narrowly: branch 2 did not exercise or refute branch 1’s boundary cases. Independent reproduction supports retaining both defects despite the successful ordinary-path validation.
+
+## Independent verification and unresolved evidence
+
+| Classification | Assessment |
+|---|---|
+| **Proven** | Privileged sentinel bypass; partial enforcement and stranded-case overflow; focused 29-test pass; twelve-context preservation at the inspected digest. |
+| **Disproven** | Any blanket assertion that all public evidence actions require a registered work account, or that accepted verdict inputs always complete atomically with a decision-journal record. |
+| **Unknown** | Behavior across arbitrary configurations, multi-book integrations, and untested numeric boundaries; general mechanism validity or production readiness. |
+| **Missing evidence** | Independently authenticated baseline capture; launch model/thinking/tool-policy attestation; verifier rerun of the full suite and broad paired probe. |
+
+Reviewer sources retained in the supplied record:
+
+- `ACTOR_EVIDENCE_REF: execution.json#command-005`
+- `ACTOR_EVIDENCE_REF: execution.json#command-006`
+
+This response supplies the raw verifier report for retention by the coordinator; no separate repository report file was written.
+
+## Next bounded actions
+
+1. Fix registered-actor validation and whole-verdict preflight, with regressions for both independently reproduced failures.
+2. Run focused tests and `npm test` after changes.
+3. Rerun preservation and bind refreshed evidence to the resulting implementation digest.
+4. Preserve both raw reviewer reports, this verifier report, and their distinct validation attributions.
+5. Keep final claims bounded to the staged reference. Neither passing checks nor absence of additional findings establishes correctness, emergence, or release readiness.

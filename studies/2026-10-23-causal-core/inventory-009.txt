@@ -1,0 +1,93 @@
+ACTOR_REVIEW_RESULT
+
+## Status and inspected identity
+
+**Status: degraded. Verdict: acceptable as a qualified synthesis, with attribution corrections needed.**
+
+Inspected: the supplied merged report, **ACTOR_EVIDENCE_REF: execution.json#command-008**. Raw reviewer and verifier outputs were not supplied in full in this judging context; their preservation and agreement are therefore **not independently checkable**.
+
+Reported identity, not independently verified:
+- HEAD: `af9b12e`
+- Implementation: `9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504`
+
+| Rubric | Judgment |
+|---|---|
+| Evidence preservation | Good visible preservation of references, branch qualifications, overlapping test subsets, and missing baseline validation; completeness against originals is not checkable. |
+| Severity calibration | Appropriate: calibration and coverage remain unestablished, not declared absent or defective. No unwarranted deletion authority is granted. |
+| Consensus purity | Needs correction: “Consensus assessment” implies independently shared findings that cannot be established from the available merge alone. |
+| Internal consistency | Generally strong; the “falsifiers” section mixes a reported counterexample with an unsupported inference. |
+| Merge bias | No obvious simplification bias. Single-branch findings and useful redundant accounting are retained. Omission bias cannot be ruled out without raw outputs. |
+
+The reported two usable branches satisfy a reported execution threshold, **not** a completeness, corroboration, or calibration threshold.
+
+## Concrete inventory with units, status, and purpose
+
+The merge preserves the following distinctions without treating them as one trust variable:
+
+| Concept | Units/status | Purpose preserved |
+|---|---|---|
+| XP | XP; endogenous state | Eligibility, selection, rewards and sanctions |
+| Structural trust | Graph-derived rank | Optional screening/prior input |
+| Procedural track record | Win/loss-derived reliability | Later priors, not demonstrated truth accuracy |
+| Familiarity | Participation records and notice probability | Later dispute visibility |
+| Money/debt | FACY stocks and obligations | Affordability, settlement, restricted rights |
+| Activity/accuracy/effort | Probabilities, opportunities, assumed weights | Behavioral/environmental assumptions |
+| Perturbations | Half-open activity windows | Exogenous intervention |
+| Analysis controls | Counts, shares, horizons, thresholds | Measurement, not automatic adaptation |
+
+**Judgment:** useful, appropriately bounded inventory. Unit definitions are not empirical calibration, and “win/loss-derived reliability” does not specify a fully reproducible numerical scale.
+
+## Duplicate or opaque concepts with consumers
+
+The merge appropriately retains:
+
+- `rewardsReceived` → incoming-transfer accounting and `FACT_KEYS` valuation.
+- `eligibleForUnmodeledXpChallenge` → opportunity counting even with modeled disputes.
+- `flowFlagged` → a count that also includes attention-derived subjects.
+- XP histories, ledger reconciliation, and conversion-count cross-checks → purposeful accounting redundancy.
+
+Raw versus invalidation-blocked connectivity and incomplete burn-category labels remain explicitly single-branch findings.
+
+**Required attribution correction:** the zero-challenge/22-transfer witness should remain “reported by branch 1 through the verifier.” Its force depends on those transfers actually being recorded in `rewardsReceived`; the judge has not inspected that witness.
+
+## Feedback table: return and missing link
+
+All pathways below are **reported by the merge**, not independently verified here.
+
+| Code | Reported returning link | Missing or unproven extension |
+|---|---|---|
+| FB-XP | Work → XP → eligibility/selection | Better contribution quality |
+| FB-DEBT | Shortfall → debt → reserved rights → repayment | Behavioral adaptation |
+| FB-PREVENT | Suspicion → authorized action → restriction/prevention | Net protective benefit |
+| FB-GROWTH | Admission → opportunities → threshold/budget effects | Endogenous adoption |
+| FB-ATTENTION | Disputes/suspicion → attention → later routing | Reliable correction or net benefit |
+| FB-REPUTATION | Procedural records → later priors/notice | Truth calibration/general learning |
+| FB-UTILITY | Facts → offline valuation | Return to simulated strategy |
+| FB-SPONSOR | Eligible challenger → dispute | Independent funded sponsorship/provenance |
+
+**Judgment:** the table preserves implementation versus effectiveness boundaries well. FB-UTILITY and FB-SPONSOR describe partial or missing loops and should not be counted as demonstrated closed feedback.
+
+## Specific falsifiers and evidence gaps
+
+### Required report corrections
+
+1. **Rename “Consensus assessment” to “Synthesis assessment.”** Reserve consensus for claims explicitly supported by both raw branches; distinct review lenses are not automatically corroborating witnesses.
+2. **Separate contradiction from non-establishment.** The reported transfer witness may contradict a rewards-only interpretation. By contrast, “return to baseline proves repair” is an unjustified inference—not a mechanism disproved by this report.
+3. **Carry reported attribution into the inventory and feedback tables.** The opening caveat is good, but these tables can otherwise read as independently established facts.
+
+### Retained gaps
+
+Calibration provenance, exhaustive consumer coverage, historical compatibility, full-baseline execution, optional-path execution witnesses, and matched-control effectiveness remain unresolved. No new mechanism confirmation or simplification authorization follows.
+
+### Evidence boundaries
+
+- **ACTOR_EVIDENCE_REF: execution.json#command-005** — reviewer 1, indirectly represented.
+- **ACTOR_EVIDENCE_REF: execution.json#command-006** — reviewer 2, indirectly represented.
+- **ACTOR_EVIDENCE_REF: execution.json#command-007** — verifier, indirectly represented.
+- **ACTOR_EVIDENCE_REF: execution.json#command-008** — supplied merge directly judged.
+
+**Bottom line:** preserve **degraded** status. The merge is responsibly cautious, but raw-source preservation and cross-branch consensus cannot be certified from the supplied text alone.
+
+## No mutations
+
+No repository changes, experiments, or independent baseline execution.

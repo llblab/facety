@@ -1,0 +1,508 @@
+{
+  "schema": "facety-legacy-stake-probe/v2",
+  "level": "diagnostic",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504",
+      "files": 23
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "config": {
+    "scenario": "sybil-cone",
+    "seed": "disputes",
+    "initialSize": 30,
+    "attackerShare": 0.2,
+    "days": 24,
+    "maxSubjects": 1500,
+    "activity": {
+      "honest": {
+        "inspect": 3,
+        "challenge": 1
+      }
+    },
+    "disputes": {
+      "enabled": true,
+      "procedure": "chekharda-timed",
+      "stake": 3
+    },
+    "includeState": true
+  },
+  "historicalSettlementRevision": "af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5",
+  "method": "Current unsecured run instrumented in memory and compared exactly with its ordinary result; separate historical settlement helper from the named git revision with constructed cases and current real model balances. Original v1 raw output is retained unchanged.",
+  "ordinaryOvercommitment": [
+    {
+      "at": 96,
+      "id": "n5",
+      "liquid": 3,
+      "committed": 6
+    },
+    {
+      "at": 144,
+      "id": "n16",
+      "liquid": 4,
+      "committed": 6
+    },
+    {
+      "at": 264,
+      "id": "n18",
+      "liquid": 8,
+      "committed": 9
+    },
+    {
+      "at": 288,
+      "id": "member:12",
+      "liquid": 5,
+      "committed": 6
+    },
+    {
+      "at": 312,
+      "id": "member:10",
+      "liquid": 5,
+      "committed": 6
+    },
+    {
+      "at": 312,
+      "id": "member:21",
+      "liquid": 4,
+      "committed": 6
+    },
+    {
+      "at": 312,
+      "id": "n19",
+      "liquid": 8,
+      "committed": 9
+    },
+    {
+      "at": 312,
+      "id": "member:7",
+      "liquid": 7,
+      "committed": 9
+    },
+    {
+      "at": 312,
+      "id": "member:12",
+      "liquid": 5,
+      "committed": 9
+    },
+    {
+      "at": 336,
+      "id": "member:10",
+      "liquid": 6,
+      "committed": 9
+    },
+    {
+      "at": 336,
+      "id": "member:21",
+      "liquid": 5,
+      "committed": 9
+    },
+    {
+      "at": 336,
+      "id": "member:16",
+      "liquid": 5,
+      "committed": 6
+    },
+    {
+      "at": 360,
+      "id": "member:12",
+      "liquid": 7,
+      "committed": 12
+    },
+    {
+      "at": 360,
+      "id": "member:21",
+      "liquid": 6,
+      "committed": 12
+    },
+    {
+      "at": 384,
+      "id": "n0",
+      "liquid": 8,
+      "committed": 9
+    },
+    {
+      "at": 384,
+      "id": "member:21",
+      "liquid": 7,
+      "committed": 15
+    },
+    {
+      "at": 384,
+      "id": "member:7",
+      "liquid": 10,
+      "committed": 12
+    },
+    {
+      "at": 408,
+      "id": "member:12",
+      "liquid": 8,
+      "committed": 15
+    },
+    {
+      "at": 408,
+      "id": "n20",
+      "liquid": 7,
+      "committed": 10
+    },
+    {
+      "at": 408,
+      "id": "member:8",
+      "liquid": 11,
+      "committed": 12
+    },
+    {
+      "at": 432,
+      "id": "member:12",
+      "liquid": 9,
+      "committed": 18
+    },
+    {
+      "at": 432,
+      "id": "n21",
+      "liquid": 13,
+      "committed": 15
+    },
+    {
+      "at": 456,
+      "id": "member:12",
+      "liquid": 9,
+      "committed": 21
+    },
+    {
+      "at": 456,
+      "id": "member:7",
+      "liquid": 8,
+      "committed": 12
+    },
+    {
+      "at": 456,
+      "id": "member:8",
+      "liquid": 13,
+      "committed": 15
+    },
+    {
+      "at": 456,
+      "id": "member:21",
+      "liquid": 9,
+      "committed": 18
+    },
+    {
+      "at": 480,
+      "id": "n0",
+      "liquid": 8,
+      "committed": 9
+    },
+    {
+      "at": 480,
+      "id": "member:21",
+      "liquid": 10,
+      "committed": 21
+    },
+    {
+      "at": 480,
+      "id": "member:21",
+      "liquid": 10,
+      "committed": 24
+    },
+    {
+      "at": 480,
+      "id": "member:10",
+      "liquid": 10,
+      "committed": 12
+    },
+    {
+      "at": 480,
+      "id": "n19",
+      "liquid": 12,
+      "committed": 15
+    },
+    {
+      "at": 504,
+      "id": "n20",
+      "liquid": 10,
+      "committed": 17
+    },
+    {
+      "at": 504,
+      "id": "member:10",
+      "liquid": 10,
+      "committed": 15
+    },
+    {
+      "at": 504,
+      "id": "member:8",
+      "liquid": 15,
+      "committed": 18
+    },
+    {
+      "at": 504,
+      "id": "member:8",
+      "liquid": 15,
+      "committed": 21
+    },
+    {
+      "at": 504,
+      "id": "n17",
+      "liquid": 13,
+      "committed": 17
+    },
+    {
+      "at": 504,
+      "id": "member:93",
+      "liquid": 4,
+      "committed": 6
+    },
+    {
+      "at": 504,
+      "id": "n0",
+      "liquid": 9,
+      "committed": 12
+    },
+    {
+      "at": 504,
+      "id": "n21",
+      "liquid": 16,
+      "committed": 18
+    },
+    {
+      "at": 528,
+      "id": "member:5",
+      "liquid": 11,
+      "committed": 12
+    },
+    {
+      "at": 528,
+      "id": "n4",
+      "liquid": 15,
+      "committed": 18
+    },
+    {
+      "at": 528,
+      "id": "member:21",
+      "liquid": 12,
+      "committed": 27
+    },
+    {
+      "at": 528,
+      "id": "member:93",
+      "liquid": 5,
+      "committed": 9
+    },
+    {
+      "at": 528,
+      "id": "member:93",
+      "liquid": 5,
+      "committed": 12
+    },
+    {
+      "at": 528,
+      "id": "member:12",
+      "liquid": 9,
+      "committed": 21
+    },
+    {
+      "at": 528,
+      "id": "n20",
+      "liquid": 11,
+      "committed": 20
+    },
+    {
+      "at": 528,
+      "id": "n20",
+      "liquid": 11,
+      "committed": 23
+    },
+    {
+      "at": 528,
+      "id": "member:96",
+      "liquid": 5,
+      "committed": 6
+    },
+    {
+      "at": 528,
+      "id": "member:96",
+      "liquid": 5,
+      "committed": 9
+    },
+    {
+      "at": 528,
+      "id": "member:57",
+      "liquid": 8,
+      "committed": 9
+    },
+    {
+      "at": 528,
+      "id": "member:57",
+      "liquid": 8,
+      "committed": 12
+    },
+    {
+      "at": 528,
+      "id": "member:8",
+      "liquid": 16,
+      "committed": 24
+    },
+    {
+      "at": 552,
+      "id": "member:5",
+      "liquid": 9,
+      "committed": 12
+    },
+    {
+      "at": 552,
+      "id": "n23",
+      "liquid": 14,
+      "committed": 16
+    },
+    {
+      "at": 552,
+      "id": "member:57",
+      "liquid": 9,
+      "committed": 15
+    },
+    {
+      "at": 552,
+      "id": "member:93",
+      "liquid": 6,
+      "committed": 15
+    },
+    {
+      "at": 552,
+      "id": "n7",
+      "liquid": 15,
+      "committed": 17
+    },
+    {
+      "at": 552,
+      "id": "n17",
+      "liquid": 15,
+      "committed": 20
+    },
+    {
+      "at": 552,
+      "id": "n0",
+      "liquid": 8,
+      "committed": 12
+    },
+    {
+      "at": 552,
+      "id": "member:12",
+      "liquid": 10,
+      "committed": 24
+    }
+  ],
+  "isolatedSettlement": {
+    "nominalLosingStakes": 6,
+    "before": {
+      "a": {
+        "id": "a",
+        "genesis": true,
+        "key": "a:key:0",
+        "identityStatus": "accepted",
+        "xp": 6,
+        "liquidFacy": 1,
+        "debt": 0,
+        "lastRewardAt": 120
+      },
+      "b": {
+        "id": "b",
+        "genesis": true,
+        "key": "b:key:0",
+        "identityStatus": "accepted",
+        "xp": 0,
+        "liquidFacy": 5,
+        "debt": 0,
+        "lastRewardAt": null
+      },
+      "ledger": {
+        "minted": 6,
+        "burned": 0,
+        "supply": 6,
+        "emitterVault": 0,
+        "collector": 6,
+        "feeVault": 0,
+        "stakeVault": 0,
+        "debt": 0
+      }
+    },
+    "after": {
+      "a": {
+        "id": "a",
+        "genesis": true,
+        "key": "a:key:0",
+        "identityStatus": "accepted",
+        "xp": 1,
+        "liquidFacy": 0,
+        "debt": 0,
+        "lastRewardAt": 120
+      },
+      "b": {
+        "id": "b",
+        "genesis": true,
+        "key": "b:key:0",
+        "identityStatus": "accepted",
+        "xp": 0,
+        "liquidFacy": 6,
+        "debt": 0,
+        "lastRewardAt": null
+      },
+      "ledger": {
+        "minted": 6,
+        "burned": 0,
+        "supply": 6,
+        "emitterVault": 0,
+        "collector": 6,
+        "feeVault": 0,
+        "stakeVault": 0,
+        "debt": 0
+      }
+    },
+    "actuallyTransferred": 1,
+    "unpaidWithoutDebt": 5,
+    "replayedHelper": {
+      "a": {
+        "id": "a",
+        "genesis": true,
+        "key": "a:key:0",
+        "identityStatus": "accepted",
+        "xp": 0,
+        "liquidFacy": 0,
+        "debt": 0,
+        "lastRewardAt": 120
+      },
+      "b": {
+        "id": "b",
+        "genesis": true,
+        "key": "b:key:0",
+        "identityStatus": "accepted",
+        "xp": 0,
+        "liquidFacy": 6,
+        "debt": 0,
+        "lastRewardAt": null
+      },
+      "ledger": {
+        "minted": 6,
+        "burned": 0,
+        "supply": 6,
+        "emitterVault": 0,
+        "collector": 6,
+        "feeVault": 0,
+        "stakeVault": 0,
+        "debt": 0
+      }
+    }
+  },
+  "limits": [
+    "Backing semantics remain OPEN.",
+    "Constructed-case undercollection is not an ordinary admission-to-settlement witness.",
+    "The historical helper replay is not a normal-scheduler exploit; current DisputeStakes guards reject a second settlement."
+  ]
+}

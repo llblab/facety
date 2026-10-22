@@ -2,7 +2,7 @@
 title: "Facety — Manifesto and Protocol Specification"
 subtitle: "Human identity, social responsibility, procedural authority, and the economic growth of Atmo"
 version: "living specification (maintained in the facety repository; history in git and Appendix A)"
-date: "2026-10-22"
+date: "2026-10-23"
 language: "English"
 status: "Proposed protocol; not a claim of a shipped implementation or proven Sybil resistance"
 source_basis: "Protocol owner decisions recorded in this repository, checked against the Facety simulator (docs/insights.en.md)"
@@ -10,13 +10,15 @@ source_basis: "Protocol owner decisions recorded in this repository, checked aga
 
 # Facety: Manifesto and Protocol Specification
 
-> **Facety turns repeated human presence, mutual guarantees, and public accountability into a growing social network. Its economy rewards people who build that network and puts accumulated money, experience, and reputation at risk when they break its rules. Atmo can support the network through a separately governed, conditional FACY buyback-and-burn flow.**
+> **Facety is a coordination protocol for mutual identification through mutual guarantees and public accountability.** Repeated identity assertions, earned non-transferable XP, economic consequences and collective disputes support that coordination; none alone defines it. XP rewards responsibility, not truth or purchasable voting weight. Anyone may discover evidence, while qualified participants accept formal challenge responsibility. Whether these routes keep earned influence correctable is the research question—not a promised outcome. Atmo support is a separate conditional integration.
+
+**[DIRECTION — D31, documented 2026-10-23; owner-provided framing]** “Mutual” describes the social architecture. Both parties consent to a directed guarantee; that consent does not create a reverse guarantee. Guarantees, invitation lineage, acquaintance channels and reachability evidence have different meanings. A path never proves unique personhood.
 
 ## How to read this document
 
 This document is both a **manifesto** and a **technical design specification**. The manifesto explains the purpose and incentives. The specification defines the intended mechanisms and identifies the rules that still need exact parameters.
 
-This is a **living specification**. It is maintained together with the Facety simulator in one repository; there are no numbered editions. Git history and [Appendix A](#appendix-a--decision-log-and-supersession-ledger) record what changed and when. **Later explicit decisions take precedence over earlier text.** The [simulator contract](simulator.en.md#protocol-coverage) maps each implemented mechanic to its section here, and research findings are kept in the [insight register](insights.en.md).
+This is a **living specification**. It is maintained together with the Facety simulator in one repository; there are no numbered editions. Git history and [Appendix A](#appendix-a-decision-log-and-supersession-ledger) record what changed and when. **Later explicit decisions take precedence over earlier text.** The [simulator contract](simulator.en.md#protocol-coverage) maps each implemented mechanic to its section here, and research findings are kept in the [insight register](insights.en.md).
 
 The current time model uses **one-day windows**: a Self-ID emission is contestable for 24 hours before it can be spent or withdrawn, and an invitation is contestable for 24 hours before it can be applied. The **28-day period remains** the window for counting active subjects.
 
@@ -33,17 +35,27 @@ Use the following labels:
 
 ## Document map
 
-- [Part I — Manifesto](#part-i--manifesto): the problem, incentives, social responsibility, and the Atmo network effect.
-- [Part II — System and Data Model](#part-ii--system-and-data-model): actors, assets, graph types, and subject identity.
-- [Part III — Identity Evidence and Self-ID](#part-iii--identity-evidence-and-self-id): media artifacts, deterministic FaceRef, group Self-ID, and Emitter rights.
-- [Part IV — Invitations, Guarantees, and Graph Responsibility](#part-iv--invitations-guarantees-and-graph-responsibility): social admission, payments, and two kinds of liability.
-- [Part V — XP, Public Disputes, and the Council](#part-v--xp-public-disputes-and-the-council): earned authority, halving, Chekharda, and the top-101 collective route.
-- [Part VI — FACY Economics and Atmo Integration](#part-vi--facy-economics-and-atmo-integration): deflation, debt, and Bucket D buyback-and-burn.
-- [Part VII — Reference Implementation Contracts](#part-vii--reference-implementation-contracts): state records, example transitions, and protocol invariants.
-- [Part VIII — Threat Model, Research, and Delivery](#part-viii--threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
-- [Part IX — Condensed Protocol Constitution](#part-ix--condensed-protocol-constitution): the rules and final thesis.
-- [Appendix A — Decision log and supersession ledger](#appendix-a--decision-log-and-supersession-ledger): dated decisions and what they replaced.
-- [Appendix B — Sources and confidence](#appendix-b--sources-and-confidence): scope and evidence limits.
+- [Part I — Manifesto](#part-i-manifesto): the problem, incentives, social responsibility, and the Atmo network effect.
+- [Part II — System and Data Model](#part-ii-system-and-data-model): actors, assets, graph types, and subject identity.
+- [Part III — Identity Evidence and Self-ID](#part-iii-identity-evidence-and-self-id): media artifacts, deterministic FaceRef, group Self-ID, and Emitter rights.
+- [Part IV — Invitations, Guarantees, and Graph Responsibility](#part-iv-invitations-guarantees-and-graph-responsibility): social admission, payments, and two kinds of liability.
+- [Part V — XP, Public Disputes, and the Council](#part-v-xp-public-disputes-and-the-council): earned authority, halving, Chekharda, and the top-101 collective route.
+- [Part VI — FACY Economics and Atmo Integration](#part-vi-facy-economics-and-atmo-integration): deflation, debt, and Bucket D buyback-and-burn.
+- [Part VII — Reference Implementation Contracts](#part-vii-reference-implementation-contracts): state records, example transitions, and protocol invariants.
+- [Part VIII — Threat Model, Research, and Delivery](#part-viii-threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
+- [Part IX — Condensed Protocol Constitution](#part-ix-condensed-protocol-constitution): the rules and final thesis.
+- [Appendix A — Decision log and supersession ledger](#appendix-a-decision-log-and-supersession-ledger): dated decisions and what they replaced.
+- [Appendix B — Sources and confidence](#appendix-b-sources-and-confidence): scope and evidence limits.
+
+## An evidence-to-correction example
+
+An outside observer notices an inconsistency in a public identity assertion by an influential participant. The observer identifies the event and supporting observations without claiming that an allegation proves guilt. A qualified sponsor independently checks the package, may request clarification or refuse it, and accepts the work, stake and public responsibility of a formal challenge. The ordinary gate still requires more XP than the transaction owner. If that route cannot reach an apex participant, the intended collective Council route matters; its referral and merits details remain OPEN.
+
+The accused can answer with evidence. A specified dispute procedure records a reasoned outcome, followed by only the consequences it authorizes: a chain cut, actual collectible losses and debt separately, XP changes, and independently chosen relationship withdrawal. A rejected accusation can instead cost its challenger. Revoking XP does not silently reverse decisions already executed. Other people may then learn from the public reasons; precedent mechanics are a proposal, not a selected court engine.
+
+**Implementation boundary:** `FacetyModel` implements the economic/XP/relationship transitions. The simulator has noisy one-step, instant-ladder and timed-ladder dispute abstractions, not a complete human court. At the 2026-10-23 audit baseline it had no explicit external evidence-package/sponsorship lifecycle. The bounded [causal reference](research.en.md#executable-causal-core) now exercises costed outsider discovery, independent supplied sponsor review, the existing one-step gate/consequences, refusal and false allegations. It does not implement voluntary self-reporting, reasoned Council merits, compensation or institutional learning. [Coverage](simulator.en.md#protocol-coverage) tracks subsequent changes; this example distinguishes intended routes from executable facts.
+
+The final trust boundary is human collective judgment. Equal votes limit individual dominance but do not guarantee independent interests or honest decisions. The objective can be useful self-government with bounded fraud, provided safety, capacity, authority and recoverability remain acceptable—not perfect Sybil resistance, nor acceptance of any fraud level merely because people can disagree. See the [research criteria](research.en.md#survivability-vector-and-stage-clocks).
 
 ## Protocol at a glance
 
@@ -62,7 +74,7 @@ Use the following labels:
 
 ---
 
-# Part I — Manifesto
+# Part I: Manifesto
 
 ## 1. A network of people, not a collection of accounts
 
@@ -78,7 +90,7 @@ The objective is not a global moral score. Facety does **not** certify political
 
 Facety is designed to spread through people who know other people. A person cannot join through an anonymous market purchase alone. A new subject needs an invitation and qualifying social guarantees.
 
-A participant gains FACY from personal Self-ID work. A participant gains XP both from personal Self-ID work and from successful Self-ID work by people it guarantees. The participant has a reason to build a wider social network.
+A participant gains FACY from personal Self-ID work. A participant gains XP both from personal Self-ID work and from successful Self-ID work by people it guarantees. **[DIRECTION, clarified 2026-10-23]** Guarantee-derived XP compensates network-building work and exposure to liability instead of relying solely on unpaid enthusiasm. Unequal earned influence is intentional; removing these credits merely to equalize influence would remove part of the incentive.
 
 That wider network also creates exposure. The guarantor can become responsible for false identity claims and for failing to prevent invalid Self-ID acts within the defined rules.
 
@@ -116,7 +128,7 @@ These periods serve different functions. They MUST NOT be conflated.
 
 XP is not a token. It is a non-transferable measure of identity work and **procedural authority**. A person can use XP to qualify for disputes. A leaderboard makes accumulated XP visible.
 
-Long-term participation may create a large amount of XP. The history of rule compliance gives that experience social credibility. Greater visibility also increases the cost of publicly taking a false position.
+Long-term participation may create a large amount of XP. **[HYPOTHESIS]** That history may create social credibility and greater exposure when someone takes a false position; high XP does not define someone as informed, honest or long-term-oriented. Identity credibility, guarantee reliability, adjudication history, social recognition and protocol XP are distinct. A newcomer can have decisive evidence, and a respected investigator can be wrong. Reputation can be correlated, mistaken or manipulated.
 
 A liable loser of a dispute can lose **50% of effective XP**. Repeated losses can halve effective XP again. The loss can remove access to future dispute opportunities and can remove a person from the Council of 101.
 
@@ -192,19 +204,19 @@ Facety aims to create conditions in which:
 
 **[DIRECTION] Who earns what.** Facety is a distribution mechanism for emission that rewards the network effect. An ordinary participant earns a modest, steady income from daily presence. People who invest effort over a long time — guaranteeing, inviting, checking and resolving disputes — accumulate XP and receive large returns from the network. The design goal is that the most committed rule-followers hold the most XP.
 
-**[HYPOTHESIS, 2026-10-22] The honest network effect prevails.** Honest people's network is denser: information spreads faster through acquaintance and they see more. Its efficiency grows roughly quadratically with the network, so the honest network effect should dominate a coalition's.
+**[HYPOTHESIS, 2026-10-22; scope clarified 2026-10-23] The honest network effect prevails.** The owner's hypothesis is that acquaintance, repeated cooperation and information propagation can give an honest community an advantage. A denser honest graph and roughly quadratic efficiency were predictions, not runtime formulas or established facts. Both genuine and adversarial communities can be dense and exploit the same rewards and gossip. Useful service value, population growth, arithmetic XP scaling and demonstrated manipulation resistance must be measured separately.
 
-**[DIRECTION, 2026-10-22] A bounded fraud budget.** Perfect detection is not required. If most circulating coins were minted by honest people, for example 80% honest and 20% by undetected fakes, the system still works. Like a payment network, Facety can operate with a declared tolerable fraud share. Three conditions:
+**[DIRECTION, 2026-10-22; clarified 2026-10-23] A bounded fraud budget.** Perfect detection is not required. The owner's 80% honest / 20% undetected-fake coin example illustrates tolerable bounded harm; it is not a calibrated acceptance threshold or proof of usefulness. Conditions must include:
 
-- the **authority** share of fakes (XP, Council seats) must stay well below control, since half the Council is the last line;
-- the share must be **stable, not growing**;
-- outside support (Treasury D) reaches fakes in proportion, so its pause policy needs a statistical estimate of the share.
+- **Authority and actual action:** XP contamination, procedural gates, Council seats, voting independence and demonstrated obstruction separately. A small XP change can cross a decisive gate; a seat share alone is not a wrongful verdict.
+- **Trend and correction:** stable monetary harm, genuine participation, case capacity and remaining ability to correct after neglect. Recalculation or a flat fraud share alone does not establish resilience.
+- **Outside support:** Treasury D can benefit undetected fakes as well as genuine participants. Its health estimates, funding and pause/restart effects require a separate conditional model.
 
-**[MODEL FINDING]** In the simulator, fraud does not earn more than playing by the rules whenever the network is viable. The coalition is indifferent between fraud and honest participation, so any fraud that remains earns no premium, and honest people pay a policing cost. See the [insight register](insights.en.md).
+**[MODEL FINDING, exploratory]** Some retained finite-menu games had equilibria in which fraud earned no premium over the rule-following reference while honest people paid a policing cost. This depends on the declared valuation, strategy menu, accuracy, costs and horizon; zero premium partly follows from indifference when the reference is in equilibrium support. It is not an unrestricted equilibrium or a real-world fraud estimate. See the [insight register](insights.en.md).
 
 ---
 
-# Part II — System and Data Model
+# Part II: System and Data Model
 
 ## 10. System boundaries
 
@@ -286,7 +298,7 @@ Trust history survives account changes. A wallet address alone does not define p
 
 ---
 
-# Part III — Identity Evidence and Self-ID
+# Part III: Identity Evidence and Self-ID
 
 ## 14. Media artifacts and publication
 
@@ -337,10 +349,11 @@ Each media class needs a deterministic method for addressing a person's image. A
 **[SELECTED, 2026-10-22]** A Self-ID proves control of the subject key (the signature) and claims fresh presence (the media). A group Self-ID is additionally a public act of co-presence.
 
 - **No mandatory media type.** Participants choose the format. Group photos should be used whenever an occasion exists, such as holidays and meetings.
-- **The same media cannot be reused.** A registered content hash may not be registered again, and a perceptual near-duplicate is a reason to dispute. This is cheap to check.
+- **The same media cannot be reused.** A registered content hash may not be registered again, and a perceptual near-duplicate is a reason to dispute. Exact supplied-hash equality is cheap to check; perceptual equivalence and fabrication are not established by a hash.
+- **[OPEN, documented 2026-10-23] Same-subject reuse of an existing artifact.** The inclusive 24-hour reference age and rolling reward interval meet at hour 24. The current legacy simulator can reward a second claim by the same subject on that artifact, including the same face. The broad no-reuse intention and legitimate multi-subject group-media use need this distinction made explicit. The simulator's `artifactReuse: "once-per-subject"` is a labeled stronger reference interpretation, not a newly selected rule. It rejects a subject's second use regardless of face, key rotation or prior cancellation without forbidding other people's shared-media claims.
 - **[DIRECTION]** Optional varied formats (text, short video, group media) and small challenges derived from public randomness at the time of the act (for example, words to say or a code to show) can strengthen freshness without forcing a format. They raise the daily cost of fabricating a fake.
 
-**[MODEL FINDING]** The daily cost of producing fresh, non-duplicate fabricated media for every fake identity is the primary economic barrier against farms. The simulator prices it separately (`fakeSelfId`). When it costs ten times an honest Self-ID, farming disappears entirely in the timed-dispute game, and dispute-side measures stop mattering. See the [assumption audit](../studies/2026-10-22-timed-chekharda/README.md#assumption-audit-assumption-auditjson).
+**[MODEL FINDING, exploratory]** The retained timed-dispute menu changed to abstention when the *assumed* `fakeSelfId` effort cost was ten times an honest act. That one-factor audit makes fabrication effort a high-value calibration target, not a measured primary barrier or a guarantee that large farms are exposed. Economies of production, correlated detection, camouflage and finite investigative capacity remain alternatives. See the original [assumption audit](../studies/2026-10-22-timed-chekharda/README.md#assumption-audit-assumption-auditjson), whose historical results are not rerun by this wording.
 
 ## 15. Deterministic face references
 
@@ -507,7 +520,7 @@ Cancellation, conversion, and subsequent punishment are different operations:
 The system MUST record a terminal emission disposition exactly once.
 
 ---
-# Part IV — Invitations, Guarantees, and Graph Responsibility
+# Part IV: Invitations, Guarantees, and Graph Responsibility
 
 ## 18. Admission through invitation
 
@@ -671,6 +684,12 @@ The intended incentive is that responsible participants teach one another to com
 
 **[MODEL FINDING]** Acquaintance-only guaranteeing, followed by a call or meeting before any veto or challenge, nearly eliminated wrongful invalidations. It also made paying honest strangers to vouch for fakes unprofitable, because the bribed guarantor carries the liability. See the [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md).
 
+### 20.5 Correction routes and early reporting
+
+**[DIRECTION, documented 2026-10-23]** Correction can come through self-correction, a guarantor's intervention or withdrawal, evidence-backed challenge, Chekharda escalation, or collective Council action. The absence of an infallible algorithm is not the absence of a correction route. The owner's preference is that timely appropriate self-reporting provides a viable exit from a mistake without punishment for that appropriate early correction.
+
+**[OPEN]** Eligibility, report deadlines, restitution, effects on others' existing liabilities and prevention of repeated profitable abuse need exact rules. This direction is not unlimited immunity. Preventive cancellation of one erroneous act by a real person does not clear a separate false-person guarantee. The simulator has preventive vetoes, but no selected voluntary-reporting policy.
+
 ## 21. Fraud classes and proof chains
 
 **[SELECTED]** Serious identity offenses include:
@@ -725,13 +744,15 @@ A subject that loses its only accepted trust path may be **real**. Its current p
 
 ---
 
-# Part V — XP, Public Disputes, and the Council
+# Part V: XP, Public Disputes, and the Council
 
 ## 23. XP as earned procedural authority
 
 **[SELECTED]** XP is non-transferable. A subject earns one XP credit from each qualifying personal Self-ID and one XP credit from each qualifying Self-ID by a subject it guarantees.
 
 A person with many active, genuine guarantee relations can earn far more than one XP per day. This is intentional. The network rewards social expansion, continued observation, and responsibility. Equal XP distribution is **not** a design goal.
+
+**[DIRECTION, clarified 2026-10-23]** Early builders intentionally receive an earned advantage for building before the network was attractive. This is not permanent immunity, inaccessible governance or an assumption that they stay honest forever. Non-transferability blocks direct purchase of XP by token accumulation; it does not automatically block bribery, coercion, account control, delegated influence or coordination among real people.
 
 A public leaderboard ranks subjects by effective XP. High XP may provide access to disputes of higher procedural rank and an opportunity to receive dispute rewards. The quantity of XP is not a token balance and cannot be transferred, minted by FACY purchase, or delegated merely as a market asset.
 
@@ -760,7 +781,7 @@ The penalty represents lost access and public reputation, not the transfer of XP
 
 **[REFERENCE]** An ordered ledger of `XP_Credit` and `XP_Halving` events can preserve this distinction. Efficient snapshots may implement the same semantics.
 
-The protocol must also decide when XP from an unspent and still cancellable Self-ID becomes effective for dispute power. Otherwise an identity act that is later cancelled could already have affected high-level judgments.
+The selected terminal-credit rule (§17.5) prevents still-cancellable Self-ID credits from becoming procedural XP. Earlier provisional-credit candidates are comparison policies only. Later adjudicated revocation replays XP without silently undoing executed decisions; appeal/finality remedies remain OPEN.
 
 ## 25. Right to challenge
 
@@ -783,6 +804,16 @@ A challenger supplies a monetary stake under the dispute policy and publicly sta
 A subject can inspect and challenge other subjects' actions even without an existing guarantee link. This creates an oversight network larger than the local set of guarantors.
 
 The distinct **free guarantor cancellation** of an unspent Self-ID does not require this general XP gate. It is a specific protective authority provided by an existing guarantee.
+
+### 25.1 Open discovery and qualified sponsorship
+
+**[DIRECTION, documented 2026-10-23]** Anyone can identify an inconsistency, investigate it and supply useful evidence, including people with no XP or no Facety membership. Separate discovery, evidence construction, formal sponsorship, adjudication and enforcement. A qualified participant can independently evaluate an external or low-XP source's package and accept the formal procedural responsibility. This channel does not give an external observer XP, membership, private-information access or a bypass of the ordinary challenge gate.
+
+The investigator and sponsor may negotiate compensation outside protocol. A built-in bounty marketplace, transferable XP or mandatory new token is not required. Funding, payer/recipient, currency, payment conditions, sponsor effort, collection risk and enforceability are **[OPEN / RESEARCH ASSUMPTIONS]**, not free resources or silently minted FACY.
+
+**[HYPOTHESIS]** An active investigative minority with sufficiently responsive sponsors and decision-makers can support a much larger passive population and expose violations beyond the accused's local guarantor cluster. Outsiders, rivals and former collaborators may supply evidence, but they need access and a willing capable sponsor. Multiple routing, publication and sponsor competition are possible mechanisms to test, not omnipotent fallbacks. Public availability does not imply attention or enforcement.
+
+Evidence must be evaluated apart from source allegiance: a malicious source can reveal a real violation; a respected source can submit a false accusation. An allegation is not a verdict. Repeated circulation of one package is not independent confirmation. **[REFERENCE / OPEN]** Packages may retain public-event references, claimed duty, supporting observations/source identities, timestamps and review history without publishing additional sensitive personal data. Evidence admission, clarification/refusal, conflict handling, retries and harassment safeguards remain to be specified and tested. See the [research program](research.en.md).
 
 ## 26. Chekharda / Leapfrog
 
@@ -807,11 +838,11 @@ The system uses both forms of capital:
 
 More money cannot bypass the XP condition. More XP does not establish factual truth by itself.
 
-### 26.2 Last position and increasing time
+### 26.2 Earlier deadline candidates (superseded)
 
 **[DIRECTION]** Simple disputes should end locally. The last unopposed side can prevail when the response period ends under the finality rule.
 
-The period must become longer as participants enter the sequence. A candidate is to add approximately **one day for each new participant**. Another candidate is to use a function of escalation depth, rounded to whole days.
+**Historical candidates, superseded by the selected 7-day restart window in §26.5:** the period could become longer as participants enter the sequence. A candidate is to add approximately **one day for each new participant**. Another candidate is to use a function of escalation depth, rounded to whole days.
 
 For example:
 
@@ -819,7 +850,7 @@ For example:
 new_deadline = previous_deadline + extension(escalation_depth)
 ```
 
-**[OPEN]** Base deadline, exact extension function, cumulative or absolute clock behavior, timeout bounds, minimum notice, and Council intervention timing are not finalized.
+**[OPEN]** Timeout/execution bounds, minimum notice and Council interaction still need definition. Base finality itself is selected in §26.5; the earlier extension candidates above are not current defaults.
 
 A simple mathematical increase of XP does not by itself bound a dispute's runtime cost. The implementation needs explicit state and execution limits.
 
@@ -856,7 +887,7 @@ With a private belief `p` that its side is right, joining at position `k` is wor
 p * stake(k-1) > (1 - p) * (stake(k) + value_of_half_own_XP)
 ```
 
-On money alone this needs only slightly better than even confidence (about 52–55%). The XP at risk makes high-XP participants join only when they are confident, so the bigger a dispute, the more certain its participants. The arrangement resembles a prediction market or an escalating dispute-bond game.
+On the illustrative money-only calculation this needs slightly better than even confidence (about 52–55%). **[HYPOTHESIS]** XP risk may select for greater confidence among high-XP entrants; it does not guarantee their accuracy, independence or private valuation of XP. The arrangement resembles a prediction market or an escalating dispute-bond game.
 
 **[SELECTED, 2026-10-22] Finality window.** A dispute runs until **7 days** pass after the last move. Within that time anyone eligible can take the opposite side, and every new entry restarts the 7-day clock. The last unopposed side then wins, unless the Council intervenes. The accused's unspent rights stay frozen meanwhile (§17.4).
 
@@ -868,13 +899,15 @@ On money alone this needs only slightly better than even confidence (about 52–
 
 **[DIRECTION, 2026-10-22] Cluster disputes.** A participant who defends a proven violator without evidence draws attention to itself and may be part of the same scheme. After a violation is proven, disputes can be opened automatically and in parallel against the cluster that defended it.
 
+**[REFERENCE / OPEN, clarified 2026-10-23]** Attention is not a finding of guilt. Legitimate defense, mistaken judgment and knowing obstruction of established evidence differ. A separate sanction needs evidence of a defined identity or procedural duty, not mere association with a losing side or political disagreement. The legacy `clusterFollowUp` option is a scripted stress test, not a complete standard for proving obstruction.
+
 **[CANDIDATE] Other markets for resolving sides.** Parimutuel pools on the claim, automated market makers, and Schelling-point juries are alternatives to the alternating ladder that deserve comparison.
 
-**[MODEL FINDING]** The violating side won disputes only when its identities out-ranked honest people in XP. That happened only when fakes were so cheap that the coalition dominated the network's XP. With realistic fake costs it could not. The XP gate is safe exactly as long as no coalition can dominate XP; see insight F21.
+**[MODEL FINDING, diagnostic; scope corrected 2026-10-23]** In one retained cheap-fake run, a top-XP coalition defender ended all 89 resolved disputes at depth 2 despite a common noisy signal favoring the accusation. This demonstrates an XP-gate obstruction under that script. It does not prove that XP dominance is necessary for every wrongful verdict, that non-dominance guarantees safety, or that real fabrication costs prevent dominance; see insight F21.
 
 **[OPEN]** Whether a position's stake must only be at least the stake below rather than a fixed +g, and how winnings are then distributed fairly.
 
-**[OPEN]** What happens to the stake of a losing top position, which has no winner above it (the simulator burns it as an assumption). The base stake, caps and Council intervention timing.
+**[OPEN]** What happens to the stake of a losing top position, which has no winner above it (the legacy simulator burns the collectible amount as an assumption). The base stake, caps and Council intervention timing. Stake backing is also unresolved: exclusive custody/reservation versus an unsecured commitment changes concurrent-case capacity and recoverability. The legacy simulator only checks current liquid funds and collects up to the remaining balance at settlement, so nominal stakes are not guaranteed winnings. The implemented `disputes.stakeBacking: "reserved"` comparison holds real model custody, excludes it from spending/unrelated fines, refunds winners or mooted cases, and retains open-horizon commitments. Passive refunds/winnings can reach known invalidated accounts without restoring rights. These backing/priority choices are research references, not selected economics; default backing remains legacy unsecured.
 
 **[MODEL FINDING]** A ladder decided only by the last unopposed side favors the side with the most disposable high-XP identities. Fake identities have nothing to lose, and mutual guarantees inflate their XP. In the simulator, verdict accuracy fell to 0.2–0.4 without Council intervention. Accuracy reached 0.83–0.89 (1.0 without coalition harassment) when the active Council could step in early, at depth 2–4; at depth 6 it came too late. The Council's honest majority and its willingness to intervene early are the anchor of the dispute system. See the [insight register](insights.en.md).
 
@@ -890,9 +923,9 @@ A final result must be attributable to a specified procedure. The mere willingne
 
 **[SELECTED]** The **101 highest-effective-XP subjects** form a dynamic Council. Its members appear on the public leaderboard. Each member gets **one vote**. The person with the largest XP does not receive extra Council votes.
 
-**[SELECTED, 2026-10-22]** The leaderboard counts only **active** subjects: those with an uncancelled Self-ID in the preceding 28 days. Inactive members drop out, so the Council turns over with real participation.
+**[SELECTED, 2026-10-22]** The leaderboard counts only **active** subjects: those with an uncancelled Self-ID in the preceding 28 days. Inactive members drop out. **Recalculation is not turnover:** continuously active leaders may retain their seats. Stability is not itself failure, and frequent replacement is not itself success. Measure actual mobility, contestability, independence of judgment and removal of influence after established misconduct.
 
-Council membership changes as XP changes. A dispute or Council proceeding should use a deterministic membership snapshot to avoid ambiguous mid-vote replacements.
+Council membership changes as XP/activity changes. **[REFERENCE / OPEN]** A deterministic case-membership snapshot can avoid ambiguous replacements; dynamic membership is a distinct comparison. The current leaderboard does not choose an active-case policy.
 
 **[OPEN]** How the Council operates when fewer than 101 qualified subjects exist, and tie-breaking at rank 101 require defined rules.
 
@@ -902,7 +935,7 @@ Council membership changes as XP changes. A dispute or Council proceeding should
 
 This creates an upper review path for conflicts involving the largest amount of social capital, including an allegation against a subject that nobody can challenge through the ordinary `XP(challenger) > XP(owner)` gate.
 
-The Council's capacity to hear apex cases prevents individual maximum-XP immunity in the intended design.
+The Council's capacity to hear apex cases prevents individual maximum-XP immunity in the intended design. **[SELECTED restatement, 2026-10-23]** A consul has no seniority immunity: another consul may challenge through the applicable ordinary or collective route. XP does not add votes inside the Council. This restatement does not settle the still-OPEN referral and merits procedures.
 
 ### 27.3 An intervention vote is not automatically a truth verdict
 
@@ -929,7 +962,11 @@ There is no requirement for an infinite chain of councils above the Council of 1
 **[HYPOTHESIS]** Large reputational exposure discourages such collective misconduct. The protocol cannot guarantee this behavior. Public votes make responsibility observable; they do not force honest results or automatically restore damaged trust.
 
 ---
-# Part VI — FACY Economics and Atmo Integration
+### 27.5 Reasoned outcomes and precedent
+
+**[CANDIDATE / OPEN, documented 2026-10-23]** The owner suggested public, reasoned precedent for boundary cases. Interpreting an ambiguous existing rule differs from changing the rule prospectively. Compare comparable insider/newcomer cases, preserve reasons and action provenance, and test correction of bad precedents and protection from retroactive punishment. No precedent engine, unbounded appeal hierarchy or extra supreme controller is selected by this proposal.
+
+# Part VI: FACY Economics and Atmo Integration
 
 ## 28. A monetary token and a separate authority measure
 
@@ -940,7 +977,7 @@ Facety deliberately separates FACY from XP:
 | Nature | Fungible economic token. | Non-transferable procedural experience. |
 | Primary issuance | 1 FACY for a valid, rewarded Self-ID. | 1 credit for an eligible own Self-ID, plus 1 per qualifying guaranteed Self-ID. |
 | Market transfer | Yes, after the applicable Emitter-to-Collector conversion or through already liquid holdings. | No. |
-| Invitation eligibility | Only personally earned, unspent Emitter emission, at least 3 days old. | Does not substitute for the FACY invitation burn. |
+| Invitation eligibility | Only personally earned, unspent Emitter emission, at least 24 hours old. | Does not substitute for the FACY invitation burn. |
 | Dispute role | Monetary stake and possible winnings or penalties. | Admission and escalation authority. |
 | Penalty | Real balance loss, possible burn, or future-reward debt under policy. | Possible 50% reduction in effective XP. |
 
@@ -989,7 +1026,7 @@ Apply debt recovery:  debt falls to 7 FACY
 Disposable reward:    0 FACY
 ```
 
-This describes the intended economic result. It does **not** select the exact asset implementation. The runtime could withhold a future mint or mint and immediately burn to satisfy a debt, but the total-issuance effects must match the chosen method.
+This describes the intended economic result. It does **not** select the exact asset implementation. A final implementation could withhold a future mint or mint into restricted custody and burn after the selected veto window; immediate burning at acceptance is superseded by §17.3. Total-issuance effects must match the chosen representation.
 
 The debt should follow the `SubjectId`, not a changeable account key. A person who makes an error may continue to participate and work toward a non-negative balance. Negative debt is not, by itself, permanent exclusion.
 
@@ -1088,7 +1125,7 @@ Likewise, Facety can publish reusable attestations and context-specific reputati
 
 ---
 
-# Part VII — Reference Implementation Contracts
+# Part VII: Reference Implementation Contracts
 
 ## 35. Suggested logical records
 
@@ -1398,7 +1435,7 @@ A hash alone does not guarantee artifact availability or media truth. An accessi
 
 ---
 
-# Part VIII — Threat Model, Research, and Delivery
+# Part VIII: Threat Model, Research, and Delivery
 
 ## 40. Attacker goals and attack surfaces
 
@@ -1542,9 +1579,9 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 
 ### B. Self-ID and Emitter
 
-7. Exact point at which an accepted Self-ID becomes a rewarded act.
+7. Exact same-subject reuse semantics on an already registered artifact (§14.4); terminal XP timing itself is selected in §17.5.
 8. Minted escrow versus deferred mint, including exact supply accounting and custody.
-9. Semantics of pending, effective and reversed XP for a cancellable Self-ID.
+9. Chronological reversal and later-credit semantics; terminal XP, not provisional effective credit, is selected in §17.5.
 10. Guarantor authority snapshot versus current graph authority at the time of cancellation.
 11. Precedence of an authorized guarantor cancellation and an open Self-ID dispute.
 12. Freeze and appeal effects on age-based eligibility and finality.
@@ -1567,7 +1604,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 23. Which participants in a losing side or guarantee chain receive XP penalties.
 24. What makes a challenge admissible, including deadlines for different transaction types.
 25. Stake asset, initial amount, escalation schedule and winning-stake distribution.
-26. Base dispute deadline, extension function, finality and timeouts.
+26. Execution bounds and deadline interactions; the selected finality window is 7 days after the last entry (§26.5), superseding earlier extension candidates.
 27. Whether provisional XP can be used in a dispute that will itself become final before the source XP.
 28. Council referral, membership snapshot, recusal, quorum and intervention threshold.
 29. Merits decision procedure after Council intervention, and how it overrides or continues the ordinary Chekharda sequence.
@@ -1603,7 +1640,7 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 
 ---
 
-# Part IX — Condensed Protocol Constitution
+# Part IX: Condensed Protocol Constitution
 
 ## 44. Principles to preserve
 
@@ -1644,7 +1681,7 @@ That is the proposed foundation of Facety as a protocol for social self-identifi
 
 ---
 
-## Appendix A — Decision log and supersession ledger
+## Appendix A: Decision log and supersession ledger
 
 This ledger prevents earlier drafts from being mistaken for the latest decisions. Git history holds the exact text changes.
 
@@ -1666,6 +1703,24 @@ This ledger prevents earlier drafts from being mistaken for the latest decisions
 | Guarantees flow through acquaintance; strangers are refused by default. | **[DIRECTION]** (§20.4) |
 | Public, accountable market without zero-knowledge layers. | **[DIRECTION]** (§9) |
 
+### Discussion reconciliation documented 2026-10-23
+
+Source: the owner's A–T synthesis in the research/development mandate; this is the actual documentation date, not a retroactive decision date. [The insight register](insights.en.md#design-discussion-reconciliation-2026-10-23) preserves each item, its status, implementation/gap, falsifier and follow-up.
+
+| Item | Status and canonical section |
+| --- | --- |
+| Coordination for mutual identification through mutual guarantees and public accountability; directed consent is not reciprocity | **[DIRECTION]** D31, introduction/§1; owner clarification documented 2026-10-23, not a change to rights or defaults |
+| A–B: guarantee XP compensates responsibility; earned early advantage without immunity | **[DIRECTION]** D17/D16, §2, §23; high-XP behavioral quality is **[HYPOTHESIS]** |
+| C–F: public history is not automatic accountability; reputation is not XP; future credibility and exit have opposing incentives | **[DIRECTION / HYPOTHESIS / RESEARCH INTERPRETATION]** §4, §9, §19.3; no invented utility or automatic reputational loss |
+| G: multiple correction routes and appropriate early self-reporting | **[DIRECTION / OPEN]** D29, §20.5; no unlimited immunity |
+| H–I: equal votes, active eligibility, no senior immunity; recalculation need not replace members | **[SELECTED restatement / RESEARCH INTERPRETATION]** D3, §27.1–§27.3; merits and active-case membership remain OPEN |
+| J–M: motivated minority, external/low-XP discovery, qualified sponsorship, optional private compensation and nonlocal exposure | **[DIRECTION / HYPOTHESIS / OPEN]** D28, §25.1; no mandatory market, token or procedural-right bypass |
+| N–P: source allegiance is not truth; dense genuine communities are valid; scalable exposure and network effects need mechanisms | **[RESEARCH BOUNDARY / HYPOTHESIS]** §21, §23, §25.1, §40.1; no guaranteed detection or quadratic honesty bonus |
+| Q–R: bounded fraud requires a vector; investigate abuse-assisted obstruction and corrective exposure | **[DIRECTION / HYPOTHESIS]** D27, §9, §41.9; seats alone are not capture |
+| S: reasoned precedent for boundary cases | **[CANDIDATE / OPEN]** D30, §27.5; not an approved new institution |
+| T: retain corrected critique scope and conditional evidence levels | **[EDITORIAL / RESEARCH BOUNDARY]** intended senior-challenge routes exist; access/effectiveness still need tests |
+| Same-subject artifact replay and concurrent stake backing reproduced at the audit baseline | **[DIAGNOSTIC MODEL FINDING / OPEN]** §14.4, §26.5; tested once-per-subject and funded-stake references do not silently become selected defaults |
+
 ### Earlier supersessions
 
 | Earlier description | Status |
@@ -1682,7 +1737,7 @@ This ledger prevents earlier drafts from being mistaken for the latest decisions
 | One-way guarantee transaction. | **Superseded:** a directed guarantee needs matching authorization from both parties. |
 | Council as a higher judge that must process all hard cases. | **Refined:** Council can vote to intervene in any dispute but is not obliged to hear ordinary local cases. The subsequent merits procedure is open. |
 
-## Appendix B — Sources and confidence
+## Appendix B: Sources and confidence
 
 The primary source is the protocol owner's design decisions, recorded in this repository together with the simulator that tests them. Earlier design notes are superseded by this text. The document does not claim independent validation of these design rules in a shipped DEOS repository or independent proof of the economic hypotheses. Simulator findings are model results under declared assumptions.
 

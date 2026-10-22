@@ -1,0 +1,116 @@
+ACTOR_REVIEW_RESULT
+
+## Status / identity
+
+**Complete for bounded synthesis; both original defects are verified corrected in the reproduced scenarios. No supported material regression was established within the inspected owner boundary.**
+
+The verifier reports **2 usable reviewer branches out of 2 required**, with agreement on the two fixes. This merger received the verifier’s report and retained reviewer references, **not the raw reviewer reports**. Reviewer conclusions below are therefore attributed through the verifier; this is not a new independent inspection or an authenticated-independence claim.
+
+Verified implementation identity reported by the verifier:
+
+```text
+Runtime: Node v26.8.1
+Implementation method: sha256-src-mjs-v1
+Implementation digest:
+1338b35c06a19c668b833b84fa6f15f9152c98082e811efee672ab64f421d3fb
+Source modules: 28
+```
+
+The verifier reports unchanged source hashes throughout its checks:
+
+| File | SHA-256 |
+|---|---|
+| `src/accountability.mjs` | `dee78d16cddf503909618898d9cc33c594cb1ce67714d439e0376adf25b18b5a` |
+| `src/disputes.mjs` | `574f8a0ffc4d5336898af0272d8981bc8a5a2eb7bfcb11388b51ece31aa81509` |
+
+**Evidence-accounting limitation:** `test/accountability.test.mjs` changed externally during verification. The focused inventory increased from **32 to 33 passing tests**. A coordinator’s **34-test claim remains unreconciled**.
+
+## Original finding verification matrix
+
+| Original finding or preservation requirement | Evidence reported by verifier | Merged assessment |
+|---|---|---|
+| Public `null` actors could invoke privileged, budget-free execution | Registered-actor lookup precedes journal execution in `src/accountability.mjs:108–110`; internal resolution has a separate journal path. Independent probes rejected `null` for **observe, package, route, review and sponsor**, at trace limits **0, 1 and 100**, without changes to protocol, workflow or trace snapshots. | **Verified corrected for all five tested public entrypoints.** Reviewer agreement is reported by the verifier. |
+| Extreme accepted verdict could partially settle custody/enforcement, escape journal evidence and strand its case | Preflight precedes settlement in `src/accountability.mjs:216–218`. `src/disputes.mjs:22–49` projects ordered balances and aggregate debt, including pending stake refund. With fine `MAX_SAFE_INTEGER`, `inviter-chain` and `rewardShare: 0`, two attempts per trace limit threw `RangeError` without changing protocol or workflow snapshots. Case and custody remained pending. | **Verified corrected for the original numeric witness and repeated failure.** Not a general rollback guarantee. |
+| The exact safe numeric boundary must remain accepted | Prior debt `MAX_SAFE_INTEGER - 4`, fine 2, reserved stake and Bela’s pre-resolution liquid balance 1 produced successful resolution, final debt **9007199254740991**, and stake vault zero. | **Verified for this projected-refund boundary.** |
+| Unexpected exceptions must not become policy refusals | A particular `TypeError` object thrown through `CausalJournal.step` was rethrown as the identical object at all three trace limits. | **Verified for this exception witness.** |
+
+With sufficient trace retention, the overflow attempts recorded `unexpected-error`, `RangeError`, and no protocol-event references.
+
+## New supported defects with reproducers
+
+**None established in the supplied verification scope.**
+
+The changing test inventory and unresolved 34-test claim are **evidence-accounting and target-stability issues**, not demonstrated product defects. They do not invalidate the verifier’s independent probes against unchanged source.
+
+No additional minority product finding is present in the supplied verifier report. Because raw reviewer reports were not supplied to this merger, this is not an independent determination that those reports contain no other observations.
+
+## Commands actually run
+
+### By this merger
+
+Only the actors and swarm operating Skills were read. **No repository tests, source probes, preservation commands or file edits were performed.**
+
+### By the verifier, as reported
+
+1. Checked working-tree status, hashes and implementation identity:
+
+   ```sh
+   git status --short
+   sha256sum src/accountability.mjs src/disputes.mjs test/accountability.test.mjs
+   node --input-type=module -e "import {implementationDigest} from './src/provenance.mjs'; console.log(process.version); console.log(JSON.stringify(implementationDigest()))"
+   ```
+
+2. Ran this focused command twice:
+
+   ```sh
+   node --test test/accountability.test.mjs test/causal-relay.test.mjs \
+     test/disputes.test.mjs test/dispute-stakes.test.mjs
+   ```
+
+   | Test version | Tests | Passed | Failed |
+   |---|---:|---:|---:|
+   | Initial | 32 | 32 | 0 |
+   | After externally appended XP-halving counterfactual test | 33 | 33 | 0 |
+
+   Both runs had zero cancelled or skipped tests. The revised accountability-test hash was:
+
+   ```text
+   8efbcb9980562bb6483c5f26a0c98be97c471f8d6bb3bfd3c842dd13668c2f54
+   ```
+
+3. Ran independent read-only Node assertions covering the five null entrypoints, overflow/retry invariance, identical-error propagation and exact-refund headroom.
+
+4. Rechecked hashes and implementation identity after the probes and focused rerun.
+
+**The verifier did not run `npm test` or the preservation script.** Any coordinator full-suite result remains separately attributable and is not independently established here.
+
+## Preservation and trace limits
+
+- **Reviewer branch 2**, as relayed by the verifier, reports equivalence across **12 preservation contexts** and **144 sequential-oracle comparisons** at the same implementation digest. These remain reviewer-executed results, not verifier- or merger-executed results.
+- Disabled or saturated journals omit exception details while counting omissions. **Durable exception-detail retention under saturation is not established.**
+- Arithmetic preflight is **not general transaction rollback**. Arbitrary later exceptions, external interference and nonexclusive stake-book ownership remain outside the demonstrated guarantee.
+- Universal safety across normalized numeric configurations is **unknown**.
+- Preservation is bounded by declared contexts and seeds. Historical baseline provenance was not independently authenticated.
+- Excluded prototype implementations were not inspected, although the aggregate implementation digest includes them.
+- No release-readiness, global-correctness, equilibrium or emergence conclusion follows.
+
+## Dissent and next action
+
+The verifier reports **no supported material dissent between the two current reviewer branches concerning the original fixes**. This supports a bounded conclusion, not a correctness quorum.
+
+The unresolved discrepancy remains:
+
+> **34 claimed focused tests versus 32 initially observed and 33 observed after test-file drift.**
+
+Recommended next actions:
+
+1. Reconcile the 34-test claim using the exact command, test inventory and corresponding test hashes.
+2. Retain both raw reviewer reports and the verifier report with distinct executor attribution; preserve both observed test versions.
+3. Carry the numeric, bounded-trace and exclusive-ownership limitations into the final synthesis.
+4. If full-suite evidence is required, obtain or retain an explicitly attributed `npm test` result tied to the tested source identity; do not substitute focused or preservation results.
+
+Retained evidence references:
+
+- Reviewer branch 1: **ACTOR_EVIDENCE_REF: execution.json#command-005**
+- Reviewer branch 2: **ACTOR_EVIDENCE_REF: execution.json#command-006**
+- Verifier, directly supplied to this merger: **ACTOR_EVIDENCE_REF: execution.json#command-007**

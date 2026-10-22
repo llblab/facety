@@ -1,0 +1,135 @@
+ACTOR_REVIEW_RESULT
+
+## Status and inspected identity
+
+**Status: degraded — substantial causal separation supported; calibration and repository-wide completeness not established.**
+
+The supplied verifier reports **2/2 completed reviewer executions**, satisfying the minimum of two usable branches:
+
+- **Branch 1 — parameter/state/measurement inventory:** usable, with explicitly degraded inventory coverage.
+- **Branch 2 — implemented feedback:** usable, with qualifications on effectiveness and execution witnesses.
+
+**Reported checkpoint**
+- HEAD: `af9b12e`
+- Implementation: `9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504`
+
+This synthesis uses the supplied verification report. It does **not** constitute a new source inspection or independent test execution. Reviewer details below are preserved as reported by the verifier; the raw reviewer outputs were not separately inspected for this merge.
+
+The reported 73-test and 72-test subsets overlap and must not be summed. Neither reviewer independently reran the supplied 184-test baseline.
+
+### Consensus assessment
+
+| Claim | Assessment |
+|---|---|
+| Protocol rules are distinguished from behavioral and environmental assumptions | **Supported within reviewed scope** |
+| Interventions are distinguished from measurements and analyst controls | **Supported** |
+| Calibration targets, empirical provenance, and fitting/validation criteria are explicit | **Not established** |
+| Implemented feedback is distinguished from open or absent pathways | **Supported**, without establishing beneficial effectiveness |
+| XP, reputation, familiarity, and money remain distinct rather than forming one “trust score” | **Supported** |
+| Inventory covers the entire repository and historical consumers | **Not established** |
+
+The defensible conclusion is a **substantial, checkpoint-bound causal inventory with declared omissions**, not an exhaustive or empirically calibrated model.
+
+## Concrete inventory: units, status, and purpose
+
+| Concept | Units / status | Causal purpose |
+|---|---|---|
+| XP | XP per subject; endogenous protocol state | Eligibility, Council selection, and chronological reward/sanction accounting |
+| Structural trust | Graph-derived rank; optional behavioral input | Screening and dispute-opening priors |
+| Adjudication track record | Win/loss-derived reliability | Subsequent entrant priors; procedural success does not establish evaluator correctness |
+| Participation familiarity | Recorded participation and notice probability | Changes who notices later disputes |
+| Money and debt | FACY stocks, transfers, custody, and obligations | Affordability, settlement, and future-right restrictions; debt is not a burn |
+| Activity, observation accuracy, and effort weights | Probabilities, opportunities, and uncalibrated effort assumptions | Declared environment and behavior, not inferred preferences |
+| Perturbations | Activity records over half-open day windows | Externally imposed intervention, not endogenous strategy adaptation |
+| Outcome and analysis controls | Counts, shares, horizons, and thresholds | Measurement and classification; no automatic return to agent behavior |
+
+**Calibration gap:** identifying units and uncalibrated assumptions does not supply calibration targets. The evidence does not establish an explicit register linking parameters to empirical sources, fitting objectives, or validation criteria.
+
+Sources, as summarized by the verifier: branch 1’s configuration/state inventory and branch 2’s concept inventory.
+
+## Duplicate or opaque concepts with consumers
+
+### Naming and interpretation ambiguities
+
+| Concept | Reported meaning and consumer | Qualification |
+|---|---|---|
+| `rewardsReceived` | Aggregates incoming transfers; exposed to game valuation through `FACT_KEYS` | Not exclusively dispute rewards. Branch 1 reportedly witnessed zero challenges alongside 22 incoming transfers |
+| `eligibleForUnmodeledXpChallenge` | Opportunity counter retained when modeled disputes are enabled | Its name does not establish unresolved enforcement |
+| `flowFlagged` | Includes attention-derived subjects | Not exclusively a flow-tracing count |
+
+These ambiguities do **not** justify collapsing the underlying concepts or changing historical schemas without consumer analysis.
+
+### Useful redundant accounting—not deletion findings
+
+- XP histories and materialized XP values support accounting checks.
+- Ledger reconciliation provides an audit function.
+- Incremental and recomputed conversion counts provide cross-checks.
+
+The supplied evidence identifies these as purposeful redundancy, not demonstrated waste.
+
+### Branch-specific findings
+
+Branch 1 additionally reports:
+
+- Raw connectivity versus connectivity with invalidated nodes blocked.
+- Incomplete burn-category labels.
+
+These remain **single-branch findings reported through the verifier**, without independently corroborated execution witnesses in this synthesis. Their presence should not be silently dropped, but neither should their confidence be elevated to cross-branch consensus.
+
+## Feedback: returning links and missing pathways
+
+| Code | Supported returning link | Missing or unproven extension |
+|---|---|---|
+| **FB-XP** | Terminal work → XP → eligibility/Council selection | Better responsibility or contribution quality |
+| **FB-DEBT** | Fine shortfall → debt → reserved future rights → mature repayment → restored disposable capacity | Debt-induced behavioral adaptation |
+| **FB-PREVENT** | Suspicion → authorized veto/review → lost rights or prevented admission | Optimized vigilance or uniformly beneficial outcomes |
+| **FB-GROWTH** | Funded admission → more action opportunities → population-threshold/shared-budget effects | Autonomous adoption or replenishing productive capacity |
+| **FB-ATTENTION** | Disputes/suspicion → attention/watch lists → later routing | Reliable correction, forgetting, or net protective effect |
+| **FB-REPUTATION** | Procedural outcomes → records → subsequent priors/notice | Truth calibration or general learning |
+| **FB-UTILITY** | Recorded facts → offline valuation/game analysis | Automatic return from valuation to simulated strategy |
+| **FB-SPONSOR** | Existing eligible challenger → dispute | External-evidence provenance and independent funded sponsorship |
+
+These distinguish implemented state-mediated returns from absent adaptation, sponsorship, loyalty, general exit, and learning pathways. They are **not registered mechanism confirmations, emergence claims, endogenous-adoption evidence, or equilibrium results**.
+
+Branch 2 specifically qualifies the strength of cluster-follow-up and reputation/gossip assertions. Implemented routing is not evidence that the routing improves net outcomes.
+
+## Specific falsifiers and evidence gaps
+
+### Interpretations contradicted by the reported evidence
+
+- **“`rewardsReceived` means only challenge rewards.”** The reported zero-challenge/22-transfer witness contradicts that interpretation.
+- **“All feedback is absent.”** The reported XP, debt, attention, and procedural-record pathways contradict it.
+- **“A return-to-baseline descriptor proves repair or learning.”** The evidence does not support that inference; imposed activity windows and encoded rules remain alternative explanations.
+
+### Unknown or unproven
+
+- Whether attention, gossip, or reputation improve net outcomes under matched controls.
+- Whether every optional pathway has a decisive execution witness.
+- Whether parameter fusion could preserve independent interventions and historical schemas.
+- Whether observed recovery reflects an emergent mechanism rather than imposed interventions or encoded rules.
+
+Low sensitivity alone is not deletion authority.
+
+### Missing evidence
+
+1. **Calibration:** explicit targets, empirical provenance, fitting criteria, and validation criteria.
+2. **Coverage:** exhaustive default/caller inspection across omitted analysis, CLI, and configuration areas.
+3. **Compatibility:** a complete historical-consumer census and schema-impact analysis.
+4. **Validation:** an independent full-baseline execution at the reported checkpoint.
+5. **Effectiveness:** matched controls and the required registered confirmation before advancing mechanism claims.
+
+### Required boundaries for subsequent work
+
+Preserve defaults, independent signals, accounting checks, and compatibility boundaries. Any proposed simplification must separately establish semantic equivalence, consumer compatibility, and retained intervention capability. No such simplification is authorized by this review.
+
+## Evidence
+
+The following references are retained from the supplied verification report; they were not independently reopened during this merge:
+
+- **ACTOR_EVIDENCE_REF: execution.json#command-005** — parameter/state/measurement reviewer; inventory coverage explicitly degraded.
+- **ACTOR_EVIDENCE_REF: execution.json#command-006** — implemented-feedback reviewer; effectiveness and some execution witnesses qualified.
+- **ACTOR_EVIDENCE_REF: execution.json#command-007** — supplied verification synthesis; supports the qualified verdict and records remaining gaps.
+
+## Mutations
+
+**None.** No repository changes, new experiments, or independent baseline execution.

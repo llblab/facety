@@ -1,0 +1,67 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+**Complete — narrow read-only review. No supported material finding.**
+
+The inspected implementation and 65 passing focused tests support the reserved-custody/lifecycle behavior described below. This is an independent reviewer conclusion, not verifier or swarm consensus and not a blanket correctness guarantee.
+
+## Scope/source identity
+Reviewed the current working-tree checkpoint in `/home/llb/Repos/facety`, through the lens **reserved collateral, lifecycle and controlled economic mutation**:
+
+- `src/model.mjs`
+- `src/dispute-stakes.mjs`
+- Stake-related integration in `src/experiment.mjs`
+- Changes in `src/games.mjs` and `src/incentives.mjs`
+- Associated model, stake, dispute, game and incentive tests
+- Custody-reference documentation in `docs/simulator.en.md`
+
+No repository files were written or committed. Prior artifact-reuse/protocol changes were not treated as redesign targets.
+
+## Findings and minimal witnesses
+**No supported material finding within this lens.**
+
+Evidence-backed observations:
+
+1. **Reserved collateral is excluded from ordinary spending and fines.**  
+   `src/model.mjs:402–413` removes committed funds from `liquidFacy` and credits separate custody. Existing liquid-spending paths therefore cannot reuse that balance. `penalize` collects only remaining liquid funds, leaving reserved collateral intact and recording the shortfall as debt.  
+   **Witness:** `test/dispute-stakes.test.mjs`, “reserved stakes have exclusive model custody across concurrent cases and every liquid spending path,” passes concurrent reservation, transfer, guarantee-confirmation, link-break and fine checks.
+
+2. **Model reservation/disposition rejection and replay guards precede mutation.**  
+   `src/model.mjs:402–437` validates duplicate reservations, disposition, recipient existence and receiver balance before changing custody. Settled commitments cannot be settled again.  
+   **Witness:** Passing tests “stake disposition preflights invalid requests…” and “zero and invalid stake commitments…” compare subjects, commitments, ledger and events before/after rejection.
+
+3. **Case lifecycle guards protect normal settlement and moot replay.**  
+   `src/dispute-stakes.mjs:15–18,44–89` requires an open case, settles actual custody, retains accounting and closes the case. `src/experiment.mjs:787–811` checks the case before Council/settlement processing; `:860–875` rejects repeat timed resolution and refunds mooted collateral.  
+   **Witness:** Passing book tests cover duplicate settle/moot rejection, losing-top burns, winner collateral release, shortfalls and moot refunds. These demonstrate helper lifecycle protection, not proof of a formerly exploitable scheduler path.
+
+4. **Invalidation does not silently destroy custody or restore spending authority.**  
+   `src/model.mjs:419–423` deliberately permits passive refunds/winnings to invalidated recipients; ordinary transfers still require accepted identities.  
+   **Witness:** The disposition test invalidates payer and recipient, exercises release/transfer/burn, checks conservation, and confirms prohibited ordinary spending.
+
+5. **Pending custody remains measurable rather than disappearing from holdings.**  
+   `src/experiment.mjs:1177–1239` derives pending subject custody from model reservations, retains group/system stake facts and includes false-owned custody in false-circulating holdings. `:1255` retains case outcomes.  
+   **Witness:** Passing integration test “all dispute references expose exclusive reserved custody…” checks all three procedures, pending custody, group totals, conservation, unpaid accounting and absence of truth/cohort fields in model commitments.
+
+**Recommended next action:** No corrective implementation change is supported by this review. Preserve these regression checks and keep the reference assumptions explicit.
+
+## Tests actually run
+1. `node --test test/dispute-stakes.test.mjs test/disputes.test.mjs test/games.test.mjs test/model.test.mjs test/incentives.test.mjs`  
+   **58 passed; 0 failed.** Includes reserved-stake valuation and missing historical custody, bounded-fixture rejection, deterministic procedure integration, and custody/lifecycle checks.
+
+2. `node --test test/perturbations.test.mjs`  
+   **7 passed; 0 failed.** Includes future-intervention-prefix and inert-inspection randomness controls.
+
+No full `npm test`, historical-study reruns, diagnostic study scripts or performance measurements were run.
+
+## Selected versus reference assumptions
+The implementation/documentation correctly distinguish:
+
+- **Default unsecured behavior:** Entry checks do not reserve collateral; concurrent reuse and later unpaid commitments are intentional. Unpaid stakes do not become invented debt.
+- **Reserved reference:** Collateral has priority over unrelated fines; refunds do not automatically repay debt; invalidated accounts may passively receive refunds/winnings; losing top positions burn; pending-horizon cases retain custody.
+- These are explicitly **OPEN reference choices**, not selected protocol backing or seizure law (`docs/simulator.en.md:105–119`).
+
+## Residual risks
+- Existing future/inert controls passed, but I did not add or execute a dedicated reserved-backing perturbation matrix.
+- Full multi-position book settlement is sequential, not transactional against externally induced model/book desynchronization. No reviewed scheduler path was found that directly settles book-owned commitments out of band; this remains an ownership constraint, not a demonstrated scheduler defect.
+- Dedicated experiment-level moot/invalidation combinations are less directly exercised than book-level refunds and model-level invalidated-recipient handling.
+- Historical artifacts and final provenance refresh were not verified. No claim is made that old studies were rerun or that protocol backing has been selected.

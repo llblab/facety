@@ -1,0 +1,107 @@
+{
+  "schema": "facety-media-reuse-probe/v1",
+  "level": "diagnostic",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "c6738f9df88d815ac0ece55c50651c4a8c64aa922e854adc367bd96bb6c4849c",
+      "files": 22
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "assumptions": [
+    "Artifact registration age includes hour 24.",
+    "registration-only is the legacy reference; once-per-subject is an unselected stronger no-reuse interpretation."
+  ],
+  "probes": [
+    {
+      "artifactReuse": "registration-only",
+      "at23": "rolling 24-hour reward limit",
+      "at24": "accepted",
+      "subject": {
+        "id": "a",
+        "genesis": true,
+        "key": "new-key",
+        "identityStatus": "accepted",
+        "xp": 2,
+        "liquidFacy": 2,
+        "debt": 0,
+        "lastRewardAt": 24
+      },
+      "ledger": {
+        "minted": 4,
+        "burned": 0,
+        "supply": 4,
+        "emitterVault": 2,
+        "collector": 2,
+        "feeVault": 0,
+        "debt": 0
+      },
+      "claims": [
+        {
+          "subject": "a",
+          "faceIndex": 0,
+          "collision": true
+        },
+        {
+          "subject": "a",
+          "faceIndex": 0,
+          "collision": true
+        },
+        {
+          "subject": "b",
+          "faceIndex": 1,
+          "collision": false
+        },
+        {
+          "subject": "c",
+          "faceIndex": 0,
+          "collision": true
+        }
+      ]
+    },
+    {
+      "artifactReuse": "once-per-subject",
+      "at23": "rolling 24-hour reward limit",
+      "at24": "subject has already used this artifact",
+      "subject": {
+        "id": "a",
+        "genesis": true,
+        "key": "new-key",
+        "identityStatus": "accepted",
+        "xp": 1,
+        "liquidFacy": 1,
+        "debt": 0,
+        "lastRewardAt": 0
+      },
+      "ledger": {
+        "minted": 3,
+        "burned": 0,
+        "supply": 3,
+        "emitterVault": 2,
+        "collector": 1,
+        "feeVault": 0,
+        "debt": 0
+      },
+      "claims": [
+        {
+          "subject": "a",
+          "faceIndex": 0,
+          "collision": true
+        },
+        {
+          "subject": "b",
+          "faceIndex": 1,
+          "collision": false
+        },
+        {
+          "subject": "c",
+          "faceIndex": 0,
+          "collision": true
+        }
+      ]
+    }
+  ]
+}

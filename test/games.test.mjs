@@ -50,6 +50,28 @@ test('games are reproducible, parallel-identical and analyzable offline under ex
   assert.equal(sweep[1].bestResponses.honest.abstain, 'rest', 'costly effort with nothing to catch favors resting');
 });
 
+test('reserved stake facts can be explicitly valued without imputing missing historical custody as zero', async () => {
+  const reservedSpec = { ...spec, replicas: 2, deviation: undefined, base: { ...spec.base, disputes: { enabled: true, procedure: 'chekharda-timed', stakeBacking: 'reserved' } } };
+  const result = await runGame(reservedSpec);
+  assert.deepEqual((await runGame(reservedSpec, { workers: 2 })).facts, result.facts);
+  const current = analyzeGame(result, valuation);
+  const withStakes = analyzeGame(result, { ...valuation, honest: { facts: { liquidFacy: 1, stakeFacy: 0.5 }, system: { falseStakeFacy: -0.1 } } });
+  assert.ok(withStakes.profiles.every(profile => profile.payoffs.honest.unknown === 0));
+  const historical = structuredClone(result);
+  for (const entry of historical.facts) for (const replica of entry.replicas) {
+    for (const groups of Object.values(replica.agents)) for (const facts of Object.values(groups)) {
+      delete facts.stakeFacy;
+      delete facts.falseStakeFacy;
+    }
+    delete replica.system.stakeFacy;
+    delete replica.system.falseStakeFacy;
+  }
+  assert.deepEqual(analyzeGame(historical, valuation), current, 'zero-valued absent fields cannot corrupt an older valuation');
+  const missing = analyzeGame(historical, { honest: { facts: { stakeFacy: 1 } } });
+  assert.ok(missing.profiles.every(profile => (profile.payoffs.honest.mean ?? null) === null && profile.payoffs.honest.unknown === 2));
+  assert.equal(missing.mixedEquilibria, null);
+});
+
 test('a deviation to an identical strategy has exactly zero individual gain', async () => {
   const twin = await runGame({
     ...spec, id: 'twin',

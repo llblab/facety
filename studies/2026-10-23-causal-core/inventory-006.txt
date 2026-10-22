@@ -1,0 +1,102 @@
+ACTOR_REVIEW_RESULT
+
+## Status and inspected identity
+
+**Status: complete for the implemented-feedback lens; mechanism effectiveness remains conditional.**
+
+- Inspected HEAD: `af9b12e`, with existing uncommitted changes.
+- Independently computed implementation identity: `sha256-src-mjs-v1`, **`9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504`**, 23 source modules—matches the assigned checkpoint.
+- Inspected model, experiment, effort, game/incentive and recovery-analysis paths, plus relevant tests and model-contract statements.
+- Validation: `node --test test/model.test.mjs test/experiment.test.mjs test/social.test.mjs test/disputes.test.mjs test/games.test.mjs test/controls.test.mjs` — **72 passed, 0 failed**. The supplied 184-test baseline was not independently rerun.
+- **No files written, defaults changed, or commits created.**
+- Scope exclusion: this report inventories feedback-relevant concepts, not every configuration field; the exhaustive default-field inventory belongs to the other lens. No new mechanism, institution or utility coefficient is proposed.
+
+**Main finding:** meaningful state-mediated return links already exist. What is largely absent is the further return from experienced outcomes to revised participation, loyalty, investigation quality or strategy. Those two layers must not be conflated.
+
+## Concrete inventory: units, status and causal purpose
+
+| Concept | Units / scope | Status and causal purpose |
+|---|---|---|
+| Self-ID rights and liquid FACY | Integer rights/coins per subject | Endogenous protocol resources: mature rights fund invitations or convert to liquidity; liquidity funds fees, stakes and transfers. Conversion does not mint another coin. `src/model.mjs:266–378` |
+| XP and source history | Integer XP per subject; ordered credits/halvings | Endogenous eligibility and authority state. Terminal disposition credits the subject and eligible recording-time guarantors; cancellation/voiding can replay historical XP. `src/model.mjs:246–316,460–488` |
+| Guarantees and invitation lineage | Directed relationships | Distinct causal structures: guarantees supply eligibility, vetoes and credit relationships; lineage records funded admission and supplies investigation/liability neighborhoods. `src/model.mjs:175–215,331–369`; `src/experiment.mjs:669–675,937–949` |
+| Activity and invitation threshold | Active accepted subjects within 672 h; integer guarantor requirement | Endogenous population-to-admission constraint: `requiredGuarantors()` is decimal digit count of active population, minimum one. Guarantor activity separately controls eligibility. `src/model.mjs:218–244` |
+| Debt and reservations | Integer obligations and reserved rights per subject | Endogenous restriction on disposable future emissions; collectible FACY is burned, unpaid fines become debt. Debt itself is not a burn. `src/model.mjs:146–157,279–295,438–456` |
+| Observation and verification | Bernoulli signals per keyed context | Exogenous declared quality; endogenous targeting and consequences. Ground truth enters through the observation environment, not ordinary defense judgment. `src/experiment.mjs:281–283,952–955,958–1067` |
+| Attention and gossip | Subject sets; observer→subject watch lists; counters | Endogenous dispute/suspicion history changes future inspection targets, without increasing baseline inspection rates. `src/experiment.mjs:359–375,644,776–782,974–1045` |
+| Dispute positions and custody | Entrants, XP floors, FACY stakes, hours | Optional procedural references, disabled by default. State changes future eligibility, affordability, attention, finality and sanctions. `src/experiment.mjs:622–935` |
+| Public reputation | Graph-derived trust and smoothed win/loss ratios | Distinct endogenous signals used by optional screening, dispute priors and regular-noticer selection. Not demonstrated truth calibration. `src/experiment.mjs:299–315,380–383,706–737,817–821,919–924` |
+| Effort/capacity | Uncalibrated weighted effort; cohort budget | Actions spend finite resources, including rejected funded attempts. Denial blocks later actions. `maxActions` is a censoring limit, not economic exhaustion. `src/effort.mjs:68–113`; `src/experiment.mjs:446–466` |
+| Utility/game results | Supplied utility per initial operator | Offline analysis of recorded facts and a finite strategy menu. No automatic return to simulated choices. `src/games.mjs:247–264,344–429` |
+| “Recovery” | Paired metric differences; finite hold window | Analytical descriptor, not a repair actor or learning mechanism. `src/controls.mjs:51–83,137–182` |
+
+## Feedback inventory: implemented returns versus missing links
+
+**E** = state-mediated/endogenous within the declared simulation. **X** = externally fixed assumption. Signs are conditional, not universal welfare claims.
+
+| Code / pathway | Actual return link and conditional sign | Missing link / evidence status |
+|---|---|---|
+| **FB-01 — Contribution** | **E:** Guarantee→eligible recipient of another subject’s terminal acts→XP→higher challenge/ladder eligibility or Council rank. Invitation also consumes a right and finalizes its existing XP. `model.mjs:237–295,331–343,484–488` | No direct rule makes invitation volume useful service, or makes higher returns induce better contributions. Reward transitions tested in `test/model.test.mjs:245–264,423–435`; behavioral quality remains conceptual. |
+| **FB-02 — Prevention** | **E:** Suspicion→authorized veto→burn/revoked XP→less usable reward and potentially lower active count. Frozen-invitation review→cancelled admission→smaller subsequent population. `experiment.mjs:592–615,1037–1065`; `model.mjs:318–327,359–369` | Negative for false growth when observations are reliable; also harms genuine subjects under false positives. Tested: `test/social.test.mjs:35–42,66–81`; `test/experiment.test.mjs:89–110`. No demonstrated optimization of vigilance. |
+| **FB-03 — Withdrawal** | **E:** Either party ends guarantee→one-liquid-FACY fee→edge removal→guarantor credit revocation and suppressed later credits while edge absent→changed XP/eligibility. Optional guardian exit also removes a current liability relationship. `model.mjs:199–215,253–265`; `experiment.mjs:614` | Scheduler exit is narrowly triggered after invitation cancellation, not a general dissatisfied-subject exit choice. Historical snapshot veto can survive. Model tests cover core revocation; relinking/historical liability remains an explicit audit gap. |
+| **FB-04 — External evidence / sponsor** | Current path is suspicious accepted observer→strict higher-XP and liquid-stake gates→challenge. `experiment.mjs:622–640,1049–1058` | **Open:** no outsider/zero-XP package lifecycle, independent sponsor selection, provenance, review queue or compensation collection. Explicitly acknowledged in `docs/simulator.en.md:68` and `BACKLOG.md:10`. Detection alone does not close enforcement. |
+| **FB-05 — Public attention** | **E, optional:** Challenge/entry→actor added to attention set→screening pool→changed subsequent inspection allocation. `experiment.mjs:644,782,974–987` | Not necessarily beneficial: it targets challengers and entrants, not just accused subjects. It reallocates fixed inspection effort. `test/disputes.test.mjs:91–100` establishes flagging, not net protective effect. |
+| **FB-06 — Gossip** | **E, optional:** Suspicion→acquaintance watch lists→biased future inspection; timed-dispute participants’ neighborhoods also enter noticer pools. `experiment.mjs:361–371,914–919,1009–1045` | Can propagate false suspicion. Watch lists do not implement evidentiary retraction, forgetting or correction. Inspected public-proof/gossip test (`test/disputes.test.mjs:164–175`) does not isolate a positive gossip effect. |
+| **FB-07 — Growth and capacity** | **E:** Funded invitation→accepted subjects→more per-subject scheduled actions and potential guarantees/XP; active-population digit thresholds raise admission requirements. More actions consume the same cohort budget and may crowd out later work. `experiment.mjs:1069–1115,1127–1155`; `model.mjs:237–244` | **X:** Rates, matching rules and cohort budgets. No useful-service demand or replenishing capacity/productivity loop. Threshold resistance is discontinuous at powers of ten. Population growth is not automatically more human operators in Sybil scenarios. |
+| **FB-08 — Authority / equal votes** | **E:** XP→Council selection; optional depth-triggered Council→one vote per seat→verdict→sanctions/halvings/invalidations→future membership and rank. `model.mjs:484–488`; `experiment.mjs:787–826,658–696` | XP weights selection, **not vote count**. Coalition votes are a role script. No reasoned merits/appeals engine or demonstrated strategic obstruction. `test/disputes.test.mjs:66–89` supports a conditional Council comparison, not general governance resilience. |
+| **FB-09 — Future value / loyalty** | **E:** Current balances, XP and eligibility affect later feasible actions. Honest ladder entrants compare declared stake and XP risk plus `civicValue`. `experiment.mjs:742–768` | **X:** Coalition backing, activity schedules, bribe acceptance and valuation coefficients. No return from lost future livelihood or trust to coalition defection, endogenous adoption or renewed honesty. Games evaluate choices offline rather than adapting agents. |
+| **FB-10 — False accusation / overload / exit** | **E:** False signals or malicious inspections→veto/challenge→genuine-right loss or wrongful invalidation; attempts consume effort; accepted-only filters suppress later activity. `experiment.mjs:658–696,1017–1065,1129–1155`; `effort.mjs:68–98` | Resource depletion exists; an explicit investigator/sponsor workload queue does not. Wrongful invalidation has no reinstatement path in inspected model. General exit/abandonment is not implemented. Noise harm is tested in `test/disputes.test.mjs:33–37`. |
+| **FB-11 — Debt** | **E:** Fine beyond liquidity→debt→future rights reserved→mature repayment burn→debt decreases→future disposable rights recover. Repayment also finalizes XP. Vetoed reservations do not repay debt. `model.mjs:146–157,279–295,438–456` | This is a real balancing loop, conditional on future accepted-subject activity. Invalidation blocks new Self-IDs, so repayment is not guaranteed. `test/model.test.mjs:359–393` directly tests veto, lock, repayment and resumed conversion. No debt-induced behavioral adaptation. |
+| **FB-12 — Investigation / clusters** | **E, optional:** Upheld verdict→lineage follow-ups→verification→further challenges; winning ladder can expose defenders for follow-up challenges. `experiment.mjs:669,696,827–839,937–949` | Upheld does not mean evaluator-correct; erroneous judgments can seed further suspicion. Lineage follow-up budget is tested (`test/social.test.mjs:44–51`). Cluster test asserts `clusterChallenges >= 0`, so it does **not** prove that branch executed. |
+| **FB-13 — Reputation / regulars** | **E, optional:** Ladder settlement→wins/losses→later opposing-entrant prior and extra notice probability. Guarantees→public trust rank→screening/prior→dispute→graph/XP changes. `experiment.mjs:380–383,706–737,817–821,919–924` | Win/loss means agreement with procedural winner, not correctness; procedural errors can reinforce later beliefs. `test/disputes.test.mjs:119–124` checks resolutions/settings, not a controlled causal effect of record weights. |
+| **FB-14 — Money-flow exposure** | **E, optional:** Converted false rewards→cash-out transfer→distinct-sender hub flag→screening→possible sanctions→less future cash-out capacity. `experiment.mjs:536–565,974–987` | Detection depends on consolidation, threshold and noisy background payments; no adaptive laundering response. `test/social.test.mjs:83–99` tests flagging and precision dilution under ordinary payments. |
+| **FB-15 — Recovery / learning** | Existing state can recover disposable capacity after debt repayment; new activity can restore activity eligibility. Paired controls measure return toward baseline. `model.mjs:146–157,218–244`; `controls.mjs:51–83` | No general identity reinstatement, calibrated skill learning, precedent learning, strategy adaptation or repair policy. Tested finite-window return can relapse or become unknown: `test/controls.test.mjs:40–66`. It is not evidence of system health. |
+
+## Duplicate or opaque concepts and their consumers
+
+1. **“Reputation” names three different signals—not duplicate parameters.**
+   - Graph trust: screening and accused/challenger prior.
+   - Win/loss record: opposing-entrant reliability and regular-noticer selection.
+   - XP: formal rank/eligibility, plus declared private loss valuation.
+   - Keep these separate in the causal register; merging would erase distinct inputs and falsifiers.
+
+2. **`flowFlagged` is broader than flow tracing.**
+   - `inspectionWork()` adds attention subjects to the same set and records its size before graph-screening additions (`src/experiment.mjs:974–987`).
+   - Consumer: history/system trust metrics; games merge trust counters into retained `sanctions` (`src/games.mjs:88–92`).
+   - **Risk:** interpreting this counter as exclusively money-flow detection, or as the full final screening pool.
+   - **Next action:** document the exact historical measurement meaning; preserve compatibility.
+
+3. **`eligibleForUnmodeledXpChallenge` is a historical name.**
+   - Incremented whenever a suspicious no-veto-authority observation passes the XP comparison—even when an enabled dispute immediately handles it (`src/experiment.mjs:1049–1058`).
+   - It is an opportunity counter, not necessarily an unresolved backlog.
+   - **Next action:** annotate consumers before any rename.
+
+4. **`rewardsReceived` includes all recorded incoming FACY transfers.**
+   - Aggregation does not filter transfer memo (`src/experiment.mjs:1231–1233`), although transfers distinguish ordinary cash-out/payment from challenge reward and ladder settlement.
+   - **Risk:** a game valuation may value “rewards” while actually valuing broader gross inflow.
+   - **Next action:** retain current field semantics and distinguish transfer categories in explanatory evidence.
+
+5. **Repeated accounting is not automatically redundant state.**
+   - Incremental false-conversion count is checked against an independently recomputed count (`src/experiment.mjs:492–494`).
+   - Model ledger totals are checked against outstanding rights and reserved custody (`src/model.mjs:490–505`).
+   - Cohort effort is checked against action and phase totals (`src/effort.mjs:114–123`).
+   - These are useful consistency checks, not deletion candidates.
+
+6. **Historical timing is intentionally pinned.**
+   - `LEGACY_FIXTURE_TIMING` and the fixed incentive schedule preserve an older 3/7-day comparison (`src/incentives.mjs:8–10`).
+   - They are not duplicate current defaults or evidence that the current scheduler uses those windows.
+
+## Specific falsifiers, evidence gaps and next action
+
+| Claim to challenge | Specific falsifier / missing evidence | Recommended next action |
+|---|---|---|
+| Contribution rewards improve responsibility | More terminal XP with unchanged or worse selection/monitoring quality | Register reward accounting separately from the untested behavioral return. |
+| Withdrawal disciplines influence | Lost historical XP deters exit more than it improves selection, or relinking restores unintended authority/credit | Preserve both-party, pending-act and relinking witnesses; do not infer incentive alignment from revocation alone. |
+| Attention/gossip improve correction | Matched inspection effort finds more genuine-target harm, displaced detection or persistent false watch lists | Compare target allocation and downstream correct/wrongful outcomes, not attention counts alone. |
+| Reputation improves accuracy | Early procedural errors generate reinforcing records that worsen later decisions | Use matched record-weight/notice controls and retain evaluator-correctness measurements separately from procedural wins. |
+| Growth expands defense capacity | New subject workload exhausts shared budgets faster than useful defense grows | Separate subject count, operator count, performed work, denials and censoring. |
+| Current tests establish all optional links | Cluster follow-up never actually fires; reputation/gossip settings change no downstream outcome in decisive witnesses | Mark those links source-implemented but effect validation incomplete; require positive-execution witnesses before stronger claims. |
+| Measured return establishes recovery | Metrics return while wrongful invalidations persist, or return only to a compromised baseline | Keep `describeReturn` as a finite metric criterion; require separate restoration and irreversible-harm criteria. |
+| Outsider discovery can reach judgment | Strong evidence cannot find an eligible, independent and funded sponsor—especially near the XP apex | Follow the existing bounded evidence→sponsor→dispute backlog slice; do not add a second court. |
+
+**Handoff:** preserve the existing mechanics and defaults. The highest-value reduction is conceptual: label **protocol transitions**, **optional behavioral/procedural references**, **external assumptions**, and **offline measurements** separately. Most overclaim risk comes from silently connecting those layers, not from an absence of all feedback.

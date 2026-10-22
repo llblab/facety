@@ -1,0 +1,118 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**degraded — acceptable synthesis with attribution corrections.**
+
+The merger preserves the central evidence distinctions and does not claim implemented remediation. Its degraded status is appropriate and must remain.
+
+Judgment against the rubric:
+
+| Criterion | Judgment |
+|---|---|
+| Evidence preservation | Strong within the supplied summary; fidelity to original reviewer and verifier bodies is **not checkable** here. |
+| Severity calibration | Appropriate: observed behavior is separated from selected-rule violations and scheduler exploitability. |
+| Consensus purity | Needs qualification: usable branches do not establish agreement on every classification. |
+| Internal consistency | Substantially sound; exact outputs and execution contexts need clearer separation. |
+| Merge bias | No evident suppression of unresolved risks. A few statements turn reported observations into insufficiently attributed conclusions. |
+
+## Scope and baseline
+
+This judgment reviews only the supplied merger text:
+
+- Merger: `ACTOR_EVIDENCE_REF: execution.json#command-008`
+- Dispute reviewer, indirectly cited: `ACTOR_EVIDENCE_REF: execution.json#command-005`
+- Media reviewer, indirectly cited: `ACTOR_EVIDENCE_REF: execution.json#command-006`
+- Verifier, indirectly cited: `ACTOR_EVIDENCE_REF: execution.json#command-007`
+
+The original reviewer and verifier bodies were not supplied separately. Their references are traceability pointers, **not evidence independently inspected by this judge**. No repository inspection, runtime reproduction, or writes were performed.
+
+The merger retains a useful reported baseline:
+
+```text
+HEAD:               af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5
+src/model.mjs:      9f72fd82822b6038555f76cd350df76b4e84db0b
+src/experiment.mjs: dd81762e934cfd27b096f7953f96563b40d2fe48
+```
+
+Its warning that an earlier clean-tree observation does not establish current cleanliness is appropriate. These identifiers remain verifier-reported, not judge-verified.
+
+## Finding per suspicion with exact witness and output
+
+| Suspicion | Judgment of merger treatment | Retained witness and limitation |
+|---|---|---|
+| Concurrent commitments reuse liquid backing | Appropriately classified as reproduced behavior, not automatically a protocol violation. | Reported witness: `n5`, hour `96`, liquid `3`, commitments `6`. Instrumentation neutrality is asserted through the verifier, not independently established here. |
+| Spending produces settlement undercollection | Correctly restricted to an isolated harness. | Spending five of six FACY left two nominal three-FACY losing positions collecting **one FACY total**, debt `0`. No ordinary admission-to-settlement witness is supplied. |
+| A dispute settles twice | Correctly separates helper replay from scheduler reachability. | Repeated helper invocation reportedly caused another transfer/XP penalty. Exact transfer and XP deltas are absent. Normal-scheduler double settlement remains unresolved. |
+| Same-subject artifact/face reuse at exactly 24 hours | Correctly preserves the reported public-API reproduction and separates behavior from protocol interpretation. | Quoted output below supports acceptance at the boundary as reported; it does not alone establish a selected subject/artifact uniqueness rule. |
+| Key rotation bypasses the rolling limit | Correctly bounded negative evidence. | Hour-23 rejection persisted after rotation. It is not a universal bypass exclusion. |
+| Act creation immediately grants XP | Correctly bounded to the exercised sequence. | After hour-24 creation, `a.xp=0`; XP appeared after conversion. |
+| One act converts twice | Correctly bounded negative evidence. | Repeat conversion rejected with `emission is spent or disputed`; this does not explain acceptance of two separate acts. |
+
+The merger preserves the verifier’s quoted media output:
+
+```text
+23h: rolling 24-hour reward limit
+24h: minted=4, a.xp=0
+claims: a=true, a=true, b=false, c=true [collision flags]
+48h: a.xp=2, a.liquidFacy=2
+repeat conversion: emission is spent or disputed
+```
+
+Two precision issues remain:
+
+1. **“Exact witness and output” is only partially satisfied.** Dispute findings include summarized observations rather than full reproduction commands or exact helper-replay deltas. Do not invent missing output; label it unavailable.
+2. **The quoted `false` collision flag is not claim rejection.** Preserve the explicit “collision flags” annotation to avoid implying that subject `b` was denied admission.
+
+## Selected versus OPEN semantics
+
+The merger appropriately avoids silently selecting escrow or subject/artifact uniqueness. It also correctly distinguishes:
+
+- nominal commitments from actual recovery;
+- actual debt from unpaid amounts;
+- helper lifecycle robustness from demonstrated scheduler exploitation;
+- accepted behavior from a protocol defect.
+
+The SELECTED/OPEN inventory is nevertheless **reported through the supplied synthesis**, not independently verified against protocol text here. A normalized report should retain that attribution or provide decision-label/document citations before presenting it as independently established.
+
+The sentence:
+
+> “Agreement is on these evidence classifications—not on a protocol change.”
+
+is stronger than the visible evidence supports. Reviewer usability and a verifier’s synthesis do not prove explicit branch agreement on every classification.
+
+Prefer:
+
+> “The merger adopts these evidence classifications. Explicit agreement by both reviewers on every classification is not established by the supplied material; no protocol change is selected.”
+
+## Proposed minimal changes/tests
+
+For the **report**, before final normalization:
+
+1. Replace the unsupported agreement claim with the qualified wording above.
+2. Keep attribution adjacent to factual claims: “the verifier reports” or “the dispute reviewer reportedly observed.”
+3. State that exact dispute command output and helper-replay deltas are unavailable in the supplied material.
+4. Preserve `degraded`; distinguish the reported **2/2 usable branches** from complete evidence coverage.
+5. Retain the distinction between quoted collision flags and admission outcomes.
+
+For **later repository work**, the merger’s recommendations are reasonable and remain unimplemented:
+
+- Seek an ordinary admission-to-settlement shortfall witness.
+- Test normal-scheduler lifecycle behavior separately from helper replay.
+- Account separately for nominal stakes, actual transfers, burns, unpaid amounts, and any debt actually created.
+- Preserve the reference funding behavior unless an owner decision selects another policy.
+- Obtain media-reuse clarification before changing acceptance semantics.
+- Run relevant regressions and `npm test` after behavior changes.
+
+These are recommendations, not validation results or authorization to choose OPEN rules.
+
+## Remaining risks
+
+- Original reviewer and verifier bodies are unavailable here; omissions, contradictions, and minority-view preservation cannot be fully audited.
+- Reported independent corroboration is strongest for media behavior, not every dispute finding.
+- “No settled-state guard was found” remains a reported inspection result, not proof of normal-scheduler double settlement.
+- Reported targeted test counts do not establish remediation correctness.
+- No end-to-end undercollection witness, remediation patch, or post-change validation is supplied.
+- No clear merge bias is visible, but absence of source bodies prevents a complete bias assessment.
+
+**Final judgment:** retain the merger as a **degraded, evidence-qualified synthesis**, with the consensus and attribution corrections above. It is suitable for directing follow-up investigation—not for declaring a proven scheduler exploit, a selected protocol change, or completed remediation.

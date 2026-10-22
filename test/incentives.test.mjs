@@ -135,6 +135,8 @@ test('offline facts reject incomplete, incomparable or inconsistent used source 
     data => { data.branches[1].timeline.at(-1).subjects[0].debt = 1; },
     data => { data.branches[1].timeline.at(-1).subjects[0].xp = null; },
     data => { data.branches[1].timeline.at(-1).ledger.collector++; },
+    data => { data.branches[1].timeline.at(-1).ledger.stakeVault = 1; },
+    data => { data.branches[1].timeline.at(-1).ledger.stakeVault = null; },
     data => { data.branches[1].timeline.at(-1).guarantees.nodes.push('ghost'); },
     data => { data.branches[1].work.unit = 'calibrated hours'; },
     data => { data.branches[1].work.bySubject.sponsor.effort = 0; },

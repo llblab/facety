@@ -2,7 +2,10 @@
 
 - [Facety protocol](facety.protocol.en.md): Living manifesto and protocol specification; selected rules, directions, open choices and the dated decision log.
 - [Insight register](insights.en.md): Every owner decision and simulator finding, with its evidence level and source study.
-- [Simulator model](simulator.en.md): Implemented abstractions, explicit research policies, graph certificates and limits.
+- [Simulator model](simulator.en.md): Implemented abstractions, subsystem/spec/source/test coverage, explicit research policies, graph certificates and unresolved risks.
+- [Accountable-correction research](research.en.md): One mechanism chapter and [structured inventory/register](mechanisms.json), executable causal walkthroughs, hypothesis/control matrix, survivability vector, utility boundary and safe human-calibration design (not collected data).
+- [2026-10-23 causal-core checkpoint](../studies/2026-10-23-causal-core/README.md): Preservation-tested extraction, bounded traces, matched-resource exploration, raw outputs and qualified independent review.
+- [2026-10-23 diagnostic audit](../studies/2026-10-23-accountability-audit/README.md): Starting revision/runtime/tests/artifact inventory, independently reviewed media/stake suspicions and evidence limits.
 - [Cohort experiments](experiments.en.md): Activity, attack/defense effort, ownership, noisy observations, success criteria and statistical uncertainty.
 - [Emergent behavior research](discovery.en.md): Macro-state trajectories, bounded parameter landscapes, diagnostic candidates and evidence limits.
 - [Paired controls](controls.en.md): Decision-keyed randomness, scheduled activity disturbances, paired uncertainty and finite-window return criteria.

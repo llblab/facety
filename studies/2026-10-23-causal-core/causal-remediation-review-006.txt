@@ -1,0 +1,125 @@
+ACTOR_REVIEW_RESULT
+
+## Status / identity
+
+**Complete for this bounded remediation review. Both original findings verified addressed; no new supported defect found.** Read-only inspection and independent probes; no files edited.
+
+Current implementation, measured before and after validation:
+
+```text
+Runtime: Node v26.8.1
+Method: sha256-src-mjs-v1
+Digest: 1338b35c06a19c668b833b84fa6f15f9152c98082e811efee672ab64f421d3fb
+Source modules: 28
+```
+
+Stable target SHA-256 hashes:
+
+```text
+src/accountability.mjs
+dee78d16cddf503909618898d9cc33c594cb1ce67714d439e0376adf25b18b5a
+src/disputes.mjs
+574f8a0ffc4d5336898af0272d8981bc8a5a2eb7bfcb11388b51ece31aa81509
+test/accountability.test.mjs
+f7ea4d6d47e004f8ff7e7a90b8b5de6d06f5cd582c7e899aaa71abae880f8f6a
+```
+
+Read both requested original raw reports and `AGENTS.md`. Excluded prototype implementations were not inspected; the aggregate digest includes them by definition.
+
+## Original finding verification matrix
+
+| Original finding | Revised evidence and independent result | Status |
+|---|---|---|
+| Public `null` actor selects privileged budget-free execution | `src/accountability.mjs:108–110` now performs registered-actor lookup before journal execution. Adjudication separately calls the journal at line 207. The regression tests reject `null` for observe/package/route with unchanged workflow and trace; an additional independent observe probe likewise left evidence/work/trace snapshots unchanged. | **Verified addressed** |
+| Accepted numeric overflow partially settles custody/enforces sanctions and strands the case without journal evidence | `src/accountability.mjs:216–218` preflights before settlement, projecting the reserved one-step refund. `src/disputes.mjs:22–48` simulates ordered transfers, collections and aggregate debt using BigInt balances. The original `MAX_SAFE_INTEGER`, fixed-fine, inviter-chain, zero-reward probe now throws **before any protocol/workflow mutation**, with an honestly pending case and recorded exception. | **Verified addressed** |
+
+Independent overflow output:
+
+```text
+RangeError: verdict would overflow aggregate debt
+resolvedAt: null
+upheld: null
+openCases: 1
+pendingNominal: 1
+released: 0
+journal error: RangeError
+journal protocolEvents: []
+```
+
+Full protocol snapshot and relay workflow snapshot were exactly unchanged. The focused regression also checks rejection on retry without mutation.
+
+### Exact safe boundary and ordinary outcomes
+
+The projected-refund boundary independently succeeded:
+
+```text
+Existing debt: MAX_SAFE_INTEGER - 4
+Fixed fine: 2
+Liability order: Mira, Bela, Aster, Cato
+Consequences:
+  transferred: 0
+  burned: 4
+  debtAdded: 4
+  invalidated: [Mira]
+  voidedActs: 0
+Final aggregate debt: 9007199254740991
+Final stakeVault: 0
+```
+
+Final XP was Aster `1`, Bela `3`, Cato `2`, Mira `1`; only Mira became invalidated.
+
+I also executed **144 independent sequential-oracle comparisons**, covering:
+
+- Fixed and chain fine modes.
+- All four liability policies.
+- Reward shares `0`, `0.5`, `1`.
+- Both liable-exclusion settings.
+- All parties accepted, Aster already invalidated, or challenger Bela already invalidated.
+
+Every comparison matched exact consequences, money, XP, identity status and ordered protocol-event snapshots. This checks challenger transfers—including incoming funds before the challenger’s own liability turn—accepted-party filtering, liability deduplication/order, chain void counts and exclusion behavior. The oracle was hand-coded sequential semantics, not an authenticated historical implementation.
+
+## New supported defects with reproducers
+
+**None established in the inspected scope.**
+
+One evidence-accounting distinction: the four-file focused command independently ran **32 tests**, all passing—not the supplied summary’s 34. I do not treat that difference as a product defect or attribute unexecuted tests to this review.
+
+## Commands actually run
+
+1. Inspected status and identities:
+   ```sh
+   git status --short
+   sha256sum src/accountability.mjs src/disputes.mjs test/accountability.test.mjs
+   node --version
+   ```
+2. Independently ran:
+   ```sh
+   node --test test/accountability.test.mjs test/causal-relay.test.mjs \
+     test/disputes.test.mjs test/dispute-stakes.test.mjs
+   ```
+   **Observed: 32 passed, 0 failed.**
+3. Independently ran:
+   ```sh
+   node studies/2026-10-23-causal-core/preservation.mjs
+   ```
+   **Observed: `equivalent: true`, all 12 contexts matched**, bound to current digest `1338b35c…`; baseline digest `9a83b5db…`.
+4. Executed a read-only `node --input-type=module` heredoc containing the independent null, original overflow, projected-refund boundary and 144 sequential-oracle probes described above. All assertions passed.
+5. Measured `implementationDigest()` in fresh Node processes and repeated target hashes after validation; identities matched.
+6. Used `rg -n` to confirm cited execution locations.
+
+Raw command output is present in this invocation’s tool results; no separate report file was written. **Full `npm test` was not independently run.**
+
+## Preservation and trace limits
+
+- Twelve-context preservation supports those declared configurations and seeds, not arbitrary numeric configurations or universal equivalence.
+- The baseline file was compared, not independently authenticated as a historical capture.
+- Preflight is arithmetic validation, **not whole-case transaction recovery**. Exclusive stake-book ownership remains a declared integration boundary; external interference or arbitrary exceptions after mutation are not covered by these results.
+- Exception evidence is subject to journal retention limits. A full or disabled journal may count an omitted record rather than retain it; this review does not claim durable logging.
+- Declared acquisition-source labels are not authenticated statistical independence. Journal ancestry is not independent causal identification.
+- No release-readiness, global correctness, equilibrium or emergence claim follows.
+
+## Dissent and next action
+
+The prior severe counterexample was retained and independently retried; it now rejects safely. No new severe minority counterexample emerged from this lens. No other current reviewer conclusions were supplied, so **no consensus is inferred**.
+
+Recommended next action: preserve these raw results and source identities, reconcile the focused-test count in the coordinator’s evidence ledger, and retain the exclusive-owner, transaction-recovery and bounded-trace limits in the final synthesis. Any full-suite result should retain its actual executor and digest attribution.

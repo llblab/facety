@@ -1,0 +1,115 @@
+{
+  "schema": "facety-audit-checkpoint/v1",
+  "documentedOn": "2026-10-23",
+  "checkpoint": "funded-stake-reference",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504",
+      "files": 23
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "checks": [
+    {
+      "command": "npm test",
+      "passed": 184,
+      "failed": 0
+    },
+    {
+      "command": "node --test --test-name-pattern='round-limited resolutions' test/disputes.test.mjs",
+      "passed": 1,
+      "failed": 0
+    },
+    {
+      "command": "node studies/2026-10-23-accountability-audit/stake-backing.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node studies/2026-10-23-accountability-audit/stake-compatibility.mjs",
+      "equivalentContexts": 6,
+      "exitCode": 0,
+      "scope": "old scheduler with current support modules, not full historical replay"
+    },
+    {
+      "command": "node studies/2026-10-23-accountability-audit/legacy-stakes.mjs",
+      "exitCode": 0,
+      "historicalHelperRevision": "af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5"
+    },
+    {
+      "command": "node studies/2026-10-23-accountability-audit/media-reuse.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "node bin/facety.mjs run examples/dispute-stakes.json",
+      "exitCode": 0,
+      "uncensored": true,
+      "cases": 19,
+      "pendingCases": 15,
+      "stakeVault": 53,
+      "unpaidStake": 0,
+      "debt": 192,
+      "scope": "smoke example, not deterrence or welfare evidence"
+    },
+    {
+      "command": "node examples/incentives.mjs; node examples/incentive-payoffs.mjs; node examples/incentive-ownership.mjs",
+      "exitCodes": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root .",
+      "errors": 0,
+      "warnings": 0,
+      "modules": 23,
+      "localEdges": 53
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    }
+  ],
+  "review": {
+    "run": "run:review-stakes",
+    "usableReviewers": 2,
+    "requiredReviewers": 2,
+    "result": "no supported material economic/integration finding within declared ownership scope",
+    "directlyRead": [
+      "stake-review-005.txt",
+      "stake-review-006.txt",
+      "stake-review-007.txt",
+      "stake-review-008.txt",
+      "stake-review-009.txt",
+      "stake-review-010.txt"
+    ],
+    "reviewerExecution": "Each reports the same 58 focused and 7 perturbation tests; not 130 distinct tests. Integration reviewer alone reports extra reserved no-op/future-prefix probes. Verifier and later stages ran no tests.",
+    "postReviewChange": "Parent-fixed procedural reason labels for round/scan caps versus actual timeout; regression added. Economic/book source unchanged, no claim this metadata fix was independently reviewed."
+  },
+  "contextValidation": {
+    "command": "NO_COLOR=1 node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "exitCode": 0,
+    "errors": 0,
+    "warnings": 24,
+    "warningsReviewed": "Wide tables and generic AGENTS structure suggestions, not missing links or scientific validation"
+  },
+  "defaultsPreserved": {
+    "stakeBacking": "unsecured",
+    "artifactReuse": "registration-only"
+  },
+  "remaining": [
+    "External/low-XP evidence-to-qualified-sponsor vertical slice",
+    "Matched-resource exploratory relay comparison and retained-state review",
+    "Owner decisions for production media and stake semantics",
+    "Broader calibrated/adaptive/merits/survivability studies"
+  ],
+  "noNewConfirmations": true,
+  "noCommitsOrPublishing": true
+}

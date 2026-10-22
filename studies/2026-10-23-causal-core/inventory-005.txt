@@ -1,0 +1,225 @@
+ACTOR_REVIEW_RESULT
+
+## Status and inspected identity
+
+**Status: degraded — core parameter/state/measurement inventory completed; repository-wide historical-consumer coverage is incomplete.**
+
+- **Lens:** Parameter/state/measurement inventory and justified reduction candidates.
+- **Inspected HEAD:** `af9b12e`.
+- **Independently computed implementation:** `9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504`, using `implementationDigest()`; 23 source modules. This matches the assigned checkpoint.
+- **Validation:** 73 tests passed across `experiment`, `model`, `observables`, `effort`, `social`, `disputes`, and `games`; no failures. The supplied 184-test baseline was not independently rerun.
+- **Mutations:** None. No files, defaults, or Git state changed.
+
+**Principal finding:** The main reduction opportunity is **a smaller explanatory surface with explicit accounting semantics**, not merging policy knobs or deleting weakly sensitive parameters. Several similarly named quantities deliberately differ in scope. Conversely, some measurements have names broader or narrower than what their implementation actually counts.
+
+## Concrete inventory: configuration
+
+Legend:
+
+- **P:** Protocol/model rule or explicit comparison reference; selection status must remain attached.
+- **B:** Exogenous scripted behavior/environment assumption, not an inferred human preference.
+- **E:** Evaluator, resource bound, retention, or analysis choice.
+- Probabilities and shares are dimensionless. Monetary quantities below are FACY unless expressly off-protocol.
+- Values separated by `/` are honest/attacker defaults.
+
+### Experiment envelope
+
+All 15 scalar fields are enumerated below. Source: `src/experiment.mjs:21–27,227–260`.
+
+| Field = default | Units / scope | Status and causal purpose |
+|---|---|---|
+| `scenario = sybil-cone` | Scenario enum / run | B: Determines whether descendants are fake controlled subjects or recruited genuine operators. |
+| `seed = facety` | Logical seed / run | E: Reproduction input; insufficient without implementation/randomness identity. |
+| `initialSize = 30` | Subjects / initialization | B: Trusted accepted genesis operators, not economically acquired admissions. |
+| `attackerShare = 0.1` | Requested initial subject share | B: Rounded to an integer attacker count; defaults to zero for honest growth. Distinguish requested, realized initial, and evolving shares. |
+| `days = 30` | Days / horizon | E: Declared endpoint and exposure duration. |
+| `initialTopology = random` | Graph generator enum | B: Initial guarantee opportunities. |
+| `initialDegree = 3` | Generator degree parameter | B: Initial connectivity, not an invariant degree of the evolving graph. |
+| `localInspectionShare = 0.8` | Probability / inspection opportunity | B: Preference for inspectable local-authority acts. |
+| `sensitivity = 0.8` | Probability / observation of false identity | B: Noisy first-stage detection, including guarantee vetting. |
+| `falsePositiveRate = 0.01` | Probability / observation of genuine identity | B: False suspicion, not final wrongful-verdict rate. |
+| `maxSubjects = 2000` | Subjects / run | E: Computational censor, not endogenous carrying capacity. |
+| `maxActions = 500000` | Ledger calls / run | E: Computational censor, including budget-denied calls. |
+| `targetFalseConversions = 1` | Conversion count / success test | E: Threshold for false-liquidity success, not retained false liquidity. |
+| `successCriterion = false-liquidity` | Enum / run | E: Defaults to Council majority for real cartel. Council control means ever exceeding half of seats, not successfully corrupting a verdict. |
+| `includeState = false` | Boolean / output | E: Snapshot retention, not a behavioral mechanism. |
+
+### Activity, effort, deviations, and interventions
+
+Sources: `src/experiment.mjs:17–20,104–117,149–175,187–225,247–259,439–465`; `src/effort.mjs:3–19,49–127`.
+
+| Fields = defaults | Units / scope | Status / purpose |
+|---|---|---|
+| `selfId = .8/1` | Probability / accepted subject-day | B: Attempt daily identity work. |
+| `invite = .05/.4` | Action opportunities / subject-day | B: Admission demand, conditional on available rights. |
+| `guarantee = .3/2` | Opportunities / subject-day | B: Relation formation; not an effort price. |
+| `inspect = 1/0` | Opportunities / subject-day | B: Inspection workload. |
+| `respond = .9/0` | Probability / actionable suspicious act | B: Exercise veto authority. |
+| `challenge = 0/0` | Probability / eligible outsider suspicion | B: Initiate optional dispute procedure. |
+| `review = 0/0` | Probability / guarantor–pending invitation review | B: Invitation prevention. |
+| `defend = 0/1` | Probability / eligible coalition ladder position | B: Coalition backing script. |
+| `bribe = 0/0` | Offers / subject-day | B: Solicit honest guarantors. |
+| `cashout = 0/0` | Probability / eligible fake-holder-day | B: Consolidate liquid holdings to operator. |
+| `convert = 1/1` | Probability / eligible emission opportunity | B: Realize liquid FACY. |
+| `budgets.honest`, `.attackers = 100000` each | Uncalibrated weighted effort / cohort-run | B: Finite resources; exhausted budgets deny actions without computational censoring. |
+| All 15 `weights.* = 1` | Effort / attempted action | B: `selfId`, `fakeSelfId`, `fabricateIdentity`, `recruitHuman`, `invite`, `acceptInvitation`, `proposeGuarantee`, `confirmGuarantee`, `inspect`, `respond`, `challenge`, `verify`, `bribe`, `cashout`, `convert`. Rejected attempts are charged; denied attempts are not. |
+| `deviants.share = 0` | Share / initial operators of each cohort | B: Seeded alternative-strategy subset; nonzero selection rounds with a minimum of one where a cohort exists. |
+| `deviants.honest`, `.attackers = null` | Optional activity/schedule records | B: Inherit **default cohort activity**, not configured conformist activity. Controlled fakes inherit their operator’s strategy; recruited genuine operators do not. |
+| `perturbations = []` | Intervention records / half-open day windows | E/B: Each has `id`, `startDay`, `endDay`, `activity`; externally changes activity, not rules or endogenous preferences. |
+
+**Do not merge:** `activity.guarantee` and effort weights for proposing/confirming guarantees; actor demand and resource price are different causal edges.
+
+### Model policy and counterfactuals
+
+Sources: `src/model.mjs:5–24,32–58`; selection/reference discussion: `docs/simulator.en.md:78–110`.
+
+| Field = default | Units / scope | Status / purpose |
+|---|---|---|
+| `xpFinality = terminal` | Enum / XP credit | P: Selected terminal-credit behavior; immediate is a comparison. |
+| `cancellationAuthority = snapshot` | Enum / act veto | P reference: Historical eligible guarantors versus current edges. |
+| `guarantorEligibility = active` | Enum / guarantees counted | P reference: Activity-qualified versus merely accepted. |
+| `guaranteeFee = 0` | FACY / relation confirmation | P assumption: Positive fees enter custody, not burn; does not implement an unspecified Emitter commitment. |
+| `councilSize = 101` | Seats / Council maximum | P: Top-XP membership bound. |
+| `debtRecovery = reserve-until-mature` | Enum / future rights | P: Preserves veto window before actual repayment burn; immediate burn is a comparison. Seizure priority remains OPEN. |
+| `councilEligibility = active` | Enum / Council membership | P: Selected active-subject eligibility; accepted-only preserves historical comparison. |
+| `invitationFreezeHours = 24` | Hours / invitation | P: Prevention window before acceptance. |
+| `linkBreakXp = revoke` | Enum / relation exit | P: Revoke attributable guarantor credits versus comparison retention. |
+| `spendMaturityHours = 24` | Hours / invitation spending and debt reservation maturity | P: Spending/veto boundary. |
+| `conversionMaturityHours = 24` | Hours / conversion | P: Liquidity boundary. Equal default does **not** make it the same control as spending maturity. |
+| `artifactReuse = registration-only` | Enum / artifact claims | OPEN reference: Preserves legacy same-subject boundary replay; stronger once-per-subject reference is not silently selected. |
+| `withholdGuarantorXp = false` | Boolean / XP recipients | Counterfactual ablation, not protocol option. |
+| `fixedInvitationThreshold = null` | Optional guarantor count | Counterfactual replacement of active-population digit threshold. |
+| `randomGuaranteeTargets = false` | Boolean / scheduler matching | Behavioral counterfactual: Removes lineage/coalition target preference. |
+
+### Dispute references
+
+All 30 fields enumerated. Sources: `src/experiment.mjs:30–49,119–146,621–940`.
+
+**Every field in this table belongs to an explicit OPEN-procedure research abstraction, not a selected adjudication institution.** Fields may be inactive under the chosen procedure.
+
+| Fields = defaults | Units / conditional scope | Purpose |
+|---|---|---|
+| `enabled=false`; `procedure=one-step` | Switch / enum | Activate disputes and choose environment verdict, instant ladder, or timed ladder. |
+| `accuracy=.9` | Probability / one-step verdict | Environment truth-channel accuracy; distinct from detection and private evidence. |
+| `stake=1`; `stakeGrowth=.2` | FACY; fractional increase / ladder entry | Entry commitment and escalation. |
+| `stakeBacking=unsecured` | Custody enum | Promises collectible from remaining liquidity versus exclusive reserved custody. |
+| `fine=5`; `fineMode=chain` | FACY; enum / upheld case | Fixed nominal amount or cut-chain-scaled fine. `fine` is inactive in chain mode. |
+| `liability=inviter-chain` | Enum / liable subjects | Propagation through accused, guarantors, inviter, inviter’s guarantors. |
+| `rewardShare=.5` | Share / collectible liquid fine | Challenger transfer before remaining penalty; not a share of nominal debt. |
+| `loserHalvesXp=true` | Boolean / losing dispute entrants | XP risk. Upheld-case liable-party halving is separately hardcoded in `applyVerdict`. |
+| `excludeLiable=false` | Boolean / collateral invalidation | Extends exclusion beyond accused. |
+| `signalAccuracy=.7`; `closeSignalAccuracy=.9` | Probabilities / private ladder/Council evidence | Distinct distant and close-contact quality. |
+| `xpValue=.05` | Stake-comparison value / XP | Scripted candidate risk valuation, **not** measured market XP price. |
+| `maxRounds=60`; `maxScan=60` | Entries; eligible candidates scanned | Reference termination/scan limits, not selected finality or computational censor. |
+| `councilDepth=0` | Entries; zero disables | Depth-triggered Council referral reference. |
+| `reputationWeight=0` | Blend / opening prior | Public trust-propagation rank comparison of accused and challenger. |
+| `disputeWindowHours=168` | Hours / timed response window | Last-move timeout. |
+| `noticeBase=.02` | Base population fraction / timed round | Generates noticer sample enlarged by relative dispute XP height. |
+| `evidenceGain=.1` | Accuracy increment / relative height | Timed private-signal sharpening, capped in willingness evaluation. |
+| `civicValue=0` | Stake-comparison value / candidate entry | Exogenous civic benefit, not application externality evidence. |
+| `entrantChoice=lowest` | Order enum / eligible candidates | Lowest/highest/random visiting order. |
+| `roundsPerDay=1` | Entry opportunities / timed day | Reference throughput; not learned capacity. |
+| `trackRecordWeight=0` | Blend / candidate prior | Opposed entrant’s public win/loss reliability. |
+| `regularsNotice=0` | Probability / recorded participant-round | Extra notice for dispute regulars. |
+| `evidence=private-signal`; `proofStrength=.98` | Enum; probability | Private noisy signals versus shared noisy public proof. |
+| `clusterFollowUp=false` | Boolean / upheld ladder | Further challenges against defenders; no guarantee of guilt. |
+
+### Social references
+
+All 20 fields enumerated. Sources: `src/experiment.mjs:54–66,176–185,356–397,498–620,943–1065`.
+
+| Fields = defaults | Units / scope | Status / causal purpose |
+|---|---|---|
+| `scope=public`; `hops=2`; `strangerRate=0` | Enum; graph hops; probability | B: Public versus acquaintance matching and stranger exceptions. |
+| `screening=false`; `screeningQuantile=.2`; `screeningShare=.5` | Switch; population quantile; inspection probability | B: Root-seeded public trust targeting. |
+| `verification=false`; `verificationSensitivity=.9`; `verificationFalsePositiveRate=.01` | Switch; probabilities / second-stage check | B: Separate noisy verification before veto/challenge. |
+| `investigation=false`; `maxFollowUps=20` | Switch; suspects / follow-up budget | B: Bounded lineage investigation after upheld verdict. |
+| `bribeAcceptance=0`; `bribePrice=5` | Probability; off-protocol payment units | B: Exogenous corruption acceptance and payoff bookkeeping; no FACY funding constraint. |
+| `exitOnFraud=false` | Boolean / invitation guardian | B: Paid guarantee-link withdrawal after cancelling suspicious invitation; not general population exit. |
+| `flowTracing=false`; `flowHubThreshold=3` | Switch; distinct senders / recipient | B: Historical ordinary-transfer hub flags. |
+| `honestTransferRate=0` | Probability / eligible honest subject-day | B: Background one-FACY acquaintance transfers. |
+| `attentionFeedback=false` | Boolean / challengers and entrants | B: Add public participants to screening attention. |
+| `gossipHops=0`; `gossipShare=.5` | Graph hops; probability | B: Disseminate suspicion/notices and preferentially inspect watched subjects. |
+
+## Concrete inventory: state and measurements
+
+| State/measurement family | Units / ownership | Evidence and purpose |
+|---|---|---|
+| Subject `{id,genesis,key,identityStatus,xp,xpEvents,liquidFacy,debt,lastRewardAt}` | IDs, statuses, XP, FACY, hours / model | `src/model.mjs:118–133,245–263`. `xp` is a replayed materialization of chronological credits/halvings, not a second independent authority source. |
+| Self-ID `{id,subject,artifact,faceIndex,recordedAt,guarantors,xpRecipients,xpCredited,status,disposition,disputeLock,collision,debtReserved}` | IDs, hours, flags / model | `src/model.mjs:265–302`. Historical authority, accounting disposition, custody, and collision are distinct. |
+| Artifacts, face claims, content-hash set | References / model | `src/model.mjs:170–183,265–296`. Registration uniqueness, face collision, and same-subject reuse are not interchangeable authenticity tests. |
+| Guarantee graph and relation records | Directed edges; lifecycle timestamps | `src/model.mjs:184–224`. Graph supplies current reachability; records preserve proposals, activation, and exits. |
+| Invitation lineage and invitation records | Directed edges; rights provenance and status | `src/model.mjs:333–371`. Lineage survives as historical admission evidence; guarantees may change independently. |
+| XP-source set; subject-act index; debt-reservation set; active cache | Indexes/materializations / model | `src/model.mjs:68–89,147–159,232–263`. Reduction requires proving replay/invalidation equivalence, not merely observing duplicated values. |
+| Ledger `{minted,burned,supply,emitterVault,collector,feeVault,stakeVault,debt}` | FACY / model | `src/model.mjs:487–505`. `supply=minted−burned`; custody partitions audited separately. Debt is an obligation, never an actual burn. |
+| Reserved-stake records and dispute position book | FACY, case lifecycle / model plus environment | `src/model.mjs:401–435`; `src/dispute-stakes.mjs`. Custody and promised/actual settlement are different accounting layers. |
+| Evaluator truth `{id,cohort,genuine,operator}`; deviants and operator groups | Labels / environment only | `src/experiment.mjs:325–354,428–438`. Ownership, genuine identity, attacker coalition, and protocol invalidation must stay separate. |
+| Rosters/positions; prepared candidates; pending invitations; seen inspections | Indexes and scheduler state / environment | `src/experiment.mjs:335–343,406–411,1071–1120`. Candidate preparation can consume effort before admission succeeds. |
+| Attention, watch lists, dispute records, open cases | Public behavioral memory / environment | `src/experiment.mjs:356–397,706–825,863–940`. This is actual history-dependent state, but not generalized learning. |
+| Effort counters | Attempts, accepted/rejected/denied counts; weighted effort | `src/effort.mjs:45–127`. Cohort, action, and phase totals intentionally reconcile; `measureWork` provides deltas. |
+| Network measurements | Counts, fractions, correlations, hop depths | `src/observables.mjs:38–122`. Includes population/false/operator counts; XP concentration/shares; Council membership/churn; density/degree/reciprocity/components/mixing; admission readiness; rooted connectivity. |
+| Sanctions | 17 counters/gauges | `src/experiment.mjs:356`. Challenge/upheld/rejected, false/wrongful/excluded/missed, voided acts, entries/max depth, Council interventions, resolved/mooted/open cases, notices, cluster challenges. These do not all share accumulation semantics. |
+| Trust work | 13 counters/gauges | `src/experiment.mjs:357`. Refusals, verification clears, follow-ups, offers/acceptance, invitation cancels/exits, cashouts, flow flags/coalition flags, gossip shares/inspections. |
+| Observation diagnostics | Four counts | `src/experiment.mjs:411,1038–1058`: inspections, suspicious, no veto authority, eligible higher-XP outsider observations. |
+| Agent facts | Counts, FACY, XP, effort, off-protocol transfers / cohort and operator group | `src/experiment.mjs:1191–1234`; `src/games.mjs:11–15`. Includes accepted/invalidated/false subjects, custody, debt, seats, converted rewards, fines, halvings, incoming transfers, bribes. |
+| Outcome/history | Hours, success/censor status, sampled state | `src/experiment.mjs:474–497,1240–1276`. First-success costs and final costs answer different questions. |
+
+### Analysis controls are not behavioral controls
+
+- `DEFAULT_VIABILITY`: `minHonestRetention=.5`, `maxWrongfulInvalidations=1`, `maxFalseMintedShare=1`, `maxCoalitionCouncilShare=1`. Analyst thresholds; last two default to effectively off. Sources: `src/games.mjs:168–190`.
+- Game defaults include replicas `20`, deviation `null`, run cap `20000`, default seed from game ID; grid workers `0`, cap `200000`, retained facts `false`. These control evidence production/retention, not agent incentives. `src/games.mjs:36–67,121–164`.
+- Game fact/system valuation weights default to zero; omission means **declared zero**, unlike incentive-payoff inputs where explicit `null` preserves unknown valuation. `src/games.mjs:233–246`; `src/incentive-payoffs.mjs:19–39,47–108`.
+- Discovery practical-change scales are in each observable’s units; default metric selection is ten paths. Diagnostic defaults are `minReplicates=3`, `separation=2`, `patternFraction=.75`, `jumpFactor=3`, `plateauSteps=3`. These label trajectories, not mechanisms. `src/discovery.mjs:8–63`.
+- Historical incentive fixture timing remains explicitly `72/168/0` hours with retained link-break XP; it must not be merged into current `24/24/24` defaults. `src/incentives.mjs:7–10`.
+
+**Explicit omissions:** Full field-by-field configuration/caller closure for graph-workbench/proof benchmarking, statistical/evidence registration, controls, landscape execution, CLI flags, and every retained study JSON was not completed. Historical consumers below are examples, not an exhaustive compatibility census.
+
+## Duplicate or opaque concepts, consumers, and reduction candidates
+
+| Finding | Evidence / consumers | Risk and recommended next action |
+|---|---|---|
+| **Confirmed semantic overloading: `rewardsReceived` counts all incoming protocol transfers.** | `src/experiment.mjs:1230–1231` ignores transfer memo; ordinary cashouts/payments are generated at `529–540`. Exported and independently priceable through `FACT_KEYS`, `src/games.mjs:11–14`. | **Medium interpretation risk.** Do not interpret as challenge rewards or net profit. Prefer one explicit incoming-transfer fact plus memo-classified derived views, preserving compatibility. Valuing liquid balance and incoming gross transfers can intentionally or accidentally double-count. |
+| **Historical name: `eligibleForUnmodeledXpChallenge` remains incremented when disputes are modeled.** | `src/experiment.mjs:1053–1058`: count increments before the enabled/challenge decision, including enabled disputes. | **Low/medium interpretation risk.** Retain historical field; document it as higher-XP outsider suspicion opportunities, or add a compatibility alias. It is not a count of missing adjudication events. |
+| **`inviteBurns` is a current disposition filter, not all historical invitation burns.** | `src/experiment.mjs:1176`; cancellation changes disposition to `invitation-cancelled`, `src/model.mjs:368–370`; adjudicated voiding appends `+voided`, `src/model.mjs:476`. Baseline decomposition assertion: `test/experiment.test.mjs:62–79`. | **Medium accounting-label risk.** Reconstruct causal burn categories from events/disposition families; do not claim `inviteBurns + vetoBurns` exhausts modern burns when penalties, stake burns, cancellation, or voiding occur. Preserve useful custody reconciliation separately. |
+| **Three reputation-like concepts are not duplicates.** | `propagatedTrust` feeds screening and opening priors; `disputeRecords` feeds reliability/prior and regular notice: `src/experiment.mjs:297–315,379–383,706–743,916–920`. | Keep separate names: structural trust, adjudication track record, and participation familiarity. No parameter fusion. |
+| **Connectivity outputs differ in blocked-node treatment.** | Final `impact.honestConnectedFraction` uses unblocked reachability at `src/experiment.mjs:1161,1269–1270`; `measureNetwork` blocks protocol-invalidated subjects at `src/observables.mjs:68–69,117–120`; `modelMetrics` also blocks them, `src/metrics.mjs:38–47`. Consumer: `src/trials.mjs:75`. | **Medium comparison risk.** Name raw graph connectivity versus accepted-path connectivity explicitly. Do not merge because baseline equality tests pass absent invalidation. |
+| **Bribe facts record net operator flow, despite gross-sounding names.** | Signed operator balance at `src/experiment.mjs:584–585`; one paid/received magnitude assigned at `1206–1207`. | Current script separates payer/receiver cohorts, so this is **not demonstrated current cancellation loss**. Clarify net-flow semantics before allowing actors to both pay and receive. |
+| **Flow and gossip counter names overstate specificity.** | `flowFlagged` includes attention subjects before counting, `src/experiment.mjs:981–989`; `disputeNotices += count` excludes extra gossip/regular picks at `904–925`; `gossipInspections` increments before local-choice priority at `1027–1033`. | **Medium measurement risk.** Separate candidate-list construction, sampled/extra noticers, and actual chosen route. Do not delete inconvenient false flags. |
+| **Legitimate duplicated bookkeeping: conversion count versus act scan.** | `falseConversionCount` maintained in `attempt`, independently checked in `sample`: `src/experiment.mjs:451–452,478–480`. | Keep invariant check. It buys auditability and efficient first-success tracking. |
+| **Legitimate duplicated bookkeeping: XP history/materialization and custody totals.** | Replay and revocation: `src/model.mjs:245–263,307–320`; conservation: `493–505`. | Keep. A smaller state shape without replay history would lose chronological halving/revocation semantics. |
+| **Repeated derived scalar views are reduction candidates only at computation/explanation level.** | XP totals, Council state, subject counts and shares appear in `modelMetrics`, `measureNetwork`, final system/agent outputs. | Centralize common pure measurements if useful; preserve distinct denominators, blocked sets, timestamps, truth access, and historical schemas. No automatic field deletion. |
+
+**Direct falsification probe for the first finding:** A six-subject honest-growth run, six days, seed `inventory-transfer`, no invitations/guarantee maintenance/inspections, `social.honestTransferRate=1`, with disputes disabled produced **zero challenges and `rewardsReceived=22`**. Thus challenge-reward interpretation is disproven at this checkpoint.
+
+Historical consumer existence was observed in retained timed-Chekharda and social-trust game/result JSON paths. Those files were not audited as independent evidence or exhaustively checked for field usage.
+
+## Feedback classification relevant to this lens
+
+This table identifies whether stored measurements actually return to behavior. It is not a new mechanism register.
+
+| Code | Return link / missing link | Classification and evidence |
+|---|---|---|
+| `FB-XP` | Terminal work → subject/guarantor XP → challenge eligibility, ladder order/risk, Council membership | Endogenous state return under exogenous behavior. `src/model.mjs:252–263,483–488`; `src/experiment.mjs:626–629,743–764`. |
+| `FB-DEBT` | Fine shortfall → debt → future rights reserved/burned → reduced spendable rights and repayment | Implemented negative resource feedback, conditional on future valid work and veto survival. `src/model.mjs:147–159,281–300,436–451`. |
+| `FB-GROWTH` | Successful funded admission → more subjects and activity opportunities → active count → larger digit-count guarantee threshold | Implemented; sign is conditional: more workers/rights but potentially stricter admission. `src/model.mjs:238–243,333–357`; `src/experiment.mjs:1071–1149`. No autonomous adoption model. |
+| `FB-PREVENT` | Suspicion → authorized veto/review → fewer usable rights/admissions | Implemented with effort/authority gates. Not all observation quality becomes effective prevention. `src/experiment.mjs:592–620,1036–1065`. |
+| `FB-EXIT` | Guardian cancels invitation → paid relation exit → removed guarantee, fee and XP consequences | Implemented narrow withdrawal script; missing generalized subject exit/loyalty response. `src/experiment.mjs:613–620`; `src/model.mjs:205–224`. |
+| `FB-REPUTATION` | Ladder wins/losses → reliability and regular notice → later participation | Implemented history dependence, not truth-calibrated reputation or general learning. `src/experiment.mjs:737–743,813–817,916–920`. |
+| `FB-ATTENTION` | Challenges/entries → attention; suspicion → gossip/watch lists → future screening/inspection | Implemented optional routing return. Counter names need qualification above. `src/experiment.mjs:361–376,641,783–784,978–1033`. |
+| `FB-UTILITY` | Retained balances/XP/effort → analyst game valuation | **Open return to simulation:** analysis prices facts after runs; does not adapt activity or create endogenous adoption. `src/games.mjs:233–255`; `src/incentive-payoffs.mjs:95–108`. |
+| `FB-EXTERNAL` | External evidence sponsorship, future application value, broad recovery/learning → behavior | Not supplied by these configuration/state paths. Declared gaps must stay gaps, not be filled by `civicValue`, `xpValue`, or renamed metrics. `src/experiment.mjs:73,86–88`; `src/incentive-payoffs.mjs:95–108`. |
+
+Implemented loops above have unit/integration tests, but **test coverage is not a registered mechanism confirmation, equilibrium proof, or emergence claim**.
+
+## Specific falsifiers and evidence gaps
+
+1. **Reward-label finding:** Falsified by an implementation that filters incoming transfers to the intended reward memo before aggregation. Current source and direct probe instead demonstrate all-transfer aggregation.
+2. **Connectivity distinction:** A counterexample should place a protocol-invalidated non-root node on an honest subject’s only guarantee path. Raw and blocked-path connectivity should diverge; baseline endpoint agreement does not establish equivalence.
+3. **Burn-category interpretation:** Cancel a frozen invitation after its funding emission burns, or void an already invitation-consumed act. The exact-disposition `inviteBurns` count should cease to describe all invitation-origin burns. No new targeted witness was executed for this source-supported finding.
+4. **Notice/route counters:** Enable extra gossip/regular noticers, or provide both local and watched inspection candidates. Compare actual selected/noticing IDs with reported counters. Source supports the discrepancy; no event-level probe was added.
+5. **Parameter consolidation:** Any proposed fusion must preserve interventions that independently change the two fields. Equal defaults, correlated outputs, or low sensitivity do not prove semantic identity.
+6. **Historical compatibility:** Study filenames establish retained consumers exist, not which schema migrations are safe. Complete that census before renaming/removing exported fields.
+7. **Coverage bound:** The 73 passing tests establish the inspected behavior checks at this checkpoint. They do not prove all default fields causally active in every procedure, validate supplied human utility, or cover all analysis/CLI defaults.
+8. **Snapshot boundary:** Claims bind to the computed implementation digest above. Coordinator changes after inspection require dependency-specific refresh, not blanket reuse.
+
+**Recommended next action:** Preserve all defaults. Have the coordinator distinguish **rule, behavioral assumption, evaluator setting, primitive state, materialized index, cumulative event flow, stock, and diagnostic label** in its causal inventory. Address the measurement/name ambiguities first; retain compatibility aliases and independent accounting checks rather than deleting information.

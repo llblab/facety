@@ -1,0 +1,17 @@
+{
+  "scenario": "sybil-cone",
+  "seed": "funded-stakes-example",
+  "initialSize": 12,
+  "attackerShare": 0.25,
+  "days": 18,
+  "maxSubjects": 400,
+  "activity": {
+    "honest": { "inspect": 2, "challenge": 1 },
+    "attackers": { "defend": 1 }
+  },
+  "disputes": {
+    "enabled": true,
+    "procedure": "chekharda-timed",
+    "stakeBacking": "reserved"
+  }
+}

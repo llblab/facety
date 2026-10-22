@@ -123,6 +123,44 @@ test('dispute records accumulate and settings validate', () => {
   assert.ok(run.system.sanctions.disputesResolved > 0);
 });
 
+test('round-limited resolutions name the scheduler cap rather than claiming unopposed timeout finality', () => {
+  for (const procedure of ['chekharda', 'chekharda-timed']) {
+    const run = runExperiment({ seed: 'termination-reason', initialSize: 12, attackerShare: 0.25, days: 12,
+      activity: { honest: { inspect: 3, challenge: 1 } },
+      disputes: { enabled: true, procedure, stakeBacking: 'reserved', maxRounds: 1 } });
+    assert.ok(run.disputes.cases.length > 0);
+    assert.ok(run.disputes.cases.every(record => record.reason === 'round-limit' && record.positions.length === 1));
+    assert.ok(run.disputes.cases.every(record => record.openedAt === record.closedAt), 'this cap bypasses waiting as an explicit reference bound, not the selected finality window');
+  }
+});
+
+test('all dispute references expose exclusive reserved custody, pending cases and actual stake outcomes', () => {
+  assert.throws(() => experimentConfig({ disputes: { stakeBacking: 'free' } }), /stakeBacking/);
+  for (const procedure of ['one-step', 'chekharda', 'chekharda-timed']) {
+    const settings = { ...base, seed: 'reserved:' + procedure, includeState: true,
+      disputes: { enabled: true, procedure, stakeBacking: 'reserved', disputeWindowHours: 48 } };
+    const run = runExperiment(settings);
+    assert.deepEqual(run, runExperiment(settings));
+    const ledger = run.metrics.ledger;
+    const stakes = run.disputes.stakes;
+    assert.ok(stakes.cases > 0);
+    assert.equal(stakes.cases, run.system.sanctions.challenges);
+    assert.equal(stakes.openCases, run.system.sanctions.disputesOpen);
+    assert.equal(stakes.pendingNominal, ledger.stakeVault);
+    assert.equal(stakes.nominalLosing, stakes.transferred + stakes.burned + stakes.unpaid);
+    assert.equal(stakes.unpaid, 0);
+    assert.equal(ledger.supply, ledger.emitterVault + ledger.collector + ledger.feeVault + ledger.stakeVault);
+    assert.equal(run.state.disputeStakes.filter(stake => stake.status === 'reserved').reduce((sum, stake) => sum + stake.amount, 0), ledger.stakeVault);
+    assert.equal(Object.values(run.agents).flatMap(groups => Object.values(groups)).reduce((sum, facts) => sum + facts.stakeFacy, 0), ledger.stakeVault);
+    assert.ok(run.disputes.cases.every(record => record.status === 'open' ? record.reason === null : typeof record.reason === 'string'));
+    const truth = new Map(run.state.truth.map(identity => [identity.id, identity]));
+    const falseUnspent = run.state.selfIds.filter(act => act.status === 'unspent' && !truth.get(act.subject).genuine).length;
+    const heldByFalse = run.system.falseLiquidFacy + run.system.falseStakeFacy + falseUnspent;
+    assert.equal(run.system.falseCirculatingShare, ledger.supply ? heldByFalse / ledger.supply : 0);
+    assert.ok(run.state.disputeStakes.every(stake => !Object.hasOwn(stake, 'genuine') && !Object.hasOwn(stake, 'cohort')));
+  }
+});
+
 test('public proof is shared by every noticer and cluster follow-ups challenge defenders of proven fakes', () => {
   assert.throws(() => experimentConfig({ disputes: { evidence: 'rumor' } }), /evidence/);
   const settings = {

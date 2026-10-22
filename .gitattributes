@@ -1,0 +1,3 @@
+# Preserve raw research transcripts and validation logs without text normalization.
+studies/**/*.txt -text -whitespace
+studies/**/*.log -text -whitespace

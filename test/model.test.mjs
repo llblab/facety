@@ -46,7 +46,7 @@ test('3/7-day transitions consume exactly one own right and never mint on conver
   model.advanceTo(10 * DAY);
   model.convertToCollector('a', next);
   assert.throws(() => model.convertToCollector('a', next));
-  assert.deepEqual(model.audit(), { minted: 2, burned: 1, supply: 1, emitterVault: 0, collector: 1, feeVault: 0, debt: 0 });
+  assert.deepEqual(model.audit(), { minted: 2, burned: 1, supply: 1, emitterVault: 0, collector: 1, feeVault: 0, stakeVault: 0, debt: 0 });
 });
 
 test('shared artifacts flag different subjects, not submission order, and preserve independent rewards', () => {
@@ -76,6 +76,39 @@ test('same subject repeating a face at exactly 24 hours is not a cross-subject c
   model.advanceTo(DAY);
   const repeated = model.createSelfId('a', artifact);
   assert.equal(model.selfId(repeated).collision, false);
+});
+
+test('once-per-subject artifact reference rejects boundary replay atomically across faces and terminal states', () => {
+  for (const disposition of ['unspent', 'converted', 'cancelled', 'voided', 'debt-repayment']) {
+    for (const face of [0, 1]) {
+      const model = new FacetyModel({ genesis: ['a', 'b', 'c'], policy: { artifactReuse: 'once-per-subject', guarantorEligibility: 'accepted' } });
+      guarantee(model, 'b', 'a');
+      if (disposition === 'debt-repayment') model.penalize('a', { fine: 1, halveXp: false });
+      const artifact = model.registerArtifact('a', { faceCount: 2, contentHash: 'group' });
+      const first = model.createSelfId('a', artifact);
+      model.advanceTo(DAY - 1);
+      model.rotateKey('a', 'new-key');
+      assert.throws(() => model.createSelfId('a', artifact, face), /rolling 24-hour/);
+      if (disposition === 'cancelled') model.cancelSelfId('b', first);
+      if (disposition === 'voided') model.voidSelfIdChain('a');
+      model.advanceTo(DAY);
+      if (disposition === 'converted') model.convertToCollector('a', first);
+      const before = protocolState(model);
+      assert.throws(() => model.createSelfId('a', artifact, face), /already used this artifact/);
+      assert.deepEqual(protocolState(model), before, disposition + ', face ' + face);
+      const shared = model.createSelfId('b', artifact, 1);
+      const conflict = model.createSelfId('c', artifact, 0);
+      assert.equal(model.selfId(shared).collision, false);
+      assert.equal(model.selfId(first).collision, true);
+      assert.equal(model.selfId(conflict).collision, true);
+      const fresh = identify(model, 'a');
+      assert.equal(model.selfId(fresh).recordedAt, DAY, 'fresh media remains eligible at the exact reward boundary');
+      model.advanceTo(DAY + 1);
+      assert.throws(() => model.createSelfId('a', artifact), /outside reference window/);
+      model.audit();
+    }
+  }
+  assert.throws(() => policyFrom({ artifactReuse: 'ban-group-media' }), /invalid policy/);
 });
 
 test('dispute locks block every disposition without resetting age', () => {
@@ -246,7 +279,7 @@ test('fines burn only collectible money and persist as debt across key changes (
   assert.equal(model.subject('a').debt, 0);
   model.advanceTo(9 * DAY);
   identify(model, 'a');
-  assert.deepEqual(model.audit(), { minted: 4, burned: 3, supply: 1, emitterVault: 1, collector: 0, feeVault: 0, debt: 0 });
+  assert.deepEqual(model.audit(), { minted: 4, burned: 3, supply: 1, emitterVault: 1, collector: 0, feeVault: 0, stakeVault: 0, debt: 0 });
 });
 
 test('fines preserve safe aggregate debt and reject overflow before balances, XP or events change', () => {
@@ -357,7 +390,7 @@ test('default debt recovery keeps the guarantor veto window before burning a res
   assert.equal(model.selfId(third).status, 'unspent');
   model.advanceTo(10 * DAY);
   model.convertToCollector('b', third);
-  assert.deepEqual(model.audit(), { minted: 4, burned: 3, supply: 1, emitterVault: 0, collector: 1, feeVault: 0, debt: 0 });
+  assert.deepEqual(model.audit(), { minted: 4, burned: 3, supply: 1, emitterVault: 0, collector: 1, feeVault: 0, stakeVault: 0, debt: 0 });
 });
 
 test('immediate-burn debt recovery removes the veto window and is only a comparison policy', () => {

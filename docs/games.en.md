@@ -13,17 +13,16 @@ A scripted run fixes everyone's behavior; a higher success frequency for one scr
 
 ## Dispute layer (needed for any deterrence)
 
-Without sanctions, inspection costs effort and earns nothing, so no rational agent inspects. When `disputes.enabled` is true:
+Without sanctions/rewards or separately supplied civic/future utility, inspection costs effort and earns no direct money in this model. That accounting fact does not exclude unpaid human investigation under other preferences. When `disputes.enabled` is true:
 
 - An observer without veto authority who sees a suspicious act **and has more effective XP than the act owner** may challenge, with probability `activity.<cohort>.challenge`. A challenge costs one `challenge` effort unit and requires the declared `stake` in liquid FACY.
 - An environment verdict is correct with probability `accuracy`. It uses evaluator truth, as the observation model does; no protocol code reads the truth labels.
 - **Upheld** (the subject is found false): the subject is invalidated; each liable party (`liability`: `subject`, `guarantors`, or `guarantors-and-inviter`) pays `fine`. A `rewardShare` of what is actually collected is transferred to the challenger and the rest goes through `penalize` (burn, then debt), with XP halving. `excludeLiable: true` also invalidates liable real guarantors, which models the "persona non grata" sanction.
 - **Rejected:** the challenger pays the stake and, if `loserHalvesXp`, has XP halved.
 - Invalidated subjects stop acting; their open invitations lapse.
+- `fineMode: "chain"` voids the false subject's entire Self-ID chain through `FacetyModel.voidSelfIdChain`. Unspent rights burn, and XP credited by the chain is revoked from the subject and every guarantor recipient. Each liable party owes one coin per voided act (at least one), so the sanction grows with how long the fake operated. `liability: "inviter-chain"` adds the inviter and the inviter's guarantors. Guardian review/cancellation during the invitation freeze is implemented. Historical no-freeze study arms lacked that preventive opportunity; they are not results of the later default.
 
-- `fineMode: "chain"` voids the false subject's entire Self-ID chain through `FacetyModel.voidSelfIdChain`. Unspent rights burn, and XP credited by the chain is revoked from the subject and every guarantor recipient. Each liable party owes one coin per voided act (at least one), so the sanction grows with how long the fake operated. `liability: "inviter-chain"` adds the inviter and the inviter's guarantors. The model does not yet let those guarantors see or cancel a pending invitation, so this wave can fine people who had no chance to prevent the fraud.
-
-**Defaults** follow the protocol owner's rules (§21.1, §26.5): `fineMode: "chain"`, `liability: "inviter-chain"`, stake 1 FACY, reward share 0.5.
+**Defaults** implement the owner's chain-cut/liability directions (§21.1) as research references: `fineMode: "chain"`, `liability: "inviter-chain"`. Stake 1 FACY and reward share 0.5 are model assumptions, not fully selected economic rules.
 
 **Chekharda ladder** (`procedure: "chekharda"`, owner rule §26.5):
 
@@ -31,20 +30,20 @@ Without sanctions, inspection costs effort and earns nothing, so no rational age
 - Honest candidates, scanned from the lowest eligible XP up to `maxScan`, receive a private signal of the truth. Its accuracy is `closeSignalAccuracy` for acquaintances of the accused (within two hops) and `signalAccuracy` otherwise. An optional public reputation prior (`reputationWeight`, the trust-propagation percentile of the accused versus the challenger) adjusts the belief.
 - A candidate joins the side it believes when `belief × stake below > (1 − belief) × (own stake + xpValue × own XP / 2)`. Coalition members join the coalition side whenever eligible, since a disposable identity risks nothing personal.
 - The last unopposed side wins, unless the ladder reaches `councilDepth`. Then the active Council votes by majority: honest members by belief, coalition members for the coalition.
-- Each winner takes the stake of the entrant directly below. A losing top entrant's stake is burned (assumption for an OPEN case). Losers lose half their XP.
+- Each winner takes the collectible amount of the stake directly below. `stakeBacking: "unsecured"` is the legacy default: checking funds does not reserve them, concurrent cases reuse balances and later spending/penalties reduce collection. `"reserved"` is an unselected fully collateralized reference using model custody. Winners recover their own collateral, lower losing stakes transfer, losing tops burn and mooted cases refund. Unpaid unsecured stake is not debt. Losers receive the configured XP halving. See [custody and priority assumptions](simulator.en.md#dispute-stake-custody-reference); conservation alone does not prove backing.
 - The verdict then applies the ordinary sanctions. Counters: `sanctions.ladderEntries`, `ladderDepth`, `councilInterventions`.
 
 **Timed Chekharda** (`procedure: "chekharda-timed"`, owner rule §26.5):
 
-- A challenge opens a dispute and freezes the accused's unspent rights. It resolves when `disputeWindowHours` (168) pass after the last move, when the Council depth is reached, or at `maxRounds`.
+- A challenge opens a dispute and freezes the opening snapshot of the accused's unspent rights; subsequently created rights are not automatically locked in this reference. It resolves when `disputeWindowHours` (168) pass after the last move, when the Council depth is reached, or at `maxRounds`.
 - Each day, up to `roundsPerDay` positions can be taken. For each position, `noticeBase × N × (1 + height)` distinct subjects notice the dispute, where height is the largest entrant XP over mean network XP. Honest noticers' signal accuracy rises by `evidenceGain × height`.
 - The next position goes to a willing eligible noticer chosen by `entrantChoice`: `lowest`, `highest` (the most senior first) or `random`. Coalition members join to defend with probability `activity.attackers.defend`, and with `social.attentionFeedback` every entrant becomes a screening target.
-- Disputes still open at the horizon are counted as `sanctions.disputesOpen`; mooted ones (the accused removed meanwhile) as `disputesMooted`.
+- Disputes still open at the horizon are counted as `sanctions.disputesOpen`; mooted ones (the accused removed meanwhile) as `disputesMooted`. Case reasons distinguish the selected-window timeout from experimental round/scan termination limits, incomplete entry and Council intervention. A cap-triggered verdict is not evidence that the selected seven-day finality window elapsed.
 
 **Evidence and clusters:**
 
-- `evidence: "public-proof"` replaces private signals with one public proof per dispute, correct with `proofStrength`, that every noticer and Council member sees.
-- `clusterFollowUp: true` makes the most senior winning entrant of an upheld dispute challenge each entrant who defended the proven fake, subject to the XP gate.
+- `evidence: "public-proof"` supplies one fallible common environment signal per dispute, correct with `proofStrength`, seen by every noticer/Council voter. The historical option name does not mean cryptographic proof, an agent-visible truth flag or a complete evidence-admission process.
+- `clusterFollowUp: true` makes the most senior winning entrant of an upheld dispute challenge each defender, subject to the XP gate. This is a scripted stress-test channel, not a selected guilt-by-association rule or a standard of proof of knowingly obstructing evidence.
 
 The default `procedure` stays `"one-step"`, with its `accuracy` parameter, so that threshold studies can vary accuracy directly. The ladder derives accuracy instead; see insight F13.
 
@@ -56,8 +55,8 @@ The one-step procedure deliberately abstracts Chekharda to one step: no escalati
 
 Each run reports `agents[cohort][group]` for groups `conformist` (initial operators), `deviant` (initial operators) and `recruit` (later genuine operators), plus a `system` record:
 
-- **Group facts:** operators, subjects, accepted/invalidated/false subjects, liquid and Emitter FACY, debt, FACY and debt held by false subjects, XP, Council seats, effort, converted rewards, fines collected or turned into debt, XP halvings, challenge rewards received, and off-protocol bribes paid or received.
-- **System facts:** supply, burned FACY, liquid FACY held by false subjects, false converted rewards, accepted false subjects and coalition Council seats.
+- **Group facts:** operators, subjects, accepted/invalidated/false subjects, liquid/Emitter FACY, `stakeFacy` in pending custody, debt, false-subject liquid/custody/debt, XP, Council seats, effort, converted rewards, actually collected/debt fines, XP halvings, received transfers and off-protocol bribes. Custody refunds are not profit; stake losses are separately retained actual transfers/burns, not fictitious fine collection.
+- **System facts:** supply, burned FACY, pending `stakeFacy` and `falseStakeFacy`, false liquid holdings/conversions/accepted subjects and coalition Council seats. False circulating holdings include still-owned reserved stakes, rather than hiding them when they leave liquid balances.
 
 Controlled fakes count toward their operator's group, because custody pools money. XP stays per subject; Council seats count control of votes.
 
@@ -90,7 +89,7 @@ node bin/facety.mjs game-sweep results/game.json sweep.json   # { valuation, rol
 
 `valuation[role].facts[key]` weights a group fact; `valuation[role].system[key]` weights a shared system fact. Omitted weights are zero, and the normalized valuation is echoed in every analysis. A role's payoff is per initial operator: the summed weighted facts of the initial groups divided by their operators, plus the system terms.
 
-Choose weights to express what is actually valued, and state them. For example, debt left on an exposed fake is uncollectible from an attacker who abandons it, so `debt: -1, falseDebt: 1` charges only debt on genuine identities.
+Choose weights to express what is actually valued, and state them. Pending stake custody can be valued explicitly with `stakeFacy`/`falseStakeFacy`; it is neither disposable liquidity nor an already realized loss. A nonzero weight on a missing/non-finite saved fact makes that utility unknown; zero-weight absent fields do not corrupt older valuations. This does not silently impute missing historical custody as zero. For example, debt left on an exposed fake is uncollectible from an attacker who abandons it, so `debt: -1, falseDebt: 1` charges only debt on genuine identities.
 
 ## Analysis
 

@@ -10,7 +10,7 @@ The primary research question is which collective regimes arise from interacting
 - Offline reanalysis of an existing landscape under different declared diagnostic thresholds.
 - Constant/no-effect, known-pattern, missing-data and computational-truncation controls in native tests.
 
-[Matched controls and scheduled activity perturbations](controls.en.md) are implemented. CLI delivery remains open in [the backlog](../BACKLOG.md). No mechanism has been established merely by adding this instrumentation.
+[Matched controls and scheduled activity perturbations](controls.en.md) are implemented through native APIs and CLI `compare`. The [causal research program](research.en.md) separates responsible-building, attention, correction, dependence and obstruction loops, candidate survivability criteria and calibration gates. No mechanism has been established merely by adding this instrumentation.
 
 ## Run the example
 

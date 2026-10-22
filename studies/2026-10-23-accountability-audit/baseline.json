@@ -1,0 +1,249 @@
+{
+  "schema": "facety-audit-baseline/v1",
+  "documentedOn": "2026-10-23",
+  "timezone": "+04:00",
+  "revision": "af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5",
+  "workingTree": "clean (git status --porcelain=v1 returned no entries before changes)",
+  "runtime": {
+    "node": "v26.8.1",
+    "npm": "11.19.0"
+  },
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "ad848f5e8d7b48cf7707368a29250cfa15479e736559db9b778456c022a9c953",
+    "files": 22
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "validation": {
+    "command": "npm test",
+    "tests": 175,
+    "passed": 175,
+    "failed": 0,
+    "exitCode": 0,
+    "log": "baseline-tests.log"
+  },
+  "contextValidation": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "exitCode": 1,
+    "errors": 17,
+    "warnings": 21,
+    "details": "12 protocol anchor diagnostics (one repeated target), 5 blank-list diagnostics; historical backlog claimed 11 anchor errors"
+  },
+  "existingArtifacts": [
+    {
+      "path": "studies/2026-10-22-coalition-council/README.md",
+      "sha256": "fa7cdd00c4adf6049e9038a18524448755a5d1aeb97be83681f8d6ce0e7dc41c"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/exploration-growth-halt.json",
+      "sha256": "3540ad8163caabc15dba56307424a8adacc261adf9c20a44c4a395d6082da991"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/exploration-landscape.json",
+      "sha256": "5ede774c838b74d80686eb54389e8edbb5efbed21f302f72cb3e3f1876ebb50c"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/h1-coupling-amplification.json",
+      "sha256": "3e568d6a2c92017fe50cd12ec7f9bb041c6c3efdeda133fa92b53ccb2fb23de3"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/h1.confirmation.json",
+      "sha256": "0d80cb6c6b0b5154f605e0dadbe6d80dafff822053e5a19cbe815b262568c3e9"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/h1.registration.json",
+      "sha256": "2f6c237f53e95d022bf03d0e9e571d74a09e1a0cdfe679071c63df846857537f"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/h2-growth-shield.json",
+      "sha256": "3df387ea08678702d0e1ad2badaafb0e66d791a3e05436b3dfc57cd26cffd1b8"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/h2.confirmation.json",
+      "sha256": "23f2dc3ac0b4ce605a9f53f1236cd396299df097e4973a51ffae16124510cb3e"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/h2.registration.json",
+      "sha256": "fe2bf98fb4d12b13382fa621b3d0f7790f2d32ddb9ca336ef27dd237db6149b3"
+    },
+    {
+      "path": "studies/2026-10-22-coalition-council/study.json",
+      "sha256": "2a873c8c23bd3a07550dcffd3f4546bd764597eea18b3e0aa70ba561022456d1"
+    },
+    {
+      "path": "studies/2026-10-22-deterrence-threshold/README.md",
+      "sha256": "d22b20719a0f2f14d2c11b97089b6ddc2fa9d5eb8c953bb5ee0144a044a24f62"
+    },
+    {
+      "path": "studies/2026-10-22-deterrence-threshold/axes-false-positives.json",
+      "sha256": "7a96cd958ea7e1a40468c1cc52e25b9f456aec9a160f67d5b1dab772b1f99feb"
+    },
+    {
+      "path": "studies/2026-10-22-deterrence-threshold/axes-sensitivity.json",
+      "sha256": "41f1b985a7b006566bce9edf451f9e6fe6a18668c66e588c197152bbdd93d1d5"
+    },
+    {
+      "path": "studies/2026-10-22-deterrence-threshold/game.json",
+      "sha256": "6232adf1b7c24c364b025bf045f91adb64dcea084344876df4537c2b55680ab0"
+    },
+    {
+      "path": "studies/2026-10-22-deterrence-threshold/grid-false-positives.json",
+      "sha256": "8941540ee540b6c5fa643d25562f99f07676f7729282b6125d71aa67e01648ce"
+    },
+    {
+      "path": "studies/2026-10-22-deterrence-threshold/grid-sensitivity.json",
+      "sha256": "adac17cdb93b1d0f5c01866d32c671618b8a95f9773121fdfba5b50cc500929e"
+    },
+    {
+      "path": "studies/2026-10-22-inspection-game/README.md",
+      "sha256": "4547b92a1d451ee4f305b7c32e8e8a59488ec1c408cbd1a8af30f0476c0d2617"
+    },
+    {
+      "path": "studies/2026-10-22-inspection-game/game.json",
+      "sha256": "a2802a825dffd6cdadd74ea036edd291d1fb046d626dd7ad7edac3488f4df291"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/README.md",
+      "sha256": "557892280e5cdc27431b9cbdc44f8c0253d62b9c581b64835df2ee9abeb00b16"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/axes-chain-fines.json",
+      "sha256": "52df17a17e3b12e75b57c72419399a2e5a6c9c2f56e886449ac54b13e4b8d53b"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/axes-false-positives-fine10.json",
+      "sha256": "c42eb92fa42120b97930f7f2121702d75736558ef5f60f82dc6b1d9b7d08cdea"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/axes-false-positives.json",
+      "sha256": "9a12065555e8abe81fe3517dd6f8575ef6b342936613dcd2b81569601462d9b0"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/axes-guardian.json",
+      "sha256": "77fb98297b67875887f031a55bd4f3815697ecfba3cebce4607e513edf62d0b0"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/axes-incentive-levers.json",
+      "sha256": "50014e8588e7a95d8c1b6f7656c0cc9cc8292d6471398cde74b594a331dfbb60"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/axes-sensitivity-fine10.json",
+      "sha256": "7aee024bad3f7f343424ef8409dee04e6047170bbe00bfe56be501ed5e0a0e58"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/axes-sensitivity.json",
+      "sha256": "ec0f6424800e9b126c05a0416beac5c6ebbc36e75cdfc22e492c4f088673a8ec"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/axes-timing.json",
+      "sha256": "213445e56df2d19c3d9b7f689f87ff904ffce5d920e034e1704ac83c55717203"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/game-guardian.json",
+      "sha256": "8e1b38228307cc0d0a1d2d2c3815f396daaba1b6cc0c9e7980b1de344f415f22"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/game.json",
+      "sha256": "96c00726bf165fac29b993cca1ef679188f1c5a728ad5f4a5abc92f02e9b8516"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/grid-chain-fines.json",
+      "sha256": "c671cb32ef5b8d0329bc0f0d867acd3e32afddbf3f55074a98c67f7c2c51ff05"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/grid-false-positives-fine10.json",
+      "sha256": "55630c475782a43e0d5fa8e6804974a768e849cd808c49123d258d600d99a3af"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/grid-false-positives.json",
+      "sha256": "b32ce091240d03c6b24d4cfe8de6baf58472a44e5c33b4d5c3cd992a0a4b6d22"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/grid-guardian.json",
+      "sha256": "573912f0c3e5423042c85cc862eb2a2d5c351cd8398dc06b4a2e9aeddd358be2"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/grid-incentive-levers.json",
+      "sha256": "da9c319db88effe30b5b615ef994345039a8e3a1cc2b9eb2b984000d79f7429e"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/grid-sensitivity-fine10.json",
+      "sha256": "86466dc92940c0c368fd5b0ce207cdd5efefe725adb575c0a34dd3ac31d21aae"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/grid-sensitivity.json",
+      "sha256": "0a49cabddc9977965dddf9289388c633732fff2b01039e58b5a7a67ca33ffc94"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/grid-timing.json",
+      "sha256": "08161e22ff9b8afaa6aa9f6d3fe6a6dbc6c9b6835ee943da85b9095cc0fa1c07"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/README.md",
+      "sha256": "401eb0bd5d955f97aab2e99a6ce084cc076d3b4982f46c60f906ca9b8af68e73"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/assumption-audit.json",
+      "sha256": "a41a5a64bf8ed77c6bf6a5ead2eb3e7d4f40d646f8b00ca77f6c04969f308e1a"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/axes-fake-cost.json",
+      "sha256": "459df3cb569a670a48d2606e06e817109cde54d615c29d4dcf299d49343ddb30"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/axes-gossip.json",
+      "sha256": "11ea654c785a60799171c6a0ad92b93607dd14b767a09b6b83b1f74d95263acd"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/axes-public-proof.json",
+      "sha256": "346306111969714ff8856ac3eeb40b6a6e1f005d230a16731f782c764bb03fe6"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/axes-threshold-ablation.json",
+      "sha256": "95eeb22e33cdf144249feb6d3bed805c2d0759863b8ccf5c387ac8b1bb718533"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/game-fast.json",
+      "sha256": "d96aa951e405143e7bf784aa8b76a1d4c097046dd446d173e122e688d458e739"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/game-reputation.json",
+      "sha256": "3d9b5567a5b563742e32c0106631f169249b731e5f0cdb8c588ee5f80e73ccdb"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/game.json",
+      "sha256": "f61245e4260e971e125716b87d051a3265925d5d5cdfa3aa179f23cb36bf0dc0"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/grid-fake-cost.json",
+      "sha256": "7d843c2616a90b1a15bccea1f2b5e4bc9f4cd0aa53f098c1a937aa6c69f75f99"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/grid-gossip.json",
+      "sha256": "ba678bf4074197a913b4ef904452210d02f904ce25da8cf74e90658115049c32"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/grid-public-proof.json",
+      "sha256": "1c0fda4aae28e14d368554d86f2a9b2589d4785040c828e787d4897d5ab16820"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/grid-threshold-ablation.json",
+      "sha256": "4900bbc2f3a196e59ee5125dfec7ed7c473bb6c035fa7bf9ac6214fccd557f5d"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/result-fast.json",
+      "sha256": "29d8798c1221f5d7d8a33bf49e6533d3edafc7aad8111040a042293218b563ca"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/result-reputation.json",
+      "sha256": "50bf2fb5c0cf89e3c97979bae9731429c8ae0f088a13e3985366bd9406de5e86"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/result.json",
+      "sha256": "5884ea11a8c7e77b5d565d90260f2bb9b14a4a748ce613493609d823049a24bd"
+    }
+  ]
+}

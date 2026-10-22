@@ -14,6 +14,8 @@ export const DEFAULT_POLICY = Object.freeze({
   linkBreakXp: 'revoke',
   spendMaturityHours: 24,
   conversionMaturityHours: 24,
+  // Same-subject replay on an existing artifact is OPEN; preserve the legacy window-only reference.
+  artifactReuse: 'registration-only',
 });
 // Counterfactual mechanism removals for evidence experiments. They are not protocol options.
 export const DEFAULT_ABLATIONS = Object.freeze({
@@ -37,6 +39,7 @@ export function policyFrom(overrides = {}) {
     debtRecovery: ['reserve-until-mature', 'immediate-burn'],
     councilEligibility: ['active', 'accepted'],
     linkBreakXp: ['keep', 'revoke'],
+    artifactReuse: ['registration-only', 'once-per-subject'],
   })) if (!allowed.includes(policy[key])) throw new Error('invalid policy: ' + key);
   natural(policy.guaranteeFee, 'guaranteeFee');
   natural(policy.councilSize, 'councilSize', 1);
@@ -72,6 +75,7 @@ export class FacetyModel {
   #claims = new Map();
   #xpSources = new Set();
   #debtReservations = new Set();
+  #disputeStakes = new Map();
   #contentHashes = new Set();
   #activityVersion = 0;
   #activeCache = null;
@@ -82,6 +86,7 @@ export class FacetyModel {
   #burned = 0;
   #vault = 0;
   #fees = 0;
+  #stakeVault = 0;
   constructor({ genesis = ['root'], policy = {}, ablations = {} } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
     Object.defineProperty(this, 'policy', { value: policyFrom(policy), enumerable: true });
@@ -130,6 +135,7 @@ export class FacetyModel {
   invitations() { return [...this.#invitations.values()].map(value => Object.freeze({ ...value })); }
   guaranteeRelations() { return [...this.#guaranteeRecords.values()].map(value => Object.freeze({ ...value })); }
   events() { return [...this.#events]; }
+  disputeStakes() { return [...this.#disputeStakes.values()].map(value => Object.freeze({ ...value })); }
   advanceTo(hour) {
     natural(hour, 'hour');
     if (hour < this.now) throw new ProtocolRejection('simulation time cannot move backwards');
@@ -263,6 +269,7 @@ export class FacetyModel {
     natural(faceIndex, 'faceIndex');
     if (faceIndex >= artifact.faceCount) throw new ProtocolRejection('faceIndex outside modeled detector output');
     if (subject.lastRewardAt !== null && this.now - subject.lastRewardAt < DAY) throw new ProtocolRejection('rolling 24-hour reward limit');
+    if (this.policy.artifactReuse === 'once-per-subject' && this.#subjectActs.get(subjectId).some(id => this.#acts.get(id).artifact === artifactId)) throw new ProtocolRejection('subject has already used this artifact');
     const guarantors = this.eligibleGuarantors(subjectId);
     const id = this.#id('self-id');
     const faceRef = JSON.stringify([artifactId, 'abstract-detector-v1', faceIndex]);
@@ -391,6 +398,39 @@ export class FacetyModel {
     recipient.liquidFacy += amount;
     this.#event('facy-transferred', { from, to, amount, memo });
   }
+  // Reference custody for OPEN stake-backing semantics; reserved funds are no longer liquid.
+  reserveDisputeStake(caseId, owner, amount) {
+    natural(amount, 'stake');
+    if (typeof caseId !== 'string' || !caseId.length) throw new ProtocolRejection('invalid stake case ID');
+    const key = JSON.stringify([caseId, owner]);
+    if (this.#disputeStakes.has(key)) throw new ProtocolRejection('duplicate stake commitment');
+    const payer = this.#subject(owner, true);
+    if (payer.liquidFacy < amount) throw new ProtocolRejection('insufficient liquid stake');
+    natural(this.#stakeVault + amount, 'stake vault');
+    payer.liquidFacy -= amount;
+    this.#stakeVault += amount;
+    this.#disputeStakes.set(key, { caseId, owner, amount, status: 'reserved', reservedAt: this.now, settledAt: null, disposition: null, recipient: null });
+    this.#event('dispute-stake-reserved', { caseId, subject: owner, amount });
+  }
+  settleDisputeStake(caseId, owner, { disposition = 'release', recipient = null } = {}) {
+    const stake = this.#disputeStakes.get(JSON.stringify([caseId, owner]));
+    if (!stake || stake.status !== 'reserved') throw new ProtocolRejection('stake is not reserved');
+    if (!['release', 'transfer', 'burn'].includes(disposition) || (disposition !== 'transfer' && recipient !== null)) throw new ProtocolRejection('invalid stake disposition');
+    // Settlement is an adjudication input, not a new action by the recipient: invalidated accounts can
+    // receive custody refunds/winnings. Ordinary transfers from them remain prohibited.
+    const receiver = disposition === 'burn' ? null : this.#subject(disposition === 'release' ? owner : recipient);
+    if (receiver) natural(receiver.liquidFacy + stake.amount, 'settlement balance');
+    this.#stakeVault -= stake.amount;
+    if (receiver) receiver.liquidFacy += stake.amount;
+    else this.#burned += stake.amount;
+    stake.status = 'settled';
+    stake.settledAt = this.now;
+    stake.disposition = disposition;
+    stake.recipient = recipient;
+    if (disposition === 'transfer' && stake.amount > 0) this.#event('facy-transferred', { from: owner, to: recipient, amount: stake.amount, memo: 'ladder-settlement' });
+    this.#event('dispute-stake-settled', { caseId, subject: owner, amount: stake.amount, disposition, recipient });
+    return stake.amount;
+  }
   penalize(id, { fine = 0, halveXp = true } = {}) {
     natural(fine, 'fine');
     if (typeof halveXp !== 'boolean') throw new TypeError('halveXp must be boolean');
@@ -448,12 +488,13 @@ export class FacetyModel {
   }
   ledger() {
     const subjects = [...this.#subjects.values()];
-    return { minted: this.#minted, burned: this.#burned, supply: this.#minted - this.#burned, emitterVault: this.#vault, collector: subjects.reduce((sum, subject) => sum + subject.liquidFacy, 0), feeVault: this.#fees, debt: subjects.reduce((sum, subject) => sum + subject.debt, 0) };
+    return { minted: this.#minted, burned: this.#burned, supply: this.#minted - this.#burned, emitterVault: this.#vault, collector: subjects.reduce((sum, subject) => sum + subject.liquidFacy, 0), feeVault: this.#fees, stakeVault: this.#stakeVault, debt: subjects.reduce((sum, subject) => sum + subject.debt, 0) };
   }
   audit() {
     const ledger = this.ledger();
     const outstanding = [...this.#acts.values()].filter(act => act.status === 'unspent').length;
-    if (outstanding !== ledger.emitterVault || ledger.supply !== ledger.emitterVault + ledger.collector + ledger.feeVault) throw new Error('FACY conservation invariant failed');
+    const reserved = [...this.#disputeStakes.values()].filter(stake => stake.status === 'reserved').reduce((sum, stake) => sum + stake.amount, 0);
+    if (reserved !== ledger.stakeVault || outstanding !== ledger.emitterVault || ledger.supply !== ledger.emitterVault + ledger.collector + ledger.feeVault + ledger.stakeVault) throw new Error('FACY conservation invariant failed');
     for (const value of Object.values(ledger)) natural(value, 'ledger value');
     for (const subject of this.#subjects.values()) {
       natural(subject.xp, 'XP');

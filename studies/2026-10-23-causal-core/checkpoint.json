@@ -1,0 +1,479 @@
+{
+  "schema": "facety-causal-checkpoint/v1",
+  "documentedOn": "2026-10-23",
+  "status": "verified-bounded",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "1338b35c06a19c668b833b84fa6f15f9152c98082e811efee672ab64f421d3fb",
+      "files": 28
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "revision": "af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5",
+  "workingTree": " M BACKLOG.md\n M CHANGELOG.md\n M README.md\n M docs/README.md\n M docs/discovery.en.md\n M docs/experiments.en.md\n M docs/facety.protocol.en.md\n M docs/games.en.md\n M docs/insights.en.md\n M docs/simulator.en.md\n M src/experiment.mjs\n M src/games.mjs\n M src/incentives.mjs\n M src/model.mjs\n M test/disputes.test.mjs\n M test/games.test.mjs\n M test/incentives.test.mjs\n M test/model.test.mjs\n?? docs/mechanisms.json\n?? docs/research.en.md\n?? examples/causal-relay.mjs\n?? examples/causal-walkthroughs.mjs\n?? examples/dispute-stakes.json\n?? src/accountability.mjs\n?? src/dispute-stakes.mjs\n?? src/disputes.mjs\n?? src/relay.mjs\n?? src/trace.mjs\n?? src/walkthroughs.mjs\n?? studies/2026-10-23-accountability-audit/\n?? studies/2026-10-23-causal-core/\n?? test/accountability.test.mjs\n?? test/causal-relay.test.mjs\n?? test/dispute-stakes.test.mjs\n?? test/mechanisms.test.mjs\n",
+  "files": [
+    {
+      "path": "src/accountability.mjs",
+      "sha256": "dee78d16cddf503909618898d9cc33c594cb1ce67714d439e0376adf25b18b5a"
+    },
+    {
+      "path": "src/disputes.mjs",
+      "sha256": "574f8a0ffc4d5336898af0272d8981bc8a5a2eb7bfcb11388b51ece31aa81509"
+    },
+    {
+      "path": "src/relay.mjs",
+      "sha256": "c3f98e29e9dcce4e6fd7ec1e5988018063d407f358f48ebf58a3c2db393562c5"
+    },
+    {
+      "path": "src/trace.mjs",
+      "sha256": "9b52d9bc73bb0648345ce9dacfb210a0b69f13d88350d8d110b9d25fb7f8247b"
+    },
+    {
+      "path": "src/walkthroughs.mjs",
+      "sha256": "e0da11d7b2fd3a86f142d0a95d0becd737679cb80b6f1897c5bbfda404b9b7ea"
+    },
+    {
+      "path": "examples/causal-walkthroughs.mjs",
+      "sha256": "4b6c8e7bbb729febbd3579c20ba4a05efd53dd44bb764e9a0985184eb8c17d3e"
+    },
+    {
+      "path": "examples/causal-relay.mjs",
+      "sha256": "3c8df3ebb5a0ed8889737abf7f5fb693b2436927c28e290ba8bfc88df146bc7b"
+    },
+    {
+      "path": "docs/mechanisms.json",
+      "sha256": "ee4de6644a53d50677088508e065ba82075b49363bb6608793b7dffa7311edfc"
+    },
+    {
+      "path": "test/accountability.test.mjs",
+      "sha256": "8efbcb9980562bb6483c5f26a0c98be97c471f8d6bb3bfd3c842dd13668c2f54"
+    },
+    {
+      "path": "test/causal-relay.test.mjs",
+      "sha256": "5f9306de93f0864a18d15e00d2da132e8d62afeea3350d32fa3da2eba8b5b8bb"
+    },
+    {
+      "path": "test/mechanisms.test.mjs",
+      "sha256": "95c4bb234694d9b2a82c6d61f2acd4c742f1c45755c46b3d067c378f8d1b8b21"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/run.mjs",
+      "sha256": "883076af06fdd0d19bd93f0ed14718f00c8df545f909295ad22a674e03872a2f"
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "4c65a42e91676acfa638e2c2ed5584aeb381ad2c9849215c58506720d530e902"
+    },
+    {
+      "path": "README.md",
+      "sha256": "159e5a221e34e29bab81cea61e85d70122fb0c11b4f68d11390112c20d46b798"
+    },
+    {
+      "path": "BACKLOG.md",
+      "sha256": "270726a6a7f93937a92e81a1564db8a623c97aa0aad3025308d4048768357052"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "5af8d4d5784c064a567bb9be1ebff07203b53df15c250a18fc01ee0f0c6ff311"
+    },
+    {
+      "path": "docs/README.md",
+      "sha256": "ffa1b67f9de8b52af7bb88b89be0af1f8d5506be2465d23d5944bf149390e540"
+    },
+    {
+      "path": "docs/research.en.md",
+      "sha256": "e16ee3ebb0a34b77700978bcbe28c1d5f195b1c9e9d182502210e2ccb5f0e204"
+    },
+    {
+      "path": "docs/facety.protocol.en.md",
+      "sha256": "7a30f5d165ed1ce08a9ce9516b873138e5a915148c708268e5064d494aa76626"
+    },
+    {
+      "path": "docs/insights.en.md",
+      "sha256": "d9437b1506baafc57cceadf6e9e6a56de7873931c00660309fe5eedb21dc95d6"
+    },
+    {
+      "path": "docs/simulator.en.md",
+      "sha256": "e6c349a6605c5353a37d0d8ce0361b5abc7262ac4f6c2d96b2c42636e1878c5c"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "studies/2026-10-23-causal-core/README.md",
+      "sha256": "341a19a9d413154b37d1825be512e62397c2925ce20489b648993610e831732e"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/baseline.json",
+      "sha256": "87fc8eb093e7b6d32bfbfcd6f50cb81e82c501d73a38bf6c14eb31ac63359a07"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-remediation-review-005.txt",
+      "sha256": "737c2eb765dce76745500e04a3dee8ef0573e14c67db11b5a3649ba45aefebe1"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-remediation-review-006.txt",
+      "sha256": "4c0626e590e43049e4d27b47c7edb4213008b31963bdc1d576b73d570a5de9f8"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-remediation-review-007.txt",
+      "sha256": "aaa529f63088cf43da6b6e422239f3f445d1c6c0ef04958fc7a1b214cb547e40"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-remediation-review-008.txt",
+      "sha256": "2936016660d64a7e3faacf5bb42b804742c9d6abd2beebe65ec1d1cab6c92317"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-remediation-review-009.txt",
+      "sha256": "ff9964aaac9ba2029d338df631819b95b32a12eda1c8459cf0207381d3613284"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-remediation-review-010.txt",
+      "sha256": "900db741eee8fc59f3e45bb72bea31f5c5dd58b357c1d713fd185ce28bb59549"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-slice-review-005.txt",
+      "sha256": "69e6ecf63f9ed796e5ca87fc9cb98bedd9845885ed4db28677e662f281f978d7"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-slice-review-006.txt",
+      "sha256": "51a997c866ad7758f5da738c5d6f6bc4423a561f62fd314890afe36a39b08772"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-slice-review-007.txt",
+      "sha256": "bba3f3983e8fb6d51b582b0b517ecfb50930f040b9e853337b8e8b3f6b6de8fe"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-slice-review-008.txt",
+      "sha256": "97060d6c6ea57cd040f12d97d7765989a8848cc090d6b9be28a0707c2b05ab61"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-slice-review-009.txt",
+      "sha256": "7a7a21bcb904d08716b25fe4e7ddc5f99a8d255579df96a32e3087ab2692c4c1"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/causal-slice-review-010.txt",
+      "sha256": "6e21db1805e74df2963ce1e77b8375c5ecc15cde8457e10fb94894b33a6b15d2"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/inventory-005.txt",
+      "sha256": "3a9d261f2f625baa3e216153b8701238753bc18cd05bedb518e3e4e54ab0aa51"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/inventory-006.txt",
+      "sha256": "1dbfb19321cf67cec147501384cf21e68ac8de86750817c90b233533fcac8615"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/inventory-007.txt",
+      "sha256": "42178bf6164b8735aa205769159d6fcada03a14a2f67c74161e76977d255e9ef"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/inventory-008.txt",
+      "sha256": "1760a38fb8160e93426210587499ae1d7216bc277d940e90d03bea4a2a180751"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/inventory-009.txt",
+      "sha256": "32db781099f2d862137400b5e299fcd2d20fca3b74f2daef42f2ca8c6dab7f83"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/inventory-010.txt",
+      "sha256": "0457502647d11d1b695e3c0aa71c7264ef5385c53e24778ccde36e84f9fc1cd8"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/preservation-baseline.json",
+      "sha256": "0d38fa60f93ed3d11a60cb068d098b6a6151ef66c53550f8d79b275126d3a14d"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/preservation-current.json",
+      "sha256": "00fe808e94690639aeae8ade4b0dc171d2adb22bcec445b2fd4d8425343bb3a0"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/preservation.json",
+      "sha256": "ffaed18547cd3a93b220c6fde966ceba652441bbfb19ff279f8f9cc708da08d9"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/preservation.mjs",
+      "sha256": "f3cf2b2fe5936344abef7f8cea74d64168012f9e000b73e6ecd311474010c664"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/relay-exploration.json.gz",
+      "sha256": "4879400aaf9dbdd4dac8e810dceed43d5b616a2b1c6e563a2580a2e5ef896a93"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/relay-summary.md",
+      "sha256": "2682ddb68023ef2370c8be05fc7b4d74f0554cce262fbecf787af0936d5265a2"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/run.mjs",
+      "sha256": "883076af06fdd0d19bd93f0ed14718f00c8df545f909295ad22a674e03872a2f"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/trace-control.json.gz",
+      "sha256": "4ca5f94afdbad102b330d7eae08cdd8fa415523ebbc95b3dcd9289f04c2a42a8"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/validation-context.txt",
+      "sha256": "649318d5b532f5000deceb051ed2d85f360b1aadfeea47243e1e9033ba745e19"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/validation-dag.txt",
+      "sha256": "356a1c2cb35620b0689073e3542332f35eb8747fcc9268a15260aace4cc02ca9"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/validation-examples.txt",
+      "sha256": "8d835fce452948ad38650364ea8622276e04dcc62fe83bb8fe2ca2b21bc0d5df"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/validation-final.txt",
+      "sha256": "ca5bb0a8ea525d25144a996acc56313a6c51e536b02c793de75c71026b897303"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/validation-tests.txt",
+      "sha256": "fe357c7c16dcac005108ea19fc392fea1b466bbab0bb13102188d37ffb5fce4d"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/walkthroughs.json.gz",
+      "sha256": "6a5c3626502dea707a77d2effd38321598e2e62b43933f676d2d68c53270d8e3"
+    },
+    {
+      "path": "studies/2026-10-23-causal-core/walkthroughs.md",
+      "sha256": "ae602e2c2580895d49fc193ae8f679699ee42f9efd7f84b4453a043e013d9457"
+    }
+  ],
+  "baseline": {
+    "revision": "af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5",
+    "implementation": "9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504",
+    "tests": 184,
+    "workingTree": "pre-existing dirty work, preserved"
+  },
+  "historical": {
+    "checked": 53,
+    "unchanged": true,
+    "changed": []
+  },
+  "randomness": {
+    "fullScheduler": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "decision-keyed-v1"
+    },
+    "exploration": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "causal-relay-input-keyed-v1"
+    },
+    "walkthroughs": {
+      "generator": null,
+      "decisions": "supplied-inputs-v1"
+    }
+  },
+  "scope": {
+    "register": {
+      "mechanisms": 15,
+      "normalizedControlLeaves": 123,
+      "annotatedGroups": 52
+    },
+    "semanticRefactor": "Removed one duplicate participant set; shared existing access, settlement and enforcement.",
+    "correctnessChanges": [
+      "Reject public null actors before journal/workflow mutation.",
+      "Preflight whole-verdict aggregate debt before reference custody settlement; exact refund boundary remains usable.",
+      "Record unexpected execution errors subject to capacity, rethrow original error."
+    ],
+    "protocolDefaultChanges": [],
+    "researchReduction": "Input-driven, finite work/capacity, unpaid staged one-step reference; no autonomous adoption, compensation, apex merits, reinstatement or learning."
+  },
+  "validation": {
+    "focused": {
+      "command": "node --test test/accountability.test.mjs test/causal-relay.test.mjs test/mechanisms.test.mjs test/disputes.test.mjs test/dispute-stakes.test.mjs",
+      "passed": 35,
+      "failed": 0,
+      "executor": "coordinator"
+    },
+    "full": {
+      "command": "npm test",
+      "passed": 202,
+      "failed": 0,
+      "executor": "coordinator"
+    },
+    "preservation": {
+      "checks": 12,
+      "equivalent": true,
+      "bound": "Every retained run field and ordered protocol event, except provenance, in declared contexts only."
+    },
+    "traceControls": {
+      "checks": 288,
+      "equivalent": true,
+      "bound": "Retained paired runs with tracing full + inert inspection vs no retention; walkthroughs also compare limits 0/full/1."
+    },
+    "dag": {
+      "modules": 28,
+      "edges": 62,
+      "errors": 0,
+      "warnings": 0
+    },
+    "context": {
+      "errors": 0,
+      "warnings": 26,
+      "wideTables": 24,
+      "reviewed": "Wide tables plus two generic context-structure suggestions; links, entrypoints, index coverage and list structure pass."
+    },
+    "examples": {
+      "walkthroughs": 10,
+      "exploratoryRuns": 288,
+      "artifactReplay": true,
+      "fundedCli": {
+        "cases": 19,
+        "pendingCases": 15,
+        "pendingStakeFacy": 53,
+        "unpaidSettledStake": 0,
+        "censored": false
+      }
+    },
+    "diffCheck": 0
+  },
+  "reviews": {
+    "rawBodiesByteIdentical": 18,
+    "inventory": "Two lenses; historical-consumer census incomplete; normalized synthesis degraded.",
+    "implementation": "Two concrete Medium defects retained and corrected.",
+    "remediation": "Both reviewer branches and verifier retried concrete failures at current source; no new supported material regression in that boundary.",
+    "countReconciliation": "Four-file commands: 32 then 33 after added XP-return test. Five-file coordinator commands include two mechanism tests: 34 then 35. Full final suite: 202. Overlapping results are not added.",
+    "limitations": "Judge/normalizer lacked raw bodies and ran no product tests; raw bodies retained/read by coordinator. Neither quorum nor global correctness/release readiness inferred."
+  },
+  "evidenceBoundary": "Diagnostic/exploratory. No registered confirmation, calibrated human/market data, equilibrium, emergence, adoption or governance reliability claim. The 53 original study files are unchanged.",
+  "remaining": "Canonical BACKLOG owns concrete unresolved work, including unintegrated prototypes, full behavioral/compensation/governance/recovery studies and owner OPEN choices. No automatic continuation into the older queue.",
+  "configurations": {
+    "modelPolicy": {
+      "xpFinality": "terminal",
+      "cancellationAuthority": "snapshot",
+      "guarantorEligibility": "active",
+      "guaranteeFee": 0,
+      "councilSize": 101,
+      "debtRecovery": "reserve-until-mature",
+      "councilEligibility": "active",
+      "invitationFreezeHours": 24,
+      "linkBreakXp": "revoke",
+      "spendMaturityHours": 24,
+      "conversionMaturityHours": 24,
+      "artifactReuse": "registration-only"
+    },
+    "modelAblations": {
+      "withholdGuarantorXp": false,
+      "fixedInvitationThreshold": null
+    },
+    "normalizedDisputeRules": {
+      "enabled": true,
+      "accuracy": 0.9,
+      "stake": 1,
+      "fine": 5,
+      "liability": "inviter-chain",
+      "rewardShare": 0.5,
+      "loserHalvesXp": true,
+      "excludeLiable": false,
+      "fineMode": "chain",
+      "stakeBacking": "reserved",
+      "procedure": "one-step",
+      "stakeGrowth": 0.2,
+      "signalAccuracy": 0.7,
+      "closeSignalAccuracy": 0.9,
+      "xpValue": 0.05,
+      "maxRounds": 60,
+      "maxScan": 60,
+      "councilDepth": 0,
+      "reputationWeight": 0,
+      "disputeWindowHours": 168,
+      "noticeBase": 0.02,
+      "evidenceGain": 0.1,
+      "civicValue": 0,
+      "entrantChoice": "lowest",
+      "roundsPerDay": 1,
+      "trackRecordWeight": 0,
+      "regularsNotice": 0,
+      "evidence": "private-signal",
+      "proofStrength": 0.98,
+      "clusterFollowUp": false
+    },
+    "inactiveReferenceRuleFields": [
+      "accuracy",
+      "stakeGrowth",
+      "signalAccuracy",
+      "closeSignalAccuracy",
+      "xpValue",
+      "maxRounds",
+      "maxScan",
+      "councilDepth",
+      "reputationWeight",
+      "disputeWindowHours",
+      "noticeBase",
+      "evidenceGain",
+      "civicValue",
+      "entrantChoice",
+      "roundsPerDay",
+      "trackRecordWeight",
+      "regularsNotice",
+      "evidence",
+      "proofStrength",
+      "clusterFollowUp"
+    ],
+    "verdictEnvironment": {
+      "walkthroughs": "Supplied verdicts and fallible reviews by named schedule; no modeled accuracy distribution.",
+      "exploration": {
+        "violationPrevalence": 0.5,
+        "sensitivity": 0.8,
+        "falsePositiveRate": 0.2,
+        "reviewSensitivity": 0.85,
+        "reviewFalsePositiveRate": 0.2,
+        "adjudicationAccuracy": 0.8,
+        "startHour": 72,
+        "endHour": 96
+      },
+      "note": "The reference does not sample disputes.accuracy/signalAccuracy or timed controls. Exploration uses its declared 0.8 adjudication accuracy; it does not use normalized disputes.accuracy 0.9. Only Mira receives the prevalence draw; Aster is always genuine. Target order is Mira, Aster."
+    },
+    "contexts": [
+      {
+        "id": "independent-capacity2",
+        "reviewCapacity": 2,
+        "sharedReviewError": 0
+      },
+      {
+        "id": "independent-capacity1",
+        "reviewCapacity": 1,
+        "sharedReviewError": 0
+      },
+      {
+        "id": "correlated-capacity1",
+        "reviewCapacity": 1,
+        "sharedReviewError": 0.75
+      }
+    ],
+    "namedOverrides": {
+      "authority-boundary": {
+        "modelPolicy": {
+          "councilSize": 1
+        },
+        "actualBallots": null
+      }
+    },
+    "custodyAssumptions": [
+      "Reserved funds cannot fund unrelated spending/fines; fines may create debt.",
+      "Refund is not automatic debt repayment; passive receipt restores no rights.",
+      "A moot target refunds pending custody; horizon-open cases retain it."
+    ],
+    "calibration": "All view work and signal probabilities are illustrative; no compensation or useful-service funding.",
+    "supportedReferenceRuleFields": [
+      "enabled",
+      "procedure",
+      "stake",
+      "stakeBacking",
+      "fine",
+      "fineMode",
+      "liability",
+      "rewardShare",
+      "loserHalvesXp",
+      "excludeLiable"
+    ],
+    "conditionalFields": {
+      "fine": "Not consumed in chain mode; the cut-act count supplies the fine.",
+      "loserHalvesXp": "Losing challenger position only; upheld liable-party halving is separate."
+    }
+  }
+}

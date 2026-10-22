@@ -1,0 +1,116 @@
+ACTOR_REVIEW_RESULT
+
+## Status / identity
+
+**Status: degraded.**
+
+**Verdict:** Accept the merger’s attributed, scenario-bounded technical synthesis with an evidence-completeness qualification. This does **not** establish complete upstream evidence preservation, authenticated consensus, full-suite success, or release readiness.
+
+The judge received the merger output and retained references, but not the raw reviewer or verifier reports. This normalization receives the judge’s report; it does not independently authenticate the upstream reports.
+
+The merger’s reported **“complete for bounded synthesis”** remains a description of its synthesis activity—not evidence-chain completeness.
+
+Reported implementation identity, **not recomputed by the judge or normalizer**:
+
+```text
+Runtime: Node v26.8.1
+Method: sha256-src-mjs-v1
+Digest: 1338b35c06a19c668b833b84fa6f15f9152c98082e811efee672ab64f421d3fb
+Source modules: 28
+```
+
+### Retained branch status
+
+| Source | Status available in supplied material |
+|---|---|
+| Reviewer branch 1 | Reference retained; raw report and explicit terminal status unavailable. |
+| Reviewer branch 2 | Reference retained; preservation results attributed to this branch; raw report and explicit terminal status unavailable. |
+| Verifier | Reference retained; checks and agreement attributed by the merger; raw report and explicit terminal status unavailable. |
+| Merger | Reported completion of bounded synthesis; upstream evidence fidelity remains unverified. |
+| Judge | **Degraded**: bounded report judgment completed; primary-evidence comparison unavailable. |
+| Normalized result | **Degraded**: preserves the supplied judgment without adding independent product verification. |
+
+## Original finding verification matrix
+
+These entries describe **merger-reported evidence as assessed by the judge**, not independently reproduced implementation results.
+
+| Original finding or control | Reported verification | Retained judgment |
+|---|---|---|
+| Public `null` actors could invoke privileged execution | Five public entrypoints rejected at trace limits 0, 1 and 100, with unchanged snapshots. | Supports the correction only for the tested entrypoints and scenarios. |
+| Extreme verdict could partially settle and strand a case | Arithmetic preflight preceded settlement; repeated `RangeError` left protocol/workflow snapshots unchanged and case/custody pending. | Supports correction of the original numeric witness; does not establish general rollback. |
+| Exact safe boundary must remain accepted | Resolution succeeded to debt `9007199254740991`, including the pending stake refund. | Retains the positive boundary control, not merely rejection coverage. |
+| Unexpected exceptions must propagate | A particular `TypeError` was rethrown with identity preserved at all three trace limits. | Supports only the supplied exception witness. |
+
+**No additional independent verification is supplied by the judge or this normalization.**
+
+## New supported defects with reproducers
+
+**No new product defect is established.** No new product reproducer is supplied.
+
+Two evidence/report issues remain:
+
+1. **Evidence-chain completeness is unestablished.**  
+   Reviewer and verifier references are retained, but their raw reports were absent from the judge’s input. Omitted findings, changed severity, or lost dissent therefore cannot be checked. This is not evidence that such omissions occurred.
+
+2. **Focused-test accounting is unresolved.**  
+   The supplied judgment preserves counts of **32 initially passing tests**, **33 after externally changed tests**, and an unreconciled coordinator claim of **34**. This is an evidence-accounting discrepancy, not a demonstrated implementation failure.
+
+## Commands actually run
+
+### By this normalizer
+
+- Read the `actors` and `swarm` operating Skills.
+- Ran no repository commands, tests, probes, hash calculations, or preservation checks.
+- Made no file edits.
+
+### By the judge, as stated in the supplied report
+
+- Read the `actors`, `swarm`, and `re-review` operating Skills.
+- Ran no repository commands, tests, probes, hash calculations, or preservation checks.
+- Made no file edits.
+
+### Upstream activity attributed by the merger
+
+- The verifier reportedly ran status/hash/implementation-identity checks, two focused test runs, and independent Node assertions.
+- Reviewer branch 2 reportedly performed preservation comparisons.
+- Neither the merger nor verifier reportedly ran `npm test` or the preservation script.
+
+These upstream activities remain **attributed claims**, not judge- or normalizer-executed evidence.
+
+## Preservation and trace limits
+
+- Preservation results of **12 contexts and 144 sequential-oracle comparisons** remain attributed to reviewer branch 2—not the verifier, merger, judge, or normalizer.
+- Disabled or saturated traces do not establish durable retention of exception details.
+- Arithmetic preflight does not guarantee rollback after arbitrary later exceptions.
+- External interference and nonexclusive stake-book ownership remain outside the demonstrated guarantee.
+- Universal numeric safety, untested contexts, and authenticated historical-baseline provenance remain unestablished.
+- Focused validation does not establish full-suite success or release readiness.
+- The judge found the merger’s attribution, severity calibration, and limitation disclosure appropriately bounded. Fidelity to missing upstream reports remains unchecked.
+
+## Evidence
+
+All references below are retained from the supplied material. Their underlying execution records were **not independently opened by this normalizer**.
+
+| Source | Stable reference | Use in this result |
+|---|---|---|
+| Reviewer branch 1 | **ACTOR_EVIDENCE_REF: execution.json#command-005** | Retained upstream source; report body unavailable. |
+| Reviewer branch 2 | **ACTOR_EVIDENCE_REF: execution.json#command-006** | Attributed preservation results; report body unavailable. |
+| Verifier | **ACTOR_EVIDENCE_REF: execution.json#command-007** | Attributed focused checks and assertions; report body unavailable. |
+| Merger | **ACTOR_EVIDENCE_REF: execution.json#command-008** | Bounded synthesis represented through the supplied judgment. |
+| Judge | **ACTOR_EVIDENCE_REF: execution.json#command-009** | Supplied report normalized here. |
+
+Reference retention does not substitute for reviewing the referenced evidence.
+
+## Dissent and next action
+
+**No supported material dissent is reported in the merger, according to the judge. Whether all upstream dissent was preserved is not checkable.** No contrary product finding is invented to fill that gap.
+
+Required handoff:
+
+1. Retain **degraded** downstream evidence-chain status while preserving the merger’s reported completion of bounded synthesis.
+2. Supply the raw reviewer and verifier reports, plus the merger report, for direct comparison before claiming complete evidence preservation.
+3. Reconcile **34 versus 32/33** using the exact commands, test inventories, and corresponding implementation/test hashes.
+4. If full-suite validation is required, obtain an explicitly attributed `npm test` result tied to the tested implementation and test identities.
+5. Preserve scenario boundaries and executor attribution in subsequent summaries.
+
+**Bottom line:** The supplied material supports a usable, attributed, bounded synthesis—not authenticated upstream consensus, exhaustive evidence preservation, or complete validation.

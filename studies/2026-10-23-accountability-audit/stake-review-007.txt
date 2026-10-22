@@ -1,0 +1,78 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**Complete — claim supported within the reviewed model/book/scheduler ownership boundaries. No supported material finding.**
+
+Both supplied reviewer branches are usable: **2/2 complete**, meeting the stated minimum. This verifier corroborated core source and test assertions by inspection; this is not a blanket correctness guarantee or proof over all configurations.
+
+## Scope/source identity
+
+Read-only verification of the funded-stake reference in `/home/llb/Repos/facety`.
+
+Evidence sources:
+- **Reviewer 1**, custody/lifecycle lens: `execution.json#command-005`.
+- **Reviewer 2**, integration/missingness/compatibility lens: `execution.json#command-006`.
+- **Verifier inspection:** `src/model.mjs:391–453`, `src/dispute-stakes.mjs:1–103`, `src/experiment.mjs:1177–1255`, `src/games.mjs:245–266`, `test/dispute-stakes.test.mjs`, `test/games.test.mjs:53–73`, and `docs/simulator.en.md:105–119`.
+
+No repository writes or commits.
+
+## Findings and minimal witnesses
+
+### Proven within the inspected scope
+
+1. **Reserved collateral is real funded custody, unavailable for concurrent reuse or ordinary spending.**  
+   `src/model.mjs:402–413` deducts liquid FACY and records separate custody. Settlement at `:415–437` moves that custody to a receiver or burned supply, rather than creating a new payment. Fines at `:439–453` collect only liquid funds and record remaining liability as debt.  
+   **Witness:** “reserved stakes have exclusive model custody across concurrent cases and every liquid spending path” checks concurrent reservations, rejected transfers/guarantee spending, fine priority, refunds and replay rejection. Reviewer 1 reports it passing.
+
+2. **Normal case settlement/refund has one lifecycle.**  
+   `src/dispute-stakes.mjs:14–18,44–89` requires an open case before settlement or moot processing; model commitments independently reject repeated disposition.  
+   **Witnesses:** “stake books retain unsecured shortfalls but enforce funded concurrent commitments in the reserved reference” and “reserved ladder outcomes conserve all positions including losing tops and mooted cases.” Both reviewers report these passing. Reviewer 1 additionally inspected experiment replay guards at `src/experiment.mjs:787–811,860–875`.  
+   **Qualification:** This supports single settlement through the owning book/scheduler, not whole-case transactional recovery after external desynchronization.
+
+3. **Retained accounting distinguishes nominal commitments from actual consequences.**  
+   `src/dispute-stakes.mjs:47–79` separately records nominal losing stakes, actual transfers, burns, releases and unpaid amounts. `src/experiment.mjs:1177–1239` attributes pending custody to owners and includes false-owned custody in circulating holdings; `:1255` returns case records.  
+   **Witnesses:** The concurrent-case test distinguishes reserved transfer of 6 from unsecured transfer of 1 with unpaid 5, without inventing debt. Both reviewers cite the integration test “all dispute references expose exclusive reserved custody…” for custody totals and conservation.
+
+4. **Missing valued historical custody remains unknown, not zero.**  
+   `src/games.mjs:245–266` ignores zero-weight fields but returns unknown utility for missing/non-finite nonzero-weight facts.  
+   **Witness:** `test/games.test.mjs:53–73` deletes historical custody fields, checks unchanged legacy valuations, then checks unknown stake-valued payoffs and unavailable mixed equilibria. Both reviewers report it passing.
+
+5. **Default backing is unchanged.**  
+   `DisputeStakes` defaults to `'unsecured'`; `docs/simulator.en.md:105–119` explicitly labels reserved custody and its priority/recipient rules as OPEN research assumptions. Reviewer 2 reports six passing bounded legacy differential contexts, not historical-study reproduction.
+
+### Disproven
+
+**No component of the narrowly qualified claim is contradicted by the usable evidence.** No implementation defect is established by either reviewer or this verification.
+
+### Unknown / missing evidence
+
+- Unconditional correctness across all schedules, numeric boundaries and external model/book interference is **not established**.
+- Historical-study reproducibility and final artifact provenance refresh are **not verified**.
+- Saved game facts alone do **not establish case-level reconstruction**, because they do not retain full experiment case histories.
+
+## Tests actually run
+
+**This verifier ran no tests.** It inspected implementation and test assertions and reused the supplied reviewer execution evidence.
+
+Reviewer-reported execution:
+- **Both reviewers:** Five focused suites — **58 passed, 0 failed**; perturbation suite — **7 passed, 0 failed**.
+- **Reviewer 2 only:** `stake-compatibility.mjs` — six differential contexts passed; `stake-backing.mjs` — passed.
+- **Reviewer 2 only:** Additional reserved-backing future-prefix/no-op probe passed across all three procedures, exercising 11, 11 and 10 cases. This remains reviewer-specific evidence, not independently reproduced verifier evidence.
+
+Neither reviewer ran full `npm test`.
+
+## Selected versus reference assumptions
+
+- **Unsecured remains the intentional default:** concurrent balance reuse and later unpaid commitments are preserved; unpaid stakes do not automatically become debt.
+- **Reserved remains an OPEN reference:** collateral is protected from unrelated fines; refunds do not automatically repay debt; invalidated accounts may passively receive refunds/winnings; losing top stakes burn; pending cases retain custody.
+- These are declared reference semantics, **not selected protocol backing or seizure law**.
+
+## Residual risks
+
+- Multi-position settlement is sequential, not transactional against externally induced desynchronization. No reviewed scheduler path demonstrating that defect was reported.
+- Dedicated experiment-level moot/invalidation combinations have less direct evidence than the model/book checks.
+- Existing inert-inspection controls passed, but a dedicated reserved-backing inert-inspection matrix was not demonstrated.
+- Legacy-equivalence evidence is bounded to six contexts using current support modules.
+
+**Next action:** No corrective implementation change is supported by this evidence. Preserve the regressions and stated limitations; leave full-suite validation and final provenance refresh with the coordinator.

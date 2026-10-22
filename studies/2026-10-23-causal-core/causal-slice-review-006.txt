@@ -1,0 +1,141 @@
+ACTOR_REVIEW_RESULT
+
+## Status and inspected identity
+
+**Complete for the bounded read-only lens; approve with limits.** No blocking code defect or material unsupported claim found in the inspected target.
+
+- Working-tree HEAD: `af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5`.
+- Independently observed implementation identity:
+  - Method: `sha256-src-mjs-v1`
+  - Digest: `aaf2b02b9173bf57628c41ef0c72ecabb46bf3ad4e77e1dcb15e26aeb2c6f4d4`
+  - Source modules: 28
+  - Runtime: Node `v26.8.1`
+- Baseline artifact identifies digest `9a83b5db8875c6d0c63ef24dc36f5be4875836bafd7b9531ed68b8590fd89504`, 23 modules.
+- Read `AGENTS.md`, target implementation/tests, shared-helper callers, provenance/randomness owners, and preservation harness. Did not inspect or import the excluded prototypes as review targets. The implementation digest nevertheless includes all top-level `src/*.mjs`, by definition.
+- No repository writes, commits, or publication performed. Existing dirty stake/audit work was treated as baseline.
+
+Selected exact file identities:
+
+| Path | SHA-256 |
+|---|---|
+| `src/accountability.mjs` | `78bd845ee1295da23a6ea4d251c776870de294811be503ab26fd88d9d660a172` |
+| `src/disputes.mjs` | `8510b340d74efa02890fa084a3f956d1ce916acf6b4b4b4a7549c796f91528ca` |
+| `src/experiment.mjs` | `84001195cc587544b107f70e4867fd7942dc7cd453d49c5a142517cfe9fbe5b9` |
+| `examples/causal-walkthroughs.mjs` | `4b6c8e7bbb729febbd3579c20ba4a05efd53dd44bb764e9a0985184eb8c17d3e` |
+| `examples/causal-relay.mjs` | `2503be33bb07d00cbfde5eb6834106ad6bef4bd47caaa628542247022e22701a` |
+
+## Supported findings, ranked by concrete impact
+
+### 1. Preservation is independently supported—but only for the twelve declared contexts
+
+**Evidence:** Running `node studies/2026-10-23-causal-core/preservation.mjs` returned:
+
+```json
+{"equivalent":true,"checks":12}
+```
+
+The harness hashes every retained run field except provenance, including an injected complete ordered protocol-event log. It covers three procedures, two stake backings, and two social-hook settings.
+
+**Risk:** This is useful diagnostic evidence for extraction preservation, not universal equivalence or historical confirmation. I did not independently reconstruct the baseline implementation or authenticate baseline capture.
+
+**Next action:** Retain the baseline and comparison artifacts with their distinct implementation identities. Do not broaden their claim beyond these configurations.
+
+### 2. The paired relay design supports a routing-path diagnostic, not an outsourcing-quality benefit
+
+**Evidence:** `examples/causal-relay.mjs:20–60,92–120` pairs environment draws, funded starting state, opportunities, horizon, and total budget. Its allocation is explicit: member 10 work units versus external origin 6 plus sponsor 4.
+
+An independent 40-seed probe across all three contexts and arms verified:
+
+- Member/external-relay protocol and metric equality.
+- Trace off/full/saturated and inert-read equality.
+- Retained decision ancestry references point backward to existing decisions.
+- Referenced protocol-event indices exist.
+- Unresolved verdict latencies remain `null`.
+
+Output:
+
+```json
+{"runs":360,"additionalReplayRuns":720,"unresolvedPackageInstances":146,"wrongfulInvalidationInstances":0,"reasons":["no-sponsor","review-not-suspicious","review-capacity-exhausted"],"invariants":"PASS"}
+```
+
+**Risk:** Equal budgets are not equal realized expenditure, and neither budget allocation nor observation quality is empirically calibrated. The implementation explicitly acknowledges both. Member-placebo equality is an important negative control, not evidence of improved investigator skill.
+
+**Next action:** Preserve the member placebo and the explicit resource-allocation assumptions in downstream summaries.
+
+### 3. False-allegation harm is represented; zero wrongful invalidations must not be presented as zero harm
+
+**Evidence:** `src/disputes.mjs:15–18,22–55` records challenger XP loss after rejection and liability sanctions after upheld allegations. `examples/causal-relay.mjs:65–79` separately retains wrongful invalidations, genuine XP loss, collected penalties, burn, and debt.
+
+The default 32-seed comparison independently produced:
+
+| Context | Opened cases | False allegations reaching cases | Wrongful invalidations | Genuine XP lost, summed |
+|---|---:|---:|---:|---:|
+| Independent, capacity 2 | 16 | 5 | 1 | 95 |
+| Independent, capacity 1 | 14 | 3 | 0 | 88 |
+| Correlated, capacity 1 | 18 | 6 | 0 | 104 |
+
+**Risk:** The rendered table emphasizes wrongful invalidations; readers can overlook substantial genuine-party XP consequences when that count is zero. The renderer does direct readers to the retained JSON (`examples/causal-relay.mjs:123–133`), so this is an interpretation risk, not missing measurement.
+
+**Next action:** Whenever summarizing safety, report genuine XP/financial consequences alongside wrongful invalidations. Do not collapse debt into burn.
+
+### 4. The exercised feedback claim is appropriately narrow
+
+**Evidence:** The `false-allegation-rejected` walkthrough performs a later challenge after the first rejected challenge changes Bela’s XP. `test/accountability.test.mjs` checks the actual challenge sequence `[false, true, false]`, XP transition `7 → 3`, and the later strict-gate failure against 3-XP Mira.
+
+The walkthrough explicitly calls this **encoded authority feedback**, not learned caution. Availability restoration in `neglect-restored` is likewise labeled exogenous.
+
+**Risk:** Describing these as endogenous participation, adaptive investigation, equilibrium, or a general closed-loop behavioral model would be unsupported.
+
+**Next action:** Keep the current distinctions. No additional behavioral concept is needed to explain this slice.
+
+## Tested invariants and commands
+
+Independently ran:
+
+1. `npm test`
+   ```text
+   ℹ tests 196
+   ℹ pass 196
+   ℹ fail 0
+   ℹ cancelled 0
+   ℹ skipped 0
+   ```
+   Full output: `/tmp/causal-review-tests.log`.
+
+2. `node studies/2026-10-23-causal-core/preservation.mjs`
+   - Twelve checks passed.
+   - Output: `/tmp/causal-review-preservation.json`.
+
+3. Independent inline Node probe described above: 360 full-trace runs plus 720 off/saturated replays.
+
+4. Default `runRelayComparison()` metric inspection, including false-allegation cases and genuine XP loss.
+
+5. Implementation digest before and after validation: unchanged.
+
+Existing tests additionally substantiate truth separation, trace truncation invariance, strict XP/liquidity access, source-label duplication refusal, moot refunds, pending-stage missingness, and programming-error propagation.
+
+## Paired-design / trace limits
+
+- Journal ancestry and mechanism tags explain execution; they are not independent causal identification (`src/accountability.mjs:44–63`).
+- Distinct source-group labels do not establish independent errors. The correlated context explicitly allows shared interpretation errors despite separate labels (`examples/causal-relay.mjs:39–43,116`).
+- Saturated traces retain references to omitted records; they are not complete standalone ancestry certificates.
+- Verdicts remain supplied one-step inputs. No Council merits, appeal procedure, endogenous search, compensation, adoption, or calibrated utility was demonstrated.
+- The independent probe exercised the declared examples, not arbitrary multi-owner integration. Exclusive dispute-book ownership remains a boundary; it was not tested as a composable multi-book API.
+- Preservation and seed pairing do not replace committed mechanism registration or confirmation.
+
+## Minority findings
+
+No peer reports were supplied for this substantive review. No consensus or quorum inferred. The interpretation risks above are this reviewer’s observations.
+
+## Independent verification and unresolved evidence
+
+Repository behavior was independently tested; launch model/thinking/tool-policy attestation was not. The supplied preflight reports establish startup only.
+
+Baseline capture authenticity, untested configurations, empirical work-unit calibration, and general mechanism validity remain unresolved. None is silently promoted to a code defect or a completed confirmation.
+
+## Next bounded actions
+
+1. Retain this raw review and its command-output references for verifier assessment.
+2. Bind any final integrated claim to the inspected digest—or rerun affected checks if source identity changes.
+3. Keep the result framed as a bounded staged reference with an exercised authority-feedback example.
+4. Include genuine-party costs and unresolved packages when presenting relay outcomes; preserve the zero-effect member placebo.

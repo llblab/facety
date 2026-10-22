@@ -1,0 +1,103 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**Complete — no supported material finding within the reviewed model/book/scheduler ownership boundaries.**
+
+The verifier reports **2/2 reviewer branches complete**, meeting the stated minimum, and corroborates core implementation and regression assertions by inspection. The available evidence supports the narrowly qualified claim; it does **not** establish unconditional correctness, historical-study reproducibility, or release readiness.
+
+This merger used the supplied verifier report and its attributed reviewer evidence. It did not independently inspect the raw reviewer reports, repository, or execution artifacts.
+
+## Scope/source identity
+
+Read-only review of the funded-stake reference in `/home/llb/Repos/facety`, covering custody, lifecycle, experiment accounting, utility missingness, and default compatibility.
+
+Retained evidence references:
+- **Reviewer 1 — custody/lifecycle:** `execution.json#command-005`
+- **Reviewer 2 — integration/missingness/compatibility:** `execution.json#command-006`
+- **Verifier — source/test inspection and evidence qualification:** `execution.json#command-007`
+
+The verifier identifies these inspected sources:
+- `src/model.mjs:391–453`
+- `src/dispute-stakes.mjs:1–103`
+- `src/experiment.mjs:1177–1255`
+- `src/games.mjs:245–266`
+- `test/dispute-stakes.test.mjs`
+- `test/games.test.mjs:53–73`
+- `docs/simulator.en.md:105–119`
+
+No repository writes or commits are reported.
+
+## Findings and minimal witnesses
+
+### Consensus supported by the supplied evidence
+
+1. **Reserved collateral is funded custody, not a reusable nominal promise.**  
+   Reservation deducts liquid FACY and records separate custody; disposition transfers or burns that custody. Ordinary fines collect liquid funds and record remaining liability as debt rather than seizing reserved positions.  
+   **Witness:** The concurrent-custody regression exercises reservations, rejected transfers and guarantee spending, fine priority, refunds, and replay rejection.  
+   **Sources:** Reviewer 1; verifier inspection of `src/model.mjs:402–453`.
+
+2. **Normal settlement and moot processing enforce a single lifecycle through the owning book/scheduler.**  
+   The book requires an open case, while model commitments independently reject repeated disposition.  
+   **Witnesses:** Concurrent-commitment and reserved-ladder tests cover funded positions, losing tops, and mooted cases. Reviewer 1 also reports inspection of experiment replay guards.  
+   **Boundary:** This is not proof of transactional recovery after external model/book desynchronization.  
+   **Sources:** Both reviewers; verifier inspection of `src/dispute-stakes.mjs:14–18,44–89`.
+
+3. **Accounting separates nominal exposure from realized consequences.**  
+   Records distinguish losing nominal stakes, actual transfers, burns, releases, and unpaid amounts. Experiment accounting attributes pending custody to owners, including false-owned custody in circulating holdings.  
+   **Witness:** A concurrent-case test distinguishes a reserved transfer of 6 from an unsecured transfer of 1 with unpaid 5, without inventing debt. The integration regression checks custody totals and conservation.  
+   **Sources:** Both reviewers; verifier inspection of `src/dispute-stakes.mjs:47–79` and `src/experiment.mjs:1177–1255`.
+
+4. **Missing historical custody facts remain unknown when valued.**  
+   Zero-weight missing fields do not disturb legacy valuations; missing or non-finite facts with nonzero weights make utility unknown.  
+   **Witness:** `test/games.test.mjs:53–73` removes custody fields, verifies unchanged legacy valuations, then checks unknown stake-valued payoffs and unavailable mixed equilibria.  
+   **Sources:** Both reviewers; verifier inspection of `src/games.mjs:245–266`.
+
+5. **Unsecured backing remains the default.**  
+   Reserved backing remains an explicitly documented OPEN research reference. Reviewer 2 reports bounded legacy-equivalence checks across six contexts.  
+   **Boundary:** Those checks are not historical-study reproduction.  
+   **Sources:** Reviewer 2; verifier inspection of the default and `docs/simulator.en.md:105–119`.
+
+### Minority risks and contradictions
+
+No contradictory implementation witness or supported severe minority defect is reported in the supplied verifier summary. The sequential-settlement concern remains a lifecycle-hardening risk, **not a demonstrated scheduler exploit**.
+
+No merger-added implementation finding is asserted.
+
+## Tests actually run
+
+**This merger ran no tests. The verifier also ran no tests.** Execution results below are reviewer-reported, as retained in the supplied verifier report:
+
+| Source | Reported execution |
+|---|---|
+| Both reviewers | Five focused suites: **58 passed, 0 failed** |
+| Both reviewers | Perturbation suite: **7 passed, 0 failed** |
+| Reviewer 2 | `stake-compatibility.mjs`: six differential contexts passed |
+| Reviewer 2 | `stake-backing.mjs`: passed |
+| Reviewer 2 | Reserved future-prefix/no-op probe passed across all three procedures, exercising **11, 11, and 10 cases** |
+
+The additional prefix/no-op probe remains reviewer-specific evidence, not independently reproduced verifier evidence.
+
+**Neither reviewer ran full `npm test`.**
+
+## Selected versus reference assumptions
+
+The review does not promote reserved backing into selected protocol law.
+
+- **Intentional unsecured default:** Concurrent balance reuse and subsequent unpaid commitments remain possible; unpaid stakes do not automatically become debt.
+- **OPEN reserved reference:** Reserved collateral is protected from unrelated fines; refunds do not automatically repay debt; invalidated accounts may passively receive refunds or winnings; losing top stakes burn; pending cases retain custody.
+
+These declared semantics are not, by themselves, bugs or evidence of selected backing or seizure rules.
+
+## Residual risks
+
+- Multi-position settlement is sequential, not transactional against externally induced desynchronization; no reviewed scheduler path demonstrating exploitation was reported.
+- Experiment-level moot/invalidation combinations have less direct evidence than model/book checks.
+- A dedicated reserved-backing inert-inspection matrix was not demonstrated, although existing inert-inspection controls passed.
+- Compatibility evidence is bounded to six contexts using current support modules.
+- Arbitrary schedules, numeric boundaries, and external model/book interference remain unproven.
+- Historical-study reproduction and final artifact provenance refresh remain unverified.
+- Saved game facts alone do not retain enough history for full case-level reconstruction.
+- Raw reviewer reports and execution artifacts were not independently rechecked by this merger.
+
+**Next action:** No corrective implementation change is supported by the supplied evidence. Preserve the regressions and qualifications. The coordinator retains ownership of full `npm test`, final provenance refresh, and any additional validation required before stronger readiness claims.

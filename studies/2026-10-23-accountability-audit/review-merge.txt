@@ -1,0 +1,104 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**Degraded — partially supported.** Both reviewer branches are reported usable (**2/2**), but the evidence does not support the claim that every suspicion was reproduced or falsified.
+
+- Concurrent stake overcommitment and exact-24-hour same-subject media reuse are reproduced.
+- Settlement undercollection is reproduced in an isolated harness, not end to end.
+- Settlement-helper replay is reproduced; **normal-scheduler double settlement remains unresolved**.
+- Proposed remedies are recommendations, not implemented or validated changes.
+
+Agreement is on these evidence classifications—not on a protocol change.
+
+## Scope and baseline
+
+This is a synthesis of the supplied verifier report and its retained reviewer references. **This merger performed no repository inspection, runtime reproduction, or writes.** Reviewer-specific details below are attributed through the verifier; the original reviewer bodies were not supplied separately in this turn.
+
+Sources:
+
+- Dispute reviewer: `ACTOR_EVIDENCE_REF: execution.json#command-005`
+- Media reviewer: `ACTOR_EVIDENCE_REF: execution.json#command-006`
+- Verifier: `ACTOR_EVIDENCE_REF: execution.json#command-007`
+
+The verifier reported:
+
+```text
+HEAD:
+af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5
+
+src/model.mjs:
+9f72fd82822b6038555f76cd350df76b4e84db0b
+
+src/experiment.mjs:
+dd81762e934cfd27b096f7953f96563b40d2fe48
+```
+
+These matched the dispute reviewer’s inspected source blobs. At verification time, `studies/2026-10-23-accountability-audit/` was untracked. The earlier clean-tree observation is historical, not a current-state guarantee.
+
+## Finding per suspicion with exact witness and output
+
+| Suspicion | Classification | Witness, output, and limitation |
+|---|---|---|
+| Concurrent cases reuse liquid backing | **Reproduced in an instrumented ordinary experiment** | Dispute reviewer observed `n5` at hour `96` with liquid `3` and commitments `6`, followed by further overcommitments. Instrumentation reportedly observed admission without changing decisions. References: `src/experiment.mjs:614–630, 681–699, 719–758`. This proves overcommitment under the exercised implementation, not by itself a violation of a selected escrow rule. |
+| Spending before settlement causes undercollection | **Reproduced in an isolated harness; end-to-end occurrence unknown** | With real `FacetyModel` balances and constructed dispute records, spending five of six FACY left two nominal three-FACY losing positions collecting only **one FACY total**, with debt remaining `0`. Verifier inspected collection capped at current liquid balance and later XP punishment using `fine: 0`, at `src/experiment.mjs:787–800`. Ordinary admission-to-settlement reachability of this exact shortfall was not demonstrated. |
+| The same dispute settles twice | **Helper replay reproduced; scheduler exploit unresolved** | Explicitly invoking the same settlement helper twice caused another transfer/XP penalty. No settled-state guard was found at `src/experiment.mjs:764–810`. However, the timed path removes records before settlement and iterates a snapshot at `:861–889`. No normal-scheduler double-settlement witness was supplied. This is neither established scheduler exploitation nor falsification. |
+| The same subject reuses the same artifact/face at exactly 24 hours | **Reproduced through the public API and independently corroborated** | Both reviewer branches reportedly supplied witnesses; the verifier independently reproduced acceptance at hour `24`. The additional XP came from two accepted acts, not duplicate conversion. References: `src/model.mjs:247–309, 361–367`; baseline acceptance tests: `test/model.test.mjs:52–79`. |
+| Key rotation bypasses the rolling limit | **Bounded negative evidence** | The hour-23 attempt remained rejected after key rotation. This excludes the exercised witness, not every configuration. |
+| Act creation immediately grants XP | **Bounded negative evidence** | After accepted creation at hour `24`, `a.xp=0`; later conversion produced XP. |
+| One act converts twice | **Bounded negative evidence** | Repeat conversion rejected with `emission is spent or disputed`. This does not explain the two-act reuse behavior. |
+
+The verifier’s exact media output was:
+
+```text
+23h: rolling 24-hour reward limit
+24h: minted=4, a.xp=0
+claims: a=true, a=true, b=false, c=true [collision flags]
+48h: a.xp=2, a.liquidFacy=2
+repeat conversion: emission is spent or disputed
+```
+
+Witness sequence: one shared artifact; `a` on face `0` at hour `0`; key rotation at hour `23`; another `a` claim at hour `24`; then `b` on face `1` and `c` on face `0`. Distinct-face shared media and cross-subject collision recording remained operational.
+
+Dispute findings trace to `command-005`, as qualified by `command-007`; media findings trace to `command-006` and the independent reproduction reported in `command-007`.
+
+## Selected versus OPEN semantics
+
+The supplied evidence distinguishes implementation behavior from protocol judgment:
+
+- **SELECTED dispute semantics:** monetary participation stakes, increasing ladder positions, restart-on-entry finality, and freezing accused unspent rights.
+- **OPEN dispute choices:** detailed stake funding/backing mechanics and losing-top treatment.
+- **SELECTED/documented media controls:** rolling reward interval, terminal XP, shared artifacts, cross-subject collision recording, duplicate content-hash rejection, and an inclusive artifact reference boundary.
+
+Consequently:
+
+1. **Overcommitment is demonstrated behavior; mandatory escrow is not established as a selected requirement.**
+2. **Undercollection exposes a settlement/accounting risk.** Nominal commitments cannot be reported as fully recovered costs when collection is smaller.
+3. **Exact-24-hour reuse is demonstrated, but its classification as a protocol defect requires clarification.** Subject/artifact uniqueness is a proposed rule, not an already-unambiguous selected rule.
+4. **Helper replay is a defensive lifecycle concern, not a proven ordinary-scheduler exploit.**
+5. No supplied patch demonstrates remediation compatibility with an unsecured/reference funding variant.
+
+**Uncollected amounts are not burned stake, funded winnings, or recovered costs.** No protocol selection is made by this synthesis.
+
+## Proposed minimal changes/tests
+
+1. **Correct the synthesis claim:** classify suspicions as reproduced, bounded-negative, or unresolved—not universally reproduced or falsified.
+2. **Preserve the current backing behavior as an explicitly described reference variant** unless an owner decision selects another policy. Do not silently introduce default escrow.
+3. **Separate settlement accounting:** record nominal stake, actual transfers, actual burns, and unpaid amounts. Report debt separately if any is actually created.
+4. **Close dispute test gaps:** add ordinary admission-to-settlement shortfall witnesses and normal-scheduler lifecycle regressions. Keep helper replay evidence distinct from scheduler reachability.
+5. **Obtain media-reuse clarification before changing acceptance semantics.** If subject/artifact uniqueness is selected, preserve fresh-artifact rewards at hour `24`, legitimate shared media, collision recording, and mutation-free rejection.
+6. **Validate any later implementation:** run relevant regressions and `npm test`; record owner decisions and model assumptions through the project’s protocol/documentation process.
+
+These are conditional next actions, not completed fixes.
+
+## Remaining risks
+
+- No end-to-end settlement-undercollection witness was supplied.
+- Normal-scheduler double settlement remains unresolved.
+- No remediation patch, preserved reference variant, or post-change validation was reviewed.
+- The dispute branch reportedly passed **36 targeted tests**; the media branch reportedly passed **3 targeted tests**. These support baseline behavior, not proposed fixes. The verifier did not rerun them, and this merger ran no tests.
+- Conservation checks do not establish funded commitments.
+- Reviewer count does not create independent corroboration for every finding: the strongest independent runtime corroboration reported here concerns media behavior.
+- Original reviewer bodies were not separately available to this merger; branch details rely on the supplied verifier’s account and retained references.
+
+**Overall confidence:** high for the reported media reproduction and the need to narrow the synthesis claim; qualified for dispute behavior beyond the instrumented experiment and isolated harness.

@@ -1,0 +1,199 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**Complete — read-only audit.** Concurrent stake reuse and exact-24-hour same-subject media reuse were reproduced. Settlement undercollection was reproduced using the inspected settlement function in an isolated in-memory harness. **Double settlement was not reproduced through the normal scheduler.**
+
+No files changed; no protocol decisions selected.
+
+## Scope and baseline
+
+- Repository HEAD: `af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5`.
+- `git status --short` and `git diff --stat` produced no changes during inspection.
+- Inspected `src/model.mjs`, dispute functions in `src/experiment.mjs`, protocol §§25–27 and media rules, and relevant model/dispute tests.
+- Source blob IDs from `git hash-object`:
+  - `src/model.mjs`: `9f72fd82822b6038555f76cd350df76b4e84db0b`
+  - `src/experiment.mjs`: `dd81762e934cfd27b096f7953f96563b40d2fe48`
+
+The runtime probes below modified source **only in memory**, or exercised `FacetyModel` directly.
+
+## Finding per suspicion with exact witness and output
+
+### 1. Reproduced: concurrent disputes count the same liquid balance repeatedly
+
+**Risk: high for interpreting dispute economics; exact backing policy remains unresolved.**
+
+Challenge admission checks current liquid balance, and escalation eligibility does likewise. Neither opening nor entering deducts or reserves the stake:
+
+- Initial check: `src/experiment.mjs:614–630`.
+- Initial position record: `src/experiment.mjs:681–699`.
+- Entrant eligibility: `src/experiment.mjs:719–722`.
+- Entry mutation: `src/experiment.mjs:750–758`.
+- Timed dispute opening freezes the **accused’s unspent emissions**, not participants’ liquid stakes: `src/experiment.mjs:850–859`.
+
+**Executable witness:** Ran `runExperiment` from a data-URL import of the inspected source, resolving its relative imports to their existing file URLs. Immediately after `openDisputes.push(dispute)`, this observational probe summed the challenger’s commitments:
+
+```js
+const committed = openDisputes.flatMap(d => d.entrants)
+  .filter(e => e.id === challenger)
+  .reduce((n, e) => n + e.stake, 0);
+if (committed > model.subject(challenger).liquidFacy)
+  w.push({ at: model.now, id: challenger,
+    liquid: model.subject(challenger).liquidFacy, committed });
+```
+
+Configuration:
+
+```js
+{
+  scenario: 'sybil-cone', seed: 'disputes',
+  initialSize: 30, attackerShare: 0.2, days: 24,
+  maxSubjects: 1500,
+  activity: { honest: { inspect: 3, challenge: 1 } },
+  disputes: {
+    enabled: true, procedure: 'chekharda-timed', stake: 3
+  },
+  includeState: true
+}
+```
+
+Observed first three overcommitments:
+
+```json
+[
+  {"at":96,"id":"n5","liquid":3,"committed":6},
+  {"at":144,"id":"n16","liquid":4,"committed":6},
+  {"at":264,"id":"n18","liquid":8,"committed":9}
+]
+```
+
+Thus simultaneous nominal commitments exceed liquid holdings in an ordinary experiment execution.
+
+### 2. Reproduced in isolated settlement harness: spending before collection reduces winnings; unpaid stake creates no debt
+
+`settleDispute` computes:
+
+```js
+const amount = Math.min(lower.stake, model.subject(lower.id).liquidFacy);
+```
+
+It transfers only `amount`, or burns only `amount` for a losing top position. Its subsequent loser penalty has `fine: 0`. The missing stake is therefore neither collected nor assigned as debt by this function. See `src/experiment.mjs:787–800`.
+
+Meanwhile `transferFacy` checks only liquid balance and has no dispute-stake reservation: `src/model.mjs:388–399`.
+
+**Exact harness method:** Read `src/experiment.mjs`, extracted the unchanged `settleDispute` declaration using the boundaries:
+
+```js
+source.slice(
+  source.indexOf('  function settleDispute(dispute) {'),
+  source.indexOf('  // Everyone who defended')
+)
+```
+
+Instantiated that function with a real `FacetyModel`, `loserHalvesXp: true`, and `councilReached: () => false`. Funded `a` through six actual Self-ID creations and mature conversions. Constructed two dispute records, each with:
+
+```js
+[
+  { id: 'a', side: 'fraud', stake: 3 },
+  { id: 'b', side: 'genuine', stake: 4 }
+]
+```
+
+Before settlement, executed:
+
+```js
+model.transferFacy('a', 'b', 5, 'spend-before-settlement');
+settle(first);
+settle(second);
+```
+
+Observed:
+
+| State | `a` liquid | `a` debt | `a` XP | `b` liquid | Burned |
+|---|---:|---:|---:|---:|---:|
+| Before settlement | 1 | 0 | 6 | 5 | 0 |
+| After both cases | 0 | 0 | 1 | 6 | 0 |
+
+Only **one FACY total** was collected against six nominal losing stakes. `model.audit()` passed.
+
+**Limitation:** Dispute records were constructed in the harness; opening and settlement helpers are not public APIs. This establishes the actual settlement function’s behavior, not an end-to-end naturally occurring shortfall under the configuration above. The observational full-run probe reproduced overcommitment but did not capture a shortfall.
+
+### 3. Double settlement: unguarded helper, but no normal-path reproduction
+
+In the same harness, after the first two settlements:
+
+```js
+model.transferFacy('b', 'a', 1);
+settle(first); // Same record again.
+```
+
+Observed another one-FACY `ladder-settlement` transfer and XP reduction from 1 to 0. The helper has no settled-state guard and updates win/loss records each call: `src/experiment.mjs:764–810`.
+
+**However:** The normal timed path removes the dispute from `openDisputes` before settling, and the work loop visits a snapshot of that list: `src/experiment.mjs:861–889`. I found no public operation that replays the same record.
+
+**Classification:** Defensive lifecycle/test gap, **not a demonstrated scheduler double-payment bug**.
+
+### 4. Reproduced: the identical subject/artifact/face can earn twice at exactly 24 hours
+
+The reference window rejects `age > DAY`, whereas the reward limiter rejects elapsed time `< DAY`. Therefore both allow the exact boundary. Claims only detect **different-subject** collisions; they do not reject repeat same-subject claims. See `src/model.mjs:260–291`.
+
+Public-API witness:
+
+```js
+const m = new FacetyModel({ genesis: ['a', 'b', 'c'] });
+const art = m.registerArtifact('a', {
+  faceCount: 2, contentHash: 'photo'
+});
+const first = m.createSelfId('a', art, 0);
+m.advanceTo(23);
+m.rotateKey('a', 'new');
+// Repeating here rejects.
+m.advanceTo(24);
+const second = m.createSelfId('a', art, 0);
+m.createSelfId('b', art, 1);
+m.createSelfId('c', art, 0);
+m.convertToCollector('a', first);
+m.advanceTo(48);
+m.convertToCollector('a', second);
+```
+
+Observed:
+
+- At hour 23 after key rotation: `rolling 24-hour reward limit`.
+- At hour 24: repeat accepted; four total emissions, `a` XP still 0.
+- Immediate conversion of the second act rejected as immature.
+- At hour 48: `a` had **2 XP and 2 liquid FACY**.
+- Both `a` claims were marked colliding after `c` claimed face 0; `b` used face 1 independently.
+- Later reference to the expired artifact rejected.
+
+This behavior is explicitly preserved by `test/model.test.mjs:72–79`; the adjacent group-media test covers independent faces, cross-subject collision, rotation, and window expiry (`:52–70`).
+
+## Selected versus OPEN semantics
+
+- **Selected:** Challengers supply a monetary stake; Chekharda alternates positions with increasing XP and monetary stakes (§§25–26.1, `docs/facety.protocol.en.md:766–808`).
+- **Direction:** Each winner receives the stake directly below (§26.5, `:840–859`).
+- **Selected:** Seven-day restart-on-entry finality and freezing accused unspent rights (`:861`).
+- **OPEN:** Stake asset/amount and other detailed mechanics remain unresolved; the losing top stake treatment is explicitly OPEN (`:875–877`). The inspected §§25–27 do **not** settle escrow versus reservation versus unsecured liability. Overcommitment is reproduced implementation behavior, not proof of violation of a selected escrow rule.
+- Media rules permit shared artifacts and require recording cross-subject FaceRef collisions (`:312`, `:375–390`), while §14.4 says the same media cannot be reused (`:335–340`). The same-subject exact-boundary behavior creates a specification tension; this audit does not choose its resolution.
+
+## Proposed minimal changes/tests
+
+1. **Make dispute backing an explicit owner/model-contract choice.** Do not silently introduce escrow. If funded stakes are intended, centralize reservations/releases in `FacetyModel`, and exclude reserved value from all liquid spending paths.
+2. **Expose exact settlement accounting:** Nominal stake, collected transfer, collected burn, and unpaid amount. Never report the unpaid amount as burned or as funded winnings.
+3. Add regressions for concurrent commitments, attempted spending while committed, exact partial/zero collection, and duplicate settlement lifecycle handling.
+4. For media reuse, clarify whether same-subject reuse is forbidden. If so, reject repeated `(subject, artifact)` use without banning legitimate multi-subject shared artifacts or cross-subject collision records. Do not merely change the 24-hour comparison.
+5. Existing dispute tests check conservation and aggregate resolution counts, not funded stake integrity (`test/disputes.test.mjs:66–116`).
+
+Validation run:
+
+```text
+node --test test/model.test.mjs test/disputes.test.mjs
+tests 36; pass 36; fail 0
+```
+
+## Remaining risks
+
+- Passing conservation checks does not establish that nominal dispute commitments were funded.
+- End-to-end settlement shortfall and scheduler duplicate settlement remain unproven; the isolated harness limitations must survive synthesis.
+- Backing and media-reuse remedies require semantic clarification before integration.
+- Findings bind the inspected baseline/source blobs, not any subsequent coordinator edits.

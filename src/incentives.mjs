@@ -125,7 +125,7 @@ function checkedSnapshot(snapshot) {
   if (!Array.isArray(acts) || acts.length > 3 || new Set(acts.map(act => act.id)).size !== acts.length
     || acts.some(act => typeof act.id !== 'string' || !ids.includes(act.subject) || !['unspent', 'consumed', 'converted', 'cancelled'].includes(act.status))) throw new Error('invalid incentive Self-ID records');
   if (ledger.minted !== acts.length || ledger.emitterVault !== acts.filter(act => act.status === 'unspent').length
-    || ledger.collector !== subjects.reduce((sum, subject) => sum + subject.liquidFacy, 0) || ledger.debt !== 0
+    || ledger.collector !== subjects.reduce((sum, subject) => sum + subject.liquidFacy, 0) || ledger.debt !== 0 || (ledger.stakeVault !== undefined && ledger.stakeVault !== 0)
     || ledger.supply !== ledger.minted - ledger.burned || ledger.supply !== ledger.emitterVault + ledger.collector + ledger.feeVault) throw new Error('incentive monetary accounting mismatch');
 }
 

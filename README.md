@@ -1,15 +1,25 @@
 # Facety simulator
 
-A dependency-free Node.js / ESM research workbench for the [Facety protocol](docs/facety.protocol.en.md). The protocol is a living specification maintained in this repository together with the simulator that tests it. The [insight register](docs/insights.en.md) collects every design decision and research finding. The simulator separates protocol state, graph algorithms, cohort strategies and evaluator ground truth. It does not establish real-world Sybil resistance.
+**Facety is a coordination protocol for mutual identification through mutual guarantees and public accountability.** This is owner-provided design intent, documented 2026-10-23. “Mutual” describes the social architecture: consenting to a directed guarantee does not create its reverse. Repeated identity assertions, non-transferable XP, economic consequences and collective disputes support coordination; none alone proves unique personhood.
 
-Simulator defaults follow the selected protocol rules:
+Guarantees earn XP because building, checking and accepting responsibility are work. Early builders intentionally receive an earned advantage—not permanent immunity. XP cannot be purchased by accumulating FACY, and it is not proof of wisdom or honesty. Public histories make actions attributable, but attention, usable evidence, a willing sponsor and enforcement are separate bottlenecks. Anyone may discover evidence; a qualified participant accepts formal challenge responsibility. The intended final Council has 101 active high-XP members with **one equal vote each**, not extra votes for more XP.
 
-- one-day windows to contest a Self-ID before spending or withdrawal, and to contest an invitation before it applies;
-- terminal XP for the subject and its guarantors;
-- XP revoked when a guarantor leaves;
-- a Council of active subjects;
-- debt repayment that keeps the veto;
-- chain-proportional sanctions with a liability wave when disputes are enabled.
+This repository is the dependency-free Node.js / ESM research workbench and [living protocol](docs/facety.protocol.en.md). It separates protocol state, behavioral policies, observations and evaluator-only truth. The aim is to establish when earned influence stays correctable—even with a passive majority and bounded fraud—and when the same incentives protect abuse. No real-world Sybil resistance, adoption or governance reliability is established. [Decisions and findings](docs/insights.en.md) retain their different evidence levels; the [causal research program](docs/research.en.md) defines tests rather than favorable assumptions.
+
+### One accountability route
+
+An outside observer finds an inconsistency in an influential participant's public identity act and sends an event-linked evidence package to a qualified sponsor. The sponsor independently checks it, can refuse a weak case or seek clarification, and accepts the cost/stake of a formal challenge. The accused can answer. An explicit procedure records an outcome and applies only authorized account/XP consequences; people may separately withdraw guarantees. If nobody can exceed the accused's XP, the intended collective Council route matters. It has a final human trust boundary, not an infallible algorithm or another supreme controller.
+
+**Implemented versus intended:** native money, XP, guarantees and sanctions, noisy dispute references, and a bounded costed evidence→independent sponsor review→existing one-step outcome are executable. The small reference includes refusal, rerouting, false allegations and an actual later XP-gate consequence; it is not a selected court or proof of reliable investigation. Compensation, self-report immunity, reasoned Council merits and institutional learning remain unimplemented. [The coverage map](docs/simulator.en.md#protocol-coverage) is the current implementation ledger. Atmo demand, market prices and useful application income remain separate conditional models, not free support for the core.
+
+Simulator defaults combine selected rules with explicitly labeled direction/reference mechanics:
+
+- **Selected:** one-day Self-ID spending/conversion and invitation-freeze windows;
+- **Selected:** terminal XP for the subject and eligible guarantors;
+- **Direction/reference:** relation-derived XP revocation, with detailed either-party and historical semantics kept explicit;
+- **Selected:** active-subject Council eligibility and one equal vote per member;
+- **Selected principle:** debt recovery preserves the veto; seizure priority remains an explicit reference;
+- **Direction/reference:** chain-proportional sanctions and liability when the optional dispute abstraction is enabled.
 
 ## Run
 
@@ -23,6 +33,16 @@ node bin/facety.mjs --help
 ## Command line
 
 `bin/facety.mjs` (also `npm run facety --`) wraps the native APIs: `run`, `trials`, `sweep`, `landscape`, `compare`, offline reanalysis, the evidence commands `register`, `confirm`, `reanalyze-confirmation` and `study`, and graph-artifact commands. Inputs are JSON files holding the documented API arguments. Stdout carries JSON only and errors go to stderr. `--out` refuses to overwrite an existing file without `--force`. `--workers auto` parallelizes landscapes and confirmations without changing their results.
+
+## See the causal core
+
+```sh
+node examples/causal-walkthroughs.mjs
+node examples/causal-walkthroughs.mjs --json false-allegation-rejected
+node examples/causal-relay.mjs
+```
+
+The [mechanism chapter](docs/research.en.md#executable-causal-core) and [structured register](docs/mechanisms.json) separate real return links from open hypotheses. Named walkthroughs show before/after state, work, money, missed windows, wrongful harm and exact blocked decisions; the matched-resource exploration keeps raw evidence and limits in its [study](studies/2026-10-23-causal-core/README.md). Neither a trace nor a directly encoded threshold is emergence. Full cohort defaults stay unchanged.
 
 ## Proving emergent properties
 
@@ -45,7 +65,7 @@ node bin/facety.mjs game examples/game.json --workers auto --out results/game.js
 node bin/facety.mjs game-sweep results/game.json sweep.json
 ```
 
-See [strategy games](docs/games.en.md) and the [exploratory inspection-game note](studies/2026-10-22-inspection-game/README.md).
+See [strategy games](docs/games.en.md) and the [exploratory inspection-game note](studies/2026-10-22-inspection-game/README.md). To inspect fully backed stakes without choosing a new protocol default, run `node bin/facety.mjs run examples/dispute-stakes.json`. This [timed reference example](examples/dispute-stakes.json) retains pending custody, case records and actual financial outcomes; it is not evidence of deterrence.
 
 ## Emergent behavior research
 
@@ -60,7 +80,7 @@ const result = runLandscape(example.experiment, example.landscape);
 console.log(result.diagnostics.summaries, result.diagnostics.candidates);
 ```
 
-See [discovery semantics and controls](docs/discovery.en.md). The [example](examples/discovery.json) defines six cells and 48 replayable runs. Candidate counts are not counts of discovered emergent properties. [Paired controls and scheduled perturbations](docs/controls.en.md) are also available through the native APIs; general CLI delivery remains open.
+See [discovery semantics and controls](docs/discovery.en.md). The [example](examples/discovery.json) defines six cells and 48 replayable runs. Candidate counts are not counts of discovered emergent properties. [Paired controls and scheduled perturbations](docs/controls.en.md) are available through native APIs and CLI `compare`.
 
 ### Paired disturbances and return criteria
 
@@ -109,7 +129,7 @@ const sweep = sweepParameter(scenario, {
 console.log(sweep.results.map(row => [row.value, row.experiment.probability]));
 ```
 
-Three scenarios are available: `honest-growth`, `sybil-cone`, and `real-cartel`. Cost is realized weighted attempted work, not a token balance or elapsed time. Read [experiment semantics](docs/experiments.en.md) before interpreting a probability. The APIs work now; CLI and algorithm benchmarks remain in the backlog.
+Three scenarios are available: `honest-growth`, `sybil-cone`, and `real-cartel`. Cost is realized weighted attempted work, not a token balance or elapsed time. Read [experiment semantics](docs/experiments.en.md) before interpreting a probability. Both APIs and CLI work; algorithm benchmarks remain open.
 
 ## Graph experiments
 
@@ -141,8 +161,9 @@ A certificate proves a directed path in the verifier's canonical graph from an i
 - `src/evidence.mjs`: Hypothesis registration, reserved-seed confirmation, exact claim tests, verdicts, Holm study adjustment and finite-size sharpening designs.
 - `src/statistics.mjs`: Exact binomial tails, Clopper–Pearson bounds, Holm adjustment and deterministic bootstrap intervals.
 - `src/provenance.mjs`: Source-content implementation digest and canonical JSON digests.
+- `src/disputes.mjs`: Shared strict challenge access, one-step stake settlement and model-owned verdict consequences; no truth or observation policy.
+- `src/accountability.mjs`: Input-driven evidence/sponsor research reference and bounded noninterfering causal journal; no new protocol defaults or external rights.
 - `src/parallel.mjs`, `src/task-worker.mjs`: Order-preserving worker-thread execution of pure tasks.
-
 - `src/incentives.mjs`: Deterministic marginal decision forks, timed protocol accounting, per-subject work and validated retained-fact extraction.
 - `src/incentive-payoffs.mjs`: Explicit terminal-payoff assumptions, null-preserving offline revaluation, numerical bands and conditional finite-menu comparisons; no market or network-value calibration.
 - `src/incentive-ownership.mjs`: Evaluator-only ownership worlds, operator custody/work and separate subject XP; no live attack replay or pooled procedural authority.
@@ -152,7 +173,8 @@ A certificate proves a directed path in the verifier's canonical graph from an i
 - `src/experiment.mjs`: Cohort activity, budget-constrained growth, noisy observations, veto responses and evaluator outcomes.
 - `src/effort.mjs`: Exact micro-unit effort budgets, action counters, rejected attempts and setup/maintenance attribution.
 - `src/trials.mjs`: Reproducible replicas, Wilson intervals, censoring bounds and parameter sweeps.
-- `src/model.mjs`: Deterministic subjects, two-sided guarantees, Self-ID, Emitter, invitations, FACY accounting, chronological XP, veto-preserving debt recovery, explicit penalties and labeled mechanism ablations.
+- `src/model.mjs`: Deterministic subjects, two-sided guarantees, Self-ID, Emitter, invitations, FACY accounting (including reference stake custody), chronological XP, veto-preserving debt recovery, explicit penalties and labeled mechanism ablations.
+- `src/dispute-stakes.mjs`: Open/settled/mooted commitment records, actual-versus-promised collection, exclusive reserved backing and replay guards; no truth, XP or merits authority.
 - `src/graph.mjs`: Directed adjacency indexes, immutable edge identities, pure capacity preflights, revisioned mutations and JSON snapshots.
 - `src/proofs.mjs`: BFS / bidirectional BFS, independent certificate verification and reachable sets.
 - `src/generators.mjs`: Tree, random fixed-outdegree, preferential, community and clique topologies; node/edge removal and rewiring.
@@ -164,7 +186,7 @@ A certificate proves a directed path in the verifier's canonical graph from an i
 
 ## Research contract
 
-Open protocol choices are named experiment policies, not Facety doctrine. Read [model assumptions](docs/simulator.en.md) before interpreting any outcome. Experiments currently model guarantor vetoes, not a complete dispute court or market. Noisy observations are generated by the experimental environment, not an omniscient defense. An estimated success frequency applies only to the declared strategy, budget, horizon and assumptions; it is not a bound against an optimal real-world attacker.
+Open protocol choices are named experiment policies, not Facety doctrine. Read [model assumptions](docs/simulator.en.md) before interpreting any outcome. Experiments model vetoes and optional one-step/instant/timed dispute references, not a complete human court or market. Noisy observations come from the environment, not an omniscient defense. An estimated success frequency applies only to the declared strategy, budget, horizon, seed sampling and criterion; it is not a bound against an optimal real-world attacker. The [2026-10-23 audit](studies/2026-10-23-accountability-audit/README.md) records the clean 175-test starting state, reproduced media/stake concerns, tested reference remedies and historical-study scope limits. `disputes.stakeBacking: "reserved"` enables funded custody for comparison; `"unsecured"` remains the legacy default. Pending collateral, refunds, losses and uncollected promises must not be conflated.
 
 ## Project context
 

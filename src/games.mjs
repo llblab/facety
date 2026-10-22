@@ -9,10 +9,10 @@ import { provenance } from './provenance.mjs';
 
 export const GAME_SCHEMA = 'facety-game/v1';
 export const FACT_KEYS = Object.freeze([
-  'subjects', 'acceptedSubjects', 'invalidatedSubjects', 'falseSubjects', 'liquidFacy', 'emitterFacy', 'debt', 'falseLiquidFacy', 'falseDebt', 'xp',
+  'subjects', 'acceptedSubjects', 'invalidatedSubjects', 'falseSubjects', 'liquidFacy', 'emitterFacy', 'stakeFacy', 'debt', 'falseLiquidFacy', 'falseStakeFacy', 'falseDebt', 'xp',
   'councilSeats', 'effort', 'convertedRewards', 'finesCollected', 'finesAsDebt', 'halvings', 'rewardsReceived', 'bribesPaid', 'bribesReceived',
 ]);
-export const SYSTEM_KEYS = Object.freeze(['supply', 'burned', 'falseLiquidFacy', 'falseConvertedRewards', 'falseAcceptedSubjects', 'councilAttackerSeats', 'falseMintedShare', 'falseCirculatingShare']);
+export const SYSTEM_KEYS = Object.freeze(['supply', 'burned', 'falseLiquidFacy', 'stakeFacy', 'falseStakeFacy', 'falseConvertedRewards', 'falseAcceptedSubjects', 'councilAttackerSeats', 'falseMintedShare', 'falseCirculatingShare']);
 const INITIAL_GROUPS = Object.freeze(['conformist', 'deviant']);
 
 function fail(message) { throw new Error('game: ' + message); }
@@ -251,11 +251,17 @@ function groupUtility(replica, role, groups, weights) {
   for (const group of groups) {
     const facts = replica.agents[role][group];
     operators += facts.operators;
-    for (const key of FACT_KEYS) value += weights.facts[key] * facts[key];
+    for (const key of FACT_KEYS) if (weights.facts[key] !== 0) {
+      if (!Number.isFinite(facts[key])) return null;
+      value += weights.facts[key] * facts[key];
+    }
   }
   if (!operators) return null;
   let shared = 0;
-  for (const key of SYSTEM_KEYS) shared += weights.system[key] * replica.system[key];
+  for (const key of SYSTEM_KEYS) if (weights.system[key] !== 0) {
+    if (!Number.isFinite(replica.system[key])) return null;
+    shared += weights.system[key] * replica.system[key];
+  }
   return value / operators + shared;
 }
 

@@ -1,0 +1,124 @@
+ACTOR_REVIEW_RESULT
+
+## Status and inspected identity
+
+**Status: degraded.**  
+**Disposition: changes requested; accept the merger’s bounded technical conclusions, while qualifying end-to-end evidence completeness.**
+
+The supplied judge report supports the merger’s preservation of two Medium findings, minority approval, validation attribution, and uncertainty. It does not establish complete source-to-merge fidelity: raw reviewer and verifier bodies were unavailable to the judge, and only the judge body is directly supplied to this normalizer.
+
+No repository inspection, command execution, source changes, or independent authentication of execution references occurred during normalization.
+
+### Reported implementation identity
+
+The judge attributes these observations to the verifier through the merger; they are **not independently observed here**.
+
+| Field | Reported value |
+|---|---|
+| HEAD | `af9b12eb34204cdb0a0f6d523aacb44aa9fe5fe5` |
+| Runtime | Node `v26.8.1` |
+| Implementation method | `sha256-src-mjs-v1` |
+| Implementation digest | `aaf2b02b9173bf57628c41ef0c72ecabb46bf3ad4e77e1dcb15e26aeb2c6f4d4` |
+| Source modules | 28 |
+
+## Supported findings ranked by concrete impact
+
+### 1. Medium — Partial verdict enforcement can strand a case
+
+The reported counterexample uses accepted inputs that cause custody settlement and one penalty before an overflow exception prevents resolution. An unchanged decision-journal count and failed retry demonstrate a concrete operational consequence.
+
+- Retained protocol events must not be confused with missing decision-journal evidence.
+- Extreme numeric inputs do not invalidate the counterexample.
+- Whole-verdict arithmetic preflight is a justified remediation direction, but is not yet proven sufficient against every possible post-mutation exception.
+
+**Evidence status:** verifier reproduction reported through the merger and judge; not independently reproduced here.
+
+### 2. Medium — Public privileged-sentinel bypass
+
+The reported `null` actor counterexample permits zero-work evidence operations and adjudicator attribution.
+
+- The demonstrated impact is limited to that boundary.
+- No sponsor-XP or stake bypass was demonstrated.
+- Public operations should require registered actors, with privileged internal adjudication kept separate.
+
+**Evidence status:** verifier reproduction reported through the merger and judge; not independently reproduced here.
+
+### 3. Evidence limitation — Source-to-merge fidelity remains unverified
+
+The judge lacked raw reviewer and verifier bodies. This normalizer additionally lacks the directly supplied merger body.
+
+Stable references preserve traceability, but do not establish that every original finding, caveat, branch status, or attribution survived synthesis. **No specific omission or distortion has been established.**
+
+## Tested invariants and commands
+
+All results below retain their upstream attribution; none were rerun during judging or normalization.
+
+| Check | Reported result | Attribution |
+|---|---|---|
+| Focused four-file test command | 29 passed | Verifier-executed |
+| Preservation study | `equivalent: true`; 12 checks | Verifier-executed |
+| Both failure probes | Reproduced | Verifier-executed |
+| `npm test` | 196 passed | Reviewer branch 2 only |
+| Probe and additional replays | 360-run probe; 720 additional replays | Reviewer branch 2; detailed design unavailable |
+
+Reported focused commands:
+
+```sh
+node --test test/accountability.test.mjs test/causal-relay.test.mjs \
+  test/disputes.test.mjs test/dispute-stakes.test.mjs
+
+node studies/2026-10-23-causal-core/preservation.mjs
+```
+
+Passing ordinary-path checks do not refute counterexamples outside their tested contexts.
+
+## Paired-design / trace limits
+
+The following inferential boundaries remain in force:
+
+- Twelve-context preservation is not universal equivalence.
+- Journal ancestry and mechanism tags do not independently establish causation.
+- Declared source-group separation does not establish independent errors.
+- Routing-path equality does not establish adoption, equilibrium, investigation quality, or calibrated costs.
+- Zero wrongful invalidations does not establish zero genuine-party harm.
+- Debt is distinct from burn.
+- Declared integration limits are not automatically defects.
+- Findings do not authorize changes to OPEN protocol rules.
+
+Whether these exhaust the original sources’ caveats remains unverified.
+
+## Minority findings
+
+| Branch | Retained disposition |
+|---|---|
+| Reviewer 1 | Changes requested on two boundary defects |
+| Reviewer 2 | Approved its bounded lens; supplied positive ordinary-path evidence |
+
+Two usable reviewer branches satisfy an evidence-count threshold, not an approval quorum. Reported reproduction supports retaining branch 1’s counterexamples without erasing branch 2’s bounded positive evidence.
+
+The judge identified no fabricated unanimous approval, material internal contradiction, or unsupported merge bias.
+
+## Independent verification and unresolved evidence
+
+The judge accepted severity calibration, attribution, and disagreement handling **within the supplied merger narrative**. Repository correctness, release readiness, and complete review-chain fidelity remain unestablished.
+
+### Evidence
+
+| Role | Stable reference | Availability in this normalization |
+|---|---|---|
+| Reviewer 1 | ACTOR_EVIDENCE_REF: execution.json#command-005 | Retained upstream reference; raw body not supplied |
+| Reviewer 2 | ACTOR_EVIDENCE_REF: execution.json#command-006 | Retained upstream reference; raw body not supplied |
+| Verifier | ACTOR_EVIDENCE_REF: execution.json#command-007 | Retained upstream reference; raw body not supplied |
+| Merger | ACTOR_EVIDENCE_REF: execution.json#command-008 | Retained upstream reference; body described by judge |
+| Judge | ACTOR_EVIDENCE_REF: execution.json#command-009 | Body directly supplied |
+
+All required role references are retained. Their presence alone does not justify a **complete** status.
+
+## Next bounded actions
+
+1. Preserve the **changes-requested** disposition and both Medium findings.
+2. Retain **degraded** end-to-end evidence status until raw reviewer and verifier outputs can be compared with the merger.
+3. Compare findings, caveats, branch status, and command attribution without presuming omissions.
+4. Implement both corrections with negative-path regressions; run focused tests and `npm test`.
+5. Rerun preservation against the changed implementation and record its refreshed digest.
+6. Keep merge quality, implementation validation, mechanism confirmation, and release readiness as separate judgments.

@@ -1,0 +1,1670 @@
+{
+  "schema": "facety-mechanisms/v1",
+  "documentedOn": "2026-10-23",
+  "owner": "docs/research.en.md",
+  "intent": "Facety is a coordination protocol for mutual identification through mutual guarantees and public accountability.",
+  "legend": {
+    "R": "protocol transition (selection/reference status stays in basis)",
+    "A": "explicit behavioral/environment/procedure assumption",
+    "O": "measurement/offline valuation",
+    "?": "missing/unimplemented return; never closed by an invented probability"
+  },
+  "scope": "Maintained map of conceptual, source-implemented, diagnostically exercised and unconfirmed mechanisms, not a preregistration or claim of beneficial emergence.",
+  "mechanisms": [
+    {
+      "id": "M01",
+      "question": "Does contribution induce continued responsible participation?",
+      "initiatingChange": "A subject records fresh identity work or confirms a directed guarantee.",
+      "path": [
+        "FacetyModel terminal disposition credits the subject and recording-time eligible guarantors.",
+        "XP changes challenge eligibility, Council ranking and declared XP risk."
+      ],
+      "feedback": {
+        "implemented": "Reward→XP→future eligibility is implemented.",
+        "missing": "No outcome-driven increase in participation or contribution quality; this is an open behavioral pathway."
+      },
+      "signs": "+ contribution→XP conditional on finality and retained source; XP→quality has no implemented sign.",
+      "delay": "24-hour maturity by default; cancelled acts never finalize XP.",
+      "bottleneck": "Fresh work, qualifying guarantees, attention and fees are distinct resources.",
+      "basis": "Selected terminal XP and non-transferability; behavioral activity rates are exogenous.",
+      "code": [
+        "src/model.mjs#createSelfId/#credit",
+        "src/experiment.mjs#willing",
+        "src/games.mjs#valuation"
+      ],
+      "observable": [
+        "subjects[].xp",
+        "selfIds[].xpRecipients/xpCredited",
+        "trace.records[].changes"
+      ],
+      "diagnostic": [
+        "support-finalized",
+        "support-vetoed"
+      ],
+      "intervention": "withholdGuarantorXp is a counterfactual ablation, never a protocol option; compare equal-age/resource populations.",
+      "alternative": "Arithmetic reward scaling and early bootstrap, not improved responsibility.",
+      "falsifier": "More XP with unchanged/worse evidence review or contribution quality defeats the behavioral return.",
+      "status": "Transition diagnostic; behavioral hypothesis unimplemented.",
+      "diagram": "M01 [R] terminal work → XP → eligibility --[? continued responsibility]--x work"
+    },
+    {
+      "id": "M02",
+      "question": "Does responsibility produce timely preventive correction?",
+      "initiatingChange": "A suspicious act is observed while a guarantor retains cancellation authority.",
+      "path": [
+        "Fallible observation→declared response and work gate.",
+        "Authorized veto burns the right, removes attributable XP and can prevent funded admission."
+      ],
+      "feedback": {
+        "implemented": "Prevention changes later usable rights, active count and admission opportunities.",
+        "missing": "Liability-induced vigilance, general self-report immunity and revised guarantee willingness are absent."
+      },
+      "signs": "− suspicious usable rights if timely/correct; − genuine rights on false positives; no general welfare sign.",
+      "delay": "Before terminal disposition; invitation cancellation is strictly before the freeze endpoint.",
+      "bottleneck": "Attention, veto authority and timing; a free protocol veto does not mean zero human work.",
+      "basis": "Selected model transitions plus explicit fallible observation/response assumptions.",
+      "code": [
+        "src/model.mjs#cancelSelfId/cancelInvitation",
+        "src/experiment.mjs#guardianWork/inspectionWork"
+      ],
+      "observable": [
+        "selfIds[].status/disposition",
+        "invitations[].status",
+        "observations",
+        "effort"
+      ],
+      "diagnostic": [
+        "early-veto",
+        "missed-veto"
+      ],
+      "intervention": "Remove timely response at the same fresh-act prefix; hold knowledge/timing fixed before studying forgiveness.",
+      "alternative": "Earlier removal alone, perfect attention, or free unmeasured work.",
+      "falsifier": "Matched late/early evidence produces no usable prevention or false veto harm outweighs it.",
+      "status": "Native timing diagnostic; vigilance incentive not established.",
+      "diagram": "M02 [A] suspicion --[R authority, before spend]--> veto → fewer rights --[? vigilance]--x review"
+    },
+    {
+      "id": "M03",
+      "question": "Who can withdraw relationship-supported influence?",
+      "initiatingChange": "Either party ends an active directed guarantee.",
+      "path": [
+        "The ending party pays one liquid FACY into fee custody.",
+        "The edge ends; guarantor-derived historical XP is replayed; later credit depends on the edge."
+      ],
+      "feedback": {
+        "implemented": "Revoked XP changes later eligibility/rank; snapshot veto may persist.",
+        "missing": "Evidence→exit choice and expected loss→conduct are not endogenous; concealment/dependence remains a competing hypothesis."
+      },
+      "signs": "− guarantor XP/fee payer liquidity; ± oversight/liability; no automatic discipline.",
+      "delay": "Immediate paid exit; pending acts and historical authority have distinct clocks.",
+      "bottleneck": "One liquid FACY plus lost XP, relationships and possible future opportunities.",
+      "basis": "Selected either-party exit and fee existence; XP revocation implements D9 DIRECTION, with payer/custody an explicit reference. Voluntary behavior is scripted or narrowly triggered.",
+      "code": [
+        "src/model.mjs#endGuarantee/#credit",
+        "src/experiment.mjs#guardianWork"
+      ],
+      "observable": [
+        "guaranteeRelations[].status",
+        "subjects[].xp",
+        "ledger.feeVault",
+        "trace.records[].changes"
+      ],
+      "diagnostic": [
+        "support-finalized"
+      ],
+      "intervention": "Compare either party ending the same relation; preserve observation capacity; relink semantics require separate audit.",
+      "alternative": "Lost oversight or self-selection, not deterrence.",
+      "falsifier": "Fee/XP dependence induces continued concealment or relinking restores unintended credit/authority.",
+      "status": "Exit/XP diagnostic; incentive sign and historical-liability interaction open.",
+      "diagram": "M03 [R] either-party exit → fee custody + edge loss → guarantor XP↓ --[? conduct/exit]--x support"
+    },
+    {
+      "id": "M04",
+      "question": "Can open discovery reach qualified authority?",
+      "initiatingChange": "A member or external observer obtains a fallible public-event signal.",
+      "path": [
+        "Costed observation→package with observation/source IDs→explicit route.",
+        "A sponsor can refuse/conflict/miss notice; independent supplied review precedes the existing strict XP/stake gate.",
+        "A funded one-step reference case→supplied verdict→shared stake/XP/liability enforcement."
+      ],
+      "feedback": {
+        "implemented": "Native consequences can change the next formal-access decision (see M07/M09).",
+        "missing": "No endogenous search, sponsor competition, compensation collection or outcome-driven investigation."
+      },
+      "signs": "+ reachable formal cases only with available/funded/higher-XP sponsor; wrongful cases and congestion can rise too.",
+      "delay": "Separate discovery/package/route/review/open/verdict times; supplied hearing delay; unresolved stages stay null.",
+      "bottleneck": "Work budgets, daily reviewer capacity, conflicts, strict XP, liquid stake and unavailable apex referral.",
+      "basis": "DIRECTION: discovery is open, formal rights qualified. Unpaid, staged one-step relay is an explicit research reference, not an owner-selected merits procedure.",
+      "code": [
+        "src/accountability.mjs#EvidenceRelay",
+        "src/disputes.mjs",
+        "examples/causal-relay.mjs"
+      ],
+      "observable": [
+        "relay.packages/routes/cases",
+        "stageClocks",
+        "metrics.work/wrongfulInvalidations/unresolvedPackages",
+        "trace.records[].supports"
+      ],
+      "diagnostic": [
+        "outsider-confirmed",
+        "outsider-refused",
+        "false-allegation-rejected",
+        "false-allegation-upheld"
+      ],
+      "intervention": "Matched-budget member, external-unrouted and external-relay arms; no resource addition. Multi-sponsor/compensation effects remain deferred.",
+      "alternative": "Extra workforce, oracle review, source allegiance or copies counted as corroboration.",
+      "falsifier": "At equal resources relay adds no access, overloads reviewers, or causes unacceptable genuine harm.",
+      "status": "Executed diagnostic reference and small exploration; no mechanism confirmation.",
+      "diagram": "M04 [A work/capacity] observation → package → review --[R XP/stake]--> case → sanctions --[? investigation]--x discovery"
+    },
+    {
+      "id": "M05",
+      "question": "Does public exposure attract useful investigative response?",
+      "initiatingChange": "A challenge/entry or conspicuous public history becomes an attention target.",
+      "path": [
+        "Optional attentionFeedback adds challengers/entrants to the screening pool.",
+        "Fixed inspection opportunities are redirected; fallible findings can cause more challenges."
+      ],
+      "feedback": {
+        "implemented": "Challenge→attention→later target allocation is a conditional returning path.",
+        "missing": "No learned investigative intensity or demonstrated net correction benefit; targets are not only accused subjects."
+      },
+      "signs": "+ attention→target probability; ± correct/wrongful correction; fixed work can crowd out other subjects.",
+      "delay": "Later screening/inspection opportunities; public does not mean noticed immediately.",
+      "bottleneck": "Fixed inspection effort and candidate availability; source/decision quality remain assumptions.",
+      "basis": "Optional behavioral reference, disabled by default.",
+      "code": [
+        "src/experiment.mjs#attention/inspectionWork",
+        "test/disputes.test.mjs"
+      ],
+      "observable": [
+        "trust.flowFlagged (historically broader than money flow)",
+        "observationDiagnostics",
+        "effort"
+      ],
+      "diagnostic": null,
+      "intervention": "Toggle attentionFeedback with equal inspection work and keyed observations; preserve displaced targets and genuine harms.",
+      "alternative": "Changing effort, a different candidate set or misleading flag counts.",
+      "falsifier": "Flag counts rise without downstream correction or with worse genuine-target harm.",
+      "status": "Source-implemented returning path; effect validation incomplete.",
+      "diagram": "M05 [A] public participation → attention → later inspections → cases → attention (±; scarce effort)"
+    },
+    {
+      "id": "M06",
+      "question": "Does growth expand verification capacity or overload it?",
+      "initiatingChange": "A funded invitation admits another subject.",
+      "path": [
+        "New subjects gain future scheduled opportunities, not necessarily independent operators.",
+        "Active-population digit count can raise the guarantor threshold.",
+        "Additional work consumes shared budgets; acquaintance access can change with graph growth."
+      ],
+      "feedback": {
+        "implemented": "Admission→population→opportunities/thresholds/budget exhaustion→later admission is implemented.",
+        "missing": "Fresh-media production economies, useful services and calibrated co-presence learning are not endogenous."
+      },
+      "signs": "+ opportunities/workload; + threshold at powers of ten restricts admission; net capacity sign conditional.",
+      "delay": "24-hour invitation freeze; 28-day activity window; per-day reference scheduler.",
+      "bottleneck": "Finite operator/cohort effort, independent human count, qualifying guarantors and access.",
+      "basis": "Selected admission/activity mechanics plus exogenous activity/matching/cost references.",
+      "code": [
+        "src/model.mjs#requiredGuarantors/createInvitation/acceptInvitation",
+        "src/experiment.mjs#runExperiment",
+        "src/effort.mjs"
+      ],
+      "observable": [
+        "population/operators",
+        "history[].network.admission",
+        "effort.denied",
+        "activeCount"
+      ],
+      "diagnostic": null,
+      "intervention": "Size/age/resource/topology-matched genuine and collusive groups; fixed threshold is only an ablation.",
+      "alternative": "Arithmetic population rewards or more resources, not better verification.",
+      "falsifier": "Growth exhausts fixed review capacity faster than it increases usable independent evidence.",
+      "status": "Implemented constraint return; information-quality scaling untested.",
+      "diagram": "M06 [R] admission → active N --[R digit threshold; A workload]--> later admission (±)"
+    },
+    {
+      "id": "M07",
+      "question": "Is earned authority contestable rather than immunity?",
+      "initiatingChange": "XP changes or a case affects authority-bearing accounts.",
+      "path": [
+        "Strict higher-XP access and liquid stake gate ordinary challenge.",
+        "Active XP ranking selects up to 101 Council seats, each with one equal vote.",
+        "Existing references can use a Council verdict; sanctions then change future XP/eligibility."
+      ],
+      "feedback": {
+        "implemented": "Sanctions→XP→later access is exercised; source contains vote→sanction→future membership reference.",
+        "missing": "Apex referral, reasoned merits, voting independence and strategic obstruction are unestablished."
+      },
+      "signs": "+ XP→rank/access; − losing-case XP→later access; seat counts do not sign actual decisions.",
+      "delay": "Terminal XP, case finality and active-member expiry; past decisions are not silently reversed.",
+      "bottleneck": "Qualified/funded challengers, final human judgment and OPEN case-admission/merits rules.",
+      "basis": "Selected active top-101 equal-vote architecture; smaller Council and depth-triggered merits are named references.",
+      "code": [
+        "src/model.mjs#council/penalize",
+        "src/disputes.mjs#challengeAccess",
+        "src/experiment.mjs#settleDispute"
+      ],
+      "observable": [
+        "trace.records[].preconditions",
+        "headlines.councilBefore/councilAfter",
+        "actualCouncilVotes (null if not exercised)"
+      ],
+      "diagnostic": [
+        "authority-boundary",
+        "false-allegation-rejected"
+      ],
+      "intervention": "Withhold one terminal disposition at a rank boundary; matched XP/age and tie-break controls before interpreting capture.",
+      "alternative": "ID tie-breaking, arithmetic threshold or fixed coalition ballots.",
+      "falsifier": "A seat shift without a wrongful decision cannot support capture; restored evidence access that removes influence weakens self-protection.",
+      "status": "Threshold and later-gate diagnostics; governance effectiveness not confirmed.",
+      "diagram": "M07 [R] XP → access/seats --[A merits; R equal votes]--> consequence → later XP/access (±)"
+    },
+    {
+      "id": "M08",
+      "question": "Does future value encourage correction or insider protection?",
+      "initiatingChange": "An actor anticipates continued network income, credibility or social loss.",
+      "path": [
+        "Protocol balances/XP constrain feasible choices.",
+        "Offline games value facts and compare a declared finite strategy menu."
+      ],
+      "feedback": {
+        "implemented": "Current resources affect feasibility; post-run utility has no automatic return into simulation.",
+        "missing": "Network credibility, remaining future opportunities, belief updating, sincere loyalty and adaptive participation are unimplemented."
+      },
+      "signs": "Unknown: accountability or concealment can both protect perceived future value.",
+      "delay": "Discounted remaining future income, not sunk effort; no endogenous clock yet.",
+      "bottleneck": "Calibrated opportunities, preferences, exit options and independent utility evidence.",
+      "basis": "Behavioral hypotheses; xpValue/civicValue are explicit reference valuations, not universal reputation multipliers.",
+      "code": [
+        "src/games.mjs",
+        "src/incentive-payoffs.mjs",
+        "src/experiment.mjs#willing"
+      ],
+      "observable": [
+        "conditional valuations and individual deviations",
+        "protocol facts, not adoption"
+      ],
+      "diagnostic": null,
+      "intervention": "Declared valuation/discount/loyalty sweeps and individual deviations; no uncalibrated alignment coefficient.",
+      "alternative": "Fixed loyalty scripts or favorable civic utility manufacture alignment.",
+      "falsifier": "Concealment remains individually profitable or utility depends on free external support.",
+      "status": "Hypothesis; offline conditional analysis only.",
+      "diagram": "M08 [O] consequences → supplied valuation --[? beliefs/future choices]--x participation"
+    },
+    {
+      "id": "M09",
+      "question": "Do false allegations, load and exit damage correction?",
+      "initiatingChange": "A mistaken/hostile report consumes work or reaches adjudication.",
+      "path": [
+        "False signals can trigger costly review or native sanctions against genuine subjects.",
+        "Rejected challengers can lose stake and XP, changing later formal access.",
+        "Fixed budgets/capacity can leave evidence unresolved; general identity reinstatement is absent."
+      ],
+      "feedback": {
+        "implemented": "Losing allegation→XP loss→later failed gate is exercised; work exhaustion blocks later actions.",
+        "missing": "Overload→voluntary exit→capacity loss and restoration of wrongfully invalidated identity are unimplemented."
+      },
+      "signs": "− resources/XP can limit repeat allegations and honest sponsorship; ± net safety; exit sign unknown.",
+      "delay": "Daily review cap, hearing delay and unresolved queue age; no automatic restoration deadline.",
+      "bottleneck": "Review work, funding, fallible merits and irreversible exclusion under current transitions.",
+      "basis": "Selected/native sanctions with explicit one-step verdict inputs; capacity/declared conflict policy are research assumptions.",
+      "code": [
+        "src/accountability.mjs#review/resolve",
+        "src/disputes.mjs#settleOneStepPosition",
+        "src/model.mjs#penalize/invalidateIdentity"
+      ],
+      "observable": [
+        "metrics.wrongfulInvalidations/genuineXpLost/genuineCollectedPenalties",
+        "unresolvedPackages",
+        "trace.records[].preconditions"
+      ],
+      "diagnostic": [
+        "false-allegation-rejected",
+        "false-allegation-upheld",
+        "outsider-refused"
+      ],
+      "intervention": "Matched false-allegation input and capacities 1/2; preserve genuine harm, not only corrected violations.",
+      "alternative": "Removing participants makes fraud shares look better; rejected packages excluded from latency summaries.",
+      "falsifier": "A seeming safety gain disappears when genuine retention, pending evidence and irreversible loss are included.",
+      "status": "Exercised encoded balancing constraint plus exploratory burden; exit/repair loop open.",
+      "diagram": "M09 [A false signal/load] case → [R stake/XP loss] → later access↓; [? exit/repair] open"
+    },
+    {
+      "id": "M10",
+      "question": "Can correction resume after neglect without resetting history?",
+      "initiatingChange": "Sponsor availability or ordinary attention returns after an outage.",
+      "path": [
+        "A queued package retains its observations/routes and timestamps.",
+        "Restored reviewer availability can resume native case processing with current funds/XP."
+      ],
+      "feedback": {
+        "implemented": "Availability restoration→processing is exercised as an exogenous intervention.",
+        "missing": "No endogenous restoration trigger, reasoned precedent, calibrated learning or general reinstatement."
+      },
+      "signs": "+ availability→service only if remaining gates permit; no guaranteed health/stability sign.",
+      "delay": "Explicit 24-hour outage plus hearing; harmful state/history is not rolled back.",
+      "bottleneck": "Accumulated authority, available stakes, work and OPEN due-process repair.",
+      "basis": "Exogenous bounded diagnostic, not a selected institutional-learning mechanism.",
+      "code": [
+        "examples/causal-walkthroughs.mjs#neglect-restored",
+        "src/controls.mjs#describeReturn",
+        "src/accountability.mjs"
+      ],
+      "observable": [
+        "discoveryToResolutionHours",
+        "genuineRetained",
+        "monetaryChanges",
+        "pending stage clocks"
+      ],
+      "diagnostic": [
+        "neglect-restored",
+        "outsider-confirmed"
+      ],
+      "intervention": "Compare ordinary vs restored schedule on the same prefix; retain delay and cumulative damage, not just endpoint share.",
+      "alternative": "A scripted restoration or return to a compromised baseline is mistaken for learning/recovery.",
+      "falsifier": "Correction remains blocked after restoration, or irreversible wrongful harm survives apparent metric return.",
+      "status": "Restoration pathway diagnostic; health/learning hypothesis open.",
+      "diagram": "M10 [A outage/restoration] capacity↓↑ → queued processing --[? institutional learning]--x later conduct"
+    },
+    {
+      "id": "M11",
+      "question": "Does debt restrict and then restore disposable capacity?",
+      "initiatingChange": "A fine exceeds current liquid funds.",
+      "path": [
+        "Uncollected fine becomes debt, never a burn.",
+        "Future accepted-subject emissions are reserved, remain vetoable, then burn at maturity to repay debt.",
+        "Reduced debt permits later disposable emissions."
+      ],
+      "feedback": {
+        "implemented": "Debt→reserved future rights→repayment→less debt→disposable rights is a balancing stock loop.",
+        "missing": "No debt-induced behavior adaptation; invalidation can prevent future work/repayment."
+      },
+      "signs": "− future disposable rights while debt>0; − debt only after actual repayment burn.",
+      "delay": "Spend maturity; veto/locks can postpone or prevent recovery.",
+      "bottleneck": "Future valid work and continued accepted identity.",
+      "basis": "Selected veto-preserving recovery; immediate burn is an explicit comparison.",
+      "code": [
+        "src/model.mjs#createSelfId/#settleDebtReservations",
+        "test/model.test.mjs"
+      ],
+      "observable": [
+        "ledger.debt/burned",
+        "selfIds[].debtReserved/disposition"
+      ],
+      "diagnostic": null,
+      "intervention": "Hold work constant and compare debt/no debt or a vetoed reservation; immediate burn is a non-default comparison.",
+      "alternative": "Nominal debt mislabeled loss or burn.",
+      "falsifier": "Debt falls without actual recoverable burning or a vetoed right repays debt.",
+      "status": "Direct transition regressions; no population-stability claim.",
+      "diagram": "M11 [R] debt → reserve future right --[maturity, veto survives]--> burn → debt↓ (balancing)"
+    },
+    {
+      "id": "M12",
+      "question": "Do adjudication histories improve decisions or reinforce errors?",
+      "initiatingChange": "A ladder settles and updates public participation/win/loss history.",
+      "path": [
+        "Procedural wins/losses alter opposing-entrant priors.",
+        "Participation familiarity changes regular-noticer selection.",
+        "Graph structural rank is a separate screening/prior input."
+      ],
+      "feedback": {
+        "implemented": "Settlement records→later prior/notice→entry→new settlement is source-implemented.",
+        "missing": "Procedural success is not truth accuracy; no controlled beneficial effect established."
+      },
+      "signs": "± reinforcement: accurate and mistaken outcomes can both reinforce later beliefs.",
+      "delay": "Later cases; record retention is not calibrated learning.",
+      "bottleneck": "Independent evidence and opportunity to notice/enter.",
+      "basis": "Optional research modifiers, zero by default; XP, reputation and familiarity remain distinct.",
+      "code": [
+        "src/experiment.mjs#disputeRecords/settleDispute/regularsNotice",
+        "test/disputes.test.mjs"
+      ],
+      "observable": [
+        "disputeRecords",
+        "disputes.entries",
+        "regular-noticer paths"
+      ],
+      "diagnostic": null,
+      "intervention": "Toggle trackRecordWeight/regularsNotice independently; inject early errors at matched evidence/work.",
+      "alternative": "More notices or cohort composition, not better credibility estimates.",
+      "falsifier": "Records reinforce early wrong verdicts or weights never change a downstream decision.",
+      "status": "Source-implemented return; effect validation incomplete.",
+      "diagram": "M12 [A] procedural record → prior/familiarity → later entry → record (±)"
+    },
+    {
+      "id": "M13",
+      "question": "Does gossip inform correction or spread mistaken suspicion?",
+      "initiatingChange": "A suspicious observation is shared through acquaintance channels.",
+      "path": [
+        "Watch lists bias subsequent inspections.",
+        "Participants' neighborhoods can expand timed-dispute notice."
+      ],
+      "feedback": {
+        "implemented": "Suspicion→watch list→later inspection→suspicion is an optional returning path.",
+        "missing": "No retraction/forgetting, calibrated independence or guaranteed beneficial propagation."
+      },
+      "signs": "+ notice/exposure conditional on graph and gossip share; false suspicion can amplify too.",
+      "delay": "Later inspection/timed rounds and bounded hop count.",
+      "bottleneck": "Communication access, finite inspection effort and correlated mistakes.",
+      "basis": "Optional behavioral reference; acquaintance channels are not guarantee or invitation rights.",
+      "code": [
+        "src/experiment.mjs#spreadSuspicion/neighborhood/inspectionWork"
+      ],
+      "observable": [
+        "trust.gossipShares/gossipInspections",
+        "watch-list target allocation"
+      ],
+      "diagnostic": null,
+      "intervention": "Equal-work gossip on/off, independent/shared errors, and displaced-target controls.",
+      "alternative": "An adjacency bonus, extra work or positive-only examples.",
+      "falsifier": "Repeated false suspicion persists or apparent gain disappears under matched independent evidence.",
+      "status": "Source-implemented return; beneficial mechanism unconfirmed.",
+      "diagram": "M13 [A] suspicion → acquaintance notice/watchlist → later suspicion (±; no retraction)"
+    },
+    {
+      "id": "M14",
+      "question": "Can public cash-out expose fraud without punishing ordinary payments?",
+      "initiatingChange": "Several subjects transfer liquid FACY to one recipient.",
+      "path": [
+        "Distinct-sender hub flags enter screening.",
+        "Fallible review can trigger sanctions and constrain later conversion/transfers."
+      ],
+      "feedback": {
+        "implemented": "Cashout→flags→screening→sanctions→future cashout capacity is a conditional path.",
+        "missing": "Adaptive laundering and reliable money-flow attribution are not implemented."
+      },
+      "signs": "+ consolidation→visibility; ± precision with background payments; sanctions constrain capacity.",
+      "delay": "Historical transfers and next inspection opportunities.",
+      "bottleneck": "Observable consolidation, threshold, review effort and common legitimate payments.",
+      "basis": "Optional behavioral detection reference, not automatic sanction for graph density or transfers.",
+      "code": [
+        "src/experiment.mjs#cashFlowWork/flaggedByFlows/inspectionWork",
+        "test/social.test.mjs"
+      ],
+      "observable": [
+        "trust.flowFlagged",
+        "transfer events/memos",
+        "precision diagnostics"
+      ],
+      "diagnostic": null,
+      "intervention": "Same transfers/resources with honest payment noise and non-consolidation controls.",
+      "alternative": "Attention shares the historical flowFlagged counter; flag count is not exclusively flow detection.",
+      "falsifier": "Ordinary recipients dominate flags or consolidation can be avoided without any modeled utility loss.",
+      "status": "Flagging/precision tests; adaptive feedback effect not confirmed.",
+      "diagram": "M14 [A] transfers → flow flags → review --[R] sanctions → future transfers↓ (conditional)"
+    },
+    {
+      "id": "M15",
+      "question": "Can correction propagate through a network without guilt by association?",
+      "initiatingChange": "An upheld case exposes related public subjects or defending entrants.",
+      "path": [
+        "Optional lineage investigation spends bounded follow-up work.",
+        "Cluster references can propose cases against defenders; each merits path remains an OPEN reference."
+      ],
+      "feedback": {
+        "implemented": "Verdict→follow-up→new challenge→verdict is source-implemented.",
+        "missing": "Losing defense does not prove a violation; informed obstruction and independent review are not supplied by association."
+      },
+      "signs": "+ follow-up cases, including erroneous cascades; net benefit unknown.",
+      "delay": "After verdict, maxFollowUps and case clocks.",
+      "bottleneck": "Work, qualification and independent evidence for each additional case.",
+      "basis": "Optional research stress script; no selected automatic guilt of associates.",
+      "code": [
+        "src/experiment.mjs#investigate/clusterFollowUp",
+        "test/social.test.mjs",
+        "test/disputes.test.mjs"
+      ],
+      "observable": [
+        "trust.followUps",
+        "sanctions.clusterChallenges",
+        "wrongful outcomes"
+      ],
+      "diagnostic": null,
+      "intervention": "Toggle follow-ups with equal work, genuine/collusive matched neighborhoods and erroneous seed verdicts.",
+      "alternative": "Encoded association sanctions or a non-executing branch (a >=0 counter is not a positive witness).",
+      "falsifier": "False initial judgment produces a cascade, or cluster follow-up never actually executes in claimed evidence.",
+      "status": "Lineage work bounded by tests; cluster positive-execution/effect evidence incomplete.",
+      "diagram": "M15 [A] verdict → lineage/defender follow-up → cases → verdict (±; no guilt inference)"
+    }
+  ],
+  "inventory": {
+    "scope": "All normalized runExperiment default controls are covered by grouped paths (tested). Dynamic schedules reuse action units. Graph/proof benchmarking, CLI execution, registration/statistical-analysis settings and historical study JSON are separately owned by their existing contracts; this is not a complete historical-consumer migration audit.",
+    "parameters": [
+      {
+        "paths": [
+          "scenario",
+          "initialSize",
+          "attackerShare",
+          "initialTopology",
+          "initialDegree"
+        ],
+        "units": "enum; subjects; share; generator degree",
+        "scope": "initial world/run",
+        "status": "research-assumption",
+        "meaning": "Choose scenario, rounded initial attacker count and topology; genesis acquisition is unpriced. Requested/evolving shares and humans/subjects differ.",
+        "provenance": "src/experiment.mjs DEFAULTS/initialization; docs/experiments.en.md",
+        "mechanisms": [
+          "M01",
+          "M06",
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "seed"
+        ],
+        "units": "logical seed string",
+        "scope": "run",
+        "status": "intervention",
+        "meaning": "Reproduction input; not a human trait. Requires source and randomness identity.",
+        "provenance": "src/random.mjs; docs/experiments.en.md",
+        "mechanisms": [
+          "M04"
+        ]
+      },
+      {
+        "paths": [
+          "days"
+        ],
+        "units": "days",
+        "scope": "declared horizon",
+        "status": "intervention",
+        "meaning": "Exposure endpoint, not the last retained row or endogenous lifetime.",
+        "provenance": "src/experiment.mjs DEFAULTS; docs/discovery.en.md",
+        "mechanisms": [
+          "M06",
+          "M10"
+        ]
+      },
+      {
+        "paths": [
+          "localInspectionShare"
+        ],
+        "units": "probability",
+        "scope": "inspection target opportunity",
+        "status": "calibration-target",
+        "meaning": "Chance of preferring a local-authority act, not observation quality.",
+        "provenance": "src/experiment.mjs inspectionWork",
+        "mechanisms": [
+          "M02",
+          "M05"
+        ]
+      },
+      {
+        "paths": [
+          "sensitivity",
+          "falsePositiveRate"
+        ],
+        "units": "probability conditional on evaluator violation/genuine label",
+        "scope": "observation/vetting opportunity",
+        "status": "calibration-target",
+        "meaning": "Fallible first-stage hit/false-suspicion rates, distinct from review/verdict accuracy.",
+        "provenance": "src/experiment.mjs observation environment",
+        "mechanisms": [
+          "M02",
+          "M04",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "maxSubjects",
+          "maxActions"
+        ],
+        "units": "subjects; effort-ledger calls",
+        "scope": "run computation",
+        "status": "intervention",
+        "meaning": "Resource safety censors, not endogenous carrying capacity or economic exhaustion.",
+        "provenance": "src/experiment.mjs DEFAULTS; src/effort.mjs",
+        "mechanisms": [
+          "M06"
+        ]
+      },
+      {
+        "paths": [
+          "targetFalseConversions",
+          "successCriterion"
+        ],
+        "units": "conversion count; criterion enum",
+        "scope": "evaluation",
+        "status": "intervention",
+        "meaning": "Conditional success test; Council share is not demonstrated corrupt governance.",
+        "provenance": "src/experiment.mjs checkSuccess; docs/experiments.en.md",
+        "mechanisms": [
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "includeState"
+        ],
+        "units": "boolean",
+        "scope": "output retention",
+        "status": "intervention",
+        "meaning": "Snapshot retention, never an actor policy.",
+        "provenance": "src/experiment.mjs result",
+        "mechanisms": [
+          "M04"
+        ]
+      },
+      {
+        "paths": [
+          "activity.*.selfId",
+          "activity.*.respond",
+          "activity.*.challenge",
+          "activity.*.review",
+          "activity.*.defend",
+          "activity.*.cashout",
+          "activity.*.convert"
+        ],
+        "units": "probability",
+        "scope": "cohort/action-specific opportunity",
+        "status": "calibration-target",
+        "meaning": "Respectively fresh-act attempt, authorized suspicious response, eligible challenge, pending-invitation review, ladder defense, eligible cashout and conversion. Fixed rates do not adapt to outcomes.",
+        "provenance": "src/experiment.mjs DEFAULT_ACTIVITY/activityFrom",
+        "mechanisms": [
+          "M01",
+          "M02",
+          "M04",
+          "M08",
+          "M14"
+        ]
+      },
+      {
+        "paths": [
+          "activity.*.invite",
+          "activity.*.guarantee",
+          "activity.*.inspect",
+          "activity.*.bribe"
+        ],
+        "units": "action opportunities per accepted subject-day",
+        "scope": "cohort/day",
+        "status": "calibration-target",
+        "meaning": "Demand for each named action; floor(rate)+Bernoulli(fraction), not Poisson. More subjects increase workload, not free operator capacity.",
+        "provenance": "src/experiment.mjs DEFAULT_ACTIVITY/actionsAtRate",
+        "mechanisms": [
+          "M02",
+          "M06",
+          "M08"
+        ]
+      },
+      {
+        "paths": [
+          "budgets.*"
+        ],
+        "units": "uncalibrated weighted effort",
+        "scope": "cohort/run",
+        "status": "calibration-target",
+        "meaning": "Finite work resources; denial is economic exhaustion, not maxActions censoring.",
+        "provenance": "src/effort.mjs; src/experiment.mjs budget normalization",
+        "mechanisms": [
+          "M04",
+          "M06",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "weights.*"
+        ],
+        "units": "effort per attempted named action",
+        "scope": "action/cohort ledger",
+        "status": "calibration-target",
+        "meaning": "15 distinct action prices; rejected attempted work is charged, denied work is not. selfId/fakeSelfId are not probabilities or token prices.",
+        "provenance": "src/effort.mjs DEFAULT_WEIGHTS",
+        "mechanisms": [
+          "M01",
+          "M04",
+          "M06"
+        ]
+      },
+      {
+        "paths": [
+          "deviants.share",
+          "deviants.honest",
+          "deviants.attackers"
+        ],
+        "units": "share; optional activity/schedule records",
+        "scope": "initial operator subset",
+        "status": "research-assumption",
+        "meaning": "Alternative strategy subset; omitted activities inherit default cohort activity, not configured conformist behavior.",
+        "provenance": "src/experiment.mjs deviantsFrom/initialization",
+        "mechanisms": [
+          "M08"
+        ]
+      },
+      {
+        "paths": [
+          "perturbations"
+        ],
+        "units": "records: id, startDay/endDay in days, activity overrides",
+        "scope": "half-open intervention windows",
+        "status": "intervention",
+        "meaning": "Exogenously alters named cohort actions; no endogenous learning. Activity units match the activity inventory.",
+        "provenance": "src/experiment.mjs perturbationsFrom; docs/controls.en.md",
+        "mechanisms": [
+          "M05",
+          "M10"
+        ]
+      },
+      {
+        "paths": [
+          "policy.xpFinality"
+        ],
+        "units": "enum",
+        "scope": "XP-source credit",
+        "status": "selected-rule",
+        "meaning": "Terminal credit default; immediate is comparison, not interchangeable timing.",
+        "provenance": "docs/facety.protocol.en.md; src/model.mjs DEFAULT_POLICY",
+        "mechanisms": [
+          "M01"
+        ]
+      },
+      {
+        "paths": [
+          "policy.cancellationAuthority"
+        ],
+        "units": "enum",
+        "scope": "act veto authority",
+        "status": "research-assumption",
+        "meaning": "Historical snapshot/current-edge comparison; do not merge historical authority with present relationships.",
+        "provenance": "docs/simulator.en.md policy references; src/model.mjs",
+        "mechanisms": [
+          "M02",
+          "M03"
+        ]
+      },
+      {
+        "paths": [
+          "policy.councilEligibility"
+        ],
+        "units": "enum",
+        "scope": "Council eligibility",
+        "status": "selected-rule",
+        "meaning": "Active accepted Council membership is selected; accepted-only is a historical comparison.",
+        "provenance": "docs/facety.protocol.en.md; src/model.mjs",
+        "mechanisms": [
+          "M01",
+          "M06",
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "policy.guaranteeFee"
+        ],
+        "units": "FACY per confirmation",
+        "scope": "guarantor payer/fee custody",
+        "status": "research-assumption",
+        "meaning": "Zero default; a positive fee is held, not burned. Unspecified Emitter commitment not invented.",
+        "provenance": "docs/simulator.en.md; src/model.mjs confirmGuarantee",
+        "mechanisms": [
+          "M03"
+        ]
+      },
+      {
+        "paths": [
+          "policy.councilSize"
+        ],
+        "units": "seats",
+        "scope": "Council rank cutoff",
+        "status": "selected-rule",
+        "meaning": "Selected target 101; small named boundary references do not change it. XP ranks seats, not vote weight.",
+        "provenance": "docs/facety.protocol.en.md §27; src/model.mjs council",
+        "mechanisms": [
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "policy.debtRecovery"
+        ],
+        "units": "enum",
+        "scope": "future emissions",
+        "status": "selected-rule",
+        "meaning": "Veto-preserving reservation default; immediate burn remains comparison. Debt is not collection.",
+        "provenance": "docs/facety.protocol.en.md; src/model.mjs",
+        "mechanisms": [
+          "M11"
+        ]
+      },
+      {
+        "paths": [
+          "policy.invitationFreezeHours"
+        ],
+        "units": "hours",
+        "scope": "invitation prevention/acceptance",
+        "status": "selected-rule",
+        "meaning": "24-hour default; cancel strictly before the endpoint, accept at/after it.",
+        "provenance": "docs/facety.protocol.en.md; src/model.mjs",
+        "mechanisms": [
+          "M02",
+          "M06"
+        ]
+      },
+      {
+        "paths": [
+          "policy.linkBreakXp"
+        ],
+        "units": "enum",
+        "scope": "ended directed relation",
+        "status": "research-assumption",
+        "meaning": "Default revoke implements D9 DIRECTION; attributable guarantor credits are replayed. Keep is a comparison, not a selection. Either-party historical semantics remain a research boundary.",
+        "provenance": "docs/facety.protocol.en.md; src/model.mjs endGuarantee",
+        "mechanisms": [
+          "M03"
+        ]
+      },
+      {
+        "paths": [
+          "policy.spendMaturityHours",
+          "policy.conversionMaturityHours"
+        ],
+        "units": "hours (independent controls)",
+        "scope": "invitation/debt spending; Collector conversion respectively",
+        "status": "selected-rule",
+        "meaning": "Both default 24, but their interventions and flows differ; equal values do not authorize fusion.",
+        "provenance": "docs/facety.protocol.en.md; src/model.mjs",
+        "mechanisms": [
+          "M01",
+          "M02",
+          "M11"
+        ]
+      },
+      {
+        "paths": [
+          "policy.artifactReuse"
+        ],
+        "units": "enum",
+        "scope": "same subject/artifact claims",
+        "status": "research-assumption",
+        "meaning": "OPEN production interpretation: registration-only legacy vs once-per-subject reference; group claims remain distinct.",
+        "provenance": "docs/simulator.en.md artifact references; src/model.mjs",
+        "mechanisms": [
+          "M01",
+          "M02"
+        ]
+      },
+      {
+        "paths": [
+          "ablations.withholdGuarantorXp",
+          "ablations.fixedInvitationThreshold",
+          "ablations.randomGuaranteeTargets"
+        ],
+        "units": "boolean; nullable guarantor count; boolean",
+        "scope": "model/behavior counterfactual",
+        "status": "intervention",
+        "meaning": "Remove guarantor credit, replace digit threshold, or remove preferential matching independently. Never protocol options.",
+        "provenance": "src/model.mjs DEFAULT_ABLATIONS; src/experiment.mjs EXPERIMENT_ABLATIONS",
+        "mechanisms": [
+          "M01",
+          "M06"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.enabled",
+          "disputes.procedure"
+        ],
+        "units": "boolean; enum",
+        "scope": "optional procedural reference",
+        "status": "research-assumption",
+        "meaning": "Enable one-step, instant ladder or timed ladder; all merits institutions remain OPEN.",
+        "provenance": "src/experiment.mjs DEFAULT_DISPUTES; docs/simulator.en.md",
+        "mechanisms": [
+          "M04",
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.accuracy"
+        ],
+        "units": "probability",
+        "scope": "one-step environment verdict",
+        "status": "calibration-target",
+        "meaning": "Accuracy of supplied adjudication environment, not an actor truth oracle or observation rate.",
+        "provenance": "src/experiment.mjs challenge",
+        "mechanisms": [
+          "M04",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.stake",
+          "disputes.stakeGrowth",
+          "disputes.stakeBacking"
+        ],
+        "units": "FACY; fractional ladder increase; custody enum",
+        "scope": "case/entry",
+        "status": "research-assumption",
+        "meaning": "Entry commitment, escalation and exclusive custody vs unsecured promise are separate; backing remains OPEN.",
+        "provenance": "src/dispute-stakes.mjs; docs/simulator.en.md#dispute-stake-custody-reference",
+        "mechanisms": [
+          "M04",
+          "M07",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.fine",
+          "disputes.fineMode",
+          "disputes.liability"
+        ],
+        "units": "FACY; enum; liable-set enum",
+        "scope": "upheld case",
+        "status": "research-assumption",
+        "meaning": "Fixed vs chain fine and subjects exposed; fixed fine inactive in chain mode. Association is not evaluator proof.",
+        "provenance": "src/disputes.mjs enforceIdentityVerdict; docs/simulator.en.md",
+        "mechanisms": [
+          "M02",
+          "M03",
+          "M09",
+          "M11",
+          "M15"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.rewardShare"
+        ],
+        "units": "fraction of collectible liquid fine",
+        "scope": "challenger payment",
+        "status": "research-assumption",
+        "meaning": "Transfer actual liquid collection, not nominal debt or a free subsidy.",
+        "provenance": "src/disputes.mjs enforceIdentityVerdict",
+        "mechanisms": [
+          "M04",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.loserHalvesXp",
+          "disputes.excludeLiable"
+        ],
+        "units": "boolean",
+        "scope": "losing entrant; liable-party exclusion respectively",
+        "status": "research-assumption",
+        "meaning": "Loser XP risk and optional collateral exclusion; liable halving on upheld cases is separately encoded.",
+        "provenance": "src/disputes.mjs; src/experiment.mjs settlement",
+        "mechanisms": [
+          "M07",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.signalAccuracy",
+          "disputes.closeSignalAccuracy"
+        ],
+        "units": "conditional probability",
+        "scope": "private ladder/Council signal, distant/close respectively",
+        "status": "calibration-target",
+        "meaning": "Distinct evidence-quality contexts, not a combined trust score.",
+        "provenance": "src/experiment.mjs ladder/Council signals",
+        "mechanisms": [
+          "M07",
+          "M12"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.xpValue",
+          "disputes.civicValue"
+        ],
+        "units": "stake-comparison units per XP; per entry",
+        "scope": "candidate willingness",
+        "status": "research-assumption",
+        "meaning": "Supplied private risk/civic valuation; neither market price nor application externality evidence.",
+        "provenance": "src/experiment.mjs willing",
+        "mechanisms": [
+          "M08"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.maxRounds",
+          "disputes.maxScan"
+        ],
+        "units": "entries; candidates scanned",
+        "scope": "reference termination/candidate search",
+        "status": "research-assumption",
+        "meaning": "Experimental finality/search caps, not computational censoring or automatically last-unopposed timeout.",
+        "provenance": "src/experiment.mjs ladder limits",
+        "mechanisms": [
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.councilDepth"
+        ],
+        "units": "ladder entries; zero disables",
+        "scope": "Council referral",
+        "status": "research-assumption",
+        "meaning": "OPEN depth-triggered reference, not selected apex admission.",
+        "provenance": "src/experiment.mjs settleDispute/referral",
+        "mechanisms": [
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.reputationWeight",
+          "disputes.trackRecordWeight"
+        ],
+        "units": "blend fraction",
+        "scope": "opening structural prior; opposing-entrant record prior respectively",
+        "status": "research-assumption",
+        "meaning": "Different public signals: graph rank versus procedural record. Not XP, familiarity or truth accuracy.",
+        "provenance": "src/experiment.mjs openingPrior/willing",
+        "mechanisms": [
+          "M12"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.disputeWindowHours",
+          "disputes.roundsPerDay"
+        ],
+        "units": "hours; entry opportunities/day",
+        "scope": "timed ladder",
+        "status": "research-assumption",
+        "meaning": "Timeout after last entry; independent throughput. Clock and service capacity are not one parameter.",
+        "provenance": "src/experiment.mjs timed disputes",
+        "mechanisms": [
+          "M07",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.noticeBase",
+          "disputes.regularsNotice"
+        ],
+        "units": "base population fraction; probability",
+        "scope": "timed-round notice",
+        "status": "calibration-target",
+        "meaning": "Base sampled attention and extra familiarity notice; public does not imply universal observation.",
+        "provenance": "src/experiment.mjs timed notice",
+        "mechanisms": [
+          "M05",
+          "M12"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.evidenceGain"
+        ],
+        "units": "accuracy increment per relative XP height",
+        "scope": "timed private willingness",
+        "status": "research-assumption",
+        "meaning": "Explicit signal-sharpening reference, bounded at consumption; not calibrated emergent evidence quality.",
+        "provenance": "src/experiment.mjs willing",
+        "mechanisms": [
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.entrantChoice"
+        ],
+        "units": "enum",
+        "scope": "willing-candidate visiting order",
+        "status": "research-assumption",
+        "meaning": "Lowest/highest/random reference scheduler order can affect winners.",
+        "provenance": "src/experiment.mjs candidate order",
+        "mechanisms": [
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.evidence",
+          "disputes.proofStrength"
+        ],
+        "units": "enum; probability",
+        "scope": "private vs common environment signal",
+        "status": "research-assumption",
+        "meaning": "Public-proof is fallible common evidence, not cryptographic truth. Shared error is explicit.",
+        "provenance": "src/experiment.mjs public/private signals",
+        "mechanisms": [
+          "M04",
+          "M07"
+        ]
+      },
+      {
+        "paths": [
+          "disputes.clusterFollowUp"
+        ],
+        "units": "boolean",
+        "scope": "post-verdict follow-ups",
+        "status": "research-assumption",
+        "meaning": "Optional stress reference does not prove every defender committed another offense.",
+        "provenance": "src/experiment.mjs cluster follow-ups",
+        "mechanisms": [
+          "M15"
+        ]
+      },
+      {
+        "paths": [
+          "social.scope",
+          "social.hops",
+          "social.strangerRate"
+        ],
+        "units": "enum; graph hops; probability",
+        "scope": "matching/access",
+        "status": "calibration-target",
+        "meaning": "Public/acquaintance matching and stranger exception; acquaintance channels are not procedural rights.",
+        "provenance": "src/experiment.mjs socialFrom/acquaintances",
+        "mechanisms": [
+          "M06",
+          "M13"
+        ]
+      },
+      {
+        "paths": [
+          "social.screening",
+          "social.screeningQuantile",
+          "social.screeningShare"
+        ],
+        "units": "boolean; population quantile; inspection probability",
+        "scope": "structural targeting",
+        "status": "research-assumption",
+        "meaning": "Root-seeded graph rank selects candidates; rank is not guilt. Quantile and share have distinct roles.",
+        "provenance": "src/experiment.mjs inspectionWork",
+        "mechanisms": [
+          "M05",
+          "M12"
+        ]
+      },
+      {
+        "paths": [
+          "social.verification",
+          "social.verificationSensitivity",
+          "social.verificationFalsePositiveRate"
+        ],
+        "units": "boolean; conditional probabilities",
+        "scope": "second-stage review",
+        "status": "calibration-target",
+        "meaning": "Optional independent noisy verification before veto/challenge; distinct from first-stage suspicion and verdict.",
+        "provenance": "src/experiment.mjs verify",
+        "mechanisms": [
+          "M02",
+          "M04",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "social.investigation",
+          "social.maxFollowUps"
+        ],
+        "units": "boolean; suspects per follow-up budget",
+        "scope": "post-upheld lineage investigation",
+        "status": "research-assumption",
+        "meaning": "Bounded investigation work, not mandatory group guilt.",
+        "provenance": "src/experiment.mjs investigate",
+        "mechanisms": [
+          "M15"
+        ]
+      },
+      {
+        "paths": [
+          "social.bribeAcceptance",
+          "social.bribePrice"
+        ],
+        "units": "probability; off-protocol payment units",
+        "scope": "corruption offer/acceptance",
+        "status": "research-assumption",
+        "meaning": "Exogenous acceptance and unfunded external bookkeeping, not FACY market execution or endogenous loyalty.",
+        "provenance": "src/experiment.mjs bribeWork",
+        "mechanisms": [
+          "M08"
+        ]
+      },
+      {
+        "paths": [
+          "social.exitOnFraud"
+        ],
+        "units": "boolean",
+        "scope": "guardian after invitation cancellation",
+        "status": "research-assumption",
+        "meaning": "Narrow paid relation withdrawal, not general population exit or learned defection.",
+        "provenance": "src/experiment.mjs guardianWork",
+        "mechanisms": [
+          "M03",
+          "M09"
+        ]
+      },
+      {
+        "paths": [
+          "social.flowTracing",
+          "social.flowHubThreshold",
+          "social.honestTransferRate"
+        ],
+        "units": "boolean; distinct senders; payment probability",
+        "scope": "historical transfer screening/background payments",
+        "status": "research-assumption",
+        "meaning": "Flow visibility and ordinary one-FACY payment noise; no punitive density rule.",
+        "provenance": "src/experiment.mjs flaggedByFlows/honestTransfers",
+        "mechanisms": [
+          "M14"
+        ]
+      },
+      {
+        "paths": [
+          "social.attentionFeedback"
+        ],
+        "units": "boolean",
+        "scope": "later inspection routing",
+        "status": "research-assumption",
+        "meaning": "Adds public participants to attention pool; no extra baseline inspection effort.",
+        "provenance": "src/experiment.mjs attention/inspectionWork",
+        "mechanisms": [
+          "M05"
+        ]
+      },
+      {
+        "paths": [
+          "social.gossipHops",
+          "social.gossipShare"
+        ],
+        "units": "graph hops; probability",
+        "scope": "watch-list communication/targeting",
+        "status": "calibration-target",
+        "meaning": "Bounded public suspicion propagation and preferential inspection, with no retraction model.",
+        "provenance": "src/experiment.mjs spreadSuspicion/inspectionWork",
+        "mechanisms": [
+          "M13"
+        ]
+      },
+      {
+        "paths": [
+          "policy.guarantorEligibility"
+        ],
+        "units": "enum",
+        "scope": "guarantor eligibility",
+        "status": "research-assumption",
+        "meaning": "Activity-qualified vs accepted guarantor reference; do not infer owner selection from an active default.",
+        "provenance": "src/model.mjs eligibleGuarantors; docs/simulator.en.md policy references",
+        "mechanisms": [
+          "M01",
+          "M06"
+        ]
+      }
+    ],
+    "viewParameters": [
+      {
+        "paths": [
+          "actors[].budget"
+        ],
+        "meaning": "Fixed work endowment, one unit per observation/package/route/processed review/formal attempt; zero-cost blocked unavailable/capacity checks do not claim completed work.",
+        "units": "uncalibrated work units/actor/view",
+        "scope": "bounded reference",
+        "provenance": "explicit research reduction; src/accountability.mjs",
+        "status": "research-assumption"
+      },
+      {
+        "paths": [
+          "actors[].reviewCapacity"
+        ],
+        "meaning": "Maximum processed reviews in each half-open 24-hour day; separate from total work and availability.",
+        "units": "reviews/actor/day",
+        "scope": "bounded reference",
+        "provenance": "supplied scenario capacity; calibration needed",
+        "status": "calibration-target"
+      },
+      {
+        "paths": [
+          "traceLimit"
+        ],
+        "meaning": "0 disables retention; saturation counts omitted records and never truncates protocol semantics.",
+        "units": "records",
+        "scope": "observation only",
+        "provenance": "CausalJournal instrumentation limit, not an agent policy",
+        "status": "intervention"
+      },
+      {
+        "paths": [
+          "suspicious",
+          "sourceGroup",
+          "available",
+          "conflicted",
+          "upheld"
+        ],
+        "meaning": "Supplied fallible observation/source declarations, availability/disclosed conflict and separate reference verdict. Source labels are not authenticated independent sources or correctness.",
+        "units": "boolean/declared categorical input",
+        "scope": "individual stage/time",
+        "provenance": "scenario/environment, never evaluator allegiance; src/accountability.mjs",
+        "status": "research-assumption"
+      },
+      {
+        "paths": [
+          "RELAY_INPUTS",
+          "RELAY_CONTEXTS"
+        ],
+        "meaning": "Example-only prevalence, detection/review/verdict probabilities, shared-error mixture, capacity and window; retain exact values in output. They do not modify full-model defaults.",
+        "units": "conditional probabilities; reviews/day; hours",
+        "scope": "declared paired exploration",
+        "provenance": "examples/causal-relay.mjs supplied inputs; no human calibration",
+        "status": "research-assumption"
+      }
+    ],
+    "state": [
+      {
+        "fields": [
+          "subject.xp",
+          "xpEvents",
+          "xpSources"
+        ],
+        "kind": "stock + ordered provenance/materialization",
+        "units": "XP; credits/halvings",
+        "owner": "src/model.mjs",
+        "purpose": "Subject-level formal authority; replay is deliberate audit state, not a second trust quantity."
+      },
+      {
+        "fields": [
+          "liquidFacy",
+          "emitterVault",
+          "feeVault",
+          "stakeVault",
+          "disputeStakes",
+          "DisputeStakes.positions"
+        ],
+        "kind": "stocks + custody commitments",
+        "units": "FACY",
+        "owner": "src/model.mjs; src/dispute-stakes.mjs",
+        "purpose": "Liquid spending, outstanding rights, retained fees, reserved funds and promised/actual settlement are distinct. Monetary authority stays in FacetyModel."
+      },
+      {
+        "fields": [
+          "minted",
+          "burned",
+          "debt"
+        ],
+        "kind": "cumulative flows + obligation stock",
+        "units": "FACY",
+        "owner": "src/model.mjs",
+        "purpose": "Actual issue/burn versus unpaid obligations; supply/custody reconcile independently."
+      },
+      {
+        "fields": [
+          "subjects",
+          "key",
+          "identityStatus",
+          "genesis"
+        ],
+        "kind": "primitive public protocol state",
+        "units": "IDs/status",
+        "owner": "src/model.mjs",
+        "purpose": "Accepted identity and account authority, not evaluator genuine/false labels or proof of unique personhood."
+      },
+      {
+        "fields": [
+          "artifacts",
+          "contentHashes",
+          "claims",
+          "selfIds",
+          "subjectActs"
+        ],
+        "kind": "claim state + indexes",
+        "units": "event/face/content references; hours",
+        "owner": "src/model.mjs",
+        "purpose": "Freshness, distinct media claims/collision, terminal disposition, original guarantors, source credits and locks; hashless media authenticity is abstract."
+      },
+      {
+        "fields": [
+          "guarantees",
+          "guaranteeRelations",
+          "lineage",
+          "invitations"
+        ],
+        "kind": "separate graph/lifecycle state",
+        "units": "directed edges; statuses/hours",
+        "owner": "src/model.mjs",
+        "purpose": "Present guarantee consent/lifecycle vs historical funded admission. One directed guarantee never silently creates its reverse."
+      },
+      {
+        "fields": [
+          "lastRewardAt",
+          "debtReservations",
+          "activeCache",
+          "activityVersion"
+        ],
+        "kind": "clock/index/materialized count",
+        "units": "hours; rights; count/version",
+        "owner": "src/model.mjs",
+        "purpose": "24-hour rate, 28-day accepted activity and veto-preserving recovery. Redundancy requires equivalence proof before removal."
+      },
+      {
+        "fields": [
+          "attention",
+          "watchLists",
+          "acquaintances",
+          "disputeRecords"
+        ],
+        "kind": "behavioral memory / derived channels",
+        "units": "subject sets, records, graph hops",
+        "owner": "src/experiment.mjs",
+        "purpose": "Targeting, familiarity, procedural reliability and structural rank remain separate from XP and actual truth."
+      },
+      {
+        "fields": [
+          "effort",
+          "budgets",
+          "rosters",
+          "pending",
+          "prepared candidates"
+        ],
+        "kind": "resources + scheduler/index state",
+        "units": "weighted work; calls; IDs",
+        "owner": "src/effort.mjs; src/experiment.mjs",
+        "purpose": "Attempt/reject/deny and cohort/action/phase reconciliation; staged preparation can consume work even when admission fails."
+      },
+      {
+        "fields": [
+          "relay observations/packages/routes/cases",
+          "actor work/reviews"
+        ],
+        "kind": "reference information/workflow state",
+        "units": "IDs, hours, work, reviews/day",
+        "owner": "src/accountability.mjs",
+        "purpose": "Explicit source/review ancestry, access bottlenecks, pending stages; no external protocol account or compensating mint."
+      },
+      {
+        "fields": [
+          "genuine",
+          "cohort",
+          "operator",
+          "actual violation"
+        ],
+        "kind": "evaluator-only world",
+        "units": "labels",
+        "owner": "src/experiment.mjs environment; executable example environment",
+        "purpose": "Compute false/genuine/ownership harm and denominators; never feed defender choice except through declared noisy observations/verdict environment."
+      }
+    ],
+    "measurements": [
+      {
+        "fields": [
+          "subjects/operators/false circulation",
+          "XP concentration",
+          "Council shares/churn",
+          "network/admission/work"
+        ],
+        "purpose": "Distinct outcome dimensions with denominators/horizon; zero-XP concentration null. Seats do not prove a malicious vote.",
+        "owner": "src/observables.mjs; src/metrics.mjs"
+      },
+      {
+        "fields": [
+          "sanctions",
+          "trust",
+          "observationDiagnostics",
+          "case/stake records"
+        ],
+        "purpose": "Flows, stocks and opportunities differ. eligibleForUnmodeledXpChallenge is a historical name: it counts higher-XP outsider suspicions even with disputes enabled.",
+        "owner": "src/experiment.mjs"
+      },
+      {
+        "fields": [
+          "rewardsReceived"
+        ],
+        "purpose": "Compatibility name for all incoming protocol transfers, not only challenge rewards, not net profit. Liquid wealth plus gross inflow can double-value money if an analyst chooses both.",
+        "owner": "src/experiment.mjs agent facts; src/games.mjs FACT_KEYS"
+      },
+      {
+        "fields": [
+          "flowFlagged"
+        ],
+        "purpose": "Historical set size also includes attention subjects, not exclusively flow detection or all final screening candidates.",
+        "owner": "src/experiment.mjs inspectionWork"
+      },
+      {
+        "fields": [
+          "inviteBurns"
+        ],
+        "purpose": "Exact current disposition category, not exhaustive historical invitation-origin burns after cancellation/voiding; event ledger is authoritative for actual burn.",
+        "owner": "src/experiment.mjs result; src/model.mjs events"
+      },
+      {
+        "fields": [
+          "impact.honestConnectedFraction",
+          "network.connectivity"
+        ],
+        "purpose": "Raw graph reachability vs invalidated-node-blocked paths respectively; do not merge because simple baseline endpoints happen to agree.",
+        "owner": "src/experiment.mjs; src/observables.mjs"
+      },
+      {
+        "fields": [
+          "viability/utility weights",
+          "descriptor margins",
+          "bootstrap/binomial settings",
+          "return windows"
+        ],
+        "purpose": "Offline analyst criteria, not automatic actor adaptation or proof of a mechanism; defaults/missingness owned by their existing analysis contracts.",
+        "owner": "docs/games.en.md; docs/discovery.en.md; docs/evidence.en.md; docs/controls.en.md"
+      },
+      {
+        "fields": [
+          "LEGACY_FIXTURE_TIMING"
+        ],
+        "purpose": "Pinned historical 72/168/0-hour fixture, not duplicate current 24-hour policy; preserve historical dependency until a new study is run.",
+        "owner": "src/incentives.mjs; docs/incentives.en.md"
+      }
+    ],
+    "unintegratedPrototypes": {
+      "status": "Preserved untracked work outside this checkpoint; not imported by the canonical examples/cohort scheduler. Authorship/acceptance not established here; no deletion or migration is authorized.",
+      "files": [
+        "src/relay.mjs",
+        "src/trace.mjs",
+        "src/walkthroughs.mjs"
+      ],
+      "controls": [
+        {
+          "paths": [
+            "RELAY_POLICY.discoveryCost",
+            "RELAY_POLICY.packageCost",
+            "RELAY_POLICY.reviewCost"
+          ],
+          "units": "work/action",
+          "scope": "prototype observer",
+          "status": "research-assumption",
+          "meaning": "Separate uncalibrated work prices",
+          "provenance": "src/relay.mjs"
+        },
+        {
+          "paths": [
+            "RELAY_POLICY.sponsorMinXp",
+            "RELAY_POLICY.acceptStrength"
+          ],
+          "units": "XP; ordinal 0..3",
+          "scope": "prototype sponsor",
+          "status": "research-assumption",
+          "meaning": "Minimum-XP/declared-strength gate differs from canonical target-relative XP and independent supplied review",
+          "provenance": "src/relay.mjs"
+        },
+        {
+          "paths": [
+            "RELAY_POLICY.maxRoutes",
+            "RELAY_POLICY.conflict"
+          ],
+          "units": "attempts; enum",
+          "scope": "prototype routing",
+          "status": "research-assumption",
+          "meaning": "Alternative route limit/graph-conflict refusal, not selected",
+          "provenance": "src/relay.mjs"
+        },
+        {
+          "paths": [
+            "RELAY_POLICY.stake",
+            "RELAY_POLICY.fine",
+            "RELAY_POLICY.hearingHours"
+          ],
+          "units": "FACY; FACY; hours",
+          "scope": "prototype hearing",
+          "status": "research-assumption",
+          "meaning": "Separate sanction/hearing reference, not the shared one-step consequences",
+          "provenance": "src/relay.mjs"
+        },
+        {
+          "paths": [
+            "Trace.maxEntries"
+          ],
+          "units": "entries",
+          "scope": "prototype logging",
+          "status": "intervention",
+          "meaning": "Separate trace bound/vocabulary; canonical slice uses CausalJournal",
+          "provenance": "src/trace.mjs"
+        },
+        {
+          "paths": [
+            "walkthrough function options"
+          ],
+          "units": "scenario-specific days, counts, booleans",
+          "scope": "prototype scenes",
+          "status": "intervention",
+          "meaning": "Unintegrated schedules/role inputs; no complete historical-consumer census",
+          "provenance": "src/walkthroughs.mjs"
+        }
+      ],
+      "followUp": "Establish ownership, then reconcile/archive with explicit reference labels and preservation tests; never silently merge different gates, sanctions or mechanism IDs."
+    }
+  },
+  "simplifications": [
+    {
+      "id": "S1",
+      "kind": "semantic-preserving refactoring",
+      "change": "Removed dispute.taken; subject is excluded explicitly and participant membership is derived from the owned stake-book positions through hasParticipant.",
+      "why": "One authority for entrant membership, not a synchronized duplicate set.",
+      "evidence": "Twelve predeclared procedure/backing/social contexts compare all retained fields and full ordered protocol events except provenance; focused dispute tests."
+    },
+    {
+      "id": "S2",
+      "kind": "semantic-preserving isolation",
+      "change": "One shared challengeAccess and one-step stake/enforceIdentityVerdict implementation used by the scheduler and evidence reference.",
+      "why": "The explanatory view cannot drift into a second economic/adjudication implementation.",
+      "evidence": "Same twelve-context preservation and native accounting/XP regressions; no default configuration change."
+    },
+    {
+      "id": "S3",
+      "kind": "bounded research reduction",
+      "change": "Named input-driven observations/reviews/verdicts, fixed one-unit relay work and one-step procedure; use native funded prefixes and real state transitions.",
+      "why": "Expose individual stage failures without introducing a generic agent framework or universal trust score.",
+      "evidence": "Walkthroughs and paired exploration are diagnostic/exploratory only; no endogenous search/compensation/adoption/learning. Signal quality, capacity, correlation and wrongful harm remain visible."
+    },
+    {
+      "id": "S4",
+      "kind": "correctness hardening, not semantic-equivalence claim",
+      "change": "Reject public null actors; preflight whole-verdict aggregate-debt arithmetic before reference custody settlement; journal unexpected failures and rethrow.",
+      "why": "Independent review reproduced free unregistered work and a numeric overflow that partially settled/stranded a case.",
+      "evidence": "Targeted negative and exact-headroom regressions. Ordinary twelve-context results remain equivalent; numeric failure semantics deliberately improve. Exclusive book ownership and normalized coherent model state remain limits."
+    }
+  ]
+}
