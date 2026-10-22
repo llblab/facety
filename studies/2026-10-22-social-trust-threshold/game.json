@@ -1,0 +1,132 @@
+{
+  "id": "social-trust-threshold",
+  "description": "Deterrence threshold rerun with acquaintance-only guarantees, graph screening, call/meeting verification, lineage investigation, a positive challenge stake and corruptible honest guarantors.",
+  "base": {
+    "scenario": "sybil-cone",
+    "seed": "inspection-game",
+    "initialSize": 40,
+    "attackerShare": 0.1,
+    "days": 30,
+    "maxSubjects": 4000,
+    "disputes": {
+      "enabled": true,
+      "accuracy": 0.9,
+      "fine": 5,
+      "liability": "guarantors",
+      "rewardShare": 0.5,
+      "stake": 1
+    },
+    "social": {
+      "scope": "acquaintances",
+      "hops": 2,
+      "strangerRate": 0.02,
+      "screening": true,
+      "screeningQuantile": 0.2,
+      "screeningShare": 0.5,
+      "verification": true,
+      "verificationSensitivity": 0.9,
+      "verificationFalsePositiveRate": 0.01,
+      "investigation": true,
+      "maxFollowUps": 20,
+      "bribeAcceptance": 0.05,
+      "bribePrice": 5
+    }
+  },
+  "roles": {
+    "honest": {
+      "strategies": {
+        "vigilant": {
+          "activity": {
+            "inspect": 3,
+            "respond": 0.9,
+            "challenge": 1
+          }
+        },
+        "lax": {
+          "activity": {
+            "inspect": 0.3,
+            "respond": 0.9,
+            "challenge": 0.2
+          }
+        },
+        "passive": {
+          "activity": {
+            "inspect": 0,
+            "respond": 0,
+            "challenge": 0
+          }
+        }
+      }
+    },
+    "attackers": {
+      "strategies": {
+        "abstain": {
+          "description": "Real coalition members who create no fakes and act like honest people.",
+          "activity": {
+            "invite": 0,
+            "guarantee": 0.3,
+            "selfId": 0.8
+          }
+        },
+        "farm": {
+          "activity": {}
+        },
+        "farm-then-hide": {
+          "activity": {},
+          "schedule": [
+            {
+              "startDay": 12,
+              "endDay": 30,
+              "activity": {
+                "invite": 0
+              }
+            }
+          ]
+        },
+        "farm-and-harass": {
+          "description": "Farm fakes and also challenge honest acts to collect rewards from wrong verdicts.",
+          "activity": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "farm-and-bribe": {
+          "description": "Farm fakes and pay honest strangers off-protocol to guarantee them.",
+          "activity": {
+            "bribe": 0.3
+          }
+        }
+      }
+    }
+  },
+  "replicas": 16,
+  "seed": "social-trust-threshold",
+  "valuation": {
+    "honest": {
+      "facts": {
+        "liquidFacy": 1,
+        "emitterFacy": 0.5,
+        "debt": -1,
+        "effort": -0.05,
+        "bribesReceived": 1
+      },
+      "system": {
+        "falseLiquidFacy": -0.02
+      }
+    },
+    "attackers": {
+      "facts": {
+        "liquidFacy": 1,
+        "emitterFacy": 0.5,
+        "debt": -1,
+        "falseDebt": 1,
+        "effort": -0.05,
+        "councilSeats": 2,
+        "bribesPaid": -1
+      }
+    }
+  },
+  "reference": {
+    "attackers": "abstain"
+  }
+}

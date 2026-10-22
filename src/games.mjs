@@ -10,7 +10,7 @@ import { provenance } from './provenance.mjs';
 export const GAME_SCHEMA = 'facety-game/v1';
 export const FACT_KEYS = Object.freeze([
   'subjects', 'acceptedSubjects', 'invalidatedSubjects', 'falseSubjects', 'liquidFacy', 'emitterFacy', 'debt', 'falseLiquidFacy', 'falseDebt', 'xp',
-  'councilSeats', 'effort', 'convertedRewards', 'finesCollected', 'finesAsDebt', 'halvings', 'rewardsReceived',
+  'councilSeats', 'effort', 'convertedRewards', 'finesCollected', 'finesAsDebt', 'halvings', 'rewardsReceived', 'bribesPaid', 'bribesReceived',
 ]);
 export const SYSTEM_KEYS = Object.freeze(['supply', 'burned', 'falseLiquidFacy', 'falseConvertedRewards', 'falseAcceptedSubjects', 'councilAttackerSeats']);
 const INITIAL_GROUPS = Object.freeze(['conformist', 'deviant']);
@@ -87,8 +87,8 @@ function profileConfig(game, profile, deviant = null) {
 // Retained payoff facts of one run; exported for worker threads.
 export function gameRunTask({ config }) {
   const run = runExperiment(config);
-  const { sanctions, ...system } = run.system;
-  return { seed: run.config.seed, censored: run.outcome.censored, agents: run.agents, system, sanctions };
+  const { sanctions, trust, ...system } = run.system;
+  return { seed: run.config.seed, censored: run.outcome.censored, agents: run.agents, system, sanctions: { ...sanctions, ...trust } };
 }
 
 function profileKey(profile) { return `${profile.honest}|${profile.attackers}`; }

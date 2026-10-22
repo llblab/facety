@@ -1,0 +1,701 @@
+{
+  "schema": "facety-game-grid/v1",
+  "id": "social-trust-threshold",
+  "axes": {
+    "disputes.accuracy": [
+      0.9
+    ],
+    "disputes.fine": [
+      5,
+      10,
+      20
+    ],
+    "disputes.rewardShare": [
+      0.5,
+      1
+    ],
+    "falsePositiveRate": [
+      0.05
+    ],
+    "sensitivity": [
+      0.5
+    ]
+  },
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "1c6fe57fe76c38a9e7911fcf09f57a40afcd04e4f1ee6378630bda035e06caf9",
+      "files": 22
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "runs": 1440,
+  "cells": [
+    {
+      "coordinates": {
+        "disputes.accuracy": 0.9,
+        "disputes.fine": 5,
+        "disputes.rewardShare": 0.5,
+        "falsePositiveRate": 0.05,
+        "sensitivity": 0.5
+      },
+      "deterrence": {
+        "reference": "abstain",
+        "byHonest": {
+          "vigilant": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -87.99921875,
+                "verdict": "worse"
+              },
+              "farm-then-hide": {
+                "mean": -64.69062500000001,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -92.95,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -93.23593749999999,
+                "verdict": "worse"
+              }
+            },
+            "deters": true
+          },
+          "lax": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": 48.80468749999999,
+                "verdict": "better"
+              },
+              "farm-then-hide": {
+                "mean": -13.533593750000001,
+                "verdict": "undetermined"
+              },
+              "farm-and-harass": {
+                "mean": -53.389062500000016,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -36.44140625000001,
+                "verdict": "worse"
+              }
+            },
+            "deters": false
+          },
+          "passive": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": 184.34062500000002,
+                "verdict": "better"
+              },
+              "farm-then-hide": {
+                "mean": 84.90859375,
+                "verdict": "better"
+              },
+              "farm-and-harass": {
+                "mean": 29.365624999999973,
+                "verdict": "better"
+              },
+              "farm-and-bribe": {
+                "mean": 75.59140624999996,
+                "verdict": "better"
+              }
+            },
+            "deters": false
+          }
+        },
+        "equilibria": [
+          {
+            "honest": {
+              "vigilant": 0,
+              "lax": 1,
+              "passive": 0
+            },
+            "attackers": {
+              "abstain": 0,
+              "farm": 1,
+              "farm-then-hide": 0,
+              "farm-and-harass": 0,
+              "farm-and-bribe": 0
+            },
+            "fraudProbability": 1,
+            "fraudPremium": 48.804687499999986,
+            "honestValue": 13.324427083333333,
+            "wrongfulInvalidations": 0,
+            "falseInvalidations": 21.125
+          }
+        ],
+        "honestWithoutFraud": 16.535243055555558,
+        "verdict": "fraud-pays"
+      },
+      "viability": {
+        "criteria": {
+          "minHonestRetention": 0.5,
+          "maxWrongfulInvalidations": 1
+        },
+        "honestRetention": 0.8058198502777105,
+        "wrongfulInvalidations": 0,
+        "viable": false,
+        "failures": [
+          "fraud-pays"
+        ]
+      }
+    },
+    {
+      "coordinates": {
+        "disputes.accuracy": 0.9,
+        "disputes.fine": 5,
+        "disputes.rewardShare": 1,
+        "falsePositiveRate": 0.05,
+        "sensitivity": 0.5
+      },
+      "deterrence": {
+        "reference": "abstain",
+        "byHonest": {
+          "vigilant": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -87.59531249999999,
+                "verdict": "worse"
+              },
+              "farm-then-hide": {
+                "mean": -64.78125000000001,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -91.5609375,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -93.0796875,
+                "verdict": "worse"
+              }
+            },
+            "deters": true
+          },
+          "lax": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": 48.80468749999999,
+                "verdict": "better"
+              },
+              "farm-then-hide": {
+                "mean": -13.533593750000001,
+                "verdict": "undetermined"
+              },
+              "farm-and-harass": {
+                "mean": -21.100000000000016,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -36.44140625000001,
+                "verdict": "worse"
+              }
+            },
+            "deters": false
+          },
+          "passive": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": 184.34062500000002,
+                "verdict": "better"
+              },
+              "farm-then-hide": {
+                "mean": 84.90859375,
+                "verdict": "better"
+              },
+              "farm-and-harass": {
+                "mean": 87.04843749999996,
+                "verdict": "better"
+              },
+              "farm-and-bribe": {
+                "mean": 75.59140624999996,
+                "verdict": "better"
+              }
+            },
+            "deters": false
+          }
+        },
+        "equilibria": [
+          {
+            "honest": {
+              "vigilant": 0,
+              "lax": 1,
+              "passive": 0
+            },
+            "attackers": {
+              "abstain": 0,
+              "farm": 0.9999999999999999,
+              "farm-then-hide": 0,
+              "farm-and-harass": 0,
+              "farm-and-bribe": 0
+            },
+            "fraudProbability": 1,
+            "fraudPremium": 48.804687499999986,
+            "honestValue": 14.706371527777776,
+            "wrongfulInvalidations": 0,
+            "falseInvalidations": 21.124999999999996
+          }
+        ],
+        "honestWithoutFraud": 16.535243055555558,
+        "verdict": "fraud-pays"
+      },
+      "viability": {
+        "criteria": {
+          "minHonestRetention": 0.5,
+          "maxWrongfulInvalidations": 1
+        },
+        "honestRetention": 0.8893955461293741,
+        "wrongfulInvalidations": 0,
+        "viable": false,
+        "failures": [
+          "fraud-pays"
+        ]
+      }
+    },
+    {
+      "coordinates": {
+        "disputes.accuracy": 0.9,
+        "disputes.fine": 10,
+        "disputes.rewardShare": 0.5,
+        "falsePositiveRate": 0.05,
+        "sensitivity": 0.5
+      },
+      "deterrence": {
+        "reference": "abstain",
+        "byHonest": {
+          "vigilant": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -176.27109374999998,
+                "verdict": "worse"
+              },
+              "farm-then-hide": {
+                "mean": -132.965625,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -181.75859375,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -181.14921875,
+                "verdict": "worse"
+              }
+            },
+            "deters": true
+          },
+          "lax": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -3.447656250000015,
+                "verdict": "undetermined"
+              },
+              "farm-then-hide": {
+                "mean": -53.23124999999999,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -104.65390625,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -61.40156250000002,
+                "verdict": "worse"
+              }
+            },
+            "deters": false
+          },
+          "passive": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": 184.34062500000002,
+                "verdict": "better"
+              },
+              "farm-then-hide": {
+                "mean": 84.90859375,
+                "verdict": "better"
+              },
+              "farm-and-harass": {
+                "mean": 51.80703124999998,
+                "verdict": "better"
+              },
+              "farm-and-bribe": {
+                "mean": 75.59140624999996,
+                "verdict": "better"
+              }
+            },
+            "deters": false
+          }
+        },
+        "equilibria": [
+          {
+            "honest": {
+              "vigilant": 0,
+              "lax": 0.9816407273816506,
+              "passive": 0.01835927261834935
+            },
+            "attackers": {
+              "abstain": 0.8810896632405775,
+              "farm": 0.11891033675942247,
+              "farm-then-hide": 0,
+              "farm-and-harass": 0,
+              "farm-and-bribe": 0
+            },
+            "fraudProbability": 0.11891033675942253,
+            "fraudPremium": 0,
+            "honestValue": 15.63836390496318,
+            "wrongfulInvalidations": 0,
+            "falseInvalidations": 2.721203537012766
+          }
+        ],
+        "honestWithoutFraud": 16.535243055555558,
+        "verdict": "deterred"
+      },
+      "viability": {
+        "criteria": {
+          "minHonestRetention": 0.5,
+          "maxWrongfulInvalidations": 1
+        },
+        "honestRetention": 0.9457595423557417,
+        "wrongfulInvalidations": 0,
+        "viable": true,
+        "failures": []
+      }
+    },
+    {
+      "coordinates": {
+        "disputes.accuracy": 0.9,
+        "disputes.fine": 10,
+        "disputes.rewardShare": 1,
+        "falsePositiveRate": 0.05,
+        "sensitivity": 0.5
+      },
+      "deterrence": {
+        "reference": "abstain",
+        "byHonest": {
+          "vigilant": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -177.67578125,
+                "verdict": "worse"
+              },
+              "farm-then-hide": {
+                "mean": -133.13125,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -182.52734374999997,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -182.559375,
+                "verdict": "worse"
+              }
+            },
+            "deters": true
+          },
+          "lax": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -1.1046875000000145,
+                "verdict": "undetermined"
+              },
+              "farm-then-hide": {
+                "mean": -53.23124999999999,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -74.04062500000002,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -61.40156250000002,
+                "verdict": "worse"
+              }
+            },
+            "deters": false
+          },
+          "passive": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": 184.34062500000002,
+                "verdict": "better"
+              },
+              "farm-then-hide": {
+                "mean": 84.90859375,
+                "verdict": "better"
+              },
+              "farm-and-harass": {
+                "mean": 120.87187499999999,
+                "verdict": "better"
+              },
+              "farm-and-bribe": {
+                "mean": 75.59140624999996,
+                "verdict": "better"
+              }
+            },
+            "deters": false
+          }
+        },
+        "equilibria": [
+          {
+            "honest": {
+              "vigilant": 0,
+              "lax": 0.9940430551459746,
+              "passive": 0.005956944854025426
+            },
+            "attackers": {
+              "abstain": 0.9117667119304049,
+              "farm": 0.08823328806959517,
+              "farm-then-hide": 0,
+              "farm-and-harass": 0,
+              "farm-and-bribe": 0
+            },
+            "fraudProbability": 0.08823328806959507,
+            "fraudPremium": 0,
+            "honestValue": 15.869745012118555,
+            "wrongfulInvalidations": 0,
+            "falseInvalidations": 1.9569777715040166
+          }
+        ],
+        "honestWithoutFraud": 16.535243055555558,
+        "verdict": "deterred"
+      },
+      "viability": {
+        "criteria": {
+          "minHonestRetention": 0.5,
+          "maxWrongfulInvalidations": 1
+        },
+        "honestRetention": 0.9597527510662501,
+        "wrongfulInvalidations": 0,
+        "viable": true,
+        "failures": []
+      }
+    },
+    {
+      "coordinates": {
+        "disputes.accuracy": 0.9,
+        "disputes.fine": 20,
+        "disputes.rewardShare": 0.5,
+        "falsePositiveRate": 0.05,
+        "sensitivity": 0.5
+      },
+      "deterrence": {
+        "reference": "abstain",
+        "byHonest": {
+          "vigilant": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -354.8578125,
+                "verdict": "worse"
+              },
+              "farm-then-hide": {
+                "mean": -269.53125,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -361.09921875,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -360.13203125,
+                "verdict": "worse"
+              }
+            },
+            "deters": true
+          },
+          "lax": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -63.736718749999994,
+                "verdict": "worse"
+              },
+              "farm-then-hide": {
+                "mean": -125.13281249999999,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -210.753125,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -131.55156250000002,
+                "verdict": "worse"
+              }
+            },
+            "deters": true
+          },
+          "passive": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": 184.34062500000002,
+                "verdict": "better"
+              },
+              "farm-then-hide": {
+                "mean": 84.90859375,
+                "verdict": "better"
+              },
+              "farm-and-harass": {
+                "mean": 53.14140624999998,
+                "verdict": "better"
+              },
+              "farm-and-bribe": {
+                "mean": 75.59140624999996,
+                "verdict": "better"
+              }
+            },
+            "deters": false
+          }
+        },
+        "equilibria": [
+          {
+            "honest": {
+              "vigilant": 0,
+              "lax": 0.7430772283089635,
+              "passive": 0.2569227716910364
+            },
+            "attackers": {
+              "abstain": 0.8656431754664241,
+              "farm": 0.1343568245335758,
+              "farm-then-hide": 0,
+              "farm-and-harass": 0,
+              "farm-and-bribe": 0
+            },
+            "fraudProbability": 0.1343568245335759,
+            "fraudPremium": 7.105427357601002e-15,
+            "honestValue": 15.52185903909482,
+            "wrongfulInvalidations": 0,
+            "falseInvalidations": 2.052908527514142
+          }
+        ],
+        "honestWithoutFraud": 16.535243055555558,
+        "verdict": "deterred"
+      },
+      "viability": {
+        "criteria": {
+          "minHonestRetention": 0.5,
+          "maxWrongfulInvalidations": 1
+        },
+        "honestRetention": 0.9387136909293717,
+        "wrongfulInvalidations": 0,
+        "viable": true,
+        "failures": []
+      }
+    },
+    {
+      "coordinates": {
+        "disputes.accuracy": 0.9,
+        "disputes.fine": 20,
+        "disputes.rewardShare": 1,
+        "falsePositiveRate": 0.05,
+        "sensitivity": 0.5
+      },
+      "deterrence": {
+        "reference": "abstain",
+        "byHonest": {
+          "vigilant": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -355.48515625000005,
+                "verdict": "worse"
+              },
+              "farm-then-hide": {
+                "mean": -269.853125,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -361.075,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -360.68125,
+                "verdict": "worse"
+              }
+            },
+            "deters": true
+          },
+          "lax": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": -78.50546875,
+                "verdict": "worse"
+              },
+              "farm-then-hide": {
+                "mean": -125.13281249999999,
+                "verdict": "worse"
+              },
+              "farm-and-harass": {
+                "mean": -186.25703125,
+                "verdict": "worse"
+              },
+              "farm-and-bribe": {
+                "mean": -131.55156250000002,
+                "verdict": "worse"
+              }
+            },
+            "deters": true
+          },
+          "passive": {
+            "fraudGainOverReference": {
+              "farm": {
+                "mean": 184.34062500000002,
+                "verdict": "better"
+              },
+              "farm-then-hide": {
+                "mean": 84.90859375,
+                "verdict": "better"
+              },
+              "farm-and-harass": {
+                "mean": 125.81328124999996,
+                "verdict": "better"
+              },
+              "farm-and-bribe": {
+                "mean": 75.59140624999996,
+                "verdict": "better"
+              }
+            },
+            "deters": false
+          }
+        },
+        "equilibria": [
+          {
+            "honest": {
+              "vigilant": 0,
+              "lax": 0.7013253359410064,
+              "passive": 0.2986746640589937
+            },
+            "attackers": {
+              "abstain": 0.913529082909992,
+              "farm": 0.0864709170900081,
+              "farm-then-hide": 0,
+              "farm-and-harass": 0,
+              "farm-and-bribe": 0
+            },
+            "fraudProbability": 0.08647091709000798,
+            "fraudPremium": 0,
+            "honestValue": 15.883037664635372,
+            "wrongfulInvalidations": 0,
+            "falseInvalidations": 1.383446838544128
+          }
+        ],
+        "honestWithoutFraud": 16.535243055555558,
+        "verdict": "deterred"
+      },
+      "viability": {
+        "criteria": {
+          "minHonestRetention": 0.5,
+          "maxWrongfulInvalidations": 1
+        },
+        "honestRetention": 0.9605566492897087,
+        "wrongfulInvalidations": 0,
+        "viable": true,
+        "failures": []
+      }
+    }
+  ]
+}

@@ -399,3 +399,34 @@ test('the Council is an XP leaderboard among currently active subjects by defaul
   assert.deepEqual(model.council(), [{ id: 'c', xp: 0 }]);
   assert.deepEqual(fixture({ councilSize: 2, councilEligibility: 'accepted' }).council().map(member => member.id), ['a', 'b']);
 });
+
+test('voiding a Self-ID chain burns unspent rights and revokes XP from the subject and its guarantors', () => {
+  const model = fixture();
+  guarantee(model, 'a', 'b');
+  const first = identify(model, 'b');
+  model.advanceTo(7 * DAY);
+  model.convertToCollector('b', first);
+  const second = identify(model, 'b');
+  model.advanceTo(8 * DAY);
+  const third = identify(model, 'b');
+  assert.equal(model.subject('a').xp, 1);
+  assert.equal(model.subject('b').xp, 1);
+  const before = model.audit();
+  const result = model.voidSelfIdChain('b');
+  assert.deepEqual(result, { acts: 3, burnedRights: 2, xpRecipients: ['b', 'a'] });
+  assert.equal(model.subject('a').xp, 0);
+  assert.equal(model.subject('b').xp, 0);
+  assert.equal(model.selfId(second).status, 'cancelled');
+  assert.equal(model.selfId(third).disposition, 'adjudicated-void');
+  assert.equal(model.selfId(first).status, 'converted', 'converted coins are not un-minted; a fine recovers them');
+  const after = model.audit();
+  assert.equal(after.burned, before.burned + 2);
+  assert.equal(after.emitterVault, before.emitterVault - 2);
+  const partial = fixture();
+  const kept = identify(partial, 'c');
+  partial.advanceTo(DAY);
+  const bad = identify(partial, 'c');
+  assert.equal(partial.voidSelfIdChain('c', { fromAct: bad }).acts, 1);
+  assert.equal(partial.selfId(kept).status, 'unspent');
+  assert.throws(() => partial.voidSelfIdChain('c', { fromAct: 'self-id:999' }), /not in the subject chain/);
+});

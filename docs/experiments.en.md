@@ -81,6 +81,18 @@ The current experiment applies no judicial fine or XP-halving verdict; the under
 
 `disputes` enables a one-step public challenge layer: an XP gate, a stake, a verdict of declared accuracy, fines, liability scope, a challenger reward share and optional exclusion of liable guarantors. `activity.<cohort>.challenge` is the probability of challenging an eligible suspicious act. `deviants` marks a seeded subset of initial operators that follow an alternative profile. Every run reports per-group payoff facts (`agents`), `system` facts and cumulative `sanctions` in history. [Strategy games](games.en.md) owns their semantics. With disputes disabled and no deviants, behavior is bit-identical to the previous scheduler.
 
+## Social trust behavior
+
+`social` declares how honest people extend and check trust. The defaults (`scope: "public"`, all switches off) reproduce the earlier scheduler bit for bit.
+
+- `scope: "acquaintances"`: honest people propose guarantees only to their own invitees first, then to accepted subjects within `hops` steps (default 2) of their undirected guarantee and lineage neighborhood, in admission order. Honest guaranteed subjects refuse a stranger's proposal. Either side engages a stranger only with probability `strangerRate`, a draw keyed per opportunity. Refusals are counted in `trust.strangerRefusals`. The `randomGuaranteeTargets` ablation still forces public matching.
+- `screening`: each day, subjects are ranked by SybilRank-style propagation from the public genesis roots over the undirected guarantee graph (⌈log₂ n⌉ steps, degree-normalized). Coalition genesis members are among the seeds, as in any real trusted-root set. A non-local honest inspection targets the lowest `screeningQuantile` with probability `screeningShare`. Screening chooses *where to look*; the observation remains the noisy detector.
+- `verification`: a suspicious honest observation triggers a second-stage check, such as a call or a meeting. It costs one `verify` effort and flags fakes with `verificationSensitivity` and genuine people with `verificationFalsePositiveRate`. Only a confirmed suspicion leads to a veto or a challenge (`trust.verificationsCleared` counts cleared suspicions).
+- `investigation`: after an honest challenger's upheld verdict, the challenger verifies the false subject's inviter, the inviter's other invitees and the false subject's own invitees. A confirmed suspect is challenged, subject to the XP gate. This is bounded by `maxFollowUps` per root challenge and counted in `trust.followUps`.
+- Bribery: coalition actors make `activity.attackers.bribe` offers per day to random honest people who don't already guarantee them. A target accepts with probability `bribeAcceptance`, proposes a guarantee and becomes liable for it. The `bribePrice` is paid off-protocol and recorded as `bribesPaid` and `bribesReceived` payoff facts, not as FACY.
+
+These are behavioral assumptions, not protocol rules. Verification quality in particular is a declared input for a human process the simulator does not model.
+
 ## Ablations and provenance
 
 `ablations` accepts the model ablations from [the model contract](simulator.en.md#counterfactual-ablations) plus `randomGuaranteeTargets`, which replaces coalition and lineage-preferring guarantee targets with uniform public matching. Dotted paths such as `ablations.withholdGuarantorXp` work in sweeps, landscapes, controls and hypothesis arms. Enabled ablations appear in the recorded configuration and assumptions.

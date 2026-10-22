@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- Added a social trust layer (`social`, defaults bit-identical), with the corresponding counters in `trust.*` and payoff facts:
+  - acquaintance-only guaranteeing within a hop radius, plus a stranger rate;
+  - SybilRank-style graph screening of inspection targets from public roots;
+  - second-stage call/meeting verification before vetoes and challenges;
+  - lineage investigations after proven fakes;
+  - off-protocol bribery of honest guarantors.
+- Added chain-proportional sanctions: `FacetyModel.voidSelfIdChain` burns unspent rights and revokes chain XP from all recipients; `disputes.fineMode: "chain"` fines each liable party one coin per voided act; and `liability: "inviter-chain"` extends liability to the inviter's guarantors.
+- Exploratory social-trust threshold study (`studies/2026-10-22-social-trust-threshold`):
+  - verification and acquaintance-only guarantees nearly eliminate wrongful invalidations and make harassment and bribery unprofitable;
+  - lax vigilance then becomes the honest best response, so fraud needs larger expected sanctions (fine 10 or chain fines) to stop paying;
+  - an inviter-chain liability wave pushes the honest population into passivity in this model, the §22 concealment risk.
 - Added deterrence grids: `runGameGrid` / CLI `game-grid` reruns a game over simulation-parameter axes and summarizes each cell. The summary covers fraud gain over a declared rule-following reference, the equilibrium fraud premium and fraud probability, honest value and wrongful invalidations. `assessViability` / `grid-viability` apply declared welfare criteria.
 - Exploratory deterrence-threshold study (`studies/2026-10-22-deterrence-threshold`, 10,560 runs). Within the model, deterrence with acceptable honest welfare needs:
   - verdict accuracy of at least about 0.8 (below that, a harassing coalition invalidates many genuine people);

@@ -377,6 +377,34 @@ export class FacetyModel {
     this.#activityVersion++;
     this.#event('identity-invalidated', { subject: id });
   }
+  // Adjudicated cut of a subject's Self-ID chain from one act onward (default: the whole chain).
+  // Unspent rights burn without XP; XP credited by the cut acts is revoked from every recipient.
+  // Already converted or burned coins cannot be un-minted; recovering them is a separate fine.
+  voidSelfIdChain(id, { fromAct = null } = {}) {
+    this.#subject(id);
+    const chain = this.#subjectActs.get(id);
+    const start = fromAct === null ? 0 : chain.indexOf(fromAct);
+    if (start < 0) throw new ProtocolRejection('act is not in the subject chain');
+    const cut = chain.slice(start).map(actId => this.#acts.get(actId)).filter(act => act.status !== 'cancelled');
+    const recipients = new Set();
+    let burned = 0;
+    for (const act of cut) {
+      if (act.status === 'unspent') {
+        act.status = 'cancelled';
+        act.disposition = 'adjudicated-void';
+        act.debtReserved = false;
+        this.#debtReservations.delete(act);
+        this.#vault--;
+        this.#burned++;
+        burned++;
+      } else act.disposition = act.disposition + '+voided';
+      if (this.#xpSources.delete(act.id) && act.xpCredited) for (const recipient of act.xpRecipients) recipients.add(recipient);
+    }
+    for (const recipient of recipients) this.#replayXp(this.#subject(recipient));
+    this.#activityVersion++;
+    this.#event('self-id-chain-voided', { subject: id, fromAct, acts: cut.length, burnedRights: burned });
+    return { acts: cut.length, burnedRights: burned, xpRecipients: [...recipients] };
+  }
   council() {
     const active = this.policy.councilEligibility === 'active';
     return [...this.#subjects.values()].filter(subject => subject.identityStatus === 'accepted' && (!active || this.isActive(subject.id))).map(subject => ({ id: subject.id, xp: subject.xp }))

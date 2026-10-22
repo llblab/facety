@@ -21,6 +21,8 @@ Without sanctions, inspection costs effort and earns nothing, so no rational age
 - **Rejected:** the challenger pays the stake and, if `loserHalvesXp`, has XP halved.
 - Invalidated subjects stop acting; their open invitations lapse.
 
+- `fineMode: "chain"` voids the false subject's entire Self-ID chain through `FacetyModel.voidSelfIdChain`. Unspent rights burn, and XP credited by the chain is revoked from the subject and every guarantor recipient. Each liable party owes one coin per voided act (at least one), so the sanction grows with how long the fake operated. `liability: "inviter-chain"` adds the inviter and the inviter's guarantors. The model does not yet let those guarantors see or cancel a pending invitation, so this wave can fine people who had no chance to prevent the fraud.
+
 This deliberately abstracts Chekharda to one step: no escalation, Council review, appeal or evidence procedure. All sanctions go through `FacetyModel`. A wrong verdict can invalidate a genuine person, and that harm is counted (`sanctions.wrongfulInvalidated`).
 
 ## Deviant groups and payoff facts
@@ -29,7 +31,7 @@ This deliberately abstracts Chekharda to one step: no escalation, Council review
 
 Each run reports `agents[cohort][group]` for groups `conformist` (initial operators), `deviant` (initial operators) and `recruit` (later genuine operators), plus a `system` record:
 
-- **Group facts:** operators, subjects, accepted/invalidated/false subjects, liquid and Emitter FACY, debt, FACY and debt held by false subjects, XP, Council seats, effort, converted rewards, fines collected or turned into debt, XP halvings and challenge rewards received.
+- **Group facts:** operators, subjects, accepted/invalidated/false subjects, liquid and Emitter FACY, debt, FACY and debt held by false subjects, XP, Council seats, effort, converted rewards, fines collected or turned into debt, XP halvings, challenge rewards received, and off-protocol bribes paid or received.
 - **System facts:** supply, burned FACY, liquid FACY held by false subjects, false converted rewards, accepted false subjects and coalition Council seats.
 
 Controlled fakes count toward their operator's group, because custody pools money. XP stays per subject; Council seats count control of votes.

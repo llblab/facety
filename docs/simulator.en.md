@@ -51,6 +51,10 @@ Other explicit assumptions:
 - A monetary fine burns collectible liquid FACY first and assigns the remainder to subject debt. Existing Emitter balances are not seized. Future Self-ID repays one unit of debt per mature uncancelled right under the selected `debtRecovery` policy; its valid identity work can still earn XP. Nominal debt is never counted as an actual burn. The 72-hour reservation age is an experiment assumption for an OPEN seizure-order question.
 - Monetary amounts use safe-integer FACY units, not production token precision. `penalize` rejects a fine that would make accumulated individual or aggregate debt unrepresentable before changing money, XP history or events. This is a numeric representation limit, not a calibrated economic ceiling. Signatures, key possession, media capture/detection, publication rights and lawful identity judgments are abstract inputs, not validated here.
 
+## Adjudicated chain voiding
+
+`voidSelfIdChain(id, { fromAct })` is an explicit adjudication input, like `penalize`. It cuts a subject's Self-ID chain from one act onward (default: the whole chain): unspent rights burn with no XP, and XP credited by every cut act is revoked from all its recipients by chronological replay. Converted or invitation-burned coins cannot be un-minted, so recovering them requires a separate fine. No court procedure is implied.
+
 ## Counterfactual ablations
 
 `ablations` (constructor option, `ablationsFrom`) removes a protocol mechanism for evidence experiments: `withholdGuarantorXp` limits Self-ID XP to its owner while keeping guarantor cancellation authority, and `fixedInvitationThreshold` replaces the N28 digit rule. Defaults are off. Any enabled ablation is a labeled counterfactual, not Facety behavior, and [evidence](evidence.en.md) owns how it supports necessity claims.

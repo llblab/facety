@@ -49,3 +49,16 @@ test('deviants are a seeded subset of initial operators whose controlled subject
   assert.equal(idle.agents.attackers.deviant.convertedRewards, 0);
   assert.equal(idle.agents.attackers.deviant.subjects, idle.agents.attackers.deviant.operators, 'idle deviant operators fabricated nobody');
 });
+
+test('chain fines scale with the voided chain and reach the inviter and the inviter\'s guarantors', () => {
+  const settings = { ...base, disputes: { enabled: true, accuracy: 1, fineMode: 'chain', liability: 'inviter-chain', rewardShare: 0 }, includeState: true };
+  const run = runExperiment(settings);
+  assert.ok(run.system.sanctions.voidedActs > 0);
+  const voided = run.state.selfIds.filter(act => act.disposition === 'adjudicated-void').length;
+  assert.ok(voided > 0 && voided <= run.system.sanctions.voidedActs);
+  const fixedRun = runExperiment({ ...settings, disputes: { ...settings.disputes, fineMode: 'fixed' } });
+  assert.equal(fixedRun.system.sanctions.voidedActs, 0);
+  assert.throws(() => experimentConfig({ disputes: { fineMode: 'square' } }), /fineMode/);
+  const ledger = run.metrics.ledger;
+  assert.equal(ledger.supply, ledger.emitterVault + ledger.collector + ledger.feeVault);
+});

@@ -11,6 +11,8 @@ export const DEFAULT_WEIGHTS = Object.freeze({
   inspect: 1,
   respond: 1,
   challenge: 1,
+  verify: 1,
+  bribe: 1,
   convert: 1,
 });
 
