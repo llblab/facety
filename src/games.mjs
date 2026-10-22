@@ -12,7 +12,7 @@ export const FACT_KEYS = Object.freeze([
   'subjects', 'acceptedSubjects', 'invalidatedSubjects', 'falseSubjects', 'liquidFacy', 'emitterFacy', 'debt', 'falseLiquidFacy', 'falseDebt', 'xp',
   'councilSeats', 'effort', 'convertedRewards', 'finesCollected', 'finesAsDebt', 'halvings', 'rewardsReceived', 'bribesPaid', 'bribesReceived',
 ]);
-export const SYSTEM_KEYS = Object.freeze(['supply', 'burned', 'falseLiquidFacy', 'falseConvertedRewards', 'falseAcceptedSubjects', 'councilAttackerSeats']);
+export const SYSTEM_KEYS = Object.freeze(['supply', 'burned', 'falseLiquidFacy', 'falseConvertedRewards', 'falseAcceptedSubjects', 'councilAttackerSeats', 'falseMintedShare', 'falseCirculatingShare']);
 const INITIAL_GROUPS = Object.freeze(['conformist', 'deviant']);
 
 function fail(message) { throw new Error('game: ' + message); }
@@ -163,14 +163,16 @@ export async function runGameGrid(spec, { axes, workers = 0, maxRuns = 200000, r
   };
 }
 
-export const DEFAULT_VIABILITY = Object.freeze({ minHonestRetention: 0.5, maxWrongfulInvalidations: 1 });
+// The fraud-budget limits default to off (1); a typical declared budget is 0.2 of minted money and
+// less than half of Council seats.
+export const DEFAULT_VIABILITY = Object.freeze({ minHonestRetention: 0.5, maxWrongfulInvalidations: 1, maxFalseMintedShare: 1, maxCoalitionCouncilShare: 1 });
 
 // Declared viability criteria over a deterrence summary: fraud earns no premium, some honest strategy
 // deters, honest equilibrium value keeps a minimum share of the fraud-free value, and wrongful
 // invalidations of genuine people stay below a bound. The thresholds are analyst choices.
 export function assessViability(deterrence, criteria = {}) {
   record(criteria, Object.keys(DEFAULT_VIABILITY), 'viability criteria');
-  const { minHonestRetention, maxWrongfulInvalidations } = { ...DEFAULT_VIABILITY, ...criteria };
+  const { minHonestRetention, maxWrongfulInvalidations, maxFalseMintedShare, maxCoalitionCouncilShare } = { ...DEFAULT_VIABILITY, ...criteria };
   const equilibria = deterrence.equilibria ?? [];
   const retention = equilibria.length ? Math.min(...equilibria.map(eq => eq.honestValue / deterrence.honestWithoutFraud)) : null;
   const wrongful = equilibria.length ? Math.max(...equilibria.map(eq => eq.wrongfulInvalidations)) : null;
@@ -178,7 +180,15 @@ export function assessViability(deterrence, criteria = {}) {
   if (deterrence.verdict !== 'deterred') failures.push(deterrence.verdict);
   if (retention === null || retention < minHonestRetention) failures.push('honest-retention');
   if (wrongful === null || wrongful > maxWrongfulInvalidations) failures.push('wrongful-invalidations');
-  return { criteria: { minHonestRetention, maxWrongfulInvalidations }, honestRetention: retention, wrongfulInvalidations: wrongful, viable: !failures.length, failures };
+  const falseMinted = equilibria.length ? Math.max(...equilibria.map(eq => eq.falseMintedShare ?? 0)) : null;
+  const coalitionCouncil = equilibria.length ? Math.max(...equilibria.map(eq => eq.coalitionCouncilShare ?? 0)) : null;
+  if (falseMinted !== null && falseMinted > maxFalseMintedShare) failures.push('fraud-budget-money');
+  if (coalitionCouncil !== null && coalitionCouncil > maxCoalitionCouncilShare) failures.push('fraud-budget-council');
+  return {
+    criteria: { minHonestRetention, maxWrongfulInvalidations, maxFalseMintedShare, maxCoalitionCouncilShare },
+    honestRetention: retention, wrongfulInvalidations: wrongful, falseMintedShare: falseMinted, coalitionCouncilShare: coalitionCouncil,
+    viable: !failures.length, failures,
+  };
 }
 
 // Does fraud pay? Compares every non-reference attacker strategy with the rule-following reference.
@@ -197,6 +207,7 @@ export function deterrenceSummary(result, analysis, { alpha = analysis.alpha } =
   const mixed = analysis.mixedEquilibria;
   const equilibria = mixed === null ? null : mixed.map(eq => {
     const referenceValue = names.honest.reduce((sum, honest) => sum + eq.honest[honest] * profile(honest, reference).payoffs.attackers.mean, 0);
+    const weightedBudget = key => names.honest.reduce((sum, honest) => sum + names.attackers.reduce((inner, attackers) => inner + eq.honest[honest] * eq.attackers[attackers] * (profile(honest, attackers).fraudBudget?.[key] ?? 0), 0), 0);
     const weighted = key => names.honest.reduce((sum, honest) => sum + names.attackers.reduce((inner, attackers) => inner + eq.honest[honest] * eq.attackers[attackers] * (profile(honest, attackers).sanctions[key] ?? 0), 0), 0);
     return {
       honest: eq.honest, attackers: eq.attackers,
@@ -205,6 +216,8 @@ export function deterrenceSummary(result, analysis, { alpha = analysis.alpha } =
       honestValue: eq.values.honest,
       wrongfulInvalidations: weighted('wrongfulInvalidated'),
       falseInvalidations: weighted('falseInvalidated'),
+      falseMintedShare: weightedBudget('falseMintedShare'),
+      coalitionCouncilShare: weightedBudget('coalitionCouncilShare'),
     };
   });
   const honestWithoutFraud = Math.max(...names.honest.map(honest => profile(honest, reference).payoffs.honest.mean));
@@ -336,6 +349,11 @@ export function analyzeGame(result, valuationInput, { alpha = 0.05 } = {}) {
     censoredReplicas: entry.replicas.filter(replica => replica.censored).length,
     payoffs: Object.fromEntries(COHORTS.map(role => [role, summarize(payoffsOf(entry, role, INITIAL_GROUPS), `${profileKey(entry.profile)}:${role}`)])),
     sanctions: describeSanctions(entry.replicas),
+    fraudBudget: {
+      falseMintedShare: describeValues(entry.replicas.map(replica => replica.system.falseMintedShare ?? 0))?.mean ?? null,
+      falseCirculatingShare: describeValues(entry.replicas.map(replica => replica.system.falseCirculatingShare ?? 0))?.mean ?? null,
+      coalitionCouncilShare: describeValues(entry.replicas.map(replica => (replica.system.councilSeats ? replica.system.councilAttackerSeats / replica.system.councilSeats : 0)))?.mean ?? null,
+    },
   }));
   const mean = (profile, role) => profiles.find(row => profileKey(row.profile) === profileKey(profile)).payoffs[role].mean ?? null;
 

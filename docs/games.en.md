@@ -117,7 +117,9 @@ When the reference is in the equilibrium support, the attackers' indifference fo
 
 `runGameGrid(spec, { axes, workers })` (CLI `game-grid game.json axes.json`) reruns the whole game for every combination of base parameters, such as `sensitivity`, `falsePositiveRate` or `disputes.accuracy`. All cells share replica seeds and one worker pool, and each cell gets a deterrence summary. Cells are independent games: neighboring verdicts locate a threshold, but a single grid is exploratory, not a confirmed boundary.
 
-`assessViability(deterrence, criteria)` (CLI `grid-viability grid.json [criteria.json]`) adds declared welfare criteria to the deterrence verdict: a minimum honest retention (equilibrium honest value divided by the fraud-free value, default 0.5) and a maximum of wrongful invalidations per run (default 1). Fraud can earn no premium while honest people are ruined by dispute abuse or false vetoes, so report viability, not just deterrence. The [deterrence-threshold study](../studies/2026-10-22-deterrence-threshold/README.md) shows both failure modes.
+Each profile also reports a **fraud budget**: the mean share of minted rights created by false identities (`falseMintedShare`), the share of circulating supply they hold (`falseCirculatingShare`), and the coalition's Council share. Equilibria report their expected values.
+
+`assessViability(deterrence, criteria)` (CLI `grid-viability grid.json [criteria.json]`) adds declared welfare criteria to the deterrence verdict: a minimum honest retention (equilibrium honest value divided by the fraud-free value, default 0.5) and a maximum of wrongful invalidations per run (default 1). Fraud can earn no premium while honest people are ruined by dispute abuse or false vetoes, so report viability, not just deterrence. Optional fraud-budget limits, `maxFalseMintedShare` and `maxCoalitionCouncilShare`, default to off (1); a typical declared budget is `0.2` and `0.5`. The [deterrence-threshold study](../studies/2026-10-22-deterrence-threshold/README.md) shows both failure modes.
 
 ## Limits
 

@@ -1209,6 +1209,11 @@ export function runExperiment(overrides = {}) {
     falseAcceptedSubjects: model.subjects().filter(subject => subject.identityStatus === 'accepted' && !truth.get(subject.id).genuine).length,
     councilSeats: council.size,
     councilAttackerSeats: [...council].filter(id => truth.get(id).cohort === 'attackers').length,
+    // Fraud budget: share of all minted rights created by false identities, and share of circulating
+    // supply (liquid plus unspent Emitter rights) that false identities still hold.
+    falseMintedShare: acts.length ? acts.filter(act => !truth.get(act.subject).genuine).length / acts.length : 0,
+    falseCirculatingShare: metrics.ledger.supply ? (model.subjects().filter(subject => !truth.get(subject.id).genuine).reduce((sum, subject) => sum + subject.liquidFacy, 0)
+      + acts.filter(act => act.status === 'unspent' && !truth.get(act.subject).genuine).length) / metrics.ledger.supply : 0,
     sanctions: { ...sanctions },
     trust: { ...trustWork },
   };

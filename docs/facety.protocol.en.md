@@ -194,6 +194,12 @@ Facety aims to create conditions in which:
 
 **[HYPOTHESIS, 2026-10-22] The honest network effect prevails.** Honest people's network is denser: information spreads faster through acquaintance and they see more. Its efficiency grows roughly quadratically with the network, so the honest network effect should dominate a coalition's.
 
+**[DIRECTION, 2026-10-22] A bounded fraud budget.** Perfect detection is not required. If most circulating coins were minted by honest people, for example 80% honest and 20% by undetected fakes, the system still works. Like a payment network, Facety can operate with a declared tolerable fraud share. Three conditions:
+
+- the **authority** share of fakes (XP, Council seats) must stay well below control, since half the Council is the last line;
+- the share must be **stable, not growing**;
+- outside support (Treasury D) reaches fakes in proportion, so its pause policy needs a statistical estimate of the share.
+
 **[MODEL FINDING]** In the simulator, fraud does not earn more than playing by the rules whenever the network is viable. The coalition is indifferent between fraud and honest participation, so any fraud that remains earns no premium, and honest people pay a policing cost. See the [insight register](insights.en.md).
 
 ---

@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added a fraud budget: `system.falseMintedShare` and `falseCirculatingShare`, per-profile and equilibrium budgets in games, and optional `maxFalseMintedShare` / `maxCoalitionCouncilShare` viability limits. Recorded the owner's bounded-fraud direction (an honest majority of coins is enough), with the refinements on authority share, trend and outside money.
 - Added gossip as a network-effect mechanism (`social.gossipHops`, `gossipShare`), public proof (`disputes.evidence`, `proofStrength`) and automatic cluster disputes against defenders of proven fakes (`disputes.clusterFollowUp`).
 - Assumption audit and threshold studies (exploratory):
   - the cost of fabricating fresh daily Self-IDs is decisive (F19); at ≥5× an honest act, with gossip, fraud falls to 2% and honest people keep 96% (F20);

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { runGame, runGameGrid, analyzeGame, sweepValuation, mixedEquilibria, normalizeGame, deterrenceSummary } from '../src/games.mjs';
+import { runGame, runGameGrid, analyzeGame, sweepValuation, mixedEquilibria, normalizeGame, deterrenceSummary, assessViability } from '../src/games.mjs';
 
 const spec = {
   id: 'small',
@@ -83,4 +83,20 @@ test('deterrence summaries compare fraud with the declared rule-following strate
   const summary = deterrenceSummary(single, analyzeGame(single, valuation));
   assert.deepEqual(Object.keys(summary.byHonest), ['watch', 'rest']);
   assert.equal(summary.reference, 'abstain');
+});
+
+test('fraud budgets measure false minted money and coalition Council share and can bound viability', async () => {
+  const result = await runGame({ ...spec, deviation: undefined, reference: { attackers: 'abstain' } });
+  const analysis = analyzeGame(result, valuation);
+  for (const row of analysis.profiles) {
+    assert.ok(row.fraudBudget.falseMintedShare >= 0 && row.fraudBudget.falseMintedShare <= 1);
+    assert.ok(row.fraudBudget.coalitionCouncilShare >= 0 && row.fraudBudget.coalitionCouncilShare <= 1);
+  }
+  const farmRow = analysis.profiles.find(row => row.profile.honest === 'rest' && row.profile.attackers === 'farm');
+  assert.ok(farmRow.fraudBudget.falseMintedShare > 0);
+  const summary = deterrenceSummary(result, analysis);
+  const open = assessViability(summary);
+  const strict = assessViability(summary, { maxFalseMintedShare: 0, maxCoalitionCouncilShare: 0 });
+  assert.equal(open.criteria.maxFalseMintedShare, 1);
+  assert.ok(strict.failures.length >= open.failures.length);
 });
