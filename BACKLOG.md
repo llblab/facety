@@ -15,6 +15,10 @@ Acceptance: exploration retains raw trajectories and exposes candidates. A mecha
 - [ ] Finite-size sharpening study for a candidate transition (`sharpeningDesign`), for example Council capture versus attacker guarantee intensity at two bootstrap sizes. Falsifier: registered DiD; a non-sharpening result is evidence of a crossover.
 - [ ] Council tie-break ablation (random or seniority order) to test the ID-order alternative beyond the descriptive boundary check. Falsifier: an equivalence claim on seat share.
 
+### Protocol simplification — awaiting owner decision
+
+- [ ] Decide the simplification candidates in `docs/insights.en.md`: fixed guarantor threshold, no link-break fee, collapsed Emitter/Collector, capped ladder plus Council, optional face indices, unified sanctions, separate Atmo spec. For each accepted one, update the protocol, the simulator defaults and the coverage table, and rerun the most viable configuration as an ablation. Falsifier: any simplification that lowers viability.
+
 ### Strategy games — current priority
 
 Acceptance: equilibrium and incentive claims name the strategy menu, valuation and dispute assumptions, report valuation sweeps and individual deviation tests, and are confirmed on reserved seeds before being called findings.

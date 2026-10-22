@@ -66,6 +66,18 @@ All findings are conditional on the simulator's declared assumptions, horizons a
 | F21 | Violators win disputes only when their identities out-rank honest people in XP. With cheap fakes the farm reached about 2,900 identities whose mutual guarantees put their XP above every honest person, so one top-XP fake defender ended every dispute at depth 2, even under public proof. The XP gate is safe only while the coalition cannot dominate XP, which realistic fake costs ensure. | Diagnostic | same study |
 | F16 | A debtor's immediate-burn repayment would bypass the guarantor veto and finalize XP sooner. This was fixed as D4. | Diagnostic | `test/model.test.mjs` |
 
+## Simplification candidates (proposals awaiting owner decision)
+
+| Candidate | Rationale | Evidence |
+| --- | --- | --- |
+| Replace the `decimal_digits(N28)` guarantor threshold with a fixed small number (1–2) | Never changed an outcome; in the most viable configuration, fixed 1, fixed 2 and the dynamic rule gave identical results (fraud 2%, honest 96%). The rolling count adds state and an OPEN bootstrap case. | Exploratory (`grid-threshold-ablation.json`), earlier honest-growth probe |
+| Drop the 1 FACY link-break fee | Breaking a link already costs the XP earned through it (D9). The fee hinders exactly the fast exit from a fraudster that the liability wave relies on; honest people without liquid FACY could not leave. | Mechanism argument; F11 |
+| Collapse the Emitter / Collector distinction into "a right is pending for 24 h, then free; an invitation spends one's own unspent right" | With one-day windows both maturities are equal; only the provenance rule (invitations need one's own Self-ID right) remains essential. | Follows D1 |
+| Cap the Chekharda ladder at 2–3 positions, then send it to the Council | The ladder alone reached 0.2–0.4 accuracy; early Council intervention gave 0.83–1.0. Deep ladders add complexity, not accuracy. | F13, F21 |
+| Make deterministic face indices optional: media hash + signature + co-signatures of group media | The reproducible cross-device detector is the largest engineering OPEN item. Group co-presence can be proven by every participant co-signing the same media hash. | Engineering argument |
+| Unify sanctions: chain cut + per-act fine for proven fraud, XP halving only for losing a dispute | Fixed fines, chain fines, halving and debt overlap. Chain-proportional fines already scale with damage. | F9 |
+| Move Atmo / Treasury D to a separate integration specification | It is not needed for identity and trust to work. Treasury D policy depends on the fraud estimate (D27, A1). | Scope argument |
+
 ## Comparative analysis: Facety and Bitcoin
 
 | Aspect | Bitcoin | Facety |
