@@ -14,8 +14,8 @@ export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-car
 export const EXPERIMENT_ABLATIONS = Object.freeze({ ...DEFAULT_ABLATIONS, randomGuaranteeTargets: false });
 export const RANDOMNESS_POLICY = Object.freeze({ generator: RANDOM_GENERATOR, decisions: 'decision-keyed-v1' });
 export const DEFAULT_ACTIVITY = Object.freeze({
-  honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, challenge: 0, review: 0, bribe: 0, convert: 1 }),
-  attackers: Object.freeze({ selfId: 1, invite: 0.4, guarantee: 2, inspect: 0, respond: 0, challenge: 0, review: 0, bribe: 0, convert: 1 }),
+  honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, challenge: 0, review: 0, bribe: 0, cashout: 0, convert: 1 }),
+  attackers: Object.freeze({ selfId: 1, invite: 0.4, guarantee: 2, inspect: 0, respond: 0, challenge: 0, review: 0, bribe: 0, cashout: 0, convert: 1 }),
 });
 const DEFAULTS = Object.freeze({
   scenario: 'sybil-cone', seed: 'facety', initialSize: 30, attackerShare: 0.1,
@@ -27,8 +27,12 @@ const DEFAULTS = Object.freeze({
 // Minimal public-challenge layer. It abstracts Chekharda to one challenge with an immediate verdict
 // of declared accuracy; escalation, Council review and appeals are not modeled.
 export const DEFAULT_DISPUTES = Object.freeze({
-  enabled: false, accuracy: 0.9, stake: 0, fine: 5, liability: 'guarantors', rewardShare: 0.5, loserHalvesXp: true, excludeLiable: false,
-  fineMode: 'fixed',
+  enabled: false, accuracy: 0.9, stake: 1, fine: 5, liability: 'inviter-chain', rewardShare: 0.5, loserHalvesXp: true, excludeLiable: false,
+  fineMode: 'chain',
+  // Chekharda ladder: each entrant needs more XP than the previous one and stakes (1 + stakeGrowth) times more;
+  // the last unopposed side wins and every winner takes the stake of the entrant directly below.
+  procedure: 'one-step', stakeGrowth: 0.2, signalAccuracy: 0.7, closeSignalAccuracy: 0.9, xpValue: 0.05, maxRounds: 60, maxScan: 60,
+  councilDepth: 0, reputationWeight: 0,
 });
 // 'inviter-chain' adds the inviter's own guarantors, who could have cancelled the invitation right.
 export const LIABILITY_POLICIES = Object.freeze(['subject', 'guarantors', 'guarantors-and-inviter', 'inviter-chain']);
@@ -41,6 +45,8 @@ export const DEFAULT_SOCIAL = Object.freeze({
   investigation: false, maxFollowUps: 20,
   bribeAcceptance: 0, bribePrice: 5,
   exitOnFraud: false,
+  flowTracing: false, flowHubThreshold: 3, honestTransferRate: 0,
+  attentionFeedback: false,
 });
 export const EXPERIMENT_ASSUMPTIONS = Object.freeze([
   'Initial subjects are genuine accepted human operators and trusted roots; their prior acquisition cost is not estimated.',
@@ -57,6 +63,7 @@ export const EXPERIMENT_ASSUMPTIONS = Object.freeze([
   'Scheduled perturbations alter daily activity only, not protocol rules, genesis trust or automatic counterparty matching.',
   'XP Gini and normalized XP shares are undefined (null) when total effective XP is zero; equal positive XP has Gini zero.',
   'Configured ablations are counterfactual mechanism removals for evidence experiments; any enabled ablation is not Facety protocol behavior.',
+  'With procedure "chekharda", the verdict is endogenous: entrants with strictly increasing XP and stakes growing by stakeGrowth join the side their private signal favors (acquaintances of the subject within two hops receive the more accurate signal) only when their expected stake gain exceeds the stake and XP-halving risk; coalition members back the coalition side when eligible; the last unopposed side wins; winners take the stake directly below them; losers lose their stakes and half their XP. Council intervention is not modeled.',
   'When enabled, disputes are one-step public challenges: an observer with more effective XP than the act owner and a suspicious observation may challenge; an environment verdict of declared accuracy invalidates the subject and sanctions declared liable parties, or sanctions the challenger. Chekharda escalation, Council review and appeals are not modeled.',
   'Deviants are a seeded subset of a cohort\'s initial operators, with the fake subjects they control, following a declared alternative activity profile; labels are evaluator-only. Recruited genuine people follow their cohort profile.',
   'Payoff facts are protocol quantities per operator group (initial conformists, initial deviants, later recruits); their utility weights are supplied separately by an analysis, never inferred.',
@@ -82,7 +89,7 @@ function activityOverrides(overrides) {
     mergeRecord(DEFAULT_ACTIVITY[cohort], partial, cohort + ' activity');
     for (const [action, rate] of Object.entries(partial)) {
       if (!Number.isFinite(rate) || rate < 0 || rate > 100) throw new RangeError('activity must be in [0, 100]');
-      if (['selfId', 'respond', 'challenge', 'review', 'convert'].includes(action)) probability(rate, action);
+      if (['selfId', 'respond', 'challenge', 'review', 'cashout', 'convert'].includes(action)) probability(rate, action);
     }
     return [cohort, Object.freeze({ ...partial })];
   })));
@@ -97,6 +104,14 @@ function disputesFrom(overrides) {
   integer(disputes.fine, 'disputes.fine', 0);
   if (!LIABILITY_POLICIES.includes(disputes.liability)) throw new Error('unknown dispute liability policy');
   if (!['fixed', 'chain'].includes(disputes.fineMode)) throw new Error('disputes.fineMode must be fixed or chain');
+  if (!['one-step', 'chekharda'].includes(disputes.procedure)) throw new Error('disputes.procedure must be one-step or chekharda');
+  for (const key of ['signalAccuracy', 'closeSignalAccuracy']) probability(disputes[key], 'disputes.' + key);
+  if (!Number.isFinite(disputes.stakeGrowth) || disputes.stakeGrowth < 0 || disputes.stakeGrowth > 10) throw new RangeError('disputes.stakeGrowth must be in [0, 10]');
+  if (!Number.isFinite(disputes.xpValue) || disputes.xpValue < 0) throw new RangeError('disputes.xpValue must be non-negative');
+  integer(disputes.maxRounds, 'disputes.maxRounds', 1, 100);
+  integer(disputes.maxScan, 'disputes.maxScan', 1, 100000);
+  integer(disputes.councilDepth, 'disputes.councilDepth', 0, 100);
+  probability(disputes.reputationWeight, 'disputes.reputationWeight');
   return Object.freeze(disputes);
 }
 
@@ -129,11 +144,12 @@ function deviantsFrom(overrides, days) {
 function socialFrom(overrides) {
   const social = mergeRecord(DEFAULT_SOCIAL, overrides, 'social');
   if (!['public', 'acquaintances'].includes(social.scope)) throw new Error('social.scope must be public or acquaintances');
-  for (const key of ['screening', 'verification', 'investigation', 'exitOnFraud']) if (typeof social[key] !== 'boolean') throw new TypeError('social.' + key + ' must be boolean');
+  for (const key of ['screening', 'verification', 'investigation', 'exitOnFraud', 'flowTracing', 'attentionFeedback']) if (typeof social[key] !== 'boolean') throw new TypeError('social.' + key + ' must be boolean');
   integer(social.hops, 'social.hops', 1, 6);
   integer(social.maxFollowUps, 'social.maxFollowUps', 0, 1000);
   integer(social.bribePrice, 'social.bribePrice', 0);
-  for (const key of ['strangerRate', 'screeningQuantile', 'screeningShare', 'verificationSensitivity', 'verificationFalsePositiveRate', 'bribeAcceptance']) probability(social[key], 'social.' + key);
+  integer(social.flowHubThreshold, 'social.flowHubThreshold', 2, 1000);
+  for (const key of ['strangerRate', 'screeningQuantile', 'screeningShare', 'verificationSensitivity', 'verificationFalsePositiveRate', 'bribeAcceptance', 'honestTransferRate']) probability(social[key], 'social.' + key);
   return Object.freeze(social);
 }
 
@@ -303,9 +319,11 @@ export function runExperiment(overrides = {}) {
   }
   const genesisOperators = new Set(ids);
   const operatorEffort = new Map();
-  const sanctions = { challenges: 0, upheld: 0, rejected: 0, falseInvalidated: 0, wrongfulInvalidated: 0, excluded: 0, missedFalse: 0, voidedActs: 0 };
-  const trustWork = { strangerRefusals: 0, verificationsCleared: 0, followUps: 0, bribesOffered: 0, bribesAccepted: 0, invitationsCancelled: 0, guardianExits: 0 };
+  const sanctions = { challenges: 0, upheld: 0, rejected: 0, falseInvalidated: 0, wrongfulInvalidated: 0, excluded: 0, missedFalse: 0, voidedActs: 0, ladderEntries: 0, ladderDepth: 0, councilInterventions: 0 };
+  const trustWork = { strangerRefusals: 0, verificationsCleared: 0, followUps: 0, bribesOffered: 0, bribesAccepted: 0, invitationsCancelled: 0, guardianExits: 0, cashouts: 0, flowFlagged: 0, flowFlaggedCoalition: 0 };
   const bribes = new Map();
+  // Subjects who opened a challenge draw public attention to themselves (attentionFeedback).
+  const attention = new Set();
   // Undirected social neighborhood over guarantees and invitation lineage.
   function neighborhood(id, hops) {
     const seenIds = new Set([id]);
@@ -454,6 +472,39 @@ export function runExperiment(overrides = {}) {
       }
     }
   }
+  // Public money movements: fakes consolidate liquid FACY to their operator; honest people make ordinary
+  // small payments to acquaintances, which are the background noise for flow analysis.
+  function cashFlowWork(actors) {
+    for (const actor of actors) {
+      const identity = truth.get(actor);
+      const subject = model.subject(actor);
+      if (!identity.genuine && subject.liquidFacy > 0 && identity.operator !== actor && model.subject(identity.operator).identityStatus === 'accepted'
+        && decision('cashout', actor).chance(activityOf(actor).cashout)) {
+        if (attempt(actor, 'cashout', () => model.transferFacy(actor, identity.operator, subject.liquidFacy)).ok) trustWork.cashouts++;
+      } else if (identity.genuine && identity.cohort === 'honest' && subject.liquidFacy > 0 && config.social.honestTransferRate > 0
+        && decision('honest-transfer', actor).chance(config.social.honestTransferRate)) {
+        const known = [...neighborhood(actor, config.social.hops)].filter(id => model.subject(id).identityStatus === 'accepted').sort((a, b) => rosterPositions.all.get(a) - rosterPositions.all.get(b));
+        if (known.length) model.transferFacy(actor, decision('honest-transfer-target', actor).pick(known), 1);
+      }
+    }
+  }
+  // Flow analysis: recipients of ordinary transfers from at least flowHubThreshold distinct senders are hubs;
+  // hubs and their senders are flagged for screening.
+  function flaggedByFlows() {
+    const senders = new Map();
+    for (const event of model.events()) {
+      if (event.type !== 'facy-transferred' || event.memo !== 'transfer') continue;
+      if (!senders.has(event.to)) senders.set(event.to, new Set());
+      senders.get(event.to).add(event.from);
+    }
+    const flagged = new Set();
+    for (const [hub, from] of senders) {
+      if (from.size < config.social.flowHubThreshold) continue;
+      flagged.add(hub);
+      for (const id of from) flagged.add(id);
+    }
+    return flagged;
+  }
   // Coalition actors offer payment to honest strangers for guaranteeing a controlled subject.
   function briberyWork(actors) {
     for (const actor of actors) {
@@ -515,16 +566,19 @@ export function runExperiment(overrides = {}) {
       if (model.subject(subject).identityStatus !== 'accepted') throw new ProtocolRejection('challenge target is not accepted');
       if (model.subject(challenger).liquidFacy < rules.stake) throw new ProtocolRejection('insufficient challenge stake');
       const genuine = truth.get(subject).genuine;
+      if (rules.procedure === 'chekharda') return { genuine, upheld: null };
       const correct = sensing.fork(JSON.stringify(['verdict', model.now, challenger, subject])).chance(rules.accuracy);
       return { genuine, upheld: genuine ? !correct : correct };
     });
     if (!result.ok) return;
     sanctions.challenges++;
-    const { genuine, upheld } = result.value;
+    if (config.social.attentionFeedback) attention.add(challenger);
+    const { genuine } = result.value;
+    const upheld = rules.procedure === 'chekharda' ? ladder(challenger, subject, genuine) : result.value.upheld;
     if (!upheld) {
       sanctions.rejected++;
       if (!genuine) sanctions.missedFalse++;
-      model.penalize(challenger, { fine: rules.stake, halveXp: rules.loserHalvesXp });
+      if (rules.procedure === 'one-step') model.penalize(challenger, { fine: rules.stake, halveXp: rules.loserHalvesXp });
       return;
     }
     sanctions.upheld++;
@@ -544,7 +598,7 @@ export function runExperiment(overrides = {}) {
     for (const party of new Set(liable)) {
       if (model.subject(party).identityStatus !== 'accepted') continue;
       const reward = party === challenger ? 0 : Math.floor(Math.min(model.subject(party).liquidFacy, fine) * rules.rewardShare);
-      if (reward > 0 && model.subject(challenger).identityStatus === 'accepted') model.transferFacy(party, challenger, reward);
+      if (reward > 0 && model.subject(challenger).identityStatus === 'accepted') model.transferFacy(party, challenger, reward, 'challenge-reward');
       model.penalize(party, { fine: fine - reward, halveXp: true });
     }
     const invalidated = [subject, ...(rules.excludeLiable ? [...new Set(liable)].filter(party => party !== subject && party !== challenger) : [])];
@@ -555,6 +609,96 @@ export function runExperiment(overrides = {}) {
       onInvalidated(party);
     }
     if (config.social.investigation && truth.get(challenger).cohort === 'honest') investigate(challenger, subject, onInvalidated, budget);
+  }
+  // Chekharda ladder: returns true when the fraud side holds the last unopposed position.
+  function ladder(challenger, subject, genuine) {
+    const rules = config.disputes;
+    const coalitionSubject = truth.get(subject).cohort === 'attackers';
+    const close = neighborhood(subject, 2);
+    const entrants = [{ id: challenger, side: 'fraud', stake: rules.stake }];
+    const taken = new Set([challenger, subject]);
+    const pool = rosters.all.filter(id => model.subject(id).identityStatus === 'accepted').sort((a, b) => model.subject(a).xp - model.subject(b).xp || rosterPositions.all.get(a) - rosterPositions.all.get(b));
+    // Public reputation prior: the trust-propagation percentile of the accused versus the challenger.
+    let genuinePrior = 0.5;
+    if (rules.reputationWeight > 0) {
+      const trust = propagatedTrust(model.guarantees, model.roots);
+      const rank = new Map([...pool].sort((a, b) => trust.get(a) - trust.get(b) || rosterPositions.all.get(a) - rosterPositions.all.get(b)).map((id, index) => [id, pool.length > 1 ? index / (pool.length - 1) : 0.5]));
+      genuinePrior = Math.min(0.95, Math.max(0.05, 0.5 + rules.reputationWeight * ((rank.get(subject) ?? 0.5) - (rank.get(challenger) ?? 0.5)) / 2));
+    }
+    // Posterior that the accusation is true after a private signal of the given accuracy.
+    const fraudBelief = (accuracy, saysFraud) => {
+      const fraud = (saysFraud ? accuracy : 1 - accuracy) * (1 - genuinePrior);
+      const real = (saysFraud ? 1 - accuracy : accuracy) * genuinePrior;
+      return fraud / (fraud + real);
+    };
+    for (let round = 1; round < rules.maxRounds; round++) {
+      if (rules.councilDepth > 0 && entrants.length >= rules.councilDepth) break;
+      const last = entrants.at(-1);
+      const side = last.side === 'fraud' ? 'genuine' : 'fraud';
+      const stake = Math.ceil(last.stake * (1 + rules.stakeGrowth));
+      const floor = model.subject(last.id).xp;
+      let scanned = 0;
+      let joined = null;
+      for (const id of pool) {
+        const candidate = model.subject(id);
+        if (candidate.xp <= floor || taken.has(id) || candidate.liquidFacy < stake) continue;
+        if (++scanned > rules.maxScan) break;
+        const identity = truth.get(id);
+        if (identity.cohort === 'attackers') {
+          // Coalition members back the coalition side whenever eligible.
+          if ((side === 'genuine') === coalitionSubject) { joined = id; break; }
+          continue;
+        }
+        const accuracy = close.has(id) ? rules.closeSignalAccuracy : rules.signalAccuracy;
+        const correct = sensing.fork(JSON.stringify(['ladder-signal', model.now, challenger, subject, id])).chance(accuracy);
+        const pFraud = fraudBelief(accuracy, genuine ? !correct : correct);
+        const believesFraud = pFraud > 0.5;
+        if ((side === 'fraud') !== believesFraud) continue;
+        const confidence = believesFraud ? pFraud : 1 - pFraud;
+        const gain = confidence * last.stake - (1 - confidence) * (stake + rules.xpValue * candidate.xp / 2);
+        if (gain > 0) { joined = id; break; }
+      }
+      if (joined === null) break;
+      const entry = attempt(joined, 'challenge', () => true);
+      if (!entry.ok) break;
+      taken.add(joined);
+      entrants.push({ id: joined, side, stake });
+      sanctions.ladderEntries++;
+    }
+    let winner = entrants.at(-1).side;
+    // Council intervention once the ladder reaches the declared depth: one vote per active member;
+    // honest members vote their private signal, coalition members vote for the coalition side.
+    if (rules.councilDepth > 0 && entrants.length >= rules.councilDepth) {
+      sanctions.councilInterventions++;
+      let fraudVotes = 0;
+      const members = model.council();
+      for (const member of members) {
+        const identity = truth.get(member.id);
+        let votesFraud;
+        if (identity.cohort === 'attackers') votesFraud = !coalitionSubject;
+        else {
+          const accuracy = close.has(member.id) ? rules.closeSignalAccuracy : rules.signalAccuracy;
+          const correct = sensing.fork(JSON.stringify(['council-signal', model.now, challenger, subject, member.id])).chance(accuracy);
+          votesFraud = fraudBelief(accuracy, genuine ? !correct : correct) > 0.5;
+        }
+        if (votesFraud) fraudVotes++;
+      }
+      winner = fraudVotes * 2 > members.length ? 'fraud' : 'genuine';
+    }
+    // Every winner takes the stake of the entrant directly below. A losing top entrant has no winner
+    // above it; its stake is burned (an experiment assumption for an OPEN case). Losers lose half their XP.
+    for (let k = entrants.length - 1; k >= 0; k--) {
+      const upper = entrants[k + 1];
+      const lower = entrants[k];
+      if (lower.side === winner) continue;
+      const amount = Math.min(lower.stake, model.subject(lower.id).liquidFacy);
+      if (upper && upper.side === winner) {
+        if (amount > 0 && model.subject(lower.id).identityStatus === 'accepted' && model.subject(upper.id).identityStatus === 'accepted') model.transferFacy(lower.id, upper.id, amount, 'ladder-settlement');
+      } else if (!upper) model.penalize(lower.id, { fine: amount, halveXp: false });
+    }
+    for (const entrant of entrants) if (entrant.side !== winner) model.penalize(entrant.id, { fine: 0, halveXp: rules.loserHalvesXp });
+    sanctions.ladderDepth = Math.max(sanctions.ladderDepth, entrants.length);
+    return winner === 'fraud';
   }
   // After a proven false identity, check who invited it, whom that inviter also invited, and whom it invited.
   function investigate(challenger, subject, onInvalidated, budget) {
@@ -592,10 +736,17 @@ export function runExperiment(overrides = {}) {
     // Screening targets subjects in the lowest trust quantile by root-seeded propagation.
     let screenList = [];
     let screenPositions = new Map();
-    if (config.social.screening) {
-      const trust = propagatedTrust(model.guarantees, model.roots);
-      const ranked = rosters.all.filter(id => model.subject(id).identityStatus === 'accepted').sort((a, b) => trust.get(a) - trust.get(b) || rosterPositions.all.get(a) - rosterPositions.all.get(b));
-      const low = new Set(ranked.slice(0, Math.ceil(ranked.length * config.social.screeningQuantile)));
+    if (config.social.screening || config.social.flowTracing || config.social.attentionFeedback) {
+      const low = config.social.flowTracing ? flaggedByFlows() : new Set();
+      for (const id of attention) if (model.subject(id).identityStatus === 'accepted') low.add(id);
+      trustWork.flowFlagged = low.size;
+      // Evaluator-only precision measurement; the defense never reads it.
+      trustWork.flowFlaggedCoalition = [...low].filter(id => truth.get(id).cohort === 'attackers').length;
+      if (config.social.screening) {
+        const trust = propagatedTrust(model.guarantees, model.roots);
+        const ranked = rosters.all.filter(id => model.subject(id).identityStatus === 'accepted').sort((a, b) => trust.get(a) - trust.get(b) || rosterPositions.all.get(a) - rosterPositions.all.get(b));
+        for (const id of ranked.slice(0, Math.ceil(ranked.length * config.social.screeningQuantile))) low.add(id);
+      }
       screenList = list.filter(act => low.has(act.subject));
       screenPositions = new Map(screenList.map((act, index) => [act.id, index]));
     }
@@ -732,7 +883,8 @@ export function runExperiment(overrides = {}) {
       const actors = decision('actor-order').shuffle([...model.guarantees.nodeIds()]).filter(id => model.subject(id).identityStatus === 'accepted');
       for (const actor of actors) {
         if (!decision('self-id', actor).chance(activityOf(actor).selfId)) continue;
-        attempt(actor, 'selfId', () => model.createSelfId(actor, model.registerArtifact(actor)));
+        // A false subject must fabricate fresh, never-reused media every day; its work is priced separately.
+        attempt(actor, truth.get(actor).genuine ? 'selfId' : 'fakeSelfId', () => model.createSelfId(actor, model.registerArtifact(actor)));
       }
       const stillAccepted = () => actors.filter(id => model.subject(id).identityStatus === 'accepted');
       guaranteeWork(actors);
@@ -740,6 +892,7 @@ export function runExperiment(overrides = {}) {
       inspectionWork(actors);
       guardianWork();
       admissionWork(stillAccepted());
+      cashFlowWork(stillAccepted());
       for (const actor of stillAccepted()) {
         for (const act of model.eligibleEmissions(actor, model.policy.conversionMaturityHours)) {
           if (decision('collector-conversion', actor, model.selfId(act).recordedAt).chance(activityOf(actor).convert)) attempt(actor, 'convert', () => model.convertToCollector(actor, act));

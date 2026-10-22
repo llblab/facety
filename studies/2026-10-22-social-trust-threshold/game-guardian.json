@@ -33,6 +33,9 @@
       "bribePrice": 5
     },
     "policy": {
+      "spendMaturityHours": 72,
+      "conversionMaturityHours": 168,
+      "invitationFreezeHours": 0,
       "linkBreakXp": "revoke"
     }
   },

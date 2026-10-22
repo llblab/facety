@@ -1,0 +1,72 @@
+# Insight register
+
+This register keeps every design insight and research finding in one place. A **decision** comes from the protocol owner and is recorded in the [protocol](facety.protocol.en.md) with its label. A **finding** comes from the simulator and states its evidence level:
+
+- **Confirmed:** supported by a preregistered test on reserved seeds ([evidence](evidence.en.md)).
+- **Exploratory:** a grid, screen or game on one seed batch. It is a map, not a result.
+- **Diagnostic:** a small targeted probe that explains a mechanism.
+
+All findings are conditional on the simulator's declared assumptions, horizons and valuations. None is a real-world measurement. Update this file whenever a decision is made or a study ends.
+
+## Owner decisions and design insights
+
+| # | Insight | Protocol | Simulator |
+| --- | --- | --- | --- |
+| D1 | All contest windows are one day: 24 h to contest a Self-ID emission before it can be spent or withdrawn, and 24 h to contest an invitation before it applies. One day is understandable, and long delays discourage people. | §3, §17.3, §18.5 [SELECTED] | `spendMaturityHours`, `conversionMaturityHours`, `invitationFreezeHours` = 24 (defaults) |
+| D2 | XP is credited when the emission is spent or withdrawn without cancellation: +1 to the subject and +1 to each guarantor eligible at recording. A cancelled act credits nothing. | §17.5 [SELECTED] | `xpFinality: "terminal"` |
+| D3 | The Council is the top-101 XP leaderboard among subjects active in the last 28 days. | §27.1 [SELECTED] | `councilEligibility: "active"` |
+| D4 | Debt repayment keeps the guarantor veto window. | §17.3 [SELECTED] | `debtRecovery: "reserve-until-mature"` |
+| D5 | No mandatory media type; group media whenever possible; the same media cannot be reused. Optional varied formats or beacon-bound challenges raise the cost of faking. | §14.4 [SELECTED/DIRECTION] | `registerArtifact({ contentHash })` rejects reuse; `fakeSelfId` work weight |
+| D6 | A Self-ID proves key control plus fresh presence; a group Self-ID is a public act of co-presence. | §14.4 | — |
+| D7 | A personal Self-ID chain is like a private ledger of confirmations. Proving step X invalid cuts everything after it: illegitimate coins and XP are removed, and each liable party owes one coin per cut act. For fraud from the invitation, the liability spreads to the inviter and the inviter's guarantors. | §21.1 [DIRECTION] | `voidSelfIdChain`, `disputes.fineMode: "chain"`, `liability: "inviter-chain"` (dispute defaults) |
+| D8 | The liability wave exists so that guarantors watch their people. Someone who sees their person inviting non-real people cancels the invitations and leaves the relation. | §18.5, §19.3 [SELECTED/DIRECTION] | `cancelInvitation`, `activity.honest.review`, `social.exitOnFraud` |
+| D9 | XP earned through a relation is revoked when the guarantor leaves it. | §19.3 [DIRECTION] | `linkBreakXp: "revoke"` (default) |
+| D10 | People vouch first for long-time acquaintances, then for friends of friends; a stranger's request is blocked like spam. | §20.4 [DIRECTION] | `social.scope: "acquaintances"`, `strangerRate` |
+| D11 | Detection is imperfect but has many public channels: generated-media detectors, graph analysis of narrowly connected regions, lineage tracing to the root, money-flow tracing, and calls or meetings before any sanction. | §40.1 [DIRECTION] | `social.screening`, `investigation`, `flowTracing`, `verification` |
+| D12 | A fake operator eventually exposes itself through cash flow on the public chain. | §40.1 | `activity.attackers.cashout`, `social.flowTracing` |
+| D13 | Chekharda stakes grow by a fixed percentage per position (10–20%), and each winner takes the stake of the position directly below. The bottom winner is paid from the rule-breaker's sanction. It resembles a prediction market. | §26.5 [DIRECTION] | `disputes.procedure: "chekharda"`, `stakeGrowth` |
+| D14 | Fakes rarely open disputes against honest players, because it draws attention and invites a counter-dispute. Supporters of fakes are mostly other fakes; the side with reputation draws more support. | §26.5 [HYPOTHESIS] | `social.attentionFeedback`, `disputes.reputationWeight` |
+| D15 | Facety is a public, accountable market of trust, the opposite of anonymous currencies, with no ZK layers. Transparency is the defense and must be balanced against personal safety. | §9 [DIRECTION] | — |
+| D16 | Facety distributes emission to reward the network effect. Ordinary users earn modestly; long-term contributors earn large returns. Knowing whom you deal with is the core of it. | §9 [DIRECTION] | — |
+| D17 | Rewarding guarantees is necessary for the network effect. That a cartel can maximize it too is a property of the rules; the largest "cartel" should be the committed early honest community. | §23 | H1 / pilot game |
+
+## Simulator findings
+
+| # | Finding | Level | Source |
+| --- | --- | --- | --- |
+| F1 | Guarantor-XP coupling raises a dense coalition's Council share by +0.14 to +0.17. It requires coalition-level guarantee intensity and survives equal Self-ID rates. | Confirmed (mechanism, within model; population-size confound open) | [coalition study](../studies/2026-10-22-coalition-council/README.md) H1 |
+| F2 | A fast-growing Sybil cone is under-represented on the Council (seats − subjects ≈ −0.3) only while it grows. Halting growth makes it over-represented, and immediate XP finality explains only part of the effect. | Confirmed (within model, accepted-Council era) | same, H2 |
+| F3 | Deterrence works when someone checks: against vigilant honest people, farming loses about 140 per coalition operator; against passive ones it gains about ×10 honest income. | Exploratory | [inspection game](../studies/2026-10-22-inspection-game/README.md) |
+| F4 | Vigilance is a public good. There is no pure equilibrium; in the mixed equilibrium the coalition is indifferent between fraud and honest play, so **fraud earns no premium over playing by the rules**, while honest people pay a policing cost. | Exploratory | inspection game, threshold studies |
+| F5 | Challenger rewards make individual vigilance pay while others are lax, and free-riding pay while others are vigilant, so individuals settle at an intermediate level (a social dilemma). | Exploratory | inspection game |
+| F6 | With the one-step dispute abstraction, viability needs verdict accuracy ≥ ~0.8 and raw false suspicion ≈ 1%. Detection per inspection can be as low as 0.2–0.35. Below 0.8 accuracy, dispute abuse (harassment) harms honest people more than fakes do. | Exploratory | [deterrence threshold](../studies/2026-10-22-deterrence-threshold/README.md) |
+| F7 | The free veto is a damage channel. At 5% false suspicion, vigilant guarantors cancel about 131 genuine Self-IDs per run, so honest people stop checking and farming pays. A second-stage call or meeting removes this. | Diagnostic + exploratory | deterrence and social-trust studies |
+| F8 | Acquaintance-only guarantees plus verification nearly eliminate wrongful invalidations, make bribery and harassment unprofitable, and raise honest retention to 0.65–0.96. Because the network is then safe without heavy vigilance, honest people stay lax, and fraud needs a larger expected sanction. | Exploratory | [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md) §1–2 |
+| F9 | Sanction size is decisive: fine 5 lets fraud pay, while fine 10 or chain-proportional fines make the network viable. A larger fine does not substitute for poor detection. | Exploratory | social-trust §3–4 |
+| F10 | A liability wave without a way to prevent the fraud backfires. Honest friends of a real cheater are fined for each exposed fake, so the community prefers not to look (the protocol's §22 concealment risk). A reviewable invitation freeze fixes it: fraud premium about 190 → 3–12, honest retention 0.5 → 0.85. | Exploratory | social-trust §4–5 |
+| F11 | Leaving a relation escapes liability but removes a watcher; at low detection it pushes honest people back to passivity. | Exploratory | social-trust §5 |
+| F12 | One-day windows (24/24/24 h) are viable with mostly vigilant honest people (retention ≈ 0.72). 24 h spend / 7 d withdraw / 72 h freeze is viable with lax vigilance and higher retention (0.88–0.93). Mismatched windows fail. One-day windows assume guarantors check daily. | Exploratory | social-trust §6 |
+| F13 | A Chekharda ladder settled only by the last unopposed side favors whoever can field a higher-XP participant at no personal risk. One fake defender with more XP than the challenger ends the dispute unless a more senior honest person dares to join. Verdict accuracy: 0.2–0.4. Council intervention early in the ladder (depth 2–4) restores 0.83–0.89 with coalition harassment, and 1.0 without harassment. Intervention at depth 6 comes too late (≈ 0.46). A public reputation prior barely helps, because mutual guarantees give fakes reputation too. | Diagnostic | [disputes tests](../test/disputes.test.mjs); this register |
+| F14 | Graph screening (SybilRank-style) separates fakes from real people with an AUC of about 0.92 without camouflage and 0.80 with it. It also flags 9–20% of real people, so it must guide verification, not sanctions. | Diagnostic | this register; `social.screening` |
+| F15 | Money-flow tracing flags coalition hubs with >95% precision when fakes consolidate earnings. Ordinary honest payments dilute the signal. | Diagnostic | `test/social.test.mjs` |
+| F16 | A debtor's immediate-burn repayment would bypass the guarantor veto and finalize XP sooner. This was fixed as D4. | Diagnostic | `test/model.test.mjs` |
+
+## Method lessons
+
+- Random scripted runs cannot model incentives. Use strategy menus, payoff facts and equilibrium or deviation analysis ([games](games.en.md)).
+- A strategy menu that is too small misleads: adding `farm-and-harass` reversed the apparent safety of inaccurate verdicts.
+- Check valuation traps: debt left on abandoned fakes is not a cost to the attacker (`falseDebt: +1`).
+- Exploratory candidate counts are not discoveries (228 candidates, two of them confirmed).
+- Confirm on reserved seeds before calling anything a mechanism; record what was not tested.
+
+## Open questions carried forward
+
+See [BACKLOG.md](../BACKLOG.md). The main ones:
+
+- confirm F9–F12 and F13;
+- patient and camouflaged coalitions;
+- adaptive agents;
+- guarantors who check less often than daily;
+- leniency for first reporters;
+- calibration of detection and false-alarm rates with real reviewers;
+- the endgame of a captured Council.

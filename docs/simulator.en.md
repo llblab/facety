@@ -22,11 +22,32 @@ The model never receives a hidden label saying that a subject is an attacker or 
 - Time uses integer hours. A day is 24 hours; there is at most one rewarded Self-ID per rolling day. Simulation time never moves backwards.
 - Artifacts have abstract detector outputs (`faceCount`), registration timestamps and selected face indices. The reference window includes age 24 hours. Different subjects claiming the same face flag every affected claim without submission-order guilt.
 - A normal Self-ID mints one modeled FACY into Emitter custody. It cannot be transferred as an Emitter right.
-- An own unspent right can burn for a target-bound invitation at age 72 hours. Conversion transfers, rather than mints, at age 168 hours. No automatic conversion occurs.
-- An authorized guarantor can cancel an unspent right even after seven days. Consumption and conversion permanently end that veto.
+- An own unspent right can burn for a target-bound invitation once it reaches `spendMaturityHours` (default 24). Conversion transfers, rather than mints, once it reaches `conversionMaturityHours` (default 24). No automatic conversion occurs.
+- A new invitation is frozen for `invitationFreezeHours` (default 24); a current guarantor of the creator can cancel it during the freeze.
+- An authorized guarantor can cancel an unspent right for as long as it stays unspent. Consumption and conversion permanently end that veto.
 - Directed guarantees need a proposal from the guarantor and confirmation by the guaranteed subject. They do not create reciprocal guarantees or invitation lineage.
 - Disconnection, invalidated identity and monetary liability are separate. `invalidateIdentity` marks only the adjudicated subject; it does not declare descendants false.
 - Penalties are explicit exogenous inputs, not a claim that the simulator has solved adjudication.
+
+## Protocol coverage
+
+| Protocol rule | Section | Simulator |
+| --- | --- | --- |
+| One rewarded Self-ID per 24 h; 24 h artifact reference window | §14, §17.5 | `createSelfId` |
+| Media reuse forbidden | §14.4 | `registerArtifact({ contentHash })` |
+| One-day emission window; spend and conversion after 24 h | §17.3 | `spendMaturityHours`, `conversionMaturityHours` |
+| Terminal XP to subject and eligible guarantors | §17.5 | `xpFinality: "terminal"` |
+| Debt repayment keeps the veto window | §17.3 | `debtRecovery` |
+| Invitation: earned emission, decimal guarantor threshold, 24 h freeze, guarantor cancellation | §18 | `createInvitation`, `requiredGuarantors`, `cancelInvitation` |
+| Two-sided guarantees; 1 FACY link break; XP follows the relation | §19 | `proposeGuarantee`, `confirmGuarantee`, `endGuarantee`, `linkBreakXp` |
+| Free preventive cancellation of unspent acts | §20 | `cancelSelfId` |
+| Chain-cut sanction and liability wave | §21.1 | `voidSelfIdChain`, `disputes.fineMode`, `disputes.liability` |
+| XP halving, debt, no fictitious burns | §24, §30 | `penalize` |
+| Challenge XP gate; Chekharda stake ladder; Council intervention | §25–§27 | `disputes.procedure`, `stakeGrowth`, `councilDepth` (experiment layer) |
+| Council: top-101 among active subjects | §27.1 | `council()`, `councilEligibility` |
+| Trust formation and detection channels | §20.4, §40.1 | `social.*` (experiment layer) |
+
+Mechanics marked as the experiment layer are behavioral or procedural abstractions in `src/experiment.mjs`. Protocol state changes still go through `FacetyModel`. Atmo/Treasury D, key recovery, media detection and the Council merits procedure are not implemented.
 
 ## Research policies
 
@@ -38,7 +59,7 @@ The model never receives a hidden label saying that a subject is an attacker or 
 - `guaranteeFee: 0` (default) models an unfunded two-sided guarantee. A configured positive integer fee is paid by the guarantor from liquid FACY on confirmation and held in a fee vault, not burned. This is not the still-unspecified Emitter guarantee commitment.
 - `councilSize: 101` (default) ranks eligible subjects by effective XP, breaking ties by JavaScript string order. Zero-XP eligible subjects qualify; fewer eligible subjects produce a smaller Council. A snapshot is an observation, not an implemented Council case.
 - `councilEligibility: "active"` (default) makes the Council the XP leaderboard among currently active accepted subjects: those with an uncancelled Self-ID inside the preceding 28 days. Members drop out when their activity window expires. This follows the protocol owner's decision of 2026-10-22 on the §27.1 OPEN item; the protocol text is not yet updated. `"accepted"` keeps every accepted subject eligible and was the implicit behavior before that date, including for the 2026-10-22 coalition study.
-- `debtRecovery: "reserve-until-mature"` (default) marks a debtor's new Self-ID right as reserved while outstanding debt exceeds the debtor's already reserved rights. The reserved right stays in Emitter custody, where guarantors can still cancel it, and the owner cannot spend or convert it. When it reaches 72 hours without a dispute lock, the next clock advance (or unlock) burns it, reduces debt by one and applies terminal XP. A cancelled reservation repays nothing. `"immediate-burn"` burns at acceptance and credits XP at once. It is retained only as a comparison policy, because it removes the selected free guarantor veto for debtors and makes their XP final sooner than everyone else's.
+- `debtRecovery: "reserve-until-mature"` (default) marks a debtor's new Self-ID right as reserved while outstanding debt exceeds the debtor's already reserved rights. The reserved right stays in Emitter custody, where guarantors can still cancel it, and the owner cannot spend or convert it. When it reaches `spendMaturityHours` without a dispute lock, the next clock advance (or unlock) burns it, reduces debt by one and applies terminal XP. A cancelled reservation repays nothing. `"immediate-burn"` burns at acceptance and credits XP at once. It is retained only as a comparison policy, because it removes the selected free guarantor veto for debtors and makes their XP final sooner than everyone else's.
 
 Other explicit assumptions:
 
@@ -48,13 +69,15 @@ Other explicit assumptions:
 - A link break costs exactly one liquid FACY, paid by the party ending the link, and transfers it to fee custody. No hardship exception is assumed.
 - A dispute lock prohibits both owner disposition and guarantor cancellation. Unlocking does not reset age. Opening a lock does not itself prove admissibility.
 - XP halving rounds down. Credits and halvings are chronological. Cancelling an immediate credit replays current XP without that source; historical votes or decisions are not rolled back. The foundation intentionally has no final court decisions.
-- A monetary fine burns collectible liquid FACY first and assigns the remainder to subject debt. Existing Emitter balances are not seized. Future Self-ID repays one unit of debt per mature uncancelled right under the selected `debtRecovery` policy; its valid identity work can still earn XP. Nominal debt is never counted as an actual burn. The 72-hour reservation age is an experiment assumption for an OPEN seizure-order question.
+- A monetary fine burns collectible liquid FACY first and assigns the remainder to subject debt. Existing Emitter balances are not seized. Future Self-ID repays one unit of debt per mature uncancelled right under the selected `debtRecovery` policy; its valid identity work can still earn XP. Nominal debt is never counted as an actual burn. Tying the reservation to the spend window follows the selected veto rule; the seizure order itself remains OPEN.
 - Monetary amounts use safe-integer FACY units, not production token precision. `penalize` rejects a fine that would make accumulated individual or aggregate debt unrepresentable before changing money, XP history or events. This is a numeric representation limit, not a calibrated economic ceiling. Signatures, key possession, media capture/detection, publication rights and lawful identity judgments are abstract inputs, not validated here.
 
 ## Invitation freeze and link-break XP
 
-- `invitationFreezeHours` (default 0) keeps a new invitation open but unacceptable for that many hours. During the freeze, any current guarantor of the creator may `cancelInvitation`. The emission burned to create it stays burned, and the XP its consumption credited is revoked. This follows the protocol owner's description of a cancellable invitation freeze; its length is an experiment choice.
-- `linkBreakXp: "revoke"` (default `"keep"`): ending a guarantee removes every XP credit the guarantor earned from the guaranteed subject's acts. Snapshot rights credited later no longer reach a departed guarantor. This follows the owner's proposal that XP should not flow from a person one no longer vouches for.
+- `spendMaturityHours` and `conversionMaturityHours` (both 24 by default, protocol §17.3) set when an unspent right can be spent on an invitation or converted. The superseded 3/7-day schedule is `72`/`168`; the bounded incentive fixtures pin it (`LEGACY_FIXTURE_TIMING`) because their documented measurements were taken under it.
+- `invitationFreezeHours` (default 24, protocol §18.5) keeps a new invitation open but unacceptable for that many hours. During the freeze, any current guarantor of the creator may `cancelInvitation`. The emission burned to create it stays burned, and the XP its consumption credited is revoked.
+- `linkBreakXp: "revoke"` (default, protocol §19.3 DIRECTION): ending a guarantee removes every XP credit the guarantor earned from the guaranteed subject's acts, and snapshot rights credited later no longer reach a departed guarantor. `"keep"` is the comparison policy.
+- `registerArtifact(publisher, { contentHash })` rejects reuse of a registered content hash (protocol §14.4). `transferFacy(from, to, amount, memo)` records a public memo, so that flow analysis can separate ordinary transfers from dispute settlements and challenge rewards.
 
 ## Adjudicated chain voiding
 

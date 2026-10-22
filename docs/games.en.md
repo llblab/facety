@@ -23,7 +23,20 @@ Without sanctions, inspection costs effort and earns nothing, so no rational age
 
 - `fineMode: "chain"` voids the false subject's entire Self-ID chain through `FacetyModel.voidSelfIdChain`. Unspent rights burn, and XP credited by the chain is revoked from the subject and every guarantor recipient. Each liable party owes one coin per voided act (at least one), so the sanction grows with how long the fake operated. `liability: "inviter-chain"` adds the inviter and the inviter's guarantors. The model does not yet let those guarantors see or cancel a pending invitation, so this wave can fine people who had no chance to prevent the fraud.
 
-This deliberately abstracts Chekharda to one step: no escalation, Council review, appeal or evidence procedure. All sanctions go through `FacetyModel`. A wrong verdict can invalidate a genuine person, and that harm is counted (`sanctions.wrongfulInvalidated`).
+**Defaults** follow the protocol owner's rules (§21.1, §26.5): `fineMode: "chain"`, `liability: "inviter-chain"`, stake 1 FACY, reward share 0.5.
+
+**Chekharda ladder** (`procedure: "chekharda"`, owner rule §26.5):
+
+- Position 1 is the challenger with `stake`. Each further entrant needs strictly more XP than the previous one and stakes `ceil(previous × (1 + stakeGrowth))`.
+- Honest candidates, scanned from the lowest eligible XP up to `maxScan`, receive a private signal of the truth. Its accuracy is `closeSignalAccuracy` for acquaintances of the accused (within two hops) and `signalAccuracy` otherwise. An optional public reputation prior (`reputationWeight`, the trust-propagation percentile of the accused versus the challenger) adjusts the belief.
+- A candidate joins the side it believes when `belief × stake below > (1 − belief) × (own stake + xpValue × own XP / 2)`. Coalition members join the coalition side whenever eligible, since a disposable identity risks nothing personal.
+- The last unopposed side wins, unless the ladder reaches `councilDepth`. Then the active Council votes by majority: honest members by belief, coalition members for the coalition.
+- Each winner takes the stake of the entrant directly below. A losing top entrant's stake is burned (assumption for an OPEN case). Losers lose half their XP.
+- The verdict then applies the ordinary sanctions. Counters: `sanctions.ladderEntries`, `ladderDepth`, `councilInterventions`.
+
+The default `procedure` stays `"one-step"`, with its `accuracy` parameter, so that threshold studies can vary accuracy directly. The ladder derives accuracy instead; see insight F13.
+
+The one-step procedure deliberately abstracts Chekharda to one step: no escalation, Council review, appeal or evidence procedure. All sanctions go through `FacetyModel`. A wrong verdict can invalidate a genuine person, and that harm is counted (`sanctions.wrongfulInvalidated`).
 
 ## Deviant groups and payoff facts
 

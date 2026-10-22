@@ -24,8 +24,10 @@ test('acquaintance-only guaranteeing refuses strangers and cuts coalition-to-hon
 });
 
 test('graph screening steers inspections toward the weakly connected coalition', () => {
-  const plain = runs({});
-  const screened = runs({ social: { screening: true, screeningShare: 1 } });
+  // Sparse, weak inspection: where to look matters.
+  const weak = { sensitivity: 0.3, activity: { honest: { inspect: 0.5, challenge: 1 } } };
+  const plain = runs(weak);
+  const screened = runs({ ...weak, social: { screening: true, screeningShare: 1 } });
   assert.ok(mean(screened, run => run.population.falseSubjects) < mean(plain, run => run.population.falseSubjects), 'earlier removal stops the cone from growing');
   assert.ok(mean(screened, run => run.system.falseAcceptedSubjects) < mean(plain, run => run.system.falseAcceptedSubjects));
 });
@@ -76,4 +78,20 @@ test('guarantors reviewing frozen invitations stop fake admissions, and exits es
   assert.ok(mean(leaving, run => run.system.trust.guardianExits) > 0);
   assert.ok(watched.every(run => run.state === undefined));
   assert.throws(() => experimentConfig({ activity: { honest: { review: 2 } } }), RangeError);
+});
+
+test('cash-outs make fakes visible to flow analysis, and fabricated Self-IDs are priced separately', () => {
+  const weak = { sensitivity: 0.3, activity: { honest: { inspect: 0.5, challenge: 1 }, attackers: { cashout: 0.5 } } };
+  const blind = runs(weak);
+  const traced = runs({ ...weak, social: { flowTracing: true } });
+  assert.ok(blind.every(run => run.system.trust.cashouts > 0 && run.system.trust.flowFlagged === 0));
+  assert.ok(traced.every(run => run.system.trust.flowFlagged > 0));
+  assert.ok(traced.every(run => run.system.trust.flowFlaggedCoalition / run.system.trust.flowFlagged > 0.95), 'consolidation hubs point at the coalition');
+  const noisy = runs({ ...weak, social: { flowTracing: true, honestTransferRate: 0.3 } });
+  assert.ok(mean(noisy, run => run.system.trust.flowFlaggedCoalition / run.system.trust.flowFlagged) < mean(traced, run => run.system.trust.flowFlaggedCoalition / run.system.trust.flowFlagged), 'ordinary payments dilute flow evidence');
+  const priced = runExperiment({ ...base, seed: 'priced', weights: { fakeSelfId: 3 } });
+  const fakeWork = priced.effort.cohorts.attackers.byAction.fakeSelfId;
+  assert.ok(fakeWork.attempts > 0);
+  assert.equal(priced.effort.cohorts.honest.byAction.fakeSelfId.attempts, 0);
+  assert.throws(() => experimentConfig({ social: { flowHubThreshold: 1 } }), RangeError);
 });

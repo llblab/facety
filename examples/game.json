@@ -13,7 +13,15 @@
       "accuracy": 0.9,
       "fine": 5,
       "liability": "guarantors",
-      "rewardShare": 0.5
+      "rewardShare": 0.5,
+      "stake": 0,
+      "fineMode": "fixed"
+    },
+    "policy": {
+      "spendMaturityHours": 72,
+      "conversionMaturityHours": 168,
+      "invitationFreezeHours": 0,
+      "linkBreakXp": "keep"
     }
   },
   "roles": {

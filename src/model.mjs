@@ -10,10 +10,10 @@ export const DEFAULT_POLICY = Object.freeze({
   councilSize: 101,
   debtRecovery: 'reserve-until-mature',
   councilEligibility: 'active',
-  invitationFreezeHours: 0,
-  linkBreakXp: 'keep',
-  spendMaturityHours: 72,
-  conversionMaturityHours: 168,
+  invitationFreezeHours: 24,
+  linkBreakXp: 'revoke',
+  spendMaturityHours: 24,
+  conversionMaturityHours: 24,
 });
 // Counterfactual mechanism removals for evidence experiments. They are not protocol options.
 export const DEFAULT_ABLATIONS = Object.freeze({
@@ -72,6 +72,7 @@ export class FacetyModel {
   #claims = new Map();
   #xpSources = new Set();
   #debtReservations = new Set();
+  #contentHashes = new Set();
   #activityVersion = 0;
   #activeCache = null;
   #events = [];
@@ -153,10 +154,14 @@ export class FacetyModel {
     this.#subject(id, true).key = key;
     this.#event('key-rotated', { subject: id, key });
   }
-  registerArtifact(publisher, { id = this.#id('artifact'), faceCount = 1 } = {}) {
+  // A content hash, when supplied, may be registered only once: the same media cannot be reused.
+  registerArtifact(publisher, { id = this.#id('artifact'), faceCount = 1, contentHash = null } = {}) {
     this.#subject(publisher, true);
     natural(faceCount, 'faceCount', 1);
     if (typeof id !== 'string' || !id.length || this.#artifacts.has(id)) throw new ProtocolRejection('invalid or duplicate artifact');
+    if (contentHash !== null && (typeof contentHash !== 'string' || !contentHash.length)) throw new ProtocolRejection('invalid content hash');
+    if (contentHash !== null && this.#contentHashes.has(contentHash)) throw new ProtocolRejection('duplicate media content');
+    if (contentHash !== null) this.#contentHashes.add(contentHash);
     this.#artifacts.set(id, Object.freeze({ id, publisher, faceCount, registeredAt: this.now }));
     this.#event('artifact-registered', { artifact: id, publisher });
     return id;
@@ -375,14 +380,16 @@ export class FacetyModel {
     this.#event('self-id-unfrozen', { selfId: selfIdId, lockId });
     this.#settleDebtReservations();
   }
-  transferFacy(from, to, amount) {
+  // The memo labels public transfers (e.g. dispute settlements) for flow analysis; it is not a protocol field.
+  transferFacy(from, to, amount, memo = 'transfer') {
     natural(amount, 'amount', 1);
+    if (typeof memo !== 'string' || !memo.length) throw new TypeError('transfer memo must be non-empty');
     const payer = this.#subject(from, true);
     const recipient = this.#subject(to, true);
     if (payer.liquidFacy < amount) throw new ProtocolRejection('insufficient liquid FACY');
     payer.liquidFacy -= amount;
     recipient.liquidFacy += amount;
-    this.#event('facy-transferred', { from, to, amount });
+    this.#event('facy-transferred', { from, to, amount, memo });
   }
   penalize(id, { fine = 0, halveXp = true } = {}) {
     natural(fine, 'fine');

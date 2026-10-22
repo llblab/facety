@@ -127,7 +127,7 @@ Economic budget exhaustion is a modeled constraint, not computational censoring.
 
 1. Inspect trajectories and within-cell variability, not only an endpoint or a Boolean attack result.
 2. Treat automated candidates as pointers for investigation. The number of candidates is **not** a count of emergent properties.
-3. Check direct explanations: 3/7-day maturity, 28-day expiry, decimal invitation thresholds, rounding of initial cohort sizes, XP tie-breaking, budgets and onboarding.
+3. Check direct explanations: spend, conversion and invitation-freeze windows, 28-day expiry, decimal invitation thresholds, rounding of initial cohort sizes, XP tie-breaking, budgets and onboarding.
 4. Replay the witness seed and vary one mechanism at a time under an explicitly labeled control. A selected strategy is not an optimal attacker.
 5. Register the hypothesis, with presence, necessity and named-alternative claims plus robustness contexts, before confirming it on reserved seeds. See [confirmatory evidence](evidence.en.md). Do not reuse exploratory selection as independent confirmation.
 6. Make a mechanism claim only when a registered confirmation supports it, and list the alternatives it did not test.

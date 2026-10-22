@@ -34,7 +34,10 @@ Each cohort has its own `activity` profile:
 - `guarantee`: Expected new directed-guarantee proposals per subject per day. Confirmations are separate actions charged to the counterparty's cohort.
 - `inspect`: Expected distinct public unspent-act inspections per subject per day.
 - `respond`: Probability of acting on a suspicious observation when veto authority exists, in [0, 1].
-- `convert`: Probability of converting each available seven-day right on a daily pass, in [0, 1].
+- `convert`: Probability of converting each right that has reached conversion maturity, on a daily pass, in [0, 1].
+- `challenge`, `review`: probability of challenging an eligible suspicious act, and of reviewing a frozen invitation of a guaranteed subject (honest only).
+- `bribe`: expected bribe offers per coalition actor per day.
+- `cashout`: probability that a fake subject moves its liquid FACY to its operator each day.
 
 For the non-probability rates, the scheduler takes the integer part plus a Bernoulli draw for the fractional part. This is not a Poisson arrival model. Rates are bounded by 100 to prevent accidental unbounded per-subject loops.
 
@@ -47,7 +50,7 @@ Every simulated day:
 3. Guarantee work runs. Attackers favor controlled peers; honest agents prioritize their invitation descendants, then use random public mixing.
 4. Inspection and authorized responses run before value can leave Emitter.
 5. Invitation creation and matching acceptance run. Preparing a candidate costs work, and prepared candidates can be retried without paying setup again.
-6. Agents may convert seven-day rights.
+6. Fakes may consolidate money to their operator (`cashout`), honest people may make small payments to acquaintances (`social.honestTransferRate`), and agents may convert mature rights.
 7. Monetary invariants are checked and a history sample is recorded.
 
 New members first act on the following day. Simulation time advances on a 24-hour grid; within-day action ordering is explicit, not physically timed. Success is checked after every accepted action that can change the success criterion, as well as against the given initial state. The run continues to the horizon after first success, while retaining its exact effort prefix.
@@ -92,6 +95,10 @@ The current experiment applies no judicial fine or XP-halving verdict; the under
 - Bribery: coalition actors make `activity.attackers.bribe` offers per day to random honest people who don't already guarantee them. A target accepts with probability `bribeAcceptance`, proposes a guarantee and becomes liable for it. The `bribePrice` is paid off-protocol and recorded as `bribesPaid` and `bribesReceived` payoff facts, not as FACY.
 
 - Invitation review: when the `policy.invitationFreezeHours` freeze is positive, each honest current guarantor of an inviter reviews a pending invitation each day with probability `activity.honest.review`. A review observes the invited candidate with the ordinary detector and, if `verification` is on, verifies it. A confirmed suspicion cancels the invitation; with `exitOnFraud`, the guarantor also ends the relation (paying the 1 FACY link-break fee) and so escapes later `inviter-chain` liability. Leaving also removes that guarantor's oversight of the inviter. Counters: `trust.invitationsCancelled`, `trust.guardianExits`.
+
+- Fabricated media: a false subject's daily Self-ID is charged as `fakeSelfId` work, the price of producing fresh, never-reused fake media, separately from an honest `selfId`.
+- Flow tracing (`social.flowTracing`): recipients of ordinary transfers from at least `flowHubThreshold` distinct senders are hubs; hubs and their senders become screening targets. Dispute settlements and challenge rewards carry their own memos and are excluded.
+- Attention (`social.attentionFeedback`): a subject who opens a challenge becomes a screening target, inviting counter-scrutiny. The counter `trust.flowFlagged` includes these targets; `trust.flowFlaggedCoalition` measures evaluator-only precision.
 
 These are behavioral assumptions, not protocol rules. Verification quality in particular is a declared input for a human process the simulator does not model.
 

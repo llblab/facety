@@ -62,3 +62,39 @@ test('chain fines scale with the voided chain and reach the inviter and the invi
   const ledger = run.metrics.ledger;
   assert.equal(ledger.supply, ledger.emitterVault + ledger.collector + ledger.feeVault);
 });
+
+test('the Chekharda ladder escalates stakes, settles money conservatively and depends on Council intervention', () => {
+  const ladderBase = {
+    ...base, scenario: 'sybil-cone', sensitivity: 0.5, falsePositiveRate: 0.05,
+    activity: { honest: { inspect: 3, challenge: 1, review: 1 }, attackers: { inspect: 2, challenge: 1 } },
+    social: { scope: 'acquaintances', verification: true },
+  };
+  const outcome = disputes => [0, 1, 2].map(i => runExperiment({ ...ladderBase, seed: 'ladder:' + i, disputes: { enabled: true, procedure: 'chekharda', ...disputes } }));
+  const accuracy = runs => {
+    const s = runs.reduce((sum, run) => Object.fromEntries(Object.entries(run.system.sanctions).map(([k, v]) => [k, (sum[k] ?? 0) + v])), {});
+    return (s.falseInvalidated + s.rejected - s.missedFalse) / s.challenges;
+  };
+  const alone = outcome({});
+  const council = outcome({ councilDepth: 3 });
+  assert.ok(alone.every(run => run.system.sanctions.ladderEntries > 0));
+  assert.ok(alone.every(run => run.system.sanctions.councilInterventions === 0));
+  assert.ok(council.some(run => run.system.sanctions.councilInterventions > 0));
+  assert.ok(council.every(run => run.system.sanctions.ladderDepth <= 3));
+  assert.ok(accuracy(council) > accuracy(alone), 'disposable high-XP fakes win unopposed ladders; the Council restores accuracy');
+  for (const run of [...alone, ...council]) {
+    const ledger = run.metrics.ledger;
+    assert.equal(ledger.supply, ledger.emitterVault + ledger.collector + ledger.feeVault);
+  }
+  assert.throws(() => experimentConfig({ disputes: { procedure: 'vote' } }), /procedure/);
+});
+
+test('challengers draw attention and a public reputation prior shapes ladder beliefs', () => {
+  const attentive = runExperiment({ ...base, seed: 'attention', disputes: { enabled: true }, social: { attentionFeedback: true } });
+  assert.ok(attentive.system.sanctions.challenges > 0);
+  assert.ok(attentive.system.trust.flowFlagged > 0, 'every challenger becomes a screening target');
+  const quiet = runExperiment({ ...base, seed: 'attention', disputes: { enabled: true } });
+  assert.equal(quiet.system.trust.flowFlagged, 0);
+  assert.throws(() => experimentConfig({ disputes: { reputationWeight: 2 } }), RangeError);
+  const reputed = runExperiment({ ...base, seed: 'reputation', disputes: { enabled: true, procedure: 'chekharda', reputationWeight: 0.8, councilDepth: 3 } });
+  assert.ok(reputed.system.sanctions.challenges > 0);
+});

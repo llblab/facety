@@ -14,7 +14,8 @@
       "fine": 5,
       "liability": "guarantors",
       "rewardShare": 0.5,
-      "stake": 1
+      "stake": 1,
+      "fineMode": "fixed"
     },
     "social": {
       "scope": "acquaintances",
@@ -30,6 +31,12 @@
       "maxFollowUps": 20,
       "bribeAcceptance": 0.05,
       "bribePrice": 5
+    },
+    "policy": {
+      "spendMaturityHours": 72,
+      "conversionMaturityHours": 168,
+      "invitationFreezeHours": 0,
+      "linkBreakXp": "keep"
     }
   },
   "roles": {

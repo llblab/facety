@@ -1,6 +1,7 @@
 # Documentation
 
-- [Facety protocol](facety.protocol.en.md): Proposed manifesto and protocol design; source of selected rules and unresolved choices.
+- [Facety protocol](facety.protocol.en.md): Living manifesto and protocol specification; selected rules, directions, open choices and the dated decision log.
+- [Insight register](insights.en.md): Every owner decision and simulator finding, with its evidence level and source study.
 - [Simulator model](simulator.en.md): Implemented abstractions, explicit research policies, graph certificates and limits.
 - [Cohort experiments](experiments.en.md): Activity, attack/defense effort, ownership, noisy observations, success criteria and statistical uncertainty.
 - [Emergent behavior research](discovery.en.md): Macro-state trajectories, bounded parameter landscapes, diagnostic candidates and evidence limits.

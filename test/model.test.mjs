@@ -3,8 +3,10 @@ import assert from 'node:assert/strict';
 import { FacetyModel, DAY, policyFrom } from '../src/model.mjs';
 import { DirectedGraph } from '../src/graph.mjs';
 
+// Most transition tests pin the original 3/7-day timing; the selected one-day timing has its own tests.
+const LEGACY_TIMING = { spendMaturityHours: 3 * DAY, conversionMaturityHours: 7 * DAY, invitationFreezeHours: 0, linkBreakXp: 'keep' };
 function fixture(policy = {}, genesis = ['a', 'b', 'c']) {
-  return new FacetyModel({ genesis, policy: { guarantorEligibility: 'accepted', ...policy } });
+  return new FacetyModel({ genesis, policy: { guarantorEligibility: 'accepted', ...LEGACY_TIMING, ...policy } });
 }
 function guarantee(model, a, b) {
   const relation = model.proposeGuarantee(a, b);
@@ -153,7 +155,7 @@ test('graph capacity rejection preserves funded confirmation and termination bef
 test('admission preflights complete lineage and guarantee capacity before inserting any subject state', () => {
   for (const [field, counter, required] of [['lineage', 'revision', 2], ['lineage', 'nextEdge', 1], ['guarantees', 'revision', 1], ['guarantees', 'nextEdge', 0]]) {
     for (const room of required ? [required - 1, required] : [0]) {
-      const model = new FacetyModel({ genesis: ['a', 'b'] });
+      const model = new FacetyModel({ genesis: ['a', 'b'], policy: { invitationFreezeHours: 0 } });
       guarantee(model, 'b', 'a');
       identify(model, 'b');
       const own = identify(model, 'a');
@@ -488,4 +490,27 @@ test('spend and conversion maturity are policies; the owner proposal uses one da
   model.advanceTo(3 * DAY);
   model.convertToCollector('b', other);
   assert.throws(() => policyFrom({ spendMaturityHours: -1 }), RangeError);
+});
+
+test('selected defaults: one-day spend, conversion and invitation windows, XP revoked on link break, active Council', () => {
+  const policy = policyFrom();
+  assert.equal(policy.spendMaturityHours, DAY);
+  assert.equal(policy.conversionMaturityHours, DAY);
+  assert.equal(policy.invitationFreezeHours, DAY);
+  assert.equal(policy.linkBreakXp, 'revoke');
+  assert.equal(policy.councilEligibility, 'active');
+  assert.equal(policy.debtRecovery, 'reserve-until-mature');
+});
+
+test('the same media content cannot be registered twice, and transfers carry a public memo', () => {
+  const model = fixture();
+  model.registerArtifact('a', { contentHash: 'sha256:photo' });
+  assert.throws(() => model.registerArtifact('b', { contentHash: 'sha256:photo' }), /duplicate media/);
+  model.registerArtifact('b', { contentHash: 'sha256:other' });
+  const act = identify(model, 'a');
+  model.advanceTo(7 * DAY);
+  model.convertToCollector('a', act);
+  model.transferFacy('a', 'b', 1, 'challenge-reward');
+  assert.equal(model.events().at(-1).memo, 'challenge-reward');
+  assert.throws(() => model.transferFacy('b', 'a', 1, ''), TypeError);
 });

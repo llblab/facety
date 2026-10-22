@@ -2,6 +2,7 @@
 export const COHORTS = Object.freeze(['honest', 'attackers']);
 export const DEFAULT_WEIGHTS = Object.freeze({
   selfId: 1,
+  fakeSelfId: 1,
   fabricateIdentity: 1,
   recruitHuman: 1,
   invite: 1,
@@ -13,6 +14,7 @@ export const DEFAULT_WEIGHTS = Object.freeze({
   challenge: 1,
   verify: 1,
   bribe: 1,
+  cashout: 1,
   convert: 1,
 });
 

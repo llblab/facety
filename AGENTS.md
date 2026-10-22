@@ -5,7 +5,8 @@ Canonical open work: BACKLOG.md
 ## Durable boundaries
 
 - This is a Node.js 22+ research simulator using ESM `.mjs` modules and native `node:test`; it has no third-party dependencies or build step.
-- [The proposed protocol](docs/facety.protocol.en.md) is design input, not a shipped-runtime contract. Do not silently choose rules for its OPEN items: name every simulation assumption in [the model contract](docs/simulator.en.md) and in experiment output.
+- [The protocol](docs/facety.protocol.en.md) is a living specification maintained here, not a shipped-runtime contract and not a numbered edition. Record every owner decision in it with its label and date, add it to Appendix A, and update the [insight register](docs/insights.en.md). Simulator defaults follow SELECTED rules; the [coverage table](docs/simulator.en.md#protocol-coverage) maps each rule to its mechanic. Do not silently choose rules for OPEN items: name every simulation assumption in [the model contract](docs/simulator.en.md) and in experiment output.
+- Keep every insight: a finding goes into the insight register with its evidence level (confirmed, exploratory, diagnostic) and source study, and the backlog keeps its follow-up.
 - Keep evaluator ground truth (attacker ownership, genuine/false identity labels) outside protocol state. Defense algorithms may consume declared observations, never omniscient labels.
 - A membership path certifies reachability in a supplied canonical graph, not unique personhood. Keep invitation lineage, guarantees and identity judgments distinct.
 - Report attack probabilities only conditional on scenario, policy, horizon, seed sampling and success criterion. Include uncertainty and real recovered costs; debt is not a token burn.

@@ -43,7 +43,8 @@ test('honest growth creates no false subjects; Sybil subjects do not create free
   assert.equal(sybil.population.humanOperators, 3);
   assert.equal(sybil.population.falseSubjects, sybil.population.finalSubjects - 3);
   assert.equal(sybil.outcome.success, true);
-  assert.ok(sybil.outcome.firstSuccess.atHour >= 11 * DAY);
+  // One-day spend maturity, one-day invitation freeze, next-day first act, one-day conversion.
+  assert.ok(sybil.outcome.firstSuccess.atHour >= 4 * DAY);
   assert.ok(sybil.outcome.firstSuccess.attackerEffort < sybil.effort.cohorts.attackers.effort);
 });
 

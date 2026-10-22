@@ -2,6 +2,23 @@
 
 ## Unreleased
 
+- **Protocol is now a living specification** with a dated decision log (Appendix A). It records the owner decisions of 2026-10-22:
+  - one-day emission and invitation windows;
+  - invitation freeze with guarantor cancellation;
+  - terminal XP to subject and guarantors;
+  - a Council of active subjects;
+  - veto-preserving debt repayment;
+  - no mandatory media type and no media reuse.
+
+  It also records directions: the chain-cut sanction and liability wave, XP following the relation, the Chekharda stake ladder, acquaintance-based trust, detection channels, the public accountable market and the distribution thesis. Model findings are linked in a new insight register (`docs/insights.en.md`).
+- **Simulator defaults now follow the selected rules:** spend, conversion and invitation freeze all 24 h; `linkBreakXp: "revoke"`. Dispute defaults are chain fines, inviter-chain liability and a 1 FACY stake. The incentive fixtures pin the superseded 3/7-day timing (`LEGACY_FIXTURE_TIMING`), and timing-specific model tests pin it explicitly.
+- **Added mechanics:**
+  - Chekharda stake ladder (`disputes.procedure: "chekharda"`) with signals, an XP-risk entry rule, coalition backing, a reputation prior and Council intervention depth;
+  - money-flow tracing (`activity.attackers.cashout`, `social.flowTracing`, `social.honestTransferRate`, transfer memos);
+  - attention feedback on challengers;
+  - priced fabricated Self-IDs (`fakeSelfId`);
+  - duplicate-media rejection (`contentHash`).
+- **Finding (diagnostic):** a ladder settled by the last unopposed side reaches only 0.2–0.4 verdict accuracy, because a disposable high-XP fake defender ends disputes. Early Council intervention (depth 2–4) restores 0.83–0.89, or 1.0 without coalition harassment.
 - Added a cancellable invitation freeze (`invitationFreezeHours`, `cancelInvitation`), guardian review of frozen invitations (`activity.honest.review`), optional exit from the relation (`social.exitOnFraud`) and XP revocation on link break (`linkBreakXp: "revoke"`). Spend and conversion maturity are now policies (`spendMaturityHours` 72, `conversionMaturityHours` 168 by default). All defaults are bit-identical.
 - Exploratory results in `studies/2026-10-22-social-trust-threshold`:
   - a reviewable freeze turns the inviter-chain liability wave from counterproductive (honest passivity, fraud +190) into nearly deterring (fraud +3 to +12, honest retention about 0.85);

@@ -29,6 +29,8 @@ console.log(measured.comparisons);
 
 The scripts are deterministic. Repeating them tests replay, not a statistical sample or independent corroboration.
 
+**Timing note:** the fixture and its measured tables use the superseded 3/7-day schedule (`LEGACY_FIXTURE_TIMING`: spend 72 h, conversion 168 h, no invitation freeze, XP kept on link break). They remain valid as recorded measurements under that schedule. Porting the fixture to the selected one-day windows is a backlog item.
+
 ## Common prefix and alternatives
 
 Each branch starts with independent fresh model instances and replays exactly the same prefix:

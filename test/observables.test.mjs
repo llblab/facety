@@ -85,7 +85,7 @@ test('zero effective XP is undefined concentration, distinct from equal positive
 });
 
 test('new genuine descendants can lack a guarantee path without becoming false identities', () => {
-  const model = new FacetyModel({ genesis: ['a', 'b'], policy: { guarantorEligibility: 'accepted' } });
+  const model = new FacetyModel({ genesis: ['a', 'b'], policy: { guarantorEligibility: 'accepted', invitationFreezeHours: 0 } });
   const truth = labels(['a', 'b']);
   guarantee(model, 'a', 'b');
   const act = model.createSelfId('b', model.registerArtifact('b'));

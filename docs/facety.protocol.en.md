@@ -1,11 +1,11 @@
 ---
 title: "Facety — Manifesto and Protocol Specification"
 subtitle: "Human identity, social responsibility, procedural authority, and the economic growth of Atmo"
-version: "3.0 — consolidated design draft"
-date: "2026-10-21"
+version: "living specification (maintained in the facety repository; history in git and Appendix A)"
+date: "2026-10-22"
 language: "English"
 status: "Proposed protocol; not a claim of a shipped implementation or proven Sybil resistance"
-source_basis: "Facety Protocol Knowledge and Design Rules, Revision 2, plus subsequent design decisions"
+source_basis: "Protocol owner decisions recorded in this repository, checked against the Facety simulator (docs/insights.en.md)"
 ---
 
 # Facety: Manifesto and Protocol Specification
@@ -16,7 +16,9 @@ source_basis: "Facety Protocol Knowledge and Design Rules, Revision 2, plus subs
 
 This document is both a **manifesto** and a **technical design specification**. The manifesto explains the purpose and incentives. The specification defines the intended mechanisms and identifies the rules that still need exact parameters.
 
-The document consolidates the earlier *Facety: Protocol Knowledge and Design Rules — Revision 2* with later design decisions. **Later explicit decisions take precedence over earlier text.** In particular, the former 28-day restriction on an individual Self-ID reward has been replaced by the **3-day network-use / 7-day Collector-conversion model**. The **28-day period remains** the window for counting active subjects.
+This is a **living specification**. It is maintained together with the Facety simulator in one repository; there are no numbered editions. Git history and [Appendix A](#appendix-a--decision-log-and-supersession-ledger) record what changed and when. **Later explicit decisions take precedence over earlier text.** The [simulator contract](simulator.en.md#protocol-coverage) maps each implemented mechanic to its section here, and research findings are kept in the [insight register](insights.en.md).
+
+The current time model uses **one-day windows**: a Self-ID emission is contestable for 24 hours before it can be spent or withdrawn, and an invitation is contestable for 24 hours before it can be applied. The **28-day period remains** the window for counting active subjects.
 
 Use the following labels:
 
@@ -25,6 +27,7 @@ Use the following labels:
 - **[REFERENCE]** — A proposed implementation that can realize the selected behavior. It is not yet a selected requirement.
 - **[OPEN]** — A choice that the protocol must settle before production.
 - **[HYPOTHESIS]** — An economic or social prediction that needs simulation or evidence.
+- **[MODEL FINDING]** — A result of the Facety simulator under declared assumptions, with a link to its study. It informs design; it is not real-world evidence and does not by itself select a rule.
 
 **MUST** describes an intended protocol invariant. It does not claim that the existing DEOS runtime implements the rule. This text follows many principles of Simplified Technical English: defined terms, direct sentences, and explicit conditions. It has **not** passed a formal ASD-STE100 vocabulary audit.
 
@@ -39,22 +42,22 @@ Use the following labels:
 - [Part VII — Reference Implementation Contracts](#part-vii--reference-implementation-contracts): state records, example transitions, and protocol invariants.
 - [Part VIII — Threat Model, Research, and Delivery](#part-viii--threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
 - [Part IX — Condensed Protocol Constitution](#part-ix--condensed-protocol-constitution): the rules and final thesis.
-- [Appendix A — Supersession ledger](#appendix-a--supersession-ledger): decisions that replace earlier drafts.
+- [Appendix A — Decision log and supersession ledger](#appendix-a--decision-log-and-supersession-ledger): dated decisions and what they replaced.
 - [Appendix B — Sources and confidence](#appendix-b--sources-and-confidence): scope and evidence limits.
 
 ## Protocol at a glance
 
 | Event | Human and economic rule |
 | --- | --- |
-| Self-ID | One signed identity assertion tied to one artifact and one deterministic face index. A valid act creates a one-unit FACY emission right and XP credits. |
-| First 3 days | The holder cannot use the emission. An authorized guarantor may cancel its Self-ID for free while the emission exists. |
-| From day 3 | The owner can use the unspent Emitter right for permitted invitation or guarantee operations, not ordinary market transfer. |
-| From day 7 | The owner can convert an unspent Emitter right to fungible FACY on the Collector. An unconverted right remains cancellable. |
-| Invitation | Burn one personally earned eligible emission; the creator also needs `decimal_digits(N28)` eligible guarantors. |
+| Self-ID | One signed identity assertion tied to one artifact and one deterministic face index. It proves control of the subject key and claims fresh presence. A valid act creates a one-unit FACY emission right; when the right is spent or withdrawn without cancellation, the subject and each of its guarantors gain 1 XP. |
+| First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel the Self-ID for free while the emission exists. |
+| From 24 hours | The owner can spend the unspent right on an invitation or convert it to fungible FACY on the Collector. An unspent right remains cancellable. |
+| Invitation | Burn one personally earned eligible emission; the creator also needs `decimal_digits(N28)` eligible guarantors. The invitation stays frozen for 24 hours, during which the creator's guarantors can cancel it. |
+| Liability | A proven false identity voids its whole Self-ID chain. Its inviter, its guarantors and the inviter's guarantors who stayed linked each owe one coin per voided act. Guarantors escape by cancelling the frozen invitation or leaving the relation in time. |
 | Guarantee | Both subjects must authorize the directed responsibility link. Either can end it under a separate 1 FACY fee rule. |
-| Dispute | Eligible challenger XP exceeds transaction-owner XP; later positions in Chekharda strictly increase XP and monetary stakes. |
+| Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
 | XP penalty | A liable loss can halve effective XP; monetary penalties can create collectible debt. |
-| Council | Top 101 effective-XP subjects each have one vote; they may choose to intervene in any dispute. |
+| Council | Top 101 effective-XP subjects **among those active in the last 28 days** each have one vote; they may choose to intervene in any dispute. |
 | Atmo | Bucket D activates under policy, releases capital to Treasury D, and can buy and burn FACY under bounded rules. |
 
 ---
@@ -98,12 +101,16 @@ Facety deliberately combines different time scales:
 
 - **24 hours:** the minimum interval between rewarded Self-ID acts by the same subject.
 - **24 hours:** the allowed period to reference a newly registered shared artifact, measured from its on-chain registration time.
-- **3 days:** the earliest time at which an unspent Self-ID emission can be used for network-building operations.
-- **7 days:** the earliest time at which an unspent Self-ID emission can become freely transferable FACY on the Collector.
-- **28 days:** the rolling window used to count active subjects for the dynamic invitation threshold.
+- **24 hours:** the contest window of a Self-ID emission. Afterwards an unspent emission can be spent on an invitation or converted to Collector FACY.
+- **24 hours:** the freeze of a new invitation, during which the creator's guarantors can cancel it before the invitee is admitted.
+- **28 days:** the rolling window used to count active subjects for the dynamic invitation threshold and for Council eligibility.
 - **Months and years:** the accumulation of XP, social ties, public decisions, and responsibility.
 
 These periods serve different functions. They MUST NOT be conflated.
+
+**[SELECTED, 2026-10-22]** All contest windows are one day. A day is an understandable unit, long delays discourage people, and one day still gives guarantors time to stop a violating transaction. Two separate days apply: one to contest the emission (the Self-ID transaction that earns the coin) and one to contest its spending (the invitation transaction).
+
+**[MODEL FINDING]** With one-day windows the simulated system stayed viable: fraud earned no premium over honest play, and honest people kept most of their fraud-free value. Fast payouts make an unchecked farm grow quickly, so vigilance pays. One-day windows assume that guarantors look at their people's new activity daily, for example through notifications. See the [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md), section 6.
 
 ## 4. Reputation is valuable because it can be lost
 
@@ -181,6 +188,12 @@ Facety aims to create conditions in which:
 
 **Facety's ultimate ambition is an open, self-expanding, self-policing network of human identity claims.** The ambition requires a mechanism that survives adversarial incentives. The existence of public rules alone does not establish that outcome.
 
+**[DIRECTION] A public, accountable market.** Anonymous cryptocurrencies hide who is connected to whom. Facety deliberately does the opposite, without zero-knowledge layers. Identity acts, guarantees, invitations, money flows and disputes are public, and the chain remembers them. This transparency is the defense: graph analysis, lineage tracing and flow tracing work only because everything is visible, and a guarantee bought from a real person stays on record as that person's liability. It is also a risk. Public faces, social graphs and money flows together can enable harassment, coercion of guarantors and targeting of visible wealth (see [§39](#39-public-evidence-and-personal-safety)). Design work must decide what must be public for accountability and what can stay private.
+
+**[DIRECTION] Who earns what.** Facety is a distribution mechanism for emission that rewards the network effect. An ordinary participant earns a modest, steady income from daily presence. People who invest effort over a long time — guaranteeing, inviting, checking and resolving disputes — accumulate XP and receive large returns from the network. The design goal is that the most committed rule-followers hold the most XP.
+
+**[MODEL FINDING]** In the simulator, fraud does not earn more than playing by the rules whenever the network is viable. The coalition is indifferent between fraud and honest participation, so any fraud that remains earns no premium, and honest people pay a policing cost. See the [insight register](insights.en.md).
+
 ---
 
 # Part II — System and Data Model
@@ -214,7 +227,7 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Emitter** — The one-time emission-right state associated with a Self-ID. It defines whether the related FACY is restricted, available for network use, disputed, cancelled, consumed, or converted.
 
-**Collector** — The ordinary fungible FACY balance or destination to which an eligible Emitter emission can be converted after seven days. The term is a protocol role, not necessarily a separate token or chain.
+**Collector** — The ordinary fungible FACY balance or destination to which an eligible Emitter emission can be converted after 24 hours. The term is a protocol role, not necessarily a separate token or chain.
 
 **Guarantor** — A subject that explicitly accepts responsibility for another subject's identity under an established guarantee relation.
 
@@ -310,6 +323,16 @@ An ordinary Self-ID contains three mandatory assertions and one conditional righ
 The design permits self-images, group images, short videos, stereo data, light-field captures, and NeRF-like artifacts. The standard economic reward does not increase with media complexity.
 
 Each media class needs a deterministic method for addressing a person's image. A camera format is not itself a human-uniqueness proof. Liveness, provenance, edited imagery, synthetic media, and accessibility remain part of the verification and dispute model.
+
+### 14.4 Media diversity and reuse
+
+**[SELECTED, 2026-10-22]** A Self-ID proves control of the subject key (the signature) and claims fresh presence (the media). A group Self-ID is additionally a public act of co-presence.
+
+- **No mandatory media type.** Participants choose the format. Group photos should be used whenever an occasion exists, such as holidays and meetings.
+- **The same media cannot be reused.** A registered content hash may not be registered again, and a perceptual near-duplicate is a reason to dispute. This is cheap to check.
+- **[DIRECTION]** Optional varied formats (text, short video, group media) and small challenges derived from public randomness at the time of the act (for example, words to say or a code to show) can strengthen freshness without forcing a format. They raise the daily cost of fabricating a fake.
+
+**[MODEL FINDING]** The daily cost of producing fresh, non-duplicate fabricated media for every fake identity is a primary economic barrier against farms. The simulator prices it separately (`fakeSelfId`).
 
 ## 15. Deterministic face references
 
@@ -415,31 +438,32 @@ Valid guarantor cancellation:
     burn its 1 FACY from the Emitter vault
     Self-ID.emission = Cancelled
 
-Invite creation after day 3:
+Invite creation after 24 hours:
     burn its 1 FACY from the Emitter vault
     Self-ID.emission = UsedForInvitation
 
-Collector conversion after day 7:
+Collector conversion after 24 hours:
     transfer its 1 FACY from the Emitter vault to Collector
     Self-ID.emission = Converted
 ```
 
-A guarantee commitment is also a permitted network operation after day 3. **[OPEN]** Whether it consumes, holds, or releases its source emission must be specified. Do not silently treat all guarantee commitments as burns.
+A guarantee commitment is also a permitted network operation after 24 hours. **[OPEN]** Whether it consumes, holds, or releases its source emission must be specified. Do not silently treat all guarantee commitments as burns.
 
-### 17.3 The 3-day / 7-day schedule
+### 17.3 The one-day schedule
 
-**[SELECTED]** Let `age = chain_time - SelfId.recorded_at`.
+**[SELECTED, 2026-10-22]** Let `age = chain_time - SelfId.recorded_at`. This replaces the earlier 3-day / 7-day schedule.
 
 | Age | Ordinary transfer | Network use from Emitter | Free guarantor cancellation |
 | --- | --- | --- | --- |
-| `0 <= age < 3 days` | No | No | Yes, while unspent and cancellable. |
-| `3 days <= age < 7 days` | No | Invitation and defined guarantee operations only. | Yes, while the emission still exists and is not consumed. |
-| `age >= 7 days` | Yes, by first converting the unspent emission to Collector. | Still allowed if the emission is unspent and the operation is eligible. | **Yes, even after day 7**, while the emission remains unspent on Emitter. |
+| `0 <= age < 24 hours` | No | No | Yes, while unspent. |
+| `age >= 24 hours` | Yes, by first converting the unspent emission to Collector. | Invitation and defined guarantee operations. | **Yes**, while the emission remains unspent on Emitter. |
 | After consumption or Collector conversion | The particular emission is no longer on Emitter. | Cannot spend that emission again. | Cannot cancel that original emission through the free Emitter-veto mechanism. |
 
-The third and seventh days do **not** make an automatic transfer. The holder chooses an authorized operation. A participant can leave an unspent emission on Emitter after day 7. A guarantor can still cancel it while it remains there.
+Reaching 24 hours does **not** make an automatic transfer. The holder chooses an authorized operation. A participant can leave an unspent emission on Emitter, and a guarantor can still cancel it while it remains there.
 
-**[SELECTED]** After day 3, *network use* is a special, constrained Emitter operation. It is not ordinary spending and cannot be used for an arbitrary transfer or market sale. The FACY unit enters normal fungible circulation only by an authorized Collector conversion after day 7.
+**[SELECTED]** *Network use* is a special, constrained Emitter operation. It is not ordinary spending and cannot be used for an arbitrary transfer or market sale. The FACY unit enters normal fungible circulation only by an authorized Collector conversion.
+
+**[SELECTED, 2026-10-22] Debt recovery keeps the veto window.** For a subject with debt, a new Self-ID right is reserved for repayment. It stays cancellable during its 24-hour window and then burns to repay one unit of debt. Burning it immediately would deny guarantors their veto and make a debtor's XP final sooner than anyone else's.
 
 **[SELECTED]** Once an emission is lawfully consumed for an invitation or an irrevocable guarantee operation, or converted to Collector, its original free cancellation window ends. A later dispute against misconduct remains possible under its own rules. It must not retroactively burn a token that no longer exists on Emitter.
 
@@ -461,7 +485,7 @@ A freeze MUST preserve the original emission disposition and history. It is a pr
 
 Guarantors receive XP, not an automatic FACY mint, for that act.
 
-**[OPEN]** The exact timing of XP availability is not yet final. A Self-ID can be cancelled while its Emitter emission is unspent, including after day 7. Therefore, XP accounting MUST handle cancellation without leaving unjustified procedural power. A separate provisional-XP state is one candidate, not a selected rule.
+**[SELECTED, 2026-10-22]** XP is credited at the terminal disposition, not at acceptance. When the emission is spent (invitation, debt repayment) or withdrawn to Collector without having been cancelled, the subject gains 1 XP and **each guarantor that was eligible when the Self-ID was recorded** gains 1 XP. A cancelled Self-ID credits no XP. XP is therefore never earned by an act that could still be vetoed.
 
 ### 17.6 Emission finality is not immunity
 
@@ -469,7 +493,7 @@ Cancellation, conversion, and subsequent punishment are different operations:
 
 - **Preventive cancellation** invalidates an unspent Self-ID emission and burns the associated Emitter FACY under the minted-escrow representation.
 - **Collector conversion** makes the economic unit transferable and ends this preventive cancellation route.
-- **Network use** can irreversibly consume the emission before day 7 under selected rules.
+- **Network use** irreversibly consumes the emission instead of converting it.
 - **Later dispute** can still establish an identity violation and apply defined financial and XP penalties. It cannot simply pretend that a spent emission remained available to burn.
 
 The system MUST record a terminal emission disposition exactly once.
@@ -487,7 +511,7 @@ The creator MUST:
 
 1. Have a valid Facety subject with the right to create invitations.
 2. Have the required dynamic number of valid guarantors.
-3. Control **one unspent Self-ID emission earned by that subject**, aged at least three days.
+3. Control **one unspent Self-ID emission earned by that subject**, aged at least 24 hours.
 4. Burn the **1 FACY** corresponding to that emission as part of creating the invitation.
 5. Record an invitation that can be traced to the creator and its authorization.
 
@@ -528,10 +552,11 @@ An invitation destroys one **existing** personally earned FACY unit under the mi
 
 ```text
 own Self-ID -> Emitter emission
-    -> at least 3 days
+    -> at least 24 hours
     -> dynamic-guarantor check
     -> burn 1 personally earned FACY
-    -> invitation recorded
+    -> invitation recorded and frozen for 24 hours
+    -> invitee admitted unless a guarantor of the creator cancelled it
 ```
 
 The creator cannot sell the right on the market and later buy it back. Selling ordinary FACY can provide personal liquidity; keeping an Emitter emission makes it available for direct network expansion.
@@ -543,6 +568,12 @@ The creator cannot sell the right on the market and later buy it back. Selling o
 An invitation must retain its creator, timestamp, intended scope, and later use. The creator's responsibility does not disappear if the invite reaches an undesirable subject.
 
 **[OPEN]** Target binding, invite expiration, acceptance, whether an invitation can be transferred, and remedies for traded or coerced invitations need explicit definitions. The protocol must not accidentally turn personally earned invite rights into freely tradable bearer coupons.
+
+### 18.5 Invitation freeze
+
+**[SELECTED, 2026-10-22]** A new invitation is frozen for 24 hours before the invitee can be admitted. During the freeze, any current guarantor of the creator can cancel it. The burned emission stays burned, and any XP credited by its consumption is revoked. The freeze is what makes guarantors responsible for whom their people invite: a guarantor who sees invitations going to people who do not look real is expected to cancel them and, if needed, leave the relation.
+
+**[MODEL FINDING]** Liability for an inviter's guarantors helps only if they can see and cancel the invitation. Without a freeze, the simulated honest community preferred not to expose fakes, because exposure fined honest friends of a real cheater. With a reviewable freeze, the fraud premium fell from about 190 to single digits. See the [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md), sections 4–5.
 
 ## 19. Two-sided guarantee establishment
 
@@ -565,7 +596,7 @@ A guarantee makes a specific claim: A accepts the defined responsibility for B's
 
 ### 19.2 Payment or commitment
 
-**[SELECTED]** An eligible Self-ID emission can be used for a defined network-building guarantee operation after it reaches three days of age. Such use is different from arbitrary FACY spending.
+**[SELECTED]** An eligible Self-ID emission can be used for a defined network-building guarantee operation after it reaches 24 hours of age. Such use is different from arbitrary FACY spending.
 
 **[OPEN]** The amount required from each party, whether the value is burned, transferred as a fee, reserved as liability backing, or temporarily committed, and the return rules for unmatched proposals remain undecided.
 
@@ -585,6 +616,12 @@ No design should assume that a guarantee automatically burns 1 FACY. The confirm
 This is a **fee**. It is not automatically a burn. Its payer, recipient or destination, permitted source balance, and treatment of debt are **[OPEN]**.
 
 An abusive guarantor may repeatedly cancel otherwise valid Self-ID records. The guaranteed subject can decide to end that relation. A guarantor can also withdraw from an unsustainable responsibility relation.
+
+**[DIRECTION, 2026-10-22] XP follows the relation.** A guarantor that ends a relation loses the XP it earned through that person. Rights recorded while the relation existed no longer credit the departed guarantor. It is wrong to keep counting XP from someone one no longer vouches for.
+
+**[DIRECTION] Exit as a duty.** If a guarantee's subject starts behaving suspiciously, for example by inviting people who do not look real, the rational and expected reaction is to cancel those invitations and break the relation as soon as possible. Liability for later sanctions follows the relations that still exist when the violation is adjudicated.
+
+**[MODEL FINDING]** Leaving escapes liability but also removes a watcher. With weak detection, early exits let the coalition's later invitations go unreviewed.
 
 The free cancellation of a particular Self-ID and the paid termination of an established guarantee are separate operations. Terminating the link must not retroactively erase its previous existence, public decisions, or established liability history.
 
@@ -620,6 +657,12 @@ The guardian can correct a mistake without necessarily destroying a valid identi
 
 The intended incentive is that responsible participants teach one another to comply with the rules, rather than wait for a preventable violation to become an expensive dispute.
 
+### 20.4 How trust forms
+
+**[DIRECTION, 2026-10-22]** People do not vouch for anyone at random. Liability makes guarantees expensive, so a guarantee is given first to people one has known for a long time, and then to friends of friends. A request for a guarantee from a stranger is treated like spam: blocked by default. One may still vouch for someone one knows even if that person does not yet know the guarantor. Trust therefore flows through existing social clusters, and an honest network is a dense web of acquaintances.
+
+**[MODEL FINDING]** Acquaintance-only guaranteeing, followed by a call or meeting before any veto or challenge, nearly eliminated wrongful invalidations. It also made paying honest strangers to vouch for fakes unprofitable, because the bribed guarantor carries the liability. See the [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md).
+
 ## 21. Fraud classes and proof chains
 
 **[SELECTED]** Serious identity offenses include:
@@ -639,6 +682,18 @@ A correct decision needs evidence of the underlying violation and a separate rea
 **[DIRECTION]** Monetary sanctions can depend on the affected proof-chain length and can reach the transaction creator and its accountable guarantors. The exact chain-length function, maximum liability, responsibility scope, and allocation of a penalty are **[OPEN]**.
 
 Responsibility must be recorded and verifiable. A claim that every connected subject is guilty is not an acceptable substitute for a liability rule.
+
+### 21.1 Chain-cut sanction
+
+**[DIRECTION, 2026-10-22]** A subject's Self-ID acts form a personal chain of confirmations, a small private ledger in which confirmations take the place of blocks. The goal is a chain made only of valid confirmations.
+
+- If a dispute proves that step X was invalid and N steps followed it, the chain is cut from step X. The coins created illegitimately by those N steps are removed from the system, and the XP they credited is revoked from the subject and its guarantors.
+- As a sanction, each liable party also pays N coins. The penalty spreads outward like a wave and grows with how deeply the violation is embedded in the chain.
+- If the violation starts at the invitation (the subject never was a real, unique person), N is the number of acts the false subject performed. The fine falls on the inviter, who spent an invitation on a non-existent person, and on the inviter's guarantors, who vouched for a person registering fake people and did not cancel the frozen invitation. The false subject's own guarantors are liable as well.
+
+Converted coins cannot be un-minted; recovering them is part of the fine. **[OPEN]** Caps, collection order from recoverable assets, partial cuts for real persons with an isolated invalid act, and treatment of guarantors who left before the violation was proven.
+
+**[MODEL FINDING]** Sanction size is the decisive deterrence lever. A fixed fine of 5 let fraud pay, while chain-proportional fines (or a fine of 10) made the simulated network viable. See the [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md), sections 3–4.
 
 ## 22. Disconnected cones and historical trust
 
@@ -774,7 +829,34 @@ The intended rule is that a false or unsupported position exposes a participant 
 
 **[DIRECTION]** Winning participants can receive a defined share of the losing monetary stakes. This creates an opportunity to earn money by doing difficult dispute work, not a passive yield for holding XP.
 
-**[OPEN]** The evidence standard, who decides a conflict if both sides stop participating, stake growth rule, distribution of rewards, treatment of innocent mistakes, and safeguards against fabricated disputes are not final.
+### 26.5 Stake ladder
+
+**[DIRECTION, 2026-10-22]** Each new position stakes a fixed percentage more than the previous one, for example 10–20%. Stakes therefore grow by compound interest: a dispute that starts small puts much more money at risk the higher it climbs.
+
+```text
+stake(k) = stake(k-1) * (1 + g)        g ~ 0.10 .. 0.20
+```
+
+- When the dispute ends, **each winning position receives the stake of the position directly below it**.
+- A winner at position `k` therefore earns `1 / (1 + g)` of its own stake (about 83–91%), and every participant contests exactly one opponent.
+- The lowest winning position, the first challenger, is paid from the sanction on the rule-breaking transaction owner.
+- Losers also lose half their XP.
+
+With a private belief `p` that its side is right, joining at position `k` is worthwhile when
+
+```text
+p * stake(k-1) > (1 - p) * (stake(k) + value_of_half_own_XP)
+```
+
+On money alone this needs only slightly better than even confidence (about 52–55%). The XP at risk makes high-XP participants join only when they are confident, so the bigger a dispute, the more certain its participants. The arrangement resembles a prediction market or an escalating dispute-bond game.
+
+**[OPEN]** What happens to the stake of a losing top position, which has no winner above it (the simulator burns it as an assumption). The finality rule: last unopposed side by timeout, or Council. The base stake, caps and deadlines.
+
+**[MODEL FINDING]** A ladder decided only by the last unopposed side favors the side with the most disposable high-XP identities. Fake identities have nothing to lose, and mutual guarantees inflate their XP. In the simulator, verdict accuracy fell to 0.2–0.4 without Council intervention. Accuracy reached 0.83–0.89 (1.0 without coalition harassment) when the active Council could step in early, at depth 2–4; at depth 6 it came too late. The Council's honest majority and its willingness to intervene early are the anchor of the dispute system. See the [insight register](insights.en.md).
+
+**[HYPOTHESIS, 2026-10-22]** In practice fakes rarely open disputes against honest players. A dispute draws attention to its initiator and invites a counter-dispute, so disputes are mostly opened against suspected fakes, using public statistics. The participants who support a fake are mostly other fakes. A side with real reputation (history, tenure, ties to the honest network) attracts more support than one without it.
+
+**[OPEN]** The evidence standard, treatment of innocent mistakes, and safeguards against fabricated disputes are not final.
 
 A final result must be attributable to a specified procedure. The mere willingness of a wealthy or high-XP participant to join a side does not prove that side true.
 
@@ -784,9 +866,11 @@ A final result must be attributable to a specified procedure. The mere willingne
 
 **[SELECTED]** The **101 highest-effective-XP subjects** form a dynamic Council. Its members appear on the public leaderboard. Each member gets **one vote**. The person with the largest XP does not receive extra Council votes.
 
+**[SELECTED, 2026-10-22]** The leaderboard counts only **active** subjects: those with an uncancelled Self-ID in the preceding 28 days. Inactive members drop out, so the Council turns over with real participation.
+
 Council membership changes as XP changes. A dispute or Council proceeding should use a deterministic membership snapshot to avoid ambiguous mid-vote replacements.
 
-**[OPEN]** How the Council operates when fewer than 101 qualified subjects exist, whether members must be currently active, and tie-breaking at rank 101 require defined rules.
+**[OPEN]** How the Council operates when fewer than 101 qualified subjects exist, and tie-breaking at rank 101 require defined rules.
 
 ### 27.2 Voluntary intervention
 
@@ -1028,8 +1112,8 @@ EmitterRight {
     source_self_id_id
     amount = ONE_FACY
     status: unspent | allocated | consumed | converted | cancelled
-    eligibility_time = recorded_at + 3 days
-    collector_time = recorded_at + 7 days
+    eligibility_time = recorded_at + 24 hours
+    collector_time = recorded_at + 24 hours
     custody_reference
 }
 
@@ -1155,11 +1239,17 @@ create_invitation(creator, source_self_id):
     require qualifying_guarantor_count >= decimal_digits(N28)
     require source_self_id belongs to creator
     require emitter right is unspent and not disputed
-    require emitter right age >= 3 days
+    require emitter right age >= 24 hours
     burn exactly ONE_FACY of eligible emitter backing
     mark source emission UsedForInvitation
-    record accountable invitation
+    record accountable invitation, frozen for 24 hours
     commit all changes atomically
+
+cancel_invitation(guarantor, invitation):
+    require invitation is open and still frozen
+    require guarantor currently guarantees the creator
+    mark invitation Cancelled; the burned emission stays burned
+    revoke the XP credited by consuming the source emission
 ```
 
 ### 36.5 Convert to Collector
@@ -1168,7 +1258,7 @@ create_invitation(creator, source_self_id):
 convert_to_collector(owner, self_id_id):
     require owner is authorized for self_id_id
     require emitter right is unspent and not disputed
-    require emitter right age >= 7 days
+    require emitter right age >= 24 hours
     transfer the ONE_FACY backing to ordinary Collector balance
     mark source emission Converted
     commit once
@@ -1209,11 +1299,11 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 
 10. Each eligible Self-ID produces no more than one standard FACY entitlement.
 11. One emission right has no more than one terminal disposition: cancellation, invitation consumption, defined guarantee disposal, or Collector conversion.
-12. Before three days, an emission cannot be spent by its owner.
-13. From three days onward, only explicitly approved network-building operations can use a still-restricted Emitter emission.
-14. Before seven days, ordinary Collector conversion is forbidden.
-15. From seven days onward, an unspent emission may convert to Collector; conversion is not automatic.
-16. An unspent Emitter emission remains subject to valid guarantor cancellation even after seven days.
+12. Before 24 hours, an emission cannot be spent or converted by its owner.
+13. From 24 hours onward, only explicitly approved network-building operations can use a still-restricted Emitter emission.
+14. An invitation cannot be applied before its 24-hour freeze ends, and a current guarantor of its creator can cancel it during the freeze.
+15. From 24 hours onward, an unspent emission may convert to Collector; conversion is not automatic.
+16. An unspent Emitter emission remains subject to valid guarantor cancellation for as long as it stays unspent.
 17. A consumed or converted emission cannot be cancelled again through the original free Emitter-veto mechanism.
 18. An active dispute freezes its target's still-unspent emission against use or conversion.
 19. FACY bought or received from another subject does not create invitation eligibility.
@@ -1243,7 +1333,7 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 37. An eligible losing and liable participant receives the defined XP penalty at most once per enforceable penalty event; later independent losses can cause another halving.
 38. XP credits and halving events preserve their true chronological meaning.
 39. Council membership snapshots and all vote results are deterministic for each case.
-40. Every eligible Council member has one vote, regardless of XP magnitude.
+40. Every eligible Council member has one vote, regardless of XP magnitude; eligibility requires activity within the last 28 days.
 41. The highest-XP subjects have an intended collective path for apex disputes and are not automatically beyond all review.
 42. The outcome of a dispute must be derived from an explicit timeout, accepted position, or Council procedure, never from an unstated moderator decision.
 
@@ -1307,6 +1397,26 @@ Facety must be evaluated against several adversaries, not only a person who buys
 
 A registered artifact, a high XP score, and many guarantors are **evidence and incentives**, not cryptographic uniqueness proofs.
 
+### 40.1 How fraud surfaces
+
+**[DIRECTION, 2026-10-22]** Detection need not be perfect, because it works through several independent public channels:
+
+- **Media checks:** detectors of generated imagery, duplicate-media checks and the difficulty of producing fresh, varied fake media every day.
+- **Graph analysis:** a large region connected to the rest of the network only through narrow links is a reason to examine it. Statistical analysis can rank the most suspicious nodes.
+- **Lineage tracing:** who invited whom can be followed up to the account that started registering fakes.
+- **Money flows:** fakes must eventually move their coins somewhere useful. Consolidation from many accounts into one is visible on a public chain.
+- **Verification by contact:** suspicion is a reason to find out, not to punish immediately. A call or a meeting settles most cases. A person acting publicly and responsibly can announce such a meeting.
+
+The fact that a dispute can be opened deters fraud, and an actual dispute regulates the network once trust is undermined. The initiator has a material interest in winning and in not losing.
+
+**[MODEL FINDING]** In the simulator:
+
+- graph screening separated fakes from real people with an AUC of about 0.8–0.9 even against camouflage;
+- consolidation hubs pointed almost exclusively at the coalition, until ordinary honest payments diluted the signal;
+- a call or meeting before any veto or challenge was necessary to keep false suspicion from destroying honest income.
+
+Deterrence held only while verdict accuracy was at least about 0.8 and raw false suspicion stayed near 1%, unless a second-stage verification filtered suspicions.
+
 ## 41. Required simulation scenarios
 
 The design needs an agent-based or other explicit incentive simulation before relying on it for expensive treasury support or high-stakes identity disputes.
@@ -1325,7 +1435,7 @@ Compare a wide honest network, a very dense group of mutually guaranteeing genui
 
 ### 41.4 Emitter lifecycle adversaries
 
-Test an honest cancellation before day 3, network-use consumption on day 3, attempted cancellation after consumption, a seven-day conversion, and a still-unspent emission left on Emitter well after day 7. Confirm that only the still-unspent emission can be preventively cancelled.
+Test an honest cancellation inside the first 24 hours, network-use consumption after 24 hours, attempted cancellation after consumption, a conversion after 24 hours, a cancelled frozen invitation, and a still-unspent emission left on Emitter for weeks. Confirm that only the still-unspent emission can be preventively cancelled.
 
 ### 41.5 Duplicate FaceRef and group artifacts
 
@@ -1389,6 +1499,10 @@ expected_attack_gain
 
 The model also needs the utility and opportunity cost of honest observers. Protecting a network is not automatically rational for every participant, even when it benefits the community overall.
 
+### 41.12 Simulation status
+
+The repository's simulator implements the selected rules of this document and the declared assumptions for open ones. The [insight register](insights.en.md) lists every finding with its evidence level and study. Findings labeled confirmed passed a preregistered test on reserved seeds; the others are exploratory maps.
+
 ## 42. Decisions still open before production
 
 The following are gaps in the **protocol**, not discretionary coding choices. An implementer must not insert arbitrary defaults and then present them as Facety doctrine.
@@ -1451,7 +1565,7 @@ The following sequence is **[REFERENCE]**. It aims to prove the smallest complet
 | --- | --- | --- |
 | 1. Framework alignment | Pin current DEOS runtime and SDK contracts. | Existing asset, Router, Actor, treasury and payment behavior are mapped to Facety needs. |
 | 2. Artifact and FaceRef | Hash registration, timestamps, deterministic face indices. | Same canonical artifact produces the same references across supported clients. |
-| 3. Self-ID and Emitter | NFT-like Self-ID plus exactly one emission right. | No double emission; correct 3/7-day restrictions; cancellation while still unspent. |
+| 3. Self-ID and Emitter | NFT-like Self-ID plus exactly one emission right. | No double emission; correct one-day restrictions; cancellation while still unspent. |
 | 4. Group Self-ID | Multiple separate signed claims on one artifact. | Two different subjects can claim different indices; duplicate index conflict is flagged, not rejected. |
 | 5. Guarantees and invitations | Matching authorizations, dynamic threshold, earned FACY burn. | Purchased FACY cannot create invitations; guarantee links need both authorizations. |
 | 6. XP and prevention | Personal and guarantor XP credits; free act cancellation. | Unspent bad act cancels without leaving illicit FACY or unjustified XP. |
@@ -1471,10 +1585,10 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 
 1. **A subject is not a wallet.** An identity survives an authorized key change.
 2. **A Self-ID is a signed, individually addressable claim.** Its media and FaceRef do not automatically prove unique personhood.
-3. **One successful Self-ID can create one individual FACY emission and one personal XP credit.** Qualifying guarantors can also earn XP.
+3. **One successful Self-ID can create one individual FACY emission and one personal XP credit.** Qualifying guarantors also earn XP when the emission is spent or withdrawn without cancellation.
 4. **An Emitter emission is not ordinary liquid FACY.** It has a specific, one-time disposition.
-5. **Three days open network-building operations. Seven days open Collector conversion.** Neither happens automatically.
-6. **An unspent Emitter emission remains cancellable by an authorized guarantor.** Cancellation ends when the emission is used or converted, not merely when its age crosses seven days.
+5. **One day opens both network-building operations and Collector conversion; a new invitation is frozen for one more day.** Neither happens automatically.
+6. **An unspent Emitter emission remains cancellable by an authorized guarantor.** Cancellation ends when the emission is used or converted, not merely when it ages.
 7. **The guarantor can prevent one bad act without automatically revoking a real person's identity.** Responsibility for identity guarantees is separate from responsibility for individual Self-ID acts.
 8. **A real guarantee needs both subjects' authorization.** Either party can end a relation under the fee and graph rules.
 9. **An invitation consumes personally earned FACY and requires a size-dependent number of guarantors.** Market capital cannot directly buy the right to create invites.
@@ -1487,6 +1601,10 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 16. **Facety's credibility is a public good.** Public misconduct by its most respected participants can destroy its legitimacy.
 17. **Bucket D connects Atmo to Facety through an approved, bounded economic policy.** Atmo can buy and burn FACY, but cannot purchase historical XP or define human truth through market spending.
 18. **The test of the design is behavioral.** The protocol succeeds only if honest participation is practical and large, profitable fraud becomes sufficiently difficult under realistic adversarial behavior.
+19. **Vouch for people you know.** Guarantees flow through real acquaintance; requests from strangers are refused by default.
+20. **A proven false identity cuts its whole chain.** Illegitimate coins and XP are removed, and liability spreads to those who stayed responsible for it.
+21. **Everything is public by design.** Transparency is the defense and must be balanced against personal safety.
+22. **Playing by the rules must pay at least as well as fraud.** This is the target condition that the simulator checks.
 
 ## 45. Final thesis
 
@@ -1502,16 +1620,34 @@ That is the proposed foundation of Facety as a protocol for social self-identifi
 
 ---
 
-## Appendix A — Supersession ledger
+## Appendix A — Decision log and supersession ledger
 
-This ledger prevents earlier drafts from being mistaken for the latest decisions.
+This ledger prevents earlier drafts from being mistaken for the latest decisions. Git history holds the exact text changes.
 
-| Earlier description | Consolidated status in this document |
+### Decisions of 2026-10-22
+
+| Decision | Status |
+| --- | --- |
+| One-day windows replace 3-day network use and 7-day Collector conversion. | **[SELECTED]** (§3, §17.3) |
+| New invitations are frozen for 24 hours and cancellable by the creator's guarantors. | **[SELECTED]** (§18.5) |
+| XP is credited at terminal disposition to the subject and its eligible guarantors; cancelled acts credit nothing. | **[SELECTED]** (§17.5) |
+| The Council is the top-101 XP leaderboard among subjects active in the last 28 days. | **[SELECTED]** (§27.1) |
+| Debt repayment keeps the guarantor veto window. | **[SELECTED]** (§17.3) |
+| No mandatory media type; the same media cannot be reused; group media whenever possible. | **[SELECTED]** (§14.4) |
+| Chain-cut sanction with a liability wave to the inviter and its guarantors. | **[DIRECTION]** (§21.1) |
+| XP earned through a relation is revoked when the guarantor leaves it. | **[DIRECTION]** (§19.3) |
+| Chekharda stake ladder: +g per position, each winner takes the stake below. | **[DIRECTION]** (§26.5) |
+| Guarantees flow through acquaintance; strangers are refused by default. | **[DIRECTION]** (§20.4) |
+| Public, accountable market without zero-knowledge layers. | **[DIRECTION]** (§9) |
+
+### Earlier supersessions
+
+| Earlier description | Status |
 | --- | --- |
 | 24-hour Self-ID cooling period from early discussions. | **Superseded** as the principal Emitter lifecycle; 24 hours still limits reward frequency and artifact-reference age. |
-| Revision 2: Emitter restricted for 28 days before free withdrawal. | **Superseded:** Collector conversion at **7 days**. |
-| Revision 2: network operations at 3 days. | **Retained:** only special network-building uses, not ordinary transferable spending. |
-| Revision 2: guarantor cancellation during a fixed 28-day period. | **Superseded:** valid cancellation while the specific Self-ID emission remains **unspent on Emitter**, including after day 7; no cancellation after lawful consumption or conversion. |
+| Emitter restricted for 28 days before free withdrawal. | **Superseded:** first by 7-day conversion, now by **24-hour** conversion. |
+| Network operations at 3 days. | **Superseded:** network operations at **24 hours**; still only special network-building uses, not ordinary transferable spending. |
+| Guarantor cancellation during a fixed 28-day period. | **Superseded:** valid cancellation while the specific Self-ID emission remains **unspent on Emitter**; no cancellation after lawful consumption or conversion. |
 | Self-ID emission described as a generic balance. | **Refined:** each Self-ID is an NFT-like individual act containing a one-time Emitter right; common FACY vault custody remains a reference implementation. |
 | Separate personal media per Self-ID. | **Extended:** multiple subjects may reference one registered artifact within 24 hours and select deterministic indexed faces. |
 | Reject a duplicate face selection automatically. | **Not selected:** both claims are recorded and the collision becomes publicly disputable. |
@@ -1522,7 +1658,7 @@ This ledger prevents earlier drafts from being mistaken for the latest decisions
 
 ## Appendix B — Sources and confidence
 
-The primary sources for this document are the user's Facety design decisions in the conversation and the supplied file *Facety: Protocol Knowledge and Design Rules — Revision 2* (2026-10-21). This document does not claim independent validation of these design rules in a shipped DEOS repository or independent proof of the economic hypotheses.
+The primary source is the protocol owner's design decisions, recorded in this repository together with the simulator that tests them. Earlier design notes are superseded by this text. The document does not claim independent validation of these design rules in a shipped DEOS repository or independent proof of the economic hypotheses. Simulator findings are model results under declared assumptions.
 
 Sections labeled **[REFERENCE]** or **[OPEN]** are deliberately not presented as previously selected protocol rules. Where a newer statement did not fully settle an issue, this text preserves the ambiguity rather than inventing a binding answer.
 

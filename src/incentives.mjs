@@ -6,6 +6,8 @@ import { EffortLedger, effortWeights, DEFAULT_WEIGHTS } from './effort.mjs';
 
 export const INCENTIVE_STRATEGIES = Object.freeze(['wait-collector', 'invite-only', 'invite-and-guarantee']);
 const SCHEDULE = Object.freeze({ decisionDay: 3, newcomerSelfIdDay: 4, collectorDay: 7, horizonDay: 11 });
+// The fixture was measured under the superseded 3/7-day timing, which it pins explicitly.
+export const LEGACY_FIXTURE_TIMING = Object.freeze({ spendMaturityHours: 72, conversionMaturityHours: 168, invitationFreezeHours: 0, linkBreakXp: 'keep' });
 
 function runBranch(strategy, policy) {
   const model = new FacetyModel({ genesis: ['sponsor', 'peer'], policy });
@@ -170,7 +172,7 @@ function checkedAlternative(branch) {
 
 export function readIncentiveComparisons(artifact) {
   if (artifact?.schema !== 'facety-incentive-forks/v1' || artifact.fixture !== 'marginal-admission-v1') throw new Error('unsupported incentive artifact');
-  if (!isDeepStrictEqual(artifact.policy, policyFrom({ xpFinality: artifact.policy?.xpFinality }))
+  if (!isDeepStrictEqual(artifact.policy, policyFrom({ ...LEGACY_FIXTURE_TIMING, xpFinality: artifact.policy?.xpFinality }))
     || !isDeepStrictEqual(artifact.schedule, SCHEDULE)) throw new Error('unsupported incentive policy or schedule');
   if (!Array.isArray(artifact.branches) || artifact.branches.length !== INCENTIVE_STRATEGIES.length
     || new Set(artifact.branches.map(branch => branch.strategy)).size !== artifact.branches.length
@@ -194,7 +196,7 @@ export function readIncentiveComparisons(artifact) {
 export function runIncentiveForks(options = {}) {
   if (!options || typeof options !== 'object' || Array.isArray(options)) throw new TypeError('incentive options must be an object');
   for (const key of Object.keys(options)) if (key !== 'xpFinality') throw new Error('unknown incentive option: ' + key);
-  const policy = policyFrom({ xpFinality: 'terminal', ...options });
+  const policy = policyFrom({ xpFinality: 'terminal', ...options, ...LEGACY_FIXTURE_TIMING });
   const branches = INCENTIVE_STRATEGIES.map(strategy => runBranch(strategy, policy));
   return {
     schema: 'facety-incentive-forks/v1', fixture: 'marginal-admission-v1', policy, schedule: { ...SCHEDULE },

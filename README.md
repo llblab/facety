@@ -1,6 +1,15 @@
 # Facety simulator
 
-A dependency-free Node.js / ESM research workbench for the [proposed Facety protocol](docs/facety.protocol.en.md). It separates protocol state, graph algorithms, cohort strategies and evaluator ground truth. It does not establish real-world Sybil resistance.
+A dependency-free Node.js / ESM research workbench for the [Facety protocol](docs/facety.protocol.en.md). The protocol is a living specification maintained in this repository together with the simulator that tests it. The [insight register](docs/insights.en.md) collects every design decision and research finding. The simulator separates protocol state, graph algorithms, cohort strategies and evaluator ground truth. It does not establish real-world Sybil resistance.
+
+Simulator defaults follow the selected protocol rules:
+
+- one-day windows to contest a Self-ID before spending or withdrawal, and to contest an invitation before it applies;
+- terminal XP for the subject and its guarantors;
+- XP revoked when a guarantor leaves;
+- a Council of active subjects;
+- debt repayment that keeps the veto;
+- chain-proportional sanctions with a liability wave when disputes are enabled.
 
 ## Run
 
