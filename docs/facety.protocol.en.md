@@ -850,7 +850,11 @@ p * stake(k-1) > (1 - p) * (stake(k) + value_of_half_own_XP)
 
 On money alone this needs only slightly better than even confidence (about 52–55%). The XP at risk makes high-XP participants join only when they are confident, so the bigger a dispute, the more certain its participants. The arrangement resembles a prediction market or an escalating dispute-bond game.
 
-**[OPEN]** What happens to the stake of a losing top position, which has no winner above it (the simulator burns it as an assumption). The finality rule: last unopposed side by timeout, or Council. The base stake, caps and deadlines.
+**[SELECTED, 2026-10-22] Finality window.** A dispute runs until **7 days** pass after the last move. Within that time anyone eligible can take the opposite side, and every new entry restarts the 7-day clock. The last unopposed side then wins, unless the Council intervenes. The accused's unspent rights stay frozen meanwhile (§17.4).
+
+**[HYPOTHESIS, 2026-10-22] Fast escalation to senior judgment.** In real disputes participants may join every few minutes, not once a day, and each may have several times the previous entrant's XP, because many people want the last word and the money. A visible dispute therefore climbs quickly to long-standing members with large reputations. They gain nothing by ruling against themselves or against the crowd. Attention grows with a dispute's height (its largest XP relative to the network) and with the number of people it has drawn. Among all who notice, someone will want to take the right side; winning requires presenting evidence.
+
+**[OPEN]** What happens to the stake of a losing top position, which has no winner above it (the simulator burns it as an assumption). The base stake, caps and Council intervention timing.
 
 **[MODEL FINDING]** A ladder decided only by the last unopposed side favors the side with the most disposable high-XP identities. Fake identities have nothing to lose, and mutual guarantees inflate their XP. In the simulator, verdict accuracy fell to 0.2–0.4 without Council intervention. Accuracy reached 0.83–0.89 (1.0 without coalition harassment) when the active Council could step in early, at depth 2–4; at depth 6 it came too late. The Council's honest majority and its willingness to intervene early are the anchor of the dispute system. See the [insight register](insights.en.md).
 
@@ -1604,7 +1608,7 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 19. **Vouch for people you know.** Guarantees flow through real acquaintance; requests from strangers are refused by default.
 20. **A proven false identity cuts its whole chain.** Illegitimate coins and XP are removed, and liability spreads to those who stayed responsible for it.
 21. **Everything is public by design.** Transparency is the defense and must be balanced against personal safety.
-22. **Playing by the rules must pay at least as well as fraud.** This is the target condition that the simulator checks.
+22. **Following the rules must be easy and profitable; breaking them must be hard and very unprofitable.** This holds at every step: identity acts, guarantees, invitations and disputes. The simulator checks it as the condition that fraud earns no premium over rule-following, together with honest welfare.
 
 ## 45. Final thesis
 
@@ -1637,6 +1641,8 @@ This ledger prevents earlier drafts from being mistaken for the latest decisions
 | Chain-cut sanction with a liability wave to the inviter and its guarantors. | **[DIRECTION]** (§21.1) |
 | XP earned through a relation is revoked when the guarantor leaves it. | **[DIRECTION]** (§19.3) |
 | Chekharda stake ladder: +g per position, each winner takes the stake below. | **[DIRECTION]** (§26.5) |
+| A dispute is final 7 days after the last move; every entry restarts the clock. | **[SELECTED]** (§26.5) |
+| Design principle: easy and profitable to follow the rules, hard and very unprofitable to break them. | **[DIRECTION]** (§44) |
 | Guarantees flow through acquaintance; strangers are refused by default. | **[DIRECTION]** (§20.4) |
 | Public, accountable market without zero-knowledge layers. | **[DIRECTION]** (§9) |
 

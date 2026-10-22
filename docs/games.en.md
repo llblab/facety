@@ -34,6 +34,13 @@ Without sanctions, inspection costs effort and earns nothing, so no rational age
 - Each winner takes the stake of the entrant directly below. A losing top entrant's stake is burned (assumption for an OPEN case). Losers lose half their XP.
 - The verdict then applies the ordinary sanctions. Counters: `sanctions.ladderEntries`, `ladderDepth`, `councilInterventions`.
 
+**Timed Chekharda** (`procedure: "chekharda-timed"`, owner rule §26.5):
+
+- A challenge opens a dispute and freezes the accused's unspent rights. It resolves when `disputeWindowHours` (168) pass after the last move, when the Council depth is reached, or at `maxRounds`.
+- Each day, up to `roundsPerDay` positions can be taken. For each position, `noticeBase × N × (1 + height)` distinct subjects notice the dispute, where height is the largest entrant XP over mean network XP. Honest noticers' signal accuracy rises by `evidenceGain × height`.
+- The next position goes to a willing eligible noticer chosen by `entrantChoice`: `lowest`, `highest` (the most senior first) or `random`. Coalition members join to defend with probability `activity.attackers.defend`, and with `social.attentionFeedback` every entrant becomes a screening target.
+- Disputes still open at the horizon are counted as `sanctions.disputesOpen`; mooted ones (the accused removed meanwhile) as `disputesMooted`.
+
 The default `procedure` stays `"one-step"`, with its `accuracy` parameter, so that threshold studies can vary accuracy directly. The ladder derives accuracy instead; see insight F13.
 
 The one-step procedure deliberately abstracts Chekharda to one step: no escalation, Council review, appeal or evidence procedure. All sanctions go through `FacetyModel`. A wrong verdict can invalidate a genuine person, and that harm is counted (`sanctions.wrongfulInvalidated`).

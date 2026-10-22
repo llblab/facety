@@ -98,3 +98,20 @@ test('challengers draw attention and a public reputation prior shapes ladder bel
   const reputed = runExperiment({ ...base, seed: 'reputation', disputes: { enabled: true, procedure: 'chekharda', reputationWeight: 0.8, councilDepth: 3 } });
   assert.ok(reputed.system.sanctions.challenges > 0);
 });
+
+test('timed Chekharda freezes the accused, waits for the window after the last move and supports fast escalation', () => {
+  const timed = { ...base, days: 30, activity: { honest: { inspect: 3, challenge: 1, review: 1 } }, disputes: { enabled: true, procedure: 'chekharda-timed', disputeWindowHours: 48 } };
+  const slow = runExperiment({ ...timed, seed: 'timed' });
+  const fast = runExperiment({ ...timed, seed: 'timed', disputes: { ...timed.disputes, roundsPerDay: 10, entrantChoice: 'highest' } });
+  for (const run of [slow, fast]) {
+    const s = run.system.sanctions;
+    assert.ok(s.challenges > 0);
+    assert.ok(s.disputesResolved + s.disputesMooted + s.disputesOpen <= s.challenges);
+    assert.ok(s.disputesResolved > 0);
+    const ledger = run.metrics.ledger;
+    assert.equal(ledger.supply, ledger.emitterVault + ledger.collector + ledger.feeVault);
+  }
+  assert.throws(() => experimentConfig({ disputes: { entrantChoice: 'loudest' } }), /entrantChoice/);
+  assert.throws(() => experimentConfig({ disputes: { roundsPerDay: 0 } }), RangeError);
+  assert.throws(() => experimentConfig({ activity: { attackers: { defend: 2 } } }), RangeError);
+});

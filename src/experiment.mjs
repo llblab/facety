@@ -14,8 +14,8 @@ export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-car
 export const EXPERIMENT_ABLATIONS = Object.freeze({ ...DEFAULT_ABLATIONS, randomGuaranteeTargets: false });
 export const RANDOMNESS_POLICY = Object.freeze({ generator: RANDOM_GENERATOR, decisions: 'decision-keyed-v1' });
 export const DEFAULT_ACTIVITY = Object.freeze({
-  honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, challenge: 0, review: 0, bribe: 0, cashout: 0, convert: 1 }),
-  attackers: Object.freeze({ selfId: 1, invite: 0.4, guarantee: 2, inspect: 0, respond: 0, challenge: 0, review: 0, bribe: 0, cashout: 0, convert: 1 }),
+  honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, challenge: 0, review: 0, defend: 0, bribe: 0, cashout: 0, convert: 1 }),
+  attackers: Object.freeze({ selfId: 1, invite: 0.4, guarantee: 2, inspect: 0, respond: 0, challenge: 0, review: 0, defend: 1, bribe: 0, cashout: 0, convert: 1 }),
 });
 const DEFAULTS = Object.freeze({
   scenario: 'sybil-cone', seed: 'facety', initialSize: 30, attackerShare: 0.1,
@@ -33,6 +33,12 @@ export const DEFAULT_DISPUTES = Object.freeze({
   // the last unopposed side wins and every winner takes the stake of the entrant directly below.
   procedure: 'one-step', stakeGrowth: 0.2, signalAccuracy: 0.7, closeSignalAccuracy: 0.9, xpValue: 0.05, maxRounds: 60, maxScan: 60,
   councilDepth: 0, reputationWeight: 0,
+  // Timed Chekharda: the last move wins after disputeWindowHours without a counter-entry; attention grows
+  // with the dispute's height (largest entrant XP over mean network XP), and so does available evidence.
+  disputeWindowHours: 168, noticeBase: 0.02, evidenceGain: 0.1, civicValue: 0,
+  // Who takes the next position among willing candidates, and how many entries a timed dispute can
+  // take per day (owner: many entrants a day, XP jumping by multiples toward the most senior people).
+  entrantChoice: 'lowest', roundsPerDay: 1,
 });
 // 'inviter-chain' adds the inviter's own guarantors, who could have cancelled the invitation right.
 export const LIABILITY_POLICIES = Object.freeze(['subject', 'guarantors', 'guarantors-and-inviter', 'inviter-chain']);
@@ -89,7 +95,7 @@ function activityOverrides(overrides) {
     mergeRecord(DEFAULT_ACTIVITY[cohort], partial, cohort + ' activity');
     for (const [action, rate] of Object.entries(partial)) {
       if (!Number.isFinite(rate) || rate < 0 || rate > 100) throw new RangeError('activity must be in [0, 100]');
-      if (['selfId', 'respond', 'challenge', 'review', 'cashout', 'convert'].includes(action)) probability(rate, action);
+      if (['selfId', 'respond', 'challenge', 'review', 'defend', 'cashout', 'convert'].includes(action)) probability(rate, action);
     }
     return [cohort, Object.freeze({ ...partial })];
   })));
@@ -104,7 +110,12 @@ function disputesFrom(overrides) {
   integer(disputes.fine, 'disputes.fine', 0);
   if (!LIABILITY_POLICIES.includes(disputes.liability)) throw new Error('unknown dispute liability policy');
   if (!['fixed', 'chain'].includes(disputes.fineMode)) throw new Error('disputes.fineMode must be fixed or chain');
-  if (!['one-step', 'chekharda'].includes(disputes.procedure)) throw new Error('disputes.procedure must be one-step or chekharda');
+  if (!['one-step', 'chekharda', 'chekharda-timed'].includes(disputes.procedure)) throw new Error('disputes.procedure must be one-step, chekharda or chekharda-timed');
+  integer(disputes.disputeWindowHours, 'disputes.disputeWindowHours', 1, 10000);
+  integer(disputes.roundsPerDay, 'disputes.roundsPerDay', 1, 1000);
+  if (!['lowest', 'highest', 'random'].includes(disputes.entrantChoice)) throw new Error('disputes.entrantChoice must be lowest, highest or random');
+  probability(disputes.noticeBase, 'disputes.noticeBase');
+  for (const key of ['evidenceGain', 'civicValue']) if (!Number.isFinite(disputes[key]) || disputes[key] < 0) throw new RangeError('disputes.' + key + ' must be non-negative');
   for (const key of ['signalAccuracy', 'closeSignalAccuracy']) probability(disputes[key], 'disputes.' + key);
   if (!Number.isFinite(disputes.stakeGrowth) || disputes.stakeGrowth < 0 || disputes.stakeGrowth > 10) throw new RangeError('disputes.stakeGrowth must be in [0, 10]');
   if (!Number.isFinite(disputes.xpValue) || disputes.xpValue < 0) throw new RangeError('disputes.xpValue must be non-negative');
@@ -319,11 +330,13 @@ export function runExperiment(overrides = {}) {
   }
   const genesisOperators = new Set(ids);
   const operatorEffort = new Map();
-  const sanctions = { challenges: 0, upheld: 0, rejected: 0, falseInvalidated: 0, wrongfulInvalidated: 0, excluded: 0, missedFalse: 0, voidedActs: 0, ladderEntries: 0, ladderDepth: 0, councilInterventions: 0 };
+  const sanctions = { challenges: 0, upheld: 0, rejected: 0, falseInvalidated: 0, wrongfulInvalidated: 0, excluded: 0, missedFalse: 0, voidedActs: 0, ladderEntries: 0, ladderDepth: 0, councilInterventions: 0, disputesResolved: 0, disputesMooted: 0, disputesOpen: 0, disputeNotices: 0 };
   const trustWork = { strangerRefusals: 0, verificationsCleared: 0, followUps: 0, bribesOffered: 0, bribesAccepted: 0, invitationsCancelled: 0, guardianExits: 0, cashouts: 0, flowFlagged: 0, flowFlaggedCoalition: 0 };
   const bribes = new Map();
   // Subjects who opened a challenge draw public attention to themselves (attentionFeedback).
   const attention = new Set();
+  const openDisputes = [];
+  let disputeSequence = 0;
   // Undirected social neighborhood over guarantees and invitation lineage.
   function neighborhood(id, hops) {
     const seenIds = new Set([id]);
@@ -565,8 +578,9 @@ export function runExperiment(overrides = {}) {
     const result = attempt(challenger, 'challenge', () => {
       if (model.subject(subject).identityStatus !== 'accepted') throw new ProtocolRejection('challenge target is not accepted');
       if (model.subject(challenger).liquidFacy < rules.stake) throw new ProtocolRejection('insufficient challenge stake');
+      if (openDisputes.some(dispute => dispute.subject === subject)) throw new ProtocolRejection('subject is already under dispute');
       const genuine = truth.get(subject).genuine;
-      if (rules.procedure === 'chekharda') return { genuine, upheld: null };
+      if (rules.procedure !== 'one-step') return { genuine, upheld: null };
       const correct = sensing.fork(JSON.stringify(['verdict', model.now, challenger, subject])).chance(rules.accuracy);
       return { genuine, upheld: genuine ? !correct : correct };
     });
@@ -574,11 +588,20 @@ export function runExperiment(overrides = {}) {
     sanctions.challenges++;
     if (config.social.attentionFeedback) attention.add(challenger);
     const { genuine } = result.value;
+    if (rules.procedure === 'chekharda-timed') {
+      openTimedDispute(challenger, subject, genuine);
+      return;
+    }
     const upheld = rules.procedure === 'chekharda' ? ladder(challenger, subject, genuine) : result.value.upheld;
+    if (!upheld && rules.procedure === 'one-step') model.penalize(challenger, { fine: rules.stake, halveXp: rules.loserHalvesXp });
+    applyVerdict(challenger, subject, genuine, upheld, onInvalidated, budget);
+  }
+  // Sanctions after a verdict; the ladder procedures have already settled stakes and loser XP.
+  function applyVerdict(challenger, subject, genuine, upheld, onInvalidated, budget) {
+    const rules = config.disputes;
     if (!upheld) {
       sanctions.rejected++;
       if (!genuine) sanctions.missedFalse++;
-      if (rules.procedure === 'one-step') model.penalize(challenger, { fine: rules.stake, halveXp: rules.loserHalvesXp });
       return;
     }
     sanctions.upheld++;
@@ -610,76 +633,96 @@ export function runExperiment(overrides = {}) {
     }
     if (config.social.investigation && truth.get(challenger).cohort === 'honest') investigate(challenger, subject, onInvalidated, budget);
   }
-  // Chekharda ladder: returns true when the fraud side holds the last unopposed position.
-  function ladder(challenger, subject, genuine) {
+  // Chekharda disputes. Entrants alternate sides; each needs more XP than the previous one and stakes
+  // (1 + stakeGrowth) times more. Both the instant and the timed procedure use this record.
+  function acceptedByXp() {
+    return rosters.all.filter(id => model.subject(id).identityStatus === 'accepted')
+      .sort((a, b) => model.subject(a).xp - model.subject(b).xp || rosterPositions.all.get(a) - rosterPositions.all.get(b));
+  }
+  function openDispute(challenger, subject, genuine) {
     const rules = config.disputes;
-    const coalitionSubject = truth.get(subject).cohort === 'attackers';
-    const close = neighborhood(subject, 2);
-    const entrants = [{ id: challenger, side: 'fraud', stake: rules.stake }];
-    const taken = new Set([challenger, subject]);
-    const pool = rosters.all.filter(id => model.subject(id).identityStatus === 'accepted').sort((a, b) => model.subject(a).xp - model.subject(b).xp || rosterPositions.all.get(a) - rosterPositions.all.get(b));
     // Public reputation prior: the trust-propagation percentile of the accused versus the challenger.
     let genuinePrior = 0.5;
     if (rules.reputationWeight > 0) {
+      const pool = acceptedByXp();
       const trust = propagatedTrust(model.guarantees, model.roots);
-      const rank = new Map([...pool].sort((a, b) => trust.get(a) - trust.get(b) || rosterPositions.all.get(a) - rosterPositions.all.get(b)).map((id, index) => [id, pool.length > 1 ? index / (pool.length - 1) : 0.5]));
+      const rank = new Map(pool.sort((a, b) => trust.get(a) - trust.get(b) || rosterPositions.all.get(a) - rosterPositions.all.get(b)).map((id, index) => [id, pool.length > 1 ? index / (pool.length - 1) : 0.5]));
       genuinePrior = Math.min(0.95, Math.max(0.05, 0.5 + rules.reputationWeight * ((rank.get(subject) ?? 0.5) - (rank.get(challenger) ?? 0.5)) / 2));
     }
-    // Posterior that the accusation is true after a private signal of the given accuracy.
-    const fraudBelief = (accuracy, saysFraud) => {
-      const fraud = (saysFraud ? accuracy : 1 - accuracy) * (1 - genuinePrior);
-      const real = (saysFraud ? 1 - accuracy : accuracy) * genuinePrior;
-      return fraud / (fraud + real);
+    return {
+      id: 'dispute:' + disputeSequence++, challenger, subject, genuine, genuinePrior,
+      coalitionSubject: truth.get(subject).cohort === 'attackers', close: neighborhood(subject, 2),
+      entrants: [{ id: challenger, side: 'fraud', stake: rules.stake }], taken: new Set([challenger, subject]), lastMoveAt: model.now, frozen: [],
     };
-    for (let round = 1; round < rules.maxRounds; round++) {
-      if (rules.councilDepth > 0 && entrants.length >= rules.councilDepth) break;
-      const last = entrants.at(-1);
-      const side = last.side === 'fraud' ? 'genuine' : 'fraud';
-      const stake = Math.ceil(last.stake * (1 + rules.stakeGrowth));
-      const floor = model.subject(last.id).xp;
-      let scanned = 0;
-      let joined = null;
-      for (const id of pool) {
-        const candidate = model.subject(id);
-        if (candidate.xp <= floor || taken.has(id) || candidate.liquidFacy < stake) continue;
-        if (++scanned > rules.maxScan) break;
-        const identity = truth.get(id);
-        if (identity.cohort === 'attackers') {
-          // Coalition members back the coalition side whenever eligible.
-          if ((side === 'genuine') === coalitionSubject) { joined = id; break; }
-          continue;
-        }
-        const accuracy = close.has(id) ? rules.closeSignalAccuracy : rules.signalAccuracy;
-        const correct = sensing.fork(JSON.stringify(['ladder-signal', model.now, challenger, subject, id])).chance(accuracy);
-        const pFraud = fraudBelief(accuracy, genuine ? !correct : correct);
-        const believesFraud = pFraud > 0.5;
-        if ((side === 'fraud') !== believesFraud) continue;
-        const confidence = believesFraud ? pFraud : 1 - pFraud;
-        const gain = confidence * last.stake - (1 - confidence) * (stake + rules.xpValue * candidate.xp / 2);
-        if (gain > 0) { joined = id; break; }
-      }
-      if (joined === null) break;
-      const entry = attempt(joined, 'challenge', () => true);
-      if (!entry.ok) break;
-      taken.add(joined);
-      entrants.push({ id: joined, side, stake });
-      sanctions.ladderEntries++;
+  }
+  // Posterior that the accusation is true after a private signal of the given accuracy.
+  function fraudBelief(dispute, accuracy, saysFraud) {
+    const fraud = (saysFraud ? accuracy : 1 - accuracy) * (1 - dispute.genuinePrior);
+    const real = (saysFraud ? 1 - accuracy : accuracy) * dispute.genuinePrior;
+    return fraud / (fraud + real);
+  }
+  function nextPosition(dispute) {
+    const last = dispute.entrants.at(-1);
+    return { side: last.side === 'fraud' ? 'genuine' : 'fraud', stake: Math.ceil(last.stake * (1 + config.disputes.stakeGrowth)), floor: model.subject(last.id).xp, below: last.stake };
+  }
+  function eligible(dispute, id, next) {
+    const candidate = model.subject(id);
+    return candidate.identityStatus === 'accepted' && candidate.xp > next.floor && !dispute.taken.has(id) && candidate.liquidFacy >= next.stake;
+  }
+  // Whether an eligible candidate takes the next position. Coalition members back the coalition side;
+  // honest candidates follow their private signal (sharpened by evidence) and join when expected stake
+  // gain plus civic value outweighs the stake and XP-halving risk.
+  function willing(dispute, id, next, evidenceBoost) {
+    const rules = config.disputes;
+    if (truth.get(id).cohort === 'attackers') {
+      return (next.side === 'genuine') === dispute.coalitionSubject
+        && decision('ladder-defend', id, [dispute.id, dispute.entrants.length]).chance(activityOf(id).defend);
     }
+    const accuracy = Math.min(0.99, (dispute.close.has(id) ? rules.closeSignalAccuracy : rules.signalAccuracy) + evidenceBoost);
+    const correct = sensing.fork(JSON.stringify(['ladder-signal', dispute.id, id, model.now])).chance(accuracy);
+    const pFraud = fraudBelief(dispute, accuracy, dispute.genuine ? !correct : correct);
+    if ((next.side === 'fraud') !== (pFraud > 0.5)) return false;
+    const confidence = Math.max(pFraud, 1 - pFraud);
+    return confidence * next.below - (1 - confidence) * (next.stake + rules.xpValue * model.subject(id).xp / 2) + rules.civicValue > 0;
+  }
+  // Visiting order of candidates (ascending XP input) under the declared entrant choice.
+  function candidateOrder(ids, dispute, round) {
+    const choice = config.disputes.entrantChoice;
+    if (choice === 'highest') return [...ids].reverse();
+    if (choice === 'random') return decision('ladder-order', dispute.id, round).shuffle(ids);
+    return ids;
+  }
+  function enter(dispute, id, next) {
+    if (!attempt(id, 'challenge', () => true).ok) return false;
+    dispute.taken.add(id);
+    dispute.entrants.push({ id, side: next.side, stake: next.stake });
+    dispute.lastMoveAt = model.now;
+    sanctions.ladderEntries++;
+    // Every entrant draws public attention to itself.
+    if (config.social.attentionFeedback) attention.add(id);
+    return true;
+  }
+  function councilReached(dispute) {
+    return config.disputes.councilDepth > 0 && dispute.entrants.length >= config.disputes.councilDepth;
+  }
+  // Settles stakes and loser XP; returns true when the accusation is upheld.
+  function settleDispute(dispute) {
+    const rules = config.disputes;
+    const { entrants } = dispute;
     let winner = entrants.at(-1).side;
-    // Council intervention once the ladder reaches the declared depth: one vote per active member;
-    // honest members vote their private signal, coalition members vote for the coalition side.
-    if (rules.councilDepth > 0 && entrants.length >= rules.councilDepth) {
+    // Council intervention at the declared depth: one vote per active member; honest members vote their
+    // belief, coalition members vote for the coalition side.
+    if (councilReached(dispute)) {
       sanctions.councilInterventions++;
       let fraudVotes = 0;
       const members = model.council();
       for (const member of members) {
-        const identity = truth.get(member.id);
         let votesFraud;
-        if (identity.cohort === 'attackers') votesFraud = !coalitionSubject;
+        if (truth.get(member.id).cohort === 'attackers') votesFraud = !dispute.coalitionSubject;
         else {
-          const accuracy = close.has(member.id) ? rules.closeSignalAccuracy : rules.signalAccuracy;
-          const correct = sensing.fork(JSON.stringify(['council-signal', model.now, challenger, subject, member.id])).chance(accuracy);
-          votesFraud = fraudBelief(accuracy, genuine ? !correct : correct) > 0.5;
+          const accuracy = dispute.close.has(member.id) ? rules.closeSignalAccuracy : rules.signalAccuracy;
+          const correct = sensing.fork(JSON.stringify(['council-signal', dispute.id, member.id])).chance(accuracy);
+          votesFraud = fraudBelief(dispute, accuracy, dispute.genuine ? !correct : correct) > 0.5;
         }
         if (votesFraud) fraudVotes++;
       }
@@ -690,15 +733,93 @@ export function runExperiment(overrides = {}) {
     for (let k = entrants.length - 1; k >= 0; k--) {
       const upper = entrants[k + 1];
       const lower = entrants[k];
-      if (lower.side === winner) continue;
+      if (lower.side === winner || model.subject(lower.id).identityStatus !== 'accepted') continue;
       const amount = Math.min(lower.stake, model.subject(lower.id).liquidFacy);
       if (upper && upper.side === winner) {
-        if (amount > 0 && model.subject(lower.id).identityStatus === 'accepted' && model.subject(upper.id).identityStatus === 'accepted') model.transferFacy(lower.id, upper.id, amount, 'ladder-settlement');
+        if (amount > 0 && model.subject(upper.id).identityStatus === 'accepted') model.transferFacy(lower.id, upper.id, amount, 'ladder-settlement');
       } else if (!upper) model.penalize(lower.id, { fine: amount, halveXp: false });
     }
     for (const entrant of entrants) if (entrant.side !== winner) model.penalize(entrant.id, { fine: 0, halveXp: rules.loserHalvesXp });
     sanctions.ladderDepth = Math.max(sanctions.ladderDepth, entrants.length);
     return winner === 'fraud';
+  }
+  // Instant procedure: everyone notices at once; candidates are scanned from the lowest eligible XP.
+  function ladder(challenger, subject, genuine) {
+    const rules = config.disputes;
+    const dispute = openDispute(challenger, subject, genuine);
+    const pool = acceptedByXp();
+    for (let round = 1; round < rules.maxRounds && !councilReached(dispute); round++) {
+      const next = nextPosition(dispute);
+      let scanned = 0;
+      let joined = null;
+      for (const id of candidateOrder(pool, dispute, round)) {
+        if (!eligible(dispute, id, next)) continue;
+        if (++scanned > rules.maxScan) break;
+        if (willing(dispute, id, next, 0)) { joined = id; break; }
+      }
+      if (joined === null || !enter(dispute, joined, next)) break;
+    }
+    return settleDispute(dispute);
+  }
+  // Timed procedure (owner rule): the dispute freezes the accused's unspent rights; the last move wins
+  // after disputeWindowHours without a counter-entry; every entry restarts the clock.
+  function openTimedDispute(challenger, subject, genuine) {
+    const dispute = openDispute(challenger, subject, genuine);
+    for (const act of model.selfIds()) {
+      if (act.subject !== subject || act.status !== 'unspent' || act.disputeLock !== null) continue;
+      model.freezeSelfId(act.id, dispute.id);
+      dispute.frozen.push(act.id);
+    }
+    openDisputes.push(dispute);
+  }
+  function resolveTimedDispute(dispute) {
+    openDisputes.splice(openDisputes.indexOf(dispute), 1);
+    for (const id of dispute.frozen) {
+      const act = model.selfId(id);
+      if (act.disputeLock === dispute.id) model.unfreezeSelfId(id, dispute.id);
+    }
+    if (model.subject(dispute.subject).identityStatus !== 'accepted') {
+      sanctions.disputesMooted++;
+      return;
+    }
+    const upheld = settleDispute(dispute);
+    sanctions.disputesResolved++;
+    applyVerdict(dispute.challenger, dispute.subject, dispute.genuine, upheld, () => {}, { followUps: config.social.maxFollowUps });
+  }
+  // Daily attention: the higher the dispute relative to the network, the more people notice it and the
+  // more evidence surfaces. The lowest-XP willing noticer takes the next position.
+  function timedDisputeWork() {
+    const rules = config.disputes;
+    if (!openDisputes.length) return;
+    const accepted = acceptedByXp();
+    const meanXp = accepted.reduce((sum, id) => sum + model.subject(id).xp, 0) / Math.max(1, accepted.length);
+    for (const dispute of [...openDisputes]) {
+      if (model.subject(dispute.subject).identityStatus !== 'accepted' || model.now - dispute.lastMoveAt >= rules.disputeWindowHours
+        || councilReached(dispute) || dispute.entrants.length >= rules.maxRounds) {
+        resolveTimedDispute(dispute);
+        continue;
+      }
+      if (model.now === dispute.lastMoveAt) continue;
+      for (let round = 0; round < rules.roundsPerDay && !councilReached(dispute) && dispute.entrants.length < rules.maxRounds; round++) {
+        const height = Math.max(...dispute.entrants.map(entrant => model.subject(entrant.id).xp)) / Math.max(1, meanXp);
+        const count = Math.min(accepted.length, Math.ceil(rules.noticeBase * accepted.length * (1 + height)));
+        // Distinct uniform sample of noticers, visited in the declared order.
+        const chooser = decision('dispute-notice', dispute.id, round);
+        const picks = new Set();
+        while (picks.size < count) picks.add(chooser.int(accepted.length));
+        const next = nextPosition(dispute);
+        sanctions.disputeNotices += count;
+        let joined = false;
+        for (const index of candidateOrder([...picks].sort((a, b) => a - b), dispute, round)) {
+          const id = accepted[index];
+          if (!eligible(dispute, id, next) || !willing(dispute, id, next, rules.evidenceGain * height)) continue;
+          joined = enter(dispute, id, next);
+          break;
+        }
+        if (!joined) break;
+      }
+      if (councilReached(dispute)) resolveTimedDispute(dispute);
+    }
   }
   // After a proven false identity, check who invited it, whom that inviter also invited, and whom it invited.
   function investigate(challenger, subject, onInvalidated, budget) {
@@ -890,6 +1011,7 @@ export function runExperiment(overrides = {}) {
       guaranteeWork(actors);
       briberyWork(actors);
       inspectionWork(actors);
+      timedDisputeWork();
       guardianWork();
       admissionWork(stillAccepted());
       cashFlowWork(stillAccepted());
@@ -909,6 +1031,7 @@ export function runExperiment(overrides = {}) {
     if (!(error instanceof SimulationLimit)) throw error;
     censoredReason = error.reason;
   }
+  sanctions.disputesOpen = openDisputes.length;
   sample(censoredReason ? 'censored' : 'horizon');
   const identities = [...truth.values()];
   const attackerIds = identities.filter(identity => identity.cohort === 'attackers').map(identity => identity.id);
