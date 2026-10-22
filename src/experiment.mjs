@@ -14,8 +14,8 @@ export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-car
 export const EXPERIMENT_ABLATIONS = Object.freeze({ ...DEFAULT_ABLATIONS, randomGuaranteeTargets: false });
 export const RANDOMNESS_POLICY = Object.freeze({ generator: RANDOM_GENERATOR, decisions: 'decision-keyed-v1' });
 export const DEFAULT_ACTIVITY = Object.freeze({
-  honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, convert: 1 }),
-  attackers: Object.freeze({ selfId: 1, invite: 0.4, guarantee: 2, inspect: 0, respond: 0, convert: 1 }),
+  honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, challenge: 0, convert: 1 }),
+  attackers: Object.freeze({ selfId: 1, invite: 0.4, guarantee: 2, inspect: 0, respond: 0, challenge: 0, convert: 1 }),
 });
 const DEFAULTS = Object.freeze({
   scenario: 'sybil-cone', seed: 'facety', initialSize: 30, attackerShare: 0.1,
@@ -24,6 +24,13 @@ const DEFAULTS = Object.freeze({
   maxSubjects: 2000, maxActions: 500_000, targetFalseConversions: 1,
   successCriterion: 'false-liquidity', includeState: false,
 });
+// Minimal public-challenge layer. It abstracts Chekharda to one challenge with an immediate verdict
+// of declared accuracy; escalation, Council review and appeals are not modeled.
+export const DEFAULT_DISPUTES = Object.freeze({
+  enabled: false, accuracy: 0.9, stake: 0, fine: 5, liability: 'guarantors', rewardShare: 0.5, loserHalvesXp: true, excludeLiable: false,
+});
+export const LIABILITY_POLICIES = Object.freeze(['subject', 'guarantors', 'guarantors-and-inviter']);
+export const DEFAULT_DEVIANTS = Object.freeze({ share: 0, honest: null, attackers: null });
 export const EXPERIMENT_ASSUMPTIONS = Object.freeze([
   'Initial subjects are genuine accepted human operators and trusted roots; their prior acquisition cost is not estimated.',
   'Initial guarantees and subsequent work consume declared cohort effort budgets. All default action weights are illustrative unit weights.',
@@ -39,6 +46,9 @@ export const EXPERIMENT_ASSUMPTIONS = Object.freeze([
   'Scheduled perturbations alter daily activity only, not protocol rules, genesis trust or automatic counterparty matching.',
   'XP Gini and normalized XP shares are undefined (null) when total effective XP is zero; equal positive XP has Gini zero.',
   'Configured ablations are counterfactual mechanism removals for evidence experiments; any enabled ablation is not Facety protocol behavior.',
+  'When enabled, disputes are one-step public challenges: an observer with more effective XP than the act owner and a suspicious observation may challenge; an environment verdict of declared accuracy invalidates the subject and sanctions declared liable parties, or sanctions the challenger. Chekharda escalation, Council review and appeals are not modeled.',
+  'Deviants are a seeded subset of a cohort\'s initial operators, with the fake subjects they control, following a declared alternative activity profile; labels are evaluator-only. Recruited genuine people follow their cohort profile.',
+  'Payoff facts are protocol quantities per operator group (initial conformists, initial deviants, later recruits); their utility weights are supplied separately by an analysis, never inferred.',
 ]);
 
 function mergeRecord(defaults, overrides, label) {
@@ -60,10 +70,47 @@ function activityOverrides(overrides) {
     mergeRecord(DEFAULT_ACTIVITY[cohort], partial, cohort + ' activity');
     for (const [action, rate] of Object.entries(partial)) {
       if (!Number.isFinite(rate) || rate < 0 || rate > 100) throw new RangeError('activity must be in [0, 100]');
-      if (['selfId', 'respond', 'convert'].includes(action)) probability(rate, action);
+      if (['selfId', 'respond', 'challenge', 'convert'].includes(action)) probability(rate, action);
     }
     return [cohort, Object.freeze({ ...partial })];
   })));
+}
+
+function disputesFrom(overrides) {
+  const disputes = mergeRecord(DEFAULT_DISPUTES, overrides, 'disputes');
+  if (typeof disputes.enabled !== 'boolean' || typeof disputes.loserHalvesXp !== 'boolean' || typeof disputes.excludeLiable !== 'boolean') throw new TypeError('dispute switches must be boolean');
+  probability(disputes.accuracy, 'disputes.accuracy');
+  probability(disputes.rewardShare, 'disputes.rewardShare');
+  integer(disputes.stake, 'disputes.stake', 0);
+  integer(disputes.fine, 'disputes.fine', 0);
+  if (!LIABILITY_POLICIES.includes(disputes.liability)) throw new Error('unknown dispute liability policy');
+  return Object.freeze(disputes);
+}
+
+function scheduleFrom(events, days, label) {
+  if (!Array.isArray(events) || events.length > 32) throw new Error(label + ' schedule must contain at most 32 events');
+  return Object.freeze(events.map(event => {
+    const checked = mergeRecord({ startDay: undefined, endDay: undefined, activity: {} }, event, label + ' schedule event');
+    integer(checked.startDay, 'startDay', 0, days);
+    integer(checked.endDay, 'endDay', checked.startDay + 1, days);
+    return Object.freeze({ ...checked, activity: Object.freeze({ ...checked.activity }) });
+  }));
+}
+
+function deviantsFrom(overrides, days) {
+  const deviants = mergeRecord(DEFAULT_DEVIANTS, overrides, 'deviants');
+  probability(deviants.share, 'deviants.share');
+  for (const cohort of COHORTS) {
+    if (deviants[cohort] === null) continue;
+    const strategy = mergeRecord({ activity: {}, schedule: [] }, deviants[cohort], cohort + ' deviant strategy');
+    const activity = activityOverrides({ [cohort]: strategy.activity })[cohort];
+    const schedule = scheduleFrom(strategy.schedule, days, cohort + ' deviant');
+    for (const event of schedule) activityOverrides({ [cohort]: event.activity });
+    // Deviant activity is relative to DEFAULT_ACTIVITY, not to the cohort's configured profile.
+    deviants[cohort] = Object.freeze({ activity: Object.freeze({ ...DEFAULT_ACTIVITY[cohort], ...activity }), schedule });
+  }
+  if (deviants.share === 0 && COHORTS.some(cohort => deviants[cohort] !== null)) throw new Error('deviant strategies require a positive deviants.share');
+  return Object.freeze(deviants);
 }
 
 function perturbationsFrom(overrides, days) {
@@ -104,7 +151,7 @@ export function activityAtDay(overrides, day) {
 }
 
 export function experimentConfig(overrides = {}) {
-  const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, ablations: {}, perturbations: [] };
+  const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, ablations: {}, perturbations: [], disputes: {}, deviants: {} };
   const config = mergeRecord({ ...DEFAULTS, ...nested }, overrides, 'experiment');
   if (!SCENARIOS.includes(config.scenario)) throw new Error('unknown scenario');
   if (!Object.hasOwn(overrides, 'attackerShare') && config.scenario === 'honest-growth') config.attackerShare = 0;
@@ -126,6 +173,8 @@ export function experimentConfig(overrides = {}) {
   const partialActivity = activityOverrides(config.activity);
   config.activity = Object.freeze(Object.fromEntries(COHORTS.map(cohort => [cohort, Object.freeze({ ...DEFAULT_ACTIVITY[cohort], ...partialActivity[cohort] })])));
   config.perturbations = perturbationsFrom(config.perturbations, config.days);
+  config.disputes = disputesFrom(config.disputes);
+  config.deviants = deviantsFrom(config.deviants, config.days);
   config.budgets = Object.freeze(mergeRecord({ honest: 100_000, attackers: 100_000 }, config.budgets, 'budgets'));
   config.weights = effortWeights(mergeRecord(DEFAULT_WEIGHTS, config.weights, 'weights'));
   config.policy = policyFrom(config.policy);
@@ -196,6 +245,19 @@ export function runExperiment(overrides = {}) {
     }
   };
   ids.forEach(enroll);
+  // Evaluator-only deviant operators: a seeded subset of each cohort's initial operators.
+  const deviantOperators = new Set();
+  if (config.deviants.share > 0) {
+    for (const cohort of COHORTS) {
+      const pool = ids.filter(id => truth.get(id).cohort === cohort);
+      if (!pool.length) continue;
+      const count = Math.max(1, Math.round(config.deviants.share * pool.length));
+      for (const id of random.fork('deviants:' + cohort).shuffle(pool).slice(0, count)) deviantOperators.add(id);
+    }
+  }
+  const genesisOperators = new Set(ids);
+  const operatorEffort = new Map();
+  const sanctions = { challenges: 0, upheld: 0, rejected: 0, falseInvalidated: 0, wrongfulInvalidated: 0, excluded: 0, missedFalse: 0 };
   const modelAblations = Object.fromEntries(Object.keys(DEFAULT_ABLATIONS).map(key => [key, config.ablations[key]]));
   const model = new FacetyModel({ genesis: ids, policy: config.policy, ablations: modelAblations });
   const effort = new EffortLedger({ weights: config.weights, budgets: config.budgets, maxActions: config.maxActions });
@@ -215,6 +277,19 @@ export function runExperiment(overrides = {}) {
   let previousCouncilIds = null;
   let activity = config.activity;
   let activePerturbations = [];
+  let deviantActivity = {};
+  const deviantActivityAt = day => Object.fromEntries(COHORTS.filter(cohort => config.deviants[cohort] !== null).map(cohort => {
+    const strategy = config.deviants[cohort];
+    const profile = { ...strategy.activity };
+    for (const event of strategy.schedule) if (event.startDay <= day && day < event.endDay) Object.assign(profile, event.activity);
+    return [cohort, Object.freeze(profile)];
+  }));
+  const groupOf = identity => deviantOperators.has(identity.operator) ? 'deviant' : genesisOperators.has(identity.operator) ? 'conformist' : 'recruit';
+  // Activity for one actor: deviant operators (and fakes they control) follow their declared strategy.
+  function activityOf(actor) {
+    const identity = truth.get(actor);
+    return deviantOperators.has(identity.operator) && deviantActivity[identity.cohort] ? deviantActivity[identity.cohort] : activity[identity.cohort];
+  }
 
   function decision(channel, actor = '', slot = 0) {
     return random.fork(JSON.stringify([RANDOMNESS_POLICY.decisions, model.now, channel, actor, slot]));
@@ -223,6 +298,8 @@ export function runExperiment(overrides = {}) {
   function attempt(actor, action, operation, phase = 'maintenance') {
     const ticket = effort.begin(truth.get(actor).cohort, action, phase);
     if (!ticket) return { ok: false, reason: 'budget-denied' };
+    const operator = truth.get(actor).operator;
+    operatorEffort.set(operator, (operatorEffort.get(operator) ?? 0) + Math.round(ticket.cost * 1e6));
     try {
       const value = operation();
       effort.finish(ticket, true);
@@ -276,6 +353,8 @@ export function runExperiment(overrides = {}) {
       attackerEffort: costs.attackers.effort, defenderEffort: costs.honest.effort,
       cohorts: measureWork(costs, previousSampleCosts),
       effectiveActivity: activity, activePerturbations: [...activePerturbations],
+      ...(deviantOperators.size ? { deviantActivity } : {}),
+      sanctions: { ...sanctions },
     });
     previousSampleCosts = costs;
     previousCouncilIds = network.council.memberIds;
@@ -283,7 +362,7 @@ export function runExperiment(overrides = {}) {
   function guaranteeWork(actors) {
     for (const actor of actors) {
       const cohort = truth.get(actor).cohort;
-      for (let i = 0, count = workCount(activity[cohort].guarantee, decision('guarantee-count', actor)); i < count; i++) {
+      for (let i = 0, count = workCount(activityOf(actor).guarantee, decision('guarantee-count', actor)); i < count; i++) {
         const choice = decision('guarantee-target', actor, i);
         const excluded = [actor, ...[...model.guarantees.outEdges(actor)].map(edge => edge.to)];
         let target;
@@ -300,10 +379,48 @@ export function runExperiment(overrides = {}) {
   function responseChoice(actor, act) {
     return decision('inspection-response', actor, [act.subject, act.recordedAt]);
   }
+  // One-step challenge; the verdict is an environment draw of declared accuracy using evaluator truth.
+  function challenge(challenger, subject, onInvalidated) {
+    const rules = config.disputes;
+    const result = attempt(challenger, 'challenge', () => {
+      if (model.subject(subject).identityStatus !== 'accepted') throw new ProtocolRejection('challenge target is not accepted');
+      if (model.subject(challenger).liquidFacy < rules.stake) throw new ProtocolRejection('insufficient challenge stake');
+      const genuine = truth.get(subject).genuine;
+      const correct = sensing.fork(JSON.stringify(['verdict', model.now, challenger, subject])).chance(rules.accuracy);
+      return { genuine, upheld: genuine ? !correct : correct };
+    });
+    if (!result.ok) return;
+    sanctions.challenges++;
+    const { genuine, upheld } = result.value;
+    if (!upheld) {
+      sanctions.rejected++;
+      if (!genuine) sanctions.missedFalse++;
+      model.penalize(challenger, { fine: rules.stake, halveXp: rules.loserHalvesXp });
+      return;
+    }
+    sanctions.upheld++;
+    sanctions[genuine ? 'wrongfulInvalidated' : 'falseInvalidated']++;
+    const liable = [subject];
+    if (rules.liability !== 'subject') liable.push(...[...model.guarantees.inEdges(subject)].map(edge => edge.from));
+    if (rules.liability === 'guarantors-and-inviter') liable.push(...[...model.lineage.inEdges(subject)].map(edge => edge.from));
+    for (const party of new Set(liable)) {
+      if (model.subject(party).identityStatus !== 'accepted') continue;
+      const reward = Math.floor(Math.min(model.subject(party).liquidFacy, rules.fine) * rules.rewardShare);
+      if (reward > 0 && party !== challenger && model.subject(challenger).identityStatus === 'accepted') model.transferFacy(party, challenger, reward);
+      model.penalize(party, { fine: rules.fine - reward, halveXp: true });
+    }
+    const invalidated = [subject, ...(rules.excludeLiable ? [...new Set(liable)].filter(party => party !== subject && party !== challenger) : [])];
+    for (const party of invalidated) {
+      if (model.subject(party).identityStatus !== 'accepted') continue;
+      model.invalidateIdentity(party);
+      if (party !== subject) sanctions.excluded++;
+      onInvalidated(party);
+    }
+  }
   // Candidate acts are the phase-start unspent acts, minus own, already inspected and vetoed acts.
   // Honest choices use index arithmetic over that ordered list; draws match filtering the list.
   function inspectionWork(actors) {
-    const list = model.selfIds().filter(act => act.status === 'unspent');
+    const list = model.selfIds().filter(act => act.status === 'unspent' && model.subject(act.subject).identityStatus === 'accepted');
     const available = new Map(list.map(act => [act.id, act]));
     const positions = new Map(list.map((act, index) => [act.id, index]));
     const bySubject = new Map();
@@ -317,6 +434,12 @@ export function runExperiment(overrides = {}) {
       }
     }
     const vetoed = new Set();
+    const invalidate = subject => {
+      for (const id of bySubject.get(subject) ?? []) {
+        available.delete(id);
+        vetoed.add(id);
+      }
+    };
     const candidatesFor = (actor, cohort, inspected) => {
       if (cohort === 'attackers') {
         const candidates = [...available.values()].filter(act => act.subject !== actor && !inspected.has(act.id) && truth.get(act.subject).cohort !== 'attackers');
@@ -335,10 +458,11 @@ export function runExperiment(overrides = {}) {
       };
     };
     for (const actor of actors) {
+      if (model.subject(actor).identityStatus !== 'accepted') continue;
       const cohort = truth.get(actor).cohort;
       const inspected = seen.get(actor) ?? new Set();
       seen.set(actor, inspected);
-      for (let i = 0, count = workCount(activity[cohort].inspect, decision('inspection-count', actor)); i < count; i++) {
+      for (let i = 0, count = workCount(activityOf(actor).inspect, decision('inspection-count', actor)); i < count; i++) {
         const candidates = candidatesFor(actor, cohort, inspected);
         if (!candidates.size) break;
         const choice = decision('inspection-target', actor, i);
@@ -355,9 +479,13 @@ export function runExperiment(overrides = {}) {
         const veto = respondToObservation(model, actor, act, observation);
         if (veto.noAuthority) {
           observations.noVetoAuthority++;
-          if (model.subject(actor).xp > model.subject(act.subject).xp) observations.eligibleForUnmodeledXpChallenge++;
+          const eligible = model.subject(actor).xp > model.subject(act.subject).xp;
+          if (eligible) observations.eligibleForUnmodeledXpChallenge++;
+          if (eligible && config.disputes.enabled && decision('challenge', actor, [act.subject, act.recordedAt]).chance(activityOf(actor).challenge)) {
+            challenge(actor, act.subject, invalidate);
+          }
         }
-        if (!veto.attempted || !responseChoice(actor, act).chance(activity[cohort].respond)) continue;
+        if (!veto.attempted || !responseChoice(actor, act).chance(activityOf(actor).respond)) continue;
         const response = attempt(actor, 'respond', () => model.cancelSelfId(actor, act.id));
         if (response.ok) {
           available.delete(act.id);
@@ -369,7 +497,7 @@ export function runExperiment(overrides = {}) {
   function admissionWork(actors) {
     for (const actor of actors) {
       const identity = truth.get(actor);
-      for (let i = 0, count = workCount(activity[identity.cohort].invite, decision('invitation-count', actor)); i < count; i++) {
+      for (let i = 0, count = workCount(activityOf(actor).invite, decision('invitation-count', actor)); i < count; i++) {
         const [source] = model.eligibleEmissions(actor);
         if (!source) break;
         let candidate = prepared.get(actor);
@@ -394,6 +522,10 @@ export function runExperiment(overrides = {}) {
     }
     for (let i = pendingInvitations.length - 1; i >= 0; i--) {
       const pending = pendingInvitations[i];
+      if (model.subject(pending.sponsor).identityStatus !== 'accepted') {
+        pendingInvitations.splice(i, 1);
+        continue;
+      }
       const accepted = attempt(pending.sponsor, 'acceptInvitation', () => {
         if (model.size >= config.maxSubjects) throw new SimulationLimit('maxSubjects');
         model.acceptInvitation(pending.invitation, pending.candidate.id);
@@ -416,17 +548,20 @@ export function runExperiment(overrides = {}) {
     for (let day = 0; day < config.days; day++) {
       model.advanceTo(day * DAY);
       ({ activity, activePerturbations } = dayActivity(config, day));
-      const actors = decision('actor-order').shuffle([...model.guarantees.nodeIds()]);
+      deviantActivity = deviantActivityAt(day);
+      // Invalidated subjects cannot act; filtering after the shuffle keeps other actors' order.
+      const actors = decision('actor-order').shuffle([...model.guarantees.nodeIds()]).filter(id => model.subject(id).identityStatus === 'accepted');
       for (const actor of actors) {
-        if (!decision('self-id', actor).chance(activity[truth.get(actor).cohort].selfId)) continue;
+        if (!decision('self-id', actor).chance(activityOf(actor).selfId)) continue;
         attempt(actor, 'selfId', () => model.createSelfId(actor, model.registerArtifact(actor)));
       }
+      const stillAccepted = () => actors.filter(id => model.subject(id).identityStatus === 'accepted');
       guaranteeWork(actors);
       inspectionWork(actors);
-      admissionWork(actors);
-      for (const actor of actors) {
+      admissionWork(stillAccepted());
+      for (const actor of stillAccepted()) {
         for (const act of model.eligibleEmissions(actor, 7 * DAY)) {
-          if (decision('collector-conversion', actor, model.selfId(act).recordedAt).chance(activity[truth.get(actor).cohort].convert)) attempt(actor, 'convert', () => model.convertToCollector(actor, act));
+          if (decision('collector-conversion', actor, model.selfId(act).recordedAt).chance(activityOf(actor).convert)) attempt(actor, 'convert', () => model.convertToCollector(actor, act));
         }
       }
       completedDays++;
@@ -435,6 +570,7 @@ export function runExperiment(overrides = {}) {
     }
     model.advanceTo(config.days * DAY);
     ({ activity, activePerturbations } = dayActivity(config, config.days));
+    deviantActivity = deviantActivityAt(config.days);
   } catch (error) {
     if (!(error instanceof SimulationLimit)) throw error;
     censoredReason = error.reason;
@@ -467,6 +603,58 @@ export function runExperiment(overrides = {}) {
       debt: ownSubjects.reduce((sum, subject) => sum + subject.debt, 0),
     }];
   }));
+  const council = new Set(model.council().map(member => member.id));
+  const unspent = new Map();
+  for (const act of acts) if (act.status === 'unspent') unspent.set(act.subject, (unspent.get(act.subject) ?? 0) + 1);
+  const emptyFacts = () => ({
+    operators: 0, subjects: 0, acceptedSubjects: 0, invalidatedSubjects: 0, falseSubjects: 0,
+    liquidFacy: 0, emitterFacy: 0, debt: 0, falseLiquidFacy: 0, falseDebt: 0, xp: 0, councilSeats: 0, effort: 0,
+    convertedRewards: 0, finesCollected: 0, finesAsDebt: 0, halvings: 0, rewardsReceived: 0,
+  });
+  const agents = Object.fromEntries(COHORTS.map(cohort => [cohort, { conformist: emptyFacts(), deviant: emptyFacts(), recruit: emptyFacts() }]));
+  const operatorsSeen = new Set();
+  for (const subject of model.subjects()) {
+    const identity = truth.get(subject.id);
+    const facts = agents[identity.cohort][groupOf(identity)];
+    if (!operatorsSeen.has(identity.operator)) {
+      operatorsSeen.add(identity.operator);
+      facts.operators++;
+      facts.effort += (operatorEffort.get(identity.operator) ?? 0) / 1e6;
+    }
+    facts.subjects++;
+    facts[subject.identityStatus === 'accepted' ? 'acceptedSubjects' : 'invalidatedSubjects']++;
+    if (!identity.genuine) {
+      facts.falseSubjects++;
+      facts.falseLiquidFacy += subject.liquidFacy;
+      facts.falseDebt += subject.debt;
+    }
+    facts.liquidFacy += subject.liquidFacy;
+    facts.emitterFacy += unspent.get(subject.id) ?? 0;
+    facts.debt += subject.debt;
+    facts.xp += subject.xp;
+    if (council.has(subject.id)) facts.councilSeats++;
+  }
+  for (const act of acts) if (act.status === 'converted') agents[truth.get(act.subject).cohort][groupOf(truth.get(act.subject))].convertedRewards++;
+  for (const event of model.events()) {
+    if (event.type === 'penalty-applied') {
+      const facts = agents[truth.get(event.subject).cohort][groupOf(truth.get(event.subject))];
+      facts.finesCollected += event.collected;
+      facts.finesAsDebt += event.debtAdded;
+      if (event.halveXp) facts.halvings++;
+    } else if (event.type === 'facy-transferred') {
+      agents[truth.get(event.to).cohort][groupOf(truth.get(event.to))].rewardsReceived += event.amount;
+    }
+  }
+  for (const groups of Object.values(agents)) for (const facts of Object.values(groups)) facts.effort = Math.round(facts.effort * 1e6) / 1e6;
+  const system = {
+    supply: metrics.ledger.supply, burned: metrics.ledger.burned,
+    falseLiquidFacy: model.subjects().filter(subject => !truth.get(subject.id).genuine).reduce((sum, subject) => sum + subject.liquidFacy, 0),
+    falseConvertedRewards: acts.filter(act => act.status === 'converted' && !truth.get(act.subject).genuine).length,
+    falseAcceptedSubjects: model.subjects().filter(subject => subject.identityStatus === 'accepted' && !truth.get(subject.id).genuine).length,
+    councilSeats: council.size,
+    councilAttackerSeats: [...council].filter(id => truth.get(id).cohort === 'attackers').length,
+    sanctions: { ...sanctions },
+  };
   return {
     schema: 'facety-experiment/v1',
     config, randomness: RANDOMNESS_POLICY, provenance: provenance(), assumptions: [...EXPERIMENT_ASSUMPTIONS],
@@ -477,7 +665,7 @@ export function runExperiment(overrides = {}) {
     },
     population,
     effort: effort.audit(),
-    observations, rejections, money,
+    observations, rejections, money, agents, system,
     impact: {
       falseConversions: acts.filter(act => act.status === 'converted' && !truth.get(act.subject).genuine).length,
       falseEmissionsCancelled: acts.filter(act => act.status === 'cancelled' && !truth.get(act.subject).genuine).length,

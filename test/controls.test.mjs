@@ -115,7 +115,7 @@ test('exact null controls have zero observed effects without imputing undefined 
     for (const row of pair.metrics['xp.gini'].series) assert.equal(row.difference, row.baseline === null ? null : 0);
   }
   const censored = compareExperiments(
-    { initialSize: 3, attackerShare: 1, initialTopology: 'clique', successCriterion: 'council-majority', days: 5, maxActions: 1 },
+    { initialSize: 3, attackerShare: 1, initialTopology: 'clique', successCriterion: 'council-majority', days: 5, maxActions: 1, policy: { councilEligibility: 'accepted' } },
     { trials: 2, metrics: ['subjects'] },
   );
   assert.equal(censored.analysis.outcomes.baseline.estimate, 1);

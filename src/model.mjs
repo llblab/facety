@@ -9,6 +9,7 @@ export const DEFAULT_POLICY = Object.freeze({
   guaranteeFee: 0,
   councilSize: 101,
   debtRecovery: 'reserve-until-mature',
+  councilEligibility: 'active',
 });
 // Counterfactual mechanism removals for evidence experiments. They are not protocol options.
 export const DEFAULT_ABLATIONS = Object.freeze({
@@ -31,6 +32,7 @@ export function policyFrom(overrides = {}) {
     cancellationAuthority: ['snapshot', 'current'],
     guarantorEligibility: ['active', 'accepted'],
     debtRecovery: ['reserve-until-mature', 'immediate-burn'],
+    councilEligibility: ['active', 'accepted'],
   })) if (!allowed.includes(policy[key])) throw new Error('invalid policy: ' + key);
   natural(policy.guaranteeFee, 'guaranteeFee');
   natural(policy.councilSize, 'councilSize', 1);
@@ -376,7 +378,8 @@ export class FacetyModel {
     this.#event('identity-invalidated', { subject: id });
   }
   council() {
-    return [...this.#subjects.values()].filter(subject => subject.identityStatus === 'accepted').map(subject => ({ id: subject.id, xp: subject.xp }))
+    const active = this.policy.councilEligibility === 'active';
+    return [...this.#subjects.values()].filter(subject => subject.identityStatus === 'accepted' && (!active || this.isActive(subject.id))).map(subject => ({ id: subject.id, xp: subject.xp }))
       .sort((a, b) => b.xp - a.xp || idOrder(a.id, b.id)).slice(0, this.policy.councilSize);
   }
   ledger() {

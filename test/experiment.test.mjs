@@ -48,7 +48,7 @@ test('honest growth creates no false subjects; Sybil subjects do not create free
 });
 
 test('real-person cartel growth recruits operators instead of disguising them as Sybil identities', () => {
-  const cartel = runExperiment({ ...liquid, scenario: 'real-cartel', successCriterion: 'council-majority' });
+  const cartel = runExperiment({ ...liquid, scenario: 'real-cartel', successCriterion: 'council-majority', policy: { councilEligibility: 'accepted' } });
   assert.equal(cartel.population.falseSubjects, 0);
   assert.equal(cartel.population.humanOperators, cartel.population.finalSubjects);
   assert.equal(cartel.population.attackerOperators, cartel.population.finalAttackerSubjects);
@@ -117,7 +117,7 @@ test('resource truncation is unknown, never counted as a successful defense', ()
   assert.equal(actionCap.outcome.success, null);
   assert.equal(actionCap.outcome.censoredReason, 'maxActions');
   assert.equal(actionCap.effort.calls, 1);
-  const alreadySuccessful = runExperiment({ ...liquid, successCriterion: 'council-majority', maxActions: 1 });
+  const alreadySuccessful = runExperiment({ ...liquid, successCriterion: 'council-majority', maxActions: 1, policy: { councilEligibility: 'accepted' } });
   assert.equal(alreadySuccessful.outcome.success, true);
   assert.equal(alreadySuccessful.outcome.censored, true);
 });

@@ -1,0 +1,101 @@
+{
+  "id": "inspection-game-pilot",
+  "description": "Honest inspection/challenge intensity versus Sybil-farm timing under a one-step dispute layer.",
+  "base": {
+    "scenario": "sybil-cone",
+    "seed": "inspection-game",
+    "initialSize": 40,
+    "attackerShare": 0.1,
+    "days": 30,
+    "maxSubjects": 4000,
+    "disputes": {
+      "enabled": true,
+      "accuracy": 0.9,
+      "fine": 5,
+      "liability": "guarantors",
+      "rewardShare": 0.5
+    }
+  },
+  "roles": {
+    "honest": {
+      "strategies": {
+        "vigilant": {
+          "activity": {
+            "inspect": 3,
+            "respond": 0.9,
+            "challenge": 1
+          }
+        },
+        "lax": {
+          "activity": {
+            "inspect": 0.3,
+            "respond": 0.9,
+            "challenge": 0.2
+          }
+        },
+        "passive": {
+          "activity": {
+            "inspect": 0,
+            "respond": 0,
+            "challenge": 0
+          }
+        }
+      }
+    },
+    "attackers": {
+      "strategies": {
+        "abstain": {
+          "description": "Real coalition members who create no fakes and act like honest people.",
+          "activity": {
+            "invite": 0,
+            "guarantee": 0.3,
+            "selfId": 0.8
+          }
+        },
+        "farm": {
+          "activity": {}
+        },
+        "farm-then-hide": {
+          "activity": {},
+          "schedule": [
+            {
+              "startDay": 12,
+              "endDay": 30,
+              "activity": {
+                "invite": 0
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "replicas": 24,
+  "seed": "inspection-game-pilot",
+  "deviation": {
+    "share": 0.1
+  },
+  "valuation": {
+    "honest": {
+      "facts": {
+        "liquidFacy": 1,
+        "emitterFacy": 0.5,
+        "debt": -1,
+        "effort": -0.05
+      },
+      "system": {
+        "falseLiquidFacy": -0.02
+      }
+    },
+    "attackers": {
+      "facts": {
+        "liquidFacy": 1,
+        "emitterFacy": 0.5,
+        "debt": -1,
+        "falseDebt": 1,
+        "effort": -0.05,
+        "councilSeats": 2
+      }
+    }
+  }
+}

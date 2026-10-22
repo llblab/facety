@@ -14,6 +14,8 @@ export const OBSERVABLES = Object.freeze({
   'graph.density': 0.02, 'graph.degreeGini': 0.05, 'graph.reciprocity': 0.05,
   'graph.largestWeakComponentFraction': 0.05, 'graph.attackEdges': 1, 'graph.attackEdgesPerAttacker': 0.5,
   'lineage.maxDepth': 1, 'lineage.meanDepth': 0.25,
+  'sanctions.challenges': 1, 'sanctions.upheld': 1, 'sanctions.rejected': 1, 'sanctions.falseInvalidated': 1,
+  'sanctions.wrongfulInvalidated': 1, 'sanctions.excluded': 1, 'sanctions.missedFalse': 1,
   'graph.mixing.excessWithinCohortFraction': 0.05, 'graph.mixing.directedAssortativity': 0.05,
   'connectivity.rootedFraction': 0.05, 'connectivity.honestFraction': 0.05, 'connectivity.honestNonRootFraction': 0.05,
   'admission.guaranteeQualifiedFraction': 0.05, 'admission.inviteReadyFraction': 0.05,

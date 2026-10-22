@@ -7,6 +7,7 @@ import { runTrials, sweepParameter } from '../src/trials.mjs';
 import { runLandscape, runLandscapeParallel, diagnoseLandscape } from '../src/discovery.mjs';
 import { compareExperiments, analyzePairs } from '../src/controls.mjs';
 import { registerHypothesis, confirmHypothesis, analyzeConfirmation, verifyRegistration, adjustStudy } from '../src/evidence.mjs';
+import { runGame, analyzeGame, sweepValuation } from '../src/games.mjs';
 import { createGraphArtifact, extractGraphArtifact, mutateGraphArtifact, searchGraphArtifact, verifyGraphArtifact } from '../src/graph-workbench.mjs';
 
 const USAGE = `Usage: facety <command> [input.json ...] [--out file] [--force] [--workers n|auto]
@@ -25,6 +26,11 @@ Evidence (preregistered confirmation on reserved seeds):
   confirm <registration.json>           Run the registered design (--workers).
   reanalyze-confirmation <registration.json> <confirmation.json>
   study <confirmation.json ...>         Holm adjustment across hypotheses.
+
+Strategy games (payoff facts from simulation, utilities from explicit valuations):
+  game <game.json>                      Run all strategy profiles and deviations (--workers).
+  game-analyze <result.json> <valuation.json>   Equilibria and incentives, no reruns.
+  game-sweep <result.json> <sweep.json> Vary one valuation weight: { valuation, role, kind, key, values }.
 
 Graphs (synthetic or extracted views; never protocol admission):
   graph-create <options.json>
@@ -74,6 +80,12 @@ const COMMANDS = {
     return analyzeConfirmation(registration, confirmation.values);
   },
   study: files => adjustStudy(files.map(read)),
+  game: ([file], options) => runGame(read(file), { workers: workers(options.workers) }),
+  'game-analyze': ([result, valuation]) => analyzeGame(read(result), read(valuation)),
+  'game-sweep': ([result, file]) => {
+    const { valuation, ...sweep } = read(file);
+    return sweepValuation(read(result), valuation, sweep);
+  },
   'graph-create': ([file]) => createGraphArtifact(read(file)),
   'graph-extract': ([file, layer]) => extractGraphArtifact(read(file), layer),
   'graph-mutate': ([artifact, mutation]) => mutateGraphArtifact(read(artifact), read(mutation)),

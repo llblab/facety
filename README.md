@@ -27,6 +27,17 @@ node bin/facety.mjs study h1.confirmation.json h2.confirmation.json   # Holm acr
 
 See [confirmatory evidence](docs/evidence.en.md) and the [worked coalition Council study](studies/2026-10-22-coalition-council/README.md). That study supported two mechanisms within the model: guarantor-XP coupling amplifies a dense coalition's Council share, and a growing Sybil cone's under-representation is a transient of its age structure.
 
+## Strategy games and incentives
+
+Random scripted runs cannot show what anyone would choose. A game declares strategy menus for honest participants and attackers, simulates every profile on shared seeds and keeps per-operator protocol facts. It then applies explicit valuations offline to find best responses, equilibria and whether an individual gains by deviating. A minimal dispute layer (XP-gated challenge, verdict accuracy, fines, liability, rewards) provides the deterrence that inspection otherwise lacks.
+
+```sh
+node bin/facety.mjs game examples/game.json --workers auto --out results/game.json
+node bin/facety.mjs game-sweep results/game.json sweep.json
+```
+
+See [strategy games](docs/games.en.md) and the [exploratory inspection-game note](studies/2026-10-22-inspection-game/README.md).
+
 ## Emergent behavior research
 
 The primary output is a map of collective regimes, not one attack-success score. Runs retain time series of XP concentration, Council turnover, actual graph mixing/connectivity, admission readiness and realized cohort work. Bounded parameter landscapes flag exploratory shapes and contrasts without declaring a mechanism proven. XP concentration is undefined (`null`) until effective XP exists. Offline landscape endpoints follow the declared daily horizon; missing final observations are not replaced by earlier values.
@@ -117,6 +128,7 @@ A certificate proves a directed path in the verifier's canonical graph from an i
 ## Code map
 
 - `bin/facety.mjs`: JSON-only command line over the native APIs.
+- `src/games.mjs`: Strategy-menu games, payoff facts, valuations, best responses, pure/mixed equilibria, individual deviation tests and valuation sweeps.
 - `src/evidence.mjs`: Hypothesis registration, reserved-seed confirmation, exact claim tests, verdicts, Holm study adjustment and finite-size sharpening designs.
 - `src/statistics.mjs`: Exact binomial tails, Clopper–Pearson bounds, Holm adjustment and deterministic bootstrap intervals.
 - `src/provenance.mjs`: Source-content implementation digest and canonical JSON digests.

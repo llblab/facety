@@ -6,4 +6,5 @@
 - [Emergent behavior research](discovery.en.md): Macro-state trajectories, bounded parameter landscapes, diagnostic candidates and evidence limits.
 - [Paired controls](controls.en.md): Decision-keyed randomness, scheduled activity disturbances, paired uncertainty and finite-window return criteria.
 - [Confirmatory evidence](evidence.en.md): Preregistered hypotheses, ablation-based necessity and alternative controls, reserved seeds, exact tests, study-level correction and parallel execution.
+- [Strategy games](games.en.md): Strategy menus, the one-step dispute layer, deviant groups, payoff facts, explicit valuations, equilibria and individual incentive compatibility.
 - [Incentive direction](incentives.en.md): Replayable local decisions, checked retained accounting, explicit offline payoff evaluation, evaluator-only custody/work counterfactuals, unknown inputs and the boundary between rewards and useful network effects.

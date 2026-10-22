@@ -33,7 +33,7 @@ test('directed mixing distinguishes edge assortativity from population compositi
 });
 
 test('macro measurements preserve XP semantics, normalized Council churn and passive state', () => {
-  const model = new FacetyModel({ genesis: ['a', 'b', 'c'], policy: { councilSize: 2, guarantorEligibility: 'accepted' } });
+  const model = new FacetyModel({ genesis: ['a', 'b', 'c'], policy: { councilSize: 2, guarantorEligibility: 'accepted', councilEligibility: 'accepted' } });
   const truth = labels(['a', 'b', 'c'], ['c']);
   guarantee(model, 'a', 'b');
   const before = measureNetwork(model, truth);
@@ -131,7 +131,7 @@ test('every trajectory ends at canonical final metrics and activity sums to the 
     assert.equal(last.xp.gini, run.metrics.xp.gini);
     assert.equal(last.graph.edges, run.metrics.guarantees.edges);
     assert.equal(last.connectivity.honestFraction, run.impact.honestConnectedFraction);
-    assert.equal(last.council.attackerShare, run.metrics.council.attackerSeats / run.metrics.council.seats);
+    assert.equal(last.council.attackerShare, run.metrics.council.seats ? run.metrics.council.attackerSeats / run.metrics.council.seats : null);
     for (const cohort of ['honest', 'attackers']) {
       const rows = run.history.map(point => point.cohorts[cohort].sincePrevious);
       assert.equal(rows.reduce((sum, row) => sum + row.attempts, 0), run.effort.cohorts[cohort].attempts);

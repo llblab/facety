@@ -45,7 +45,7 @@ test('censoring and already observed success remain distinct in aggregation', ()
   const unresolved = runTrials(config, { trials: 3 });
   assert.equal(unresolved.probability.unresolved, 3);
   assert.deepEqual(unresolved.probability.identificationBounds, { lower: 0, upper: 1 });
-  const known = runTrials({ ...config, successCriterion: 'council-majority' }, { trials: 3 });
+  const known = runTrials({ ...config, successCriterion: 'council-majority', policy: { councilEligibility: 'accepted' } }, { trials: 3 });
   assert.equal(known.censoredTrials, 3);
   assert.equal(known.probability.estimate, 1);
   assert.equal(known.probability.unresolved, 0);

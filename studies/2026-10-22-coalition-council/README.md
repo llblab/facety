@@ -2,6 +2,8 @@
 
 The first worked study using the [confirmatory evidence pipeline](../../docs/evidence.en.md). Every result below is conditional on the declared sybil-cone scenario, simulator policies, scripted strategies and 30-day horizon. Nothing here is a real-world attack estimate.
 
+This study ran before the Council default became active-only (`councilEligibility: "active"`, later the same day), so its Council counted every accepted subject. The registrations are bound to that implementation digest. Re-registering under the new default is a separate hypothesis.
+
 | Hypothesis | Kind | Verdict | Holm-adjusted p |
 | --- | --- | --- | --- |
 | [H1: guarantor-XP coupling amplifies coalition Council share](h1-coupling-amplification.json) | mechanism | supported within model | 3.7e-11 |

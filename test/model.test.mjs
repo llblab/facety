@@ -384,3 +384,18 @@ test('mechanism ablations are explicit and leave cancellation authority intact',
   const vetoed = identify(model, 'b');
   model.cancelSelfId('a', vetoed);
 });
+
+test('the Council is an XP leaderboard among currently active subjects by default', () => {
+  const model = fixture({ councilSize: 2 });
+  assert.deepEqual(model.council(), [], 'nobody has an uncancelled Self-ID in the last 28 days');
+  const a = identify(model, 'a');
+  identify(model, 'b');
+  model.advanceTo(7 * DAY);
+  model.convertToCollector('a', a);
+  assert.deepEqual(model.council(), [{ id: 'a', xp: 1 }, { id: 'b', xp: 0 }]);
+  model.advanceTo(28 * DAY);
+  assert.deepEqual(model.council(), [], 'members leave when their activity window expires');
+  identify(model, 'c');
+  assert.deepEqual(model.council(), [{ id: 'c', xp: 0 }]);
+  assert.deepEqual(fixture({ councilSize: 2, councilEligibility: 'accepted' }).council().map(member => member.id), ['a', 'b']);
+});

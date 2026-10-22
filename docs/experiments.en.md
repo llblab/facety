@@ -77,6 +77,10 @@ Money remains separate:
 
 The current experiment applies no judicial fine or XP-halving verdict; the underlying model supports explicit penalties for future adjudication experiments. Token market prices, Treasury D spending and realized fiat profit are not modeled.
 
+## Disputes, deviants and payoff facts
+
+`disputes` enables a one-step public challenge layer: an XP gate, a stake, a verdict of declared accuracy, fines, liability scope, a challenger reward share and optional exclusion of liable guarantors. `activity.<cohort>.challenge` is the probability of challenging an eligible suspicious act. `deviants` marks a seeded subset of initial operators that follow an alternative profile. Every run reports per-group payoff facts (`agents`), `system` facts and cumulative `sanctions` in history. [Strategy games](games.en.md) owns their semantics. With disputes disabled and no deviants, behavior is bit-identical to the previous scheduler.
+
 ## Ablations and provenance
 
 `ablations` accepts the model ablations from [the model contract](simulator.en.md#counterfactual-ablations) plus `randomGuaranteeTargets`, which replaces coalition and lineage-preferring guarantee targets with uniform public matching. Dotted paths such as `ablations.withholdGuarantorXp` work in sweeps, landscapes, controls and hypothesis arms. Enabled ablations appear in the recorded configuration and assumptions.
