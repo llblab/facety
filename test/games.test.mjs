@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { runGame, analyzeGame, sweepValuation, mixedEquilibria, normalizeGame } from '../src/games.mjs';
+import { runGame, runGameGrid, analyzeGame, sweepValuation, mixedEquilibria, normalizeGame, deterrenceSummary } from '../src/games.mjs';
 
 const spec = {
   id: 'small',
@@ -60,4 +60,27 @@ test('a deviation to an identical strategy has exactly zero individual gain', as
     assert.equal(row.individualGain.mean, 0);
     assert.equal(row.individualGain.verdict, 'undetermined');
   }
+});
+
+test('deterrence summaries compare fraud with the declared rule-following strategy across a parameter grid', async () => {
+  assert.throws(() => normalizeGame({ ...spec, reference: { attackers: 'missing' } }), /reference/);
+  await assert.rejects(runGameGrid({ ...spec, deviation: undefined }, { axes: { sensitivity: [0.8] } }), /reference/);
+  const grid = await runGameGrid({ ...spec, deviation: undefined, valuation, reference: { attackers: 'abstain' } }, { axes: { sensitivity: [0, 0.9] }, workers: 2 });
+  assert.equal(grid.cells.length, 2);
+  assert.equal(grid.runs, 2 * 4 * 6);
+  const blind = grid.cells.find(cell => cell.coordinates.sensitivity === 0).deterrence;
+  const sharp = grid.cells.find(cell => cell.coordinates.sensitivity === 0.9).deterrence;
+  assert.ok(blind.byHonest.watch.fraudGainOverReference.farm.mean > sharp.byHonest.watch.fraudGainOverReference.farm.mean, 'fraud gains more when it is never suspicious');
+  assert.ok(['fraud-pays', 'premium-free-without-clear-deterrent', 'deterred', 'unresolved'].includes(blind.verdict));
+  for (const cell of grid.cells) assert.equal(typeof cell.viability.viable, 'boolean');
+  for (const cell of grid.cells) {
+    for (const equilibrium of cell.deterrence.equilibria ?? []) {
+      assert.ok(Math.abs(Object.values(equilibrium.honest).reduce((a, b) => a + b, 0) - 1) < 1e-9);
+      assert.ok(equilibrium.fraudProbability >= -1e-9 && equilibrium.fraudProbability <= 1 + 1e-9);
+    }
+  }
+  const single = await runGame({ ...spec, deviation: undefined, reference: { attackers: 'abstain' } });
+  const summary = deterrenceSummary(single, analyzeGame(single, valuation));
+  assert.deepEqual(Object.keys(summary.byHonest), ['watch', 'rest']);
+  assert.equal(summary.reference, 'abstain');
 });

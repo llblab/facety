@@ -7,7 +7,7 @@ import { runTrials, sweepParameter } from '../src/trials.mjs';
 import { runLandscape, runLandscapeParallel, diagnoseLandscape } from '../src/discovery.mjs';
 import { compareExperiments, analyzePairs } from '../src/controls.mjs';
 import { registerHypothesis, confirmHypothesis, analyzeConfirmation, verifyRegistration, adjustStudy } from '../src/evidence.mjs';
-import { runGame, analyzeGame, sweepValuation } from '../src/games.mjs';
+import { runGame, runGameGrid, analyzeGame, sweepValuation, assessViability } from '../src/games.mjs';
 import { createGraphArtifact, extractGraphArtifact, mutateGraphArtifact, searchGraphArtifact, verifyGraphArtifact } from '../src/graph-workbench.mjs';
 
 const USAGE = `Usage: facety <command> [input.json ...] [--out file] [--force] [--workers n|auto]
@@ -31,6 +31,8 @@ Strategy games (payoff facts from simulation, utilities from explicit valuations
   game <game.json>                      Run all strategy profiles and deviations (--workers).
   game-analyze <result.json> <valuation.json>   Equilibria and incentives, no reruns.
   game-sweep <result.json> <sweep.json> Vary one valuation weight: { valuation, role, kind, key, values }.
+  game-grid <game.json> <axes.json>     Rerun the game over simulation-parameter axes; deterrence per cell (--workers).
+  grid-viability <grid.json> [criteria.json]   Re-assess grid cells under declared viability criteria.
 
 Graphs (synthetic or extracted views; never protocol admission):
   graph-create <options.json>
@@ -82,6 +84,11 @@ const COMMANDS = {
   study: files => adjustStudy(files.map(read)),
   game: ([file], options) => runGame(read(file), { workers: workers(options.workers) }),
   'game-analyze': ([result, valuation]) => analyzeGame(read(result), read(valuation)),
+  'game-grid': ([file, axes], options) => runGameGrid(read(file), { axes: read(axes), workers: workers(options.workers) }),
+  'grid-viability': ([file, criteria]) => {
+    const grid = read(file);
+    return grid.cells.map(cell => ({ coordinates: cell.coordinates, verdict: cell.deterrence.verdict, ...assessViability(cell.deterrence, criteria ? read(criteria) : {}) }));
+  },
   'game-sweep': ([result, file]) => {
     const { valuation, ...sweep } = read(file);
     return sweepValuation(read(result), valuation, sweep);

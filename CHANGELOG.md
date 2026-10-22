@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added deterrence grids: `runGameGrid` / CLI `game-grid` reruns a game over simulation-parameter axes and summarizes each cell. The summary covers fraud gain over a declared rule-following reference, the equilibrium fraud premium and fraud probability, honest value and wrongful invalidations. `assessViability` / `grid-viability` apply declared welfare criteria.
+- Exploratory deterrence-threshold study (`studies/2026-10-22-deterrence-threshold`, 10,560 runs). Within the model, deterrence with acceptable honest welfare needs:
+  - verdict accuracy of at least about 0.8 (below that, a harassing coalition invalidates many genuine people);
+  - false-suspicion rate near 1% (at 5%, false free vetoes make vigilance unprofitable and farming pays);
+  - per-inspection detection of only 0.2–0.35.
+  Not yet confirmed on reserved seeds.
 - Added strategy games (`src/games.mjs`, CLI `game`, `game-analyze`, `game-sweep`). Roles declare strategy menus (activity profiles and schedules). Every profile and every individual deviation is simulated on shared seeds, keeping per-operator payoff facts, and explicit linear valuations are applied offline. The analysis reports population best responses with paired sign tests, pure and mixed equilibria (support enumeration), individual incentive compatibility, social-dilemma flags and valuation sweeps.
 - Added an optional one-step dispute layer: an XP-gated challenge with stake, a verdict of declared accuracy, fines with configurable liability scope, a challenger reward share, loser XP halving and optional exclusion of liable guarantors ("persona non grata"). Sanctions go through `FacetyModel`, and wrongful invalidations are counted. It is disabled by default; with it disabled, behavior is bit-identical.
 - Added deviant groups (a seeded subset of initial operators with an alternative strategy), per-operator effort, per-group payoff facts (`agents`, including FACY and debt held by fakes), `system` facts and cumulative `sanctions` observables.

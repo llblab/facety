@@ -34,7 +34,7 @@ function normalizeStrategy(role, strategy, days) {
 }
 
 export function normalizeGame(spec) {
-  record(spec, ['id', 'description', 'base', 'roles', 'replicas', 'seed', 'deviation', 'maxRuns', 'valuation'], 'specification');
+  record(spec, ['id', 'description', 'base', 'roles', 'replicas', 'seed', 'deviation', 'maxRuns', 'valuation', 'reference'], 'specification');
   identifier(spec.id, 'id');
   const base = experimentConfig(spec.base ?? {});
   if (base.includeState) fail('games retain payoff facts, not protocol snapshots');
@@ -62,7 +62,12 @@ export function normalizeGame(spec) {
   const [h, a] = COHORTS.map(role => Object.keys(roles[role]).length);
   const plannedRuns = h * a * (1 + (deviation ? h - 1 + a - 1 : 0)) * replicas;
   if (plannedRuns > maxRuns) fail(`planned ${plannedRuns} runs exceed maxRuns ${maxRuns}`);
-  return { id: spec.id, ...(spec.description ? { description: String(spec.description) } : {}), base: structuredClone(spec.base ?? {}), roles, replicas, seed: String(spec.seed ?? spec.id), deviation, maxRuns };
+  const reference = spec.reference ?? null;
+  if (reference !== null) {
+    record(reference, ['attackers'], 'reference');
+    if (!Object.hasOwn(roles.attackers, reference.attackers)) fail('reference.attackers must name the rule-following attacker strategy');
+  }
+  return { id: spec.id, ...(spec.description ? { description: String(spec.description) } : {}), base: structuredClone(spec.base ?? {}), roles, replicas, seed: String(spec.seed ?? spec.id), deviation, maxRuns, reference };
 }
 
 function profileConfig(game, profile, deviant = null) {
@@ -88,8 +93,7 @@ export function gameRunTask({ config }) {
 
 function profileKey(profile) { return `${profile.honest}|${profile.attackers}`; }
 
-export async function runGame(spec, { workers = 0 } = {}) {
-  const game = normalizeGame(spec);
+function gamePlans(game) {
   const profiles = [];
   for (const honest of Object.keys(game.roles.honest)) for (const attackers of Object.keys(game.roles.attackers)) profiles.push({ honest, attackers });
   const plans = [];
@@ -102,15 +106,115 @@ export async function runGame(spec, { workers = 0 } = {}) {
       }
     }
   }
-  const runs = plans.length * game.replicas;
   const tasks = plans.flatMap(plan => Array.from({ length: game.replicas }, (_, index) => ({ config: { ...plan.config, seed: replicaSeed(game.seed, plan.config.seed, index) } })));
-  const results = await mapTasks(tasks, { workers, module: import.meta.url, exportName: 'gameRunTask' });
+  return { plans, tasks };
+}
+
+function assembleGame(game, plans, results) {
   const facts = plans.map((plan, index) => ({
     kind: plan.kind, profile: plan.profile, ...(plan.kind === 'deviation' ? { role: plan.role, strategy: plan.strategy } : {}),
     replicas: results.slice(index * game.replicas, (index + 1) * game.replicas),
   }));
-  const result = { schema: GAME_SCHEMA, game, provenance: provenance(), runs, facts };
+  return { schema: GAME_SCHEMA, game, provenance: provenance(), runs: plans.length * game.replicas, facts };
+}
+
+export async function runGame(spec, { workers = 0 } = {}) {
+  const game = normalizeGame(spec);
+  const { plans, tasks } = gamePlans(game);
+  const result = assembleGame(game, plans, await mapTasks(tasks, { workers, module: import.meta.url, exportName: 'gameRunTask' }));
   return spec.valuation ? { ...result, analysis: analyzeGame(result, spec.valuation) } : result;
+}
+
+function withPath(object, path, value) {
+  const copy = structuredClone(object);
+  const keys = path.split('.');
+  let parent = copy;
+  for (const key of keys.slice(0, -1)) parent = parent[key] ??= {};
+  parent[keys.at(-1)] = value;
+  return copy;
+}
+
+// Runs the same game over a grid of simulation parameters (base paths such as
+// sensitivity or disputes.accuracy). All cells share replica seeds and one worker pool.
+export async function runGameGrid(spec, { axes, workers = 0, maxRuns = 200000, retainFacts = false } = {}) {
+  record(axes, null, 'grid axes');
+  const names = Object.keys(axes).sort();
+  if (!names.length || names.some(name => !Array.isArray(axes[name]) || !axes[name].length || axes[name].length > 50)) fail('grid axes need 1..50 values each');
+  if (!spec.valuation || !spec.reference) fail('a grid needs a valuation and reference.attackers to summarize deterrence');
+  let coordinates = [{}];
+  for (const name of names) coordinates = coordinates.flatMap(point => axes[name].map(value => ({ ...point, [name]: value })));
+  const cells = coordinates.map(point => {
+    const cellSpec = { ...spec, base: names.reduce((base, name) => withPath(base, name, point[name]), spec.base ?? {}) };
+    const game = normalizeGame(cellSpec);
+    return { point, cellSpec, game, ...gamePlans(game) };
+  });
+  const runs = cells.reduce((sum, cell) => sum + cell.tasks.length, 0);
+  if (runs > maxRuns) fail(`grid plans ${runs} runs, above maxRuns ${maxRuns}`);
+  const results = await mapTasks(cells.flatMap(cell => cell.tasks), { workers, module: import.meta.url, exportName: 'gameRunTask' });
+  let offset = 0;
+  return {
+    schema: 'facety-game-grid/v1', id: spec.id, axes: Object.fromEntries(names.map(name => [name, [...axes[name]]])), provenance: provenance(), runs,
+    cells: cells.map(cell => {
+      const result = assembleGame(cell.game, cell.plans, results.slice(offset, offset += cell.tasks.length));
+      const analysis = analyzeGame(result, spec.valuation);
+      const deterrence = deterrenceSummary(result, analysis);
+      return { coordinates: cell.point, deterrence, viability: assessViability(deterrence), ...(retainFacts ? { result } : {}) };
+    }),
+  };
+}
+
+export const DEFAULT_VIABILITY = Object.freeze({ minHonestRetention: 0.5, maxWrongfulInvalidations: 1 });
+
+// Declared viability criteria over a deterrence summary: fraud earns no premium, some honest strategy
+// deters, honest equilibrium value keeps a minimum share of the fraud-free value, and wrongful
+// invalidations of genuine people stay below a bound. The thresholds are analyst choices.
+export function assessViability(deterrence, criteria = {}) {
+  record(criteria, Object.keys(DEFAULT_VIABILITY), 'viability criteria');
+  const { minHonestRetention, maxWrongfulInvalidations } = { ...DEFAULT_VIABILITY, ...criteria };
+  const equilibria = deterrence.equilibria ?? [];
+  const retention = equilibria.length ? Math.min(...equilibria.map(eq => eq.honestValue / deterrence.honestWithoutFraud)) : null;
+  const wrongful = equilibria.length ? Math.max(...equilibria.map(eq => eq.wrongfulInvalidations)) : null;
+  const failures = [];
+  if (deterrence.verdict !== 'deterred') failures.push(deterrence.verdict);
+  if (retention === null || retention < minHonestRetention) failures.push('honest-retention');
+  if (wrongful === null || wrongful > maxWrongfulInvalidations) failures.push('wrongful-invalidations');
+  return { criteria: { minHonestRetention, maxWrongfulInvalidations }, honestRetention: retention, wrongfulInvalidations: wrongful, viable: !failures.length, failures };
+}
+
+// Does fraud pay? Compares every non-reference attacker strategy with the rule-following reference.
+export function deterrenceSummary(result, analysis, { alpha = analysis.alpha } = {}) {
+  const reference = result.game.reference?.attackers;
+  if (!reference) fail('deterrence needs game.reference.attackers');
+  const names = Object.fromEntries(COHORTS.map(role => [role, Object.keys(result.game.roles[role])]));
+  const fraud = names.attackers.filter(name => name !== reference);
+  const profile = (honest, attackers) => analysis.profiles.find(row => row.profile.honest === honest && row.profile.attackers === attackers);
+  const entry = (honest, attackers) => result.facts.find(item => item.kind === 'profile' && item.profile.honest === honest && item.profile.attackers === attackers);
+  const payoffs = (honest, attackers) => entry(honest, attackers).replicas.map(replica => groupUtility(replica, 'attackers', INITIAL_GROUPS, analysis.valuation.attackers));
+  const byHonest = Object.fromEntries(names.honest.map(honest => {
+    const gains = Object.fromEntries(fraud.map(name => [name, pairedGain(payoffs(honest, name), payoffs(honest, reference), `deterrence:${honest}:${name}`, alpha)]));
+    return [honest, { fraudGainOverReference: Object.fromEntries(Object.entries(gains).map(([name, gain]) => [name, { mean: gain.mean, verdict: gain.verdict }])), deters: Object.values(gains).every(gain => gain.verdict === 'worse') }];
+  }));
+  const mixed = analysis.mixedEquilibria;
+  const equilibria = mixed === null ? null : mixed.map(eq => {
+    const referenceValue = names.honest.reduce((sum, honest) => sum + eq.honest[honest] * profile(honest, reference).payoffs.attackers.mean, 0);
+    const weighted = key => names.honest.reduce((sum, honest) => sum + names.attackers.reduce((inner, attackers) => inner + eq.honest[honest] * eq.attackers[attackers] * (profile(honest, attackers).sanctions[key] ?? 0), 0), 0);
+    return {
+      honest: eq.honest, attackers: eq.attackers,
+      fraudProbability: 1 - eq.attackers[reference],
+      fraudPremium: eq.values.attackers - referenceValue,
+      honestValue: eq.values.honest,
+      wrongfulInvalidations: weighted('wrongfulInvalidated'),
+      falseInvalidations: weighted('falseInvalidated'),
+    };
+  });
+  const honestWithoutFraud = Math.max(...names.honest.map(honest => profile(honest, reference).payoffs.honest.mean));
+  const scale = Math.max(1, Math.abs(honestWithoutFraud));
+  const premiumFree = equilibria !== null && equilibria.length > 0 && equilibria.every(eq => eq.fraudPremium <= 1e-6 * scale);
+  const deterrent = Object.values(byHonest).some(row => row.deters);
+  return {
+    reference, byHonest, equilibria, honestWithoutFraud,
+    verdict: equilibria === null || !equilibria.length ? 'unresolved' : !premiumFree ? 'fraud-pays' : deterrent ? 'deterred' : 'premium-free-without-clear-deterrent',
+  };
 }
 
 export function normalizeValuation(valuation) {

@@ -74,6 +74,24 @@ Choose weights to express what is actually valued, and state them. For example, 
 - **Social dilemma flag:** an individual deviation is profitable, but the whole role switching to it lowers that role's payoff, as with free-riding on a public good.
 - `sweepValuation` recomputes best responses, equilibria and incentive compatibility while one weight varies.
 
+## Deterrence thresholds
+
+Declare the rule-following attacker strategy as `reference: { "attackers": "abstain" }`. `deterrenceSummary(result, analysis)` then reports:
+
+- **Per honest strategy:** each fraud strategy's paired payoff gain over the reference, and whether that strategy deters every fraud strategy (all significantly worse).
+- **Per equilibrium of the finite menu:** fraud probability, honest value, mean wrongful and false invalidations, and the **fraud premium**, meaning the attackers' equilibrium value minus what the reference earns against the same honest mix.
+- **Verdict:**
+  - `deterred`: no equilibrium pays a premium, and some honest strategy deters;
+  - `fraud-pays`: some equilibrium pays a positive premium;
+  - `premium-free-without-clear-deterrent`: no premium, but no honest strategy clearly deters;
+  - `unresolved`: no equilibrium was found.
+
+When the reference is in the equilibrium support, the attackers' indifference forces a zero premium. Fraud can then be frequent and still earn nothing above rule-following, while honest people pay for vigilance. Report the honest value next to the premium.
+
+`runGameGrid(spec, { axes, workers })` (CLI `game-grid game.json axes.json`) reruns the whole game for every combination of base parameters, such as `sensitivity`, `falsePositiveRate` or `disputes.accuracy`. All cells share replica seeds and one worker pool, and each cell gets a deterrence summary. Cells are independent games: neighboring verdicts locate a threshold, but a single grid is exploratory, not a confirmed boundary.
+
+`assessViability(deterrence, criteria)` (CLI `grid-viability grid.json [criteria.json]`) adds declared welfare criteria to the deterrence verdict: a minimum honest retention (equilibrium honest value divided by the fraud-free value, default 0.5) and a maximum of wrongful invalidations per run (default 1). Fraud can earn no premium while honest people are ruined by dispute abuse or false vetoes, so report viability, not just deterrence. The [deterrence-threshold study](../studies/2026-10-22-deterrence-threshold/README.md) shows both failure modes.
+
 ## Limits
 
 - An equilibrium of a finite menu is not an equilibrium of the full game. Untried strategies can beat every listed one.
