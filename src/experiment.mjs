@@ -14,8 +14,8 @@ export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-car
 export const EXPERIMENT_ABLATIONS = Object.freeze({ ...DEFAULT_ABLATIONS, randomGuaranteeTargets: false });
 export const RANDOMNESS_POLICY = Object.freeze({ generator: RANDOM_GENERATOR, decisions: 'decision-keyed-v1' });
 export const DEFAULT_ACTIVITY = Object.freeze({
-  honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, challenge: 0, bribe: 0, convert: 1 }),
-  attackers: Object.freeze({ selfId: 1, invite: 0.4, guarantee: 2, inspect: 0, respond: 0, challenge: 0, bribe: 0, convert: 1 }),
+  honest: Object.freeze({ selfId: 0.8, invite: 0.05, guarantee: 0.3, inspect: 1, respond: 0.9, challenge: 0, review: 0, bribe: 0, convert: 1 }),
+  attackers: Object.freeze({ selfId: 1, invite: 0.4, guarantee: 2, inspect: 0, respond: 0, challenge: 0, review: 0, bribe: 0, convert: 1 }),
 });
 const DEFAULTS = Object.freeze({
   scenario: 'sybil-cone', seed: 'facety', initialSize: 30, attackerShare: 0.1,
@@ -40,6 +40,7 @@ export const DEFAULT_SOCIAL = Object.freeze({
   verification: false, verificationSensitivity: 0.9, verificationFalsePositiveRate: 0.01,
   investigation: false, maxFollowUps: 20,
   bribeAcceptance: 0, bribePrice: 5,
+  exitOnFraud: false,
 });
 export const EXPERIMENT_ASSUMPTIONS = Object.freeze([
   'Initial subjects are genuine accepted human operators and trusted roots; their prior acquisition cost is not estimated.',
@@ -81,7 +82,7 @@ function activityOverrides(overrides) {
     mergeRecord(DEFAULT_ACTIVITY[cohort], partial, cohort + ' activity');
     for (const [action, rate] of Object.entries(partial)) {
       if (!Number.isFinite(rate) || rate < 0 || rate > 100) throw new RangeError('activity must be in [0, 100]');
-      if (['selfId', 'respond', 'challenge', 'convert'].includes(action)) probability(rate, action);
+      if (['selfId', 'respond', 'challenge', 'review', 'convert'].includes(action)) probability(rate, action);
     }
     return [cohort, Object.freeze({ ...partial })];
   })));
@@ -128,7 +129,7 @@ function deviantsFrom(overrides, days) {
 function socialFrom(overrides) {
   const social = mergeRecord(DEFAULT_SOCIAL, overrides, 'social');
   if (!['public', 'acquaintances'].includes(social.scope)) throw new Error('social.scope must be public or acquaintances');
-  for (const key of ['screening', 'verification', 'investigation']) if (typeof social[key] !== 'boolean') throw new TypeError('social.' + key + ' must be boolean');
+  for (const key of ['screening', 'verification', 'investigation', 'exitOnFraud']) if (typeof social[key] !== 'boolean') throw new TypeError('social.' + key + ' must be boolean');
   integer(social.hops, 'social.hops', 1, 6);
   integer(social.maxFollowUps, 'social.maxFollowUps', 0, 1000);
   integer(social.bribePrice, 'social.bribePrice', 0);
@@ -228,7 +229,7 @@ export function withExperimentParameters(overrides, parameters) {
 
 // Truth is confined to this environment/evaluator, not supplied to the defense handler.
 function observationEnvironment(truth, random, config) {
-  return (id, context) => Object.freeze({ suspicious: random.fork(JSON.stringify([id, context])).chance(truth.get(id).genuine ? config.falsePositiveRate : config.sensitivity) });
+  return (id, context, identity = truth.get(id)) => Object.freeze({ suspicious: random.fork(JSON.stringify([id, context])).chance(identity.genuine ? config.falsePositiveRate : config.sensitivity) });
 }
 
 // Uniform choice from `list` without `excluded` members; identical to picking from the filtered
@@ -303,7 +304,7 @@ export function runExperiment(overrides = {}) {
   const genesisOperators = new Set(ids);
   const operatorEffort = new Map();
   const sanctions = { challenges: 0, upheld: 0, rejected: 0, falseInvalidated: 0, wrongfulInvalidated: 0, excluded: 0, missedFalse: 0, voidedActs: 0 };
-  const trustWork = { strangerRefusals: 0, verificationsCleared: 0, followUps: 0, bribesOffered: 0, bribesAccepted: 0 };
+  const trustWork = { strangerRefusals: 0, verificationsCleared: 0, followUps: 0, bribesOffered: 0, bribesAccepted: 0, invitationsCancelled: 0, guardianExits: 0 };
   const bribes = new Map();
   // Undirected social neighborhood over guarantees and invitation lineage.
   function neighborhood(id, hops) {
@@ -476,6 +477,34 @@ export function runExperiment(overrides = {}) {
       }
     }
   }
+  // Honest guarantors review whom their guaranteed subject invites while the invitation is frozen,
+  // cancel a confirmed fake invitation and optionally leave the relation to escape the liability wave.
+  function guardianWork() {
+    if (!model.policy.invitationFreezeHours) return;
+    for (const pending of pendingInvitations) {
+      if (pending.cancelled || model.now - pending.createdAt >= model.policy.invitationFreezeHours) continue;
+      for (const guarantor of [...model.guarantees.inEdges(pending.sponsor)].map(edge => edge.from)) {
+        if (pending.cancelled || truth.get(guarantor).cohort !== 'honest' || model.subject(guarantor).identityStatus !== 'accepted') continue;
+        if (!decision('invitation-review', guarantor, [pending.invitation]).chance(activityOf(guarantor).review)) continue;
+        const look = attempt(guarantor, 'inspect', () => observe(pending.candidate.id, ['invitation-review', model.now, guarantor], pending.candidate));
+        if (!look.ok || !look.value.suspicious) continue;
+        if (config.social.verification) {
+          const check = attempt(guarantor, 'verify', () => verified(guarantor, pending.candidate.id, 'invitation-review', pending.candidate));
+          if (!check.ok || !check.value) {
+            if (check.ok) trustWork.verificationsCleared++;
+            continue;
+          }
+        }
+        const cancel = attempt(guarantor, 'respond', () => model.cancelInvitation(guarantor, pending.invitation));
+        if (!cancel.ok) continue;
+        pending.cancelled = true;
+        trustWork.invitationsCancelled++;
+        if (!config.social.exitOnFraud) continue;
+        const relation = model.guaranteeRelations().find(row => row.status === 'active' && row.guarantor === guarantor && row.guaranteed === pending.sponsor);
+        if (relation && attempt(guarantor, 'respond', () => model.endGuarantee(guarantor, relation.id)).ok) trustWork.guardianExits++;
+      }
+    }
+  }
   function responseChoice(actor, act) {
     return decision('inspection-response', actor, [act.subject, act.recordedAt]);
   }
@@ -540,8 +569,8 @@ export function runExperiment(overrides = {}) {
     }
   }
   // Second-stage check (call or meeting) with its own declared quality.
-  function verified(actor, subject, context) {
-    const rate = truth.get(subject).genuine ? config.social.verificationFalsePositiveRate : config.social.verificationSensitivity;
+  function verified(actor, subject, context, identity = truth.get(subject)) {
+    const rate = identity.genuine ? config.social.verificationFalsePositiveRate : config.social.verificationSensitivity;
     return sensing.fork(JSON.stringify(['verification', context, model.now, actor, subject])).chance(rate);
   }
   // Candidate acts are the phase-start unspent acts, minus own, already inspected and vetoed acts.
@@ -665,16 +694,17 @@ export function runExperiment(overrides = {}) {
           return model.createInvitation(actor, source, candidate.id);
         });
         if (!invitation.ok) break;
-        pendingInvitations.push({ invitation: invitation.value, candidate, sponsor: actor });
+        pendingInvitations.push({ invitation: invitation.value, candidate, sponsor: actor, createdAt: model.now });
         prepared.delete(actor);
       }
     }
     for (let i = pendingInvitations.length - 1; i >= 0; i--) {
       const pending = pendingInvitations[i];
-      if (model.subject(pending.sponsor).identityStatus !== 'accepted') {
+      if (model.subject(pending.sponsor).identityStatus !== 'accepted' || pending.cancelled) {
         pendingInvitations.splice(i, 1);
         continue;
       }
+      if (model.now - pending.createdAt < model.policy.invitationFreezeHours) continue;
       const accepted = attempt(pending.sponsor, 'acceptInvitation', () => {
         if (model.size >= config.maxSubjects) throw new SimulationLimit('maxSubjects');
         model.acceptInvitation(pending.invitation, pending.candidate.id);
@@ -708,9 +738,10 @@ export function runExperiment(overrides = {}) {
       guaranteeWork(actors);
       briberyWork(actors);
       inspectionWork(actors);
+      guardianWork();
       admissionWork(stillAccepted());
       for (const actor of stillAccepted()) {
-        for (const act of model.eligibleEmissions(actor, 7 * DAY)) {
+        for (const act of model.eligibleEmissions(actor, model.policy.conversionMaturityHours)) {
           if (decision('collector-conversion', actor, model.selfId(act).recordedAt).chance(activityOf(actor).convert)) attempt(actor, 'convert', () => model.convertToCollector(actor, act));
         }
       }

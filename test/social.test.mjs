@@ -60,3 +60,20 @@ test('bribes are off-protocol payments that create liable honest guarantors of c
   const refused = runs({ social: { bribeAcceptance: 0 }, activity: { honest: { inspect: 3, challenge: 1 }, attackers: { bribe: 0.3 } } });
   assert.ok(refused.every(run => run.system.trust.bribesAccepted === 0 && run.system.trust.bribesOffered > 0));
 });
+
+test('guarantors reviewing frozen invitations stop fake admissions, and exits escape the liability wave', () => {
+  const settings = {
+    ...base, policy: { invitationFreezeHours: 72 },
+    disputes: { enabled: true, accuracy: 0.9, fineMode: 'chain', liability: 'inviter-chain' },
+    activity: { honest: { inspect: 0.3, challenge: 0.2, review: 1 } },
+  };
+  const unwatched = runs({ ...settings, activity: { honest: { inspect: 0.3, challenge: 0.2, review: 0 } } });
+  const watched = runs(settings);
+  const leaving = runs({ ...settings, social: { exitOnFraud: true } });
+  assert.ok(unwatched.every(run => run.system.trust.invitationsCancelled === 0));
+  assert.ok(mean(watched, run => run.system.trust.invitationsCancelled) > 0);
+  assert.ok(mean(watched, run => run.population.falseSubjects) < mean(unwatched, run => run.population.falseSubjects));
+  assert.ok(mean(leaving, run => run.system.trust.guardianExits) > 0);
+  assert.ok(watched.every(run => run.state === undefined));
+  assert.throws(() => experimentConfig({ activity: { honest: { review: 2 } } }), RangeError);
+});

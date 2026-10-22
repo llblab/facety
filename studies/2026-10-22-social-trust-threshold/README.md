@@ -65,3 +65,35 @@ Chain fines beat the fixed fine wherever the fake lived long enough. The inviter
 - Exploratory; boundary cells need confirmation on reserved seeds.
 - Population best responses treat the honest cohort as one player. Individually, unexposed honest people may still profit from catching fakes.
 - Verification quality, bribe acceptance and stranger rate are assumptions, not measurements.
+
+## 5. Invitation freeze, guardian review and exit (`game-guardian.json`, `grid-guardian.json`)
+
+Settings: chain fines, inviter-chain liability, `linkBreakXp: "revoke"`. Honest strategies now include invitation review: vigilant 100%, lax 30%, passive 0%. Accuracy 0.9, false suspicions 5%.
+
+| Sensitivity | No freeze | 72 h freeze, review | 72 h freeze, review + exit |
+| --- | --- | --- | --- |
+| 0.2 | fraud +192, honest passive, r 0.51 | fraud +9, honest lax, r 0.78 | fraud +55, honest passive, r 0.77 |
+| 0.35 | fraud +193, r 0.51 | fraud +12, r 0.86 | fraud +10, r 0.86 |
+| 0.5 | fraud +193, r 0.50 | fraud +5, r 0.85 | fraud +3, r 0.85 |
+
+A cancellable freeze is what makes the wave workable. Guarantors who review their subject's invitations cancel fake admissions before the wave can reach them. The premium falls from about 190 to single digits, and honest retention rises from 0.5 to about 0.85; the coalition's best remaining strategy is `farm-then-hide`. Exiting the relation escapes the wave but also removes that guarantor's oversight; at low detection this pushes honest people back to passivity.
+
+## 6. One-day windows (`axes-timing.json`, `grid-timing.json`)
+
+The owner proposed one day for every window: a Self-ID is contestable for 24 h before it can be spent, and an invitation is contestable for 24 h before it can be applied. The grid crosses spend maturity (24/72 h), conversion maturity (24/168 h) and invitation freeze (24/72 h). Settings are as in section 5, without exit.
+
+| Spend / convert / freeze (h) | Sensitivity 0.35 | Sensitivity 0.5 |
+| --- | --- | --- |
+| **24 / 24 / 24 (owner)** | **viable**: fraud 7%, r 0.73, honest 89% vigilant | **viable**: fraud 10%, r 0.72, honest 78% vigilant |
+| 72 / 168 / 72 (current text + freeze) | fraud +12, r 0.86 | fraud +5, r 0.85 |
+| 24 / 168 / 72 | **viable**: fraud 26%, r 0.88 | **viable**: fraud 16%, r 0.93 |
+| 24 / 168 / 24 | fraud +232, r 0.29 | fraud +232, r 0.29 |
+| 72 / 24 / any | fraud +7 with harassment, wrongful invalidations | same |
+
+Reading:
+
+- The owner's 24/24/24 scheme is viable at both sensitivities. With fast spending and withdrawal, an unchecked farm grows and pays out so quickly (+274 per coalition operator against lax honest people) that honest people's best response is to stay vigilant. Vigilant honest people deter every fraud strategy, and liquid coalition money can actually be collected by fines. The price is constant vigilance: honest retention is about 0.72.
+- A longer withdrawal delay paired with a longer invitation freeze (24/168/72) is also viable, with lax vigilance and higher retention (0.88–0.93). Mismatched windows fail badly: fast invitations with slow withdrawal and a short freeze (24/168/24) let fake cones grow unchecked while fines turn into uncollectible debt.
+- One simulated day contains one inspection round. One-day windows therefore assume guarantors look at new activity every day, for example through app notifications. If real people check less often, the effective window is shorter than their checking interval.
+
+These interactions are non-monotone and exploratory; confirm the 24/24/24 and 24/168/72 cells on reserved seeds before adopting either.

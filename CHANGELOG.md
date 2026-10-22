@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- Added a cancellable invitation freeze (`invitationFreezeHours`, `cancelInvitation`), guardian review of frozen invitations (`activity.honest.review`), optional exit from the relation (`social.exitOnFraud`) and XP revocation on link break (`linkBreakXp: "revoke"`). Spend and conversion maturity are now policies (`spendMaturityHours` 72, `conversionMaturityHours` 168 by default). All defaults are bit-identical.
+- Exploratory results in `studies/2026-10-22-social-trust-threshold`:
+  - a reviewable freeze turns the inviter-chain liability wave from counterproductive (honest passivity, fraud +190) into nearly deterring (fraud +3 to +12, honest retention about 0.85);
+  - the owner's one-day windows (24/24/24 h) are viable at sensitivity 0.35–0.5 with mostly vigilant honest people;
+  - 24/168/72 is viable with lax vigilance and higher honest retention;
+  - mismatched windows fail.
 - Added a social trust layer (`social`, defaults bit-identical), with the corresponding counters in `trust.*` and payoff facts:
   - acquaintance-only guaranteeing within a hop radius, plus a stranger rate;
   - SybilRank-style graph screening of inspection targets from public roots;

@@ -16,7 +16,7 @@ export const OBSERVABLES = Object.freeze({
   'lineage.maxDepth': 1, 'lineage.meanDepth': 0.25,
   'sanctions.challenges': 1, 'sanctions.upheld': 1, 'sanctions.rejected': 1, 'sanctions.falseInvalidated': 1,
   'sanctions.wrongfulInvalidated': 1, 'sanctions.excluded': 1, 'sanctions.missedFalse': 1, 'sanctions.voidedActs': 1,
-  'trust.strangerRefusals': 1, 'trust.verificationsCleared': 1, 'trust.followUps': 1, 'trust.bribesOffered': 1, 'trust.bribesAccepted': 1,
+  'trust.strangerRefusals': 1, 'trust.verificationsCleared': 1, 'trust.followUps': 1, 'trust.bribesOffered': 1, 'trust.bribesAccepted': 1, 'trust.invitationsCancelled': 1, 'trust.guardianExits': 1,
   'graph.mixing.excessWithinCohortFraction': 0.05, 'graph.mixing.directedAssortativity': 0.05,
   'connectivity.rootedFraction': 0.05, 'connectivity.honestFraction': 0.05, 'connectivity.honestNonRootFraction': 0.05,
   'admission.guaranteeQualifiedFraction': 0.05, 'admission.inviteReadyFraction': 0.05,

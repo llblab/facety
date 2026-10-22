@@ -10,13 +10,16 @@ export const DEFAULT_POLICY = Object.freeze({
   councilSize: 101,
   debtRecovery: 'reserve-until-mature',
   councilEligibility: 'active',
+  invitationFreezeHours: 0,
+  linkBreakXp: 'keep',
+  spendMaturityHours: 72,
+  conversionMaturityHours: 168,
 });
 // Counterfactual mechanism removals for evidence experiments. They are not protocol options.
 export const DEFAULT_ABLATIONS = Object.freeze({
   withholdGuarantorXp: false,
   fixedInvitationThreshold: null,
 });
-export const DEBT_RESERVATION_AGE = 3 * 24;
 
 function natural(value, label, minimum = 0) {
   if (!Number.isSafeInteger(value) || value < minimum) throw new RangeError(label + ' must be an integer >= ' + minimum);
@@ -33,9 +36,13 @@ export function policyFrom(overrides = {}) {
     guarantorEligibility: ['active', 'accepted'],
     debtRecovery: ['reserve-until-mature', 'immediate-burn'],
     councilEligibility: ['active', 'accepted'],
+    linkBreakXp: ['keep', 'revoke'],
   })) if (!allowed.includes(policy[key])) throw new Error('invalid policy: ' + key);
   natural(policy.guaranteeFee, 'guaranteeFee');
   natural(policy.councilSize, 'councilSize', 1);
+  natural(policy.invitationFreezeHours, 'invitationFreezeHours');
+  natural(policy.spendMaturityHours, 'spendMaturityHours');
+  natural(policy.conversionMaturityHours, 'conversionMaturityHours');
   return Object.freeze(policy);
 }
 
@@ -131,7 +138,7 @@ export class FacetyModel {
   // Reserved debt-recovery rights burn once their guarantor veto window has elapsed.
   #settleDebtReservations() {
     for (const act of [...this.#debtReservations]) {
-      if (act.disputeLock !== null || this.now - act.recordedAt < DEBT_RESERVATION_AGE) continue;
+      if (act.disputeLock !== null || this.now - act.recordedAt < this.policy.spendMaturityHours) continue;
       const subject = this.#subject(act.subject);
       act.debtReserved = false;
       this.#debtReservations.delete(act);
@@ -189,6 +196,12 @@ export class FacetyModel {
     this.guarantees.removeEdge(relation.guarantor, relation.guaranteed);
     relation.status = 'ended';
     relation.endedAt = this.now;
+    if (this.policy.linkBreakXp === 'revoke') {
+      const sources = new Set(this.#subjectActs.get(relation.guaranteed));
+      const guarantor = this.#subject(relation.guarantor);
+      guarantor.xpEvents = guarantor.xpEvents.filter(event => event.type !== 'credit' || !sources.has(event.source));
+      this.#replayXp(guarantor);
+    }
     this.#event('guarantee-ended', { relation: relationId, actor });
   }
   isActive(id) {
@@ -231,6 +244,8 @@ export class FacetyModel {
     act.xpCredited = true;
     this.#xpSources.add(act.id);
     for (const id of act.xpRecipients) {
+      // Under linkBreakXp "revoke", a guarantor who has since left the relation earns nothing more from it.
+      if (this.policy.linkBreakXp === 'revoke' && id !== act.subject && !this.guarantees.edge(id, act.subject)) continue;
       const subject = this.#subject(id);
       subject.xpEvents.push({ type: 'credit', source: act.id, at: this.now });
       subject.xp++;
@@ -296,7 +311,7 @@ export class FacetyModel {
     this.#dispose(act, 'cancelled', 'guarantor-veto');
     this.#event('self-id-cancelled', { selfId: selfIdId, guarantor });
   }
-  eligibleEmissions(subjectId, minimumAge = 3 * DAY) {
+  eligibleEmissions(subjectId, minimumAge = this.policy.spendMaturityHours) {
     this.#subject(subjectId);
     return this.#subjectActs.get(subjectId).map(id => this.#acts.get(id)).filter(act =>
       act.status === 'unspent' && act.disputeLock === null && !act.debtReserved && this.now - act.recordedAt >= minimumAge).map(act => act.id);
@@ -305,7 +320,7 @@ export class FacetyModel {
     const creator = this.#subject(creatorId, true);
     const act = this.#act(selfIdId);
     this.#requireUnspent(act);
-    if (act.subject !== creator.id || this.now - act.recordedAt < 3 * DAY) throw new ProtocolRejection('invitation requires own mature Emitter right');
+    if (act.subject !== creator.id || this.now - act.recordedAt < this.policy.spendMaturityHours) throw new ProtocolRejection('invitation requires own mature Emitter right');
     if (act.debtReserved) throw new ProtocolRejection('emission is reserved for debt recovery');
     if (this.eligibleGuarantors(creatorId).length < this.requiredGuarantors()) throw new ProtocolRejection('insufficient eligible guarantors');
     if (typeof target !== 'string' || !target.length || this.#subjects.has(target)) throw new ProtocolRejection('invitation must target a new subject');
@@ -318,16 +333,30 @@ export class FacetyModel {
   acceptInvitation(invitationId, subjectId) {
     const invitation = this.#invitations.get(invitationId);
     if (!invitation || invitation.status !== 'open' || invitation.target !== subjectId) throw new ProtocolRejection('invalid invitation acceptance');
+    if (this.now - invitation.createdAt < this.policy.invitationFreezeHours) throw new ProtocolRejection('invitation is frozen');
     this.#subject(invitation.creator, true);
     this.#addSubject(subjectId, false, invitation.creator);
     invitation.status = 'accepted';
     invitation.acceptedAt = this.now;
     this.#event('invitation-accepted', { invitation: invitationId, subject: subjectId });
   }
+  // During the freeze, any current guarantor of the creator can cancel an open invitation.
+  // The burned emission stays burned; XP credited by its consumption is revoked.
+  cancelInvitation(guarantor, invitationId) {
+    this.#subject(guarantor, true);
+    const invitation = this.#invitations.get(invitationId);
+    if (!invitation || invitation.status !== 'open' || this.now - invitation.createdAt >= this.policy.invitationFreezeHours) throw new ProtocolRejection('invitation is not cancellable');
+    if (!this.guarantees.edge(guarantor, invitation.creator)) throw new ProtocolRejection('no authority to cancel invitation');
+    invitation.status = 'cancelled';
+    const act = this.#act(invitation.sourceSelfId);
+    act.disposition = 'invitation-cancelled';
+    if (this.#xpSources.delete(act.id) && act.xpCredited) for (const id of act.xpRecipients) this.#replayXp(this.#subject(id));
+    this.#event('invitation-cancelled', { invitation: invitationId, guarantor });
+  }
   convertToCollector(owner, selfIdId) {
     this.#subject(owner, true);
     const act = this.#act(selfIdId);
-    if (act.subject !== owner || this.now - act.recordedAt < 7 * DAY) throw new ProtocolRejection('conversion requires own seven-day emission');
+    if (act.subject !== owner || this.now - act.recordedAt < this.policy.conversionMaturityHours) throw new ProtocolRejection('conversion requires own mature emission');
     if (act.debtReserved) throw new ProtocolRejection('emission is reserved for debt recovery');
     this.#dispose(act, 'converted', 'collector');
     this.#event('collector-converted', { selfId: selfIdId, subject: owner });

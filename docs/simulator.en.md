@@ -51,6 +51,11 @@ Other explicit assumptions:
 - A monetary fine burns collectible liquid FACY first and assigns the remainder to subject debt. Existing Emitter balances are not seized. Future Self-ID repays one unit of debt per mature uncancelled right under the selected `debtRecovery` policy; its valid identity work can still earn XP. Nominal debt is never counted as an actual burn. The 72-hour reservation age is an experiment assumption for an OPEN seizure-order question.
 - Monetary amounts use safe-integer FACY units, not production token precision. `penalize` rejects a fine that would make accumulated individual or aggregate debt unrepresentable before changing money, XP history or events. This is a numeric representation limit, not a calibrated economic ceiling. Signatures, key possession, media capture/detection, publication rights and lawful identity judgments are abstract inputs, not validated here.
 
+## Invitation freeze and link-break XP
+
+- `invitationFreezeHours` (default 0) keeps a new invitation open but unacceptable for that many hours. During the freeze, any current guarantor of the creator may `cancelInvitation`. The emission burned to create it stays burned, and the XP its consumption credited is revoked. This follows the protocol owner's description of a cancellable invitation freeze; its length is an experiment choice.
+- `linkBreakXp: "revoke"` (default `"keep"`): ending a guarantee removes every XP credit the guarantor earned from the guaranteed subject's acts. Snapshot rights credited later no longer reach a departed guarantor. This follows the owner's proposal that XP should not flow from a person one no longer vouches for.
+
 ## Adjudicated chain voiding
 
 `voidSelfIdChain(id, { fromAct })` is an explicit adjudication input, like `penalize`. It cuts a subject's Self-ID chain from one act onward (default: the whole chain): unspent rights burn with no XP, and XP credited by every cut act is revoked from all its recipients by chronological replay. Converted or invitation-burned coins cannot be un-minted, so recovering them requires a separate fine. No court procedure is implied.

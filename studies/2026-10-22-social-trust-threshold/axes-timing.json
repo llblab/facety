@@ -1,0 +1,1 @@
+{"falsePositiveRate":[0.05],"disputes.accuracy":[0.9],"social.exitOnFraud":[false],"sensitivity":[0.35,0.5],"policy.spendMaturityHours":[24,72],"policy.conversionMaturityHours":[24,168],"policy.invitationFreezeHours":[24,72]}

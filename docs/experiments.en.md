@@ -91,6 +91,8 @@ The current experiment applies no judicial fine or XP-halving verdict; the under
 - `investigation`: after an honest challenger's upheld verdict, the challenger verifies the false subject's inviter, the inviter's other invitees and the false subject's own invitees. A confirmed suspect is challenged, subject to the XP gate. This is bounded by `maxFollowUps` per root challenge and counted in `trust.followUps`.
 - Bribery: coalition actors make `activity.attackers.bribe` offers per day to random honest people who don't already guarantee them. A target accepts with probability `bribeAcceptance`, proposes a guarantee and becomes liable for it. The `bribePrice` is paid off-protocol and recorded as `bribesPaid` and `bribesReceived` payoff facts, not as FACY.
 
+- Invitation review: when the `policy.invitationFreezeHours` freeze is positive, each honest current guarantor of an inviter reviews a pending invitation each day with probability `activity.honest.review`. A review observes the invited candidate with the ordinary detector and, if `verification` is on, verifies it. A confirmed suspicion cancels the invitation; with `exitOnFraud`, the guarantor also ends the relation (paying the 1 FACY link-break fee) and so escapes later `inviter-chain` liability. Leaving also removes that guarantor's oversight of the inviter. Counters: `trust.invitationsCancelled`, `trust.guardianExits`.
+
 These are behavioral assumptions, not protocol rules. Verification quality in particular is a declared input for a human process the simulator does not model.
 
 ## Ablations and provenance
