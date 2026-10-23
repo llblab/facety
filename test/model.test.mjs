@@ -446,6 +446,62 @@ test('default debt recovery keeps the guarantor veto window before burning a res
   assert.deepEqual(model.audit(), { minted: 4, burned: 3, supply: 1, emitterVault: 0, collector: 1, feeVault: 0, stakeVault: 0, debt: 0 });
 });
 
+test('selected one-day debt reservations preserve maturity, lock, veto and once-only settlement', () => {
+  for (const mode of ['mature', 'locked', 'vetoed']) {
+    const model = new FacetyModel({ genesis: ['guardian', 'debtor'] });
+    identify(model, 'guardian');
+    guarantee(model, 'guardian', 'debtor');
+    model.penalize('debtor', { fine: 1, halveXp: false });
+    const act = identify(model, 'debtor');
+    assert.deepEqual(model.selfId(act).guarantors, ['guardian']);
+    assert.equal(model.selfId(act).debtReserved, true);
+    assert.deepEqual(model.eligibleEmissions('debtor', 0), []);
+    model.advanceTo(DAY - 1);
+    assert.equal(model.subject('debtor').debt, 1);
+    assert.equal(model.subject('debtor').xp, 0);
+    assert.equal(model.subject('guardian').xp, 0);
+    assert.deepEqual(model.audit(), { minted: 2, burned: 0, supply: 2, emitterVault: 2, collector: 0, feeVault: 0, stakeVault: 0, debt: 1 });
+    if (mode === 'locked') model.freezeSelfId(act, 'case');
+    if (mode === 'vetoed') model.cancelSelfId('guardian', act);
+    model.advanceTo(DAY);
+    let settled = act;
+    if (mode !== 'mature') {
+      assert.equal(model.subject('debtor').debt, 1);
+      assert.equal(model.subject('debtor').xp, 0);
+      assert.equal(model.subject('guardian').xp, 0);
+    }
+    if (mode === 'locked') {
+      assert.equal(model.selfId(act).status, 'unspent');
+      assert.equal(model.selfId(act).debtReserved, true);
+      model.advanceTo(2 * DAY);
+      assert.equal(model.subject('debtor').debt, 1);
+      model.unfreezeSelfId(act, 'case');
+      assert.equal(model.selfId(act).recordedAt, 0, 'unlock settles by original age');
+    }
+    if (mode === 'vetoed') {
+      assert.equal(model.selfId(act).status, 'cancelled');
+      assert.equal(model.selfId(act).debtReserved, false);
+      assert.deepEqual(model.audit(), { minted: 2, burned: 1, supply: 1, emitterVault: 1, collector: 0, feeVault: 0, stakeVault: 0, debt: 1 });
+      settled = identify(model, 'debtor');
+      assert.equal(model.selfId(settled).debtReserved, true, 'veto frees the reservation without forgiving debt');
+      model.advanceTo(2 * DAY - 1);
+      assert.equal(model.subject('debtor').debt, 1);
+      assert.equal(model.subject('debtor').xp, 0);
+      model.advanceTo(2 * DAY);
+    }
+    assert.equal(model.selfId(settled).status, 'consumed');
+    assert.equal(model.selfId(settled).disposition, 'debt-repayment');
+    assert.equal(model.subject('debtor').debt, 0);
+    assert.equal(model.subject('debtor').xp, 1);
+    assert.equal(model.subject('guardian').xp, 1);
+    assert.deepEqual(model.audit(), { minted: mode === 'vetoed' ? 3 : 2, burned: mode === 'vetoed' ? 2 : 1,
+      supply: 1, emitterVault: 1, collector: 0, feeVault: 0, stakeVault: 0, debt: 0 });
+    const snapshot = { now: model.now, ...protocolState(model) };
+    model.advanceTo(model.now);
+    assert.deepEqual({ now: model.now, ...protocolState(model) }, snapshot);
+  }
+});
+
 test('immediate-burn debt recovery removes the veto window and is only a comparison policy', () => {
   const model = fixture({ debtRecovery: 'immediate-burn' });
   guarantee(model, 'a', 'b');

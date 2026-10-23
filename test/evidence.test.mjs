@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { registerHypothesis, verifyRegistration, confirmHypothesis, analyzeConfirmation, adjustStudy, runStatistic, sharpeningDesign } from '../src/evidence.mjs';
 import { runExperiment } from '../src/experiment.mjs';
 import { mapTasks } from '../src/parallel.mjs';
+import { digestOf } from '../src/provenance.mjs';
 
 const base = { scenario: 'sybil-cone', initialSize: 8, attackerShare: 0.25, days: 10 };
 const minimal = (overrides = {}) => ({
@@ -42,6 +43,50 @@ test('registration digests the normalized design and detects tampering', () => {
   const otherCode = structuredClone(a);
   otherCode.implementation.digest = '0'.repeat(64);
   assert.throws(() => verifyRegistration(otherCode), /digest/);
+});
+
+test('native reanalysis verifies registered design before evaluating retained values', () => {
+  const registration = registerHypothesis(minimal());
+  const retained = values([3, 3, 3, 3, 3], [1, 1, 1, 1, 1]);
+  const before = structuredClone({ registration, retained });
+  const expected = analyzeConfirmation(registration, retained);
+  assert.equal(expected.verdict, 'supported');
+  assert.deepEqual(analyzeConfirmation(JSON.parse(JSON.stringify(registration)), retained), expected);
+  for (const change of [
+    item => { item.spec.claims[0].margin = 10; },
+    item => { item.spec.claims[0].margin = 0; delete item.spec.claims[0].probability; },
+    item => { item.randomness.version = 'changed'; },
+    item => { item.confirmationSeed = 'different'; },
+    item => { item.schema = 'unknown'; },
+  ]) {
+    const changed = structuredClone(registration);
+    change(changed);
+    for (const allowImplementationChange of [false, true]) {
+      assert.throws(() => analyzeConfirmation(changed, retained, { allowImplementationChange }), /hypothesis:/);
+    }
+  }
+  assert.deepEqual({ registration, retained }, before);
+});
+
+test('native reanalysis and confirmation preserve explicit historical implementation compatibility', async () => {
+  const registration = registerHypothesis(minimal());
+  const historical = structuredClone(registration);
+  historical.implementation.digest = '0'.repeat(64);
+  historical.hash = digestOf({ schema: historical.schema, spec: historical.spec,
+    implementation: historical.implementation.digest, randomness: historical.randomness });
+  historical.confirmationSeed = 'confirm:' + historical.hash;
+  const retained = values([3, 3, 3, 3, 3], [1, 1, 1, 1, 1]);
+  assert.equal(verifyRegistration(historical, { allowImplementationChange: true }).implementationMatched, false);
+  assert.throws(() => analyzeConfirmation(historical, retained), /implementation changed/);
+  const analysis = analyzeConfirmation(historical, retained, { allowImplementationChange: true });
+  assert.equal(analysis.verdict, 'supported');
+  assert.deepEqual(analyzeConfirmation(JSON.parse(JSON.stringify(historical)), retained, { allowImplementationChange: true }), analysis);
+  await assert.rejects(confirmHypothesis(historical), /implementation changed/);
+  const confirmed = await confirmHypothesis(historical, { allowImplementationChange: true });
+  assert.equal(confirmed.implementationMatched, false);
+  assert.deepEqual(confirmed.analysis, analyzeConfirmation(historical, confirmed.values, { allowImplementationChange: true }));
+  historical.spec.claims[0].margin = 10;
+  assert.throws(() => analyzeConfirmation(historical, retained, { allowImplementationChange: true }), /digest/);
 });
 
 test('exact claim tests support, contradict or withhold judgment and count unknowns against the claim', () => {

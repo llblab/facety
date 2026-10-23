@@ -235,7 +235,7 @@ export async function confirmHypothesis(registration, { workers = 0, allowImplem
   return {
     schema: CONFIRMATION_SCHEMA, registrationHash: registration.hash, hypothesis: spec.id, statement: spec.statement,
     implementation, implementationMatched, randomness: { ...RANDOMNESS_POLICY }, values,
-    analysis: analyzeConfirmation(registration, values),
+    analysis: analyzeConfirmation(registration, values, { allowImplementationChange }),
   };
 }
 
@@ -276,9 +276,9 @@ function testClaim(claim, rows, { alpha, seed }) {
   };
 }
 
-// Pure reanalysis of retained values under the registered design; it cannot change the design.
-export function analyzeConfirmation(registration, values) {
-  const { spec } = registration;
+// Pure reanalysis verifies the registered design; only implementation drift has an explicit override.
+export function analyzeConfirmation(registration, values, { allowImplementationChange = false } = {}) {
+  const { spec } = verifyRegistration(registration, { allowImplementationChange });
   const tests = [];
   for (const context of spec.contexts) {
     const byArm = values[context.id];

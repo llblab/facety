@@ -1,0 +1,65 @@
+{
+  "baseline": "14266db",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "0f069ef8250d5bc3c9dd52d739da7b67124509a67e58c02f9d774d344608f471",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "failBefore": {
+    "command": "node --test --test-name-pattern='native reanalysis' test/evidence.test.mjs",
+    "tests": 2,
+    "failed": 2,
+    "exitCode": 1,
+    "reason": "missing expected rejection"
+  },
+  "focusedEvidenceCli": {
+    "command": "node --test test/evidence.test.mjs test/cli.test.mjs",
+    "passed": 15,
+    "exitCode": 0
+  },
+  "focusedModel": {
+    "command": "node --test test/model.test.mjs",
+    "passed": 30,
+    "exitCode": 0
+  },
+  "fullSuite": {
+    "command": "npm test",
+    "passed": 225,
+    "failed": 0,
+    "exitCode": 0,
+    "includesFocusedTests": true
+  },
+  "dag": {
+    "modules": 25,
+    "edges": 58,
+    "errors": 0,
+    "warnings": 0,
+    "exitCode": 0
+  },
+  "witness": {
+    "command": "node studies/2026-10-23-registration-integrity/witness.mjs",
+    "exitCode": 0,
+    "E2": "changed design rejected; valid historical reanalysis retained",
+    "E1": "inference unchanged"
+  },
+  "sourceScope": [
+    "src/evidence.mjs",
+    "bin/facety.mjs",
+    "test/evidence.test.mjs",
+    "test/cli.test.mjs",
+    "test/model.test.mjs"
+  ],
+  "historicalPreservation": {
+    "command": "git diff --quiet 14266db -- studies",
+    "phase": "before staging new study",
+    "exitCode": 0
+  },
+  "context": { "exitCode": 0, "errors": 0, "warnings": 27, "retained": "context.txt", "warningDisposition": "Existing structural/wide-table conventions; no broken links or orphan docs", "earlierFailure": "Removed an invalid heading-fragment link in docs/evidence.en.md before this successful check" },
+  "whitespace": { "command": "git diff --check", "exitCode": 0 },
+  "reviewBoundary": "Coordinator validation; original degraded review qualification retained, no new independent post-fix review"
+}

@@ -189,6 +189,6 @@ Tracing bounds retention only; off/full/saturated and inert-read controls preser
 
 ## Validation and optimization
 
-Run `npm test`. Proof tests compare shortest-path lengths on every directed simple graph of four nodes, plus larger seeded topologies, blocked paths, adversarial certificates and mutations. Model tests establish custody conservation, reward limits, terminal rights, chronological XP and conditional policy behavior.
+Run `npm test`. Proof tests compare shortest-path lengths on every directed simple graph of four nodes, plus larger seeded topologies, blocked paths, adversarial certificates and mutations. Model tests establish custody conservation, reward limits, terminal rights, chronological XP and conditional policy behavior. Permanent selected-default reservation coverage checks the 23/24-hour boundary, locked maturity, matching unlock without age reset, veto/replacement recovery, exact custody/XP and same-time repeat safety with an active guarantor; legacy-timing reference tests remain separate.
 
 The graph uses indexed incoming/outgoing adjacency and constant-time edge counts. Searches use queue cursors, not array shifts. Topology generation and rolling activity/XP replay are deliberately simple reference implementations; benchmark before adding indexes or caches, and compare optimized implementations to the existing semantics.

@@ -4,6 +4,7 @@ import { spawnSync } from 'node:child_process';
 import { mkdtempSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { digestOf } from '../src/provenance.mjs';
 
 const CLI = new URL('../bin/facety.mjs', import.meta.url).pathname;
 function facety(...args) {
@@ -80,6 +81,38 @@ test('CLI game JSON transport and legacy raw-fact reanalysis retain input bindin
   const migrated = facety('game-analyze', legacy, valuation);
   assert.equal(migrated.code, 0);
   assert.equal(JSON.parse(migrated.stdout).inputDigest, expected);
+});
+
+test('CLI historical reanalysis permits a valid old implementation but never a changed design', t => {
+  const directory = mkdtempSync(join(tmpdir(), 'facety-cli-historical-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const spec = join(directory, 'hypothesis.json');
+  const registrationFile = join(directory, 'registration.json');
+  const valuesFile = join(directory, 'values.json');
+  writeFileSync(spec, JSON.stringify({
+    id: 'historical', statement: 'Synthetic offline compatibility probe', kind: 'association',
+    base: { initialSize: 4, days: 1 }, statistic: { metric: 'xp.total' }, arms: { a: {} },
+    claims: [{ id: 'positive', role: 'presence', contrast: { a: 1 }, direction: 'greater' }],
+    replicas: 5, exploration: { seeds: [] },
+  }));
+  assert.equal(facety('register', spec, '--out', registrationFile).code, 0);
+  const historical = JSON.parse(readFileSync(registrationFile, 'utf8'));
+  historical.implementation.digest = '0'.repeat(64);
+  historical.hash = digestOf({ schema: historical.schema, spec: historical.spec,
+    implementation: historical.implementation.digest, randomness: historical.randomness });
+  historical.confirmationSeed = 'confirm:' + historical.hash;
+  writeFileSync(registrationFile, JSON.stringify(historical));
+  writeFileSync(valuesFile, JSON.stringify({ registrationHash: historical.hash,
+    values: { base: { a: Array.from({ length: 5 }, (_, i) => ({ value: 1, censored: false, seed: `synthetic-${i}` })) } } }));
+  const accepted = facety('reanalyze-confirmation', registrationFile, valuesFile);
+  assert.equal(accepted.code, 0);
+  assert.equal(JSON.parse(accepted.stdout).verdict, 'supported');
+  historical.spec.claims[0].margin = 10;
+  writeFileSync(registrationFile, JSON.stringify(historical));
+  const rejected = facety('reanalyze-confirmation', registrationFile, valuesFile);
+  assert.equal(rejected.code, 1);
+  assert.equal(rejected.stdout, '');
+  assert.match(rejected.stderr, /digest does not match/);
 });
 
 test('CLI registration, confirmation and offline reanalysis agree', t => {

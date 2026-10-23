@@ -80,7 +80,7 @@ const COMMANDS = {
     verifyRegistration(registration, { allowImplementationChange: true });
     const confirmation = read(confirmationFile);
     if (confirmation.registrationHash !== registration.hash) throw new Error('confirmation does not belong to this registration');
-    return analyzeConfirmation(registration, confirmation.values);
+    return analyzeConfirmation(registration, confirmation.values, { allowImplementationChange: true });
   },
   study: files => adjustStudy(files.map(read)),
   game: ([file], options) => runGame(read(file), { workers: workers(options.workers) }),
