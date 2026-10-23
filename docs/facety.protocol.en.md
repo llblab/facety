@@ -66,7 +66,7 @@ The final trust boundary is human collective judgment. Equal votes limit individ
 | First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel the Self-ID for free while the emission exists. |
 | From 24 hours | The owner can spend the unspent right on an invitation or convert it to fungible FACY on the Collector. An unspent right remains cancellable. |
 | Invitation | Burn one personally earned eligible emission; under D33 the creator also needs `D = decimal_digits(max(1, N_verified))` effective independent guarantors. The invitation stays frozen for 24 hours, during which the creator's guarantors can cancel it. |
-| Liability | A proven false identity voids its whole Self-ID chain. Its inviter, its guarantors and the inviter's guarantors who stayed linked each owe one coin per voided act. Guarantors escape by cancelling the frozen invitation or leaving the relation in time. |
+| Liability | A proven false identity voids its whole Self-ID chain. Its inviter and the guarantors liable at the relevant historical events owe the defined per-act sanction; under D34, later link termination does not erase past responsibility. Guarantors escape by cancelling the frozen invitation or leaving the relation in time. |
 | Guarantee | Both subjects must authorize the directed responsibility link. Either can end it under a separate 1 FACY fee rule. |
 | Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
 | XP penalty | A liable loss can halve effective XP; monetary penalties can create collectible debt. |
@@ -675,9 +675,9 @@ An abusive guarantor may repeatedly cancel otherwise valid Self-ID records. The 
 
 **[DIRECTION, 2026-10-22] XP follows the relation.** A guarantor that ends a relation loses the XP it earned through that person. Rights recorded while the relation existed no longer credit the departed guarantor. It is wrong to keep counting XP from someone one no longer vouches for.
 
-**[DIRECTION] Exit as a duty.** If a guarantee's subject starts behaving suspiciously, for example by inviting people who do not look real, the rational and expected reaction is to cancel those invitations and break the relation as soon as possible. Liability for later sanctions follows the relations that still exist when the violation is adjudicated.
+**[DIRECTION] Exit as a duty.** If a guarantee's subject starts behaving suspiciously, for example by inviting people who do not look real, the rational and expected reaction is to cancel those invitations and break the relation as soon as possible. **Historical wording, superseded by D34 on 2026-10-23:** the earlier draft attached later sanctions to relations still present at adjudication. D34 instead retains responsibility for events that occurred while the guarantee was effective; exit prevents new exposure, not accountability for the past.
 
-**[MODEL FINDING]** Leaving escapes liability but also removes a watcher. With weak detection, early exits let the coalition's later invitations go unreviewed.
+**[MODEL FINDING under the legacy current-link liability reference, not D34]** Leaving escapes modeled liability but also removes a watcher. With weak detection, early exits let the coalition's later invitations go unreviewed.
 
 The free cancellation of a particular Self-ID and the paid termination of an established guarantee are separate operations. Terminating the link must not retroactively erase its previous existence, public decisions, or established liability history.
 
@@ -723,7 +723,39 @@ The intended incentive is that responsible participants teach one another to com
 
 **[DIRECTION, documented 2026-10-23]** Correction can come through self-correction, a guarantor's intervention or withdrawal, evidence-backed challenge, Chekharda escalation, or collective Council action. The absence of an infallible algorithm is not the absence of a correction route. The owner's preference is that timely appropriate self-reporting provides a viable exit from a mistake without punishment for that appropriate early correction.
 
-**[OPEN]** Eligibility, report deadlines, restitution, effects on others' existing liabilities and prevention of repeated profitable abuse need exact rules. This direction is not unlimited immunity. Preventive cancellation of one erroneous act by a real person does not clear a separate false-person guarantee. The simulator has preventive vetoes, but no selected voluntary-reporting policy.
+**[OPEN]** Eligibility, report deadlines, restitution, effects on others' existing liabilities and prevention of repeated profitable abuse need exact rules. This direction is not unlimited immunity. Preventive cancellation of one erroneous act by a real person does not clear a separate false-person guarantee. The simulator has preventive vetoes, but no implemented voluntary-reporting policy. D34 below makes the desired event-level reversal more explicit without selecting its timing or funding contract.
+
+### 20.6 Historical event liability and early self-correction (D34)
+
+**D34 — [SELECTED / DIRECTION / OPEN], documented 2026-10-23.** Source: the owner's voice clarification after the chain-replay audit. For each disputed event, liability MUST be evaluated from the guarantees that were effective when that event occurred, not merely from links still present when it is adjudicated. A later-discovered fabrication can therefore create a fine for a former guarantor for the confirmations it guaranteed. Ending or replacing the relation MUST NOT erase that recorded responsibility; it does not make the former guarantor responsible for unrelated later events outside its guarantee period.
+
+Conceptually:
+
+```text
+HistoricalGuarantors(e) = guarantors whose recorded relation covered event e
+LiabilityBasis(e) = HistoricalGuarantors(e), under the applicable duty and verdict
+LiabilityBasis(e) != merely the current incoming guarantee graph at adjudication
+```
+
+This selects the historical basis, not automatic guilt by association. The relevant legal event/operation, canonical event ordering, equal-timestamp activation/end boundaries, identity-guarantee versus act-level duties, inviter-chain extensions and evidence of fault still need precise contracts. Proposal time is not automatically activation, current XP is not a historical-role record, and an XP-recipient snapshot need not equal the complete liable-party set. No numeric historical interval convention is silently selected here.
+
+**[DIRECTION] Early voluntary event correction.** The owner describes a responsible guarantor privately prompting the author of an invalid event to open a dispute against that own event as early as possible. The informal conversation is not itself a protocol verdict or concealment exemption. An eligible self-initiated correction should reverse the event's emission/XP effect rather than impose the ordinary punitive outcome for that appropriate early correction, consistent with D29. It MUST remain attributable and auditable.
+
+The intended reversal is:
+
+```text
+Identify the erroneous own event and request early self-correction
+    -> apply the defined admissibility/evidence procedure
+    -> burn or cancel its corresponding recoverable emission
+    -> revoke that transaction's attributable XP from every credited recipient
+    -> record correction, actual recovery and any unresolved obligations
+```
+
+“All recipients” includes the author and everyone historically credited by that transaction, not just current guarantors. XP reversal MUST follow credit provenance and chronological penalty/revocation semantics; previously revoked credits MUST NOT be subtracted again. This is restoration of the affected event's effects, not an automatic whole-identity invalidation, whole-history wipe or immunity for a separate false-person guarantee. Treatment of dependent later events remains OPEN under §21.1.
+
+**[OPEN] Eligibility and implementation.** Define “as early as possible,” deadlines relative to discovery/pending disputes, repeated-abuse controls, evidence/admission, adjudicator/appeal, fees/stakes and how appropriate correction affects each historical duty. Define actual recovery when the right is already converted, transferred, invitation-consumed or otherwise unavailable: a burned unit cannot burn twice, debt is not a burn, and third-party holdings cannot disappear by accounting assertion. The intended simple cancellation does not select a new source of money or automatic seizure of innocent recipients' funds. Ordinary self-challenge fails the strict greater-XP gate; an explicit self-correction procedure/exception is needed, not an undeclared bypass for arbitrary challenges.
+
+**Still OPEN from the chain-replay gate:** this clarification identifies *who was responsible for which event*, but does not explicitly decide whether the same act/guarantor/duty may be fined again in another case, what a final enforceable penalty-event identity is, or how overlapping/new suffix acts are charged. Historical attribution MUST NOT be mistaken for authorization to replay a settled penalty. The current simulator uses current-link verdict liability and has no self-dispute correction lifecycle; these remain explicit legacy/reference gaps until a separately specified and validated migration. No runtime behavior is changed by this decision record.
 
 ## 21. Fraud classes and proof chains
 
@@ -753,9 +785,9 @@ Responsibility must be recorded and verifiable. A claim that every connected sub
 - As a sanction, each liable party also pays N coins. The penalty spreads outward like a wave and grows with how deeply the violation is embedded in the chain.
 - If the violation starts at the invitation (the subject never was a real, unique person), N is the number of acts the false subject performed. The fine falls on the inviter, who spent an invitation on a non-existent person, and on the inviter's guarantors, who vouched for a person registering fake people and did not cancel the frozen invitation. The false subject's own guarantors are liable as well.
 
-Converted coins cannot be un-minted; recovering them is part of the fine. **[OPEN]** Caps, collection order from recoverable assets, partial cuts for real persons with an isolated invalid act, and treatment of guarantors who left before the violation was proven.
+Converted coins cannot be un-minted; recovering them is part of the fine. **[OPEN]** Caps, collection order from recoverable assets, partial cuts for real persons with an isolated invalid act, and exact historical duties/time boundaries for former guarantors. D34 selects survival of past-event liability after link exit; whether exit alone erases that past responsibility is no longer OPEN.
 
-**[OPEN, audit clarification documented 2026-10-23] Repeat-verdict identity and scope.** The once-per-enforceable-penalty-event invariant in §37 needs a defined event/violation identity across separate cases, overlapping cuts and guarantor duties. Replaying one finalized case differs from admitting a later case with a new basis. Decide whether already adjudicated acts can ground another penalty, how genuinely new suffix acts are counted, and whether historical or current relationships determine each liability. The [chain-replay diagnostic](../studies/2026-10-23-chain-replay/README.md) finds existing case guards, but no lower-level general deduplication contract: raw cuts do not repeat money/XP removal without new acts, whereas explicitly applying an unkeyed verdict helper again can impose another guarantor penalty. This is not a demonstrated guarded-caller exploit or authorization to add blanket per-subject/per-act deduplication. No new penalty or finality rule is selected by this audit.
+**[OPEN, audit clarification documented 2026-10-23] Repeat-verdict identity and scope.** The once-per-enforceable-penalty-event invariant in §37 needs a defined event/violation identity across separate cases, overlapping cuts and guarantor duties. Replaying one finalized case differs from admitting a later case with a new basis. Decide whether already adjudicated acts can ground another penalty, how genuinely new suffix acts are counted, and the exact historical event/duty boundary for each liability. D34 now selects historical attribution rather than an adjudication-time current-link test; repeat-event identity remains OPEN. The [chain-replay diagnostic](../studies/2026-10-23-chain-replay/README.md) finds existing case guards, but no lower-level general deduplication contract: raw cuts do not repeat money/XP removal without new acts, whereas explicitly applying an unkeyed verdict helper again can impose another guarantor penalty. This is not a demonstrated guarded-caller exploit or authorization to add blanket per-subject/per-act deduplication. No new penalty or finality rule is selected by this audit.
 
 **[MODEL FINDING]** Sanction size is the decisive deterrence lever. A fixed fine of 5 let fraud pay, while chain-proportional fines (or a fine of 10) made the simulated network viable. See the [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md), sections 3–4.
 
@@ -2019,6 +2051,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### BrightID-inspired topology design documented 2026-10-23
 
 **D33 — [SELECTED / DIRECTION / OPEN], §46.** Source: the owner's explicit directive to permanently record the BrightID-inspired design discussion. Selected design requirements: `D = floor(log10(max(1, N_verified))) + 1`, invitation `k = D`, no size-independent floor of two or more, non-retroactive identity status, `r = round(sqrt(D))` with the lookup `1, 11, 101, 1001, 10001, 100001`, population/eligibility caps, no special authority for the one-consul placeholder, and independent rather than raw support. Guidance includes weighted guarantors, `B_eff`/quota accounting, core/degree/conductance/min-cut/community/temporal/dispute signals, effective-XP Council selection, majority/two-thirds voting, cluster capture limits and hysteresis. External privacy proofs MAY include ZK, refining D15 without selecting an anonymous base ledger. D33 supersedes D3's fixed Council target and refines §18.2/§23; §46.13 records conflicts and proposed resolutions. Verification and factor algorithms, genesis, quotas, epochs, phase transitions, quorum/merits and proof/disclosure contracts remain OPEN. This documentation adds no runtime implementation, new emission schedule or empirical confirmation; the simulator remains an explicitly named legacy reference until a separately validated migration.
+
+### Historical liability and early correction documented 2026-10-23
+
+**D34 — [SELECTED / DIRECTION / OPEN], §19.3, §20.5–§20.6, §21.1.** Source: the owner's voice clarification after the chain-replay question. Historical guarantees at each relevant event determine liability; link exit does not erase responsibility for previously guaranteed confirmations. This supersedes §19.3's adjudication-time current-link direction, not the ability to leave or the separate relation-XP rule. Early self-initiated dispute/correction should undo the affected event: recover/burn its corresponding emission and revoke that transaction's XP from all historically credited parties, without ordinary punitive treatment for eligible early correction (D29). Eligibility, clock/order boundaries, spent/transferred-value recovery, repeat-abuse safeguards, case/penalty deduplication and overlap remain OPEN. The ordinary greater-XP challenge gate does not itself implement self-correction. The simulator remains the current-link reference; no historical-liability or self-dispute migration, universal immunity, extra burn or empirical finding is introduced by this record.
 
 ### Earlier supersessions
 

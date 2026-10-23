@@ -4,6 +4,8 @@ This document owns the implemented simulation semantics. The [protocol](facety.p
 
 **D33 design boundary, 2026-10-23:** [protocol §46](facety.protocol.en.md#46-brightid-inspired-topology-design) selects Network Difficulty, effective-independent invitation support and dynamic consuls as design requirements, with operational contracts still OPEN. This documentation-only update does not implement them. Active-accepted counts, raw qualifying guarantor counts, fixed Council target 101 and the one-seat reference remain legacy research assumptions; no D33 one-consul authority, verified topology gate, quota, hysteresis or privacy proof is implemented. [BACKLOG](../BACKLOG.md#d33-topology-design-implementation-gated) owns migration. Existing snapshots/studies retain their original source and meanings.
 
+**D34 liability/correction boundary, 2026-10-23:** [§20.6](facety.protocol.en.md#206-historical-event-liability-and-early-self-correction-d34) selects historical event-time guarantee responsibility and describes early self-correction. `preflightIdentityVerdict` still selects parties from the current graph and skips currently unaccepted parties; historical relation records and act/XP snapshots are not a complete D34 liability engine. Exit can therefore escape a modeled later fine under the legacy reference, even though D34 rejects exit as erasure of past responsibility. No self-dispute lifecycle or general spent-value restoration is implemented. Exact event/duty/time/collection and repeated-penalty contracts remain gated; source behavior and old studies are preserved, not reinterpreted as D34 compliance.
+
 ## Architecture
 
 ```text
@@ -46,7 +48,7 @@ The model never receives a hidden label saying that a subject is an attacker or 
 | Invitation: own-emission burn, decimal threshold and 24 h freeze/cancellation | §18; D33 refines eligibility | `createInvitation`, `requiredGuarantors`, `cancelInvitation`; legacy active/raw count, not D33 verified independence |
 | Two-sided guarantees; 1 FACY link break; XP follows the relation | §19 | `proposeGuarantee`, `confirmGuarantee`, `endGuarantee`, `linkBreakXp` |
 | Free preventive cancellation of unspent acts | §20 | `cancelSelfId` |
-| Chain-cut sanction and liability wave | §21.1 | `voidSelfIdChain`, `disputes.fineMode`, `disputes.liability` |
+| Chain-cut sanction and liability wave; D34 historical attribution | §20.6, §21.1 | `voidSelfIdChain`, `disputes.fineMode`, `disputes.liability`; current-link reference, D34 party selection unimplemented |
 | XP halving, debt, no fictitious burns | §24, §30 | `penalize` |
 | Challenge XP gate; Chekharda stake ladder; Council intervention | §25–§27 | `disputes.procedure`, `stakeGrowth`, `councilDepth` (experiment layer) |
 | Historical Council: top-101 among active subjects | §27.1, superseded target in D33 | `council()`, `councilEligibility`; unchanged legacy reference |
@@ -135,7 +137,7 @@ The [diagnostic stake comparison](../studies/2026-10-23-accountability-audit/REA
 
 **Repeated-call boundary ([diagnostic](../studies/2026-10-23-chain-replay/README.md)):** without new acts, repeated cuts do not repeat native burns or XP removal, but are not full-state no-ops: they emit another event, and converted/invitation-consumed acts receive another `+voided` disposition suffix. Returned `acts` counts selected non-cancelled historical acts, not necessarily newly voided acts; a later cut can include both already marked converted acts and newly appended rights.
 
-`enforceIdentityVerdict`/`penalize` are explicit trusted adjudication inputs, not independently case-keyed replay guards. Reapplying the helper can fine/halve an accepted guarantor again after the target was invalidated. Relay closure and book settlement guards reject repeated processing of a finalized case; new challenges reject an unaccepted target, and timed scheduler resolution moots one. The new test covers upheld/rejected and repeated/reversed relay verdicts under both stake backings; traces may record refusal even when native/workflow state is unchanged. No scheduler replay exploit follows from calling the lower-level helper out of lifecycle. Separate verdicts, overlapping cuts, historical liability and incremental fine bases require the OPEN contract in §21.1; no deduplication policy is silently introduced.
+`enforceIdentityVerdict`/`penalize` are explicit trusted adjudication inputs, not independently case-keyed replay guards. Reapplying the helper can fine/halve an accepted guarantor again after the target was invalidated. Relay closure and book settlement guards reject repeated processing of a finalized case; new challenges reject an unaccepted target, and timed scheduler resolution moots one. The new test covers upheld/rejected and repeated/reversed relay verdicts under both stake backings; traces may record refusal even when native/workflow state is unchanged. No scheduler replay exploit follows from calling the lower-level helper out of lifecycle. D34 selects historical event-time attribution, while separate verdict identity, overlapping cuts, precise historical duties and incremental fine bases still require the OPEN contract in §21.1; no deduplication policy is silently introduced.
 
 ## Counterfactual ablations
 

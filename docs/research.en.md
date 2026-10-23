@@ -77,6 +77,8 @@ Records carry time, actor/action/target, available inputs, evaluated preconditio
 
 Retention 0/full/1 and inert-read tests compare complete semantic outputs. Saturation counts omitted records without truncating simulation semantics. The reference consumes no randomness; examples use stable subject/stage keys and their own versioned manifest. Existing full-scheduler no-op, future-prefix, inert-inspection and sequential/parallel controls remain in the suite. Ancestry explains execution, not an independent causal effect; scripted actions acquire no invented expected-utility explanation.
 
+**D34 research boundary:** historical event-time responsibility is now selected intent, not a result established by legacy current-link experiments. Early self-correction should reverse the event's recoverable emission and attributable XP; deadlines, admission, spent-value funding, repeated-penalty identity and exact historical duties remain OPEN in [§20.6](facety.protocol.en.md#206-historical-event-liability-and-early-self-correction-d34). Existing withdrawal/veto/relay controls do not implement that migration or establish profitable self-correction incentives.
+
 ## Utility boundary and sensitivity plan
 
 Keep three ledgers: **recorded protocol consequences**, **explicit private valuations**, and **independently justified application externalities**. A terminal XP balance is not itself wisdom, recoverable future income or network welfare. Operator custody of many accounts is not one subject's pooled procedural XP.
