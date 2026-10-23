@@ -1023,7 +1023,7 @@ The Council is the intended collective route for correcting concentrated influen
 
 ### 27.1 Membership and equal votes
 
-The direct formula uses Network Difficulty from §18.2/§46.1:
+The direct formula uses Network Difficulty from §18.2/§46.1. **D33 clarification, documented 2026-10-24:** `round` means the nearest integer, not ceiling/always-up rounding. Since `D` is an integer digit count, `sqrt(D)` cannot be exactly a half-integer; no half-way tie choice is needed here:
 
 ```text
 r = round(sqrt(D))
@@ -1873,7 +1873,7 @@ At `N = 0` or `1`, a threshold of one does not supply a non-self guarantor. The 
 
 ### 46.4 Dynamic Consul Council size
 
-The protocol MUST define the target size through the rounded square root of difficulty:
+The protocol MUST define the target size through the **nearest-integer** square root of difficulty, not ceiling (D33 owner clarification, 2026-10-24):
 
 ```math
 r = round(sqrt(D))
@@ -2175,7 +2175,7 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 ### BrightID-inspired topology design documented 2026-10-23
 
-**D33 — [SELECTED / DIRECTION / OPEN], §46.** Source: the owner's explicit directive to permanently record the BrightID-inspired design discussion. Selected design requirements: `D = floor(log10(max(1, N_verified))) + 1`, invitation `k = D`, no size-independent floor of two or more, non-retroactive identity status, `r = round(sqrt(D))` with the lookup `1, 11, 101, 1001, 10001, 100001`, population/eligibility caps, no special authority for the one-consul placeholder, and independent rather than raw support. Guidance includes weighted guarantors, `B_eff`/quota accounting, core/degree/conductance/min-cut/community/temporal/dispute signals, effective-XP Council selection, majority/two-thirds voting, cluster capture limits and hysteresis. External privacy proofs MAY include ZK, refining D15 without selecting an anonymous base ledger. D33 supersedes D3's fixed Council target and refines §18.2/§23; §46.13 records conflicts and proposed resolutions. Verification and factor algorithms, genesis, quotas, epochs, phase transitions, quorum/merits and proof/disclosure contracts remain OPEN. This documentation adds no runtime implementation, new emission schedule or empirical confirmation; the simulator remains an explicitly named legacy reference until a separately validated migration.
+**D33 — [SELECTED / DIRECTION / OPEN], §46.** Source: the owner's explicit directive to permanently record the BrightID-inspired design discussion. Selected design requirements: `D = floor(log10(max(1, N_verified))) + 1`, invitation `k = D`, no size-independent floor of two or more, non-retroactive identity status, `r = round(sqrt(D))` with the lookup `1, 11, 101, 1001, 10001, 100001`, population/eligibility caps, no special authority for the one-consul placeholder, and independent rather than raw support. Guidance includes weighted guarantors, `B_eff`/quota accounting, core/degree/conductance/min-cut/community/temporal/dispute signals, effective-XP Council selection, majority/two-thirds voting, cluster capture limits and hysteresis. External privacy proofs MAY include ZK, refining D15 without selecting an anonymous base ledger. D33 supersedes D3's fixed Council target and refines §18.2/§23; §46.13 records conflicts and proposed resolutions. Verification and factor algorithms, genesis, quotas, epochs, phase transitions, quorum/merits and proof/disclosure contracts remain OPEN. This documentation adds no runtime implementation, new emission schedule or empirical confirmation; the simulator remains an explicitly named legacy reference until a separately validated migration. **Owner clarification, 2026-10-24:** `round(sqrt(D))` means nearest-integer rounding, not ceiling. Exact half-integer ties cannot arise for integer `D`; no new tie rule or changed Council thresholds are selected.
 
 ### Historical liability and early correction documented 2026-10-23
 
