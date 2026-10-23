@@ -2,6 +2,14 @@
 
 This document owns the mechanism chapter, research questions, causal designs, candidate survivability criteria and human-calibration design. Its [structured register](mechanisms.json) owns code-tied records and the parameter/state inventory. It does not select protocol rules or report unrun experiments. [Protocol coverage](simulator.en.md#protocol-coverage) owns implementation status; [discovery](discovery.en.md), [paired controls](controls.en.md), [games](games.en.md) and [confirmation](evidence.en.md) own their executable methods. The source is the owner's A–T design-discussion synthesis supplied with the development mandate, documented **2026-10-23**, not a newly discovered historical decision. Every insight is reconciled in the [register](insights.en.md#design-discussion-reconciliation-2026-10-23).
 
+## Strategic evaluation lens (D32)
+
+The owner's strategic-framing directive, documented **2026-10-23**, evaluates Facety as an **accountability substrate for emission distribution and network growth**, not merely dispute resolution. The [protocol's D32 section](facety.protocol.en.md#accountability-for-emission-and-growth-d32) owns the thesis, three-layer distinction, safeguards and success/failure conditions. This is a deliberate lens, not an observed flywheel or a replacement for D31's mutual-identification architecture.
+
+The proposed return is emission → retention/contributor growth → more accountable participation → better evidence about contribution → more defensible distribution. The competing return is emission-funded farming/collusion → obstruction or wrongful exclusion → honest exit and weaker review → further extraction. Require evidence for each return rather than encoding retention, usefulness or honest superiority into a script. Oracle validity, Sybils, collusion, arbitration capture, bootstrap vulnerability and the cost-of-attack condition remain live alternatives and failure modes.
+
+Evaluate **uniqueness**, **contribution/reputation** and **distribution** separately. Native Self-ID eligibility, terminal XP, custody and sanctions are recorded protocol consequences; they are not a general useful-contribution metric. Actual voluntary retention, service demand and attack/private opportunity costs need independent measurement or explicit conditional valuations. A scoped metric must say what is verified, by whom and how false attribution or collusion can be challenged. Do not turn “low-value” into a personhood judgment or select contribution-weighted emission by implication. Reuse the utility boundary, survivability vector, bootstrap/authority controls and existing study families below; no new study, parameter, confirmation or calibrated result follows from the framing alone.
+
 ## Central proposition and competing explanations
 
 **HYPOTHESIS:** earned influence can remain correctable through public evidence, relationship withdrawal, credible challenges and collective decisions, even with a passive majority and bounded fraud. The competing hypothesis is that accumulated violations increase the resources, dependence and procedural power available to block future correction. Neither a high Council share nor an inaccurate verdict alone demonstrates that feedback.
@@ -24,7 +32,7 @@ public events → supplied fallible observations → costed package / routing / 
 
 [mechanisms.json](mechanisms.json) owns the structured records, parameter/state inventory and simplification evidence. Each record has its question, initiating change, path, actual/missing return, conditional signs, clock, bottleneck, rule/assumption, code, observable, diagnostic, intervention, alternative, falsifier and status. The executable overview reads these records directly.
 
-- **M01–M03:** contribution/reward versus continued participation; preventive responsibility; relationship-supported influence/dependence.
+- **M01–M03:** recorded work/reward versus continued participation; preventive responsibility; relationship-supported influence/dependence.
 - **M04–M06:** open discovery/sponsorship; public attention response; growth versus verification workload.
 - **M07–M10:** contestability/equal-vote authority; future value/insider loyalty; false accusations/overload/exit; restoration/learning.
 - **M11–M15:** debt, procedural record/familiarity, gossip, money-flow exposure and lineage/defender follow-up.

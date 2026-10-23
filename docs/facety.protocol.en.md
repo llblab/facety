@@ -10,7 +10,7 @@ source_basis: "Protocol owner decisions recorded in this repository, checked aga
 
 # Facety: Manifesto and Protocol Specification
 
-> **Facety is a coordination protocol for mutual identification through mutual guarantees and public accountability.** Repeated identity assertions, earned non-transferable XP, economic consequences and collective disputes support that coordination; none alone defines it. XP rewards responsibility, not truth or purchasable voting weight. Anyone may discover evidence, while qualified participants accept formal challenge responsibility. Whether these routes keep earned influence correctable is the research question—not a promised outcome. Atmo support is a separate conditional integration.
+> **Facety's strategic thesis is an accountability substrate for emission distribution and network growth—not merely a dispute protocol.** It coordinates mutual identification through mutual guarantees and public accountability to ask: “Who are we actually dealing with?” The aim is distribution resistant to farming that sustains honest participation and useful network effects. This is a deliberate evaluation lens, not demonstrated sustainability. Repeated identity assertions, earned non-transferable XP, economic consequences and collective disputes support that coordination; none alone defines it. XP rewards responsibility, not truth or purchasable voting weight. Anyone may discover evidence, while qualified participants accept formal challenge responsibility. Whether these routes keep earned influence correctable is the research question—not a promised outcome. Atmo support is a separate conditional integration.
 
 **[DIRECTION — D31, documented 2026-10-23; owner-provided framing]** “Mutual” describes the social architecture. Both parties consent to a directed guarantee; that consent does not create a reverse guarantee. Guarantees, invitation lineage, acquaintance channels and reachability evidence have different meanings. A path never proves unique personhood.
 
@@ -85,6 +85,36 @@ Facety starts with a narrower claim: a subject represents one real, unique perso
 Facety does not make a photograph equivalent to proof of unique personhood. A media artifact, a signature, a social guarantee, and a resolved dispute supply different kinds of evidence. The protocol combines these elements. None is sufficient in isolation.
 
 The objective is not a global moral score. Facety does **not** certify political views, wealth, social worth, or virtue. A guarantee concerns the identity claim and the responsibilities explicitly attached to it.
+
+### Accountability for emission and growth (D32)
+
+**[DIRECTION — D32, documented 2026-10-23; owner-provided strategic framing]** Emission should serve retention, contributor recruitment and network effects, not be evaluated as a standalone reward. Claims, evidence, sponsorships, disputes, stakes and verdicts should make responsibility traceable and contestable. Eligible participants may earn personal Self-ID emission while also accepting guarantee liability or staking in disputes; these roles do not establish personhood, buy XP or introduce proof-of-stake consensus.
+
+**[HYPOTHESIS]** The intended flywheel is:
+
+```text
+emission → honest retention / contributor growth → more accountable participation
+         → better evidence about identity and contribution → more defensible distribution
+         → sustained useful participation
+```
+
+Every behavioral arrow needs evidence. The inverse can also reinforce itself: farmed emission finances more controlled activity and collusive support; accumulated procedural influence obstructs correction; wrongful sanctions or exclusion drive honest people out; weaker independent review permits further farming. FACY does not directly purchase XP, and public traces do not establish evidence validity.
+
+**Three distinct layers:**
+
+- **Uniqueness / Sybil resistance:** Facety supplies repeated identity claims, guarantees and contest mechanisms. Signatures establish key control and paths establish reachability; neither proves one unique human. Evidence accuracy and real-world Sybil resistance remain open.
+- **Contribution / reputation:** Self-ID and guarantee XP record specified work and responsibility, not universal useful contribution. Identity credibility, adjudication history and application contribution need distinct, scoped verification. A unique person is not necessarily a useful contributor; low measured activity or disagreement is not an identity offense.
+- **Emission / distribution:** Native accounting implements emission rights and their authorized consequences. The selected Self-ID rule creates one unit per eligible act, not a general contribution-proportional allocation. Sustainable retention, market value and farming resistance are not established. “Distribution proportional to verified contribution” is a conditional objective requiring an explicit contribution metric and verification model, not a description of current rewards.
+
+**Required safeguards:**
+
+- **Uniqueness layer:** Specify evidence provenance, freshness, impersonation/duplicate controls and false-accept/false-reject limits. Oracle/evidence validity is an unresolved trust boundary; traceability is not truth.
+- **Contribution metric:** Define what work or application benefit counts, who verifies it and how attribution can be contested. Test collusion and metric gaming; do not collapse XP, reputation and usefulness into a single score or classify people as intrinsically “low-value.”
+- **Anti-farming economics:** Under declared valuations, resources and horizon, compare realizable attack gains—including emission and indirect capture benefits—with fabrication/control costs and expected actually collected losses. Require honest participation to remain worthwhile too. Refundable stake principal is not a loss, debt is not realized collection, and a nominal fine is not deterrence. The cost-of-attack condition is necessary for the economic thesis, not a sufficient security proof.
+- **Bootstrap plan:** State initial admission/evidence assumptions, financing, concentration limits and how early decision-makers remain correctable. Bootstrap vulnerability cannot be hidden behind a permanently honest founding group; earned early advantage is not immunity.
+- **Arbitration trust model:** Name admissibility, independent review capacity, conflicts, recusal, quorum, appeal/repair and actual enforcement assumptions. Arbitration capture and correlated error can turn accountable-looking records into protection for a collusive farm. OPEN procedures remain OPEN; no new court or rule is selected here.
+
+**Success or failure:** this framing succeeds only if credible identity/contribution evidence and affordable correction make honest useful participation persist while bounding farming, collusion and wrongful exclusion across bootstrap, scale and neglect. It fails if emission mainly subsidizes extraction, capture or review overload—or if retention depends only on assumed token prices/subsidies rather than demonstrated usefulness. Increasing accounts, XP, rewards or recorded disputes alone supports neither conclusion. [The research program](research.en.md#strategic-evaluation-lens-d32) specifies the evaluation boundary, not proof that the flywheel operates.
 
 ## 2. Social growth must also produce responsibility
 
@@ -1720,6 +1750,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 | S: reasoned precedent for boundary cases | **[CANDIDATE / OPEN]** D30, §27.5; not an approved new institution |
 | T: retain corrected critique scope and conditional evidence levels | **[EDITORIAL / RESEARCH BOUNDARY]** intended senior-challenge routes exist; access/effectiveness still need tests |
 | Same-subject artifact replay and concurrent stake backing reproduced at the audit baseline | **[DIAGNOSTIC MODEL FINDING / OPEN]** §14.4, §26.5; tested once-per-subject and funded-stake references do not silently become selected defaults |
+
+### Strategic framing documented 2026-10-23
+
+**D32 — [DIRECTION], §1, “Accountability for emission and growth.”** Source: the owner's explicit strategic-framing directive. Facety is evaluated as an accountability substrate for farming-resistant emission distribution, retention and network growth. Uniqueness, contribution/reputation and distribution remain separate layers. The flywheel and its inverse are **[HYPOTHESIS]**; oracle validity, Sybil attacks, collusion, arbitration capture, bootstrap vulnerability and attack economics remain explicit risks. This extends D16/D17/D27/D31 without selecting a contribution metric, changing emission/XP/stake rules or establishing readiness.
 
 ### Earlier supersessions
 

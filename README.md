@@ -1,6 +1,18 @@
 # Facety simulator
 
-**Facety is a coordination protocol for mutual identification through mutual guarantees and public accountability.** This is owner-provided design intent, documented 2026-10-23. “Mutual” describes the social architecture: consenting to a directed guarantee does not create its reverse. Repeated identity assertions, non-transferable XP, economic consequences and collective disputes support coordination; none alone proves unique personhood.
+**Facety's strategic thesis is an accountability substrate for emission distribution and network growth—not merely a dispute protocol.** It aims for distribution resistant to farming by asking: “Who are we actually dealing with?” Emission is intended to retain honest participants, attract contributors and support useful network effects, not function as a standalone payout. This is a deliberate owner-provided lens (D32, documented 2026-10-23), not proven sustainability.
+
+The proposed flywheel is **emission → retention/growth → more accountable participation → better evidence about contribution → more defensible distribution**. Its inverse is farmed emission financing collusion and procedural obstruction, honest participants leaving, independent review weakening and further farming becoming easier. Traceable claims, evidence, sponsorships, stakes and verdicts make those paths inspectable; they do not make evidence true.
+
+Keep three layers distinct:
+
+- **Uniqueness / Sybil resistance:** repeated identity claims and guarantees are contestable, not proven unique-personhood certification.
+- **Contribution / reputation:** XP records specified work/responsibility, not a universal measure of useful contribution; application-specific verification remains open.
+- **Emission / distribution:** native accounting is executable; sustainable retention and farming resistance are not established. The current one-unit eligible Self-ID reward is not general contribution-proportional allocation.
+
+Required safeguards are a credible uniqueness layer, a scoped contribution metric, anti-farming economics, an explicit bootstrap plan and an arbitration trust model. Main risks remain **oracle/evidence validity, Sybil attacks, collusion, arbitration capture, bootstrap vulnerability and whether real attack costs exceed realizable gains**. Eligible participants can both earn Self-ID emission and assume guarantee liability or dispute stakes; this neither buys XP nor makes all participants mandatory stakers. The [D32 framing and falsifiers](docs/facety.protocol.en.md#accountability-for-emission-and-growth-d32) define the boundary: useful honest participation must persist without subsidy-dependent extraction, capture or intolerable wrongful exclusion. More accounts or payouts alone do not establish success.
+
+**Social architecture (D31):** Facety coordinates mutual identification through mutual guarantees and public accountability. This is owner-provided design intent, documented 2026-10-23. “Mutual” describes the social architecture: consenting to a directed guarantee does not create its reverse. Repeated identity assertions, non-transferable XP, economic consequences and collective disputes support coordination; none alone proves unique personhood.
 
 Guarantees earn XP because building, checking and accepting responsibility are work. Early builders intentionally receive an earned advantage—not permanent immunity. XP cannot be purchased by accumulating FACY, and it is not proof of wisdom or honesty. Public histories make actions attributable, but attention, usable evidence, a willing sponsor and enforcement are separate bottlenecks. Anyone may discover evidence; a qualified participant accepts formal challenge responsibility. The intended final Council has 101 active high-XP members with **one equal vote each**, not extra votes for more XP.
 
