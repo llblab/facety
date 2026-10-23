@@ -45,6 +45,7 @@ Use the following labels:
 - [Part VIII — Threat Model, Research, and Delivery](#part-viii-threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
 - [Part IX — Condensed Protocol Constitution](#part-ix-condensed-protocol-constitution): the rules and final thesis.
 - [Part X — Network Difficulty and Topology Safeguards](#part-x-network-difficulty-and-topology-safeguards-d33): D33's invitation thresholds, dynamic consuls, independent support, cluster quotas, privacy and explicit conflicts.
+- [Part XI — Research Evidence Contracts](#part-xi-research-evidence-contracts): D37's statistical contradiction promise, distinct from protocol adjudication.
 - [Appendix A — Decision log and supersession ledger](#appendix-a-decision-log-and-supersession-ledger): dated decisions and what they replaced.
 - [Appendix B — Sources and confidence](#appendix-b-sources-and-confidence): scope and evidence limits.
 
@@ -2081,6 +2082,22 @@ This decision changes the specification only. A future reference implementation 
 
 ---
 
+## Part XI — Research Evidence Contracts
+
+## 47. Calibrated aggregate contradiction in simulator research (D37)
+
+**D37 — [SELECTED research contract; implementation pending], documented 2026-10-23.** Source: the owner's Telegram reply “A” to the [E1 decision packet](../studies/2026-10-23-e1-contract/README.md), selecting calibrated aggregate refutation rather than diagnostic-only component flags. This governs statistical interpretation of simulator research, not human identity adjudication, Council voting or protocol sanctions.
+
+For one registered hypothesis, the contradiction family MUST include every registered **claim × context**, including presence, necessity and alternative-control claims. Let `M` be that family's size and `p_contradiction,j` each component's raw lower-tail p-value. The aggregate contradiction p-value MUST be `min(1, M × min_j p_contradiction,j)`, or the identical minimum of Holm-adjusted component p-values. It MUST be at most the registered `alpha` before the aggregate is called `contradicted`. Holm's later steps MAY be reported for component attribution, but raw and adjusted quantities MUST remain distinguishable; that reporting does not change the aggregate rule.
+
+The support rule MUST remain the existing intersection-union rule: every component supports, with hypothesis support p-value `max_j p_support,j`. Unknowns MUST remain adverse to each tested direction and MUST NOT reduce the registered family size. Missing registered contexts MUST NOT be silently dropped. No observed-correlation estimate or post-hoc duplicate removal may replace the fixed family.
+
+The selected error guarantee is **per hypothesis and per contradiction direction**, conditional on valid marginal tests and the declared replica/seed model. It is not a joint support-plus-contradiction guarantee and not a cross-hypothesis/study guarantee. The existing support-only `adjustStudy` contract MUST NOT be represented as contradiction correction. This selects neither evidence authentication nor the separate offline retained-input trust model, and proves no empirical error rate, personhood, useful contribution or attack resistance.
+
+**Runtime and history boundary — [OPEN implementation contract].** The native engine still uses the labeled legacy unadjusted any-component contradiction rule. D37 selects its target semantics, not an already completed repair. Explicit analysis-method/version binding and historical native/CLI compatibility MUST be approved before migration; implementation-drift permission alone MUST NOT be treated as permission to reinterpret a historical registered design. Historical artifacts MUST remain unchanged. Intentionally requested new-method reanalysis MUST identify the changed method in a separate result rather than claiming retroactive preregistration or automatically replaying confirmation. The [evidence contract](evidence.en.md#proposed-migration-approval-pending) owns the proposed rollout; it is not selected by this decision. D33–D36 topology and D34 liability/correction gates remain unchanged.
+
+---
+
 ## Appendix A: Decision log and supersession ledger
 
 This ledger prevents earlier drafts from being mistaken for the latest decisions. Git history holds the exact text changes.
@@ -2140,6 +2157,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Invitation-path independence documented 2026-10-23
 
 **D36 — [SELECTED], §46.15.** Source: the owner's explicit rejection of counting routes through a common intermediary. D35's qualifying paths MUST be internally vertex-disjoint: only the issuer and common final center may be shared. Merely distinct routes or edge-disjoint paths with a shared internal vertex do not suffice; duplicate/cyclic walks do not create support. This closes the edge-versus-vertex independence choice, while anchor membership, traversal direction, eligibility/snapshots and apex self-path handling remain OPEN. No runtime migration, cluster quota or proof of personhood is introduced.
+
+### Research contradiction semantics selected 2026-10-23
+
+**D37 — [SELECTED research contract; implementation pending], §47.** Source: the owner's explicit Telegram selection “A” after the calibrated-refutation versus diagnostic-flag comparison. Aggregate contradiction MUST control the one-hypothesis, one-direction registered claim/context family through `min(1, M × min(raw contradiction p))`; support remains the existing maximum-p-value intersection-union rule. Unknowns do not shrink the family; raw quantities and historical artifacts are preserved. This closes E1's inferential-promise choice, not method/version/native/CLI migration, joint-direction or cross-hypothesis control, offline input trust, or a protocol-economic rule. The unadjusted native reference remains explicitly labeled until the compatibility contract is approved and behavior is separately validated; no historical confirmation is replayed.
 
 ### Earlier supersessions
 
