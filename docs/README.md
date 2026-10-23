@@ -4,6 +4,7 @@
 - [Insight register](insights.en.md): Every owner decision and simulator finding, with its evidence level and source study.
 - [Simulator model](simulator.en.md): Implemented abstractions, subsystem/spec/source/test coverage, explicit research policies, graph certificates, reference-checked path benchmarks and unresolved risks.
 - [Accountable-correction research](research.en.md): One mechanism chapter and [structured inventory/register](mechanisms.json), executable causal walkthroughs, hypothesis/control matrix, survivability vector, utility boundary and safe human-calibration design (not collected data).
+- [2026-10-23 stateful dispute boundary assessment](../studies/2026-10-23-dispute-boundary/README.md): State/call and phase-order map; closes the bounded split with orchestration kept local and source/test-identical evidence reuse.
 - [2026-10-23 public social-graph extraction](../studies/2026-10-23-social-graph/README.md): Read-only neighborhoods/rank without evaluator inputs, finite direct helper controls and 17-context trajectory/event preservation.
 - [2026-10-23 experiment configuration extraction](../studies/2026-10-23-experiment-config/README.md): A separate configuration owner with the public facade retained; 16-context byte-identical trajectory/event comparison apart from provenance.
 - [2026-10-23 registration-integrity repair](../studies/2026-10-23-registration-integrity/README.md): E2 native analysis verification with explicit historical compatibility and permanent selected-default reservation coverage; E1 remains unchanged.

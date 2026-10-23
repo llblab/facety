@@ -1,0 +1,435 @@
+{
+  "baseline": "07283d3",
+  "level": "diagnostic",
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "7ee4559d2a4819aa5e17dd90bd2ee61e1d5b0074cbe3b8cc382ecce49acf6d6f",
+    "files": 27
+  },
+  "sourceTree": "40bd1fdc815756078ce340719dbb107cafce7fe4",
+  "testTree": "e84c07860f8575af3cc8e568c63221cb809ed515",
+  "method": "Bounded token inventory of nineteen named functions in the inspected source; remove comments/string literals before matching an explicit binding catalog. Not a JavaScript parser, complete free-variable analysis or architectural severity threshold.",
+  "catalog": [
+    "model",
+    "config",
+    "truth",
+    "sensing",
+    "rosters",
+    "rosterPositions",
+    "stakeBook",
+    "openDisputes",
+    "caseContexts",
+    "pendingClusters",
+    "disputeSequence",
+    "disputeRecords",
+    "sanctions",
+    "trustWork",
+    "attention",
+    "attempt",
+    "decision",
+    "activityOf",
+    "neighborhood",
+    "spreadSuspicion",
+    "verified",
+    "reliability"
+  ],
+  "lowerImports": [
+    "ProtocolRejection",
+    "challengeAccess",
+    "settleOneStepPosition",
+    "enforceIdentityVerdict",
+    "propagatedTrust"
+  ],
+  "functions": [
+    {
+      "name": "challenge",
+      "startLine": 329,
+      "experimentBindings": [
+        "model",
+        "config",
+        "truth",
+        "sensing",
+        "stakeBook",
+        "openDisputes",
+        "caseContexts",
+        "pendingClusters",
+        "disputeSequence",
+        "sanctions",
+        "attention",
+        "attempt"
+      ],
+      "lowerImports": [
+        "ProtocolRejection",
+        "challengeAccess",
+        "settleOneStepPosition"
+      ],
+      "localCalls": [
+        "applyVerdict",
+        "openDispute",
+        "clusterFollowUp",
+        "ladder",
+        "openTimedDispute"
+      ],
+      "modelCalls": [],
+      "graphCalls": [],
+      "stakeCalls": [
+        "open"
+      ]
+    },
+    {
+      "name": "applyVerdict",
+      "startLine": 362,
+      "experimentBindings": [
+        "model",
+        "config",
+        "truth",
+        "sanctions",
+        "spreadSuspicion"
+      ],
+      "lowerImports": [
+        "enforceIdentityVerdict"
+      ],
+      "localCalls": [
+        "investigate"
+      ],
+      "modelCalls": [],
+      "graphCalls": [
+        "lineage.inEdges",
+        "lineage.outEdges"
+      ],
+      "stakeCalls": []
+    },
+    {
+      "name": "acceptedByXp",
+      "startLine": 379,
+      "experimentBindings": [
+        "model",
+        "rosters",
+        "rosterPositions"
+      ],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [
+        "subject"
+      ],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "openDispute",
+      "startLine": 383,
+      "experimentBindings": [
+        "model",
+        "config",
+        "truth",
+        "sensing",
+        "rosterPositions",
+        "stakeBook",
+        "caseContexts",
+        "disputeSequence",
+        "neighborhood"
+      ],
+      "lowerImports": [
+        "propagatedTrust"
+      ],
+      "localCalls": [
+        "acceptedByXp"
+      ],
+      "modelCalls": [],
+      "graphCalls": [],
+      "stakeCalls": [
+        "open"
+      ]
+    },
+    {
+      "name": "fraudBelief",
+      "startLine": 406,
+      "experimentBindings": [],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "candidatePrior",
+      "startLine": 412,
+      "experimentBindings": [
+        "config",
+        "reliability"
+      ],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "nextPosition",
+      "startLine": 420,
+      "experimentBindings": [
+        "model",
+        "config"
+      ],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [
+        "subject"
+      ],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "eligible",
+      "startLine": 424,
+      "experimentBindings": [
+        "model",
+        "stakeBook"
+      ],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [
+        "subject"
+      ],
+      "graphCalls": [],
+      "stakeCalls": [
+        "hasParticipant"
+      ]
+    },
+    {
+      "name": "willing",
+      "startLine": 431,
+      "experimentBindings": [
+        "model",
+        "config",
+        "truth",
+        "sensing",
+        "decision",
+        "activityOf"
+      ],
+      "lowerImports": [],
+      "localCalls": [
+        "fraudBelief",
+        "candidatePrior"
+      ],
+      "modelCalls": [
+        "subject"
+      ],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "candidateOrder",
+      "startLine": 449,
+      "experimentBindings": [
+        "config",
+        "decision"
+      ],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "enter",
+      "startLine": 455,
+      "experimentBindings": [
+        "model",
+        "config",
+        "stakeBook",
+        "sanctions",
+        "attention",
+        "attempt"
+      ],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [],
+      "graphCalls": [],
+      "stakeCalls": [
+        "enter"
+      ]
+    },
+    {
+      "name": "councilReached",
+      "startLine": 464,
+      "experimentBindings": [
+        "config"
+      ],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "settleDispute",
+      "startLine": 468,
+      "experimentBindings": [
+        "model",
+        "config",
+        "truth",
+        "sensing",
+        "stakeBook",
+        "caseContexts",
+        "disputeRecords",
+        "sanctions"
+      ],
+      "lowerImports": [
+        "ProtocolRejection"
+      ],
+      "localCalls": [
+        "fraudBelief",
+        "councilReached"
+      ],
+      "modelCalls": [
+        "council",
+        "penalize",
+        "subject"
+      ],
+      "graphCalls": [],
+      "stakeCalls": [
+        "get",
+        "settle"
+      ]
+    },
+    {
+      "name": "clusterFollowUp",
+      "startLine": 507,
+      "experimentBindings": [
+        "model",
+        "config",
+        "truth",
+        "sanctions"
+      ],
+      "lowerImports": [],
+      "localCalls": [
+        "challenge"
+      ],
+      "modelCalls": [
+        "subject"
+      ],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "ladder",
+      "startLine": 517,
+      "experimentBindings": [
+        "config",
+        "pendingClusters"
+      ],
+      "lowerImports": [],
+      "localCalls": [
+        "acceptedByXp",
+        "nextPosition",
+        "eligible",
+        "willing",
+        "candidateOrder",
+        "enter",
+        "councilReached",
+        "settleDispute"
+      ],
+      "modelCalls": [],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "openTimedDispute",
+      "startLine": 545,
+      "experimentBindings": [
+        "model",
+        "openDisputes"
+      ],
+      "lowerImports": [],
+      "localCalls": [],
+      "modelCalls": [
+        "selfIds",
+        "freezeSelfId"
+      ],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "resolveTimedDispute",
+      "startLine": 553,
+      "experimentBindings": [
+        "model",
+        "config",
+        "stakeBook",
+        "openDisputes",
+        "caseContexts",
+        "sanctions"
+      ],
+      "lowerImports": [
+        "ProtocolRejection"
+      ],
+      "localCalls": [
+        "applyVerdict",
+        "settleDispute",
+        "clusterFollowUp"
+      ],
+      "modelCalls": [
+        "selfId",
+        "unfreezeSelfId",
+        "subject"
+      ],
+      "graphCalls": [],
+      "stakeCalls": [
+        "moot"
+      ]
+    },
+    {
+      "name": "timedDisputeWork",
+      "startLine": 574,
+      "experimentBindings": [
+        "model",
+        "config",
+        "openDisputes",
+        "disputeRecords",
+        "sanctions",
+        "decision",
+        "neighborhood"
+      ],
+      "lowerImports": [],
+      "localCalls": [
+        "acceptedByXp",
+        "nextPosition",
+        "eligible",
+        "willing",
+        "candidateOrder",
+        "enter",
+        "councilReached",
+        "resolveTimedDispute"
+      ],
+      "modelCalls": [
+        "subject"
+      ],
+      "graphCalls": [],
+      "stakeCalls": []
+    },
+    {
+      "name": "investigate",
+      "startLine": 621,
+      "experimentBindings": [
+        "model",
+        "trustWork",
+        "attempt",
+        "verified"
+      ],
+      "lowerImports": [],
+      "localCalls": [
+        "challenge"
+      ],
+      "modelCalls": [
+        "subject"
+      ],
+      "graphCalls": [
+        "lineage.inEdges",
+        "lineage.outEdges"
+      ],
+      "stakeCalls": []
+    }
+  ],
+  "decision": "Retain stateful scenario/dispute lifecycle orchestration in runExperiment; do not introduce a callback/context bag or promote evaluator case truth into shared protocol/custody owners."
+}
