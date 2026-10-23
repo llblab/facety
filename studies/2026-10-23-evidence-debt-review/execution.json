@@ -1,0 +1,521 @@
+{
+  "version": 1,
+  "run": "facety-evidence-debt-review",
+  "run_instance_id": "fa3af91e-761d-4d8b-983f-3a294385ca6a",
+  "status": "done",
+  "model_policy": {
+    "model": {
+      "inherited_keys": [
+        "model"
+      ],
+      "source": "inherited",
+      "value": "openai/gpt-6.1-sol"
+    },
+    "thinking": {
+      "explicit_keys": [
+        "thinking"
+      ],
+      "source": "explicit",
+      "value": "medium"
+    }
+  },
+  "active_subagents": 0,
+  "commands": [
+    {
+      "id": "command-001",
+      "stage": "preflight",
+      "occurrence": 1,
+      "status": "done",
+      "started_at": "2026-10-23T06:05:53.351Z",
+      "completed_at": "2026-10-23T06:06:09.354Z",
+      "label": "preflight:reviewer",
+      "recipe_context": {
+        "alias": "preflight",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+        "name": "subagent-preflight",
+        "path": "preflight",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-001 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-001.md",
+      "prompt_file": "prompts/command-001.md",
+      "prompt_bytes": 13507,
+      "session_dir": "sessions/command-001",
+      "session_files": [
+        "sessions/command-001/2026-10-23T06-05-53-653Z_01a1675d-a873-7400-b1ad-0585470b88e8.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-001/attempt-001/stdout.log",
+            "bytes": 1545
+          },
+          "stderr": {
+            "path": "captures/command-001/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 1545,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "rejected"
+    },
+    {
+      "id": "command-002",
+      "stage": "preflight",
+      "occurrence": 2,
+      "status": "done",
+      "started_at": "2026-10-23T06:05:53.360Z",
+      "completed_at": "2026-10-23T06:06:06.440Z",
+      "label": "preflight:verifier",
+      "recipe_context": {
+        "alias": "preflight",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+        "name": "subagent-preflight",
+        "path": "preflight",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-002 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-002.md",
+      "prompt_file": "prompts/command-002.md",
+      "prompt_bytes": 13507,
+      "session_dir": "sessions/command-002",
+      "session_files": [
+        "sessions/command-002/2026-10-23T06-05-53-731Z_01a1675d-a8c2-7296-a80e-d3737d700bd5.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-002/attempt-001/stdout.log",
+            "bytes": 1287
+          },
+          "stderr": {
+            "path": "captures/command-002/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 1287,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "rejected"
+    },
+    {
+      "id": "command-003",
+      "stage": "preflight",
+      "occurrence": 3,
+      "status": "done",
+      "started_at": "2026-10-23T06:05:53.375Z",
+      "completed_at": "2026-10-23T06:06:07.578Z",
+      "label": "preflight:merger",
+      "recipe_context": {
+        "alias": "preflight",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+        "name": "subagent-preflight",
+        "path": "preflight",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-003 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-003.md",
+      "prompt_file": "prompts/command-003.md",
+      "prompt_bytes": 13505,
+      "session_dir": "sessions/command-003",
+      "session_files": [
+        "sessions/command-003/2026-10-23T06-05-53-742Z_01a1675d-a8cd-7669-a969-059b91c3c83f.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-003/attempt-001/stdout.log",
+            "bytes": 1315
+          },
+          "stderr": {
+            "path": "captures/command-003/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 1315,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "rejected"
+    },
+    {
+      "id": "command-004",
+      "stage": "preflight",
+      "occurrence": 4,
+      "status": "done",
+      "started_at": "2026-10-23T06:05:53.382Z",
+      "completed_at": "2026-10-23T06:06:09.427Z",
+      "label": "preflight:judge",
+      "recipe_context": {
+        "alias": "preflight",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+        "name": "subagent-preflight",
+        "path": "preflight",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-004 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-004.md",
+      "prompt_file": "prompts/command-004.md",
+      "prompt_bytes": 13504,
+      "session_dir": "sessions/command-004",
+      "session_files": [
+        "sessions/command-004/2026-10-23T06-05-53-696Z_01a1675d-a89f-70c0-81e4-d5bda7c35c3b.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-004/attempt-001/stdout.log",
+            "bytes": 1343
+          },
+          "stderr": {
+            "path": "captures/command-004/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 1343,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "rejected"
+    },
+    {
+      "id": "command-005",
+      "stage": "reviewer",
+      "occurrence": 1,
+      "status": "done",
+      "started_at": "2026-10-23T06:06:09.432Z",
+      "completed_at": "2026-10-23T06:08:26.689Z",
+      "branch_index": "0",
+      "recipe_context": {
+        "alias": "reviewer",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-review.json",
+        "name": "subagent-review",
+        "path": "reviewer",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-005 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-005.md",
+      "prompt_file": "prompts/command-005.md",
+      "prompt_bytes": 16005,
+      "session_dir": "sessions/command-005",
+      "session_files": [
+        "sessions/command-005/2026-10-23T06-06-09-769Z_01a1675d-e768-715d-a2bb-4d708ce48a74.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-005/attempt-001/stdout.log",
+            "bytes": 8100
+          },
+          "stderr": {
+            "path": "captures/command-005/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 8100,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "accepted"
+    },
+    {
+      "id": "command-006",
+      "stage": "reviewer",
+      "occurrence": 2,
+      "status": "done",
+      "started_at": "2026-10-23T06:06:09.439Z",
+      "completed_at": "2026-10-23T06:08:28.804Z",
+      "branch_index": "1",
+      "recipe_context": {
+        "alias": "reviewer",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-review.json",
+        "name": "subagent-review",
+        "path": "reviewer",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-006 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-006.md",
+      "prompt_file": "prompts/command-006.md",
+      "prompt_bytes": 16071,
+      "session_dir": "sessions/command-006",
+      "session_files": [
+        "sessions/command-006/2026-10-23T06-06-09-805Z_01a1675d-e78c-7177-84d1-63753891dcef.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-006/attempt-001/stdout.log",
+            "bytes": 8357
+          },
+          "stderr": {
+            "path": "captures/command-006/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 8357,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "accepted"
+    },
+    {
+      "id": "command-007",
+      "stage": "verifier",
+      "occurrence": 1,
+      "status": "done",
+      "started_at": "2026-10-23T06:08:28.809Z",
+      "completed_at": "2026-10-23T06:10:41.994Z",
+      "recipe_context": {
+        "alias": "verifier",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-verify.json",
+        "name": "subagent-verify",
+        "path": "verifier",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-007 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-007.md",
+      "prompt_file": "prompts/command-007.md",
+      "prompt_bytes": 15874,
+      "session_dir": "sessions/command-007",
+      "session_files": [
+        "sessions/command-007/2026-10-23T06-08-29-129Z_01a16760-07c8-7092-96d5-2f141bbb03d2.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-007/attempt-001/stdout.log",
+            "bytes": 13210
+          },
+          "stderr": {
+            "path": "captures/command-007/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 13210,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "accepted"
+    },
+    {
+      "id": "command-008",
+      "stage": "merger",
+      "occurrence": 1,
+      "status": "done",
+      "started_at": "2026-10-23T06:10:42.001Z",
+      "completed_at": "2026-10-23T06:11:35.325Z",
+      "recipe_context": {
+        "alias": "merger",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-merge.json",
+        "name": "subagent-merge",
+        "path": "merger",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-008 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-008.md",
+      "prompt_file": "prompts/command-008.md",
+      "prompt_bytes": 14317,
+      "session_dir": "sessions/command-008",
+      "session_files": [
+        "sessions/command-008/2026-10-23T06-10-42-279Z_01a16762-0fe6-757a-8bfd-435a7fac74da.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-008/attempt-001/stdout.log",
+            "bytes": 11514
+          },
+          "stderr": {
+            "path": "captures/command-008/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 11514,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "accepted"
+    },
+    {
+      "id": "command-009",
+      "stage": "judge",
+      "occurrence": 1,
+      "status": "done",
+      "started_at": "2026-10-23T06:11:35.329Z",
+      "completed_at": "2026-10-23T06:12:24.389Z",
+      "recipe_context": {
+        "alias": "judge",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-judge.json",
+        "name": "subagent-judge",
+        "path": "judge",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-009 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-009.md",
+      "prompt_file": "prompts/command-009.md",
+      "prompt_bytes": 13977,
+      "session_dir": "sessions/command-009",
+      "session_files": [
+        "sessions/command-009/2026-10-23T06-11-35-614Z_01a16762-e03e-71fd-8c0e-85b68841842b.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-009/attempt-001/stdout.log",
+            "bytes": 8591
+          },
+          "stderr": {
+            "path": "captures/command-009/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 8591,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "accepted"
+    },
+    {
+      "id": "command-010",
+      "stage": "normalizer",
+      "occurrence": 1,
+      "status": "done",
+      "started_at": "2026-10-23T06:12:24.394Z",
+      "completed_at": "2026-10-23T06:12:55.576Z",
+      "recipe_context": {
+        "alias": "normalizer",
+        "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-normalize.json",
+        "name": "subagent-normalize",
+        "path": "normalizer",
+        "role": "import"
+      },
+      "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/sessions/command-010 -p --model openai/gpt-6.1-sol --thinking medium --tools read,bash,fffind,ffgrep @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-evidence-debt-review/prompts/command-010.md",
+      "prompt_file": "prompts/command-010.md",
+      "prompt_bytes": 14156,
+      "session_dir": "sessions/command-010",
+      "session_files": [
+        "sessions/command-010/2026-10-23T06-12-24-720Z_01a16763-a00f-7240-a339-816fc5d2b0aa.jsonl"
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "code": 0,
+          "native_exit_code": 0,
+          "killed": false,
+          "stdout": {
+            "path": "captures/command-010/attempt-001/stdout.log",
+            "bytes": 8224
+          },
+          "stderr": {
+            "path": "captures/command-010/attempt-001/stderr.log",
+            "bytes": 0
+          }
+        }
+      ],
+      "exit_code": 0,
+      "native_exit_code": 0,
+      "effective_exit_code": 0,
+      "killed": false,
+      "stdout_bytes": 8224,
+      "stderr_bytes": 0,
+      "stdout_truncated": false,
+      "stderr_truncated": false,
+      "semantic_acceptance": "accepted"
+    }
+  ],
+  "report_evidence": {
+    "required": [
+      "execution.json#command-005",
+      "execution.json#command-006",
+      "execution.json#command-007",
+      "execution.json#command-008",
+      "execution.json#command-009"
+    ],
+    "cited": [
+      "execution.json#command-005",
+      "execution.json#command-006",
+      "execution.json#command-007",
+      "execution.json#command-008",
+      "execution.json#command-009"
+    ],
+    "missing": [],
+    "claims_complete": false,
+    "complete_allowed": true
+  },
+  "updated_at": "2026-10-23T06:12:55.588Z"
+}

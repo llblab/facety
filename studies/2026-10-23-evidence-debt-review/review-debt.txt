@@ -1,0 +1,93 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**complete — bounded debt-reservation reviewer lens only.** No supported correctness defect found in the inspected reservation transitions. This is not completion of the independent review pipeline or proof of economic/security adequacy.
+
+## Scope and commit
+
+- Repository: `/home/llb/Repos/facety`.
+- Verified HEAD: `a40fdb0f3879866137c04f2f4f3d41276e07f311`.
+- `git status --short` was empty before and after validation.
+- Reviewed `src/model.mjs`, relevant native model tests, `docs/simulator.en.md`, and focused scheduler/dispute callers.
+- No files changed, confirmations run, dependencies installed, commits created, or pushes performed.
+- Statistical inference, D33/D35/D36 migration, D34 correction and penalty-deduplication choices excluded.
+
+## Reviewer coverage and commands
+
+Executed:
+
+1. `git status --short && git rev-parse HEAD`
+   - Observed clean worktree and the requested commit.
+2. `node --test test/model.test.mjs`
+   - **29 passed, 0 failed, 0 skipped.**
+3. An inline, artifact-free `node --input-type=module <<'NODE' … NODE` assertion probe.
+   - Observed: **`PASS: 15 focused reservation/atomicity checks; no repository artifacts written`**.
+   - Exercised selected defaults with a genuinely active guarantor; exact maturity; locked maturity and unlock; cancellation; additional debt; excess unreserved rights; chain voiding; repeated settlement; zero maturity; and immediate-burn comparison.
+4. `git status --short`
+   - Empty output after probes.
+
+The full inline probe command is retained in this invocation’s tool transcript; no standalone reproduction file was created.
+
+## Findings with original attribution and reproductions
+
+**Original attribution: debt-reservation reviewer, command-006. No actionable defect supported.**
+
+Checked invariants:
+
+| Invariant | Inspected evidence and observed validation |
+|---|---|
+| Reservation does not itself burn, repay debt, or grant terminal XP | Creation increments minted/Emitter custody and records reservation; terminal credit remains deferred: `src/model.mjs:284–302`. Native coverage: `test/model.test.mjs:412–446`. Default-policy probe observed debt 1 and subject XP 0 before maturity. |
+| Exact maturity burns one reserved right and repays one debt unit | `src/model.mjs:139–157` skips ages strictly below `spendMaturityHours`, then decrements debt and disposes once. Native test checks maturity minus one and exact maturity: `test/model.test.mjs:429–436`. Probe confirmed the selected 24-hour boundary. |
+| Locks defer recovery without resetting age | Settlement skips locked acts; unlock clears the matching lock and invokes settlement: `src/model.mjs:148–157,381–395`. Probe held debt/XP unchanged at maturity while locked, then observed one repayment and terminal credit on unlock. |
+| Cancellation burns the right but repays nothing | Cancellation disposes the act and removes its reservation without decrementing subject debt: `src/model.mjs:308–329`. Probe cancelled at hour 23, observed unchanged debt and zero subject XP, then verified a replacement right could repay later. |
+| Outstanding reservations prevent overreservation | Reservation condition compares debt with already reserved acts: `src/model.mjs:284–286`. Native coverage checks a third right remains unreserved while two debt units already have reservations: `test/model.test.mjs:423–428`. Probe also checked an excess right while the sole reservation was locked. |
+| Additional fines remain outstanding after an earlier reservation settles | `penalize` adds only uncollected fine to debt: `src/model.mjs:438–455`; settlement removes exactly one unit. Probe added two debt units after reservation, observed debt 2 after the first settlement, and required two subsequent mature rights to clear it. |
+| Voided reservations cannot later repay or credit XP | Chain void removes unspent acts from reservation tracking: `src/model.mjs:464–490`. Probe voided a locked reservation, advanced beyond maturity, and unlocked it; debt remained unchanged and subject XP remained zero. |
+| Custody remains conserved | Disposal moves one unit out of Emitter custody into burned or Collector accounting: `src/model.mjs:308–321`; audit checks custody equality: `src/model.mjs:503–522`. Native tests and every probe snapshot/audit passed. |
+| Examined rejected operations are atomic | Validation precedes mutation in owner disposition, cancellation and lock operations: `src/model.mjs:305–306,323–341,373–395`. Probe compared full exposed subjects, acts, invitations, events, time and audited ledger before/after rejected owner conversion, immature invitation, unauthorized cancellation, locked cancellation, wrong unlock, duplicate freeze and terminal-operation replay. All snapshots matched. |
+
+**Immediate-burn distinction preserved:** `src/model.mjs:298–300` consumes at creation, whereas default reservations settle through clock advance/unlock. This matches `docs/simulator.en.md:91`; native comparison coverage is `test/model.test.mjs:449–457`. No default change is recommended.
+
+## Verification
+
+Caller reachability was inspected, not inferred solely from low-level APIs:
+
+- Scheduler invitation selection uses `eligibleEmissions`: `src/experiment.mjs:1048–1063`.
+- Scheduler conversion selection likewise uses eligible emissions with conversion maturity: `src/experiment.mjs:1116–1117`.
+- The eligibility filter excludes locked and reserved rights: `src/model.mjs:331–334`; model disposition entrypoints independently reject reserved rights.
+- Timed disputes freeze opening unspent rights and unlock matching locks during resolution: `src/experiment.mjs:839–865`.
+- Shared chain verdict enforcement delegates voiding and fines to the model: `src/disputes.mjs:53–75`.
+
+These support reservation integration in the inspected callers. No full scheduler scenario or independent verifier reproduction was run by this reviewer.
+
+## Minority/disputed items
+
+None supplied by other substantive reviewers.
+
+One boundary is worth preserving without promoting it to a bug: timed dispute resolution unlocks rights **before** settlement/verdict enforcement (`src/experiment.mjs:851–865`). Consequently a mature reservation may repay on unlock before later sanctions. That ordering is visible in the source, but this review does **not** establish a violated current contract or select alternative D34 correction/debt treatment.
+
+## Remaining owner gates
+
+- D34 historical liability, correction funding, dependent debt treatment and cross-case penalty identity remain outside this review; `BACKLOG.md` retains those gates.
+- The native reservation regression uses the fixture’s legacy three-day spend window (`test/model.test.mjs:6–9,412–446`). This review supplemented it with selected-default one-day probes, but those probes are not permanent repository regressions.
+- Exhaustive state-machine coverage, numeric mint/XP/ID exhaustion, arbitrary out-of-band mutation recovery and real-world economic/security validity were not established.
+- Verifier, merger and judge substantive outputs are not available in this invocation. Their startup preflights are not substantive evidence.
+
+## Next actions
+
+1. Have the verifier independently check the narrow no-defect result and reproduce the selected-default maturity/lock/cancellation probes as useful.
+2. Coordinator may narrow Checkpoint 3’s debt-reservation item to **reviewed transitions, no supported defect found**, retaining coverage limits and owner gates.
+3. No remediation warranted from this lens alone. A permanent selected-default reservation regression would preserve the supplementary boundary evidence without changing policy.
+
+## Evidence
+
+- Original reviewer: **`execution.json#command-006`**, corresponding to the supplied `command-006.md` task identity; this invocation contains the inspected sources and command outputs. The execution manifest itself was not independently inspected.
+- Supplied startup-only references:
+  - Reviewer preflight: `execution.json#command-001`.
+  - Verifier preflight: `execution.json#command-002`.
+  - Merger preflight: `execution.json#command-003`.
+  - Judge preflight: `execution.json#command-004`.
+- **Substantive verifier/merger/judge evidence: absent here; no references fabricated.**
+
+ACTOR_EVIDENCE_REF: execution.json#command-006

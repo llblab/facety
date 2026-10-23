@@ -1,0 +1,193 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**complete — bounded verifier stage only.** Both usable reviewer branches were checked against the unchanged target. E1 and E2 were independently reproduced; selected-default debt-reservation probes supported the qualified **no-supported-defect** result.
+
+The stated claim is **supported within this bounded scope**. This does not complete merger/judge stages, authorize closing Checkpoint 3, or establish blanket correctness.
+
+## Scope and commit
+
+- Read `AGENTS.md` first.
+- Independently verified HEAD `a40fdb0f3879866137c04f2f4f3d41276e07f311`, branch `main`, and an initially clean worktree.
+- Inspected evidence/statistics implementation, registration and reanalysis callers, model reservation transitions, focused scheduler/dispute callers, relevant tests, documentation, and `BACKLOG.md:85–89`.
+- No repository files changed, dependencies installed, registered confirmations run, historical studies rewritten, commits created, or pushes performed.
+- Final `git status --short` was empty.
+
+## Reviewer coverage and commands
+
+Independently executed:
+
+```sh
+git status --short && git rev-parse HEAD && git branch --show-current
+
+node --test test/model.test.mjs test/statistics.test.mjs test/provenance.test.mjs test/random.test.mjs
+
+node --test --test-name-pattern='registration fails|registration digests|exact claim tests|run statistics|sharpening template' test/evidence.test.mjs
+```
+
+**Observed:** First test command: **39 passed, zero failed**. Focused evidence command: **5 passed, zero failed**. Tests invoking `confirmHypothesis` were not selected.
+
+Also executed two artifact-free assertion probes using:
+
+```sh
+node --input-type=module <<'NODE'
+…
+NODE
+```
+
+The complete executable bodies and stdout are retained in this verifier invocation:
+
+1. **Evidence probe:** Independently constructed registrations and synthetic retained values to reproduce E1, E2, and the inconsistent retained-input observation.
+2. **Reservation probe:** Used `FacetyModel` with an actually active guarantor to check default 24-hour maturity, locks/unlock, cancellation, added debt, excess rights, voiding, repeated settlement, rejected-operation atomicity, zero maturity, and immediate-burn comparison.
+
+Neither probe executed confirmation runs.
+
+## Findings with original attribution and reproductions
+
+### E1 — Medium: Unadjusted component contradiction tests drive an aggregate contradiction verdict
+
+**Original attribution:** Evidence/statistical reviewer, `execution.json#command-005`.
+
+**Independently reproduced.**
+
+`src/evidence.mjs:266–274` computes component contradiction p-values and flags at unadjusted `alpha`. `src/evidence.mjs:292–294` promotes any flagged component to the hypothesis-level `contradicted` verdict. The statistical documentation describes that aggregate verdict without distinguishing its error control from the support rule (`docs/evidence.en.md`, “Statistical test”).
+
+The verifier constructed a valid, verified registration with 32 arms and 32 presence claims, five replicas, probability `0.5`, and alpha `0.05`. One claim received five negative contrasts; the others received five positive contrasts.
+
+Observed:
+
+```json
+{
+  "verdict": "contradicted",
+  "contradicted": [
+    {"context":"base","claim":"c0","role":"presence"}
+  ],
+  "rawP": 0.03125,
+  "holmP": 1,
+  "hypotheticalIndependentQ06": 0.28062267211876313
+}
+```
+
+The last value independently reproduced:
+
+```js
+1 - (1 - binomialLowerTail(0, 5, 0.6)) ** 32
+```
+
+**Interpretation:** Under hypothetical independent component hold probabilities of `0.6`, all above the registered threshold, this decision rule has approximately `28.06%` probability of at least one false contradiction. This is a conditional mathematical example, **not** an observed simulator-study error rate or evidence that existing claims are independent.
+
+**Reachability:** Both normal confirmation and native offline analysis use this aggregate decision (`src/evidence.mjs:225–237,280–294`).
+
+**Qualification:** The maximum-component-p-value intersection-union rule for **support** is not disproved. E1 establishes missing aggregate contradiction multiplicity control, not a requirement to choose Holm specifically. The coordinator must either control that family or explicitly narrow the aggregate verdict to unadjusted diagnostic flags.
+
+### E2 — Medium, native API boundary: Changed registered design is accepted by offline analysis
+
+**Original attribution:** Evidence/statistical reviewer, `execution.json#command-005`.
+
+**Independently reproduced.**
+
+The public `analyzeConfirmation` function reads `registration.spec` directly (`src/evidence.mjs:280–281`), without invoking the registration checks at `src/evidence.mjs:185–195`.
+
+The verifier registered a single claim requiring values greater than `10`, supplied five values of `1`, then cloned the registration and changed only the margin to `0`, preserving its original hash.
+
+Observed assertions and stdout:
+
+```text
+Original analysis: contradicted
+verifyRegistration(changed): rejects with /digest does not match/
+analyzeConfirmation(changed, sameValues): supported
+```
+
+**Expected boundary:** Analysis advertised as reanalysis under the registered design should not silently accept a changed design with its old registration hash.
+
+**Reachability qualification:** This is independently demonstrated for the native API only. The inspected CLI verifies the registration before reanalysis and checks the confirmation hash (`bin/facety.mjs:78–83`); `confirmHypothesis` also verifies first (`src/evidence.mjs:226`). No bypass of those callers was demonstrated.
+
+A fix must preserve the explicit distinction between historical implementation differences and design tampering.
+
+### Debt reservation — No supported defect in the checked transitions
+
+**Original attribution:** Debt-reservation reviewer, `execution.json#command-006`.
+
+**Independently corroborated for the checked subset**, not exhaustively proven.
+
+The verifier’s fresh probes observed:
+
+- **Creation:** Reservation left debt outstanding, retained custody, deferred subject XP, and excluded the reserved right from eligible spending.
+- **Exact default maturity:** Debt remained at hour `23`; advancing to hour `24` burned exactly one right, repaid one debt unit, and credited terminal XP.
+- **Repeated settlement:** Advancing again at the same time did not repeat repayment or mutate exposed state.
+- **Locks:** A mature locked reservation did not settle. Matching unlock settled it without resetting its age.
+- **Outstanding reservation accounting:** A second right was unreserved while one locked reservation already covered the sole debt unit.
+- **Added debt:** An additional fine remained outstanding except for one unit recovered by each settled reservation.
+- **Cancellation:** A veto at hour `23` burned the right without repaying debt or granting subject XP; a later replacement reservation could repay.
+- **Voiding:** Voiding a locked reservation removed its recovery effect; later advance/unlock did not repay debt or credit XP.
+- **Atomic rejection:** Rejected conversion, immature invitation, and wrong-lock unlock preserved snapshots of exposed subjects, acts, invitations, events, clock and audited ledger.
+- **Policy distinction:** Zero maturity settled on the next clock advance; explicitly selected immediate-burn settled at creation.
+
+All probe assertions and custody audits passed. Relevant owners are `src/model.mjs:139–157,284–321,323–341,373–395,438–490,503–522`; these observations match `docs/simulator.en.md:91`.
+
+This corroborates the reviewer’s narrow result. It does **not** independently reproduce every one of the original reviewer’s reported 15 checks or establish exhaustive state-machine correctness.
+
+## Verification
+
+| Claim | Assessment |
+|---|---|
+| Both requested reviewer branches supplied usable bounded results | **Supported:** Header reports `usable: 2`, meeting `minimum: 2`; substantive reports identify commit, scope, commands, findings and limitations. |
+| E1’s material counterexample reproduces | **Proven in the synthetic construction:** Raw contradiction p-value `0.03125`, aggregate `contradicted`, Holm comparison `1`. |
+| E2’s material counterexample reproduces | **Proven at the native boundary:** Verification rejects tampering while direct analysis accepts it and changes the verdict. |
+| `analyzeConfirmation` itself enforces immutable registered design | **Disproven** by E2. |
+| Reviewed debt transitions exhibit a supported correctness defect | **Not established:** Native tests and fresh selected-default probes passed. |
+| Existing studies have a quantified inflated contradiction rate | **Unknown:** No historical reanalysis or dependence assessment performed. |
+| Reservation policy is universally correct or economically adequate | **Unknown:** Bounded tests cannot establish this. |
+| Merger/judge have substantively accepted these findings | **Missing evidence:** Only startup references were supplied. |
+
+Additional source checks:
+
+- Registration binds normalized design, implementation digest and randomness policy (`src/evidence.mjs:167–195`).
+- Planned replica labels share the indexed seed across arms/contexts (`src/evidence.mjs:198–207`; `src/trials.mjs:47–52`).
+- Null contrast values count against both tested directions (`src/evidence.mjs:248–274`); focused tests passed.
+- Scheduler invitations and conversions select eligible emissions (`src/experiment.mjs:1048–1063,1116–1117`), whose model filter excludes locked/reserved rights (`src/model.mjs:331–334`).
+- Verdict enforcement delegates voids and penalties to the model (`src/disputes.mjs:53–75`).
+
+## Minority/disputed items
+
+No contradictory substantive reviewer finding was supplied.
+
+Two qualifications are preserved:
+
+1. **Retained-input trust boundary:** The verifier independently reproduced acceptance of five numeric rows marked `censored: true`, all sharing one seed, as `supported` with zero unknowns. Validation at `src/evidence.mjs:287` checks values and lengths, not these provenance fields. This demonstrates acceptance of inconsistent offline input—not generation of such rows by the scheduler. It remains separate from E2 and requires an explicit trust-boundary decision before classification as an additional defect.
+
+2. **Unlock before sanctions:** `src/experiment.mjs:851–865` unlocks frozen rights before subsequent verdict enforcement. Together with the reproduced unlock settlement behavior, this permits a mature reservation to repay before later sanctions. No inspected current contract establishes that ordering as a bug. D34 alternatives must not be inferred.
+
+The original reviewer’s failed frozen-object mutation probe is reported in its supplied evidence. This verifier did not repeat that failed attempt; its own probes used mutable clones and completed without failures.
+
+## Remaining owner gates
+
+- Decide and document aggregate contradiction semantics; retain E1 until corrected or explicitly narrowed.
+- Enforce the intended native reanalysis registration boundary while preserving an explicit historical-implementation policy.
+- Decide whether offline retained values are trusted inputs or require seed/censoring provenance validation.
+- Preserve D34 event-time liability, correction funding and cross-case penalty identity as OPEN/out of scope; likewise no D33/D35/D36 migration was reviewed.
+- Consider permanent selected-default reservation regression coverage: the detailed native reservation test uses the legacy timing fixture (`test/model.test.mjs:6–9,412–446`); fresh default probes here are retained execution evidence, not repository tests.
+- Obtain substantive merger/judge outputs before declaring the review pipeline complete.
+
+## Next actions
+
+Coordinator should narrow Checkpoint 3 to:
+
+- **Evidence pipeline:** Independently reviewed; E1 and E2 reproduced and unresolved.
+- **Debt reservation:** Reviewed transitions and selected-default probes found no supported defect, with stated coverage limits and OPEN owner gates.
+
+Coordinator owns remediation, regression additions, final validation and backlog reconciliation. No repository edits or closure were performed by this verifier.
+
+## Evidence
+
+- Original evidence/statistical reviewer: **`execution.json#command-005`** — supplied substantive report; findings E1/E2 independently reproduced here.
+- Original debt-reservation reviewer: **`execution.json#command-006`** — supplied substantive report; bounded no-defect result independently corroborated here.
+- Verifier: **`execution.json#command-007`** — current task identity from the supplied `command-007.md`; this invocation retains source inspections, complete probe commands, stdout and test results. The execution manifest mapping was not separately inspected.
+- Merger: **No substantive evidence reference supplied.**
+- Judge: **No substantive evidence reference supplied.**
+- `command-001` through `command-004` are startup-only references, not substantive review acceptance.
+
+ACTOR_EVIDENCE_REF: execution.json#command-005  
+ACTOR_EVIDENCE_REF: execution.json#command-006  
+ACTOR_EVIDENCE_REF: execution.json#command-007

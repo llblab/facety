@@ -1,0 +1,1423 @@
+{
+  "baseline": "a40fdb0f3879866137c04f2f4f3d41276e07f311",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "8111fe51d69687e2a944ba5ddd0fdd9a97ccf14058ee2bcb92d674a31bd28422",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "method": "Synthetic retained values and in-memory registrations; no simulations or confirmations",
+  "randomness": "none-supplied-synthetic-rows-v1",
+  "E1": {
+    "registration": {
+      "schema": "facety-hypothesis/v1",
+      "hash": "3e2d0f566fef85014dbf826b84bd4866820144e40a9d86a343adf5a250c1d4c5",
+      "spec": {
+        "id": "review-contradiction-family",
+        "statement": "Synthetic registered-analysis boundary probe",
+        "kind": "association",
+        "base": {
+          "initialSize": 4,
+          "days": 1
+        },
+        "statistic": {
+          "metric": "xp.total",
+          "summary": "endpoint",
+          "window": null,
+          "subtract": null
+        },
+        "arms": {
+          "a0": {},
+          "a1": {},
+          "a10": {},
+          "a11": {},
+          "a12": {},
+          "a13": {},
+          "a14": {},
+          "a15": {},
+          "a16": {},
+          "a17": {},
+          "a18": {},
+          "a19": {},
+          "a2": {},
+          "a20": {},
+          "a21": {},
+          "a22": {},
+          "a23": {},
+          "a24": {},
+          "a25": {},
+          "a26": {},
+          "a27": {},
+          "a28": {},
+          "a29": {},
+          "a3": {},
+          "a30": {},
+          "a31": {},
+          "a4": {},
+          "a5": {},
+          "a6": {},
+          "a7": {},
+          "a8": {},
+          "a9": {}
+        },
+        "contexts": [
+          {
+            "id": "base",
+            "parameters": {}
+          }
+        ],
+        "claims": [
+          {
+            "id": "c0",
+            "role": "presence",
+            "contrast": {
+              "a0": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c1",
+            "role": "presence",
+            "contrast": {
+              "a1": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c2",
+            "role": "presence",
+            "contrast": {
+              "a2": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c3",
+            "role": "presence",
+            "contrast": {
+              "a3": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c4",
+            "role": "presence",
+            "contrast": {
+              "a4": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c5",
+            "role": "presence",
+            "contrast": {
+              "a5": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c6",
+            "role": "presence",
+            "contrast": {
+              "a6": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c7",
+            "role": "presence",
+            "contrast": {
+              "a7": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c8",
+            "role": "presence",
+            "contrast": {
+              "a8": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c9",
+            "role": "presence",
+            "contrast": {
+              "a9": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c10",
+            "role": "presence",
+            "contrast": {
+              "a10": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c11",
+            "role": "presence",
+            "contrast": {
+              "a11": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c12",
+            "role": "presence",
+            "contrast": {
+              "a12": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c13",
+            "role": "presence",
+            "contrast": {
+              "a13": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c14",
+            "role": "presence",
+            "contrast": {
+              "a14": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c15",
+            "role": "presence",
+            "contrast": {
+              "a15": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c16",
+            "role": "presence",
+            "contrast": {
+              "a16": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c17",
+            "role": "presence",
+            "contrast": {
+              "a17": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c18",
+            "role": "presence",
+            "contrast": {
+              "a18": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c19",
+            "role": "presence",
+            "contrast": {
+              "a19": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c20",
+            "role": "presence",
+            "contrast": {
+              "a20": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c21",
+            "role": "presence",
+            "contrast": {
+              "a21": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c22",
+            "role": "presence",
+            "contrast": {
+              "a22": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c23",
+            "role": "presence",
+            "contrast": {
+              "a23": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c24",
+            "role": "presence",
+            "contrast": {
+              "a24": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c25",
+            "role": "presence",
+            "contrast": {
+              "a25": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c26",
+            "role": "presence",
+            "contrast": {
+              "a26": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c27",
+            "role": "presence",
+            "contrast": {
+              "a27": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c28",
+            "role": "presence",
+            "contrast": {
+              "a28": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c29",
+            "role": "presence",
+            "contrast": {
+              "a29": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c30",
+            "role": "presence",
+            "contrast": {
+              "a30": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          },
+          {
+            "id": "c31",
+            "role": "presence",
+            "contrast": {
+              "a31": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          }
+        ],
+        "alternatives": [],
+        "replicas": 5,
+        "alpha": 0.05,
+        "exploration": {
+          "seeds": [],
+          "source": "Synthetic diagnostic; no experiment or confirmation executed"
+        }
+      },
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "8111fe51d69687e2a944ba5ddd0fdd9a97ccf14058ee2bcb92d674a31bd28422",
+        "files": 25
+      },
+      "randomness": {
+        "generator": "sha256-xoshiro128starstar-v2",
+        "decisions": "decision-keyed-v1"
+      },
+      "confirmationSeed": "confirm:3e2d0f566fef85014dbf826b84bd4866820144e40a9d86a343adf5a250c1d4c5",
+      "plannedRuns": 160
+    },
+    "values": {
+      "base": {
+        "a0": [
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a1": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a2": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a3": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a4": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a5": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a6": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a7": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a8": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a9": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a10": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a11": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a12": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a13": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a14": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a15": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a16": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a17": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a18": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a19": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a20": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a21": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a22": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a23": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a24": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a25": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a26": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a27": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a28": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a29": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a30": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ],
+        "a31": [
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 20,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ]
+      }
+    },
+    "verdict": "contradicted",
+    "rawContradictionPValue": 0.03125,
+    "holmComparisonPValue": 1,
+    "hypotheticalIndependentHoldProbability": 0.6,
+    "hypotheticalIndependentFalseContradictionProbability": 0.28062267211876313,
+    "limitation": "Conditional mathematical illustration, not an observed simulator-study error rate. Holm is a comparison, not a selected remedy."
+  },
+  "E2": {
+    "registration": {
+      "schema": "facety-hypothesis/v1",
+      "hash": "6c3ac37e5c509bc9a9e80c7dfa545e349946000194d4f4b4b1695db940f2a1b6",
+      "spec": {
+        "id": "review-registration-boundary",
+        "statement": "Synthetic registered-analysis boundary probe",
+        "kind": "association",
+        "base": {
+          "initialSize": 4,
+          "days": 1
+        },
+        "statistic": {
+          "metric": "xp.total",
+          "summary": "endpoint",
+          "window": null,
+          "subtract": null
+        },
+        "arms": {
+          "a": {}
+        },
+        "contexts": [
+          {
+            "id": "base",
+            "parameters": {}
+          }
+        ],
+        "claims": [
+          {
+            "id": "positive",
+            "role": "presence",
+            "contrast": {
+              "a": 1
+            },
+            "direction": "greater",
+            "margin": 10,
+            "probability": 0.5
+          }
+        ],
+        "alternatives": [],
+        "replicas": 5,
+        "alpha": 0.05,
+        "exploration": {
+          "seeds": [],
+          "source": "Synthetic diagnostic; no experiment or confirmation executed"
+        }
+      },
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "8111fe51d69687e2a944ba5ddd0fdd9a97ccf14058ee2bcb92d674a31bd28422",
+        "files": 25
+      },
+      "randomness": {
+        "generator": "sha256-xoshiro128starstar-v2",
+        "decisions": "decision-keyed-v1"
+      },
+      "confirmationSeed": "confirm:6c3ac37e5c509bc9a9e80c7dfa545e349946000194d4f4b4b1695db940f2a1b6",
+      "plannedRuns": 5
+    },
+    "values": {
+      "base": {
+        "a": [
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-0"
+          },
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-1"
+          },
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-2"
+          },
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-3"
+          },
+          {
+            "value": 1,
+            "censored": false,
+            "seed": "synthetic-replica-4"
+          }
+        ]
+      }
+    },
+    "originalVerdict": "contradicted",
+    "changedMargin": 0,
+    "unchangedHash": true,
+    "verifyRegistrationError": "hypothesis: registration digest does not match its content",
+    "changedNativeAnalysisVerdict": "supported",
+    "limitation": "Native API boundary only; inspected CLI and confirmation callers verify first."
+  },
+  "retainedInputObservation": {
+    "values": {
+      "base": {
+        "a": [
+          {
+            "value": 20,
+            "censored": true,
+            "seed": "synthetic-duplicate"
+          },
+          {
+            "value": 20,
+            "censored": true,
+            "seed": "synthetic-duplicate"
+          },
+          {
+            "value": 20,
+            "censored": true,
+            "seed": "synthetic-duplicate"
+          },
+          {
+            "value": 20,
+            "censored": true,
+            "seed": "synthetic-duplicate"
+          },
+          {
+            "value": 20,
+            "censored": true,
+            "seed": "synthetic-duplicate"
+          }
+        ]
+      }
+    },
+    "verdict": "supported",
+    "unknown": 0,
+    "limitation": "Inconsistent supplied rows accepted; no demonstration that native simulation generates them. Trust-boundary policy remains unresolved."
+  }
+}
