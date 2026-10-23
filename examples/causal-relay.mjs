@@ -18,8 +18,11 @@ export const RELAY_INPUTS = Object.freeze({ violationPrevalence: 0.5, sensitivit
   reviewSensitivity: 0.85, reviewFalsePositiveRate: 0.2, adjudicationAccuracy: 0.8, startHour: 72, endHour: 96 });
 export const RELAY_RANDOMNESS = Object.freeze({ generator: RANDOM_GENERATOR, decisions: 'causal-relay-input-keyed-v1' });
 
-export function runRelayArm(seed, context, arm, { traceLimit = 0, inertInspection = false } = {}) {
+const TARGETS = Object.freeze(['Mira', 'Aster']);
+
+export function runRelayArm(seed, context, arm, { traceLimit = 0, inertInspection = false, processingOrder = TARGETS } = {}) {
   if (!RELAY_ARMS.includes(arm)) throw new Error('unknown relay arm');
+  if (!Array.isArray(processingOrder) || processingOrder.length !== TARGETS.length || !TARGETS.every(target => processingOrder.includes(target))) throw new TypeError('processingOrder must permute Mira and Aster');
   const { model, acts } = causalWorld();
   const before = accountabilitySnapshot(model);
   const root = new Random(seed);
@@ -51,7 +54,7 @@ export function runRelayArm(seed, context, arm, { traceLimit = 0, inertInspectio
       if (packaged.ok) packages.push({ id: packaged.value, subject, review, upheld });
     }
   }
-  for (const item of packages) {
+  for (const item of packages.toSorted((a, b) => processingOrder.indexOf(a.subject) - processingOrder.indexOf(b.subject))) {
     const routed = relay.route(observer, item.id, arm === 'external-unrouted' ? null : 'Bela');
     if (!routed.ok) continue;
     const reviewed = relay.review('Bela', item.id, { suspicious: item.review, sourceGroup: 'separate-review:' + item.subject });
@@ -60,7 +63,8 @@ export function runRelayArm(seed, context, arm, { traceLimit = 0, inertInspectio
     if (challenge.ok) opened.push({ ...item, caseId: challenge.value });
   }
   model.advanceTo(73);
-  for (const item of opened) relay.resolve(item.caseId, item.upheld);
+  // Service priority must not become a simultaneous intervention on settlement order.
+  for (const item of opened.toSorted((a, b) => TARGETS.indexOf(a.subject) - TARGETS.indexOf(b.subject))) relay.resolve(item.caseId, item.upheld);
   model.advanceTo(RELAY_INPUTS.endHour);
   const after = accountabilitySnapshot(model);
   const state = relay.snapshot();

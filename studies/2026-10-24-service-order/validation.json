@@ -1,0 +1,17 @@
+{
+  "phase": "pre-execution",
+  "focusedTests": {
+    "passed": 8,
+    "failed": 0,
+    "includedInFullSuite": true
+  },
+  "fullSuite": {
+    "command": "npm test",
+    "passed": 239,
+    "failed": 0
+  },
+  "defaultCompatibility": "controls.json; source baseline 94fec29; only control labels, no stored historical scientific study",
+  "nativeSource": "src and examples/causal-walkthroughs.mjs unchanged from baseline",
+  "experimentalRunsExecuted": 0,
+  "remaining": "Commit concrete source/design, then execute the fixed 432-run study if controls remain valid"
+}
