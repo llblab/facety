@@ -2,7 +2,7 @@
 title: "Facety — Manifesto and Protocol Specification"
 subtitle: "Human identity, social responsibility, procedural authority, and the economic growth of Atmo"
 version: "living specification (maintained in the facety repository; history in git and Appendix A)"
-date: "2026-10-23"
+date: "2026-10-24"
 language: "English"
 status: "Proposed protocol; not a claim of a shipped implementation or proven Sybil resistance"
 source_basis: "Protocol owner decisions recorded in this repository, checked against the Facety simulator (docs/insights.en.md)"
@@ -45,7 +45,7 @@ Use the following labels:
 - [Part VIII — Threat Model, Research, and Delivery](#part-viii-threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
 - [Part IX — Condensed Protocol Constitution](#part-ix-condensed-protocol-constitution): the rules and final thesis.
 - [Part X — Network Difficulty and Topology Safeguards](#part-x-network-difficulty-and-topology-safeguards-d33): D33's invitation thresholds, dynamic consuls, independent support, cluster quotas, privacy and explicit conflicts.
-- [Part XI — Research Evidence Contracts](#part-xi-research-evidence-contracts): D37's statistical contradiction promise and D38's versioned migration, distinct from protocol adjudication.
+- [Part XI — Research Evidence Contracts](#part-xi-research-evidence-contracts): D37's statistical contradiction promise, D38's versioned migration and D39's integrated research mandate, distinct from protocol adjudication.
 - [Appendix A — Decision log and supersession ledger](#appendix-a-decision-log-and-supersession-ledger): dated decisions and what they replaced.
 - [Appendix B — Sources and confidence](#appendix-b-sources-and-confidence): scope and evidence limits.
 
@@ -2108,6 +2108,14 @@ Applying A to old retained data MUST require an explicit separate reanalysis req
 
 This changes the statistical contract and its transport, not protocol economics or the separate trust/authentication boundary for supplied scalar rows. Source fingerprints change, so old results still require their original source/method for exact reproduction. Frozen synthetic compatibility inputs are regression evidence, not a replay of historical scientific studies.
 
+## 49. Integrated research programme (D39)
+
+**D39 — [SELECTED research mandate, not a protocol mechanic], documented 2026-10-24.** Source: the owner's instruction to develop root and detailed directions in combinations, then explicitly add the work to the canonical backlog and start Grow Loop. Choosing a first branch MUST mean ordering the work, not discarding the other material directions. The mandate is to understand interacting Facety regimes, not to choose one favored mechanism or promise exhaustive enumeration of every numeric combination.
+
+The [integrated programme](research.en.md#integrated-research-programme-d39-2026-10-24) MUST connect root questions, detailed alternatives, known evidence, cross-root/same-root interactions, opposed explanations and falsifiers. Existing domain backlog owners and their gates MUST be reused. The immediate research priority is sustained genuine participation through maintained guarantees and readiness to check/react; liability risk is a working explanation of withdrawal, not a measured fact or the only allowed explanation. Uniqueness, contribution/reputation and distribution remain separate under D32.
+
+The canonical [convergence item](../BACKLOG.md#integrated-research-programme-d39) owns bounded execution, acceptance and stopping criteria. Grow Loop MAY continue through locally actionable or useful preparatory cohorts, without treating an OPEN contract as an implicitly selected default. D33–D36/D34 migration, human calibration, funding/ethics and evidence-authentication gates remain intact. New scientific mechanism claims still require committed registrations and reserved confirmations under the existing evidence contract; historical studies MUST NOT be replayed or relabeled automatically. A repeated checkpoint or exhausted safe preparation is a reason to stop, not to invent another rule or sweep.
+
 ---
 
 ## Appendix A: Decision log and supersession ledger
@@ -2177,6 +2185,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Versioned research migration approved 2026-10-23
 
 **D38 — [SELECTED implementation contract], §48.** Source: the owner's approval of the concrete transition. New v2 registrations/confirmations bind A's versioned method; existing v1 JSON keeps its original digest and legacy statistics by default. Explicit new-method reanalysis produces a separate identified artifact, not a rewritten registration or retroactive confirmation. Implementation permission is not method permission; method identity travels through native/CLI/study output. No historical study is run automatically, no scalar evidence authentication is inferred, and D33–D36/D34 protocol gates remain unchanged.
+
+### Integrated research mandate documented 2026-10-24
+
+**D39 — [SELECTED research mandate], §49.** Source: the owner's explicit request for a complete root/detailed-direction and combination programme, a canonical backlog task and Grow Loop execution. Priorities order work without deleting untested directions. Sustained genuine guarantee participation/readiness is the immediate outcome; risk of liability is a working hypothesis. Research design/evidence live in `docs/research.en.md` and the existing registers; `BACKLOG.md` remains the only task owner. Bounded cohorts may proceed within their contracts; no new reward, liability, verified-independence, human-study or automatic confirmation/historical-replay permission is implied. Existing selected/OPEN distinctions and scientific validation gates remain.
 
 ### Earlier supersessions
 
