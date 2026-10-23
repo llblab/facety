@@ -48,6 +48,10 @@ A root-pair coverage inventory is a planning floor, not a demand to run every nu
 
 These are unregistered questions, not chosen mechanisms or experimental results. Root-pair completeness does not exhaust detailed factors within a root; same-root interactions and targeted higher-order alternatives must be retained with their rationale.
 
+### Interaction design inventory
+
+The [interaction-design appendix](research-interactions.en.md) owns the 21 root-pair contrasts, W1–W7 within-root interactions, inspected API/applicability boundaries and the first bounded P16 service-order discriminator. It is a child of this design chapter, not a second backlog or code-tied mechanism register. I1–I9 above remain the higher-order overlays. The split separates the shared causal/method chapter from detailed comparison cards; no direction or evidence is discarded.
+
 ### Comparative method and convergence boundary
 
 Use existing studies before collecting more data: separate historically confirmed claims, exploratory menu/grid patterns, diagnostic rule/implementation witnesses and unresolved hypotheses. Build matched controls and minimal contrasts before a larger grid; retain adverse, null, inconclusive and missing outcomes. Prioritize by uncertainty/causal leverage and decision risk, not the easiest favorable result. Check one-factor explanations, then pair coverage and named multi-factor cases; do not infer a mechanism solely from a threshold plot or a combined intervention.
