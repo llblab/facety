@@ -99,6 +99,21 @@ test('weak/conflicted sponsors refuse, and an explicitly rerouted independent sp
   }
 });
 
+test('closed relay cases reject repeated and reversed verdicts without repeating penalties or custody', () => {
+  for (const stakeBacking of ['unsecured', 'reserved']) for (const upheld of [false, true]) {
+    const world = setup({ disputeOverrides: { stakeBacking } });
+    const caseId = world.relay.sponsor('Bela', reviewed(world)).value;
+    assert.ok(world.relay.resolve(caseId, upheld).ok);
+    const settledModel = accountabilitySnapshot(world.model);
+    const settledRelay = world.relay.snapshot();
+    for (const repeated of [upheld, !upheld]) {
+      assert.equal(world.relay.resolve(caseId, repeated).reason, 'case-already-resolved');
+      assert.deepEqual(accountabilitySnapshot(world.model), settledModel);
+      assert.deepEqual(world.relay.snapshot(), settledRelay);
+    }
+  }
+});
+
 test('capacity, work exhaustion and unavailable review stop only the evaluated path, preserving null pending stages', () => {
   const unavailable = setup();
   const id = packageFor(unavailable);

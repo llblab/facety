@@ -1,0 +1,90 @@
+{
+  "schema": "facety-chain-replay-validation/v1",
+  "date": "2026-10-23",
+  "level": "diagnostic",
+  "baseline": "5f85bff5d46b1dafbcd756f935793e7c8c439fba",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "a3a5c26e6e34ece29a967d135ccde81ed132f9e7bd226673b4ef26ba7844e0f8",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "implementationChanged": false,
+  "testSha256": "4fc3cc9327b40b0f62b9812e928422d6571d341bcc9f6405e627da82ea9f273e",
+  "tests": {
+    "focusedPassed": 48,
+    "fullPassed": 215,
+    "failed": 0,
+    "newGuardCoverageFamilies": 1,
+    "newBehaviorFixes": 0,
+    "failBeforeClaim": false,
+    "raw": "tests.txt",
+    "execution": "coordinator only"
+  },
+  "witness": {
+    "rawTerminalStates": 3,
+    "sameRangeRepeatEconomicXpEffects": false,
+    "fullStateIdempotence": false,
+    "appendedSuffixBurnObserved": true,
+    "bareHelperExtraTransferred": 1,
+    "bareHelperExtraBurned": 1,
+    "bareHelperExtraDebt": 0,
+    "bareHelperGuarantorXp": [
+      5,
+      2
+    ],
+    "bareHelperCaseOwnershipBypassed": true,
+    "guardedOutcomeBackingCombinations": 4,
+    "closedCaseRepeatedAndReversedVerdictsBlocked": true,
+    "raw": "witness.json"
+  },
+  "preservation": {
+    "sourceModules": 25,
+    "historicalStudyFiles": 174,
+    "rawBlobsEqual": true
+  },
+  "reusedEvidence": {
+    "reason": "Exact source/runtime and original study/script/baseline inputs unchanged; native runtime and randomness inputs did not change.",
+    "scheduler": {
+      "contexts": 12,
+      "raw": "../2026-10-23-native-id/scheduler-preservation.json",
+      "rerun": false
+    },
+    "dag": {
+      "modules": 25,
+      "edges": 57,
+      "errors": 0,
+      "warnings": 0,
+      "raw": "../2026-10-23-native-id/dag.txt",
+      "rerun": false
+    }
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 26,
+    "raw": "context.txt",
+    "warningReview": "24 wide-table warnings and two generic structure suggestions; no broken documentation/index/list checks."
+  },
+  "whitespace": "git diff --check passed",
+  "independentReview": false,
+  "handoff": {
+    "scope": "Facety BACKLOG.md native transition/provenance audit",
+    "cohort": "chain replay and penalty-authority boundary",
+    "state": "diagnostic complete; broader audit owner-gated",
+    "planTransition": "Closed boundary inspection and additional closed-relay coverage; retained repeat-verdict/overlap semantics OPEN; paused automatic continuation",
+    "blocker": "Deduplication identity and scope across separate verdicts, overlapping cuts and guarantor duties.",
+    "unblocker": "May a separately admitted case impose a new penalty on a guarantor for already voided acts, or only for newly adjudicated acts/duties?",
+    "anotherBoundedInvocationWarranted": false,
+    "alternativeRestart": "Explicitly select a separate remaining stale-proposal/terminal-lock/numeric cohort without treating this gate as resolved."
+  },
+  "limits": [
+    "No runtime implementation change or new enforcement policy.",
+    "Raw economic/XP repeat safety does not mean full-state idempotence: events and +voided metadata change.",
+    "Native/refund/book tests and inspected caller guards do not prove every future or out-of-band path.",
+    "No real attack probability, private utility, contribution, uniqueness or sustainable-distribution conclusion."
+  ]
+}

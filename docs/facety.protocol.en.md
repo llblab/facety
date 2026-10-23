@@ -755,6 +755,8 @@ Responsibility must be recorded and verifiable. A claim that every connected sub
 
 Converted coins cannot be un-minted; recovering them is part of the fine. **[OPEN]** Caps, collection order from recoverable assets, partial cuts for real persons with an isolated invalid act, and treatment of guarantors who left before the violation was proven.
 
+**[OPEN, audit clarification documented 2026-10-23] Repeat-verdict identity and scope.** The once-per-enforceable-penalty-event invariant in §37 needs a defined event/violation identity across separate cases, overlapping cuts and guarantor duties. Replaying one finalized case differs from admitting a later case with a new basis. Decide whether already adjudicated acts can ground another penalty, how genuinely new suffix acts are counted, and whether historical or current relationships determine each liability. The [chain-replay diagnostic](../studies/2026-10-23-chain-replay/README.md) finds existing case guards, but no lower-level general deduplication contract: raw cuts do not repeat money/XP removal without new acts, whereas explicitly applying an unkeyed verdict helper again can impose another guarantor penalty. This is not a demonstrated guarded-caller exploit or authorization to add blanket per-subject/per-act deduplication. No new penalty or finality rule is selected by this audit.
+
 **[MODEL FINDING]** Sanction size is the decisive deterrence lever. A fixed fine of 5 let fraud pay, while chain-proportional fines (or a fine of 10) made the simulated network viable. See the [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md), sections 3–4.
 
 ## 22. Disconnected cones and historical trust

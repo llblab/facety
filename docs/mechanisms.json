@@ -1624,6 +1624,13 @@
       "change": "Allocate automatic artifact IDs after validation; skip explicitly occupied generated names without consuming IDs on rejected registrations.",
       "why": "Parameter-default allocation advanced a shared private counter before rejection, changing later Self-ID/invitation IDs and ordered events despite unchanged immediate balances/state.",
       "evidence": "studies/2026-10-23-native-id retains five old drift classes, an explicit-invalid-ID control, six repaired funded suffixes and the deliberate automatic-collision admission change. No extra mint or economic loss is demonstrated; no general rollback, numeric-exhaustion or mechanism claim."
+    },
+    {
+      "id": "S10",
+      "kind": "diagnostic boundary classification; no runtime change",
+      "change": "Separate raw chain-cut repeat effects, case-owned finality and unkeyed explicit verdict inputs; retain the repeat-penalty/overlap contract as owner-gated.",
+      "why": "Native same-range cuts do not repeat money/XP removal without new acts, but events/void markers change. The bare verdict helper can impose another guarantor penalty outside case ownership; existing guarded relay/book paths block finalized-case replay.",
+      "evidence": "studies/2026-10-23-chain-replay records three raw terminal states, appended-suffix effects, a funded bare-helper contrast and four guarded relay outcome/backing combinations. This is not an established scheduler exploit or a selected deduplication policy; no code or mechanism claim changes."
     }
   ]
 }

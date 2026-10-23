@@ -4,6 +4,7 @@
 - [Insight register](insights.en.md): Every owner decision and simulator finding, with its evidence level and source study.
 - [Simulator model](simulator.en.md): Implemented abstractions, subsystem/spec/source/test coverage, explicit research policies, graph certificates and unresolved risks.
 - [Accountable-correction research](research.en.md): One mechanism chapter and [structured inventory/register](mechanisms.json), executable causal walkthroughs, hypothesis/control matrix, survivability vector, utility boundary and safe human-calibration design (not collected data).
+- [2026-10-23 chain-replay diagnostic](../studies/2026-10-23-chain-replay/README.md): Raw chain-cut effects, guarded closed-case replay and the owner-gated repeat-penalty contract.
 - [2026-10-23 native-ID diagnostic](../studies/2026-10-23-native-id/README.md): Rejected artifact registration, future funded ID/event preservation and explicit-name collision handling.
 - [2026-10-23 game-binding diagnostic](../studies/2026-10-23-game-binding/README.md): Stale-analysis rejection, typed input association, legacy-cache migration and unchanged computed conclusions.
 - [2026-10-23 retained-cohort diagnostic](../studies/2026-10-23-retained-cohort/README.md): Declared-replica admission, known-subset payoff limits, uniform sanction unknowns and bounded complete-data preservation.
