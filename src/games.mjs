@@ -94,8 +94,27 @@ export function gameRunTask({ config }) {
 function profileKey(profile) { return `${profile.honest}|${profile.attackers}`; }
 
 function isShare(value) { return Number.isFinite(value) && value >= 0 && value <= 1; }
-function meanShare(values, expected) {
-  return values.length === expected && values.every(isShare) ? describeValues(values)?.mean ?? null : null;
+function meanShare(values) {
+  return values.every(isShare) ? describeValues(values)?.mean ?? null : null;
+}
+function assertReplicaCohort(result) {
+  const expected = result.game.replicas;
+  const entries = result.facts;
+  if (!Number.isSafeInteger(expected) || expected < 2 || !Array.isArray(entries) || !entries.length) fail('invalid declared replica cohort');
+  const first = entries[0]?.replicas;
+  if (!Array.isArray(first)) fail('invalid retained replica cohort');
+  const seeds = Array.from(first, replica => replica?.seed);
+  if (seeds.length !== expected || seeds.some(seed => typeof seed !== 'string' || !seed.length)
+    || new Set(seeds).size !== expected) fail('replica cohort needs the declared number of unique seed identities');
+  for (const entry of entries) {
+    if (!Array.isArray(entry?.replicas) || entry.replicas.length !== expected
+      || Array.from(entry.replicas, replica => replica?.seed).some((seed, index) => seed !== seeds[index])) {
+      fail('replica cohort must retain the same ordered seed identities');
+    }
+  }
+}
+function completePayoff(summary, expected) {
+  return summary?.count === expected && summary.unknown === 0 && Number.isFinite(summary.mean) ? summary.mean : null;
 }
 function councilShare(system) {
   const seats = system?.councilSeats;
@@ -213,6 +232,7 @@ export function assessViability(deterrence, criteria = {}) {
 
 // Does fraud pay? Compares every non-reference attacker strategy with the rule-following reference.
 export function deterrenceSummary(result, analysis, { alpha = analysis.alpha } = {}) {
+  assertReplicaCohort(result);
   const reference = result.game.reference?.attackers;
   if (!reference) fail('deterrence needs game.reference.attackers');
   const names = Object.fromEntries(COHORTS.map(role => [role, Object.keys(result.game.roles[role])]));
@@ -224,7 +244,9 @@ export function deterrenceSummary(result, analysis, { alpha = analysis.alpha } =
     const gains = Object.fromEntries(fraud.map(name => [name, pairedGain(payoffs(honest, name), payoffs(honest, reference), `deterrence:${honest}:${name}`, alpha)]));
     return [honest, { fraudGainOverReference: Object.fromEntries(Object.entries(gains).map(([name, gain]) => [name, { mean: gain.mean, verdict: gain.verdict }])), deters: Object.values(gains).every(gain => gain.verdict === 'worse') }];
   }));
-  const mixed = analysis.mixedEquilibria;
+  const complete = names.honest.every(honest => names.attackers.every(attackers => COHORTS.every(role =>
+    completePayoff(profile(honest, attackers)?.payoffs?.[role], result.game.replicas) !== null)));
+  const mixed = complete ? analysis.mixedEquilibria : null;
   const equilibria = mixed === null ? null : mixed.map(eq => {
     const referenceValue = names.honest.reduce((sum, honest) => sum + eq.honest[honest] * profile(honest, reference).payoffs.attackers.mean, 0);
     const weighted = (field, key) => {
@@ -249,7 +271,8 @@ export function deterrenceSummary(result, analysis, { alpha = analysis.alpha } =
       coalitionCouncilShare: weighted('fraudBudget', 'coalitionCouncilShare'),
     };
   });
-  const honestWithoutFraud = Math.max(...names.honest.map(honest => profile(honest, reference).payoffs.honest.mean));
+  const honestWithoutFraud = observedExtreme(names.honest.map(honest =>
+    completePayoff(profile(honest, reference)?.payoffs?.honest, result.game.replicas)), Math.max);
   const scale = Math.max(1, Math.abs(honestWithoutFraud));
   const premiumFree = equilibria !== null && equilibria.length > 0 && equilibria.every(eq => eq.fraudPremium <= 1e-6 * scale);
   const deterrent = Object.values(byHonest).some(row => row.deters);
@@ -376,6 +399,7 @@ export function analyzeGame(result, valuationInput, { alpha = 0.05 } = {}) {
   if (!(alpha > 0 && alpha <= 0.2)) fail('alpha must be in (0, 0.2]');
   const valuation = normalizeValuation(valuationInput);
   const { game } = result;
+  assertReplicaCohort(result);
   const names = Object.fromEntries(COHORTS.map(role => [role, Object.keys(game.roles[role])]));
   const profileFacts = new Map(result.facts.filter(entry => entry.kind === 'profile').map(entry => [profileKey(entry.profile), entry]));
   const payoffsOf = (entry, role, groups) => entry.replicas.map(replica => groupUtility(replica, role, groups, valuation[role]));
@@ -385,19 +409,20 @@ export function analyzeGame(result, valuationInput, { alpha = 0.05 } = {}) {
     payoffs: Object.fromEntries(COHORTS.map(role => [role, summarize(payoffsOf(entry, role, INITIAL_GROUPS), `${profileKey(entry.profile)}:${role}`)])),
     sanctions: describeSanctions(entry.replicas),
     fraudBudget: {
-      falseMintedShare: meanShare(entry.replicas.map(replica => replica.system?.falseMintedShare), game.replicas),
-      falseCirculatingShare: meanShare(entry.replicas.map(replica => replica.system?.falseCirculatingShare), game.replicas),
-      coalitionCouncilShare: meanShare(entry.replicas.map(replica => councilShare(replica.system)), game.replicas),
+      falseMintedShare: meanShare(entry.replicas.map(replica => replica.system?.falseMintedShare)),
+      falseCirculatingShare: meanShare(entry.replicas.map(replica => replica.system?.falseCirculatingShare)),
+      coalitionCouncilShare: meanShare(entry.replicas.map(replica => councilShare(replica.system))),
     },
   }));
-  const mean = (profile, role) => profiles.find(row => profileKey(row.profile) === profileKey(profile)).payoffs[role].mean ?? null;
+  const mean = (profile, role) => completePayoff(profiles.find(row => profileKey(row.profile) === profileKey(profile)).payoffs[role], game.replicas);
 
   // Strategy-level (population) best responses and pure equilibria, paired by shared replica seeds.
   const bestResponses = Object.fromEntries(COHORTS.map(role => {
     const other = role === 'honest' ? 'attackers' : 'honest';
     return [role, Object.fromEntries(names[other].map(opponent => {
       const options = names[role].map(strategy => ({ strategy, mean: mean({ [role]: strategy, [other]: opponent }, role) }));
-      const best = options.reduce((top, option) => (option.mean !== null && (top === null || option.mean > top.mean) ? option : top), null);
+      const best = options.some(option => option.mean === null) ? null
+        : options.reduce((top, option) => (top === null || option.mean > top.mean ? option : top), null);
       const comparisons = best === null ? [] : options.filter(option => option.strategy !== best.strategy).map(option => ({
         against: option.strategy,
         ...pairedGain(
@@ -405,7 +430,7 @@ export function analyzeGame(result, valuationInput, { alpha = 0.05 } = {}) {
           payoffsOf(profileFacts.get(profileKey({ [role]: option.strategy, [other]: opponent })), role, INITIAL_GROUPS),
           `br:${role}:${opponent}:${option.strategy}`, alpha),
       }));
-      return [opponent, { best: best?.strategy ?? null, clear: comparisons.every(row => row.verdict === 'better'), comparisons }];
+      return [opponent, { best: best?.strategy ?? null, clear: best !== null && comparisons.every(row => row.verdict === 'better'), comparisons }];
     }))];
   }));
   const pureEquilibria = profiles.filter(row => COHORTS.every(role => bestResponses[role][row.profile[role === 'honest' ? 'attackers' : 'honest']].best === row.profile[role]))
@@ -457,8 +482,11 @@ export function analyzeGame(result, valuationInput, { alpha = 0.05 } = {}) {
 }
 
 function describeSanctions(replicas) {
-  const keys = Object.keys(replicas[0].sanctions);
-  return Object.fromEntries(keys.map(key => [key, describeValues(replicas.map(replica => replica.sanctions[key]))?.mean ?? null]));
+  const keys = new Set([...replicas.flatMap(replica => Object.keys(replica.sanctions ?? {})), 'wrongfulInvalidated', 'falseInvalidated']);
+  return Object.fromEntries([...keys].map(key => {
+    const values = replicas.map(replica => replica.sanctions?.[key]);
+    return [key, values.every(Number.isFinite) ? describeValues(values)?.mean ?? null : null];
+  }));
 }
 
 // Recomputes equilibria while one valuation weight varies, locating where conclusions change.

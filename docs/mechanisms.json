@@ -1548,7 +1548,7 @@
           "bootstrap/binomial settings",
           "return windows"
         ],
-        "purpose": "Offline analyst criteria, not automatic actor adaptation or proof of a mechanism. Saved-game budget means require complete valid observations; positive-support expectations carry unknowns; mandatory/enabled viability criteria cannot pass without data. Retention needs a positive baseline. Disabled caps and zero mixture support are not measured zeros. Raw mandatory-summary completeness remains a follow-up; see the games contract.",
+        "purpose": "Offline analyst criteria, not automatic actor adaptation or proof of a mechanism. Saved-game budget means require complete valid observations; positive-support expectations carry unknowns; mandatory/enabled viability criteria cannot pass without data. Retention needs a positive baseline. Disabled caps and zero mixture support are not measured zeros. Declared replica cohorts must be complete/aligned; known-subset payoff statistics cannot supply complete-data response/matrix claims, and raw sanction means propagate missingness uniformly. Seed consistency is not authentication; see the games contract.",
         "owner": "docs/games.en.md; docs/discovery.en.md; docs/evidence.en.md; docs/controls.en.md"
       },
       {
@@ -1602,6 +1602,13 @@
       "change": "Removed game safety zero-imputation across retained-replica means, supported equilibrium observations and active viability criteria; reject invalid analyst limits and leave non-positive-baseline retention undefined.",
       "why": "Saved-data witnesses passed explicit fraud budgets or mandatory retention/sanction criteria without measured support. Unknown is not zero, an excluded profile or a disabled criterion.",
       "evidence": "studies/2026-10-23-saved-facts retains old/new diagnostic witnesses, four new game regressions and exact complete-data analysis/summary/positive-baseline viability comparison on 36 common native runs. Native source modules and historical artifacts remain unchanged; no new protocol rule or confirmed mechanism."
+    },
+    {
+      "id": "S7",
+      "kind": "correctness repair with explicit saved-record admission",
+      "change": "One shared declared-replica/ordered-seed admission guard, complete-payoff checks for response/matrix/reference claims, incomplete cached-descriptor suppression and nullable union-based sanction means.",
+      "why": "Six-of-twenty records and a single unknown valued payoff could still establish favorable mandatory/equilibrium conclusions; first/later sanction omission behaved differently.",
+      "evidence": "studies/2026-10-23-retained-cohort retains old/current witnesses and complete-data comparisons on 36 native runs/two valuations. Malformed cohort admission deliberately changes; native transitions, sampling policy and historical artifacts do not. Consistency/descriptor checks are not authenticity, independent sampling or full-schema validation. Complete yet stale analysis can still mismatch current facts/valuation; the retained counterexample remains a separate caller-contract follow-up."
     }
   ]
 }

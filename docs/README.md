@@ -4,6 +4,7 @@
 - [Insight register](insights.en.md): Every owner decision and simulator finding, with its evidence level and source study.
 - [Simulator model](simulator.en.md): Implemented abstractions, subsystem/spec/source/test coverage, explicit research policies, graph certificates and unresolved risks.
 - [Accountable-correction research](research.en.md): One mechanism chapter and [structured inventory/register](mechanisms.json), executable causal walkthroughs, hypothesis/control matrix, survivability vector, utility boundary and safe human-calibration design (not collected data).
+- [2026-10-23 retained-cohort diagnostic](../studies/2026-10-23-retained-cohort/README.md): Declared-replica admission, known-subset payoff limits, uniform sanction unknowns and bounded complete-data preservation.
 - [2026-10-23 saved-facts diagnostic](../studies/2026-10-23-saved-facts/README.md): Missing safety observations, false-safe viability witnesses, strict unknown propagation and bounded complete-data preservation.
 - [2026-10-23 dead-code cleanup](../studies/2026-10-23-dead-code/README.md): Removal of the unused alternative component, committed-before/current differential checks and preserved historical fingerprints.
 - [2026-10-23 causal-core checkpoint](../studies/2026-10-23-causal-core/README.md): Preservation-tested extraction, bounded traces, matched-resource exploration, raw outputs and qualified independent review.

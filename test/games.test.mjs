@@ -123,11 +123,11 @@ test('fraud budgets measure false minted money and coalition Council share and c
   assert.ok(strict.failures.length >= open.failures.length);
 });
 
-async function savedBudgetFixture() {
+async function savedBudgetFixture(replicas = 2) {
   const result = await runGame({ id: 'saved-budget', base: { initialSize: 6, attackerShare: 0.5, days: 3 },
     roles: { honest: { strategies: { watch: { activity: { invite: 0 } } } },
       attackers: { strategies: { abstain: { activity: { invite: 0 } }, farm: { activity: { invite: 0 } } } } },
-    replicas: 2, reference: { attackers: 'abstain' } });
+    replicas, reference: { attackers: 'abstain' } });
   // Synthetic retained measurements isolate offline missingness; they are not a simulated outcome claim.
   for (const entry of result.facts) for (const replica of entry.replicas) Object.assign(replica.system,
     { falseMintedShare: 0.2, falseCirculatingShare: 0.3, councilSeats: 4, councilAttackerSeats: 1 });
@@ -150,8 +150,7 @@ test('saved-game budget means require every declared replica and valid observed 
   }
   const partial = structuredClone(result);
   partial.facts[0].replicas.pop();
-  assert.deepEqual(analyzeGame(partial, budgetValuation).profiles[0].fraudBudget,
-    { falseMintedShare: null, falseCirculatingShare: null, coalitionCouncilShare: null });
+  assert.throws(() => analyzeGame(partial, budgetValuation), /replica cohort/);
   const emptyCouncil = structuredClone(result);
   for (const replica of emptyCouncil.facts[0].replicas) Object.assign(replica.system, { councilSeats: 0, councilAttackerSeats: 0 });
   assert.equal(analyzeGame(emptyCouncil, budgetValuation).profiles[0].fraudBudget.coalitionCouncilShare, 0);
@@ -178,6 +177,83 @@ test('saved-game equilibrium measurements ignore zero mass, never positive-mass 
     assert.equal(supported.coalitionCouncilShare, null);
     assert.equal(supported.wrongfulInvalidations, null);
   }
+});
+
+test('saved-game admission rejects incomplete, duplicate and unaligned replica cohorts', async () => {
+  const result = await savedBudgetFixture();
+  const analysis = analyzeGame(result, budgetValuation);
+  const mutations = [
+    r => { r.game.replicas = 20; },
+    r => { r.game.replicas = 0; },
+    r => { r.facts[0].replicas = []; },
+    r => { r.facts[0].replicas.pop(); },
+    r => { delete r.facts[0].replicas[0]; },
+    r => { r.facts[0].replicas[1].seed = r.facts[0].replicas[0].seed; },
+    r => { delete r.facts[0].replicas[0].seed; },
+    r => { r.facts[1].replicas.reverse(); },
+    r => { r.facts.push({ kind: 'deviation', profile: r.facts[0].profile, role: 'attackers', strategy: 'farm', replicas: r.facts[0].replicas.slice(1) }); },
+  ];
+  for (const mutate of mutations) {
+    const incomplete = structuredClone(result); mutate(incomplete);
+    assert.throws(() => analyzeGame(incomplete, budgetValuation), /replica cohort/);
+    assert.throws(() => deterrenceSummary(incomplete, analysis), /replica cohort/);
+  }
+});
+
+test('saved-game known-subset payoff means cannot establish best responses or equilibria, including cached analyses', async () => {
+  const result = await savedBudgetFixture(6);
+  const weights = { honest: budgetValuation.honest, attackers: { facts: { liquidFacy: 1 } } };
+  // Synthetic utilities create a decisive reference strategy, not a claim about actual farming returns.
+  for (const entry of result.facts) for (const replica of entry.replicas) {
+    replica.agents.attackers.conformist.liquidFacy = entry.profile.attackers === 'abstain' ? 90 : 0;
+    replica.agents.attackers.deviant.liquidFacy = 0;
+  }
+  const complete = analyzeGame(result, weights);
+  assert.equal(assessViability(deterrenceSummary(result, complete)).viable, true);
+  for (const value of [undefined, null, NaN, Infinity, '0']) {
+    const incomplete = structuredClone(result);
+    if (value === undefined) delete incomplete.facts[0].replicas[0].agents.honest.conformist.subjects;
+    else incomplete.facts[0].replicas[0].agents.honest.conformist.subjects = value;
+    const analysis = analyzeGame(incomplete, weights);
+    assert.equal(analysis.profiles[0].payoffs.honest.mean, 1, 'retain descriptive known-subset statistics');
+    assert.equal(analysis.profiles[0].payoffs.honest.count, 5);
+    assert.equal(analysis.profiles[0].payoffs.honest.unknown, 1);
+    assert.equal(analysis.bestResponses.honest.abstain.best, null);
+    assert.equal(analysis.bestResponses.honest.abstain.clear, false);
+    assert.equal(analysis.pureEquilibria.length, 0);
+    assert.equal(analysis.mixedEquilibria, null);
+    const cached = { ...analysis, mixedEquilibria: complete.mixedEquilibria };
+    for (const candidate of [analysis, cached]) {
+      const summary = deterrenceSummary(incomplete, candidate);
+      assert.equal(summary.equilibria, null);
+      assert.equal(summary.honestWithoutFraud, null);
+      assert.equal(summary.verdict, 'unresolved');
+      assert.equal(assessViability(summary).viable, false);
+    }
+    assert.deepEqual(analyzeGame(incomplete, { honest: {}, attackers: {} }),
+      analyzeGame(result, { honest: {}, attackers: {} }), 'unvalued absent fields stay irrelevant');
+  }
+});
+
+test('saved-game sanction unknowns are nullable and independent of first or later replica position', async () => {
+  const result = await savedBudgetFixture();
+  assert.equal(analyzeGame(result, budgetValuation).profiles[0].sanctions.wrongfulInvalidated, 0);
+  for (const index of [0, 1]) for (const value of [undefined, null, NaN, Infinity, '0']) {
+    const incomplete = structuredClone(result);
+    if (value === undefined) delete incomplete.facts[0].replicas[index].sanctions.wrongfulInvalidated;
+    else incomplete.facts[0].replicas[index].sanctions.wrongfulInvalidated = value;
+    const analysis = analyzeGame(incomplete, budgetValuation);
+    assert.equal(analysis.profiles[0].sanctions.wrongfulInvalidated, null);
+    const summary = deterrenceSummary(incomplete, analysis);
+    assert.equal(summary.equilibria.find(eq => eq.attackers.abstain === 1).wrongfulInvalidations, null);
+    assert.ok(assessViability(summary).failures.includes('wrongful-invalidations'));
+  }
+  const missing = structuredClone(result);
+  for (const replica of missing.facts[0].replicas) delete replica.sanctions;
+  assert.equal(analyzeGame(missing, budgetValuation).profiles[0].sanctions.wrongfulInvalidated, null);
+  const laterOnly = structuredClone(result);
+  laterOnly.facts[0].replicas[1].sanctions.extraCounter = 2;
+  assert.equal(analyzeGame(laterOnly, budgetValuation).profiles[0].sanctions.extraCounter, null);
 });
 
 function knownDeterrence() {

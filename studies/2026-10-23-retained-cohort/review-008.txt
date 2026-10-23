@@ -1,0 +1,121 @@
+ACTOR_REVIEW_RESULT
+
+## Status and source identity
+
+**Status: complete for synthesis of the supplied verification report; coordinator validation remains open.**
+
+The verifier reports **2 usable reviewers / 2 expected / minimum 2**, meeting the reviewer threshold. No blocking defect was established within the declared offline admission/analysis contract. This is **not** universal complete-data equivalence or cohort-closure evidence.
+
+Source chain:
+- Record integrity/statistical inference reviewer: `execution.json#command-005`.
+- Compatibility/measurement semantics reviewer: `execution.json#command-006`.
+- Evidence verifier: `execution.json#command-007`.
+
+Both reviewers reportedly examined the same snapshot:
+
+```text
+src/games.mjs
+9dcfa630aaac1dce2251a18831cd579e781b3b9fa8ccb76cf9706e1fe50a16d5
+
+test/games.test.mjs
+3c3ebd877ba3b1cad4ef41be58aa6d3790f712f9455e0c71d6277a7a1e13083b
+```
+
+Reported comparison base: `a821e2beb4e4963900b9948b303b7ebb857ccb27`.
+
+**Evidence-access limitation:** this merger received the verifier’s synthesis and retained reviewer references, not the raw reviewer reports or execution records. Findings below preserve that attribution; no implementation inspection or test execution was performed in this merge.
+
+## Supported findings with minimal probes
+
+| Finding | Evidence and scope |
+|---|---|
+| Incomplete or misaligned retained cohorts are rejected | Reviewer 1 reportedly tested six retained replicas declared as twenty, duplicate seeds, and reversed seed order. Both public APIs rejected each fixture. Both reviewers inspected count, uniqueness and shared-order checks. |
+| Unknown valued alternatives suppress affected inference | Reviewer 1 tested `undefined`, `null`, `NaN`, `Infinity`, and `'0'` in a 2×2 fixture. Known-subset descriptive counts remained; affected best responses, relevant pure equilibria and mixed fits were suppressed. An unaffected opponent row retained its response. |
+| Incomplete payoff descriptors suppress supplied cached matrices | Reintroducing a previously computed matrix while retaining incomplete descriptors did not restore summary equilibria or viability. **This is descriptor-based suppression, not cache authentication.** |
+| Missing sanctions remain missing | Reviewer 2 removed sanctions from first, last and all replicas and tested later-only keys. Required counters remained present as `null`; observed-key union and explicit-zero semantics were preserved. |
+| Exercised complete native-data outputs remain equal | Historical/current offline analysis of identical current native 2×2 facts, six replicas and unilateral deviations passed `assert.deepEqual` for analysis, deterrence and viability under three valuations, including all-zero weights. This establishes only the exercised cases. |
+| Inspected changes do not alter native transition or randomness rules | Both reviewers reportedly found only offline-analysis/test changes within their inspected scope, with no transition, valuation-weight, emission/XP/stake or randomness-rule changes. This is diff evidence, not historical/current simulation equivalence. |
+
+Sources: `execution.json#command-005`, `execution.json#command-006`, as assessed in `execution.json#command-007`.
+
+## Independently tested invariants
+
+Each reviewer independently reported:
+
+```text
+node --test test/games.test.mjs
+
+tests 14
+pass 14
+fail 0
+```
+
+Reported coverage includes:
+- Cohort rejection and incomplete-payoff suppression.
+- Valuation-dependent missingness.
+- Sanction omissions and nonfinite observations.
+- Mandatory budget criteria versus disabled caps.
+- Zero-mass missingness.
+- Sequential/parallel retained-fact equality.
+
+Additional reviewer probes reportedly showed:
+- Omitting unvalued `system.stakeFacy` did not alter analysis; assigning it value made the baseline unresolved and viability fail.
+- Complete-data old/new offline outputs matched under the three exercised valuations.
+
+These executions are independent **reviewer** evidence, not tests rerun by the verifier or merger. Record completeness and shared seed identities do not prove authenticity or independence of the underlying executions.
+
+## Attributed/missing evidence
+
+### Supported within the declared contract
+
+The supplied verification supports prevention of the reviewed retained-record false-safe cases and preservation of exercised complete-data offline outputs. No reviewer disagreement or failed reviewer branch was reported.
+
+### Preserved high-impact caveat: stale complete caches
+
+Reviewer 1 reportedly reused genuinely computed but stale complete analysis after removing a valued fact:
+
+```json
+{"fresh":false,"stale":true}
+```
+
+Thus, **“the repair validates cache/fact/valuation correspondence” is false**. The favorable conclusion requires supplied cached analysis to correspond to the supplied facts and valuation. The stale-cache result is a confirmed caller-contract hazard, not a demonstrated defect under that correspondence precondition.
+
+### Missing or unestablished
+
+- Full `npm test` evidence.
+- Independently executed evidence that the three new regressions fail against historical source; that claim remains attributed to the task prompt.
+- Coordinator study artifacts and documentation/evidence changes.
+- Direct raw reviewer-report and execution-record inspection by this merger.
+- Universal equivalence across complete datasets, valuations or native executions.
+- Correctness for fabricated metadata or unsupported whole schemas.
+- Authenticity or independence of seed-labelled records.
+- Full-model equivalence or research-mechanism conclusions.
+
+## Compatibility limits
+
+The defensible merged conclusion is:
+
+> At the cited snapshot, reviewer-executed probes and the 14-test focused suite support prevention of the reviewed retained-record false-safe cases. Historical/current offline outputs match for the exercised complete native dataset and valuations. These conclusions depend on the declared admission contract and correspondence of supplied cached analysis to facts and valuation.
+
+Do not restate this as cache authentication, universal behavioral equivalence, production readiness, or equilibrium validity beyond the declared finite strategy menu and valuations.
+
+Keep these boundaries explicit:
+- Active budget criteria are distinct from disabled caps.
+- Data completeness is distinct from authenticity and independence.
+- Identity/reachability is distinct from usefulness, contribution and distribution.
+- These findings establish no real-world farming-resistance claim.
+
+## Next bounded actions
+
+1. **Coordinator:** run and retain full `npm test` evidence before closing the cohort.
+2. Preserve both raw reviewer reports and the verifier report, including source references and snapshot hashes.
+3. Describe cache protection as **incomplete-descriptor suppression conditional on facts/valuation correspondence**.
+4. Keep the historical regression-failure claim attributed unless baseline execution evidence is supplied.
+5. Scope cache binding separately if independently supplied or stale caches are intended to become supported inputs.
+
+**Disposition:** no blocking correction is established within the reviewed contract. Full-suite validation and coordinator evidence reconciliation remain open.
+
+**Retained evidence references**
+- ACTOR_EVIDENCE_REF: execution.json#command-005
+- ACTOR_EVIDENCE_REF: execution.json#command-006
+- ACTOR_EVIDENCE_REF: execution.json#command-007

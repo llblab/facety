@@ -1,0 +1,546 @@
+{
+  "schema": "facety-retained-cohort-diagnostic/v1",
+  "level": "diagnostic",
+  "previousRevision": "a821e2beb4e4963900b9948b303b7ebb857ccb27",
+  "oldAnalyzerSha256": "18cb1443daaf52d21c39fdfeb27c1160f600ac07fc905169a71a1e31e6a37b00",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "d2cc88a555bd8c2b2bc72586f6b22eaa463f66d25a10f596236858541fcef92f",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "method": "Old pure analyzer with unchanged current support modules; common complete native facts plus explicitly synthetic incomplete records. Not historical full-model replay or confirmation.",
+  "historicalPreservation": {
+    "rawBlobsEqual": true,
+    "studyFiles": 138,
+    "unchangedSourceModules": 24
+  },
+  "completeControl": {
+    "nativeRuns": 36,
+    "profiles": 4,
+    "deviations": 8,
+    "comparisons": [
+      {
+        "valuation": {
+          "honest": {
+            "facts": {
+              "subjects": 1
+            }
+          },
+          "attackers": {
+            "facts": {
+              "subjects": 1
+            }
+          }
+        },
+        "analysisDigest": "81030a14b1378f9dd00c203aa917f386e929fb437949d7cff072df3439c86bfc",
+        "summaryDigest": "01d7ed662adff38bedaaf7dd8f666b5982b5b6e8e3899429d72fd13ad9c99174",
+        "equal": true
+      },
+      {
+        "valuation": {
+          "honest": {
+            "facts": {
+              "liquidFacy": 1,
+              "subjects": 2,
+              "effort": -0.01
+            }
+          },
+          "attackers": {
+            "facts": {
+              "liquidFacy": 1,
+              "subjects": 2,
+              "effort": -0.01
+            }
+          }
+        },
+        "analysisDigest": "80d5c63fdf6dabdefce1af8ebb1012c717979af367692d0993b527743c9f45a9",
+        "summaryDigest": "acbd47e0620ebd2e774eca7fdf8c656e57ab4ac7cb384629861e50986a584309",
+        "equal": true
+      }
+    ]
+  },
+  "syntheticProbe": {
+    "nativePrefixRuns": 12,
+    "valuation": {
+      "honest": {
+        "facts": {
+          "subjects": 1
+        }
+      },
+      "attackers": {
+        "facts": {
+          "liquidFacy": 1
+        }
+      }
+    },
+    "baseline": {
+      "payoff": {
+        "count": 6,
+        "mean": 1,
+        "standardDeviation": 0,
+        "standardError": 0,
+        "min": 1,
+        "p10": 1,
+        "p50": 1,
+        "p90": 1,
+        "max": 1,
+        "unknown": 0,
+        "bootstrapMean95": {
+          "lower": 1,
+          "upper": 1,
+          "confidence": 0.95,
+          "resamples": 2000,
+          "method": "percentile bootstrap of the mean"
+        }
+      },
+      "best": {
+        "best": "watch",
+        "clear": true,
+        "comparisons": []
+      },
+      "wrongfulReported": true,
+      "wrongful": 0,
+      "equilibria": 1,
+      "honestWithoutFraud": 1,
+      "verdict": "deterred",
+      "viability": {
+        "criteria": {
+          "minHonestRetention": 0.5,
+          "maxWrongfulInvalidations": 1,
+          "maxFalseMintedShare": 1,
+          "maxCoalitionCouncilShare": 1
+        },
+        "honestRetention": 1,
+        "wrongfulInvalidations": 0,
+        "falseMintedShare": 0,
+        "coalitionCouncilShare": 0.5,
+        "viable": true,
+        "failures": []
+      }
+    },
+    "cases": {
+      "partial-count": {
+        "before": {
+          "payoff": {
+            "count": 6,
+            "mean": 1,
+            "standardDeviation": 0,
+            "standardError": 0,
+            "min": 1,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "max": 1,
+            "unknown": 0,
+            "bootstrapMean95": {
+              "lower": 1,
+              "upper": 1,
+              "confidence": 0.95,
+              "resamples": 2000,
+              "method": "percentile bootstrap of the mean"
+            }
+          },
+          "best": {
+            "best": "watch",
+            "clear": true,
+            "comparisons": []
+          },
+          "wrongfulReported": true,
+          "wrongful": 0,
+          "equilibria": 1,
+          "honestWithoutFraud": 1,
+          "verdict": "deterred",
+          "viability": {
+            "criteria": {
+              "minHonestRetention": 0.5,
+              "maxWrongfulInvalidations": 1,
+              "maxFalseMintedShare": 1,
+              "maxCoalitionCouncilShare": 1
+            },
+            "honestRetention": 1,
+            "wrongfulInvalidations": 0,
+            "falseMintedShare": null,
+            "coalitionCouncilShare": null,
+            "viable": true,
+            "failures": []
+          }
+        },
+        "after": {
+          "error": {
+            "name": "Error",
+            "message": "game: replica cohort needs the declared number of unique seed identities"
+          }
+        }
+      },
+      "missing-payoff": {
+        "before": {
+          "payoff": {
+            "count": 5,
+            "mean": 1,
+            "standardDeviation": 0,
+            "standardError": 0,
+            "min": 1,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "max": 1,
+            "unknown": 1,
+            "bootstrapMean95": {
+              "lower": 1,
+              "upper": 1,
+              "confidence": 0.95,
+              "resamples": 2000,
+              "method": "percentile bootstrap of the mean"
+            }
+          },
+          "best": {
+            "best": "watch",
+            "clear": true,
+            "comparisons": []
+          },
+          "wrongfulReported": true,
+          "wrongful": 0,
+          "equilibria": 1,
+          "honestWithoutFraud": 1,
+          "verdict": "deterred",
+          "viability": {
+            "criteria": {
+              "minHonestRetention": 0.5,
+              "maxWrongfulInvalidations": 1,
+              "maxFalseMintedShare": 1,
+              "maxCoalitionCouncilShare": 1
+            },
+            "honestRetention": 1,
+            "wrongfulInvalidations": 0,
+            "falseMintedShare": 0,
+            "coalitionCouncilShare": 0.5,
+            "viable": true,
+            "failures": []
+          }
+        },
+        "after": {
+          "payoff": {
+            "count": 5,
+            "mean": 1,
+            "standardDeviation": 0,
+            "standardError": 0,
+            "min": 1,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "max": 1,
+            "unknown": 1,
+            "bootstrapMean95": {
+              "lower": 1,
+              "upper": 1,
+              "confidence": 0.95,
+              "resamples": 2000,
+              "method": "percentile bootstrap of the mean"
+            }
+          },
+          "best": {
+            "best": null,
+            "clear": false,
+            "comparisons": []
+          },
+          "wrongfulReported": true,
+          "wrongful": 0,
+          "equilibria": null,
+          "honestWithoutFraud": null,
+          "verdict": "unresolved",
+          "viability": {
+            "criteria": {
+              "minHonestRetention": 0.5,
+              "maxWrongfulInvalidations": 1,
+              "maxFalseMintedShare": 1,
+              "maxCoalitionCouncilShare": 1
+            },
+            "honestRetention": null,
+            "wrongfulInvalidations": null,
+            "falseMintedShare": null,
+            "coalitionCouncilShare": null,
+            "viable": false,
+            "failures": [
+              "unresolved",
+              "honest-retention",
+              "wrongful-invalidations"
+            ]
+          }
+        },
+        "oldCachedAnalysisRechecked": {
+          "payoff": {
+            "count": 5,
+            "mean": 1,
+            "standardDeviation": 0,
+            "standardError": 0,
+            "min": 1,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "max": 1,
+            "unknown": 1,
+            "bootstrapMean95": {
+              "lower": 1,
+              "upper": 1,
+              "confidence": 0.95,
+              "resamples": 2000,
+              "method": "percentile bootstrap of the mean"
+            }
+          },
+          "best": {
+            "best": "watch",
+            "clear": true,
+            "comparisons": []
+          },
+          "wrongfulReported": true,
+          "wrongful": 0,
+          "equilibria": null,
+          "honestWithoutFraud": null,
+          "verdict": "unresolved",
+          "viability": {
+            "criteria": {
+              "minHonestRetention": 0.5,
+              "maxWrongfulInvalidations": 1,
+              "maxFalseMintedShare": 1,
+              "maxCoalitionCouncilShare": 1
+            },
+            "honestRetention": null,
+            "wrongfulInvalidations": null,
+            "falseMintedShare": null,
+            "coalitionCouncilShare": null,
+            "viable": false,
+            "failures": [
+              "unresolved",
+              "honest-retention",
+              "wrongful-invalidations"
+            ]
+          }
+        },
+        "remainingStaleCompleteCache": {
+          "freshViable": false,
+          "staleViable": true
+        }
+      },
+      "sanction-first": {
+        "before": {
+          "payoff": {
+            "count": 6,
+            "mean": 1,
+            "standardDeviation": 0,
+            "standardError": 0,
+            "min": 1,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "max": 1,
+            "unknown": 0,
+            "bootstrapMean95": {
+              "lower": 1,
+              "upper": 1,
+              "confidence": 0.95,
+              "resamples": 2000,
+              "method": "percentile bootstrap of the mean"
+            }
+          },
+          "best": {
+            "best": "watch",
+            "clear": true,
+            "comparisons": []
+          },
+          "wrongfulReported": false,
+          "wrongful": null,
+          "equilibria": 1,
+          "honestWithoutFraud": 1,
+          "verdict": "deterred",
+          "viability": {
+            "criteria": {
+              "minHonestRetention": 0.5,
+              "maxWrongfulInvalidations": 1,
+              "maxFalseMintedShare": 1,
+              "maxCoalitionCouncilShare": 1
+            },
+            "honestRetention": 1,
+            "wrongfulInvalidations": null,
+            "falseMintedShare": 0,
+            "coalitionCouncilShare": 0.5,
+            "viable": false,
+            "failures": [
+              "wrongful-invalidations"
+            ]
+          }
+        },
+        "after": {
+          "payoff": {
+            "count": 6,
+            "mean": 1,
+            "standardDeviation": 0,
+            "standardError": 0,
+            "min": 1,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "max": 1,
+            "unknown": 0,
+            "bootstrapMean95": {
+              "lower": 1,
+              "upper": 1,
+              "confidence": 0.95,
+              "resamples": 2000,
+              "method": "percentile bootstrap of the mean"
+            }
+          },
+          "best": {
+            "best": "watch",
+            "clear": true,
+            "comparisons": []
+          },
+          "wrongfulReported": true,
+          "wrongful": null,
+          "equilibria": 1,
+          "honestWithoutFraud": 1,
+          "verdict": "deterred",
+          "viability": {
+            "criteria": {
+              "minHonestRetention": 0.5,
+              "maxWrongfulInvalidations": 1,
+              "maxFalseMintedShare": 1,
+              "maxCoalitionCouncilShare": 1
+            },
+            "honestRetention": 1,
+            "wrongfulInvalidations": null,
+            "falseMintedShare": 0,
+            "coalitionCouncilShare": 0.5,
+            "viable": false,
+            "failures": [
+              "wrongful-invalidations"
+            ]
+          }
+        }
+      },
+      "sanction-later": {
+        "before": {
+          "error": {
+            "name": "RangeError",
+            "message": "descriptive values must be finite numbers"
+          }
+        },
+        "after": {
+          "payoff": {
+            "count": 6,
+            "mean": 1,
+            "standardDeviation": 0,
+            "standardError": 0,
+            "min": 1,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "max": 1,
+            "unknown": 0,
+            "bootstrapMean95": {
+              "lower": 1,
+              "upper": 1,
+              "confidence": 0.95,
+              "resamples": 2000,
+              "method": "percentile bootstrap of the mean"
+            }
+          },
+          "best": {
+            "best": "watch",
+            "clear": true,
+            "comparisons": []
+          },
+          "wrongfulReported": true,
+          "wrongful": null,
+          "equilibria": 1,
+          "honestWithoutFraud": 1,
+          "verdict": "deterred",
+          "viability": {
+            "criteria": {
+              "minHonestRetention": 0.5,
+              "maxWrongfulInvalidations": 1,
+              "maxFalseMintedShare": 1,
+              "maxCoalitionCouncilShare": 1
+            },
+            "honestRetention": 1,
+            "wrongfulInvalidations": null,
+            "falseMintedShare": 0,
+            "coalitionCouncilShare": 0.5,
+            "viable": false,
+            "failures": [
+              "wrongful-invalidations"
+            ]
+          }
+        }
+      },
+      "sanction-null": {
+        "before": {
+          "error": {
+            "name": "RangeError",
+            "message": "descriptive values must be finite numbers"
+          }
+        },
+        "after": {
+          "payoff": {
+            "count": 6,
+            "mean": 1,
+            "standardDeviation": 0,
+            "standardError": 0,
+            "min": 1,
+            "p10": 1,
+            "p50": 1,
+            "p90": 1,
+            "max": 1,
+            "unknown": 0,
+            "bootstrapMean95": {
+              "lower": 1,
+              "upper": 1,
+              "confidence": 0.95,
+              "resamples": 2000,
+              "method": "percentile bootstrap of the mean"
+            }
+          },
+          "best": {
+            "best": "watch",
+            "clear": true,
+            "comparisons": []
+          },
+          "wrongfulReported": true,
+          "wrongful": null,
+          "equilibria": 1,
+          "honestWithoutFraud": 1,
+          "verdict": "deterred",
+          "viability": {
+            "criteria": {
+              "minHonestRetention": 0.5,
+              "maxWrongfulInvalidations": 1,
+              "maxFalseMintedShare": 1,
+              "maxCoalitionCouncilShare": 1
+            },
+            "honestRetention": 1,
+            "wrongfulInvalidations": null,
+            "falseMintedShare": 0,
+            "coalitionCouncilShare": 0.5,
+            "viable": false,
+            "failures": [
+              "wrongful-invalidations"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "limits": [
+    "Seed identity consistency is not authentication, independent sampling or a complete fact-schema check.",
+    "Cached analyses must correspond to the supplied facts and valuation; descriptor checks do not authenticate that association.",
+    "Censoring, evidence validity, Sybils/collusion, arbitration capture, bootstrap and actual attack costs remain separate risks. No usefulness, adoption or sustainable-distribution claim."
+  ]
+}

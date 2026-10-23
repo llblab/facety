@@ -1,0 +1,104 @@
+ACTOR_REVIEW_RESULT
+
+## Status and source identity
+
+**Complete for this bounded compatibility/measurement review. No introduced regression found in the inspected scope.** This does not establish full-suite success or full-model equivalence.
+
+Prompt-attributed identity: `swarm/subagent-review`, `coordinator.reviewer`; compatibility and measurement-semantics lens. No files edited, committed or published.
+
+Inspected snapshot, unchanged at end of review:
+
+| File | SHA-256 |
+|---|---|
+| `src/games.mjs` | `9dcfa630aaac1dce2251a18831cd579e781b3b9fa8ccb76cf9706e1fe50a16d5` |
+| `test/games.test.mjs` | `3c3ebd877ba3b1cad4ef41be58aa6d3790f712f9455e0c71d6277a7a1e13083b` |
+
+Runtime: Node `v26.8.1`. HEAD/base: `a821e2beb4e4963900b9948b303b7ebb857ccb27`. Historical `src/games.mjs` SHA-256: `18cb1443daaf52d21c39fdfeb27c1160f600ac07fc905169a71a1e31e6a37b00`.
+
+## Supported findings with minimal probes
+
+### 1. Complete native retained-fact compatibility preserved in the exercised cases
+
+**Independently executed:** Loaded historical analysis source using `git show`, resolving its dependencies to the current runtime, and compared old/new pure analysis on one current native 2×2 game with six replicas and unilateral deviations.
+
+`assert.deepEqual` passed for **analysis, deterrence summary and viability** under:
+
+- Subjects-only valuation; fraud-free honest baseline `1`.
+- Subjects/liquid-FACY/effort/debt valuation; baseline `2.4435185185185184`.
+- All-zero weights; baseline `0`.
+
+Actual output:
+```text
+old/new native analysis+deterrence+viability identical 0 positive baseline 1
+old/new native analysis+deterrence+viability identical 1 positive baseline 2.4435185185185184
+old/new native analysis+deterrence+viability identical 2 positive baseline 0
+```
+
+**Risk/limit:** This compares offline analysis of identical current native facts—not independent historical/current simulation execution.
+
+### 2. Sanction missingness and explicit-zero semantics behave as requested
+
+**Independently executed:** Removed raw sanctions from first, last and all replicas. Required counters remained present and `null`. Explicit zero valued subject facts remained known zero.
+
+A deliberately reordered/raw-key-union fixture produced:
+```json
+{"z":0,"a":0,"later":null,"wrongfulInvalidated":null,"falseInvalidated":null}
+```
+
+This confirms observed-key union, first-observation insertion order, required verdict-counter inclusion, and no imputation of absent observations as zero. The key order is not canonical sorting; no requirement for canonical sorting was identified.
+
+**Recommended action:** No implementation change from this lens.
+
+### 3. Cohort admission remains compatible with native deviations and worker execution
+
+**Independently executed:** All 12 profile/deviation entries in the probe shared one ordered seed vector. The focused suite also exercised sequential/parallel fact equality and subsequent offline analysis.
+
+The inspected admission code enforces declared count, unique nonempty string seed IDs and exact cross-entry ordering. It does not fill or relabel missing slots.
+
+**Risk/limit:** Seed alignment establishes an admitted paired-record structure, not authenticity, independent sampling, or genuine distinct executions.
+
+## Independently tested invariants
+
+Command:
+```text
+node --test test/games.test.mjs
+```
+
+Result:
+```text
+tests 14
+pass 14
+fail 0
+```
+
+The executed suite includes:
+
+- Incomplete, duplicate and unaligned cohort rejection at both analysis and deterrence boundaries.
+- Known-subset descriptive payoff preservation while suppressing best responses and fitted matrices.
+- Suppression of a supplied cached matrix when its payoff descriptors are incomplete.
+- Zero-weight irrelevance of absent unvalued fields.
+- First/later sanction omission equivalence.
+- Mandatory measurement missingness versus explicitly enabled fraud-budget criteria.
+
+Inspection of the source diff found no changes to native transitions, valuation weights, emission/XP/stake rules or randomness policy.
+
+## Attributed and missing evidence
+
+- The coordinator’s statement that three regressions failed before the fix is **attributed evidence**; I did not independently execute those tests against historical source.
+- **Full `npm test` was not run by this reviewer.**
+- Coordinator study artifacts were not inspected. A new `studies/2026-10-23-retained-cohort/` directory appeared during review; it is not evidence used here.
+- Raw command output is retained in this review’s tool transcript; no separate report files were written.
+
+## Compatibility limits
+
+`completePayoff` checks descriptor completeness, **not correspondence or authentication**. A complete-looking cached analysis is not thereby established to match the supplied facts or valuation. Callers must maintain that correspondence; the present descriptor check must not be described as validating it.
+
+No claim is made about real-world farming resistance, usefulness, emission distribution, readiness, or equilibria outside the declared finite strategy menu and valuations.
+
+## Next bounded actions
+
+1. Coordinator: bind this review to the two current file hashes above.
+2. Establish and report full `npm test` evidence before closing the cohort.
+3. Preserve the distinction between incomplete-cache suppression and cache/fact/valuation correspondence in the checkpoint report.
+
+**No blocking correction or necessary narrow implementation improvement identified through this lens.**

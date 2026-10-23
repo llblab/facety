@@ -1,0 +1,99 @@
+ACTOR_REVIEW_RESULT
+
+## Status and source identity
+
+**Status: degraded.** Textual judgment of the supplied synthesis is complete; upstream evidence verification and coordinator closure remain open.
+
+**Disposition:** Accept the synthesis with an explicit evidence-access qualification. No synthesis-blocking substantive defect is established by the supplied judge report. This is not independent implementation approval.
+
+Source available for normalization:
+- Judge report: `execution.json#command-009`.
+
+Upstream sources referenced by that report, but not directly examined during normalization:
+- Reviewer 1: `execution.json#command-005`.
+- Reviewer 2: `execution.json#command-006`.
+- Verifier: `execution.json#command-007`.
+- Merger: `execution.json#command-008`.
+
+**Branch/cohort status:** The reported **2 usable / 2 expected / minimum 2** reviewer threshold remains an attributed result, not independently verified. Raw branch status and merge fidelity remain unverified. Missing raw evidence does not establish reviewer failure.
+
+## Supported findings with minimal probes
+
+These judgments derive from the supplied judge report; underlying implementation probes remain attributed reviewer evidence.
+
+| Finding | Preserved evidence and qualification |
+|---|---|
+| The synthesis is internally coherent and appropriately scoped. | The judge found no material internal contradiction or apparent synthesis-blocking unsupported finding. Upstream fidelity remains unchecked. |
+| Missingness handling and stale-cache risk are distinct. | Incomplete descriptors reportedly suppress cached inference; stale complete descriptors may still permit it. These results are compatible. |
+| The stale-cache hazard remains explicit. | The reported counterexample is `{"fresh":false,"stale":true}`. It must not be presented as repaired or authenticated. |
+| Exercised equivalence is narrower than universal equivalence. | Historical/current offline equality was reported under three valuations, not established for all inputs or native execution. |
+| Consensus is not visibly inflated. | The judge reports that the synthesis distinguishes findings attributed to both reviewers from single-reviewer probes. Raw reports are needed to verify this distinction. |
+
+Other preserved probe topics include cohort mismatches, unknown valued alternatives, incomplete descriptors with cached matrices, and sanction omissions.
+
+The cache/fact/valuation correspondence condition remains a **contract-verification gap**: its status as a pre-existing admission condition has not been independently established. This does not demonstrate that the condition was invented retrospectively.
+
+## Independently tested invariants
+
+**None independently tested by the judge or this normalizer.**
+
+The judge reports that the merger attributes this focused-suite result to each reviewer:
+
+```text
+node --test test/games.test.mjs
+tests 14
+pass 14
+fail 0
+```
+
+This is attributed execution evidence, not a rerun. Separate reviewer reports do not independently authenticate execution records or establish statistical independence.
+
+## Evidence: attributed and missing
+
+### Retained source references
+
+- Reviewer 1 — ACTOR_EVIDENCE_REF: execution.json#command-005
+- Reviewer 2 — ACTOR_EVIDENCE_REF: execution.json#command-006
+- Verifier — ACTOR_EVIDENCE_REF: execution.json#command-007
+- Merger — ACTOR_EVIDENCE_REF: execution.json#command-008
+- Judge — ACTOR_EVIDENCE_REF: execution.json#command-009
+
+All required source references are present as identifiers. Their presence does not substitute for examining the underlying artifacts.
+
+### Attributed evidence retained
+
+- Exercised historical/current offline equality under three valuations.
+- Missingness-sensitive inference and sanction handling.
+- No transition or randomness-rule changes reported from the inspected scope.
+- The stale-complete-cache counterexample.
+- Focused-suite success attributed to both reviewers.
+
+### Missing or unverified evidence
+
+- Raw reviewer, verifier, and merger reports needed to verify fidelity and branch status.
+- Full `npm test` evidence at the reviewed snapshot.
+- Historical-source regression-failure executions.
+- Coordinator artifacts and documentation reconciliation.
+- Independent confirmation of the pre-existing cache-correspondence contract.
+
+## Compatibility limits
+
+The defensible conclusion is that the synthesis, **as characterized by the supplied judge report**, is evidence-conscious, internally coherent, and appropriately limited. Implementation correctness and upstream fidelity remain only partially checkable.
+
+Do not promote this result into:
+- Independent implementation approval or cache authentication.
+- Universal or native-execution equivalence.
+- Verified full-suite success, branch completion, or coordinator closure.
+- Real-world farming resistance or equilibrium validity beyond the declared strategy menu and valuations.
+
+Completed synthesis, reported reviewer quorum, and coordinator closure are separate statuses.
+
+## Next bounded actions
+
+1. Retain all five evidence references and obtain the raw upstream reports before marking evidence verification complete.
+2. Run and retain full `npm test` evidence at the reviewed snapshot; explicitly identify any snapshot change.
+3. Verify the documented cache-correspondence precondition and preserve the stale-cache hazard in the final report.
+4. Keep historical regression-failure claims attributed until baseline execution evidence is available.
+5. Reconcile coordinator artifacts and documentation, then report closure separately from synthesis completion and reviewer quorum.
+
+**Final disposition: degraded evidence verification; no synthesis-blocking substantive defect established; coordinator closure open.**
