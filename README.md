@@ -118,6 +118,14 @@ node examples/incentive-ownership.mjs
 
 The first JSON example compares waiting for Collector, inviting only, and inviting plus guaranteeing the newcomer on the same funded prefix. It retains real FACY/XP changes and per-subject work without inventing their utility. The second revalues retained data under explicitly illustrative preferences, preserving unknown inputs and reporting conditional break-even points rather than predicted adoption. The third attaches explicit independent/controlled-newcomer worlds to the same trace, separating operator custody/work from per-subject XP. It is not a live Sybil execution or proof that a fabricated identity can pass Self-ID. See [incentive evidence and the conditional payoff boundary](docs/incentives.en.md): neither a larger reward balance nor a maximum over three scripts proves a useful network effect.
 
+Those three examples retain their historical 3/7-day fixture. The separate versioned one-day reference is:
+
+```sh
+node examples/incentive-one-day.mjs
+```
+
+It uses funded 24-hour maturity/freeze windows and ordered admission/work snapshots at hour 48. Both pure analyzers accept its v2 output and retain source provenance. It is still the fixed-101/current-link reference, not D33/D34, measured willingness or a new research-table report.
+
 ## Cohort and attack experiments
 
 ```js

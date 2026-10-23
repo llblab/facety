@@ -91,6 +91,7 @@ export function compareIncentiveOwnership(artifact) {
     source: structuredClone({
       schema: artifact.schema, fixture: artifact.fixture, policy: artifact.policy, schedule: artifact.schedule,
       workUnit: branches[0].work.unit, weights: branches[0].work.weights,
+      ...(artifact.schema === 'facety-incentive-forks/v2' ? { provenance: artifact.provenance } : {}),
     }),
     protocolBranches: branches.map(branch => structuredClone({ strategy: branch.strategy, timeline: branch.timeline, events: branch.events ?? null })),
     worlds: WORLDS.map(definition => evaluateWorld(definition, branches, effortWeights(branches[0].work.weights))),

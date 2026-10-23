@@ -77,7 +77,11 @@ export function evaluateIncentivePayoffs(artifact, suppliedPreferences, options 
   const complete = known.length === scores.length;
   return {
     schema: 'facety-incentive-payoffs/v1', model: 'terminal-linear-risk-adjusted-v1',
-    source: structuredClone({ schema: artifact.schema, fixture: artifact.fixture, policy: artifact.policy, schedule: artifact.schedule, workUnit: artifact.branches[0].work.unit, weights: artifact.branches[0].work.weights }),
+    source: structuredClone({
+      schema: artifact.schema, fixture: artifact.fixture, policy: artifact.policy, schedule: artifact.schedule,
+      workUnit: artifact.branches[0].work.unit, weights: artifact.branches[0].work.weights,
+      ...(artifact.schema === 'facety-incentive-forks/v2' ? { provenance: artifact.provenance } : {}),
+    }),
     utilityUnit: 'caller-declared common utility units; not calibrated money or welfare',
     preferences, numericPolicy: { comparisonTolerance: finite(comparisonTolerance), arithmetic: 'finite IEEE-754 numbers' },
     comparisons,

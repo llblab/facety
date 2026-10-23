@@ -1,0 +1,93 @@
+{
+  "schema": "facety-incentive-software-checkpoint/v1",
+  "date": "2026-10-24",
+  "scope": "P23 one-day producer/reader/consumer implementation; not fresh scientific tables or mechanism confirmation",
+  "preparationCommit": "30093eca9c844ac047b41c12b0595b2dba53f7e9",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "6e94fb9d4c886078011b08aae0e8a701267c9984d90fa03353a4661ee95d1d19",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "checks": {
+    "native": {
+      "command": "npm test",
+      "exitCode": 0,
+      "tests": 247,
+      "passed": 247,
+      "failed": 0,
+      "skipped": 0,
+      "newOneDayFamilies": 8,
+      "summary": "ℹ tests 247\nℹ suites 0\nℹ pass 247\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 9886.192458"
+    },
+    "legacyPreservation": {
+      "command": "node studies/2026-10-24-one-day-incentives/controls.mjs",
+      "exitCode": 0,
+      "report": "controls.json",
+      "factoryArtifacts": 2,
+      "sourceTransportsPerMode": 3,
+      "checkedFactArrays": 6,
+      "payoffAnalyses": 18,
+      "ownershipAnalyses": 6,
+      "payloadBytes": 420078,
+      "payloadSha256": "c34a34a7e9acc717dacaab381aaa96098cfb2f12c2a41015fb3165ae2cd756e4",
+      "byteIdentical": true,
+      "exampleStdoutStreams": 3,
+      "allExampleStdoutByteIdentical": true
+    },
+    "dependencyGraph": {
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+      "exitCode": 0,
+      "modules": 27,
+      "localEdges": 66,
+      "errors": 0,
+      "warnings": 0,
+      "acyclic": true,
+      "addedEdge": "incentives -> provenance",
+      "reuse": "Import graph unchanged by final removal of checks subsumed by the v2 fixed-script validator."
+    },
+    "context": {
+      "command": "NO_COLOR=1 node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 27,
+      "initialFailure": "One stale BACKLOG design-analysis heading anchor after broadening that heading for A8; corrected and legacy human anchors retained."
+    },
+    "whitespace": {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    "existingSourceBoundary": {
+      "command": "/usr/bin/git diff --exit-code --diff-filter=DMRTUXB 30093eca9c844ac047b41c12b0595b2dba53f7e9 -- src/model.mjs examples test studies",
+      "exitCode": 0,
+      "boundary": "All previously tracked examples, tests and historical study files are unchanged; new files are separately included in this checkpoint.",
+      "changedNativeModules": [
+        "src/incentive-ownership.mjs",
+        "src/incentive-payoffs.mjs",
+        "src/incentives.mjs"
+      ],
+      "unchangedNativeModules": 24
+    }
+  },
+  "newExecutableSources": [
+    {
+      "path": "test/incentive-one-day.test.mjs",
+      "sha256": "7451d128fe92a5cec66274e5da5bea7528043479802d1324f17792e5f158d91b"
+    },
+    {
+      "path": "examples/incentive-one-day.mjs",
+      "sha256": "4bfdd05669177bb0314b583a89944342f2e079376480923b5bff778e7d80f0d7"
+    },
+    {
+      "path": "studies/2026-10-24-one-day-incentives/controls.mjs",
+      "sha256": "a3b4cccc60cd7a65815a1e01f33d442edc0ca495f68a684859163d4f85cd99ba"
+    }
+  ],
+  "assurance": "Author/coordinator software validation only. No independent review; prior P16 actor-workflow qualification is unresolved and was not retried or bypassed.",
+  "historicalEvidence": "No stored scientific confirmation replayed or reclassified. Source digest changed; v1 byte preservation is not blanket reproduction of historical science.",
+  "remaining": "Commit a finite diagnostic reporting runner/design, then execute fresh source-bound v2 reporting in a later bounded pass. Liability calibration, voluntary retention, usefulness, D33/D34 and input authenticity remain unresolved."
+}

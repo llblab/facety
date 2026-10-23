@@ -1,0 +1,55 @@
+{
+  "schema": "facety-incentive-legacy-preservation/v1",
+  "baseline": {
+    "commit": "30093eca9c844ac047b41c12b0595b2dba53f7e9",
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "0313a30912eb2a1caffeec361e769debc47750cceece0946c49d367d0ed84d9a",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "current": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "6e94fb9d4c886078011b08aae0e8a701267c9984d90fa03353a4661ee95d1d19",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "controls": {
+    "factoryArtifacts": 2,
+    "sourceTransportsPerMode": 3,
+    "checkedFactArrays": 6,
+    "payoffAnalyses": 18,
+    "ownershipAnalyses": 6,
+    "payloadBytes": 420078,
+    "payloadSha256": "c34a34a7e9acc717dacaab381aaa96098cfb2f12c2a41015fb3165ae2cd756e4",
+    "byteIdentical": true
+  },
+  "examples": [
+    {
+      "path": "examples/incentives.mjs",
+      "bytes": 98197,
+      "sha256": "864cb9813a31b430e98c6eac78f3552356005062009dca5250b4b89e174ae7e3",
+      "byteIdentical": true
+    },
+    {
+      "path": "examples/incentive-payoffs.mjs",
+      "bytes": 31101,
+      "sha256": "fc346b6a2ad98141d7cf28c36a4973ef463a48db229e4be4b3e724c8097916a1",
+      "byteIdentical": true
+    },
+    {
+      "path": "examples/incentive-ownership.mjs",
+      "bytes": 101273,
+      "sha256": "e9c431848d08b847e6286854895f6bee8dea9d0dcd1bbd522e695c9add0e2cb3",
+      "byteIdentical": true
+    }
+  ],
+  "boundary": "Deterministic software compatibility controls, not replay of stored science, new v2 measurements or independent review."
+}

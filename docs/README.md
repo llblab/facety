@@ -28,4 +28,4 @@
 - [Paired controls](controls.en.md): Decision-keyed randomness, scheduled activity disturbances, paired uncertainty and finite-window return criteria.
 - [Confirmatory evidence](evidence.en.md): Preregistered hypotheses, ablation-based necessity and alternative controls, reserved seeds, exact tests, study-level correction and parallel execution.
 - [Strategy games](games.en.md): Strategy menus, the one-step dispute layer, deviant groups, payoff facts, explicit valuations, equilibria and individual incentive compatibility.
-- [Incentive direction](incentives.en.md): Replayable legacy local decisions, the prepared/unimplemented P23 one-day counterpart contract, checked retained accounting, explicit offline payoffs, evaluator-only custody/work counterfactuals, unknown inputs and rewards-versus-usefulness boundaries.
+- [Incentive direction](incentives.en.md): Separate legacy v1 and one-day v2 local fixtures, their compatibility/temporal-evidence contract, checked retained accounting, explicit offline payoffs, evaluator-only custody/work counterfactuals, unknown inputs and rewards-versus-usefulness boundaries.
