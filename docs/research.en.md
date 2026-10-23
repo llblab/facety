@@ -2,6 +2,16 @@
 
 This document owns the mechanism chapter, research questions, causal designs, candidate survivability criteria and human-calibration design. Its [structured register](mechanisms.json) owns code-tied records and the parameter/state inventory. It does not select protocol rules or report unrun experiments. [Protocol coverage](simulator.en.md#protocol-coverage) owns implementation status; [discovery](discovery.en.md), [paired controls](controls.en.md), [games](games.en.md) and [confirmation](evidence.en.md) own their executable methods. The initial source is the owner's A–T design-discussion synthesis supplied with the development mandate, documented **2026-10-23**, not a newly discovered historical decision. D39's broader integrated mandate is documented **2026-10-24** below. Every insight is reconciled in the [register](insights.en.md#design-discussion-reconciliation-2026-10-23).
 
+## Relationship to the living protocol
+
+The [protocol](facety.protocol.en.md#self-contained-living-protocol-d40) explains Facety independently as purpose plus specification. This research programme is accountable to that proposal, not a source of implied production rules. A study should connect three things:
+
+1. **Design question:** Name the protocol section/decision and distinguish an invariant, selected mechanism, OPEN contract or behavioral hypothesis. R1–R7 organize these questions, not an alternative constitution.
+2. **Executable contrast:** Identify the actual model/source, supplied observations, private valuations, resource/time bounds and reference/counterfactual deviations. A current-link/fixed-101 result is not a test of D34/dynamic verified consuls merely because both concern responsibility.
+3. **Return to design:** Retain a source-bound finding and its uncertainty/alternatives, then identify the supported limitation, next question or proposed owner decision. Results do not automatically amend the protocol; accepted decisions must also update the relevant main section and dated ledger.
+
+The project index owns navigation, the model contract owns implementation coverage, and the backlog owns execution. This chapter owns causal questions and falsifiers. Keeping those roles separate makes the project more connected without turning the protocol into a catalogue of its tooling.
+
 ## Strategic evaluation lens (D32)
 
 The owner's strategic-framing directive, documented **2026-10-23**, evaluates Facety as an **accountability substrate for emission distribution and network growth**, not merely dispute resolution. The [protocol's D32 section](facety.protocol.en.md#accountability-for-emission-and-growth-d32) owns the thesis, three-layer distinction, safeguards and success/failure conditions. This is a deliberate lens, not an observed flywheel or a replacement for D31's mutual-identification architecture.

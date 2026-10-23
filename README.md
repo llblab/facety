@@ -1,4 +1,6 @@
-# Facety simulator
+# Facety
+
+**A living protocol and a research workbench for accountable human participation.** Start with the self-contained [manifesto and protocol specification](docs/facety.protocol.en.md) for Facety's purpose, connected mechanisms, current selected design and unresolved contracts. This repository develops and tests that proposal; it is not only a simulator, and its simulator is not a complete implementation of the selected protocol.
 
 **Facety's strategic thesis is an accountability substrate for emission distribution and network growth—not merely a dispute protocol.** It aims for distribution resistant to farming by asking: “Who are we actually dealing with?” Emission is intended to retain honest participants, attract contributors and support useful network effects, not function as a standalone payout. This is a deliberate owner-provided lens (D32, documented 2026-10-23), not proven sustainability.
 
@@ -34,6 +36,25 @@ Simulator defaults combine pre-D33 selected rules with explicitly labeled direct
 - **Selected:** active-subject Council eligibility and one equal vote per member;
 - **Selected principle:** debt recovery preserves the veto; seizure priority remains an explicit reference;
 - **Direction/reference:** chain-proportional sanctions and liability when the optional dispute abstraction is enabled.
+
+## How the project connects to the protocol
+
+The [protocol](docs/facety.protocol.en.md#self-contained-living-protocol-d40) stands on its own as specification and manifestation of the design; it is not this repository's API manual, task list or navigation hub. This README and the [documentation index](docs/README.md) provide those entrypoints.
+
+```text
+purpose / selected rules / OPEN contracts in the protocol
+    -> explicit implementation subset and deviations in the model contract
+    -> source-bound scenarios, controls and retained observations
+    -> qualified findings and opposed explanations in the insight register
+    -> owner decision, when warranted, integrated back into the living protocol
+```
+
+- **Meaning and authority:** [protocol](docs/facety.protocol.en.md). A label distinguishes a rule, direction, hypothesis or unresolved choice; only an explicit decision changes design authority.
+- **Executable fidelity:** [model/coverage](docs/simulator.en.md#protocol-coverage), source and native tests. A mechanic must identify its protocol basis and any reference-only assumptions. D33/D35/D36 topology and D34 liability remain unimplemented, not silently replaced by their legacy references.
+- **Questions and evidence:** [research programme](docs/research.en.md), [mechanism register](docs/mechanisms.json), [insights](docs/insights.en.md) and retained studies. They test named claims rather than manufacture a favorable protocol through assumed behavior or utility.
+- **Work and history:** [BACKLOG](BACKLOG.md) owns remaining work; [CHANGELOG](CHANGELOG.md) owns delivery. Neither defines participant rights or supplies a missing OPEN contract.
+
+A failure can expose a code defect, a model limitation, an unsupported behavioral thesis or a protocol choice that needs revision. Those are different outcomes. Do not modify rules merely to make tests or an experiment look successful, and do not present a simulated reference as deployed Facety. This entrypoint summarizes the design; the living protocol owns its full meaning.
 
 ## Run
 
@@ -124,7 +145,7 @@ Those three examples retain their historical 3/7-day fixture. The separate versi
 node examples/incentive-one-day.mjs
 ```
 
-It uses funded 24-hour maturity/freeze windows and ordered admission/work snapshots at hour 48. Both pure analyzers accept its v2 output and retain source provenance. It is still the fixed-101/current-link reference, not D33/D34, measured willingness or a new research-table report.
+It uses funded 24-hour maturity/freeze windows and ordered admission/work snapshots at hour 48. Both pure analyzers accept its v2 output and retain source provenance. It is still the fixed-101/current-link reference, not D33/D34 or measured willingness. The [F45 diagnostic report](studies/2026-10-24-one-day-incentives/README.md#executed-diagnostic-results-f45) retains fresh accounting/conditional-valuation tables without upgrading them to human behavior or useful network growth.
 
 ## Cohort and attack experiments
 
@@ -216,7 +237,7 @@ Both algorithms receive identical snapshots and queries. Every case is checked a
 - `src/metrics.mjs`: Connectivity, concentration, reciprocity, weak components, rank correlation, lineage depth, Council and ledger observations.
 - `src/random.mjs`: Reproducible, non-cryptographic SHA-256-seeded xoshiro128** streams and draw-equivalent excluded-index picking.
 - `src/graph-workbench.mjs`: Portable graph artifacts, extraction, standalone mutation, independently verified path queries and reference-checked algorithm benchmarks.
-- `studies/`: Preregistered hypotheses, registrations and confirmations with their exploration record.
+- `studies/`: Source-bound diagnostic/exploratory records, registered hypotheses/confirmations, raw observations, method identities and qualified reviews; each keeps its evidence level.
 - `test/`: Native Node tests, including exhaustive BFS equivalence on all four-node directed simple graphs, A/A null controls and parallel/sequential equivalence.
 
 ## Research contract

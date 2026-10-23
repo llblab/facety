@@ -1,6 +1,8 @@
 # Documentation
 
-- [Facety protocol](facety.protocol.en.md): Living manifesto and protocol specification; D32's accountability/emission-growth thesis; D33's Network Difficulty, dynamic consuls and BrightID-inspired topology, D34's historical liability and early self-correction; D35's XP-centered paths, pre-guaranteed genesis and deferred cluster quotas; explicit conflicts and unimplemented boundaries; selected rules, open choices and the dated decision log.
+This index owns project navigation. The protocol is the independently readable statement of Facety's purpose and design, not a hub that requires these files to supply its meaning. Implementation, research and evidence documents below identify what they realize or test and where they depart from that design.
+
+- [Facety protocol](facety.protocol.en.md): Self-contained living manifesto/specification: purpose, participant journey, current rights/duties and clocks, D33/D35/D36 topology and dynamic consuls, D34 historical liability, explicit OPEN contracts and dated decisions. D40 keeps project navigation here and research-tool contracts in the protocol's separate appendix, not its participant-facing body.
 - [Insight register](insights.en.md): Every owner decision and simulator finding, with its evidence level and source study.
 - [Simulator model](simulator.en.md): Implemented abstractions, subsystem/spec/source/test coverage, explicit research policies, graph certificates, reference-checked path benchmarks and unresolved risks.
 - [Integrated Facety research](research.en.md): D39's root/detailed-direction programme, one mechanism chapter and [structured inventory/register](mechanisms.json), causal walkthroughs, hypothesis/control matrix, survivability vector, utility boundary and safe human-calibration design (not collected data).

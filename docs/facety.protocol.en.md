@@ -5,7 +5,7 @@ version: "living specification (maintained in the facety repository; history in 
 date: "2026-10-24"
 language: "English"
 status: "Proposed protocol; not a claim of a shipped implementation or proven Sybil resistance"
-source_basis: "Protocol owner decisions recorded in this repository, checked against the Facety simulator (docs/insights.en.md)"
+source_basis: "Owner-selected design and dated decisions; open contracts and conditional research evidence are distinguished from protocol rules"
 ---
 
 # Facety: Manifesto and Protocol Specification
@@ -18,7 +18,17 @@ source_basis: "Protocol owner decisions recorded in this repository, checked aga
 
 This document is both a **manifesto** and a **technical design specification**. The manifesto explains the purpose and incentives. The specification defines the intended mechanisms and identifies the rules that still need exact parameters.
 
-This is a **living specification**. It is maintained together with the Facety simulator in one repository; there are no numbered editions. Git history and [Appendix A](#appendix-a-decision-log-and-supersession-ledger) record what changed and when. **Later explicit decisions take precedence over earlier text.** The [simulator contract](simulator.en.md#protocol-coverage) maps each implemented mechanic to its section here, and research findings are kept in the [insight register](insights.en.md).
+This is a **living specification**, not a numbered edition or a description of a shipped runtime. The main sections state the current design, including its unresolved contracts. Git history and [Appendix A](#appendix-a-decision-log-and-supersession-ledger) preserve decisions and supersessions. **Later explicit owner decisions take precedence; retained earlier rules are labeled historical rather than offered as competing defaults.** A selected rule can remain unimplemented, and a successful model run cannot select a rule.
+
+### Self-contained living protocol (D40)
+
+**D40 — [SELECTED documentary role], documented 2026-10-24.** The owner's directive is that this document stand on its own at the intersection of specification and manifesto, **not serve as the project's navigation hub**. It must explain what Facety seeks, how its human/economic mechanisms connect, what each operation means and what remains undecided. Self-contained does not mean complete or proven: an OPEN contract must be intelligible here without inventing its answer.
+
+The manifesto supplies purpose and the conditions under which the proposal would fail. The specification makes that purpose inspectable through actors, rights, obligations, clocks, state changes and limits. Neither rhetoric nor implementation substitutes for the other. Supporting research can challenge the thesis; it does not redefine identity, rewards or authority by implication.
+
+Repository navigation, executable APIs, task ordering and full experiment records belong outside this document. Optional references provide evidence and implementation detail, not missing definitions or rules needed to understand Facety. Project artifacts must identify the protocol question or rule they realize or test, state their deviations, and return supported findings or proposed decisions to this living design. This directive changes documentary ownership and coherence, not protocol economics or the authorization to deploy unresolved mechanisms.
+
+### Status and time
 
 The current time model uses **one-day windows**: a Self-ID emission is contestable for 24 hours before it can be spent or withdrawn, and an invitation is contestable for 24 hours before it can be applied. The **28-day period remains** the window for counting active subjects.
 
@@ -39,15 +49,23 @@ Use the following labels:
 - [Part II — System and Data Model](#part-ii-system-and-data-model): actors, assets, graph types, and subject identity.
 - [Part III — Identity Evidence and Self-ID](#part-iii-identity-evidence-and-self-id): media artifacts, deterministic FaceRef, group Self-ID, and Emitter rights.
 - [Part IV — Invitations, Guarantees, and Graph Responsibility](#part-iv-invitations-guarantees-and-graph-responsibility): social admission, payments, and two kinds of liability.
-- [Part V — XP, Public Disputes, and the Council](#part-v-xp-public-disputes-and-the-council): earned authority, halving, Chekharda, and the historical top-101 route, refined by D33.
+- [Part V — XP, Public Disputes, and the Council](#part-v-xp-public-disputes-and-the-council): earned authority, halving, Chekharda, dynamic consuls and limits on apex judgment.
 - [Part VI — FACY Economics and Atmo Integration](#part-vi-facy-economics-and-atmo-integration): deflation, debt, and Bucket D buyback-and-burn.
 - [Part VII — Reference Implementation Contracts](#part-vii-reference-implementation-contracts): state records, example transitions, and protocol invariants.
 - [Part VIII — Threat Model, Research, and Delivery](#part-viii-threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
 - [Part IX — Condensed Protocol Constitution](#part-ix-condensed-protocol-constitution): the rules and final thesis.
-- [Part X — Network Difficulty and Topology Safeguards](#part-x-network-difficulty-and-topology-safeguards-d33): D33's invitation thresholds, dynamic consuls, independent support, cluster quotas, privacy and explicit conflicts.
-- [Part XI — Research Evidence Contracts](#part-xi-research-evidence-contracts): D37's statistical contradiction promise, D38's versioned migration and D39's integrated research mandate, distinct from protocol adjudication.
+- [Part X — Network Difficulty and Topology Safeguards](#part-x-network-difficulty-and-topology-safeguards-d33): current D33/D35/D36 guarantees plus independent XP-centered paths, pre-guaranteed genesis, dynamic consuls and privacy; deferred cluster quotas remain labeled history.
 - [Appendix A — Decision log and supersession ledger](#appendix-a-decision-log-and-supersession-ledger): dated decisions and what they replaced.
 - [Appendix B — Sources and confidence](#appendix-b-sources-and-confidence): scope and evidence limits.
+- [Appendix C — Research and development decisions](#appendix-c-research-and-development-decisions): retained D37–D39 research contracts, separate from the protocol's participant-facing rules.
+
+## From identity work to a maintained network
+
+A participant makes a signed Self-ID about fresh presence. The act creates one restricted FACY entitlement, not immediately liquid money or verified personhood. After its 24-hour contest period, the participant can convert an unspent right for personal use or consume it to invite someone, provided the independent-guarantee and XP-centered-path conditions are satisfied. The invitation then has its own 24-hour freeze. Admission, the newcomer's own identity work and a new guarantee are distinct acts, not automatic consequences of one payment.
+
+A guarantee joins compensation to responsibility: qualifying identity work can earn its guarantor XP, while the guarantor can inspect and prevent specific suspect acts. A genuine mistake need not destroy the relationship. Either party can end the guarantee under its separate fee/XP rules, but ending it does not erase responsibility for historical events under D34. Whether participants willingly maintain these relations, rather than avoid risk or conceal problems, is a hypothesis about human choices, not a result of credit arithmetic.
+
+The hoped-for return is a useful network whose members keep participating and whose influence remains correctable. Emission alone is not that return. Applications must find the identity evidence useful under their own rules; Atmo's conditional support cannot establish its truth or usefulness. The economic accounting, duties, correction routes and application boundary below are parts of this one proposal.
 
 ## An evidence-to-correction example
 
@@ -55,19 +73,19 @@ An outside observer notices an inconsistency in a public identity assertion by a
 
 The accused can answer with evidence. A specified dispute procedure records a reasoned outcome, followed by only the consequences it authorizes: a chain cut, actual collectible losses and debt separately, XP changes, and independently chosen relationship withdrawal. A rejected accusation can instead cost its challenger. Revoking XP does not silently reverse decisions already executed. Other people may then learn from the public reasons; precedent mechanics are a proposal, not a selected court engine.
 
-**Implementation boundary:** `FacetyModel` implements the economic/XP/relationship transitions. The simulator has noisy one-step, instant-ladder and timed-ladder dispute abstractions, not a complete human court. At the 2026-10-23 audit baseline it had no explicit external evidence-package/sponsorship lifecycle. The bounded [causal reference](research.en.md#executable-causal-core) now exercises costed outsider discovery, independent supplied sponsor review, the existing one-step gate/consequences, refusal and false allegations. It does not implement voluntary self-reporting, reasoned Council merits, compensation or institutional learning. [Coverage](simulator.en.md#protocol-coverage) tracks subsequent changes; this example distinguishes intended routes from executable facts.
+**Design versus implementation:** this example explains the intended route, not a complete deployed court. Economic/XP/relationship accounting and bounded fallible evidence/sponsorship references exist in the research simulator. They do not implement D34 historical-liability/voluntary-correction contracts, D33/D35/D36 verified topology, reasoned Council merits, compensation or institutional learning. Those missing contracts remain explicit below; neither simulated acceptance nor an illustrative verdict fills them in.
 
-The final trust boundary is human collective judgment. Equal votes limit individual dominance but do not guarantee independent interests or honest decisions. The objective can be useful self-government with bounded fraud, provided safety, capacity, authority and recoverability remain acceptable—not perfect Sybil resistance, nor acceptance of any fraud level merely because people can disagree. See the [research criteria](research.en.md#survivability-vector-and-stage-clocks).
+The final trust boundary is human collective judgment. Equal votes limit individual dominance but do not guarantee independent interests or honest decisions. The objective can be useful self-government with bounded fraud, provided safety, capacity, authority and recoverability remain acceptable—not perfect Sybil resistance, nor acceptance of any fraud level merely because people can disagree. Assess wrongful harm, access to correction, processing capacity, actually recovered losses and unpaid obligations, authority/obstruction and recovery separately. A low fraud balance alone does not establish useful self-government.
 
 ## Protocol at a glance
 
 | Event | Human and economic rule |
 | --- | --- |
-| Self-ID | One signed identity assertion tied to one artifact and one deterministic face index. It proves control of the subject key and claims fresh presence. A valid act creates a one-unit FACY emission right; when the right is spent or withdrawn without cancellation, the subject and each of its guarantors gain 1 XP. |
+| Self-ID | One signed identity assertion tied to one artifact and one deterministic face index. It proves control of the subject key and claims fresh presence. A valid act creates a one-unit FACY emission right; when the right is spent or withdrawn without cancellation, the subject and each guarantor eligible at recording gain 1 XP. |
 | First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel the Self-ID for free while the emission exists. |
 | From 24 hours | The owner can spend the unspent right on an invitation or convert it to fungible FACY on the Collector. An unspent right remains cancellable. |
-| Invitation | Burn one personally earned eligible emission; under D33 the creator also needs `D = decimal_digits(max(1, N_verified))` effective independent guarantors. The invitation stays frozen for 24 hours, during which the creator's guarantors can cancel it. |
-| Liability | A proven false identity voids its whole Self-ID chain. Its inviter and the guarantors liable at the relevant historical events owe the defined per-act sanction; under D34, later link termination does not erase past responsibility. Guarantors escape by cancelling the frozen invitation or leaving the relation in time. |
+| Invitation | Burn one personally earned eligible emission. The creator needs both `D = decimal_digits(max(1, N_verified))` qualifying independent guarantees and `D` simple, internally vertex-disjoint paths toward the defined XP apex/core. Verification, anchors and traversal remain OPEN; no cluster quota is imposed for now. The invitation stays frozen for 24 hours and can be cancelled by the creator's guarantors. |
+| Liability | A proven false identity voids its whole Self-ID chain. Its inviter and the guarantors liable at the relevant historical events owe the defined per-act sanction; under D34, later link termination does not erase past responsibility. Timely cancellation can prevent the defined act/invitation liability; exit limits future exposure, not past responsibility. Exact event/duty, overlap and recovery contracts remain OPEN. |
 | Guarantee | Both subjects must authorize the directed responsibility link. Either can end it under a separate 1 FACY fee rule. |
 | Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
 | XP penalty | A liable loss can halve effective XP; monetary penalties can create collectible debt. |
@@ -162,7 +180,7 @@ XP is not a token. It is a non-transferable measure of identity work and **proce
 
 Long-term participation may create a large amount of XP. **[HYPOTHESIS]** That history may create social credibility and greater exposure when someone takes a false position; high XP does not define someone as informed, honest or long-term-oriented. Identity credibility, guarantee reliability, adjudication history, social recognition and protocol XP are distinct. A newcomer can have decisive evidence, and a respected investigator can be wrong. Reputation can be correlated, mistaken or manipulated.
 
-A liable loser of a dispute can lose **50% of effective XP**. Repeated losses can halve effective XP again. The loss can remove access to future dispute opportunities and can remove a person from the Council of 101.
+A liable loser of a dispute can lose **50% of effective XP**. Repeated independent losses can halve effective XP again. The loss can remove access to future dispute opportunities and affect eligibility or rank in the difficulty-sized Consul Council.
 
 **[HYPOTHESIS]** A participant with substantial legitimate XP, public history, and a large honest social network often has more to lose from deliberate fraud than from refusing it. This incentive is not universal. Collusion, indifference, coercion, and mistaken judgments remain possible.
 
@@ -184,7 +202,7 @@ Facety uses **Leapfrog / Chekharda (Чехарда)**. A participant with more e
 
 Small disputes can end near the people who know the evidence. Large disputes can attract people with significant public social capital. The visibility of a dispute rises with the XP and money placed at risk.
 
-The highest 101 XP holders form a Council. They each get one vote, regardless of their different XP totals. The Council may choose to intervene in any dispute. It need not intervene in ordinary local conflicts.
+At the institutional scale, qualifying XP-ranked consuls form a Council whose target grows in steps with Network Difficulty, capped by the active verified and eligible population (§27, §46.4). Each formal consul gets one vote, regardless of XP magnitude. The one-consul target means no formal Council, not a sovereign individual. A formal Council may choose to intervene in a dispute without being required to hear every local conflict; small-network apex review remains OPEN.
 
 Facety does not need an infinite sequence of higher courts. It accepts a final social assumption: if its most respected participants collectively abuse their position, the network can lose legitimacy. Publicly corrupt Council behavior is comparable, as a **trust failure**, to a monetary network abandoning a rule that made it credible. Loss of legitimacy is not a guaranteed method of repair.
 
@@ -263,7 +281,7 @@ Facety aims to create conditions in which:
 | **FACY** | Fungible economic asset used by the Facety economy. | Human identity or XP authority. |
 | **XP** | Earned, non-transferable procedural authority and recorded identity work. | A transferable monetary claim. |
 
-Facety is not required to run as a separate blockchain. The target is the Atmo runtime based on Substrate/Polkadot SDK and DEOS mechanisms. **DEOS Actors** are runtime execution infrastructure and are distinct from the separate pi-actors project.
+Facety is not required to run as a separate blockchain. The target is the Atmo runtime based on Substrate/Polkadot SDK and DEOS mechanisms. **DEOS Actors** here means bounded runtime execution infrastructure, not the human participants whose identity claims Facety records.
 
 No section of this document implies that a named Facety pallet, actor, API, or storage item is already shipped.
 
@@ -287,9 +305,13 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Guarantee relation** — A directed responsibility edge that requires matching transactions from both parties. A reciprocal guarantee is a separate relation.
 
-**Invitation** — An entry authorization created by burning **1 FACY from the creator's own eligible Self-ID emission** and satisfying the dynamic guarantor threshold.
+**Invitation** — An entry authorization created by burning **1 FACY from the creator's own eligible Self-ID emission** and satisfying both the difficulty-sized guarantee and XP-centered-path conditions. It is not a guarantee of the invitee.
 
-**Active subject** — A unique subject with a qualifying Self-ID during the previous 28 days. The exact treatment of disputed or cancelled acts is open.
+**Active subject** — A distinct subject with a qualifying Self-ID during the previous 28 days. Counting a subject once does not establish a unique human. The exact treatment of disputed or cancelled acts is OPEN.
+
+**Active verified participant** — An active subject recognized under a declared protocol verification process. The verification predicate and status updates remain OPEN; neither evaluator knowledge nor raw account count supplies this status.
+
+**Network Difficulty (`D`)** — The applicable difficulty based on the active verified count, with direct target `floor(log10(max(1, N_verified))) + 1`. If hysteresis is used, the adopted difficulty must be distinct from the instantaneous target; transition rules remain OPEN.
 
 **XP credit** — One unit of earned identity work, from an eligible personal Self-ID or a qualifying Self-ID by a guaranteed subject.
 
@@ -299,7 +321,7 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Chekharda / Leapfrog** — A sequence of alternating dispute positions with strictly increasing participant XP and growing stakes.
 
-**Council of 101** — The 101 highest-effective-XP subjects, with equal voting rights in Council proceedings.
+**Consul Council** — The qualifying XP-ranked collective body, with a difficulty-dependent target, population/eligibility caps and one equal vote per formal member. A target of one means no formal Council. **Council of 101** is the historical fixed-size design, not the current universal target.
 
 **Trust cone** — A directed, time-ordered part of the invitation and guarantee graph that depends on one or more upstream identity claims or entry paths.
 
@@ -322,9 +344,9 @@ An edge in one graph MUST NOT automatically create an edge in another. For examp
 
 ## 13. Subject lifecycle and initial trust
 
-**[SELECTED]** The network starts with a small group of trusted enthusiasts who know one another. This provides a practical initial foundation for real-person guarantees and gives early participants time to accumulate experience and responsibility capital.
+**[SELECTED — D35, 2026-10-23]** The starting route is an explicit small genesis group with its already established directed guarantees. Roughly 7–12 people who know one another is illustrative, not a required population or complete graph. Genesis is a supplied initial trust assumption, not proof of personhood, ordinary funded admission or permanent founder immunity.
 
-**[OPEN]** The genesis set, activation requirements, initial invitation rights, and source of first guarantees are not fully specified. These require an explicit genesis or bounded bootstrap contract.
+The genesis record must identify the actual subjects and directed relations. **[OPEN]** Verification/activity, authorization evidence, initial XP/balances/emission rights, financing and activation of ordinary guarantee/path checks still require a contract. Already established guarantees resolve how the chosen starting route obtains its first links; they do not create free money or XP. The normal decimal difficulty remains: 7–9 active verified founders imply `D=1`, and 10–12 imply `D=2` (§46.14).
 
 A subject may change authorized keys under a defined recovery procedure. Key rotation MUST NOT reset the subject's Self-ID rate limit, XP penalty history, debt, invitation lineage, or guarantee obligations.
 
@@ -565,7 +587,7 @@ The system MUST record a terminal emission disposition exactly once.
 The creator MUST:
 
 1. Have a valid Facety subject with the right to create invitations.
-2. Have the required dynamic number of valid guarantors.
+2. Satisfy **both** the dynamic independent-guarantee threshold and the separate XP-centered-path threshold in §18.2, under declared verification, anchor and graph contracts.
 3. Control **one unspent Self-ID emission earned by that subject**, aged at least 24 hours.
 4. Burn the **1 FACY** corresponding to that emission as part of creating the invitation.
 5. Record an invitation that can be traced to the creator and its authorization.
@@ -576,17 +598,18 @@ The restriction applies to the **origin of the emission right**, not merely the 
 
 ### 18.2 Dynamic guarantor threshold
 
-**D33 update, 2026-10-23:** [§46.1–§46.3](#461-network-difficulty) names this decimal threshold **Network Difficulty**, clamps the numeric zero case, selects active **verified** participants as the intended count, and requires effective independent support rather than raw edges. The earlier `N28` description below is preserved as the pre-D33 rule and simulator reference; verification, bootstrap and hysteresis transition details remain explicitly OPEN. No fixed minimum of two or more is selected.
-
-Let `N28(t)` be the count of **distinct active subjects** with qualifying Self-ID during the rolling 28-day window before time `t`.
-
-For `N28 >= 1`:
+**[SELECTED — D33/D35/D36, 2026-10-23]** Let `N_verified` count distinct active verified participants over the rolling 28-day activity window, not accounts, repeated acts or evaluator-known genuine people. The direct difficulty target is:
 
 ```text
-required_guarantors(N28) = decimal_digit_count(N28)
+D_target = floor(log10(max(1, N_verified))) + 1
+D = the applicable adopted difficulty under the declared transition policy
+qualifying_independent_guarantees(creator) >= D
+qualifying_internally_vertex_disjoint_paths(creator, XP_anchor) >= D
 ```
 
-| Active subjects in last 28 days | Minimum qualifying guarantors for an invitation creator |
+**Both tests apply to the invitation creator, not the recipient.** Neither test substitutes for the other. Each path is simple and distinct. Counted paths toward a single center may share the creator and final center, but no intermediary. Edge-disjoint routes through the same intermediary do not supply separate paths. The anchor concept is the highest-XP center / XP-ranked consul core, not an assumed omniscient healthy seed. Exact anchor membership, traversal direction, reciprocal-edge qualification, ties/snapshots and apex self-path handling remain OPEN (§46.14–§46.15).
+
+| Active verified participants | Direct difficulty target / minimum qualifying guarantees and paths |
 | ---: | ---: |
 | 1–9 | 1 |
 | 10–99 | 2 |
@@ -597,11 +620,11 @@ required_guarantors(N28) = decimal_digit_count(N28)
 | 1,000,000–9,999,999 | 7 |
 | 10,000,000–99,999,999 | 8 |
 
-The dynamic threshold applies to **the subject that creates invitations**. It must not be silently restated as a requirement that the recipient already has that number of guarantors.
+At zero the numeric target is also one; the formula creates neither a founder nor a non-self guarantee. Genesis follows §13. No fixed floor of two or more is selected. Raw edge count, path reachability and disjoint vertices do not prove independent humans. Effective-support qualification and the verification process remain OPEN; matching consent for a directed guarantee does not automatically create its reverse.
 
-**[OPEN]** Bootstrap behavior when `N28 = 0`, treatment of disputed acts, qualification of an active subject, and qualification of an eligible guarantor require exact rules. The runtime should count subjects, not the number of Self-ID records. A single person who self-identifies 20 times inside 28 days contributes no more than one active subject.
+**No cluster invitation quota or external-boundary capacity gate is imposed for now (D35).** The own-emission burn, individual guarantee/path conditions and invitation freeze still apply. Difficulty changes must not retroactively invalidate identity. Epoch/hysteresis adoption, grace periods, pending-invitation handling and recovery after an anchor/count change remain OPEN; direct formula examples do not choose those policies.
 
-The threshold can go down when the active population declines. This can aid recovery, but it also lowers an admission defense. The tradeoff must be tested.
+**Historical/simulator reference, not the current selected count:** the earlier threshold was `decimal_digit_count(N28)` for distinct active accepted subjects, without the new verification/path contract. That reference explains older results and the current simulator; it must not be presented as verified independence or full D33/D35/D36 admission. The decimal bands survive, while their qualifying population and support semantics have changed.
 
 ### 18.3 Economic effect
 
@@ -610,7 +633,7 @@ An invitation destroys one **existing** personally earned FACY unit under the mi
 ```text
 own Self-ID -> Emitter emission
     -> at least 24 hours
-    -> dynamic-guarantor check
+    -> qualifying independent-guarantee AND XP-centered-path checks
     -> burn 1 personally earned FACY
     -> invitation recorded and frozen for 24 hours
     -> invitee admitted unless a guarantor of the creator cancelled it
@@ -987,19 +1010,29 @@ On the illustrative money-only calculation this needs slightly better than even 
 
 A final result must be attributable to a specified procedure. The mere willingness of a wealthy or high-XP participant to join a side does not prove that side true.
 
-## 27. Council of 101
+<a id="27-council-of-101"></a>
 
-**Historical title retained. D33 supersession, 2026-10-23:** [§46.4–§46.5](#464-dynamic-consul-council-size) replaces the fixed target prospectively with difficulty-based dynamic size and no formal one-consul institution. The text below retains the original rule and unresolved procedures, not a competing current size requirement. Formal intervention powers apply only when a formal Council exists; bootstrap apex correction remains OPEN. Existing simulations still implement the legacy reference, not D33.
+## 27. Consul Council
+
+The Council is the intended collective route for correcting concentrated influence, not a fixed set of 101 people at every network size. **D33, selected 2026-10-23**, replaces the old universal target while retaining equal votes and no seniority immunity. Institutional size is a design requirement, not proof of independent judgment or a completed merits procedure.
 
 ### 27.1 Membership and equal votes
 
-**[SELECTED 2026-10-22; fixed size superseded by D33]** The **101 highest-effective-XP subjects** form a dynamic Council. Its members appear on the public leaderboard. Each member gets **one vote**. The person with the largest XP does not receive extra Council votes.
+The direct formula uses Network Difficulty from §18.2/§46.1:
 
-**[SELECTED, 2026-10-22]** The leaderboard counts only **active** subjects: those with an uncancelled Self-ID in the preceding 28 days. Inactive members drop out. **Recalculation is not turnover:** continuously active leaders may retain their seats. Stability is not itself failure, and frequent replacement is not itself success. Measure actual mobility, contestability, independence of judgment and removal of influence after established misconduct.
+```text
+r = round(sqrt(D))
+r:          1    2    3     4      5       6
+C_target:   1   11  101  1001  10001  100001
+```
 
-Council membership changes as XP/activity changes. **[REFERENCE / OPEN]** A deterministic case-membership snapshot can avoid ambiguous replacements; dynamic membership is a distinct comparison. The current leaderboard does not choose an active-case policy.
+The lookup is not the repunit sequence `1,11,111,...`; behavior beyond `r=6` remains OPEN. Membership cannot exceed the active verified population or the eligible candidate set. A target of one means **no formal Council**: it creates no special office, unilateral verdict power or immunity. Under the direct formula, `N_verified<100` has no formal Council; at 100 the target is 11. The interaction with delayed difficulty adoption remains OPEN (§46.10), not an implicit phase rule.
 
-**[OPEN]** How the Council operates when fewer than 101 qualified subjects exist, and tie-breaking at rank 101 require defined rules.
+**[SELECTED] Each formal consul has one vote**, regardless of XP magnitude. Eligibility requires activity over the preceding 28 days under the declared verification/eligibility contract. Topology-aware effective-XP ranking is D33 guidance, not a selected numerical multiplier or a replacement for chronological XP credits/penalties. The ranking/dispute-authority boundary, candidate filters and graph observations still need exact contracts.
+
+Membership changes with XP/activity. **Recalculation is not turnover:** continuously active leaders may retain seats. Stability is not itself failure, and rapid replacement is not itself success; actual contestability, independence and influence removal after established misconduct matter. An active-case membership snapshot and dynamic membership are distinct references. Ties at the last seat, vacancies, recusal, minimum functioning quorum and case-membership updates remain OPEN. A lone remaining member cannot acquire the powers denied to the one-consul phase.
+
+**Historical reference:** the 2026-10-22 top-101 leaderboard among active subjects remains the simulator's fixed-size reference. D33 supersedes that target; old simulations retain their original interpretation, not compliance with the current verified/dynamic design. The full topology and transition obligations are stated in §46, not supplied by a leaderboard implementation.
 
 ### 27.2 Voluntary intervention
 
@@ -1029,7 +1062,7 @@ A 51-versus-50 simple-majority example illustrates equal voting. It is not an ap
 
 If a majority of the most respected members starts to protect visible misconduct, the social value of their XP and Facety's identity assurances can collapse. This is the intended credibility constraint at the apex.
 
-There is no requirement for an infinite chain of councils above the Council of 101. The public network can lose trust in its highest body, much as a monetary network can lose credibility after abandoning a fundamental monetary rule.
+There is no requirement for an infinite chain of councils above the Consul Council. The public network can lose trust in its highest body, much as a monetary network can lose credibility after abandoning a fundamental monetary rule.
 
 **[HYPOTHESIS]** Large reputational exposure discourages such collective misconduct. The protocol cannot guarantee this behavior. Public votes make responsibility observable; they do not force honest results or automatically restore damaged trust.
 
@@ -1369,7 +1402,10 @@ There is no cancellation fee for an authorized guarantor. Other transaction-vali
 ```text
 create_invitation(creator, source_self_id):
     require active and authorized creator
-    require qualifying_guarantor_count >= decimal_digits(N28)
+    require declared verification, graph, XP-anchor and difficulty-transition contracts
+    D = applicable_network_difficulty(canonical_snapshot)
+    require qualifying_independent_guarantors(creator) >= D
+    require qualifying_internally_vertex_disjoint_paths(creator, XP_anchor) >= D
     require source_self_id belongs to creator
     require emitter right is unspent and not disputed
     require emitter right age >= 24 hours
@@ -1483,7 +1519,7 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 
 Substrate execution is deterministic and resource-bounded. The implementation must specify maximum costs for each kind of transition. Use bounded evidence metadata, bounded guarantees per operation, bounded dispute histories or summaries, and bounded queue processing.
 
-Do not scan every subject each block to maintain `N28`. Use a deterministic expiration index or equivalent bounded update method. A missed or delayed background operation must not create inconsistent eligibility results. If eligibility depends on lazy expiration, prove that the value seen by the dispatch is canonical.
+Do not scan every subject each block to maintain the active verified count and its activity window. A legacy `N28` index is not by itself the selected verification process. Use a deterministic expiration index or equivalent bounded update method. A missed or delayed background operation must not create inconsistent eligibility results. If eligibility depends on lazy expiration, prove that the value seen by the dispatch is canonical.
 
 Do not perform an unbounded search of the global trust graph during a transaction. More complex graph analysis can occur off-chain, but every consequential on-chain decision must reference accepted inputs and authorized verification rules.
 
@@ -1604,7 +1640,8 @@ Measure, at minimum:
 honest_unique_active_subjects
 false_or_duplicate_subjects_detected
 undetected_false_subjects
-N28 and invitation threshold
+active verified count, target/adopted difficulty and guarantee/path eligibility
+legacy N28 separately when evaluating the older reference
 FACY minted / burned / converted / still on Emitter
 FACY restricted for disputes
 invite burns and guarantee fees
@@ -1634,11 +1671,11 @@ The model also needs the utility and opportunity cost of honest observers. Prote
 
 ### 41.12 Simulation status
 
-The repository's simulator implements the subset in the [coverage map](simulator.en.md#protocol-coverage), with declared assumptions for open mechanics. D33's topology and dynamic-Council design is not implemented; the fixed-101/raw-guarantor legacy reference remains explicitly identified rather than presented as conforming to every current selected requirement. The [insight register](insights.en.md) lists every finding with its evidence level and study. Findings labeled confirmed passed a preregistered test on reserved seeds; the others are exploratory maps.
+The repository's simulator implements the subset in the [coverage map](simulator.en.md#protocol-coverage), with declared assumptions for open mechanics. D33's topology and dynamic-Council design is not implemented; the fixed-101/raw-guarantor legacy reference remains explicitly identified rather than presented as conforming to every current selected requirement. Research evidence does not by itself change these rules. A confirmed model claim passed a preregistered test on reserved seeds under its source and assumptions; an exploratory result maps a finite tested range, and a diagnostic explains a targeted rule or execution boundary. None establishes deployed personhood, real retention or general attack resistance. Full study records are supporting evidence, not additional participant obligations.
 
 ## 42. Decisions still open before production
 
-D33's [§46.13 conflict register](#4613-conflicts-supersession-and-proposed-resolutions) refines this earlier list: the numeric zero-count difficulty and dynamic Council lookup are now selected, while verification, genesis activation, topology factors, quotas, hysteresis and voting execution still need precise contracts. The earlier items remain for traceability and MUST be read with that supersession.
+The current design selects the zero-count numeric clamp, dynamic Council lookup, pre-guaranteed genesis route and internal vertex-disjointness. Cluster invitation quotas and external-boundary admission gates are deferred, not current blockers. The remaining questions below concern operational meaning and protection from abuse; §46.13–§46.15 preserve the reasons and supersessions, not a requirement to revive older choices.
 
 The following are gaps in the **protocol**, not discretionary coding choices. An implementer must not insert arbitrary defaults and then present them as Facety doctrine.
 
@@ -1664,7 +1701,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 
 ### C. Entry, guarantees, and graph
 
-15. Bootstrap membership and `N28 = 0` handling.
+15. Actual pre-guaranteed genesis membership, verification/activity, financing and activation; the numeric zero clamp and already-guaranteed starting route are selected, not open alternatives.
 16. What makes a guarantor active and eligible; limits on repeated links and reused guarantors.
 17. How disputed or cancelled acts affect the rolling active-subject count.
 18. Invitation target binding, expiration, acceptance, replay protection, and any cancellation remedy.
@@ -1679,7 +1716,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 24. What makes a challenge admissible, including deadlines for different transaction types.
 25. Stake asset, initial amount, escalation schedule and winning-stake distribution.
 26. Execution bounds and deadline interactions; the selected finality window is 7 days after the last entry (§26.5), superseding earlier extension candidates.
-27. Whether provisional XP can be used in a dispute that will itself become final before the source XP.
+27. Finality/appeal effects when later reversal of already terminal XP affects prior eligibility or decisions; still-cancellable provisional XP is not usable authority under the selected terminal-credit rule.
 28. Council referral, membership snapshot, recusal, quorum and intervention threshold.
 29. Merits decision procedure after Council intervention, and how it overrides or continues the ordinary Chekharda sequence.
 30. Evidence thresholds for intentional fraud versus negligent guarantees.
@@ -1702,10 +1739,10 @@ The following sequence is **[REFERENCE]**. It aims to prove the smallest complet
 | 2. Artifact and FaceRef | Hash registration, timestamps, deterministic face indices. | Same canonical artifact produces the same references across supported clients. |
 | 3. Self-ID and Emitter | NFT-like Self-ID plus exactly one emission right. | No double emission; correct one-day restrictions; cancellation while still unspent. |
 | 4. Group Self-ID | Multiple separate signed claims on one artifact. | Two different subjects can claim different indices; duplicate index conflict is flagged, not rejected. |
-| 5. Guarantees and invitations | Matching authorizations, dynamic threshold, earned FACY burn. | Purchased FACY cannot create invitations; guarantee links need both authorizations. |
+| 5. Guarantees and invitations | Matching authorizations, verified difficulty, separate qualifying guarantee/path gates and earned FACY burn. | Purchased FACY cannot create invitations; path witnesses exclude shared intermediaries; verification/anchor/genesis contracts precede enforcement. |
 | 6. XP and prevention | Personal and guarantor XP credits; free act cancellation. | Unspent bad act cancels without leaving illicit FACY or unjustified XP. |
 | 7. Dispute engine | Ordinary challenge, Chekharda, monetary stakes, deadlines. | Valid XP escalation, freezes, deterministic outcomes and penalties. |
-| 8. Council | Top-101 snapshots and intervention ballots. | One vote per member; apex disputes have a bounded review path. |
+| 8. Council | Difficulty-sized eligible consuls, phase/case snapshots and intervention ballots. | No formal one-consul powers; one vote per formal member; apex review, quorum and membership changes have explicit contracts. |
 | 9. Financial sanctions | Real burns, recoverable debt, auditable XP halving. | No double collection or fictitious burns. |
 | 10. Atmo demand interface | Treasury D purchase and burn under bounded policy. | Treasury limits, actual output burn, pause behavior and atomic local execution. |
 | 11. Adversarial system tests | Agent-based model and fault-injection integration tests. | Honest-growth and coordinated-attack scenarios expose quantified outcomes. |
@@ -1726,20 +1763,20 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 6. **An unspent Emitter emission remains cancellable by an authorized guarantor.** Cancellation ends when the emission is used or converted, not merely when it ages.
 7. **The guarantor can prevent one bad act without automatically revoking a real person's identity.** Responsibility for identity guarantees is separate from responsibility for individual Self-ID acts.
 8. **A real guarantee needs both subjects' authorization.** Either party can end a relation under the fee and graph rules.
-9. **An invitation consumes personally earned FACY and requires a size-dependent number of guarantors.** Market capital cannot directly buy the right to create invites.
+9. **An invitation consumes personally earned FACY and requires both difficulty-sized independent guarantee support and internally vertex-disjoint XP-centered paths.** Verification/anchor details remain OPEN; no cluster quota is selected for now, and market capital cannot directly buy the right to invite.
 10. **Group artifacts create independent claims about shared appearance, not automatic guarantees.** Duplicate face-index claims remain visible and disputable.
 11. **XP is earned authority.** It is not money. Participants compete for it and risk losing it in public disputes.
 12. **Chekharda escalates responsibility through strictly increasing XP and monetary stakes.** Higher XP grants a procedural role, not an automatic proof of truth.
-13. **The Council of 101 gives equal votes to the largest XP holders.** It can intervene in disputes without becoming an unlimited single-person sovereign.
+13. **A difficulty-sized Consul Council gives each eligible member one vote.** Its target is capped by population/eligibility; the one-consul target means no formal Council, not a single-person sovereign. Referral and merits contracts remain OPEN.
 14. **Fraud can damage an accountable proof chain.** Disconnection and proven personal guilt must remain separate findings.
 15. **Recorded debt is not a burned token.** Actual monetary supply changes require actual mint and burn operations.
 16. **Facety's credibility is a public good.** Public misconduct by its most respected participants can destroy its legitimacy.
 17. **Bucket D connects Atmo to Facety through an approved, bounded economic policy.** Atmo can buy and burn FACY, but cannot purchase historical XP or define human truth through market spending.
 18. **The test of the design is behavioral.** The protocol succeeds only if honest participation is practical and large, profitable fraud becomes sufficiently difficult under realistic adversarial behavior.
 19. **Vouch for people you know.** Guarantees flow through real acquaintance; requests from strangers are refused by default.
-20. **A proven false identity cuts its whole chain.** Illegitimate coins and XP are removed, and liability spreads to those who stayed responsible for it.
-21. **Everything is public by design.** Transparency is the defense and must be balanced against personal safety.
-22. **Following the rules must be easy and profitable; breaking them must be hard and very unprofitable.** This holds at every step: identity acts, guarantees, invitations and disputes. The simulator checks it as the condition that fraud earns no premium over rule-following, together with honest welfare.
+20. **A proven false identity cuts its whole Self-ID chain under the defined sanction.** Actual recovery is distinct from nominal debt, and D34 retains responsibility for relevant historical events after exit. Duty, event/penalty identity, overlap and correction funding still need exact contracts.
+21. **Accountability needs inspectable evidence, not unlimited personal exposure.** Base-history visibility, lawful access and safety need explicit boundaries; D33 permits optional privacy-preserving proofs to external applications without erasing internal responsibility.
+22. **Following the rules must be easy and profitable; breaking them must be hard and very unprofitable.** This design goal applies to identity acts, guarantees, invitations and disputes. It is not established by more XP, a finite-menu payoff maximum or an assumed token price; real usefulness, human choice and attack costs require evidence.
 
 ## 45. Final thesis
 
@@ -1949,7 +1986,7 @@ The intended effect is to prevent a closed cluster from turning a few external l
 conductance(C) = external_boundary(C) / internal_volume(C)
 ```
 
-High internal density with low external conductance SHOULD reduce invitation capacity. The graph, edge directions/weights and meaning of `internal_volume` remain OPEN; this ratio MUST NOT be silently equated to a different standard conductance definition. Zero/undefined volume requires explicit handling, not zero-imputation. Dense genuine groups and weakly connected genuine newcomers require matched controls and review, not automatic identity invalidation.
+**Historical capacity proposal, deferred by D35:** high internal density with low external conductance was intended to reduce invitation capacity; this is not a current quota or cluster-boundary gate. Conductance remains a possible review observation. The graph, edge directions/weights and meaning of `internal_volume` remain OPEN; this ratio MUST NOT be silently equated to a different standard conductance definition. Zero/undefined volume requires explicit handling, not zero-imputation. Dense genuine groups and weakly connected genuine newcomers require matched controls and review, not automatic identity invalidation.
 
 **Min-cut and independence.** Clusters SHOULD have multiple independent external paths to the trusted core. A single bridge node SHOULD NOT support high invitation capacity. The path/cut independence definition MUST be specified; a reachability certificate alone does not establish independent people or honest sources.
 
@@ -2015,7 +2052,7 @@ This owner-provided summary is interpreted with the exact phase rule, genesis li
 - **Boundary quotas, weighted sources and the example cluster seat cap:** these are not enforceable budgets without normalization, persistent cluster/source accounting, quota periods and infeasible-cap handling. Proposed resolution: define those contracts and test reset/split, rented bridge and genuine-newcomer cases before implementation; never treat one source's wealth as many independent people.
 - **Topology suspicion versus liability and truth:** low conductance, shared guarantors, a failed challenge or an allegation cannot alone prove a false identity or inherited guilt. Proposed resolution: keep eligibility observations contestable and use declared adjudication/authorized model transitions for sanctions. No mandatory stake, bought XP, verified-contribution reward or all-purpose trust score is selected.
 
-The [simulator coverage map](simulator.en.md#protocol-coverage), [insight register](insights.en.md) and [backlog](../BACKLOG.md) record implementation gaps. No runtime change or new empirical evidence accompanies D33.
+**Implementation boundary:** the verified-count, independent-support/path, genesis-activation and dynamic-Council contracts are not implemented in the research simulator. Its active-accepted/raw-guarantor/fixed-101 reference is not this selected topology design. No runtime change or new empirical evidence accompanies D33.
 
 ---
 
@@ -2082,42 +2119,6 @@ This decision changes the specification only. A future reference implementation 
 
 ---
 
-## Part XI — Research Evidence Contracts
-
-## 47. Calibrated aggregate contradiction in simulator research (D37)
-
-**D37 — [SELECTED research contract; implemented for new v2 registrations through D38], documented 2026-10-23.** Source: the owner's Telegram reply “A” to the [E1 decision packet](../studies/2026-10-23-e1-contract/README.md), selecting calibrated aggregate refutation rather than diagnostic-only component flags. This governs statistical interpretation of simulator research, not human identity adjudication, Council voting or protocol sanctions.
-
-For one registered hypothesis, the contradiction family MUST include every registered **claim × context**, including presence, necessity and alternative-control claims. Let `M` be that family's size and `p_contradiction,j` each component's raw lower-tail p-value. The aggregate contradiction p-value MUST be `min(1, M × min_j p_contradiction,j)`, or the identical minimum of Holm-adjusted component p-values. It MUST be at most the registered `alpha` before the aggregate is called `contradicted`. Holm's later steps MAY be reported for component attribution, but raw and adjusted quantities MUST remain distinguishable; that reporting does not change the aggregate rule.
-
-The support rule MUST remain the existing intersection-union rule: every component supports, with hypothesis support p-value `max_j p_support,j`. Unknowns MUST remain adverse to each tested direction and MUST NOT reduce the registered family size. Missing registered contexts MUST NOT be silently dropped. No observed-correlation estimate or post-hoc duplicate removal may replace the fixed family.
-
-The selected error guarantee is **per hypothesis and per contradiction direction**, conditional on valid marginal tests and the declared replica/seed model. It is not a joint support-plus-contradiction guarantee and not a cross-hypothesis/study guarantee. The existing support-only `adjustStudy` contract MUST NOT be represented as contradiction correction. This selects neither evidence authentication nor the separate offline retained-input trust model, and proves no empirical error rate, personhood, useful contribution or attack resistance.
-
-**Runtime and history boundary.** D37's initial record selected the target without approving migration; D38 subsequently approves and implements the versioned transition in §48. New v2 registrations use the controlled rule; old v1 registrations deliberately retain the labeled unadjusted method by default. Implementation-drift permission alone MUST NOT switch methods. Historical artifacts MUST remain unchanged. Intentionally requested new-method reanalysis MUST identify the changed method in a separate result rather than claiming retroactive preregistration or automatically replaying confirmation. The [evidence contract](evidence.en.md#versioned-analysis-and-reanalysis-d38) owns the implemented API. D33–D36 topology and D34 liability/correction gates remain unchanged.
-
-## 48. Versioned analysis and historical compatibility (D38)
-
-**D38 — [SELECTED implementation contract], documented 2026-10-23.** Source: the owner's explicit approval of versioned A for new registrations/results, legacy-by-default old v1 JSON in native/CLI analysis, and separately identified explicit A reanalysis without rewriting original registrations/artifacts or automatically running historical studies.
-
-New registrations MUST use `facety-hypothesis/v2` and bind `analysisPolicy: "family-contradiction/v1"` into the design digest and reserved namespace. New confirmations MUST identify `facety-confirmation/v2` and that policy. Ordinary native analysis MUST use the verified registration's bound method; it MUST NOT accept an unrecorded method override.
-
-Historical `facety-hypothesis/v1` digests and their namespaces MUST remain verifiable with their original hash layout. V1's inferred method is `unadjusted-contradiction/v1`: old numeric/statistical classifications stay legacy by default, including in CLI offline analysis. A v1 registration MUST NOT acquire a policy field that was not bound by its digest. The existing explicit permission for implementation drift MAY allow valid historical input; it MUST NOT relax design/namespace/randomness integrity or change its method.
-
-Applying A to old retained data MUST require an explicit separate reanalysis request. Its `facety-reanalysis/v1` result MUST identify the original registration, original/bound and requested methods, current implementation and source-content digest; it MUST NOT claim to be the original confirmation or rewrite/re-digest its registration. No such request may silently launch model runs. The native `reanalyzeConfirmation` API and CLI `--analysis-policy family-contradiction/v1` provide this path. Output method tags and artifact kind MUST remain visible in mixed study summaries; support-only Holm correction remains support-only.
-
-This changes the statistical contract and its transport, not protocol economics or the separate trust/authentication boundary for supplied scalar rows. Source fingerprints change, so old results still require their original source/method for exact reproduction. Frozen synthetic compatibility inputs are regression evidence, not a replay of historical scientific studies.
-
-## 49. Integrated research programme (D39)
-
-**D39 — [SELECTED research mandate, not a protocol mechanic], documented 2026-10-24.** Source: the owner's instruction to develop root and detailed directions in combinations, then explicitly add the work to the canonical backlog and start Grow Loop. Choosing a first branch MUST mean ordering the work, not discarding the other material directions. The mandate is to understand interacting Facety regimes, not to choose one favored mechanism or promise exhaustive enumeration of every numeric combination.
-
-The [integrated programme](research.en.md#integrated-research-programme-d39-2026-10-24) MUST connect root questions, detailed alternatives, known evidence, cross-root/same-root interactions, opposed explanations and falsifiers. Existing domain backlog owners and their gates MUST be reused. The immediate research priority is sustained genuine participation through maintained guarantees and readiness to check/react; liability risk is a working explanation of withdrawal, not a measured fact or the only allowed explanation. Uniqueness, contribution/reputation and distribution remain separate under D32.
-
-The canonical [convergence item](../BACKLOG.md#integrated-research-programme-d39) owns bounded execution, acceptance and stopping criteria. Grow Loop MAY continue through locally actionable or useful preparatory cohorts, without treating an OPEN contract as an implicitly selected default. D33–D36/D34 migration, human calibration, funding/ethics and evidence-authentication gates remain intact. New scientific mechanism claims still require committed registrations and reserved confirmations under the existing evidence contract; historical studies MUST NOT be replayed or relabeled automatically. A repeated checkpoint or exhausted safe preparation is a reason to stop, not to invent another rule or sweep.
-
----
-
 ## Appendix A: Decision log and supersession ledger
 
 This ledger prevents earlier drafts from being mistaken for the latest decisions. Git history holds the exact text changes.
@@ -2129,7 +2130,7 @@ This ledger prevents earlier drafts from being mistaken for the latest decisions
 | One-day windows replace 3-day network use and 7-day Collector conversion. | **[SELECTED]** (§3, §17.3) |
 | New invitations are frozen for 24 hours and cancellable by the creator's guarantors. | **[SELECTED]** (§18.5) |
 | XP is credited at terminal disposition to the subject and its eligible guarantors; cancelled acts credit nothing. | **[SELECTED]** (§17.5) |
-| The Council is the top-101 XP leaderboard among subjects active in the last 28 days. | **[SELECTED]** (§27.1) |
+| The Council is the top-101 XP leaderboard among subjects active in the last 28 days. | **[SELECTED then; fixed size superseded by D33]** (§27.1) |
 | Debt repayment keeps the guarantor veto window. | **[SELECTED]** (§17.3) |
 | No mandatory media type; the same media cannot be reused; group media whenever possible. | **[SELECTED]** (§14.4) |
 | Chain-cut sanction with a liability wave to the inviter and its guarantors. | **[DIRECTION]** (§21.1) |
@@ -2190,6 +2191,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 **D39 — [SELECTED research mandate], §49.** Source: the owner's explicit request for a complete root/detailed-direction and combination programme, a canonical backlog task and Grow Loop execution. Priorities order work without deleting untested directions. Sustained genuine guarantee participation/readiness is the immediate outcome; risk of liability is a working hypothesis. Research design/evidence live in `docs/research.en.md` and the existing registers; `BACKLOG.md` remains the only task owner. Bounded cohorts may proceed within their contracts; no new reward, liability, verified-independence, human-study or automatic confirmation/historical-replay permission is implied. Existing selected/OPEN distinctions and scientific validation gates remain.
 
+### Self-contained living protocol documented 2026-10-24
+
+**D40 — [SELECTED documentary role], introduction, “Self-contained living protocol.”** Source: the owner's explicit instruction to strengthen project cohesion, especially its relationship to this document, without making the protocol a hub. The protocol must remain independently intelligible at the intersection of manifesto and specification: purpose, connected mechanisms, current rules, unresolved contracts and limits belong here. Project navigation, implementation APIs, task state and detailed experiment records belong in their own project surfaces and must identify the protocol question/rule they serve. Supporting evidence may challenge the proposal but cannot silently select rules. Earlier decisions and their full research contracts remain preserved; this is not a new edition, an economic/governance change, or permission to fill OPEN mechanics.
+
 ### Earlier supersessions
 
 | Earlier description | Status |
@@ -2213,3 +2218,45 @@ The primary source is the protocol owner's design decisions, recorded in this re
 Sections labeled **[REFERENCE]** or **[OPEN]** are deliberately not presented as previously selected protocol rules. Where a newer statement did not fully settle an issue, this text preserves the ambiguity rather than inventing a binding answer.
 
 **Editorial note:** The document uses direct technical English and a controlled local terminology. It is not a certified ASD-STE100 publication.
+
+---
+
+<a id="part-xi-research-evidence-contracts"></a>
+
+## Appendix C: Research and development decisions
+
+These dated owner decisions govern how this proposal is investigated and maintained. They do not add conditions to Self-ID, admission, monetary rights or Council authority. Their full contracts remain here for historical and interpretive completeness; using Facety does not require understanding the simulator's command line, statistical transport or work scheduler.
+
+## 47. Calibrated aggregate contradiction in simulator research (D37)
+
+**D37 — [SELECTED research contract; implemented for new v2 registrations through D38], documented 2026-10-23.** Source: the owner's Telegram reply “A” to the [E1 decision packet](../studies/2026-10-23-e1-contract/README.md), selecting calibrated aggregate refutation rather than diagnostic-only component flags. This governs statistical interpretation of simulator research, not human identity adjudication, Council voting or protocol sanctions.
+
+For one registered hypothesis, the contradiction family MUST include every registered **claim × context**, including presence, necessity and alternative-control claims. Let `M` be that family's size and `p_contradiction,j` each component's raw lower-tail p-value. The aggregate contradiction p-value MUST be `min(1, M × min_j p_contradiction,j)`, or the identical minimum of Holm-adjusted component p-values. It MUST be at most the registered `alpha` before the aggregate is called `contradicted`. Holm's later steps MAY be reported for component attribution, but raw and adjusted quantities MUST remain distinguishable; that reporting does not change the aggregate rule.
+
+The support rule MUST remain the existing intersection-union rule: every component supports, with hypothesis support p-value `max_j p_support,j`. Unknowns MUST remain adverse to each tested direction and MUST NOT reduce the registered family size. Missing registered contexts MUST NOT be silently dropped. No observed-correlation estimate or post-hoc duplicate removal may replace the fixed family.
+
+The selected error guarantee is **per hypothesis and per contradiction direction**, conditional on valid marginal tests and the declared replica/seed model. It is not a joint support-plus-contradiction guarantee and not a cross-hypothesis/study guarantee. The existing support-only `adjustStudy` contract MUST NOT be represented as contradiction correction. This selects neither evidence authentication nor the separate offline retained-input trust model, and proves no empirical error rate, personhood, useful contribution or attack resistance.
+
+**Runtime and history boundary.** D37's initial record selected the target without approving migration; D38 subsequently approves and implements the versioned transition in §48. New v2 registrations use the controlled rule; old v1 registrations deliberately retain the labeled unadjusted method by default. Implementation-drift permission alone MUST NOT switch methods. Historical artifacts MUST remain unchanged. Intentionally requested new-method reanalysis MUST identify the changed method in a separate result rather than claiming retroactive preregistration or automatically replaying confirmation. The [evidence contract](evidence.en.md#versioned-analysis-and-reanalysis-d38) owns the implemented API. D33–D36 topology and D34 liability/correction gates remain unchanged.
+
+## 48. Versioned analysis and historical compatibility (D38)
+
+**D38 — [SELECTED implementation contract], documented 2026-10-23.** Source: the owner's explicit approval of versioned A for new registrations/results, legacy-by-default old v1 JSON in native/CLI analysis, and separately identified explicit A reanalysis without rewriting original registrations/artifacts or automatically running historical studies.
+
+New registrations MUST use `facety-hypothesis/v2` and bind `analysisPolicy: "family-contradiction/v1"` into the design digest and reserved namespace. New confirmations MUST identify `facety-confirmation/v2` and that policy. Ordinary native analysis MUST use the verified registration's bound method; it MUST NOT accept an unrecorded method override.
+
+Historical `facety-hypothesis/v1` digests and their namespaces MUST remain verifiable with their original hash layout. V1's inferred method is `unadjusted-contradiction/v1`: old numeric/statistical classifications stay legacy by default, including in CLI offline analysis. A v1 registration MUST NOT acquire a policy field that was not bound by its digest. The existing explicit permission for implementation drift MAY allow valid historical input; it MUST NOT relax design/namespace/randomness integrity or change its method.
+
+Applying A to old retained data MUST require an explicit separate reanalysis request. Its `facety-reanalysis/v1` result MUST identify the original registration, original/bound and requested methods, current implementation and source-content digest; it MUST NOT claim to be the original confirmation or rewrite/re-digest its registration. No such request may silently launch model runs. The native `reanalyzeConfirmation` API and CLI `--analysis-policy family-contradiction/v1` provide this path. Output method tags and artifact kind MUST remain visible in mixed study summaries; support-only Holm correction remains support-only.
+
+This changes the statistical contract and its transport, not protocol economics or the separate trust/authentication boundary for supplied scalar rows. Source fingerprints change, so old results still require their original source/method for exact reproduction. Frozen synthetic compatibility inputs are regression evidence, not a replay of historical scientific studies.
+
+## 49. Integrated research programme (D39)
+
+**D39 — [SELECTED research mandate, not a protocol mechanic], documented 2026-10-24.** Source: the owner's instruction to develop root and detailed directions in combinations, then explicitly add the work to the canonical backlog and start Grow Loop. Choosing a first branch MUST mean ordering the work, not discarding the other material directions. The mandate is to understand interacting Facety regimes, not to choose one favored mechanism or promise exhaustive enumeration of every numeric combination.
+
+The [integrated programme](research.en.md#integrated-research-programme-d39-2026-10-24) MUST connect root questions, detailed alternatives, known evidence, cross-root/same-root interactions, opposed explanations and falsifiers. Existing domain backlog owners and their gates MUST be reused. The immediate research priority is sustained genuine participation through maintained guarantees and readiness to check/react; liability risk is a working explanation of withdrawal, not a measured fact or the only allowed explanation. Uniqueness, contribution/reputation and distribution remain separate under D32.
+
+The canonical [convergence item](../BACKLOG.md#integrated-research-programme-d39) owns bounded execution, acceptance and stopping criteria. Grow Loop MAY continue through locally actionable or useful preparatory cohorts, without treating an OPEN contract as an implicitly selected default. D33–D36/D34 migration, human calibration, funding/ethics and evidence-authentication gates remain intact. New scientific mechanism claims still require committed registrations and reserved confirmations under the existing evidence contract; historical studies MUST NOT be replayed or relabeled automatically. A repeated checkpoint or exhausted safe preparation is a reason to stop, not to invent another rule or sweep.
+
+---

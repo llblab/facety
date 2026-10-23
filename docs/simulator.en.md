@@ -1,6 +1,6 @@
 # Simulator model and research contract
 
-This document owns the implemented simulation semantics. The [protocol](facety.protocol.en.md) owns Facety design intent. A default below is an experiment assumption, not a decision that closes a protocol OPEN item.
+This document owns the implemented simulation semantics. The self-contained [protocol](facety.protocol.en.md) owns Facety's purpose, selected design and OPEN contracts; it is not an implementation manual. The coverage map below connects that proposal to executable mechanics and tests, including explicit deviations. This document is not a competing specification: a research default cannot close an OPEN item or silently supersede a selected rule. Model evidence returns through the insight register and an explicit owner decision, not through an accidental default.
 
 **D33 design boundary, 2026-10-23:** [protocol §46](facety.protocol.en.md#46-brightid-inspired-topology-design) selects Network Difficulty, effective-independent invitation support and dynamic consuls as design requirements, with operational contracts still OPEN. This documentation-only update does not implement them. Active-accepted counts, raw qualifying guarantor counts, fixed Council target 101 and the one-seat reference remain legacy research assumptions; no D33 one-consul authority, verified topology gate, quota, hysteresis or privacy proof is implemented. [BACKLOG](../BACKLOG.md#d33-topology-design-implementation-gated) owns migration. Existing snapshots/studies retain their original source and meanings.
 
@@ -49,17 +49,17 @@ The model never receives a hidden label saying that a subject is an attacker or 
 | One-day emission window; spend and conversion after 24 h | §17.3 | `spendMaturityHours`, `conversionMaturityHours` |
 | Terminal XP to subject and eligible guarantors | §17.5 | `xpFinality: "terminal"` |
 | Debt repayment keeps the veto window | §17.3 | `debtRecovery` |
-| Invitation: own-emission burn, decimal threshold and 24 h freeze/cancellation | §18; D33 refines eligibility | `createInvitation`, `requiredGuarantors`, `cancelInvitation`; legacy active/raw count, not D33 verified independence |
+| Invitation: own-emission burn, separate qualifying guarantee/path gates and 24 h freeze/cancellation | [§18](facety.protocol.en.md#18-admission-through-invitation), [D35/D36](facety.protocol.en.md#4614-xp-centered-paths-pre-guaranteed-genesis-and-no-cluster-quotas-d35) | `createInvitation`, `requiredGuarantors`, `cancelInvitation`; legacy active/raw count, not D33 verified independence |
 | Two-sided guarantees; 1 FACY link break; XP follows the relation | §19 | `proposeGuarantee`, `confirmGuarantee`, `endGuarantee`, `linkBreakXp` |
 | Free preventive cancellation of unspent acts | §20 | `cancelSelfId` |
 | Chain-cut sanction and liability wave; D34 historical attribution | §20.6, §21.1 | `voidSelfIdChain`, `disputes.fineMode`, `disputes.liability`; current-link reference, D34 party selection unimplemented |
 | XP halving, debt, no fictitious burns | §24, §30 | `penalize` |
 | Challenge XP gate; Chekharda stake ladder; Council intervention | §25–§27 | `disputes.procedure`, `stakeGrowth`, `councilDepth` (experiment layer) |
-| Historical Council: top-101 among active subjects | §27.1, superseded target in D33 | `council()`, `councilEligibility`; unchanged legacy reference |
+| Historical Council reference: top-101 among active subjects; current design uses difficulty-sized consuls | [§27.1](facety.protocol.en.md#271-membership-and-equal-votes), [§46.4](facety.protocol.en.md#464-dynamic-consul-council-size) | `council()`, `councilEligibility`; unchanged legacy reference |
 | D33/D35 verified difficulty, guarantees plus XP-centered paths, pre-guaranteed genesis, dynamic Council and privacy; no cluster quotas for now | §46, especially §46.14 | Not implemented; anchor/path/genesis/transition contracts remain OPEN; cluster quotas/boundary gates deferred |
 | Trust formation and detection channels | §20.4, §40.1 | `social.*` (experiment layer) |
 
-Mechanics marked as the experiment layer are behavioral or procedural abstractions in `src/experiment.mjs`. Protocol state changes still go through `FacetyModel`. Atmo/Treasury D, key recovery, media detection and the Council merits procedure are not implemented.
+The admission/Council rows distinguish current protocol requirements from the legacy mechanics actually available: `createInvitation` does not enforce D35/D36 paths, and `council()` does not implement the dynamic verified/eligible body. Linked sections define the selected design; function names identify only the implemented subset. Mechanics marked as the experiment layer are behavioral or procedural abstractions in `src/experiment.mjs`. Protocol state changes still go through `FacetyModel`. Atmo/Treasury D, key recovery, media detection and the Council merits procedure are not implemented.
 
 ### Subsystem audit map (2026-10-23)
 
