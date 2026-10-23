@@ -2,11 +2,15 @@
 
 Scope: a reproducible Node.js / ESM research simulator for [the proposed protocol](docs/facety.protocol.en.md), not a production runtime or proof of personhood.
 
-The bounded causal-clarity checkpoint is documented in the [retained study](studies/2026-10-23-causal-core/README.md); completed work is in [CHANGELOG.md](CHANGELOG.md). The correctness scope below is resumed by the owner's explicit continuation request; only this bounded audit is selected for automatic continuation. The research queue is not automatic feature growth or replay of old confirmations.
+The bounded causal-clarity checkpoint is documented in the [retained study](studies/2026-10-23-causal-core/README.md); completed work is in [CHANGELOG.md](CHANGELOG.md). The correctness audit below is paused by the owner's D33 documentation redirect on 2026-10-23; no automatic continuation or implementation of the new topology design is selected. The research queue is not automatic feature growth or replay of old confirmations.
 
-## Active correctness loop: retained-data and native provenance
+## Paused correctness loop: retained-data and native provenance
 
-Resumed 2026-10-23 by explicit owner request, retaining D32 as a strategic lens rather than a proven outcome. The remaining scope is the transition/retention audit below: first repair saved-game missingness through profile, equilibrium and viability reporting; then inspect native provenance boundaries. Work one validated cohort at a time, commit/push completed checkpoints, and stop at an owner-dependent rule or exhausted useful preparation. Do not expand into broad sweeps, new institutions or automatic confirmation.
+Previously resumed 2026-10-23, now paused by the D33 documentation request; explicit owner restart is required. Retain D32 as a strategic lens rather than a proven outcome. The remaining scope is the transition/retention audit below: first repair saved-game missingness through profile, equilibrium and viability reporting; then inspect native provenance boundaries. Work one validated cohort at a time, commit/push completed checkpoints, and stop at an owner-dependent rule or exhausted useful preparation. Do not expand into broad sweeps, new institutions or automatic confirmation.
+
+## D33 topology design: implementation gated
+
+- [ ] **D33 contract resolution and runtime alignment (owner-/validation-gated):** [§46](docs/facety.protocol.en.md#46-brightid-inspired-topology-design) records the selected formulas and design guidance; [§46.13](docs/facety.protocol.en.md#4613-conflicts-supersession-and-proposed-resolutions) owns conflicts and proposed resolutions. Missing: operational verified-count/independence predicates, factor normalization, bounded genesis/apex correction, persistent cluster/source/quota accounting, target/adopted difficulty and phase timing, effective-XP ranking and voting/privacy contracts. The current active-accepted/raw-guarantor/fixed-101 simulator remains a labeled legacy reference; no evaluator truth or guessed topology defaults may stand in for these contracts. Prerequisites: explicit resolutions and a separately authorized implementation slice. Acceptance: decade/zero/two-person bootstrap and N=99/100 boundaries, difficulty up/down snapshots, quota split/reset/source-reuse, genuine-dense versus collusive groups, disputed-member/recusal and no-single-consul-authority controls; preserve old source-bound evidence and register any empirical mechanism claim before confirmation. Existing Council/authority/privacy follow-ups below are reused, not duplicate research mandates.
 
 ## Checkpoint 1: Accountable correction mandate
 
@@ -43,7 +47,7 @@ Acceptance: exploration retains raw trajectories and exposes candidates. A mecha
 
 ### Protocol simplification — awaiting owner decision
 
-- [ ] Decide the simplification candidates in `docs/insights.en.md`: fixed guarantor threshold, no link-break fee, collapsed Emitter/Collector, capped ladder plus Council, optional face indices, unified sanctions, separate Atmo spec. For each accepted one, update the protocol, the simulator defaults and the coverage table, and rerun the most viable configuration as an ablation. Falsifier: any simplification that lowers viability.
+- [ ] Decide the remaining simplification candidates in `docs/insights.en.md`: no link-break fee, collapsed Emitter/Collector, capped ladder plus Council, optional face indices, unified sanctions, separate Atmo spec. A fixed guarantor threshold is now contrary to D33 and retained only as a labeled counterfactual/historical proposal, not a pending normative choice. For each accepted remaining candidate, update the protocol, the simulator defaults and the coverage table, and rerun the most viable configuration as an ablation. Falsifier: any simplification that lowers viability.
 
 ### Strategy games — deferred priority
 

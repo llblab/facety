@@ -1,6 +1,6 @@
 # Documentation
 
-- [Facety protocol](facety.protocol.en.md): Living manifesto and protocol specification; D32's accountability/emission-growth thesis and safeguards, selected rules, open choices and the dated decision log.
+- [Facety protocol](facety.protocol.en.md): Living manifesto and protocol specification; D32's accountability/emission-growth thesis; D33's Network Difficulty, dynamic consuls and BrightID-inspired topology, explicit conflicts and unimplemented boundaries; selected rules, open choices and the dated decision log.
 - [Insight register](insights.en.md): Every owner decision and simulator finding, with its evidence level and source study.
 - [Simulator model](simulator.en.md): Implemented abstractions, subsystem/spec/source/test coverage, explicit research policies, graph certificates and unresolved risks.
 - [Accountable-correction research](research.en.md): One mechanism chapter and [structured inventory/register](mechanisms.json), executable causal walkthroughs, hypothesis/control matrix, survivability vector, utility boundary and safe human-calibration design (not collected data).

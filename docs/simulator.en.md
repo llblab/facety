@@ -2,6 +2,8 @@
 
 This document owns the implemented simulation semantics. The [protocol](facety.protocol.en.md) owns Facety design intent. A default below is an experiment assumption, not a decision that closes a protocol OPEN item.
 
+**D33 design boundary, 2026-10-23:** [protocol §46](facety.protocol.en.md#46-brightid-inspired-topology-design) selects Network Difficulty, effective-independent invitation support and dynamic consuls as design requirements, with operational contracts still OPEN. This documentation-only update does not implement them. Active-accepted counts, raw qualifying guarantor counts, fixed Council target 101 and the one-seat reference remain legacy research assumptions; no D33 one-consul authority, verified topology gate, quota, hysteresis or privacy proof is implemented. [BACKLOG](../BACKLOG.md#d33-topology-design-implementation-gated) owns migration. Existing snapshots/studies retain their original source and meanings.
+
 ## Architecture
 
 ```text
@@ -41,13 +43,14 @@ The model never receives a hidden label saying that a subject is an attacker or 
 | One-day emission window; spend and conversion after 24 h | §17.3 | `spendMaturityHours`, `conversionMaturityHours` |
 | Terminal XP to subject and eligible guarantors | §17.5 | `xpFinality: "terminal"` |
 | Debt repayment keeps the veto window | §17.3 | `debtRecovery` |
-| Invitation: earned emission, decimal guarantor threshold, 24 h freeze, guarantor cancellation | §18 | `createInvitation`, `requiredGuarantors`, `cancelInvitation` |
+| Invitation: own-emission burn, decimal threshold and 24 h freeze/cancellation | §18; D33 refines eligibility | `createInvitation`, `requiredGuarantors`, `cancelInvitation`; legacy active/raw count, not D33 verified independence |
 | Two-sided guarantees; 1 FACY link break; XP follows the relation | §19 | `proposeGuarantee`, `confirmGuarantee`, `endGuarantee`, `linkBreakXp` |
 | Free preventive cancellation of unspent acts | §20 | `cancelSelfId` |
 | Chain-cut sanction and liability wave | §21.1 | `voidSelfIdChain`, `disputes.fineMode`, `disputes.liability` |
 | XP halving, debt, no fictitious burns | §24, §30 | `penalize` |
 | Challenge XP gate; Chekharda stake ladder; Council intervention | §25–§27 | `disputes.procedure`, `stakeGrowth`, `councilDepth` (experiment layer) |
-| Council: top-101 among active subjects | §27.1 | `council()`, `councilEligibility` |
+| Historical Council: top-101 among active subjects | §27.1, superseded target in D33 | `council()`, `councilEligibility`; unchanged legacy reference |
+| D33 verified difficulty, independent support/quotas, dynamic non-placeholder Council and privacy | §46 | Not implemented; definitions/transition contracts remain OPEN |
 | Trust formation and detection channels | §20.4, §40.1 | `social.*` (experiment layer) |
 
 Mechanics marked as the experiment layer are behavioral or procedural abstractions in `src/experiment.mjs`. Protocol state changes still go through `FacetyModel`. Atmo/Treasury D, key recovery, media detection and the Council merits procedure are not implemented.
@@ -82,14 +85,14 @@ This expands the rule map, not its selected scope. **Verified** means the named 
 - `guarantorEligibility: "active"` (default) requires an accepted subject with a non-cancelled Self-ID inside the preceding 28 days. `"accepted"` removes the activity requirement. Frozen acts still count for activity. At the exact 28-day boundary an act expires.
 - `guaranteeFee: 0` (default) models an unfunded two-sided guarantee. A configured positive integer fee is paid by the guarantor from liquid FACY on confirmation and held in a fee vault, not burned. This is not the still-unspecified Emitter guarantee commitment.
 - `councilSize: 101` (default) ranks eligible subjects by effective XP, breaking ties by JavaScript string order. Zero-XP eligible subjects qualify; fewer eligible subjects produce a smaller Council. A snapshot is an observation, not an implemented Council case.
-- `councilEligibility: "active"` (default) makes the Council the XP leaderboard among currently active accepted subjects: those with an uncancelled Self-ID inside the preceding 28 days. Members drop out when their activity window expires. This follows the protocol owner's decision of 2026-10-22, recorded in §27.1. Recalculation does not imply actual turnover. `"accepted"` keeps every accepted subject eligible and was the implicit behavior before that date, including for the 2026-10-22 coalition study.
+- `councilEligibility: "active"` (default) makes the Council the XP leaderboard among currently active accepted subjects: those with an uncancelled Self-ID inside the preceding 28 days. Members drop out when their activity window expires. This follows the protocol owner's decision of 2026-10-22, recorded in §27.1; D33's later verified-count, topology and Council-phase requirements are not implemented. Recalculation does not imply actual turnover. `"accepted"` keeps every accepted subject eligible and was the implicit behavior before that date, including for the 2026-10-22 coalition study.
 - `debtRecovery: "reserve-until-mature"` (default) marks a debtor's new Self-ID right as reserved while outstanding debt exceeds the debtor's already reserved rights. The reserved right stays in Emitter custody, where guarantors can still cancel it, and the owner cannot spend or convert it. When it reaches `spendMaturityHours` without a dispute lock, the next clock advance (or unlock) burns it, reduces debt by one and applies terminal XP. A cancelled reservation repays nothing. `"immediate-burn"` burns at acceptance and credits XP at once. It is retained only as a comparison policy, because it removes the selected free guarantor veto for debtors and makes their XP final sooner than everyone else's.
 - `artifactReuse: "registration-only"` (default, legacy reference) rejects duplicate supplied content-hash registration but permits same-subject reuse of an existing artifact when both inclusive age/rate boundaries allow it. `"once-per-subject"` is the stronger no-reuse reference: reject a subject's second act on an artifact regardless of face, key rotation or prior cancellation/voiding. Other subjects may still use the shared artifact through age 24, including collision claims. Rejection occurs before minting, XP, claim flags, rate timestamps, ID allocation or events. This comparison exposes the §14.4 ambiguity without silently selecting a new production rule; neither variant detects unprovided hashes or perceptual duplicates.
 
 Other explicit assumptions:
 
 - Genesis subjects are independently supplied trusted roots with zero money and XP. No attempt is made to prove bootstrap trust.
-- For `N28 = 0`, the research invitation threshold is one; otherwise it is the decimal digit count. This fills an OPEN bootstrap choice only for experiments.
+- For `N28 = 0`, the research invitation threshold is one; otherwise it is the decimal digit count. The numeric clamp agrees with D33, but `N28` remains a legacy active-accepted count and does not implement verification, effective independence or a complete genesis contract.
 - An invitation binds one target ID, has no expiration and is accepted once. The threshold applies to its creator, not its recipient. An invitation alone does not create a guarantee.
 - A link break costs exactly one liquid FACY, paid by the party ending the link, and transfers it to fee custody. No hardship exception is assumed.
 - A dispute lock prohibits both owner disposition and guarantor cancellation. Unlocking does not reset age. Opening a lock does not itself prove admissibility.

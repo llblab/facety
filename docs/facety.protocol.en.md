@@ -39,11 +39,12 @@ Use the following labels:
 - [Part II — System and Data Model](#part-ii-system-and-data-model): actors, assets, graph types, and subject identity.
 - [Part III — Identity Evidence and Self-ID](#part-iii-identity-evidence-and-self-id): media artifacts, deterministic FaceRef, group Self-ID, and Emitter rights.
 - [Part IV — Invitations, Guarantees, and Graph Responsibility](#part-iv-invitations-guarantees-and-graph-responsibility): social admission, payments, and two kinds of liability.
-- [Part V — XP, Public Disputes, and the Council](#part-v-xp-public-disputes-and-the-council): earned authority, halving, Chekharda, and the top-101 collective route.
+- [Part V — XP, Public Disputes, and the Council](#part-v-xp-public-disputes-and-the-council): earned authority, halving, Chekharda, and the historical top-101 route, refined by D33.
 - [Part VI — FACY Economics and Atmo Integration](#part-vi-facy-economics-and-atmo-integration): deflation, debt, and Bucket D buyback-and-burn.
 - [Part VII — Reference Implementation Contracts](#part-vii-reference-implementation-contracts): state records, example transitions, and protocol invariants.
 - [Part VIII — Threat Model, Research, and Delivery](#part-viii-threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
 - [Part IX — Condensed Protocol Constitution](#part-ix-condensed-protocol-constitution): the rules and final thesis.
+- [Part X — Network Difficulty and Topology Safeguards](#part-x-network-difficulty-and-topology-safeguards-d33): D33's invitation thresholds, dynamic consuls, independent support, cluster quotas, privacy and explicit conflicts.
 - [Appendix A — Decision log and supersession ledger](#appendix-a-decision-log-and-supersession-ledger): dated decisions and what they replaced.
 - [Appendix B — Sources and confidence](#appendix-b-sources-and-confidence): scope and evidence limits.
 
@@ -64,12 +65,12 @@ The final trust boundary is human collective judgment. Equal votes limit individ
 | Self-ID | One signed identity assertion tied to one artifact and one deterministic face index. It proves control of the subject key and claims fresh presence. A valid act creates a one-unit FACY emission right; when the right is spent or withdrawn without cancellation, the subject and each of its guarantors gain 1 XP. |
 | First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel the Self-ID for free while the emission exists. |
 | From 24 hours | The owner can spend the unspent right on an invitation or convert it to fungible FACY on the Collector. An unspent right remains cancellable. |
-| Invitation | Burn one personally earned eligible emission; the creator also needs `decimal_digits(N28)` eligible guarantors. The invitation stays frozen for 24 hours, during which the creator's guarantors can cancel it. |
+| Invitation | Burn one personally earned eligible emission; under D33 the creator also needs `D = decimal_digits(max(1, N_verified))` effective independent guarantors. The invitation stays frozen for 24 hours, during which the creator's guarantors can cancel it. |
 | Liability | A proven false identity voids its whole Self-ID chain. Its inviter, its guarantors and the inviter's guarantors who stayed linked each owe one coin per voided act. Guarantors escape by cancelling the frozen invitation or leaving the relation in time. |
 | Guarantee | Both subjects must authorize the directed responsibility link. Either can end it under a separate 1 FACY fee rule. |
 | Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
 | XP penalty | A liable loss can halve effective XP; monetary penalties can create collectible debt. |
-| Council | Top 101 effective-XP subjects **among those active in the last 28 days** each have one vote; they may choose to intervene in any dispute. |
+| Council | D33 selects a difficulty-based target `1, 11, 101, 1001, 10001, 100001`, capped by active verified/eligible participants; target 1 is no formal Council. Each formal consul has one vote. The old fixed-101 design is preserved below as superseded context. |
 | Atmo | Bucket D activates under policy, releases capital to Treasury D, and can buy and burn FACY under bounded rules. |
 
 ---
@@ -231,6 +232,8 @@ Facety aims to create conditions in which:
 **Facety's ultimate ambition is an open, self-expanding, self-policing network of human identity claims.** The ambition requires a mechanism that survives adversarial incentives. The existence of public rules alone does not establish that outcome.
 
 **[DIRECTION] A public, accountable market.** Anonymous cryptocurrencies hide who is connected to whom. Facety deliberately does the opposite, without zero-knowledge layers. Identity acts, guarantees, invitations, money flows and disputes are public, and the chain remembers them. This transparency is the defense: graph analysis, lineage tracing and flow tracing work only because everything is visible, and a guarantee bought from a real person stays on record as that person's liability. It is also a risk. Public faces, social graphs and money flows together can enable harassment, coercion of guarantors and targeting of visible wealth (see [§39](#39-public-evidence-and-personal-safety)). Design work must decide what must be public for accountability and what can stay private.
+
+**D33 privacy refinement, 2026-10-23:** §46.11 permits privacy-preserving proofs to external applications, including optional ZK, while retaining accountable internal evidence. This explicitly narrows the earlier no-ZK direction; it does not silently privatize the base ledger.
 
 **[DIRECTION] Who earns what.** Facety is a distribution mechanism for emission that rewards the network effect. An ordinary participant earns a modest, steady income from daily presence. People who invest effort over a long time — guaranteeing, inviting, checking and resolving disputes — accumulate XP and receive large returns from the network. The design goal is that the most committed rule-followers hold the most XP.
 
@@ -572,6 +575,8 @@ The restriction applies to the **origin of the emission right**, not merely the 
 
 ### 18.2 Dynamic guarantor threshold
 
+**D33 update, 2026-10-23:** [§46.1–§46.3](#461-network-difficulty) names this decimal threshold **Network Difficulty**, clamps the numeric zero case, selects active **verified** participants as the intended count, and requires effective independent support rather than raw edges. The earlier `N28` description below is preserved as the pre-D33 rule and simulator reference; verification, bootstrap and hysteresis transition details remain explicitly OPEN. No fixed minimum of two or more is selected.
+
 Let `N28(t)` be the count of **distinct active subjects** with qualifying Self-ID during the rolling 28-day window before time `t`.
 
 For `N28 >= 1`:
@@ -792,7 +797,7 @@ A conceptual relation is:
 social standing ~ accumulated XP × demonstrated rule compliance
 ```
 
-This is an **interpretation**, not a selected runtime formula. The protocol must not silently add a numerical reputation multiplier that changes dispute power without an explicit decision.
+This is an **interpretation**, not a selected runtime formula. The protocol must not silently add a numerical reputation multiplier that changes dispute power without an explicit decision. **D33 (§46.6/§46.9)** explicitly adds topology-aware support and Council-ranking guidance, but leaves factor scales and the ranking/dispute-authority boundary OPEN; it does not select a universal trust score or change XP credit arithmetic.
 
 ## 24. XP losses and accounting
 
@@ -949,9 +954,11 @@ A final result must be attributable to a specified procedure. The mere willingne
 
 ## 27. Council of 101
 
+**Historical title retained. D33 supersession, 2026-10-23:** [§46.4–§46.5](#464-dynamic-consul-council-size) replaces the fixed target prospectively with difficulty-based dynamic size and no formal one-consul institution. The text below retains the original rule and unresolved procedures, not a competing current size requirement. Formal intervention powers apply only when a formal Council exists; bootstrap apex correction remains OPEN. Existing simulations still implement the legacy reference, not D33.
+
 ### 27.1 Membership and equal votes
 
-**[SELECTED]** The **101 highest-effective-XP subjects** form a dynamic Council. Its members appear on the public leaderboard. Each member gets **one vote**. The person with the largest XP does not receive extra Council votes.
+**[SELECTED 2026-10-22; fixed size superseded by D33]** The **101 highest-effective-XP subjects** form a dynamic Council. Its members appear on the public leaderboard. Each member gets **one vote**. The person with the largest XP does not receive extra Council votes.
 
 **[SELECTED, 2026-10-22]** The leaderboard counts only **active** subjects: those with an uncancelled Self-ID in the preceding 28 days. Inactive members drop out. **Recalculation is not turnover:** continuously active leaders may retain their seats. Stability is not itself failure, and frequent replacement is not itself success. Measure actual mobility, contestability, independence of judgment and removal of influence after established misconduct.
 
@@ -981,7 +988,7 @@ A vote on **whether to intervene** is different from a vote on **which underlyin
 6. How the Council decision interacts with an ordinary Chekharda deadline.
 7. How evidence, appeals, finality, and penalties are recorded.
 
-A 51-versus-50 simple-majority example illustrates equal voting. It is not an approved threshold. A supermajority for cases against apex participants is a separate candidate, not an adopted rule.
+A 51-versus-50 simple-majority example illustrates equal voting. It is not an approved threshold. A supermajority for cases against apex participants was a separate candidate, not an adopted rule at that checkpoint. **D33 (§46.9)** now recommends simple majority for ordinary decisions and two-thirds for critical interventions; quorum, vote denominator, critical-case definition and merits/referral procedures remain OPEN. The earlier example is historical, not an alternate current threshold.
 
 ### 27.4 The limit of internal legitimacy
 
@@ -1592,9 +1599,11 @@ The model also needs the utility and opportunity cost of honest observers. Prote
 
 ### 41.12 Simulation status
 
-The repository's simulator implements the selected rules of this document and the declared assumptions for open ones. The [insight register](insights.en.md) lists every finding with its evidence level and study. Findings labeled confirmed passed a preregistered test on reserved seeds; the others are exploratory maps.
+The repository's simulator implements the subset in the [coverage map](simulator.en.md#protocol-coverage), with declared assumptions for open mechanics. D33's topology and dynamic-Council design is not implemented; the fixed-101/raw-guarantor legacy reference remains explicitly identified rather than presented as conforming to every current selected requirement. The [insight register](insights.en.md) lists every finding with its evidence level and study. Findings labeled confirmed passed a preregistered test on reserved seeds; the others are exploratory maps.
 
 ## 42. Decisions still open before production
+
+D33's [§46.13 conflict register](#4613-conflicts-supersession-and-proposed-resolutions) refines this earlier list: the numeric zero-count difficulty and dynamic Council lookup are now selected, while verification, genesis activation, topology factors, quotas, hysteresis and voting execution still need precise contracts. The earlier items remain for traceability and MUST be read with that supersession.
 
 The following are gaps in the **protocol**, not discretionary coding choices. An implementer must not insert arbitrary defaults and then present them as Facety doctrine.
 
@@ -1711,6 +1720,256 @@ That is the proposed foundation of Facety as a protocol for social self-identifi
 
 ---
 
+# Part X: Network Difficulty and Topology Safeguards (D33)
+
+## 46. BrightID-inspired topology design
+
+**D33 — [SELECTED / DIRECTION / OPEN], documented 2026-10-23.** Source: the owner's explicit design-discussion directive on BrightID-inspired topology, invitation thresholds and dynamic consuls. MUST statements below are selected design requirements; SHOULD statements are design guidance, and MAY statements identify permitted options. Formulas retain the status stated in their subsection; the weighted-factor product is a template, not a selection of factor scales. Unspecified verification predicates, factor scales, graph algorithms, epochs and voting procedures remain **[OPEN]**. This is a protocol-documentation decision, not an implemented runtime migration, independent BrightID audit, proof of Sybil resistance or empirical mechanism finding. “BrightID-inspired” credits the discussion's inspiration; it does not assert that these exact formulas or policies are BrightID's deployed rules.
+
+The design serves D32's goal of distribution resistant to farming while keeping uniqueness, contribution/reputation and emission/distribution distinct. Topological support is not truth or useful contribution. A dense genuine community is not automatically a farm. Evaluator-only ownership labels MUST NOT become protocol observations. Oracle/evidence validity, Sybil inflation, collusion, arbitration/core capture, bootstrap vulnerability and real attack costs remain explicit research obligations.
+
+### 46.1 Network Difficulty
+
+The protocol MUST define dynamic **Network Difficulty** from the number of active verified participants over the rolling activity window:
+
+```math
+N = N_verified = number of distinct active verified participants
+D = floor(log10(max(1, N))) + 1
+```
+
+For `N = 1..9`, `D = 1`; for `10..99`, `D = 2`; for `100..999`, `D = 3`; for `1000..9999`, `D = 4`; and so on. At `N = 0` the formula also returns `1`; this does not create a participant or a first guarantee. Implementations MUST evaluate decade boundaries exactly, for example through integer decimal digit count rather than imprecise floating-point logarithms.
+
+`N_verified`, not raw account count or the number of repeated Self-ID records, SHOULD determine difficulty so that merely creating accounts cannot increase it. “Verified” means recognized by a declared protocol verification process, not evaluator knowledge that a person is genuinely unique. The verification predicate, disputed/frozen-state treatment and membership updates MUST be specified before enforcement. Verification itself can be wrong or captured; selecting this count does not solve Sybil inflation. The existing rolling activity window is 28 days unless explicitly changed.
+
+Network Difficulty represents the required level of independent social confirmation for invitation rights and governance expansion. Section 46.10 distinguishes instantaneous formula targets from epoch-adopted values when hysteresis is used; the examples below are the direct formula reference.
+
+### 46.2 Minimum guarantor threshold
+
+The minimum number of qualifying guarantors for the **invitation creator**, not the invitee, MUST equal Network Difficulty:
+
+```math
+k = D
+effective_independent_guarantors(user) >= D
+```
+
+Thus `k` is 1, 2, 3 and 4 for the four population bands above. The protocol MUST NOT impose a fixed minimum of 2, 3 or more regardless of network size. At `N = 2`, `k` MUST be `1`. This numeric threshold is not a promise that every two-node graph already contains a qualifying independent guarantee.
+
+Raw incoming edge count MUST be distinguished from effective independent guarantor count. A guarantor contributing to invitation eligibility SHOULD satisfy all of these conditions:
+
+1. It is not a descendant of the user in the invitation graph.
+2. It is not part of the same closed low-conductance cluster.
+3. It has sufficient external trust or external boundary connections.
+4. It has been active for a minimum protocol-defined age.
+5. It is not currently frozen, disputed or penalized under the applicable eligibility rules.
+6. It accepts the economic or reputational liability of the guarantee.
+
+The exact age, dispute admissibility, penalty expiry, independence and external-support tests remain OPEN. A mere unsupported allegation is not proof of misconduct; dispute-triggered exclusion needs anti-harassment safeguards and review. Exclusion from this eligibility calculation MUST NOT silently erase a guarantee, its history or its established liability. Existing matching consent for a directed edge remains required; consent does not create a reciprocal edge.
+
+### 46.3 Bootstrap and genesis rules
+
+The protocol MUST allow cold-start operation from a very small network. For `N < 10`, difficulty is `1`; a participant MAY become eligible with one qualifying guarantor, and the network MAY operate without a formal Council. Governance and dispute resolution SHOULD rely primarily on XP, public accountability, preventive cancellation, time delays and Chekharda-style escalation, subject to the no-special-authority rule in §46.5.
+
+Early-bootstrap safeguards SHOULD include:
+
+- A minimum account/activity age before issuing invitations.
+- A limited number of pending invitations for participants operating at `k = 1`.
+- A contest freeze for invitations; the existing selected duration is 24 hours, not a newly reopened timing default.
+- Guarantor cancellation or freezing of eligible unspent emissions or invitations under explicitly authorized conditions.
+- Limited early emission until the participant satisfies the current difficulty level.
+
+These are design requirements for safeguards, not a new selected numerical emission schedule or an unrestricted guarantor power over spent value. Age, pending-invitation limits, additional freeze authority and early-emission limits remain OPEN. The selected one-unit eligible Self-ID reward and existing cancellation finality are not silently replaced.
+
+When difficulty increases, existing participants MUST NOT lose identity status retroactively. They SHOULD obtain the additional effective guarantors before exercising new invitation rights. Activation times, grace periods and the treatment of already pending invitations MUST be defined prospectively.
+
+At `N = 0` or `1`, a threshold of one does not supply a non-self guarantor. The genesis set, first verification, first guarantee, financing and any bounded exception remain OPEN under §13. The descendant/closed-cluster exclusions also need an explicit bootstrap interpretation: the protocol MUST NOT claim that the formula alone solves this dependency or assume permanently honest founders.
+
+### 46.4 Dynamic Consul Council size
+
+The protocol MUST define the target size through the rounded square root of difficulty:
+
+```math
+r = round(sqrt(D))
+```
+
+The selected lookup sequence is:
+
+```text
+r = 1 -> C_target =      1
+r = 2 -> C_target =     11
+r = 3 -> C_target =    101
+r = 4 -> C_target =   1001
+r = 5 -> C_target =  10001
+r = 6 -> C_target = 100001
+```
+
+This is the stated lookup, not the repunit sequence `1, 11, 111, ...`. No extension or saturation rule for `r > 6` is selected; such a rule MUST be specified if that domain is admitted.
+
+```text
+N =             1..9        D = 1  sqrt(D) = 1       r = 1  C_target =   1
+N =            10..99       D = 2  sqrt(D) ~ 1.414   r = 1  C_target =   1
+N =           100..999      D = 3  sqrt(D) ~ 1.732   r = 2  C_target =  11
+N =          1000..9999     D = 4  sqrt(D) = 2       r = 2  C_target =  11
+N =         10000..99999    D = 5  sqrt(D) ~ 2.236   r = 2  C_target =  11
+N =        100000..999999   D = 6  sqrt(D) ~ 2.449   r = 2  C_target =  11
+N =       1000000..9999999  D = 7  sqrt(D) ~ 2.645   r = 3  C_target = 101
+```
+
+Actual membership MUST NOT exceed the active verified population. The protocol SHOULD use:
+
+```math
+C_actual = min(C_target, N_verified)
+```
+
+This is a population cap, not permission to fill seats with ineligible candidates. Filled seats MUST also be bounded by eligible candidates; vacancies, minimum functioning quorum and recusal handling remain OPEN. At `N = 0`, actual membership is zero even though the lookup target is one.
+
+The protocol MAY reduce membership to an odd number not exceeding the applicable population/target cap, or define an explicit tie-breaking rule. It MUST define a tie rule if even membership is permitted. Odd rounding, vacancies and eligibility filters MUST NOT grant a lone remaining person the powers prohibited in §46.5.
+
+### 46.5 One consul phase is not a formal Council
+
+When the formula returns one consul, this MUST be interpreted as the absence of a formal institutional Council mechanism. The single-consul value is a placeholder, not a special office, extra vote, unilateral merits power or exemption from review.
+
+In the direct formula reference, `N < 100` has no formal Council. Coordination SHOULD use XP, public accountability, guarantees, preventive cancellation, time delays and Chekharda escalation. At `N = 100`, `D = 3` and the target becomes 11: this marks the intended transition from direct social coordination to representative Council coordination.
+
+**[HYPOTHESIS]** The owner describes the small phase as a high-trust environment below approximately Dunbar-scale limits, where direct social accountability is intended to be sufficient. Population size does not establish acquaintance, honesty, adequate attention or safe dispute outcomes. This is not evidence that direct accountability is actually sufficient. In particular, the maximum-XP participant still needs an accessible correction route; no formal small-Council fallback is invented here. Bootstrap apex review and phase behavior during hysteresis remain OPEN.
+
+### 46.6 Effective guarantors and independent support
+
+Raw incoming guarantees MUST NOT be sufficient for invitation eligibility. Define effective support:
+
+```math
+d_eff(u) = Σ weight(g -> u)
+
+weight(g -> u) = trust(g)
+              * age_factor(g)
+              * independence_factor(g, u)
+              * stake_factor(g)
+              * dispute_penalty(g)
+```
+
+The multiplicative expression is a design template; its factor definitions, units, normalization and caps remain OPEN. The protocol SHOULD require:
+
+```math
+d_eff(u) >= D
+```
+
+It SHOULD discount or exclude circular guarantees; guarantees inside the same closed cluster; mutually dependent or newly created support; low-trust or disputed sources; excessive guarantor exposure; and nodes inferred from declared observations to be controlled by the same cluster. Hidden evaluator ownership MUST NOT be used to perform that inference.
+
+A weighted support value MUST NOT let one wealthy or high-XP guarantor impersonate `D` independent sources. A resolution SHOULD either cap each independent source at one effective unit or retain a separate distinct-source-count gate alongside the weighted threshold; the precise rule remains OPEN. Economic/reputational liability is required, but `stake_factor` does not select mandatory token staking, purchasable XP or proof-of-stake consensus.
+
+These factors concern support for a declared purpose. They MUST NOT silently collapse protocol XP, identity credibility, adjudication history, structural rank, acquaintance and finances into a universal trust score. Section 46.9 separately addresses the proposed Council-ranking adjustment.
+
+### 46.7 Cluster boundary and invitation quota
+
+The protocol MUST constrain invitation capacity of closed clusters. Let `C` be a cluster, invitation subtree or detected community. Define:
+
+```math
+B_eff(C) = Σ independent external support to C
+```
+
+The boundary MUST count independent external nodes, not raw edges. Multiple edges to the same external node SHOULD count as one source. Strong dependence among different external nodes SHOULD reduce their combined contribution. Cluster definitions, overlapping memberships and independence estimates MUST be explicit and contestable.
+
+A cluster SHOULD issue invitations only if:
+
+```math
+B_eff(C) >= D
+```
+
+The protocol SHOULD assign the cluster quota:
+
+```math
+invite_quota(C) = floor(B_eff(C) / D)
+```
+
+For `D = 4`:
+
+```text
+B_eff(C) =  3 -> quota = 0
+B_eff(C) =  4 -> quota = 1
+B_eff(C) =  7 -> quota = 1
+B_eff(C) =  8 -> quota = 2
+B_eff(C) = 12 -> quota = 3
+```
+
+The intended effect is to prevent a closed cluster from turning a few external links into unlimited invitations. This is not established by the quotient alone. The protocol MUST define the accounting window, quota consumption/reservation/release, pending versus accepted invitations, reuse of external support across clusters, overlap and split/merge/reset behavior before enforcement. These choices remain OPEN; repeatedly renaming a cluster MUST NOT be assumed to create independent capacity. The existing own-emission burn and invitation contest window still apply separately.
+
+### 46.8 BrightID-inspired graph topology rules
+
+**Trusted seed or healthy core.** The protocol MAY maintain high-trust seeds, such as long-term participants, Council members or highly effective XP holders. Trust propagation SHOULD be weighted by proximity to this core. Core selection, rotation, correction and compromised-seed recovery MUST be explicit; proximity and founder status are not proofs of honesty or uniqueness.
+
+**Independent degree.** The protocol MUST prefer independent effective degree over raw degree. Many edges or many paths with the same controlling source are not many independent confirmations.
+
+**Conductance.** The protocol SHOULD evaluate the discussion's cluster-boundary ratio:
+
+```math
+conductance(C) = external_boundary(C) / internal_volume(C)
+```
+
+High internal density with low external conductance SHOULD reduce invitation capacity. The graph, edge directions/weights and meaning of `internal_volume` remain OPEN; this ratio MUST NOT be silently equated to a different standard conductance definition. Zero/undefined volume requires explicit handling, not zero-imputation. Dense genuine groups and weakly connected genuine newcomers require matched controls and review, not automatic identity invalidation.
+
+**Min-cut and independence.** Clusters SHOULD have multiple independent external paths to the trusted core. A single bridge node SHOULD NOT support high invitation capacity. The path/cut independence definition MUST be specified; a reachability certificate alone does not establish independent people or honest sources.
+
+**Community detection.** The protocol MAY periodically evaluate communities or invitation subtrees for internal density, external boundary, age, dispute rate, frozen emissions, shared guarantors, burst growth and dependence on single bridge nodes. Algorithms, update schedules, evidence provenance and contestability remain OPEN.
+
+**Temporal analysis.** External guarantees SHOULD reach a minimum age before contributing to invitation rights. The protocol SHOULD detect guarantee bursts, sudden cluster growth, guarantees created immediately before invitation attempts and one guarantor inviting many participants in a short period. Detection is a review/eligibility signal, not proof of fraudulent intent.
+
+**Negative edges and disputes.** Disputes, cancellations, penalizations and failed challenges SHOULD reduce relevant trust assessments for the affected participant, its guarantors and potentially its cluster under an explicit relevance/liability policy. Such assessments are not automatic XP halving, guilt by association or truth labels. Distinguish a malicious failed challenge from a good-faith error, a preventive cancellation from proven fraud, and pending allegations from final verdicts. Evidence thresholds, duration, propagation bounds, proportionality and appeal remain OPEN.
+
+### 46.9 Council selection and voting
+
+Council members SHOULD be selected by **effective XP**, not raw accrued XP. Beyond existing chronological credit/revocation/halving, the proposed eligibility/ranking adjustment SHOULD discount closed-cluster farming, circular guarantees, recently created networks, disputed/frozen accounts and guarantees lacking independent external support. This extends the design meaning of effective XP; no numerical topology discount is selected or implemented here. XP does not become a tradable token or universal reliability score.
+
+The protocol MAY require candidates to satisfy both:
+
+```text
+effective_independent_guarantors(candidate) >= D
+no unresolved critical disputes
+```
+
+Each consul has one vote. Ordinary Council decisions SHOULD require a simple majority; critical interventions SHOULD require a two-thirds majority. Even membership MUST have an explicit tie rule. Quorum, eligible/cast-vote denominator, critical-case classification, abstention, recusal, membership snapshots, rounding and case interaction with Chekharda remain OPEN; a vote to intervene is still distinct from a merits verdict.
+
+The protocol SHOULD limit capture by any single cluster. A design example is: **no more than 20% of consuls SHOULD belong to the same invitation subtree or detected cluster**. This is a candidate cap, not a measured safe concentration. Group assignment, overlap, integer rounding, vacancies and an infeasible cap when too few independent groups qualify require explicit resolution. The protocol MUST NOT manufacture candidates or infer collusion solely from genuine community membership.
+
+### 46.10 Difficulty hysteresis
+
+The protocol SHOULD apply hysteresis so temporary activity changes do not cause oscillation or easy manipulation. Increases MAY take effect at the next epoch boundary. Decreases SHOULD require the lower count to persist for multiple epochs. A 28-day rolling count MAY be used; it is already the selected activity-window duration in this specification.
+
+For clarity, the instantaneous formula value in §46.1 is the **target**, `D_target`. If delayed adoption is used, publish a distinct **current/adopted** value, `D_current`. Invitation eligibility MUST use a declared snapshot/value; the target MUST NOT silently be mistaken for an already applied threshold. The shorthand `k = D` refers to the applicable adopted difficulty at enforcement. Epoch length, decrease persistence, upward/downward ordering and activation/grace rules remain OPEN.
+
+Difficulty changes MUST NOT retroactively invalidate identity status. Council phase/size must also have explicit timing: for example, `N` can fall below 100 while a delayed `D_current` remains 3. The strict small-network no-Council statement and an epoch-retained Council target then need a precedence rule. A proposed resolution is to publish phase separately and keep the `N < 100` no-special-authority safeguard while choosing how Council and invitation transitions use target/adopted difficulty. That resolution is not silently selected here.
+
+### 46.11 Privacy consideration
+
+Public guarantees expose social relationships. The protocol SHOULD support privacy-preserving proofs where possible so a participant can prove:
+
+```text
+I have at least D effective independent guarantors.
+```
+
+without necessarily exposing the full guarantor list to external applications. It MAY use zero-knowledge proofs, selective disclosure or encrypted graph commitments for external verification. Internal dispute resolution MAY reveal relevant relationships when necessary for accountable adjudication, subject to explicit authorization and personal-safety limits.
+
+This refines D15's earlier no-ZK direction **for the external application interface**. It does not select an anonymous base ledger or erase public responsibility history. The public/private boundary, canonical committed graph, proof soundness, independence predicate, freshness/revocation, authorized disclosure and data availability remain OPEN. A cryptographic proof can establish a committed predicate, not the truth or unique personhood of the underlying claims. External proof minimization alone cannot conceal relationships already published under linkable identifiers; the disclosure design MUST state what an application can reconstruct from public history before claiming relationship privacy.
+
+### 46.12 Canonical protocol addition
+
+Facety MUST use dynamic Network Difficulty based on the number of active verified participants. The minimum number of effective independent guarantors required for invitation rights MUST equal Network Difficulty. The protocol MUST allow cold-start operation with one guarantor. For networks below approximately 100 active verified participants, the formal council mechanism MAY be absent, and coordination SHOULD rely on XP, public accountability, time delays, preventive cancellation, and Chekharda-style dispute escalation. At larger scales, council size MUST expand dynamically according to the rounded square root of Network Difficulty, using the sequence 1, 11, 101, 1001, 10001, 100001. Invitation capacity MUST be constrained not only by individual guarantors but also by cluster effective external boundary, independent support, temporal aging, and dispute history.
+
+This owner-provided summary is interpreted with the exact phase rule, genesis limitations and unresolved transition contracts above. It is not a new allocation formula: one-unit Self-ID emission, non-transferable XP and accountable guarantees remain distinct from useful-contribution measurement and sustainable distribution. Success requires useful honest participation and correctable influence with bounded extraction, capture and wrongful exclusion; more graph edges, XP or payouts alone establish none of these.
+
+### 46.13 Conflicts, supersession and proposed resolutions
+
+- **Earlier §18.2 active-subject count versus verified count:** D33 selects `N_verified` as the design input and retains the decimal threshold. Proposed resolution: specify a publicly auditable verification/activity predicate without evaluator truth, then migrate count/guarantor eligibility. Until then, the simulator's active-accepted count is a legacy reference, not implementation of verified independence.
+- **Fixed top-101 Council in §27/D3:** D33 supersedes fixed size prospectively with the selected lookup and no formal one-consul institution. Equal votes remain. Proposed resolution: parameterize Council target/phase after verification, eligible-candidate and case-transition rules are settled. Old 101-member simulations remain historical evidence under their original source and assumptions.
+- **Effective XP and §23's no silent multiplier:** D33 explicitly introduces topology-aware selection guidance, not a complete new XP arithmetic. Proposed resolution: define bounded ranking/eligibility adjustments and test genuine dense groups alongside farms before adopting factors; preserve credit/penalty history and distinguish ranking from dispute authority.
+- **D15's no-ZK wording and public evidence:** §46.11 permits privacy proofs to external applications while retaining accountable internal evidence. Proposed resolution: define the disclosure/commitment interface separately from base-ledger visibility; no unreviewed secrecy migration or mandatory ZK implementation is authorized.
+- **Bootstrap exclusions and single-consul authority:** a one-guarantor threshold does not create a first independent guarantor, and lineage/cluster exclusions can block the intended small starting group. The entire genesis network has zero external boundary, so indiscriminate application of the quota also blocks growth. Proposed resolution: define which clusters are subject to the gate and a bounded genesis/aging transition and apex correction route without self-guarantees, omniscient verification or permanent founder immunity. Details remain OPEN.
+- **Hysteresis versus instantaneous formulas and the `N < 100` phase:** distinguish target, adopted threshold and institutional phase; select activation/precedence explicitly. The direct formula examples do not authorize an unstated epoch policy.
+- **Boundary quotas, weighted sources and the example cluster seat cap:** these are not enforceable budgets without normalization, persistent cluster/source accounting, quota periods and infeasible-cap handling. Proposed resolution: define those contracts and test reset/split, rented bridge and genuine-newcomer cases before implementation; never treat one source's wealth as many independent people.
+- **Topology suspicion versus liability and truth:** low conductance, shared guarantors, a failed challenge or an allegation cannot alone prove a false identity or inherited guilt. Proposed resolution: keep eligibility observations contestable and use declared adjudication/authorized model transitions for sanctions. No mandatory stake, bought XP, verified-contribution reward or all-purpose trust score is selected.
+
+The [simulator coverage map](simulator.en.md#protocol-coverage), [insight register](insights.en.md) and [backlog](../BACKLOG.md) record implementation gaps. No runtime change or new empirical evidence accompanies D33.
+
+---
+
 ## Appendix A: Decision log and supersession ledger
 
 This ledger prevents earlier drafts from being mistaken for the latest decisions. Git history holds the exact text changes.
@@ -1754,6 +2013,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Strategic framing documented 2026-10-23
 
 **D32 — [DIRECTION], §1, “Accountability for emission and growth.”** Source: the owner's explicit strategic-framing directive. Facety is evaluated as an accountability substrate for farming-resistant emission distribution, retention and network growth. Uniqueness, contribution/reputation and distribution remain separate layers. The flywheel and its inverse are **[HYPOTHESIS]**; oracle validity, Sybil attacks, collusion, arbitration capture, bootstrap vulnerability and attack economics remain explicit risks. This extends D16/D17/D27/D31 without selecting a contribution metric, changing emission/XP/stake rules or establishing readiness.
+
+### BrightID-inspired topology design documented 2026-10-23
+
+**D33 — [SELECTED / DIRECTION / OPEN], §46.** Source: the owner's explicit directive to permanently record the BrightID-inspired design discussion. Selected design requirements: `D = floor(log10(max(1, N_verified))) + 1`, invitation `k = D`, no size-independent floor of two or more, non-retroactive identity status, `r = round(sqrt(D))` with the lookup `1, 11, 101, 1001, 10001, 100001`, population/eligibility caps, no special authority for the one-consul placeholder, and independent rather than raw support. Guidance includes weighted guarantors, `B_eff`/quota accounting, core/degree/conductance/min-cut/community/temporal/dispute signals, effective-XP Council selection, majority/two-thirds voting, cluster capture limits and hysteresis. External privacy proofs MAY include ZK, refining D15 without selecting an anonymous base ledger. D33 supersedes D3's fixed Council target and refines §18.2/§23; §46.13 records conflicts and proposed resolutions. Verification and factor algorithms, genesis, quotas, epochs, phase transitions, quorum/merits and proof/disclosure contracts remain OPEN. This documentation adds no runtime implementation, new emission schedule or empirical confirmation; the simulator remains an explicitly named legacy reference until a separately validated migration.
 
 ### Earlier supersessions
 
