@@ -1,0 +1,56 @@
+--- ABCd CONTEXT PROTOCOL VALIDATOR ---
+
+[PASS] Index file detected: AGENTS.md
+[PASS] README links to docs/README.md
+[PASS] README references index file (AGENTS.md)
+[PASS] README references open-work file (BACKLOG.md)
+[PASS] README references CHANGELOG.md
+[WARN] Core structure sections missing
+[PASS] Canonical open-work file detected: BACKLOG.md
+[PASS] CHANGELOG.md detected
+[PASS] Root state split looks coherent
+[PASS] No obvious BACKLOG/CHANGELOG drift detected
+Checking documentation links...
+[PASS] Documentation links validated
+[PASS] README entrypoints are reachable
+[WARN] Meta-Protocol Principles missing
+Analyzing index file health...
+[INFO] Index metrics: 25 lines, 2 headings, density 95%
+[PASS] Index file health: no bloat signals
+Checking Markdown lists...
+[PASS] Markdown list checks passed
+Checking Markdown tables...
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:63-74 (max 333 chars, 9/12 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:256-263 (max 187 chars, 3/8 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:313-318 (max 162 chars, 3/6 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:510-514 (max 212 chars, 2/5 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:1046-1053 (max 153 chars, 4/8 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:1112-1117 (max 137 chars, 1/6 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:1515-1528 (max 202 chars, 12/14 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:1698-1710 (max 183 chars, 11/13 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:2090-2104 (max 142 chars, 2/15 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:2110-2122 (max 254 chars, 10/13 rows > 120)
+[WARN] Wide Markdown table: docs/facety.protocol.en.md:2146-2158 (max 217 chars, 11/13 rows > 120)
+[WARN] Wide Markdown table: docs/insights.en.md:13-46 (max 857 chars, 30/34 rows > 120)
+[WARN] Wide Markdown table: docs/insights.en.md:83-107 (max 688 chars, 23/25 rows > 120)
+[WARN] Wide Markdown table: docs/insights.en.md:147-155 (max 415 chars, 7/9 rows > 120)
+[WARN] Wide Markdown table: docs/insights.en.md:175-183 (max 180 chars, 6/9 rows > 120)
+[WARN] Wide Markdown table: docs/research.en.md:94-102 (max 463 chars, 7/9 rows > 120)
+[WARN] Wide Markdown table: docs/simulator.en.md:41-56 (max 283 chars, 7/16 rows > 120)
+[WARN] Wide Markdown table: docs/simulator.en.md:64-79 (max 579 chars, 14/16 rows > 120)
+[WARN] Wide Markdown table: studies/2026-10-22-coalition-council/README.md:7-10 (max 152 chars, 2/4 rows > 120)
+[WARN] Wide Markdown table: studies/2026-10-22-coalition-council/README.md:23-30 (max 122 chars, 1/8 rows > 120)
+[WARN] Wide Markdown table: studies/2026-10-22-social-trust-threshold/README.md:85-91 (max 133 chars, 1/7 rows > 120)
+[WARN] Wide Markdown table: studies/2026-10-22-timed-chekharda/README.md:68-75 (max 141 chars, 1/8 rows > 120)
+[WARN] Wide Markdown table: studies/2026-10-23-causal-core/README.md:58-62 (max 156 chars, 1/5 rows > 120)
+[WARN] Wide Markdown table: studies/2026-10-23-causal-core/relay-summary.md:5-12 (max 121 chars, 1/8 rows > 120)
+[PASS] Context is fresh (0 days old)
+[PASS] Documentation directory exists
+[PASS] Docs index coverage: 0 orphans, 0 phantoms
+
+--- VALIDATION SUMMARY ---
+
+Warnings: 26
+Errors: 0
+
+✓ Context validation PASSED

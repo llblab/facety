@@ -47,6 +47,20 @@ test('verifier uses canonical roots, edges, direction and target, not certificat
   assert.equal(verifyPath(graph, proof, options), false);
 });
 
+test('verifier rejects absent canonical edges even when certificate edge IDs are missing', () => {
+  const graph = fixture();
+  const options = { roots: ['r'], target: 't' };
+  const { proof } = findPathBfs(graph, options);
+  for (const edgeIds of [[undefined], Array(1), [null], ['edge:missing']]) {
+    assert.equal(verifyPath(graph, { ...proof, nodes: ['r', 't'], edgeIds }, options), false);
+  }
+  assert.equal(verifyPath(graph, proof, options), true);
+  const withoutId = { ...proof, edgeIds: [undefined, ...proof.edgeIds.slice(1)] };
+  assert.equal(verifyPath(graph, withoutId, options), false);
+  graph.removeEdge(proof.nodes[0], proof.nodes[1]);
+  assert.equal(verifyPath(graph, withoutId, options), false);
+});
+
 test('bidirectional search agrees with BFS on all directed simple graphs of four nodes', () => {
   const nodes = ['0', '1', '2', '3'];
   const possible = nodes.flatMap(from => nodes.filter(to => to !== from).map(to => [from, to]));

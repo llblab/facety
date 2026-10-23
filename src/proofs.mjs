@@ -117,7 +117,8 @@ export function verifyPath(graph, proof, { roots, target, blockedNodes = [], req
   const blocked = new Set(blockedNodes);
   if (new Set(proof.nodes).size !== proof.nodes.length || proof.nodes.some(id => !graph.hasNode(id) || blocked.has(id))) return false;
   for (let i = 0; i < proof.edgeIds.length; i++) {
-    if (graph.edge(proof.nodes[i], proof.nodes[i + 1])?.id !== proof.edgeIds[i]) return false;
+    const edge = graph.edge(proof.nodes[i], proof.nodes[i + 1]);
+    if (!edge || edge.id !== proof.edgeIds[i]) return false;
   }
   return true;
 }
