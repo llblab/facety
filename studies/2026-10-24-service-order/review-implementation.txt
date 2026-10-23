@@ -1,0 +1,97 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**degraded — substantive implementation-lens inspection completed; overall review pipeline incomplete.**
+
+No supported result-affecting defect found within the declared two-target reference and 432 retained runs. This report does not supply the second independent lens or substantive verifier, merger, and judge outputs required for overall completion.
+
+## Reviewed Target
+
+Read-only review of frozen HEAD `79e2148203bdd17f34c73b5b98c41fc0c8a53b63`, against baseline `94fec29d689a1de5d12afbdc489b84161a66934c` and source/design checkpoint `3d895567f473dbdda436c10c666d722866f5c023`.
+
+Inspected the requested relay implementation, both test files, study runner/controls, manifest, compressed raw runs, analysis, validation records, README, P16 brief and F44. Traced relevant native accountability, dispute, stake, model, randomness and bootstrap semantics.
+
+## Supported Findings
+
+### 1. No supported causal-isolation defect
+
+**Evidence:** `examples/causal-relay.mjs:20–67`; baseline-to-HEAD diff; `src/random.mjs:56–58`.
+
+- `processingOrder` validation requires exactly the two declared targets before constructing a world.
+- Discovery and package creation remain canonical.
+- Random inputs remain keyed by subject/stage, outside the reordered service loop.
+- The intervention reorders routing/review/sponsorship; opened cases are subsequently settled in canonical subject order.
+- The source diff changes no native modules or funded-world setup.
+
+Offline inspection of all retained runs independently confirmed matching environmental inputs across arms/orders, unchanged discovery/package inputs between orders, declared service-attempt ordering, canonical settlement, and matched member/relay protocol outcomes.
+
+**Risk/qualification:** Service priority can affect downstream work, stake reservations and eligibility through the existing service pathway. This is not a claim that review capacity is the only possible mediator. The P16 brief explicitly retains those alternatives (`docs/research-interactions.en.md:130–135`).
+
+**Next action:** Preserve that narrow interpretation; no implementation remediation is supported.
+
+### 2. Retained results support the reported diagnostic witness
+
+**Primary retained-data key:**  
+`runs[context="correlated-capacity1", seed="d39-order-explore-03", arm="external-relay", order=…]`.
+
+Both orders retain identical discovery, review and verdict inputs:
+
+- Mira-first opens Mira’s case; Aster review is capacity-blocked.
+- Aster-first opens the rejected Aster allegation; Mira review is capacity-blocked.
+- Both spend 8 work units, have no work-budget denial, and pass individual XP `7 > 3` with liquid balance 2 and stake 1.
+- Correction changes `1 → 0`; genuine XP loss `8 → 4`; genuine collected penalties `3 → 0`.
+- Unserved-package clocks remain `null`, distinct from pending funded cases.
+
+Independent offline calculations confirmed all retained analysis totals and per-seed metric deltas: corrections are `7/11 → 7/11` in both independent contexts and `9/11 → 8/11` in the shared-review context for member/relay. Exactly one correction pair changes; unrouted cases remain absent. All 14 metrics have zero paired differences in the independent contexts.
+
+**Risk/qualification:** This supports an encoded finite-service execution witness, not emergence, population safety, welfare improvement or general capacity/correlation causality.
+
+### 3. Funding and authority boundaries remain intact
+
+**Evidence:** `examples/causal-walkthroughs.mjs:20–39`; `src/accountability.mjs:187–224`; `src/disputes.mjs:3–16,53–76`; `src/dispute-stakes.mjs:19–34,49–78`; `src/model.mjs:407–460`.
+
+The common prefix uses funded Model operations. Challenge access compares individual subject XP strictly; no operator XP pool is introduced. Stake custody, sanctions and identity invalidation flow through Model methods. Evaluator violation labels remain outside protocol state; adjudication receives supplied verdicts.
+
+No new protocol choice or migration was found.
+
+## Minority/Disputed Findings
+
+No other substantive lens report was supplied, so reviewer agreement or disagreement cannot be assessed. No severe finding emerged from this lens.
+
+## Primary Evidence References
+
+- **This lens:** Direct primary-source inspection and read-only offline calculations described above. No stable `ACTOR_EVIDENCE_REF` for this report was supplied; none is invented.
+- **Second substantive lens:** Not supplied.
+- **Substantive verifier, merger and judge:** Not supplied.
+- **Startup-only references preserved:** reviewer `execution.json#command-001`; verifier `execution.json#command-002`; merger `execution.json#command-003`; judge `execution.json#command-004`. These establish neither substantive review nor semantic acceptance.
+
+## Controls Actually Verified Versus Not Rerun
+
+**Independently verified:**
+
+- Frozen HEAD and clean working tree.
+- Baseline diff: native sources and funded-world source unchanged.
+- All five manifest design hashes match current files and source/design checkpoint contents.
+- All three artifact hashes match `validation.json`; compressed raw data successfully decompresses.
+- Complete 432 unique context/seed/arm/order keys.
+- Retained matching, ordering, trace completeness, placebo, blocked-route, analysis-total/delta and refusal-count checks.
+
+**Inspected but not rerun:**
+
+- Permutation rejection, one-package, inert-inspection and saturated-trace tests.
+- Archived-source default compatibility controls.
+- Reported 239-test suite and 72 default-arm comparisons.
+- Bootstrap resampling; the stored interval was inspected, not independently regenerated.
+
+No models, experimental runners, controls scripts or tests were executed. No files were written.
+
+## Interpretation/Scope Limits
+
+The retained artifacts are internally consistent with the inspected implementation; this is not authenticated proof of execution chronology or an independent scientific replay. Untested alternatives include different qualities/prevalence, correlated capacity two, live arrivals, longer horizons and human participation incentives.
+
+Evaluator labels establish neither real personhood nor useful contribution. Historical findings remain source-bound and exploratory.
+
+## Next Bounded Action
+
+Obtain the second independent substantive lens, then verify and reconcile both reports against primary evidence while preserving their original references. Keep overall status incomplete until substantive verifier, merger and judge evidence is available.

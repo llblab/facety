@@ -1,0 +1,135 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**complete — bounded verifier stage only.** Two usable independent lens reports were supplied, meeting `usable: 2 / minimum: 2`. Direct source inspection and read-only retained-data calculations support the narrow claim. **No supported code, data or interpretation defect was found within this scope.**
+
+This does **not** complete overall multi-review acceptance: substantive merger and judge outputs are not yet supplied. Both reviewers’ original **degraded** statuses and limitations remain preserved.
+
+## Reviewed Target
+
+Independently confirmed frozen HEAD:
+
+`79e2148203bdd17f34c73b5b98c41fc0c8a53b63`
+
+Working tree was clean before and after verification.
+
+Read `AGENTS.md` first, then inspected:
+
+- `examples/causal-relay.mjs`
+- Both named test files
+- Study runner, controls source, manifest, controls/validation records and README
+- Compressed retained runs and analysis through offline Node calculations
+- P16 brief, `docs/research-interactions.en.md:124–136`
+- F44, `docs/insights.en.md:163–165`
+- Native relay review, sponsorship and resolution semantics, `src/accountability.mjs:161–238`
+
+Compared the relay implementation against baseline `94fec29` and checked manifest-bound sources against checkpoint `3d89556`.
+
+## Supported Findings
+
+### 1. Supported: the intervention is a bounded service-order contrast
+
+`examples/causal-relay.mjs:20–67` validates the two-target permutation, constructs discovery/packages canonically using subject/stage-keyed inputs, reorders service, and settles opened cases canonically.
+
+The baseline diff is limited to that option, validation and ordering logic. A read-only `git diff --exit-code` confirmed native `src` and `examples/causal-walkthroughs.mjs` are unchanged.
+
+Offline assertions across all retained rows confirmed:
+
+- Matching evaluator inputs across arms/orders within each context/world.
+- Unchanged observations and package inputs between orders.
+- Canonical settlement order.
+- Matching member/relay protocol states and metrics.
+
+**Qualification:** This changes routing/review/sponsorship priority, not an isolated abstract “capacity” variable. Work, stake and eligibility remain possible downstream mediators; the P16 brief explicitly names them (`docs/research-interactions.en.md:130–135`).
+
+### 2. Supported: retained outcomes reconcile with the narrow report
+
+Independent offline checks established:
+
+- **432 rows and 432 unique context/seed/arm/order keys**, covering the declared product.
+- All retained contrast totals and **3,024 paired metric deltas** reconcile with raw rows.
+- Independent contexts: member/relay corrections **7 → 7**.
+- Shared-review/capacity-one: member/relay corrections **9 → 8**.
+- Unrouted arms: no cases.
+- **128 package clocks** retain null formal-access/verdict values.
+- No omitted trace records.
+
+For retained key:
+
+`[correlated-capacity1, d39-order-explore-03, external-relay, order]`
+
+the two orders have identical evaluator inputs. Mira-first opens Mira’s upheld case and capacity-blocks Aster; Aster-first opens Aster’s rejected allegation and capacity-blocks Mira. Both spend eight work units, pass XP `7 > 3` with liquid balance `2` and stake `1`, and incur no work-budget denial.
+
+The witness retains correction **1 → 0**, genuine XP loss **8 → 4**, collected genuine penalties **3 → 0**, burned value **4 → 1**, and zero debt. This supports the encoded finite-service witness, not a welfare improvement.
+
+**Statistical qualification:** I inspected the stored interval **[−0.125, 0]**, but did not independently regenerate bootstrap intervals. Their complete recomputation is reported by lens two, `execution.json#command-006`, with its native-helper dependence explicitly disclosed.
+
+### 3. Supported: source identity and exploratory classification are explicit
+
+Read-only SHA-256 checks verified:
+
+- All **five manifest design hashes**, against both current files and checkpoint `3d89556`.
+- All **three validation artifact hashes**.
+- Successful decompression of retained raw data.
+
+Git inspection confirmed the source checkpoint is an ancestor of HEAD and contains no retained experimental manifest, raw runs or analysis.
+
+The study README, manifest assumptions, P16 brief and F44 consistently reject mechanism confirmation, population safety, equivalence, real retention and generalized capacity/correlation conclusions.
+
+**Unknown, not authenticated:** These checks establish content identity and retained consistency. They do not independently prove push timing or when the first experimental invocation occurred. The README’s stronger chronology statement remains an archived historical assertion, not newly authenticated evidence.
+
+## Minority/Disputed Findings
+
+Neither lens reports a supported result-affecting defect, and no substantive contradiction was found between them.
+
+Each original report states that the other lens was unavailable in its own input. Both are now supplied to this verifier; that resolves the present input gap without rewriting either historical report or upgrading its original status.
+
+No severe minority finding was supplied.
+
+## Primary Evidence References
+
+- **Implementation lens:** `ACTOR_EVIDENCE_REF: execution.json#command-005`
+- **Measurement/statistical lens:** `ACTOR_EVIDENCE_REF: execution.json#command-006`
+- **Substantive verifier:** This report. No externally assigned evidence identifier was supplied here; none is invented.
+- **Substantive merger:** Not supplied.
+- **Substantive judge:** Not supplied.
+
+Startup-only references `execution.json#command-001` through `command-004` remain preflight evidence, not substantive review or acceptance.
+
+Verifier primary evidence consists of the inspected files, retained witness keys, and read-only command results described above—not merely agreement between reviewers.
+
+## Controls Actually Verified Versus Not Rerun
+
+**Verified directly:**
+
+- Frozen HEAD and clean working tree.
+- Native/funded-world source preservation against baseline.
+- Manifest/checkpoint and artifact hashes.
+- Complete retained cohort and pairing.
+- Retained input matching, canonical settlement, member/relay placebo and blocked unrouted cases.
+- All analysis totals and paired metric deltas.
+- Witness trace, access gates, costs and missing clocks.
+
+**Inspected but not executed:**
+
+- Permutation rejection, one-package and inert/saturated-trace tests.
+- Archived-source compatibility controls.
+- Reported 239-test suite and 72 default-arm comparisons.
+- Bootstrap resampling.
+
+No model execution, study runner, controls script, tests, file writes, commits or publishing occurred.
+
+## Interpretation/Scope Limits
+
+**Proven within retained evidence:** Source/artifact consistency, paired descriptive outcomes and a diagnostic execution of the encoded service constraint.
+
+**Disproven by the witness:** Service order is irrelevant to every retained reference outcome.
+
+**Unknown or untested:** Historical execution authentication; alternative prevalence/qualities; correlated capacity two; other populations; live arrivals; longer horizons; human incentives or withdrawal; real attack resistance; selected topology/liability migrations.
+
+Evaluator “genuine” or violation labels establish neither real personhood nor useful contribution. Sparse outcomes and zero observed wrongful invalidations do not establish safety. This is not Facety readiness or registered mechanism confirmation.
+
+## Next Bounded Action
+
+Pass both original lens reports and this verifier report to substantive merger and judge stages, preserving identifiers, original degraded statuses and chronology limitations. No code remediation, additional seeds or historical replay is supported by this verification.

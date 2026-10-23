@@ -1,0 +1,89 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**degraded — bounded measurement/statistical lens completed; overall review pipeline incomplete.**
+
+No supported result-affecting defect found in the inspected P16 measurements or statistical interpretation. I independently inspected source and all 432 retained rows using read-only calculations. A second substantive lens report and downstream verifier, merger and judge reports were not supplied, so this is not a completed multi-review acceptance.
+
+## Reviewed Target
+
+Frozen HEAD independently confirmed as `79e2148203bdd17f34c73b5b98c41fc0c8a53b63`; working tree was clean.
+
+Inspected:
+- `AGENTS.md`
+- `examples/causal-relay.mjs`
+- `test/causal-relay.test.mjs`
+- `test/service-order-study.test.mjs`
+- All nine named files in `studies/2026-10-24-service-order/`
+- P16 design brief in `docs/research-interactions.en.md:124–136`
+- F44 in `docs/insights.en.md:163–165`
+- Relevant snapshot, work/refusal, challenge and settlement semantics in `src/accountability.mjs`, `src/disputes.mjs`, `src/model.mjs`, `src/statistics.mjs`, and the funded prefix in `examples/causal-walkthroughs.mjs:22–41`.
+
+## Supported Findings
+
+**No supported defect.** The following observations independently support the narrowly stated report:
+
+1. **Cohort and pairing are intact.**  
+   Offline enumeration found exactly **432 rows and 432 unique context/seed/arm/order keys**, covering the manifest’s full Cartesian product and 24 world labels. Each context/arm/order has 11 underlying violations. Truth, discovery and adjudication inputs agree across variants sharing a world label; review inputs appropriately vary by context. Member/relay protocol states and metrics match within each context/order/world.  
+   **Evidence:** retained `runs.json.gz`, manifest keys, exhaustive read-only Node assertions; pairing implementation at `run.mjs:19–76`.
+
+2. **All retained metrics and reported contrasts reconcile.**  
+   I independently recomputed **6,048 metric values**, all paired deltas, totals, refusal counts and **126 descriptive bootstrap intervals**. No mismatch with `analysis.json` was found.
+   - Independent contexts: member/relay corrections **7/11 in both orders**, with zero paired differences across all 14 metrics.
+   - Shared-review/capacity-one: **9/11 → 8/11**, solely at `d39-order-explore-03`; correction delta **−1/24**, bootstrap interval **[−0.125, 0]**.
+   - Unrouted arms: no cases or corrections.
+   - Wrongful invalidations: zero retained observations.  
+   **Evidence:** exhaustive offline assertions against retained rows and all nine analysis contrasts; metric definitions at `examples/causal-relay.mjs:69–84`; bootstrap algorithm at `src/statistics.mjs:72–87`.
+
+3. **The witness supports an encoded service-allocation explanation, not emergence or welfare improvement.**  
+   For key `[correlated-capacity1, d39-order-explore-03, external-relay]`, both orders retain identical suspicious packages and supplied verdicts. Each spends eight work units and opens one case with challenger XP 7, target XP 3, liquid balance 2 and stake 1. The other target receives `review-capacity-exhausted`; no work-budget denial occurs. Settlement remains canonical.
+   
+   Genuine XP loss changes **8 → 4**, genuine collected penalties **3 → 0**, total burned value **4 → 1**, and debt remains zero. The reversed-order rejected allegation still burns the challenger’s stake and halves challenger XP. Shared-context genuine burden totals reconcile to **88 → 84 XP** and **27 → 24 collected FACY**.  
+   **Evidence:** both retained witness rows, their trace preconditions/refusals and `penalty-applied` events; `README.md:21–25`; `src/disputes.mjs:14–17,52–75`; `src/model.mjs:439–454`.
+
+4. **Missingness and sparse uncertainty are preserved.**  
+   All 252 retained packages have clocks consistent with their cases/routes; **128 have null formal-access and verdict clocks**. These were not converted to zero latency. All traces have zero omitted records; maximum retained trace length is ten. Refusals independently total 84 `route:no-sponsor`, 36 `review:review-not-suspicious`, and eight `review:review-capacity-exhausted`. The metric `denied` specifically counts work-budget denials, not all procedural refusals.  
+   **Evidence:** exhaustive retained-data assertions; `examples/causal-relay.mjs:86–93`; `src/accountability.mjs:107–117,161–183`; refusal aggregation at `run.mjs:91–99`.
+
+The README and F44 correctly avoid interpreting these nulls as equivalence/safety, treating genuine burden as automatically wrongful, or promoting this source-bound exploratory witness into registered mechanism confirmation.
+
+## Minority/Disputed Findings
+
+No independently supplied minority report is available. This is absence of another report, not evidence of reviewer agreement.
+
+## Primary Evidence References
+
+Primary evidence above comes from inspected repository files, retained-data keys and read-only command results—not coordinator summaries.
+
+Supplied workflow references:
+- Reviewer startup: `execution.json#command-001`
+- Verifier startup: `execution.json#command-002`
+- Merger startup: `execution.json#command-003`
+- Judge startup: `execution.json#command-004`
+
+These are **preflight-only references**, not substantive review evidence. The second lens report and substantive verifier/merger/judge references are absent. No additional identifiers have been invented.
+
+## Controls Actually Verified Versus Not Rerun
+
+**Independently verified:**
+- Frozen HEAD and clean working tree.
+- Complete retained cohort, paired coverage, metric derivation, contrasts, refusals, clocks and descriptive intervals.
+- Five manifest design-source hashes and three validation artifact hashes.
+- No native-source or funded-world difference from baseline `94fec29`.
+- Reviewed executable study/example/test sources unchanged from checkpoint `3d89556`.
+- Source checkpoint contains no retained experimental manifest, raw runs or analysis.
+
+**Not rerun:** `npm test`, compatibility controls, model execution, experimental runs, inert-inspection controls or historical scientific studies. Their reported pass counts remain archived claims, not newly executed evidence.
+
+Git history supports source-before-artifact ordering; it does **not independently prove push timing or the time of the first experimental invocation**.
+
+## Interpretation/Scope Limits
+
+Bootstrap agreement uses the inspected native bootstrap helper, not an independently implemented random generator. Metric reconstruction relies on retained protocol states/events and the unrouted funded baseline; it does not authenticate historical execution.
+
+Alternative prevalence/quality settings, shared-review capacity two, other worlds/populations, longer horizons, live arrivals, human utility/retention and selected topology/liability migrations remain untested. Evaluator “genuine” labels establish neither real personhood nor usefulness. Zero observed harm and zero debt do not establish population safety or general recovery capacity.
+
+## Next Bounded Action
+
+Preserve this report unchanged and obtain the other independent lens report, then substantive verifier, merger and judge outputs with original evidence references. No remediation, extra seeds or historical replay is justified by this lens.

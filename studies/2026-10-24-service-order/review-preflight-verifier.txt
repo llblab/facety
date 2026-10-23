@@ -1,0 +1,31 @@
+## Status
+**insufficient_data** for the evidence review. This preflight invocation started and produced a response; it does not establish completion of the review pipeline.
+
+## Reviewed Target
+Verifier-stage startup only. No files inspected or tools invoked.
+
+## Supported Findings
+No supported defect. Successful response generation demonstrates that this invocation can start, but the exact model identifier, thinking level, and requested tool-policy values are not supplied in the prompt and were not independently verified.
+
+## Minority/Disputed Findings
+None supplied.
+
+## Primary Evidence references
+- Independent lens report 1: not supplied.
+- Independent lens report 2: not supplied.
+- Verifier report: not supplied.
+- Merger report: not supplied.
+- Judge report: not supplied.
+
+No `ACTOR_EVIDENCE_REF` identifiers were supplied; none have been invented.
+
+## Controls actually verified versus not rerun
+**Verified:** this invocation reached response generation; no file inspection or tool use occurred.
+
+**Not verified or rerun:** exact runtime configuration, tool-policy enforcement, reviewer independence, source fidelity, repository checks, or downstream stages.
+
+## Interpretation/Scope Limits
+The recipe bundle describes intended orchestration, not executed review evidence. There are no usable lens reports to qualify against primary sources. The required two-report completion threshold is unmet.
+
+## Next bounded action
+Have the coordinator confirm the resolved runtime configuration, then obtain two usable independent lens reports and the verifier, merger, and judge outputs with their original evidence identifiers before declaring the review complete.

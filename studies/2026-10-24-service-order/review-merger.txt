@@ -1,0 +1,86 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**degraded — bounded merger synthesis only.**
+
+The verifier report is supplied in full. The two original lens reports are identified by `ACTOR_EVIDENCE_REF`, but their bodies and directly readable primary-source locations are not supplied to this merger. The available tools do not resolve those actor identifiers. I have not guessed sibling capture paths.
+
+Accordingly, the verifier’s reported `usable: 2 / minimum: 2` is preserved as **its assessment**, not independently established by this merger. Both reviewers’ original **degraded** statuses remain unchanged.
+
+**No supported result-affecting defect is reported in the supplied verifier evidence.** This is not overall multi-review acceptance; substantive judge output remains pending.
+
+## Reviewed Target
+
+Verifier-reported frozen HEAD:
+
+`79e2148203bdd17f34c73b5b98c41fc0c8a53b63`
+
+Scope: P16’s retained service-order experiment, implementation boundaries, paired measurements, source identity and exploratory interpretation.
+
+The verifier reports a clean working tree before and after inspection. **This merger did not independently inspect the repository or retained experimental artifacts.**
+
+## Supported Findings
+
+### Original lens reports — retained separately by reference
+
+1. **Implementation lens — degraded**  
+   `ACTOR_EVIDENCE_REF: execution.json#command-005`  
+   Original body unavailable to this merger. The verifier attributes implementation and boundary support to this lens; its exact findings and limitations cannot be independently reproduced here.
+
+2. **Measurement/statistical lens — degraded**  
+   `ACTOR_EVIDENCE_REF: execution.json#command-006`  
+   Original body unavailable to this merger. The verifier attributes complete bootstrap recomputation to this lens and explicitly notes its native-helper dependence. That computation is not independently established here.
+
+These are separate referenced reports, **not two newly corroborated findings from this merger**.
+
+### Verifier conclusions — supplied directly
+
+`ACTOR_EVIDENCE_REF: execution.json#command-007` supports the following narrow synthesis:
+
+- The intervention changes **routing/review/sponsorship service priority**, not an isolated abstract capacity variable. Work, stake and eligibility can remain downstream mediators.
+- The verifier reconciled **432 retained rows**, unique pairing keys and **3,024 paired metric deltas**.
+- Retained member/relay corrections were **7 → 7** in independent contexts and **9 → 8** in shared-review/capacity-one contexts.
+- A retained witness demonstrates service-order sensitivity: correction **1 → 0**, genuine XP loss **8 → 4**, collected genuine penalties **3 → 0**, burned value **4 → 1**, and zero debt. These outcomes do **not** establish welfare improvement.
+- Reported source/artifact hash checks establish retained content consistency, **not authenticated historical execution or push timing**.
+- The study is explicitly exploratory, not registered mechanism confirmation, population safety or Facety readiness.
+
+### Merger finding
+
+The supplied verifier report is internally consistent about its narrow positive conclusion and its exclusions. The remaining merger limitation is **original-report source fidelity**, not an identified code or data defect. This synthesis adds no independent experimental corroboration.
+
+## Minority/Disputed Findings
+
+The verifier reports no substantive contradiction or severe minority finding across the lenses. Original bodies are unavailable here, so this merger cannot independently certify that all dissent has been preserved.
+
+Both reviewers reportedly lacked the other lens in their original inputs. The verifier’s later access resolves its own input gap; it does not retrospectively upgrade either reviewer’s status.
+
+## Primary Evidence References
+
+| Stage | Reference | Merger access |
+|---|---|---|
+| Implementation lens | `ACTOR_EVIDENCE_REF: execution.json#command-005` | Identifier only; original **degraded** |
+| Measurement/statistical lens | `ACTOR_EVIDENCE_REF: execution.json#command-006` | Identifier only; original **degraded** |
+| Verifier | `ACTOR_EVIDENCE_REF: execution.json#command-007` | Full report supplied; **complete — bounded verifier stage only** |
+| Merger | This response | No externally assigned evidence identifier supplied |
+| Judge | Not supplied | Pending |
+
+Preflight references `command-001` through `command-004` are not substantive review evidence.
+
+## Controls Actually Verified Versus Not Rerun
+
+**Verifier-reported direct checks:** frozen HEAD and cleanliness; source preservation; manifest/checkpoint and artifact hashes; complete cohort and pairing; retained inputs and settlement; placebo/unrouted behavior; totals and deltas; witness gates, costs and missing clocks.
+
+**Verifier inspected but did not execute:** relevant tests, archived compatibility controls, reported 239-test suite, 72 default-arm comparisons and bootstrap resampling.
+
+**This merger:** inspected the supplied verifier report only. No model execution, study runner, controls, tests, file writes, commits or publishing occurred.
+
+## Interpretation/Scope Limits
+
+The retained witness contradicts universal service-order irrelevance within the encoded reference. It does not establish prevalence, general capacity/correlation effects, real retention, human incentives, attack resistance, personhood, useful contribution or safety.
+
+Historical execution authentication remains unknown. Sparse outcomes and zero observed wrongful invalidations do not establish safety. No code remediation, additional seeds or historical replay is justified by this synthesis.
+
+## Next Bounded Action
+
+Provide the judge with **both original lens bodies**, the verifier report and this degraded merger report, preserving all identifiers and original statuses. If directly readable exports become available, resolve original-report fidelity without rerunning experiments. Until then, keep overall acceptance **degraded**, not complete.

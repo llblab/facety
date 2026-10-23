@@ -1,0 +1,77 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+
+**degraded — source fidelity remains unresolved.**
+
+The supplied judge report supports the merger’s cautious qualification, not acceptance of the underlying experiment. Two usable independent lens reports cannot be independently established from the supplied material. The verifier’s reported `usable: 2 / minimum: 2` remains attributed, not independently confirmed.
+
+This normalization preserves the reported branch statuses. It does not upgrade any stage or add experimental corroboration.
+
+## Reviewed Target
+
+- **Directly available for normalization:** the judge report, `ACTOR_EVIDENCE_REF: execution.json#command-009`.
+- **Directly reviewed by the judge:** the merger report, `ACTOR_EVIDENCE_REF: execution.json#command-008`.
+- **Underlying target, as reported:** P16’s retained service-order experiment at frozen HEAD `79e2148203bdd17f34c73b5b98c41fc0c8a53b63`.
+- **Not directly inspected during normalization:** original lens bodies, full verifier body, merger body, repository state, implementation, or experimental artifacts.
+
+## Supported Findings
+
+**No supported result-affecting code or data defect is established by the supplied material.** This is not evidence that the underlying experiment is defect-free.
+
+The judge reports that the merger:
+
+- Preserves both lens identifiers and their reported degraded statuses.
+- Discloses unavailable source bodies and distinguishes attributed evidence from direct inspection.
+- Treats missing source fidelity as an acceptance limitation rather than an implementation defect.
+- Does not count verifier-attributed conclusions as independent corroboration.
+- Contains no material internal contradiction identified by the judge.
+- Shows no visible suppression or unjustified strengthening within the text the judge reviewed; omission relative to unavailable originals remains unknown.
+
+These are judgments about reporting quality. They do not independently verify experimental correctness or readiness.
+
+## Minority/Disputed Findings
+
+The merger reportedly attributes “no substantive contradiction or severe minority finding” to the verifier while declining to certify preservation of all dissent.
+
+**Neither the absence of dissent nor its complete preservation is independently established here.** No new substantive disagreement is established by the supplied judge report.
+
+Original branch statuses and uncertainty must remain intact unless separately labeled reassessment is supported by new evidence.
+
+## Primary Evidence References
+
+| Source | Stable reference | Access and preserved status |
+|---|---|---|
+| Implementation lens | `ACTOR_EVIDENCE_REF: execution.json#command-005` | Identifier retained; body unavailable here; **degraded**, as reported |
+| Measurement/statistical lens | `ACTOR_EVIDENCE_REF: execution.json#command-006` | Identifier retained; body unavailable here; **degraded**, as reported |
+| Verifier | `ACTOR_EVIDENCE_REF: execution.json#command-007` | Conclusions available only through downstream attribution; reported **complete — bounded verifier stage only** |
+| Merger | `ACTOR_EVIDENCE_REF: execution.json#command-008` | Reviewed by the judge, not directly supplied to this normalizer; **degraded** |
+| Judge | `ACTOR_EVIDENCE_REF: execution.json#command-009` | Supplied body normalized here; **degraded** |
+
+References preserve attribution; they do not establish access to the referenced bodies or authenticate their contents.
+
+## Controls Actually Verified Versus Not Rerun
+
+**During normalization:** checked the supplied judge report for preservation of status, evidence references, attribution, uncertainty, and next action. No independent substantive verification was performed.
+
+**The judge reports directly checking:** the merger’s source-access disclosures, separation of stage claims, internal consistency, acceptance limits, and experimental and historical-authentication exclusions.
+
+**Only attributed through the merger:** verifier checks of repository cleanliness, hashes, cohort completeness, pairings, settlement, controls, totals, and witness outcomes.
+
+**Not performed during normalization or by the judge:** repository or artifact inspection, numerical recomputation, bootstrap resampling, tests, simulations, historical replay, file writes, commits, or publishing.
+
+## Interpretation/Scope Limits
+
+- The reported 432 rows, 3,024 paired deltas, correction counts, and witness outcomes remain attributed numerical claims. Repetition across synthesis stages provides no independent corroboration.
+- Service priority is not an isolated capacity intervention.
+- Encoded outcomes do not establish welfare or safety.
+- Content hashes do not authenticate historical execution.
+- Complete acceptance requires two usable independent lens reports and an honest source-fidelity assessment. That condition is not established by the available material.
+
+## Next Bounded Action
+
+Provide the exact original bodies—or directly readable exports—of `command-005`, `command-006`, and `command-007`, alongside `command-008`.
+
+Then assess finding-by-finding preservation, dissent, lens usability and independence, and verifier reconciliation. Preserve original statuses; label any evidence-supported reassessment separately.
+
+**Do not rerun experiments merely to repair report-access gaps. Keep overall acceptance degraded until source fidelity is resolved.**
