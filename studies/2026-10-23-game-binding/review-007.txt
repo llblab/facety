@@ -1,0 +1,97 @@
+ACTOR_REVIEW_RESULT
+
+## Status / source identity
+
+**Complete bounded verification; claim supported within the stated plain retained-data contract. No blocking finding.**
+
+Both reviewer branches are usable: **2/2 completed, minimum 2 satisfied**. Their reports agree on implementation identity and disclose compatible limitations.
+
+I independently inspected the retained diff against `c0123d3ee6606ec4e65476c278bc9dcdebd4bc20`, the summary guard, provenance implementation, and regression assertions. Independently computed SHA-256 values match both reviewer reports:
+
+| File | SHA-256 |
+|---|---|
+| `src/games.mjs` | `6d4490cd538da1d4f362fbf873e654a1e5bf29fb3c4dd29bc6e121db222b5ce6` |
+| `src/provenance.mjs` | `5b885f00ff5d4e5e112b07a5910b2c922f8f34493427cc0f3fc8d4f6ecd0afef` |
+| `test/games.test.mjs` | `7fbf18793061bdc0177f5cbd54cc2be960b09d5ae4599faf2306860607cb84a8` |
+| `test/cli.test.mjs` | `1d8b2d848a07fd489055f7e93d1457ec3f05f4323112997cec2a0cdc04b24bef` |
+
+No files edited, commits made, or publishing performed.
+
+## Supported findings with minimal probes
+
+### Proven within the inspected contract
+
+1. **Missing or stale input bindings are checked before summaries combine cached conclusions with raw facts.**  
+   `src/games.mjs:247–252` compares `analysis.inputDigest` with a fresh digest and rejects mismatches with **“rerun analyzeGame”**. The digest includes retained inputs excluding embedded `analysis`, semantic strategy order, valuation, analysis alpha, and source/runtime provenance.
+
+2. **The tested representation distinctions and equivalences are preserved.**  
+   Reviewer 1 reports **120 stale-association rejections**, including typed-value cross-pairs, and **five equivalence controls**. The inspected typed projection supports that explanation: tags distinguish non-finite numbers from strings/null; ordinary object keys sort; undefined object properties omit; arrays and strategy order remain significant.
+
+3. **Computed conclusions remain compatible in the exercised cases.**  
+   Reviewer 2 reports:
+   - **12** baseline/current analysis comparisons equal after removing only `inputDigest`.
+   - **24** summary/viability comparisons equal.
+   - **12** JSON-transport comparisons equal.
+   - A two-worker grid matching baseline calculations over retained facts.
+
+   These are bounded differential results, not proof over every possible game.
+
+4. **Legacy raw inputs remain reanalyzable.**  
+   The inspected CLI regression removes the old binding and successfully regenerates analysis from stored facts. Legacy cached analysis itself is deliberately rejected by the summary guard.
+
+### Disproven
+
+**No part of the narrowly scoped claim is contradicted by the usable evidence.** Neither reviewer identifies a blocking correctness or compatibility regression.
+
+### Unknown / outside the claim
+
+The binding does **not** authenticate facts or detect arbitrary alteration of cached analysis outputs when binding metadata is retained. It does not establish evaluator truth, seed independence, economic usefulness, or mechanism validity.
+
+## Independently executed checks
+
+In this verifier stage:
+
+- Executed `git status --short`.
+- Executed `sha256sum` for the four files above.
+- Executed:
+  ```sh
+  git diff c0123d3ee6606ec4e65476c278bc9dcdebd4bc20 -- \
+    src/games.mjs test/games.test.mjs test/cli.test.mjs
+  ```
+- Inspected `src/provenance.mjs`, the summary guard, regression assertions, and relevant backlog context.
+
+**I did not rerun tests or differential probes.** Those execution results are attributed to the independent reviewers:
+
+- `execution.json#command-005`: focused tests **19 passed**, typed-binding and equivalence probes.
+- `execution.json#command-006`: focused tests **19 passed**, differential compatibility, worker-grid, runtime-invalidation, and timing probes.
+
+The reported hashes match the snapshot independently checked here.
+
+## Attributed / missing evidence
+
+Still **not independently verified in this stage**:
+
+- Coordinator’s fail-before-fix execution.
+- The discarded V8-serialization candidate and its failure.
+- Full-suite success.
+- Coordinator diagnostic artifacts.
+- Actual cross-implementation or multi-version Node execution.
+
+Reviewer 2 preserved an initial worker-probe invocation failure caused by inherited `--input-type=module`, followed by a successful corrected harness. This is not evidence of a repository regression.
+
+The baseline differential comparison isolated historical game code with current dependencies; it was **not a historical full-tree reproduction**.
+
+## Compatibility and performance limits
+
+- Executed reviewer evidence is on **Node v26.8.1**, not the complete supported Node matrix.
+- Reviewer 2’s diagnostic probe measured **31.48 ms baseline versus 97.08 ms retained mean analysis time** for a roughly **1.24 MB**, 400-run record.
+- Whole-record projection, serialization, and hashing add traversal and allocation costs; summary validation repeats that work.
+- No maximum-size memory/latency test or exhaustive collision proof was supplied. The timing observation remains nonblocking and does not justify weakening binding semantics.
+
+## Next bounded actions
+
+1. Retain both raw reviewer reports and their evidence references, including the performance caveat and failed-probe disclosure.
+2. Verify full-suite validation against the final implementation snapshot before declaring the overall implementation checkpoint complete.
+3. Preserve the explicit **input association—not output authentication** boundary.
+
+**No implementation remediation is supported by this verification.**

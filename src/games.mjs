@@ -5,7 +5,7 @@ import { COHORTS } from './effort.mjs';
 import { replicaSeed, describeValues } from './trials.mjs';
 import { binomialUpperTail, bootstrapMeanInterval } from './statistics.mjs';
 import { mapTasks } from './parallel.mjs';
-import { provenance } from './provenance.mjs';
+import { provenance, digestOf } from './provenance.mjs';
 
 export const GAME_SCHEMA = 'facety-game/v1';
 export const FACT_KEYS = Object.freeze([
@@ -115,6 +115,21 @@ function assertReplicaCohort(result) {
 }
 function completePayoff(summary, expected) {
   return summary?.count === expected && summary.unknown === 0 && Number.isFinite(summary.mean) ? summary.mean : null;
+}
+function analysisInputDigest(result, valuation, alpha) {
+  // Type tags distinguish non-finite unknowns from null/strings without changing the finite canonical digest contract.
+  function encoded(value) {
+    if (value === undefined) return ['undefined'];
+    if (value === null) return ['null'];
+    if (typeof value === 'number') return ['number', Number.isFinite(value) ? value : String(value)];
+    if (typeof value === 'string' || typeof value === 'boolean') return [typeof value, value];
+    if (Array.isArray(value)) return ['array', Array.from(value, encoded)];
+    if (typeof value !== 'object' || ![Object.prototype, null].includes(Object.getPrototypeOf(value))) fail('analysis binding requires plain data');
+    return ['object', Object.keys(value).sort().filter(key => value[key] !== undefined).map(key => [key, encoded(value[key])])];
+  }
+  const record = Object.fromEntries(Object.entries(result).filter(([key]) => key !== 'analysis'));
+  const strategyOrder = COHORTS.map(role => Object.keys(result.game.roles[role]));
+  return digestOf(encoded({ policy: 'sha256-typed-game-inputs-v1', record, strategyOrder, valuation, alpha, provenance: provenance() }));
 }
 function councilShare(system) {
   const seats = system?.councilSeats;
@@ -233,6 +248,9 @@ export function assessViability(deterrence, criteria = {}) {
 // Does fraud pay? Compares every non-reference attacker strategy with the rule-following reference.
 export function deterrenceSummary(result, analysis, { alpha = analysis.alpha } = {}) {
   assertReplicaCohort(result);
+  if (typeof analysis.inputDigest !== 'string' || analysis.inputDigest !== analysisInputDigest(result, analysis.valuation, analysis.alpha)) {
+    fail('analysis inputs changed or binding missing; rerun analyzeGame');
+  }
   const reference = result.game.reference?.attackers;
   if (!reference) fail('deterrence needs game.reference.attackers');
   const names = Object.fromEntries(COHORTS.map(role => [role, Object.keys(result.game.roles[role])]));
@@ -469,7 +487,7 @@ export function analyzeGame(result, valuationInput, { alpha = 0.05 } = {}) {
     };
   });
   return {
-    valuation, alpha,
+    inputDigest: analysisInputDigest(result, valuation, alpha), valuation, alpha,
     method: 'Per-operator linear utility of initial operators from retained protocol facts; paired comparisons share replica seeds and use exact sign tests (ties and unknowns count against both directions) with percentile bootstrap intervals.',
     profiles, bestResponses, pureEquilibria, mixedEquilibria: mixed, deviations, incentiveCompatible,
     cautions: [

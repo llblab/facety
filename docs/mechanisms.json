@@ -1543,12 +1543,13 @@
       },
       {
         "fields": [
+          "analysis.inputDigest",
           "viability/utility weights",
           "descriptor margins",
           "bootstrap/binomial settings",
           "return windows"
         ],
-        "purpose": "Offline analyst criteria, not automatic actor adaptation or proof of a mechanism. Saved-game budget means require complete valid observations; positive-support expectations carry unknowns; mandatory/enabled viability criteria cannot pass without data. Retention needs a positive baseline. Disabled caps and zero mixture support are not measured zeros. Declared replica cohorts must be complete/aligned; known-subset payoff statistics cannot supply complete-data response/matrix claims, and raw sanction means propagate missingness uniformly. Seed consistency is not authentication; see the games contract.",
+        "purpose": "Offline analyst criteria, not automatic actor adaptation or proof of a mechanism. Saved-game budget means require complete valid observations; positive-support expectations carry unknowns; mandatory/enabled viability criteria cannot pass without data. Retention needs a positive baseline. Disabled caps and zero mixture support are not measured zeros. Declared replica cohorts must be complete/aligned; known-subset payoff statistics cannot supply complete-data response/matrix claims, and raw sanction means propagate missingness uniformly. Game summaries also require the analysis input binding to match record/valuation/alpha/source/runtime; neither seed consistency nor the fingerprint authenticates evidence or outputs. See the games contract.",
         "owner": "docs/games.en.md; docs/discovery.en.md; docs/evidence.en.md; docs/controls.en.md"
       },
       {
@@ -1608,7 +1609,14 @@
       "kind": "correctness repair with explicit saved-record admission",
       "change": "One shared declared-replica/ordered-seed admission guard, complete-payoff checks for response/matrix/reference claims, incomplete cached-descriptor suppression and nullable union-based sanction means.",
       "why": "Six-of-twenty records and a single unknown valued payoff could still establish favorable mandatory/equilibrium conclusions; first/later sanction omission behaved differently.",
-      "evidence": "studies/2026-10-23-retained-cohort retains old/current witnesses and complete-data comparisons on 36 native runs/two valuations. Malformed cohort admission deliberately changes; native transitions, sampling policy and historical artifacts do not. Consistency/descriptor checks are not authenticity, independent sampling or full-schema validation. Complete yet stale analysis can still mismatch current facts/valuation; the retained counterexample remains a separate caller-contract follow-up."
+      "evidence": "studies/2026-10-23-retained-cohort retains old/current witnesses and complete-data comparisons on 36 native runs/two valuations. Malformed cohort admission deliberately changes; native transitions, sampling policy and historical artifacts do not. Consistency/descriptor checks are not authenticity, independent sampling or full-schema validation. At c0123d3, complete yet stale analysis still mismatched current facts/valuation; S8 records the later input-association guard."
+    },
+    {
+      "id": "S8",
+      "kind": "correctness repair with cached-analysis migration",
+      "change": "Bind analysis to typed canonical retained inputs, normalized valuation, alpha, semantic strategy order and current source/runtime; reject absent/stale inputDigest before summaries.",
+      "why": "Complete-looking stale descriptors could still supply favorable results after raw facts changed. Association must not depend only on descriptive completeness.",
+      "evidence": "studies/2026-10-23-game-binding retains the old false-safe result, explicit rejection/fresh reanalysis and 36-run/three-valuation conclusions comparison excluding only new binding metadata. JSON migration and typed unknowns are tested. This is not evidence/output authentication, independent sampling or a protocol change."
     }
   ]
 }

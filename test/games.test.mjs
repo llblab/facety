@@ -11,6 +11,11 @@ const spec = {
   },
   replicas: 6, seed: 'g', deviation: { share: 0.25 },
 };
+function conclusions(analysis) {
+  const { inputDigest, ...body } = analysis;
+  return body;
+}
+
 const valuation = {
   honest: { facts: { liquidFacy: 1, effort: -0.05 }, system: { falseLiquidFacy: -0.05 } },
   attackers: { facts: { liquidFacy: 1, debt: -1, effort: -0.05 } },
@@ -66,7 +71,9 @@ test('reserved stake facts can be explicitly valued without imputing missing his
     delete replica.system.stakeFacy;
     delete replica.system.falseStakeFacy;
   }
-  assert.deepEqual(analyzeGame(historical, valuation), current, 'zero-valued absent fields cannot corrupt an older valuation');
+  const reanalyzed = analyzeGame(historical, valuation);
+  assert.deepEqual(conclusions(reanalyzed), conclusions(current), 'zero-valued absent fields cannot corrupt an older valuation');
+  assert.notEqual(reanalyzed.inputDigest, current.inputDigest, 'the distinct input records remain bound separately');
   const missing = analyzeGame(historical, { honest: { facts: { stakeFacy: 1 } } });
   assert.ok(missing.profiles.every(profile => (profile.payoffs.honest.mean ?? null) === null && profile.payoffs.honest.unknown === 2));
   assert.equal(missing.mixedEquilibria, null);
@@ -230,8 +237,8 @@ test('saved-game known-subset payoff means cannot establish best responses or eq
       assert.equal(summary.verdict, 'unresolved');
       assert.equal(assessViability(summary).viable, false);
     }
-    assert.deepEqual(analyzeGame(incomplete, { honest: {}, attackers: {} }),
-      analyzeGame(result, { honest: {}, attackers: {} }), 'unvalued absent fields stay irrelevant');
+    assert.deepEqual(conclusions(analyzeGame(incomplete, { honest: {}, attackers: {} })),
+      conclusions(analyzeGame(result, { honest: {}, attackers: {} })), 'unvalued absent fields stay irrelevant to conclusions');
   }
 });
 
@@ -254,6 +261,59 @@ test('saved-game sanction unknowns are nullable and independent of first or late
   const laterOnly = structuredClone(result);
   laterOnly.facts[0].replicas[1].sanctions.extraCounter = 2;
   assert.equal(analyzeGame(laterOnly, budgetValuation).profiles[0].sanctions.extraCounter, null);
+});
+
+test('saved-game summaries reject stale facts, valuation, alpha, context and unbound legacy analyses', async () => {
+  const result = await savedBudgetFixture(6);
+  const weights = { honest: budgetValuation.honest, attackers: { facts: { liquidFacy: 1 } } };
+  for (const entry of result.facts) for (const replica of entry.replicas) {
+    replica.agents.attackers.conformist.liquidFacy = entry.profile.attackers === 'abstain' ? 90 : 0;
+    replica.agents.attackers.deviant.liquidFacy = 0;
+  }
+  const analysis = analyzeGame(result, weights);
+  assert.equal(assessViability(deterrenceSummary(result, analysis)).viable, true);
+  const mutations = [
+    (r, a) => { delete r.facts[0].replicas[0].agents.honest.conformist.subjects; },
+    (r, a) => { r.facts[0].replicas[0].agents.honest.conformist.subjects += 1; },
+    (r, a) => { r.facts[0].replicas[0].sanctions.wrongfulInvalidated = 20; },
+    (r, a) => { r.facts[0].replicas[0].system.falseMintedShare = 0.8; },
+    (r, a) => { r.game.base.days += 1; },
+    (r, a) => { r.game.roles.attackers = Object.fromEntries(Object.entries(r.game.roles.attackers).reverse()); },
+    (r, a) => { a.valuation.honest.facts.subjects = 2; },
+    (r, a) => { a.alpha = 0.01; },
+    (r, a) => { delete a.inputDigest; },
+  ];
+  for (const mutate of mutations) {
+    const facts = structuredClone(result); const cached = structuredClone(analysis);
+    mutate(facts, cached);
+    assert.throws(() => deterrenceSummary(facts, cached), /rerun analyzeGame/);
+    assert.doesNotThrow(() => deterrenceSummary(facts, analyzeGame(facts, cached.valuation, { alpha: cached.alpha })));
+  }
+  assert.doesNotThrow(() => deterrenceSummary(result, analysis, { alpha: 0.1 }), 'an explicit summary sign-test override remains supported');
+});
+
+test('saved-game input binding survives valid JSON transport, ignores ordinary key order and preserves typed unknowns', async () => {
+  const result = await savedBudgetFixture();
+  const analysis = analyzeGame(result, budgetValuation);
+  assert.match(analysis.inputDigest, /^[a-f0-9]{64}$/);
+  const transported = JSON.parse(JSON.stringify({ ...result, analysis }));
+  assert.deepEqual(deterrenceSummary(transported, transported.analysis), deterrenceSummary(result, analysis));
+  const reordered = structuredClone(result);
+  reordered.facts[0].replicas[0].agents.honest.conformist = Object.fromEntries(Object.entries(reordered.facts[0].replicas[0].agents.honest.conformist).reverse());
+  assert.equal(analyzeGame(reordered, budgetValuation).inputDigest, analysis.inputDigest);
+  assert.deepEqual(deterrenceSummary(reordered, analysis), deterrenceSummary(result, analysis));
+  for (const value of [undefined, null, NaN, Infinity, -Infinity]) {
+    const unknown = structuredClone(result);
+    unknown.facts[0].replicas[0].agents.honest.conformist.subjects = value;
+    const current = analyzeGame(unknown, budgetValuation);
+    assert.equal(deterrenceSummary(unknown, current).verdict, 'unresolved');
+    assert.doesNotThrow(() => deterrenceSummary(unknown, analyzeGame(unknown, { honest: {}, attackers: {} })));
+  }
+  const nonfinite = structuredClone(result);
+  nonfinite.facts[0].replicas[0].agents.honest.conformist.subjects = NaN;
+  const nonfiniteAnalysis = analyzeGame(nonfinite, budgetValuation);
+  nonfinite.facts[0].replicas[0].agents.honest.conformist.subjects = null;
+  assert.throws(() => deterrenceSummary(nonfinite, nonfiniteAnalysis), /rerun analyzeGame/, 'do not alias non-finite data to null during binding');
 });
 
 function knownDeterrence() {

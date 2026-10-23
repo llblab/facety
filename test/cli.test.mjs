@@ -29,6 +29,33 @@ test('CLI writes JSON only to stdout, reports errors on stderr and refuses overw
   assert.equal(facety('unknown').code, 1);
 });
 
+test('CLI game JSON transport and legacy raw-fact reanalysis retain input bindings', t => {
+  const directory = mkdtempSync(join(tmpdir(), 'facety-cli-game-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const weights = { honest: { facts: { subjects: 1 } }, attackers: { facts: { subjects: 1 } } };
+  const spec = join(directory, 'game.json');
+  const facts = join(directory, 'facts.json');
+  const valuation = join(directory, 'valuation.json');
+  writeFileSync(spec, JSON.stringify({ id: 'cli-binding', base: { initialSize: 6, attackerShare: 0.5, days: 3 },
+    roles: { honest: { strategies: { watch: { activity: { invite: 0 } } } },
+      attackers: { strategies: { abstain: { activity: { invite: 0 } }, farm: { activity: { invite: 0 } } } } },
+    replicas: 2, reference: { attackers: 'abstain' }, valuation: weights }));
+  writeFileSync(valuation, JSON.stringify(weights));
+  assert.equal(facety('game', spec, '--out', facts).code, 0);
+  const stored = JSON.parse(readFileSync(facts, 'utf8'));
+  assert.match(stored.analysis.inputDigest, /^[a-f0-9]{64}$/);
+  const reanalyzed = facety('game-analyze', facts, valuation);
+  assert.equal(reanalyzed.code, 0);
+  assert.equal(JSON.parse(reanalyzed.stdout).inputDigest, stored.analysis.inputDigest);
+  const legacy = join(directory, 'legacy.json');
+  const expected = stored.analysis.inputDigest;
+  delete stored.analysis.inputDigest;
+  writeFileSync(legacy, JSON.stringify(stored));
+  const migrated = facety('game-analyze', legacy, valuation);
+  assert.equal(migrated.code, 0);
+  assert.equal(JSON.parse(migrated.stdout).inputDigest, expected);
+});
+
 test('CLI registration, confirmation and offline reanalysis agree', t => {
   const directory = mkdtempSync(join(tmpdir(), 'facety-cli-'));
   t.after(() => rmSync(directory, { recursive: true, force: true }));
