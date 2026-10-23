@@ -61,7 +61,7 @@ Use the following labels:
 
 ## From identity work to a maintained network
 
-A participant makes a signed Self-ID about fresh presence. The act creates one restricted FACY entitlement, not immediately liquid money or verified personhood. After its 24-hour contest period, the participant can convert an unspent right for personal use or consume it to invite someone, provided the independent-guarantee and XP-centered-path conditions are satisfied. The invitation then has its own 24-hour freeze. Admission, the newcomer's own identity work and a new guarantee are distinct acts, not automatic consequences of one payment.
+A participant makes a signed Self-ID about fresh presence. The act creates one restricted FACY entitlement, not immediately liquid money or verified personhood. At the end of its 24-hour contest period, an uncancelled act earns the subject and its eligible guarantors 1 XP each, even if its value remains unused; the original free guarantor veto ends then (D42). The matured value can serve personal use or an invitation, subject to the own-emission provenance and independent-guarantee/path conditions; its precise Emitter/Collector custody transition remains OPEN (§17.3). The invitation then has its own 24-hour freeze. Admission, the newcomer's own identity work and a new guarantee are distinct acts, not automatic consequences of one payment.
 
 A guarantee joins compensation to responsibility: qualifying identity work can earn its guarantor XP, while the guarantor can inspect and prevent specific suspect acts. A genuine mistake need not destroy the relationship. Either party can end the guarantee under its separate fee/XP rules, but ending it does not erase responsibility for historical events under D34. Whether participants willingly maintain these relations, rather than avoid risk or conceal problems, is a hypothesis about human choices, not a result of credit arithmetic.
 
@@ -81,9 +81,9 @@ The final trust boundary is human collective judgment. Equal votes limit individ
 
 | Event | Human and economic rule |
 | --- | --- |
-| Self-ID | One signed identity assertion tied to one artifact and one deterministic face index. It proves control of the subject key and claims fresh presence. A valid act creates a one-unit FACY emission right; when the right is spent or withdrawn without cancellation, the subject and each guarantor eligible at recording gain 1 XP. |
-| First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel the Self-ID for free while the emission exists. |
-| From 24 hours | The owner can spend the unspent right on an invitation or convert it to fungible FACY on the Collector. An unspent right remains cancellable. |
+| Self-ID | One signed identity assertion tied to one artifact and one deterministic face index. It proves key control and claims fresh presence. A valid act creates one FACY entitlement; ordinary XP is credited after 24 hours, not on withdrawal (D42). |
+| First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel it for free during this window. A cancelled act earns no ordinary XP. |
+| From 24 hours | The uncancelled act earns the subject and each eligible guarantor 1 XP even if unused. The original free veto ends. Invitation use also retains that credit and creates no second XP reward. Matured-value custody/Collector movement remains OPEN. |
 | Invitation | Burn one personally earned eligible emission. The creator needs both `D = decimal_digits(max(1, N_verified))` qualifying independent guarantees and `D` simple, internally vertex-disjoint paths toward the defined XP apex/core. Verification, anchors and traversal remain OPEN; no cluster quota is imposed for now. The invitation stays frozen for 24 hours and can be cancelled by the creator's guarantors. |
 | Liability | A proven false identity voids its whole Self-ID chain. Its inviter and the guarantors liable at the relevant historical events owe the defined per-act sanction; under D34, later link termination does not erase past responsibility. Timely cancellation can prevent the defined act/invitation liability; exit limits future exposure, not past responsibility. Exact event/duty, overlap and recovery contracts remain OPEN. |
 | Guarantee | Both subjects must authorize the directed responsibility link. Either can end it under a separate 1 FACY fee rule. |
@@ -163,7 +163,7 @@ Facety deliberately combines different time scales:
 
 - **24 hours:** the minimum interval between rewarded Self-ID acts by the same subject.
 - **24 hours:** the allowed period to reference a newly registered shared artifact, measured from its on-chain registration time.
-- **24 hours:** the contest window of a Self-ID emission. Afterwards an unspent emission can be spent on an invitation or converted to Collector FACY.
+- **24 hours:** the ordinary contest/maturation window of a Self-ID emission. Its expiry credits XP for an uncancelled act and ends the original free guarantor veto, independently of spending or withdrawal (D42).
 - **24 hours:** the freeze of a new invitation, during which the creator's guarantors can cancel it before the invitee is admitted.
 - **28 days:** the rolling window used to count active subjects for the dynamic invitation threshold and for Council eligibility.
 - **Months and years:** the accumulation of XP, social ties, public decisions, and responsibility.
@@ -188,7 +188,7 @@ A liable loser of a dispute can lose **50% of effective XP**. Repeated independe
 
 Guarantors must not bear responsibility for another person's identity acts without a way to stop harmful acts before their economic rights are consumed.
 
-An eligible guarantor can cancel a specific, unspent Self-ID emission without paying a fee. The cancellation destroys that emission right and its backing FACY under the selected monetary representation.
+An eligible guarantor can cancel a specific unspent Self-ID emission without paying a fee **before its 24-hour maturity** (D42). The cancellation destroys that emission right and its backing FACY under the selected monetary representation. Merely leaving the value unused does not extend the free veto beyond that window.
 
 This is preventive accountability. It is separate from a later dispute that establishes liability and applies penalties.
 
@@ -528,21 +528,21 @@ A guarantee commitment is also a permitted network operation after 24 hours. **[
 
 ### 17.3 The one-day schedule
 
-**[SELECTED, 2026-10-22]** Let `age = chain_time - SelfId.recorded_at`. This replaces the earlier 3-day / 7-day schedule.
+**[SELECTED, D1; clarified by D42 on 2026-10-24]** Let `age = chain_time - SelfId.recorded_at`. The one-day schedule replaces the earlier 3-day / 7-day schedule. **D42 selects age-based maturation, not spending-triggered XP or an unlimited unspent-right veto.**
 
-| Age | Ordinary transfer | Network use from Emitter | Free guarantor cancellation |
+| Age/state | Ordinary use and network use | Free guarantor cancellation | Ordinary XP |
 | --- | --- | --- | --- |
-| `0 <= age < 24 hours` | No | No | Yes, while unspent. |
-| `age >= 24 hours` | Yes, by first converting the unspent emission to Collector. | Invitation and defined guarantee operations. | **Yes**, while the emission remains unspent on Emitter. |
-| After consumption or Collector conversion | The particular emission is no longer on Emitter. | Cannot spend that emission again. | Cannot cancel that original emission through the free Emitter-veto mechanism. |
+| `0 <= age < 24 hours` | No owner spending or withdrawal. | Yes, while eligible and unspent. | Not yet earned. |
+| `age >= 24 hours`, ordinary uncancelled act | Matured FACY is no longer revocable by the original free veto; own-emission invitation conditions still apply. Exact custody/Collector movement is OPEN. | **No**, even if the value remains unused. | Once: +1 to the subject and +1 to each eligible guarantor, without waiting for an operation. |
+| After invitation use or withdrawal | Cannot spend the same backing again. | Cannot cancel the original matured emission through this veto. | No second credit for spending or withdrawal. |
 
-Reaching 24 hours does **not** make an automatic transfer. The holder chooses an authorized operation. A participant can leave an unspent emission on Emitter, and a guarantor can still cancel it while it remains there.
+The owner's phrase “a normal irrevocable coin after one day” selects maturity against the **original free guarantor veto**, not immunity from adjudicated fraud, sanctions or an authorized dispute freeze. D42 does not abolish the separate 24-hour invitation freeze or permit invitation spending before emission maturity.
 
-**[SELECTED]** *Network use* is a special, constrained Emitter operation. It is not ordinary spending and cannot be used for an arbitrary transfer or market sale. The FACY unit enters normal fungible circulation only by an authorized Collector conversion.
+**[OPEN monetary representation]** Decide whether maturity automatically moves the backing into ordinary Collector custody or leaves a matured, non-vetoable own-emission right for a later chosen operation. The implementation must preserve issuance/custody accounting, one-time use, and the selected rule that bought or received FACY cannot replace the creator's own Self-ID provenance for an invitation. The earlier explicit-conversion/no-automatic-transfer behavior remains a labeled simulator reference, not an answer inferred from D42.
 
-**[SELECTED, 2026-10-22] Debt recovery keeps the veto window.** For a subject with debt, a new Self-ID right is reserved for repayment. It stays cancellable during its 24-hour window and then burns to repay one unit of debt. Burning it immediately would deny guarantors their veto and make a debtor's XP final sooner than anyone else's.
+**[SELECTED, D4] Debt recovery keeps the veto window.** A debt-reserved Self-ID must retain its full initial 24-hour veto opportunity before recovery consumes the reserved value. D42 bases ordinary XP on maturation, not an early or late recovery call. Freeze, debt-settlement and same-time credit/penalty ordering require a migration contract; no new repayment amount or recovery priority is selected here.
 
-**[SELECTED]** Once an emission is lawfully consumed for an invitation or an irrevocable guarantee operation, or converted to Collector, its original free cancellation window ends. A later dispute against misconduct remains possible under its own rules. It must not retroactively burn a token that no longer exists on Emitter.
+**Historical rule superseded by D42:** an unspent Emitter right formerly remained freely cancellable until consumption/conversion. It now loses that free veto when its 24-hour maturation window ends, even if left unused. Later adjudicated consequences remain separate.
 
 ### 17.4 Dispute freeze
 
@@ -562,15 +562,18 @@ A freeze MUST preserve the original emission disposition and history. It is a pr
 
 Guarantors receive XP, not an automatic FACY mint, for that act.
 
-**[SELECTED, 2026-10-22]** XP is credited at the terminal disposition, not at acceptance. When the emission is spent (invitation, debt repayment) or withdrawn to Collector without having been cancelled, the subject gains 1 XP and **each guarantor that was eligible when the Self-ID was recorded** gains 1 XP. A cancelled Self-ID credits no XP. XP is therefore never earned by an act that could still be vetoed.
+**D42 — [SELECTED, documented 2026-10-24] Age-based XP.** In the ordinary uncontested lifecycle, an uncancelled Self-ID earns **1 XP for its subject and 1 XP for each eligible guarantor when 24 hours have elapsed since recording**, whether its FACY remains unused, is spent on an invitation, or is withdrawn. Spending/withdrawal is not the credit trigger and MUST NOT create a second credit. An act cancelled within the initial window earns no ordinary maturation XP. At maturity its original free guarantor veto ends. The existing recording-time eligibility basis and D9's relation-credit revocation must be reconciled explicitly for link changes and same-time events; D42 does not silently choose a new guarantor snapshot. Unresolved dispute/freeze effects remain OPEN (§17.4).
+
+**D2 historical rule, superseded:** the 2026-10-22 rule credited XP on terminal consumption/conversion. Its simulator implementation and source-bound studies remain historical references; they do not implement D42.
 
 ### 17.6 Emission finality is not immunity
 
 Cancellation, conversion, and subsequent punishment are different operations:
 
-- **Preventive cancellation** invalidates an unspent Self-ID emission and burns the associated Emitter FACY under the minted-escrow representation.
-- **Collector conversion** makes the economic unit transferable and ends this preventive cancellation route.
-- **Network use** irreversibly consumes the emission instead of converting it.
+- **Preventive cancellation** invalidates an eligible unspent Self-ID within its initial 24 hours and burns the associated Emitter FACY under the minted-escrow representation.
+- **Maturation (D42)** ends the original free veto and credits ordinary XP at 24 hours, independently of use. It is not an adjudication of truth.
+- **Collector conversion** is the retained reference's custody operation; whether it becomes automatic at maturity is OPEN, not the XP trigger.
+- **Network use** irreversibly consumes the emission instead of converting it; an invitation does not forfeit or duplicate its matured Self-ID XP.
 - **Later dispute** can still establish an identity violation and apply defined financial and XP penalties. It cannot simply pretend that a spent emission remained available to burn.
 
 The system MUST record a terminal emission disposition exactly once.
@@ -641,7 +644,7 @@ own Self-ID -> Emitter emission
     -> invitee admitted unless a guarantor of the creator cancelled it
 ```
 
-The creator cannot sell the right on the market and later buy it back. Selling ordinary FACY can provide personal liquidity; keeping an Emitter emission makes it available for direct network expansion.
+The creator cannot sell the right on the market and later buy it back. In the retained separate-Emitter reference, selling ordinary FACY provides personal liquidity while keeping the own emission permits direct network expansion. D42's mature-value custody contract must preserve the own-emission restriction without silently choosing this reference's transfer mechanics.
 
 **[HYPOTHESIS]** This creates a tradeoff between personal liquidity and expansion of a responsibility-bearing social network.
 
@@ -653,7 +656,7 @@ An invitation must retain its creator, timestamp, intended scope, and later use.
 
 ### 18.5 Invitation freeze
 
-**[SELECTED, 2026-10-22]** A new invitation is frozen for 24 hours before the invitee can be admitted. During the freeze, any current guarantor of the creator can cancel it. The burned emission stays burned, and any XP credited by its consumption is revoked. The freeze is what makes guarantors responsible for whom their people invite: a guarantor who sees invitations going to people who do not look real is expected to cancel them and, if needed, leave the relation.
+**[SELECTED, 2026-10-22]** A new invitation is frozen for 24 hours before the invitee can be admitted. During the freeze, any current guarantor of the creator can cancel it. The burned emission stays burned. **D42 boundary:** consumption is no longer an XP-credit event; the former D2 rule revoked that consumption credit on cancellation. Treatment of an already matured Self-ID credit must now be specified separately, not silently inherited from D2 or invented here. The freeze is what makes guarantors responsible for whom their people invite: a guarantor who sees invitations going to people who do not look real is expected to cancel them and, if needed, leave the relation.
 
 **[MODEL FINDING]** Liability for an inviter's guarantors helps only if they can see and cancel the invitation. Without a freeze, the simulated honest community preferred not to expose fakes, because exposure fined honest friends of a real cheater. With a reviewable freeze, the fraud premium fell from about 190 to single digits. See the [social-trust study](../studies/2026-10-22-social-trust-threshold/README.md), sections 4–5.
 
@@ -725,7 +728,7 @@ The second duty concerns a particular act:
 
 A real person can submit an invalid Self-ID by mistake or misconduct, such as selecting an animal image while asserting that it shows the person's own face.
 
-**[SELECTED]** An authorized guarantor can cancel an eligible, unspent Self-ID for free. The cancellation prevents that act's emission from reaching a usable terminal state. It protects the responsible guarantors from **liability for failing to stop that specific act**.
+**[SELECTED, clarified by D42]** An authorized guarantor can cancel an eligible unspent Self-ID for free **during its initial 24-hour window only**. The cancellation prevents ordinary maturation and its emission/XP effect. It protects the responsible guarantors from **liability for failing to stop that specific act**.
 
 This protection does **not** automatically clear liability for a separate false-person guarantee. A real person who made one erroneous Self-ID and a fabricated identity are different cases.
 
@@ -733,7 +736,7 @@ The cancellation also does not prove malicious intent. A later dispute establish
 
 ### 20.3 Why prevention matters
 
-This structure makes a guarantor more than a passive witness. The guarantor receives XP from a person's continued identity work, can inspect public evidence, and can stop a suspect act before its value leaves Emitter.
+This structure makes a guarantor more than a passive witness. The guarantor receives XP from a person's continued identity work, can inspect public evidence, and can stop a suspect act before its initial 24-hour maturation window ends.
 
 The guardian can correct a mistake without necessarily destroying a valid identity relationship. Conversely, the subject can break a harmful guarantee relation.
 
@@ -876,7 +879,7 @@ The penalty represents lost access and public reputation, not the transfer of XP
 
 **[REFERENCE]** An ordered ledger of `XP_Credit` and `XP_Halving` events can preserve this distinction. Efficient snapshots may implement the same semantics.
 
-The selected terminal-credit rule (§17.5) prevents still-cancellable Self-ID credits from becoming procedural XP. Earlier provisional-credit candidates are comparison policies only. Later adjudicated revocation replays XP without silently undoing executed decisions; appeal/finality remedies remain OPEN.
+The selected 24-hour maturity-credit rule (D42, §17.5) prevents an act still subject to its original free veto from already supplying ordinary procedural XP. Earlier provisional-credit candidates are comparison policies only. Later adjudicated revocation replays XP without silently undoing executed decisions; appeal/finality remedies remain OPEN.
 
 ## 25. Right to challenge
 
@@ -898,7 +901,7 @@ A challenger supplies a monetary stake under the dispute policy and publicly sta
 
 A subject can inspect and challenge other subjects' actions even without an existing guarantee link. This creates an oversight network larger than the local set of guarantors.
 
-The distinct **free guarantor cancellation** of an unspent Self-ID does not require this general XP gate. It is a specific protective authority provided by an existing guarantee.
+The distinct **free guarantor cancellation** of an eligible unspent Self-ID **before 24-hour maturity** does not require this general XP gate. It is a specific protective authority provided by an existing guarantee.
 
 ### 25.1 Open discovery and qualified sponsorship
 
@@ -1100,7 +1103,7 @@ The design distinguishes actual token operations from ledger claims.
 | --- | --- |
 | Valid Self-ID under minted-escrow reference | Mint 1 FACY into controlled Emitter custody. |
 | Invite from eligible Emitter right | Burn its one backing FACY. |
-| Free cancellation of an unspent Self-ID | Burn the remaining backing FACY in the minted-escrow reference. |
+| Free eligible Self-ID cancellation before 24 h | Burn Emitter backing; no maturity XP (D42). |
 | Collector conversion | Transfer an existing FACY unit; do **not** mint a second unit. |
 | Bilateral guarantee commitment | **Open**: may reserve, pay, or burn according to a later approved rule. |
 | Unilateral established-link break | Charge 1 FACY as a **fee**; not an automatic burn. |
@@ -1376,7 +1379,8 @@ create_self_id(subject, artifact_id, detector_version, face_index, assertions):
     require subject has not used its rolling 24-hour reward slot
     create unique SelfId with one unspent emission right
     perform approved FACY issuance/custody transition
-    apply approved XP-credit timing rule
+    schedule ordinary XP credit and the end of free veto at 24-hour maturity (D42)
+    do not credit ordinary XP on creation or wait for spending/withdrawal
     check and publicly flag conflicting FaceRef claims
     record all results as one valid runtime transition
 ```
@@ -1389,10 +1393,11 @@ An invalid claim can still be recorded if the only problem is that another subje
 cancel_self_id(guarantor, self_id_id):
     require guarantor has the defined authority over this act
     require original emitter right is still cancellable and unspent
+    require Self-ID age < 24 hours (D42)
     require applicable dispute-precedence policy
     cancel the Self-ID emission
     burn the unit held in emitter custody under minted-escrow design
-    reverse or settle XP under approved rules
+    record that this cancelled act earns no ordinary maturation XP
     record that this guarantor prevented this act's emission
     do not automatically break the long-term guarantee relation
 ```
@@ -1420,10 +1425,13 @@ cancel_invitation(guarantor, invitation):
     require invitation is open and still frozen
     require guarantor currently guarantees the creator
     mark invitation Cancelled; the burned emission stays burned
-    revoke the XP credited by consuming the source emission
+    do not treat the source consumption as an XP-credit trigger (D42)
+    apply only separately authorized XP consequences; treatment of prior matured credit is OPEN
 ```
 
 ### 36.5 Convert to Collector
+
+**[REFERENCE]** This shows explicit conversion. D42 has not yet selected it over an automatic matured-custody transition; neither conversion variant triggers ordinary XP.
 
 ```text
 convert_to_collector(owner, self_id_id):
@@ -1473,8 +1481,8 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 12. Before 24 hours, an emission cannot be spent or converted by its owner.
 13. From 24 hours onward, only explicitly approved network-building operations can use a still-restricted Emitter emission.
 14. An invitation cannot be applied before its 24-hour freeze ends, and a current guarantor of its creator can cancel it during the freeze.
-15. From 24 hours onward, an unspent emission may convert to Collector; conversion is not automatic.
-16. An unspent Emitter emission remains subject to valid guarantor cancellation for as long as it stays unspent.
+15. Ordinary uncancelled Self-ID maturity at 24 hours credits XP once, independently of consumption/conversion; automatic versus explicit custody movement remains OPEN (D42).
+16. Original free guarantor cancellation requires age < 24 hours; leaving an emission unused does not extend it (D42).
 17. A consumed or converted emission cannot be cancelled again through the original free Emitter-veto mechanism.
 18. An active dispute freezes its target's still-unspent emission against use or conversion.
 19. FACY bought or received from another subject does not create invitation eligibility.
@@ -1606,7 +1614,7 @@ Compare a wide honest network, a very dense group of mutually guaranteeing genui
 
 ### 41.4 Emitter lifecycle adversaries
 
-Test an honest cancellation inside the first 24 hours, network-use consumption after 24 hours, attempted cancellation after consumption, a conversion after 24 hours, a cancelled frozen invitation, and a still-unspent emission left on Emitter for weeks. Confirm that only the still-unspent emission can be preventively cancelled.
+Test free cancellation at age 23 hours and rejection at exactly 24; an unused act must credit ordinary XP at 24 hours without a spend/withdrawal call. Invitation use, withdrawal and debt recovery must not duplicate that credit. A matured act left unused for weeks must not become freely cancellable again. Test the separate invitation freeze/cancellation and report its still-OPEN consequences for prior matured XP. Freeze/appeal and exact same-time credit/penalty ordering require declared contracts; historical terminal/unspent-veto fixtures are compatibility references, not D42 acceptance.
 
 ### 41.5 Duplicate FaceRef and group artifacts
 
@@ -1692,9 +1700,9 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 
 ### B. Self-ID and Emitter
 
-7. Exact same-subject reuse semantics on an already registered artifact (§14.4); terminal XP timing itself is selected in §17.5.
+7. Exact same-subject reuse semantics on an already registered artifact (§14.4); ordinary age-based XP timing at 24 hours is selected by D42 in §17.5.
 8. Minted escrow versus deferred mint, including exact supply accounting and custody.
-9. Chronological reversal and later-credit semantics; terminal XP, not provisional effective credit, is selected in §17.5.
+9. Chronological reversal, relation eligibility and same-time credit/penalty semantics; D42 selects 24-hour maturity credit, not spending-triggered or immediate credit.
 10. Guarantor authority snapshot versus current graph authority at the time of cancellation.
 11. Precedence of an authorized guarantor cancellation and an open Self-ID dispute.
 12. Freeze and appeal effects on age-based eligibility and finality.
@@ -1718,7 +1726,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 24. What makes a challenge admissible, including deadlines for different transaction types.
 25. Stake asset, initial amount, escalation schedule and winning-stake distribution.
 26. Execution bounds and deadline interactions; the selected finality window is 7 days after the last entry (§26.5), superseding earlier extension candidates.
-27. Finality/appeal effects when later reversal of already terminal XP affects prior eligibility or decisions; still-cancellable provisional XP is not usable authority under the selected terminal-credit rule.
+27. Finality/appeal effects when reversal of already matured XP affects prior eligibility or decisions; an act in its initial free-veto window earns no ordinary maturity credit (D42).
 28. Council referral, membership snapshot, recusal, quorum and intervention threshold.
 29. Merits decision procedure after Council intervention, and how it overrides or continues the ordinary Chekharda sequence.
 30. Evidence thresholds for intentional fraud versus negligent guarantees.
@@ -1739,10 +1747,10 @@ The following sequence is **[REFERENCE]**. It aims to prove the smallest complet
 | --- | --- | --- |
 | 1. Framework alignment | Pin current DEOS runtime and SDK contracts. | Existing asset, Router, Actor, treasury and payment behavior are mapped to Facety needs. |
 | 2. Artifact and FaceRef | Hash registration, timestamps, deterministic face indices. | Same canonical artifact produces the same references across supported clients. |
-| 3. Self-ID and Emitter | NFT-like Self-ID plus exactly one emission right. | No double emission; correct one-day restrictions; cancellation while still unspent. |
+| 3. Self-ID and Emitter | NFT-like Self-ID plus exactly one emission right. | No double emission; free cancellation only before 24 hours; explicit matured-custody contract (D42). |
 | 4. Group Self-ID | Multiple separate signed claims on one artifact. | Two different subjects can claim different indices; duplicate index conflict is flagged, not rejected. |
 | 5. Guarantees and invitations | Matching authorizations, verified difficulty, separate qualifying guarantee/path gates and earned FACY burn. | Purchased FACY cannot create invitations; path witnesses exclude shared intermediaries; verification/anchor/genesis contracts precede enforcement. |
-| 6. XP and prevention | Personal and guarantor XP credits; free act cancellation. | Unspent bad act cancels without leaving illicit FACY or unjustified XP. |
+| 6. XP and prevention | Age-based personal/guarantor credits; initial-window free cancellation. | Unused valid act credits once at 24 hours; spending/withdrawal cannot duplicate it; pre-maturity cancellation prevents it (D42). |
 | 7. Dispute engine | Ordinary challenge, Chekharda, monetary stakes, deadlines. | Valid XP escalation, freezes, deterministic outcomes and penalties. |
 | 8. Council | Difficulty-sized eligible consuls, phase/case snapshots and intervention ballots. | No formal one-consul powers; one vote per formal member; apex review, quorum and membership changes have explicit contracts. |
 | 9. Financial sanctions | Real burns, recoverable debt, auditable XP halving. | No double collection or fictitious burns. |
@@ -1759,10 +1767,10 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 
 1. **A subject is not a wallet.** An identity survives an authorized key change.
 2. **A Self-ID is a signed, individually addressable claim.** Its media and FaceRef do not automatically prove unique personhood.
-3. **One successful Self-ID can create one individual FACY emission and one personal XP credit.** Qualifying guarantors also earn XP when the emission is spent or withdrawn without cancellation.
-4. **An Emitter emission is not ordinary liquid FACY.** It has a specific, one-time disposition.
-5. **One day opens both network-building operations and Collector conversion; a new invitation is frozen for one more day.** Neither happens automatically.
-6. **An unspent Emitter emission remains cancellable by an authorized guarantor.** Cancellation ends when the emission is used or converted, not merely when it ages.
+3. **An uncancelled Self-ID earns its subject and eligible guarantors 1 XP each at 24-hour maturity (D42).** Unused value counts too; invitation use or withdrawal neither triggers nor duplicates that reward.
+4. **Before maturity the emission is restricted; its one-time provenance remains essential afterwards.** Matured-custody representation must not enable double use or market-funded invitations.
+5. **One day ends the original free veto and makes ordinary value mature; a new invitation has its own additional 24-hour freeze.** Automatic versus explicit Collector movement remains OPEN.
+6. **Free guarantor cancellation ends at 24 hours even if the emission is unused (D42).** Later adjudicated correction and sanctions are separate, not an extension of that veto.
 7. **The guarantor can prevent one bad act without automatically revoking a real person's identity.** Responsibility for identity guarantees is separate from responsibility for individual Self-ID acts.
 8. **A real guarantee needs both subjects' authorization.** Either party can end a relation under the fee and graph rules.
 9. **An invitation consumes personally earned FACY and requires both difficulty-sized independent guarantee support and internally vertex-disjoint XP-centered paths.** Verification/anchor details remain OPEN; no cluster quota is selected for now, and market capital cannot directly buy the right to invite.
@@ -2131,7 +2139,7 @@ This ledger prevents earlier drafts from being mistaken for the latest decisions
 | --- | --- |
 | One-day windows replace 3-day network use and 7-day Collector conversion. | **[SELECTED]** (§3, §17.3) |
 | New invitations are frozen for 24 hours and cancellable by the creator's guarantors. | **[SELECTED]** (§18.5) |
-| XP is credited at terminal disposition to the subject and its eligible guarantors; cancelled acts credit nothing. | **[SELECTED]** (§17.5) |
+| XP is credited at terminal disposition to the subject and its eligible guarantors; cancelled acts credit nothing. | **[SELECTED then; superseded by D42's 24-hour maturity credit]** (§17.5) |
 | The Council is the top-101 XP leaderboard among subjects active in the last 28 days. | **[SELECTED then; fixed size superseded by D33]** (§27.1) |
 | Debt repayment keeps the guarantor veto window. | **[SELECTED]** (§17.3) |
 | No mandatory media type; the same media cannot be reused; group media whenever possible. | **[SELECTED]** (§14.4) |
@@ -2201,14 +2209,18 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 **D41 — [SELECTED enforcement priority], §18.2.** Source: the owner's explicit instruction to prioritize preventing invitations before the creator reaches the network-difficulty-sized guarantor threshold. The count is an authorization barrier at creation, before burning the own emission or recording an invitation, not just a degree/XP measurement. The separate independent-path requirement remains; this instruction does not supply missing verification, independence, anchor, graph, genesis or difficulty-transition contracts. It authorizes the bounded guarantee-gate implementation/validation, not an inferred full D33/D35/D36 migration or a new research run.
 
+### Age-based XP and veto expiry documented 2026-10-24
+
+**D42 — [SELECTED ordinary lifecycle; monetary representation and disputed cases OPEN], §17.3–§17.6.** Source: the owner's explicit correction that everyone earns 1 XP after one day, not when a coin is withdrawn, and that the guarantor can no longer freely cancel after that day. An uncancelled ordinary Self-ID credits its subject and each eligible guarantor once at age 24 hours, even if unused; invitation use counts without a separate or forfeited reward. This supersedes D2's terminal-disposition trigger and indefinite unspent-right veto, not later adjudicated sanctions, D9/D34, the separate invitation freeze or own-emission invitation provenance. “Normal irrevocable coin” does not by itself settle automatic Collector custody, transfers/provenance, locked-case maturation or invitation-cancellation effects on already matured XP. Native migration remains unimplemented pending those contracts; historical results retain their original timing/policies and are not replayed or relabeled as D42 evidence.
+
 ### Earlier supersessions
 
 | Earlier description | Status |
 | --- | --- |
-| 24-hour Self-ID cooling period from early discussions. | **Superseded** as the principal Emitter lifecycle; 24 hours still limits reward frequency and artifact-reference age. |
+| 24-hour Self-ID cooling period from early discussions. | **Clarified by D42:** 24 hours determines ordinary maturation XP and expiry of the original free veto, separately from reward-frequency and artifact-age limits. |
 | Emitter restricted for 28 days before free withdrawal. | **Superseded:** first by 7-day conversion, now by **24-hour** conversion. |
 | Network operations at 3 days. | **Superseded:** network operations at **24 hours**; still only special network-building uses, not ordinary transferable spending. |
-| Guarantor cancellation during a fixed 28-day period. | **Superseded:** valid cancellation while the specific Self-ID emission remains **unspent on Emitter**; no cancellation after lawful consumption or conversion. |
+| Guarantor cancellation during 28 days, or indefinitely while an emission stays unspent. | **Superseded by D42:** the original free veto is confined to the initial 24 hours; leaving the value unused does not extend it. |
 | Self-ID emission described as a generic balance. | **Refined:** each Self-ID is an NFT-like individual act containing a one-time Emitter right; common FACY vault custody remains a reference implementation. |
 | Separate personal media per Self-ID. | **Extended:** multiple subjects may reference one registered artifact within 24 hours and select deterministic indexed faces. |
 | Reject a duplicate face selection automatically. | **Not selected:** both claims are recorded and the collision becomes publicly disputable. |

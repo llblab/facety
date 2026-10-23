@@ -8,6 +8,8 @@ This document owns the implemented simulation semantics. The self-contained [pro
 
 **D37/D38 research-method boundary, 2026-10-23:** [§47–§48](facety.protocol.en.md#47-calibrated-aggregate-contradiction-in-simulator-research-d37) select calibrated aggregate contradiction for the full registered claim/context family and its versioned migration. New v2 registrations bind `family-contradiction/v1`; support stays unchanged. Historical v1 deliberately uses the original unadjusted method by default; implementation permission does not change methods. Explicit A reanalysis emits a distinct method-identified artifact through the [native/CLI contract](evidence.en.md#versioned-analysis-and-reanalysis-d38). Source fingerprints change; historical evidence remains immutable, with no automatic study replay. This changes research inference, not model economics or oracle validity.
 
+**D42 XP/veto boundary, 2026-10-24:** [§17.3–§17.5](facety.protocol.en.md#173-the-one-day-schedule) now select ordinary uncancelled Self-ID XP at 24-hour maturity, even unused, and expiry of the original free veto at that boundary. **Not implemented:** the code still credits on consumption/conversion (`xpFinality: "terminal"`) and allows cancellation of an unspent right after 24 hours. The same 24-hour spend/conversion numbers do not establish compliance. The custody/Collector transition, freezes, chronological credit/debt/penalty order and prior-credit effects need a migration contract. All terminal/unspent-veto descriptions below document the retained implementation, not the current selected protocol; frozen studies/fixtures keep their original policies and labels. No automatic conversion, rule migration, historical replay or empirical reclassification is inferred.
+
 ## Architecture
 
 ```text
@@ -47,11 +49,11 @@ The model never receives a hidden label saying that a subject is an attacker or 
 | One rewarded Self-ID per 24 h; 24 h artifact reference window | §14, §17.5 | `createSelfId` |
 | Media reuse forbidden; same-subject registered-artifact replay unresolved | §14.4 | Duplicate supplied-hash registration rejected; `artifactReuse` references below |
 | One-day emission window; spend and conversion after 24 h | §17.3 | `spendMaturityHours`, `conversionMaturityHours` |
-| Terminal XP to subject and eligible guarantors | §17.5 | `xpFinality: "terminal"` |
+| D42: subject/guarantor XP at 24-hour maturity, independent of use | §17.5 | Not implemented; `xpFinality: "terminal"` remains the legacy consumption/conversion trigger |
 | Debt repayment keeps the veto window | §17.3 | `debtRecovery` |
 | Invitation: own-emission burn, separate qualifying guarantee/path gates and 24 h freeze/cancellation | [§18](facety.protocol.en.md#18-admission-through-invitation), [D35/D36](facety.protocol.en.md#4614-xp-centered-paths-pre-guaranteed-genesis-and-no-cluster-quotas-d35) | `createInvitation`, `requiredGuarantors`, `cancelInvitation`; legacy active/raw count, not D33 verified independence |
 | Two-sided guarantees; 1 FACY link break; XP follows the relation | §19 | `proposeGuarantee`, `confirmGuarantee`, `endGuarantee`, `linkBreakXp` |
-| Free preventive cancellation of unspent acts | §20 | `cancelSelfId` |
+| D42: free preventive cancellation only in the initial 24 hours | §17.3, §20 | Not implemented; `cancelSelfId` still permits later unspent-right cancellation |
 | Chain-cut sanction and liability wave; D34 historical attribution | §20.6, §21.1 | `voidSelfIdChain`, `disputes.fineMode`, `disputes.liability`; current-link reference, D34 party selection unimplemented |
 | XP halving, debt, no fictitious burns | §24, §30 | `penalize` |
 | Challenge XP gate; Chekharda stake ladder; Council intervention | §25–§27 | `disputes.procedure`, `stakeGrowth`, `councilDepth` (experiment layer) |

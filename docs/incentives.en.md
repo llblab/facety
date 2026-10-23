@@ -2,6 +2,8 @@
 
 This document owns the bounded decision-fork harness and retained-fact reader in `src/incentives.mjs`, conditional terminal analysis in `src/incentive-payoffs.mjs`, and evaluator-only ownership counterfactuals in `src/incentive-ownership.mjs`. The [protocol](facety.protocol.en.md), especially sections 2, 23 and 34, supplies the intended incentive and useful-coordination thesis. [Model semantics](simulator.en.md) owns the implemented transitions. This harness neither adds a protocol rule nor proves a network effect.
 
+**D42 boundary (2026-10-24):** the [selected protocol](facety.protocol.en.md#175-reward-and-rate-limit) now credits ordinary XP at 24-hour maturity without waiting for use and ends the original free veto then. The native model and v1/v2 fixtures below retain their original terminal/immediate credit modes and unspent-veto semantics; they do not implement D42. “Selected terminal” in the fixed P23 design/report means selected at its design date. A8/F45 and all retained numbers remain source-bound, not reclassified or replayed. A D42 counterpart needs an explicit mature-custody/provenance and chronology contract plus a separately identified design; do not silently mutate the closed existing fixtures/readers.
+
 ## Three different claims
 
 1. Protocol actions change FACY, XP and responsibilities in particular ways. Deterministic traces can establish these accounting facts.

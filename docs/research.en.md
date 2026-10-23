@@ -12,6 +12,8 @@ The [protocol](facety.protocol.en.md#self-contained-living-protocol-d40) explain
 
 The project index owns navigation, the model contract owns implementation coverage, and the backlog owns execution. This chapter owns causal questions and falsifiers. Keeping those roles separate makes the project more connected without turning the protocol into a catalogue of its tooling.
 
+**D42 scope boundary, 2026-10-24:** ordinary 24-hour XP maturation and expiry of the original free veto now supersede D2's terminal trigger (§17.3–§17.5). Current model/fixture/source-bound evidence still uses the old terminal/immediate references; equal numerical maturity windows are not D42 compliance. New timing-sensitive studies must declare the actual implemented policy and deviation, not treat old F45/H1/H2 as tests of D42. Matured custody/provenance, frozen-case and chronological credit/penalty contracts precede migration. General D39 continuation remains paused; this rule correction does not authorize a new run.
+
 ## Strategic evaluation lens (D32)
 
 The owner's strategic-framing directive, documented **2026-10-23**, evaluates Facety as an **accountability substrate for emission distribution and network growth**, not merely dispute resolution. The [protocol's D32 section](facety.protocol.en.md#accountability-for-emission-and-growth-d32) owns the thesis, three-layer distinction, safeguards and success/failure conditions. This is a deliberate lens, not an observed flywheel or a replacement for D31's mutual-identification architecture.
