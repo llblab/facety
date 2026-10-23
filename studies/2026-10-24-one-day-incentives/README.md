@@ -31,6 +31,44 @@ bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root .
 
 `validation.json` records the context/whitespace/source-boundary checks as well. Tests and differential controls are author-coordinated software evidence. **No independent review is claimed**: the previously recorded P16 actor-workflow qualification remains unresolved and was not rerun, bypassed or repaired here.
 
+## Pre-execution report design
+
+**Prepared 2026-10-24; report execution is a separate checkpoint.** [`run.mjs`](run.mjs) owns the closed machine-readable `reportDesign()` and pure `analyzeRaw()` transformation. This is a diagnostic execution of an encoded reference plus conditional terminal arithmetic, not a registered emergent-mechanism confirmation or an inferential sample. No study results were collected in this preparation pass; constructed test inputs are software validation, not historical science or authenticated provenance.
+
+### Bound and source
+
+- **Source:** native implementation `6e94fb9d4c886078011b08aae0e8a701267c9984d90fa03353a4661ee95d1d19`, 27 modules, Node v26.8.1. Fresh execution refuses a changed implementation/runtime and an uncommitted/modified runner before generating fixtures. It does not offer an implementation override.
+- **Worlds:** two mode artifacts (`terminal`, selected reference; `immediate`, counterfactual), each containing exactly the three existing funded scripts. This means **six native branch replays**, not six independent human observations. No sampled seeds, replicate expansion, error model or randomness is introduced.
+- **Time/resources:** declared 72-hour horizon and ordered checkpoints `[0,24,48,48,72]`; retain the full provider's policy, funding, work weights/budgets, actor actions, native events, snapshots, individual XP, invitations and custody. Physical projections across XP modes must match after removing only subject XP, act-credit state and the XP-derived Council view; all those removed fields remain in the raw data and report.
+- **Denominators:** two artifacts, six native branches, 30 checkpoint rows, 28 payoff analyses / 56 sponsor comparisons, and two ownership analyses exposing four evaluator worlds / 12 overlay branch outcomes. Evaluator overlays are not additional admitted worlds or fabricated-identity executions.
+
+### Fixed valuation and unknown-loss contrasts
+
+The 14 named cases are fixed **before report execution**, not fitted to yield a favorable comparison. Values 0/1/10 are zero, unit and decade illustrations in caller-declared common utility units, not market prices or measured preferences. Default illustrated case is FACY value 1, XP value 0, work cost 1, both private benefits 0 and both incremental expected losses 0; zeros are supplied for that illustration, never inferred from no scripted debt.
+
+- **Zero/cash/work:** `zero-value-control` sets FACY/work to zero; `cash-only` sets work cost zero; `cash-and-work` retains the default; `cash-tenfold` sets FACY value 10.
+- **Authority/connection:** `xp-unit` and `xp-tenfold` set XP value 1/10; `admission-unit` and `guarantee-unit` separately set the corresponding private benefit to 1. Other components stay at the illustrated default.
+- **Signed expected losses:** `added-loss-unit` supplies +1 for each invitation alternative relative to waiting; `avoided-loss-unit` supplies −1. These are explicit utility hypotheses, not measured duties, prevention or a new sanction/insurance rule.
+- **Unknowns:** `unknown-xp`, `unknown-losses`, `unknown-benefits` and `all-unknown` preserve explicit nulls in the named inputs. Keep every unknown score/candidate and zero-exposure rule from the existing analyzer; do not prune inconclusive cases.
+
+The existing payoff analyzer computes terminal differences, components and break-even thresholds **from newly checked facts**, not copied legacy tables. There is no Cartesian sweep, endogenous optimizer, calibrated risk response or new operator utility aggregator. The ownership analyzer retains its independent/controlled-newcomer evaluator worlds, actual custody assumptions, counterfactual work and per-subject authority without treating control as proof of false personhood.
+
+### Outputs, checks and inference limits
+
+After the runner/design commit, the later execution command is:
+
+```sh
+node studies/2026-10-24-one-day-incentives/run.mjs
+```
+
+It accepts no CLI scenario/seed/force overrides and reserves a new `results/` directory atomically. Any existing directory, including a partial one, blocks automatic retry/overwrite. `raw.json` is written before analysis; `report.json` retains all cases; `manifest.json` is written last to mark completion, with byte hashes, source/runtime, runner commit/hash and full design/digest. An unexpected partial failure is evidence to inspect, not permission to delete/replay.
+
+The pure analyzer requires complete/unique mode coverage, exact declared input-source identity, bound design/runner hashes, valid v2 facts and matched physical inputs. Source order, branch order and cached comparison changes do not alter its actual analysis. It records the analyzer's own provenance separately and an explicit `matchesPinnedSource` flag; future offline analysis under different code/runtime is not silently labeled a same-source reproduction. The fresh execution gate is stricter. These structural/hash checks do not authenticate supplied inputs.
+
+Retain the two separate hour-48 snapshots; **do not** infer per-checkpoint work by filtering `atHour <= 48`, which would incorrectly include later same-hour identity work at admission. Report terminal work through the full ownership analysis and retain ordered action records. `firstCreditedCheckpoint` names the earliest retained snapshot with credit, not a newly observed exact continuous-time credit event. Missing people/acts are absent, not zero participation. Do not turn fixed sparse scripts into daily retention or compare annualized returns across the old 11-day and new 3-day horizons.
+
+All raw adverse, null and positive comparisons remain. There are no p-values, confidence intervals or claims of seed-sampled attack probability. A conditional maximum is not observed choice or equilibrium. This design does not resolve duty/history/recovery, pause/risk caps, oracle validity, bootstrap, private loss calibration, useful contribution or the actual cost-of-attack condition. It is not a D33/D34 migration, a real attack, independence/personhood verification or a finding that liability causes withdrawal.
+
 ## What remains
 
-The canonical backlog now owns a source-locked diagnostic reporting design/runner and later execution for this v2 fixture. Commit the finite reporting/valuation/unknown-loss menu before publishing fresh tables. Do not copy legacy values just because terminal accounting may agree; retain sparse physical timing, custody and individual authority. No new report dataset or p-values were produced at this checkpoint. A maximum over finite supplied valuations never becomes endogenous adoption, real retention, personhood, a successful attack or demonstrated useful network growth.
+The canonical backlog owns the single bounded execution and source-bound reporting/insight reconciliation after this runner/design is committed. No `results/` dataset exists at preparation. Reuse the native implementation/legacy-preservation evidence while those sources are unchanged; runner tests and the rejected uncommitted-execution check are recorded separately in `report-validation.json`. Author validation is not independent review, and the external P16 actor-workflow gate remains unresolved.

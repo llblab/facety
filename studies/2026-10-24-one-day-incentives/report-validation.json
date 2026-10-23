@@ -1,0 +1,52 @@
+{
+  "schema": "facety-p23-report-preparation/v1",
+  "date": "2026-10-24",
+  "sourceCheckpoint": "767cc809873c91478ef2513020605eac4f3ea0a1",
+  "nativeSource": {
+    "implementation": { "method": "sha256-src-mjs-v1", "digest": "6e94fb9d4c886078011b08aae0e8a701267c9984d90fa03353a4661ee95d1d19", "files": 27 },
+    "runtime": { "node": "v26.8.1" }
+  },
+  "runnerSha256": "dbe0fea795da023fed198a434eddf5c5f6e06d92a1b6b7b98018e937f1a1e2d2",
+  "testSha256": "a892894aae11551a0a3173e36a320027fa311275c4659bc7d130763f152c8697",
+  "executionStatus": "prepared, not executed; results directory absent",
+  "declaredBound": {
+    "modeArtifacts": 2,
+    "nativeBranches": 6,
+    "horizonHour": 72,
+    "checkpointRows": 30,
+    "valuationCasesPerMode": 14,
+    "payoffAnalyses": 28,
+    "sponsorComparisons": 56,
+    "ownershipAnalyses": 2,
+    "evaluatorWorlds": 4,
+    "evaluatorBranchOutcomes": 12,
+    "seedSampling": "none; deterministic scripts, not independent empirical observations"
+  },
+  "checks": {
+    "nativeTests": { "command": "npm test", "exitCode": 0, "tests": 252, "passed": 252, "failed": 0, "skipped": 0, "newReportFamilies": 5 },
+    "uncommittedExecutionGuard": {
+      "command": "node studies/2026-10-24-one-day-incentives/run.mjs",
+      "expectedExitCode": 1,
+      "actualExitCode": 1,
+      "stdout": "",
+      "stderr": "P23 runner must be committed unchanged before execution",
+      "resultsDirectoryCreated": false,
+      "scope": "Negative pre-data startup control only. Guard and startup order were unchanged by the later checkpoint-row label fix. No successful runStudy invocation."
+    },
+    "sourceAndEvidenceBoundary": {
+      "command": "/usr/bin/git diff --exit-code 767cc80 -- src examples test/incentive-one-day.test.mjs studies/2026-10-24-one-day-incentives/controls.mjs studies/2026-10-24-one-day-incentives/controls.json studies/2026-10-24-one-day-incentives/validation.json",
+      "exitCode": 0,
+      "boundary": "Native implementation, examples and prior fixture validation/compatibility artifacts unchanged. No stored scientific confirmation replayed."
+    },
+    "context": { "exitCode": 0, "errors": 0, "warnings": 27 },
+    "whitespace": { "command": "git diff --check", "exitCode": 0 },
+    "reusedEvidence": {
+      "from": "validation.json and controls.json at 767cc80",
+      "legacyOutputsAndExamples": "Byte-preservation controls reused because their native sources and examples are identical; not rerun for new confidence.",
+      "dependencyGraph": "27 modules / 66 edges, acyclic; reused under unchanged native source/import graph."
+    }
+  },
+  "testBoundary": "Constructed software fixture inputs validate pure transformations, nulls, source/mode rejection, physical matching, equal-hour timing, authoritative strategy labels and no-overwrite/CLI guards. Their source markers are not authentication or retained historical science; they are not the results dataset.",
+  "assurance": "Author/coordinator validation only; no independent review or repair/retry/bypass of the unresolved P16 actor workflow.",
+  "remaining": "After committing runner/design, execute exactly the declared bound once into an absent results directory. Inspect raw data, all cases and hashes before diagnostic conclusions. No calibrated retention, personhood, useful contribution, attack probability or D33/D34 implementation claim."
+}
