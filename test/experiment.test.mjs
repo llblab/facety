@@ -2,9 +2,20 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { runExperiment, experimentConfig, DEFAULT_ACTIVITY } from '../src/experiment.mjs';
 import { DAY } from '../src/model.mjs';
+import * as facade from '../src/experiment.mjs';
+import * as configuration from '../src/experiment-config.mjs';
 
 const quiet = Object.fromEntries(Object.keys(DEFAULT_ACTIVITY.honest).map(key => [key, 0]));
 const liquid = { seed: 'test', initialSize: 3, attackerShare: 1, initialTopology: 'clique', days: 20, activity: { attackers: { invite: 0.1 } } };
+
+test('experiment facade preserves configuration identities without exporting its internal daily view', () => {
+  const names = ['SCENARIOS', 'EXPERIMENT_ABLATIONS', 'RANDOMNESS_POLICY', 'DEFAULT_ACTIVITY', 'DEFAULT_DISPUTES',
+    'LIABILITY_POLICIES', 'DEFAULT_DEVIANTS', 'DEFAULT_SOCIAL', 'EXPERIMENT_ASSUMPTIONS',
+    'activityAtDay', 'experimentConfig', 'withExperimentParameters'];
+  assert.deepEqual(Object.keys(facade).sort(), [...names, 'runExperiment'].sort());
+  for (const name of names) assert.equal(facade[name], configuration[name], name);
+  assert.equal(Object.hasOwn(facade, 'dayActivity'), false);
+});
 
 test('identical seeds reproduce complete runs and evaluator truth never enters subject records', () => {
   const options = { seed: 'reproducible', initialSize: 8, days: 10, includeState: true };

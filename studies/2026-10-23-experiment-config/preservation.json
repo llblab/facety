@@ -1,0 +1,1317 @@
+{
+  "baseline": "0d2e7a4",
+  "level": "diagnostic",
+  "before": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "0f069ef8250d5bc3c9dd52d739da7b67124509a67e58c02f9d774d344608f471",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "after": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "f76fee265aa0b1135c87624566bc9a3ff38e968a5aeb8018aadd149b62eb26d5",
+      "files": 26
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "exportedNames": [
+    "DEFAULT_ACTIVITY",
+    "DEFAULT_DEVIANTS",
+    "DEFAULT_DISPUTES",
+    "DEFAULT_SOCIAL",
+    "EXPERIMENT_ABLATIONS",
+    "EXPERIMENT_ASSUMPTIONS",
+    "LIABILITY_POLICIES",
+    "RANDOMNESS_POLICY",
+    "SCENARIOS",
+    "activityAtDay",
+    "experimentConfig",
+    "runExperiment",
+    "withExperimentParameters"
+  ],
+  "sourceProof": {
+    "added": [
+      "src/experiment-config.mjs"
+    ],
+    "changed": [
+      "src/experiment.mjs"
+    ],
+    "unchangedExistingSourceModules": 24,
+    "movedBlockSha256": "5c87e9f773512da48a9bd3cacdba1bea5ae17e58bc5bc3fe105132fc0c7aaf3e",
+    "movedLines": 268,
+    "schedulerBodyByteIdentical": true,
+    "experimentLinesBefore": 1251,
+    "experimentLinesAfter": 990
+  },
+  "configurations": [
+    {
+      "input": {},
+      "digest": "0f437c210f20b46125a2c1fae995c85f0866aced3702fb8ac4c23d09dd5c7183"
+    },
+    {
+      "input": {
+        "days": 0
+      },
+      "digest": "93001e1d85ca2fda8da19877bc420be2ae66fcc8c777d53d367521d1b10d465e"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "one-step",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "682db571aaba795a073e4c9769b5a2a71179fd7c10fa62d78935c6d284b725a5"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "one-step",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "1fea947bef03903a0fc695581f27aee274e065c3732d2a230869bde797788a57"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "one-step",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "53151ac3bfb4c8cad126006848a3806a73773b9beb125caa46ff22f9ddb7bc27"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "one-step",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "fdfaaab9d591d08805ccb2cf3a18d131d32067ec590509487321684af85392b8"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "3d29c9bd5a5daa8b339e8d857b693fbfdcaed9e67bf88d0783d4621c662042b5"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "b03850cd8825c096af5d30b4f8161e14a64c860067e95162e9b3171d35281301"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "175697b1791f23dccfe638035d233280c100465b7436e715d8c0a5eb8a0d67ac"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "1ec119988afdd27e9d78f931ec93152e113e3e4a098f5608319bf928beba80e1"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "2b47f7baf9e47bfb4ecf61687c5b2916364d578373e95935f6080683577ff7ab"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "6992e576c86cbf2062d46db3635de95511117a2c3f8fa760605449d3c5dbb16f"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "d5eb04959f8d2408f79f55e35715d1ba354b72b9dba3594b2eacf5965b66e10c"
+    },
+    {
+      "input": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "6389a0fe3c9b1baecc14949b4a979bb6b8251588b355822a15031b27ab49b2cb"
+    },
+    {
+      "input": {
+        "scenario": "honest-growth",
+        "seed": "config-extraction:honest",
+        "initialSize": 8,
+        "days": 8,
+        "includeState": true
+      },
+      "digest": "0ea81aaddf83a1728b97b995fec3b963a625fdb2b95a91b31ef193e1ab419e09"
+    },
+    {
+      "input": {
+        "scenario": "real-cartel",
+        "seed": "config-extraction:cartel",
+        "initialSize": 8,
+        "days": 8,
+        "includeState": true
+      },
+      "digest": "23a774fd65a7a45dd3acba27eec1a17297ad0048cab2655c3b2b313cc7f3601e"
+    },
+    {
+      "input": {
+        "seed": "config-extraction:schedules",
+        "initialSize": 8,
+        "days": 8,
+        "includeState": true,
+        "deviants": {
+          "share": 0.25,
+          "honest": {
+            "activity": {
+              "inspect": 0
+            },
+            "schedule": [
+              {
+                "startDay": 2,
+                "endDay": 4,
+                "activity": {
+                  "selfId": 0.4
+                }
+              }
+            ]
+          }
+        },
+        "perturbations": [
+          {
+            "id": "pause-growth",
+            "startDay": 4,
+            "endDay": 6,
+            "activity": {
+              "honest": {
+                "invite": 0
+              },
+              "attackers": {
+                "guarantee": 0
+              }
+            }
+          }
+        ],
+        "policy": {
+          "xpFinality": "immediate",
+          "spendMaturityHours": 72,
+          "conversionMaturityHours": 168,
+          "invitationFreezeHours": 0,
+          "linkBreakXp": "keep"
+        },
+        "ablations": {
+          "withholdGuarantorXp": true,
+          "fixedInvitationThreshold": 1,
+          "randomGuaranteeTargets": true
+        },
+        "social": {
+          "scope": "acquaintances",
+          "strangerRate": 0.1,
+          "verification": true
+        }
+      },
+      "digest": "5eb2b26aedd954ee945d4e8ea71576ef4725c5afbe4049c08baac53fa0592501"
+    },
+    {
+      "input": {
+        "seed": "config-extraction:censor",
+        "initialSize": 6,
+        "days": 5,
+        "maxActions": 3,
+        "includeState": true
+      },
+      "digest": "053f2154487dec900879ea94f3c166976a79da5d772aa3d349d9a2e8832b79de"
+    }
+  ],
+  "rejections": [
+    {
+      "input": {
+        "unknown": 1
+      },
+      "name": "Error",
+      "message": "unknown experiment key: unknown"
+    },
+    {
+      "input": {
+        "scenario": "unknown"
+      },
+      "name": "Error",
+      "message": "unknown scenario"
+    },
+    {
+      "input": {
+        "days": -1
+      },
+      "name": "RangeError",
+      "message": "days is outside its integer bounds"
+    },
+    {
+      "input": {
+        "seed": null
+      },
+      "name": "TypeError",
+      "message": "seed must be a string or finite number"
+    },
+    {
+      "input": {
+        "activity": {
+          "honest": {
+            "selfId": 2
+          }
+        }
+      },
+      "name": "RangeError",
+      "message": "selfId must be in [0, 1]"
+    },
+    {
+      "input": {
+        "budgets": {
+          "honest": -1
+        }
+      },
+      "name": "RangeError",
+      "message": "honest budget must be non-negative, safe and have at most six decimal places"
+    },
+    {
+      "input": {
+        "policy": {
+          "unknown": true
+        }
+      },
+      "name": "Error",
+      "message": "unknown policy: unknown"
+    },
+    {
+      "input": {
+        "disputes": {
+          "enabled": "yes"
+        }
+      },
+      "name": "TypeError",
+      "message": "dispute switches must be boolean"
+    },
+    {
+      "input": {
+        "disputes": {
+          "stakeBacking": "unknown"
+        }
+      },
+      "name": "Error",
+      "message": "unknown disputes.stakeBacking"
+    },
+    {
+      "input": {
+        "deviants": {
+          "share": 0,
+          "honest": {
+            "activity": {}
+          }
+        }
+      },
+      "name": "Error",
+      "message": "deviant strategies require a positive deviants.share"
+    },
+    {
+      "input": {
+        "perturbations": [
+          {
+            "id": "bad",
+            "startDay": 2,
+            "endDay": 2
+          }
+        ]
+      },
+      "name": "RangeError",
+      "message": "endDay is outside its integer bounds"
+    },
+    {
+      "input": {
+        "perturbations": [
+          {
+            "id": "a",
+            "startDay": 1,
+            "endDay": 3,
+            "activity": {
+              "honest": {
+                "inspect": 0
+              }
+            }
+          },
+          {
+            "id": "b",
+            "startDay": 2,
+            "endDay": 4,
+            "activity": {
+              "honest": {
+                "inspect": 2
+              }
+            }
+          }
+        ]
+      },
+      "name": "Error",
+      "message": "overlapping perturbations assign the same activity field"
+    }
+  ],
+  "runs": [
+    {
+      "config": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "one-step",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "29c73d4a75b9bcc5aaa15d85199cf549aebfbca14bbd25a39033c4c7d2be861e",
+      "events": 1922,
+      "observations": {
+        "inspections": 1228,
+        "suspicious": 286,
+        "noVetoAuthority": 168,
+        "eligibleForUnmodeledXpChallenge": 35
+      },
+      "censored": false,
+      "cases": 17
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "one-step",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "138d7129261efdbcc9a50df29ae1336894d05c17d6a6953a11e7fa369d99d900",
+      "events": 770,
+      "observations": {
+        "inspections": 534,
+        "suspicious": 44,
+        "noVetoAuthority": 27,
+        "eligibleForUnmodeledXpChallenge": 7
+      },
+      "censored": false,
+      "cases": 7
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "one-step",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "ff1620d05d334b4a5601c786cbc0ff3f17bb5b36e28b7db3b825b247d2c0f7fd",
+      "events": 1950,
+      "observations": {
+        "inspections": 1228,
+        "suspicious": 286,
+        "noVetoAuthority": 168,
+        "eligibleForUnmodeledXpChallenge": 35
+      },
+      "censored": false,
+      "cases": 17
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "one-step",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "2e721fd8d3306f1996b7232b099efa2794197fc1d1ebfd1ed8395780d3308c57",
+      "events": 781,
+      "observations": {
+        "inspections": 534,
+        "suspicious": 44,
+        "noVetoAuthority": 27,
+        "eligibleForUnmodeledXpChallenge": 7
+      },
+      "censored": false,
+      "cases": 7
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "3855862cf14d96443ac6f1898d51ba1d51f344a84e757160602112529cc07293",
+      "events": 1909,
+      "observations": {
+        "inspections": 1121,
+        "suspicious": 334,
+        "noVetoAuthority": 252,
+        "eligibleForUnmodeledXpChallenge": 102
+      },
+      "censored": false,
+      "cases": 28
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "9625705232bafb4625a1fe3333c6788e52a09005d8f3c493b5ccc92017cf1290",
+      "events": 2898,
+      "observations": {
+        "inspections": 337,
+        "suspicious": 103,
+        "noVetoAuthority": 81,
+        "eligibleForUnmodeledXpChallenge": 19
+      },
+      "censored": false,
+      "cases": 17
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "e2e4bf5c82e65a72c8f14f71a69fbaf58147e3b98c793c640e91a1b95ab2279d",
+      "events": 2043,
+      "observations": {
+        "inspections": 1121,
+        "suspicious": 334,
+        "noVetoAuthority": 252,
+        "eligibleForUnmodeledXpChallenge": 102
+      },
+      "censored": false,
+      "cases": 28
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "ed120177b2fd5bda2b0e010bb12602fe1c0f8b5b1b289226f319092fbc7300fb",
+      "events": 2962,
+      "observations": {
+        "inspections": 337,
+        "suspicious": 103,
+        "noVetoAuthority": 81,
+        "eligibleForUnmodeledXpChallenge": 19
+      },
+      "censored": false,
+      "cases": 17
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "55c9714a99e5a2c84622eb14bafdf5df2190c14cef7b116c1ffd12b6d35187e3",
+      "events": 1908,
+      "observations": {
+        "inspections": 1067,
+        "suspicious": 330,
+        "noVetoAuthority": 220,
+        "eligibleForUnmodeledXpChallenge": 76
+      },
+      "censored": false,
+      "cases": 23
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "stakeBacking": "unsecured",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "d92a6fd8856844803289895228795f54fedd4118d8f3bfbd49380046b588fd7d",
+      "events": 3862,
+      "observations": {
+        "inspections": 925,
+        "suspicious": 470,
+        "noVetoAuthority": 420,
+        "eligibleForUnmodeledXpChallenge": 131
+      },
+      "censored": false,
+      "cases": 27
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:0",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": false
+        },
+        "social": {
+          "investigation": false,
+          "gossipHops": 0
+        }
+      },
+      "digest": "555f94c7f89a4dabeebb22d23fed2b8a490c80419577b5340b5ea9dbbbe4b7d0",
+      "events": 1996,
+      "observations": {
+        "inspections": 1061,
+        "suspicious": 347,
+        "noVetoAuthority": 238,
+        "eligibleForUnmodeledXpChallenge": 87
+      },
+      "censored": false,
+      "cases": 27
+    },
+    {
+      "config": {
+        "seed": "causal-preservation:1",
+        "initialSize": 20,
+        "attackerShare": 0.2,
+        "days": 18,
+        "includeState": true,
+        "maxSubjects": 1500,
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1,
+            "review": 1
+          },
+          "attackers": {
+            "inspect": 2,
+            "challenge": 1
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "stakeBacking": "reserved",
+          "disputeWindowHours": 48,
+          "excludeLiable": true
+        },
+        "social": {
+          "investigation": true,
+          "gossipHops": 2
+        }
+      },
+      "digest": "ef92939796c416cccf2f4777389ff34ae820188d63dc17d908ef7f711b67790d",
+      "events": 3551,
+      "observations": {
+        "inspections": 929,
+        "suspicious": 496,
+        "noVetoAuthority": 447,
+        "eligibleForUnmodeledXpChallenge": 153
+      },
+      "censored": false,
+      "cases": 30
+    },
+    {
+      "config": {
+        "scenario": "honest-growth",
+        "seed": "config-extraction:honest",
+        "initialSize": 8,
+        "days": 8,
+        "includeState": true
+      },
+      "digest": "96a2e8470131d8b36011569e870e1b3d753e03062af16860eee04b8340c5d460",
+      "events": 240,
+      "observations": {
+        "inspections": 66,
+        "suspicious": 0,
+        "noVetoAuthority": 0,
+        "eligibleForUnmodeledXpChallenge": 0
+      },
+      "censored": false,
+      "cases": 0
+    },
+    {
+      "config": {
+        "scenario": "real-cartel",
+        "seed": "config-extraction:cartel",
+        "initialSize": 8,
+        "days": 8,
+        "includeState": true
+      },
+      "digest": "4e83dbddd5df79b9aff00a7083eee205d3d958e269fed93177771a7d1dd07d42",
+      "events": 292,
+      "observations": {
+        "inspections": 61,
+        "suspicious": 1,
+        "noVetoAuthority": 1,
+        "eligibleForUnmodeledXpChallenge": 0
+      },
+      "censored": false,
+      "cases": 0
+    },
+    {
+      "config": {
+        "seed": "config-extraction:schedules",
+        "initialSize": 8,
+        "days": 8,
+        "includeState": true,
+        "deviants": {
+          "share": 0.25,
+          "honest": {
+            "activity": {
+              "inspect": 0
+            },
+            "schedule": [
+              {
+                "startDay": 2,
+                "endDay": 4,
+                "activity": {
+                  "selfId": 0.4
+                }
+              }
+            ]
+          }
+        },
+        "perturbations": [
+          {
+            "id": "pause-growth",
+            "startDay": 4,
+            "endDay": 6,
+            "activity": {
+              "honest": {
+                "invite": 0
+              },
+              "attackers": {
+                "guarantee": 0
+              }
+            }
+          }
+        ],
+        "policy": {
+          "xpFinality": "immediate",
+          "spendMaturityHours": 72,
+          "conversionMaturityHours": 168,
+          "invitationFreezeHours": 0,
+          "linkBreakXp": "keep"
+        },
+        "ablations": {
+          "withholdGuarantorXp": true,
+          "fixedInvitationThreshold": 1,
+          "randomGuaranteeTargets": true
+        },
+        "social": {
+          "scope": "acquaintances",
+          "strangerRate": 0.1,
+          "verification": true
+        }
+      },
+      "digest": "a2d0ce7cd4b5d32f3bc4939e210cee7251945a521080951bf3eeec00cbda911d",
+      "events": 288,
+      "observations": {
+        "inspections": 42,
+        "suspicious": 1,
+        "noVetoAuthority": 0,
+        "eligibleForUnmodeledXpChallenge": 0
+      },
+      "censored": false,
+      "cases": 0
+    },
+    {
+      "config": {
+        "seed": "config-extraction:censor",
+        "initialSize": 6,
+        "days": 5,
+        "maxActions": 3,
+        "includeState": true
+      },
+      "digest": "4761399eeaab576e8ed8d3933bcc2bd1c379387a82d1969b3bb5294c24536c9e",
+      "events": 9,
+      "observations": {
+        "inspections": 0,
+        "suspicious": 0,
+        "noVetoAuthority": 0,
+        "eligibleForUnmodeledXpChallenge": 0
+      },
+      "censored": true,
+      "cases": 0
+    }
+  ],
+  "historicalFilesUnchanged": 207,
+  "equivalentExceptProvenance": true,
+  "serializedBytesIdenticalExceptProvenance": true,
+  "method": "Reference archived from the named commit. Compare all run fields except provenance plus read-only ordered event capture; no generator/key-layout changes, timing claim or historical confirmation replay."
+}

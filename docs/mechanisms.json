@@ -545,7 +545,7 @@
         "scope": "initial world/run",
         "status": "research-assumption",
         "meaning": "Choose scenario, rounded initial attacker count and topology; genesis acquisition is unpriced. Requested/evolving shares and humans/subjects differ.",
-        "provenance": "src/experiment.mjs DEFAULTS/initialization; docs/experiments.en.md",
+        "provenance": "src/experiment-config.mjs DEFAULTS; src/experiment.mjs initialization; docs/experiments.en.md",
         "mechanisms": [
           "M01",
           "M06",
@@ -573,7 +573,7 @@
         "scope": "declared horizon",
         "status": "intervention",
         "meaning": "Exposure endpoint, not the last retained row or endogenous lifetime.",
-        "provenance": "src/experiment.mjs DEFAULTS; docs/discovery.en.md",
+        "provenance": "src/experiment-config.mjs DEFAULTS; docs/discovery.en.md",
         "mechanisms": [
           "M06",
           "M10"
@@ -618,7 +618,7 @@
         "scope": "run computation",
         "status": "intervention",
         "meaning": "Resource safety censors, not endogenous carrying capacity or economic exhaustion.",
-        "provenance": "src/experiment.mjs DEFAULTS; src/effort.mjs",
+        "provenance": "src/experiment-config.mjs DEFAULTS; src/effort.mjs",
         "mechanisms": [
           "M06"
         ]
@@ -664,7 +664,7 @@
         "scope": "cohort/action-specific opportunity",
         "status": "calibration-target",
         "meaning": "Respectively fresh-act attempt, authorized suspicious response, eligible challenge, pending-invitation review, ladder defense, eligible cashout and conversion. Fixed rates do not adapt to outcomes.",
-        "provenance": "src/experiment.mjs DEFAULT_ACTIVITY/activityFrom",
+        "provenance": "src/experiment-config.mjs DEFAULT_ACTIVITY/activityOverrides",
         "mechanisms": [
           "M01",
           "M02",
@@ -684,7 +684,7 @@
         "scope": "cohort/day",
         "status": "calibration-target",
         "meaning": "Demand for each named action; floor(rate)+Bernoulli(fraction), not Poisson. More subjects increase workload, not free operator capacity.",
-        "provenance": "src/experiment.mjs DEFAULT_ACTIVITY/actionsAtRate",
+        "provenance": "src/experiment-config.mjs DEFAULT_ACTIVITY; src/experiment.mjs actionsAtRate",
         "mechanisms": [
           "M02",
           "M06",
@@ -699,7 +699,7 @@
         "scope": "cohort/run",
         "status": "calibration-target",
         "meaning": "Finite work resources; denial is economic exhaustion, not maxActions censoring.",
-        "provenance": "src/effort.mjs; src/experiment.mjs budget normalization",
+        "provenance": "src/effort.mjs; src/experiment-config.mjs budget normalization",
         "mechanisms": [
           "M04",
           "M06",
@@ -731,7 +731,7 @@
         "scope": "initial operator subset",
         "status": "research-assumption",
         "meaning": "Alternative strategy subset; omitted activities inherit default cohort activity, not configured conformist behavior.",
-        "provenance": "src/experiment.mjs deviantsFrom/initialization",
+        "provenance": "src/experiment-config.mjs deviantsFrom; src/experiment.mjs initialization",
         "mechanisms": [
           "M08"
         ]
@@ -744,7 +744,7 @@
         "scope": "half-open intervention windows",
         "status": "intervention",
         "meaning": "Exogenously alters named cohort actions; no endogenous learning. Activity units match the activity inventory.",
-        "provenance": "src/experiment.mjs perturbationsFrom; docs/controls.en.md",
+        "provenance": "src/experiment-config.mjs perturbationsFrom; docs/controls.en.md",
         "mechanisms": [
           "M05",
           "M10"
@@ -898,7 +898,7 @@
         "scope": "model/behavior counterfactual",
         "status": "intervention",
         "meaning": "Remove guarantor credit, replace digit threshold, or remove preferential matching independently. Never protocol options.",
-        "provenance": "src/model.mjs DEFAULT_ABLATIONS; src/experiment.mjs EXPERIMENT_ABLATIONS",
+        "provenance": "src/model.mjs DEFAULT_ABLATIONS; src/experiment-config.mjs EXPERIMENT_ABLATIONS",
         "mechanisms": [
           "M01",
           "M06"
@@ -913,7 +913,7 @@
         "scope": "optional procedural reference",
         "status": "research-assumption",
         "meaning": "Enable one-step, instant ladder or timed ladder; all merits institutions remain OPEN.",
-        "provenance": "src/experiment.mjs DEFAULT_DISPUTES; docs/simulator.en.md",
+        "provenance": "src/experiment-config.mjs DEFAULT_DISPUTES; docs/simulator.en.md",
         "mechanisms": [
           "M04",
           "M07"
@@ -1162,7 +1162,7 @@
         "scope": "matching/access",
         "status": "calibration-target",
         "meaning": "Public/acquaintance matching and stranger exception; acquaintance channels are not procedural rights.",
-        "provenance": "src/experiment.mjs socialFrom/acquaintances",
+        "provenance": "src/experiment-config.mjs socialFrom; src/experiment.mjs acquaintances",
         "mechanisms": [
           "M06",
           "M13"

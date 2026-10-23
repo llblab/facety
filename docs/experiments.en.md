@@ -1,6 +1,6 @@
 # Cohort experiments and attack effort
 
-This document owns the research runner in `src/experiment.mjs`, effort accounting in `src/effort.mjs`, and statistical aggregation in `src/trials.mjs`. [The model contract](simulator.en.md) owns protocol abstractions and OPEN-policy defaults.
+This document owns the research runner in `src/experiment.mjs`, its configuration/defaults and daily activity views in `src/experiment-config.mjs`, effort accounting in `src/effort.mjs`, and statistical aggregation in `src/trials.mjs`. [The model contract](simulator.en.md) owns protocol abstractions and OPEN-policy defaults.
 
 ## Reproducible entry points
 
@@ -8,6 +8,8 @@ This document owns the research runner in `src/experiment.mjs`, effort accountin
 - `runExperiment(config)`: Returns one seeded run with its configuration, assumptions, population, outcome, effort, money, observations, impacts, metrics and history.
 - `runTrials(config, { trials, seed, includeRuns })`: Runs pseudo-random replicas with replayable derived seed labels. Full individual runs are optional.
 - `sweepParameter(config, { parameter, values, trials, seed })`: Sweeps a known dotted configuration path such as `attackerShare`, `activity.honest.inspect` or `budgets.attackers`. Every candidate validates before the sweep runs.
+
+Existing callers still import configuration functions and constants from `src/experiment.mjs`; these are identity-preserving re-exports of the configuration owner. The internal normalized `dayActivity` helper is not added to that public facade. The [extraction checkpoint](../studies/2026-10-23-experiment-config/README.md) checks configuration, rejection, API and exact trajectory/event preservation.
 
 See [the root example](../README.md#cohort-and-attack-experiments). Both native ESM APIs and CLI `run`, `trials`, `sweep`, `landscape` and `compare` require no installation.
 

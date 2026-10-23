@@ -195,7 +195,8 @@ Both algorithms receive identical snapshots and queries. Every case is checked a
 - `src/controls.mjs`: Matched counterfactuals, activity schedules, phase differences, censoring-safe uncertainty and finite-window return criteria.
 - `src/discovery.mjs`: Bounded parameter landscapes, raw trajectories, offline reanalysis and exploratory diagnostics.
 - `src/observables.mjs`: Passive macro-state, normalized mixing, admission readiness, Council churn and work increments.
-- `src/experiment.mjs`: Cohort activity, budget-constrained growth, noisy observations, veto responses and evaluator outcomes.
+- `src/experiment.mjs`: Cohort activity, budget-constrained growth, noisy observations, veto responses and evaluator outcomes; preserves the existing configuration API as re-exports.
+- `src/experiment-config.mjs`: Experiment defaults/assumptions, configuration validation, parameter overrides and daily activity views; no scheduler or random draws.
 - `src/effort.mjs`: Exact micro-unit effort budgets, action counters, rejected attempts and setup/maintenance attribution.
 - `src/trials.mjs`: Reproducible replicas, Wilson intervals, censoring bounds and parameter sweeps.
 - `src/model.mjs`: Deterministic subjects, two-sided guarantees, Self-ID, Emitter, invitations, FACY accounting (including reference stake custody), chronological XP, veto-preserving debt recovery, explicit penalties and labeled mechanism ablations.

@@ -10,6 +10,7 @@ This document owns the implemented simulation semantics. The [protocol](facety.p
 
 ```text
 CLI / trial batches / sweeps / games / evidence -> experiment
+experiment -> experiment-config (defaults, normalization, daily activity views)
 experiment -> shared disputes / stake book -> model
 experiment -> generators, metrics, observables, effort
 causal examples -> evidence/sponsor reference + optional journal -> same disputes / model
@@ -175,7 +176,7 @@ Benchmark smoke/differential tests cover all five synthetic topologies, round-tr
 
 ## Bounded causal reference and inventory
 
-The [mechanism chapter](research.en.md#executable-causal-core) owns the explanation; [mechanisms.json](mechanisms.json) owns stocks/flows, normalized experiment-control annotations, return/missing links and simplification records. Canonical examples `examples/causal-walkthroughs.mjs` and `examples/causal-relay.mjs` use `EvidenceRelay`/`CausalJournal` in `src/accountability.mjs`. The disconnected alternative relay/trace/walkthrough prototypes were [removed as dead code](../studies/2026-10-23-dead-code/README.md), not merged into these rules. The retained implementation has 25 source modules; older 28-module artifacts require their original source tree for provenance-exact replay, even though differential execution is unchanged.
+The [mechanism chapter](research.en.md#executable-causal-core) owns the explanation; [mechanisms.json](mechanisms.json) owns stocks/flows, normalized experiment-control annotations, return/missing links and simplification records. Canonical examples `examples/causal-walkthroughs.mjs` and `examples/causal-relay.mjs` use `EvidenceRelay`/`CausalJournal` in `src/accountability.mjs`. The disconnected alternative relay/trace/walkthrough prototypes were [removed as dead code](../studies/2026-10-23-dead-code/README.md), not merged into these rules. The retained implementation has 26 source modules after the [configuration extraction](../studies/2026-10-23-experiment-config/README.md); older 25- or 28-module artifacts require their original source tree for provenance-exact replay. The extraction preserves all checked run fields and ordered events except implementation provenance; this is not a new historical confirmation.
 
 This input-driven exclusive-owner reference has no automatic search or supreme court. Each observation, packaging, route, processed review and formal attempt costs one declared nontransferable work unit. Unavailable/conflicted/capacity-blocked reviews perform no review work; native setup/walkthrough effort is unmeasured (`null`), not free. Reviews have a separate per-day capacity. Current XP/liquid stake is rechecked through the scheduler's strict gate. External actors gain no subject/XP/rights, private access or compensation; no FACY is minted for their work. Source labels and signals establish neither correctness nor statistical independence.
 
