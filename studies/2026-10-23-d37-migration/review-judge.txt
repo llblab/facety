@@ -1,0 +1,62 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+degraded
+
+## Summary
+**The merger is appropriately qualified and internally consistent on the supplied record.** It preserves the reported execution-boundary violation without misclassifying it as an implementation defect, limits implementation conclusions to the reviewed scope, and retains material operational and scientific uncertainties.
+
+This judgment assesses the supplied merger text. The reviewer and verifier primary bodies were not supplied directly to this judge; their references are retained but were not retrieved. Accordingly, fidelity to those primary reports remains **not independently verified**.
+
+## Consensus Findings
+- **Evidence preservation:** The merger retains references for both reviewers and the verifier, identifies its mediated evidence chain, and distinguishes reported verification from work performed by the merger.
+- **Severity calibration:** The degraded status is justified by the disclosed workflow violation. The report does not infer either a code defect from that violation or workflow compliance from passing tests.
+- **Consensus purity:** Agreement is explicitly attributed through the verifier. Reviewer count, startup preflights, and process success are not presented as correctness evidence.
+- **Internal consistency:** Scoped implementation support is compatible with degraded workflow status and unknown repository-wide readiness.
+- **Merge bias:** No material suppression or unsupported escalation is apparent in the supplied synthesis. This is a textual assessment, not a comparison against the unavailable primary bodies.
+
+## Minority Findings
+1. **Execution-boundary violation remains material.** The merger preserves reviewer 2’s reported accidental execution of the synthetic historical-implementation confirmation test, while distinguishing it from replay of stored historical scientific registrations. This distinction must survive normalization.
+
+2. **Overwrite risk remains visible.** The reported ability of CLI `--force` to overwrite an input path is retained as an operational limitation. Its classification as an operator obligation depends on the approved contract as described by the merger; this judge did not independently verify that contract.
+
+3. **Primary-source fidelity is unresolved.** Stable references provide traceability, not proof that every qualification or disagreement in the original reports was preserved.
+
+## Verification
+**Directly assessed:** The supplied merger report, identified as:
+
+- Merger: `ACTOR_EVIDENCE_REF: execution.json#command-008`
+
+**Referenced upstream evidence, not directly inspected by this judge:**
+
+- Reviewer 1: `ACTOR_EVIDENCE_REF: execution.json#command-005`
+- Reviewer 2: `ACTOR_EVIDENCE_REF: execution.json#command-006`
+- Verifier: `ACTOR_EVIDENCE_REF: execution.json#command-007`
+
+The merger reports six passing policy tests and three passing exact-name-selected tests. Those results, source hashes, and source-level conclusions remain **attributed verification evidence**, not independently reproduced judge findings.
+
+This judge read the applicable review and actor skills. No repository source was inspected, no tests were executed, and no files were written.
+
+## Judge Notes
+| Rubric | Judgment |
+|---|---|
+| Evidence preservation | Adequate in the supplied text; fidelity to primary bodies remains unverified |
+| Severity calibration | Appropriate separation of workflow noncompliance, implementation findings, and unknowns |
+| Consensus purity | Attribution boundaries are explicit; no invented independent corroboration apparent |
+| Internal consistency | No material contradiction found |
+| Merge bias | No material bias apparent; primary-source comparison unavailable |
+
+**Disposition:** Accept the synthesis as a **degraded, bounded handoff**, not as unqualified implementation acceptance or repository readiness approval. No substantive rewrite is required on the supplied record.
+
+## Risks
+- Downstream summaries could incorrectly promote attributed findings into independently verified judge conclusions.
+- Repeated summaries of one verifier report do not create additional independent corroboration.
+- Passing focused tests do not establish evidence authenticity, scientific validity, or repository-wide regression safety.
+- Omitting either the execution violation or overwrite limitation would materially weaken the retained report.
+
+## Next Actions
+1. Preserve **degraded** status and the distinction between implementation support and workflow noncompliance.
+2. Retain all four evidence references alongside this judgment; do not replace primary reports with summaries.
+3. If primary-source fidelity is required for acceptance, inspect the exact retained reviewer and verifier bodies before upgrading confidence.
+4. Do not initiate implementation remediation solely from this synthesis: no implementation defect is established here.
+5. Do not rerun the prohibited historical-implementation confirmation test. Obtain separate authorization for broader validation.

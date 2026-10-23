@@ -1,0 +1,76 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+degraded
+
+## Summary
+**The claim is supported within the reviewed implementation and approved compatibility envelope.** Direct source inspection and independently executed focused tests found no supported inference or compatibility defect in the D37/D38 transition.
+
+The degraded status preserves reviewer 2’s disclosed execution-boundary violation; it is **not a finding of an implementation defect**. This result does not establish repository-wide readiness or evidence authenticity.
+
+## Consensus Findings
+Both usable reviewer reports agree on the following conclusions, independently corroborated here:
+
+- **A uses the complete registered family.** `src/evidence.mjs:298–334` evaluates every registered claim/context component and computes `min(1, M × minimum raw contradiction p-value)`. Unknown observations do not reduce `M`.
+- **Support and raw flags retain their meanings.** Support remains the intersection-union decision with the maximum component support p-value. Raw component contradiction flags and the `contradicted` list are preserved separately from calibrated aggregate contradiction.
+- **Legacy behavior remains the default.** `src/evidence.mjs:172–209` preserves the original v1 digest layout and infers the legacy method. Implementation-drift permission does not select A, and ordinary analysis rejects method overrides.
+- **Explicit reanalysis is separately identified.** `reanalyzeConfirmation` checks registration and confirmation method/schema binding, returns `facety-reanalysis/v1`, identifies registered/requested methods and supplied source content, and does not mutate its inputs.
+- **Native/CLI compatibility matches the approved contract.** CLI analysis without the policy flag returns bare analysis; an explicit policy flag returns the separate artifact. Mixed study rows retain method/artifact identity, while Holm adjustment remains support-only.
+
+These are bounded implementation conclusions, not acceptance inferred from branch count or successful process exits.
+
+## Minority Findings
+- **Preserved workflow deviation:** Reviewer 2 reports that its test filter accidentally executed a newly created synthetic historical-implementation confirmation test (`test/evidence.test.mjs:71`). No stored historical scientific registration was reported replayed. This violates the review’s execution boundary and prevents unqualified workflow acceptance. That test was not rerun here.
+- **Preserved operational limitation:** CLI `--force` can overwrite an original input path. The approved documentation explicitly requires a new output path; the implementation does not enforce source-path protection. This is an operator obligation under the approved contract, not a newly established compatibility defect.
+
+## Verification
+Inspected:
+
+- `AGENTS.md` and applicable coding/review/actor skills.
+- All six named source/test files.
+- The scoped tracked diff against `77ba07c`, plus the two untracked policy tests.
+- `docs/evidence.en.md`’s statistical and D38 compatibility contract.
+- Both exact reviewer primary bodies, resolved through the supplied execution references:
+  - `ACTOR_EVIDENCE_REF: execution.json#command-005`
+    - `captures/command-005/attempt-001/stdout.log`
+  - `ACTOR_EVIDENCE_REF: execution.json#command-006`
+    - `captures/command-006/attempt-001/stdout.log`
+
+Independently executed:
+
+1. `node --test test/evidence-policy.test.mjs test/evidence-policy-cli.test.mjs`
+   - **6 passed, 0 failed.**
+   - Covers synthetic retained-value family decisions, method binding, historical default/reanalysis separation, input preservation, transport rejection, and CLI behavior.
+
+2. Anchored exact-name selection of three tests in `test/evidence.test.mjs` and `test/cli.test.mjs`:
+   - Native registered-design verification.
+   - Exact claim decisions and unknown handling.
+   - CLI historical retained-value reanalysis.
+   - **3 passed, 0 failed.**
+   - No historical `confirmHypothesis` call was executed here.
+
+All six scoped file hashes were unchanged across this verification. The implementation hashes also match both reviewers’ reports:
+
+- `src/evidence.mjs`: `bcbd8a09363ceba3365f14e9d6b9e6ca60b891bf0b0ced9099d1b08d4c21bea2`
+- `bin/facety.mjs`: `a0aa56d19fad161a45f40c534d8e1522653cd94c0e1be114a8143613430b50c1`
+
+No repository files were written, committed, or pushed.
+
+## Judge Notes
+- **Proven within inspected scope:** The implementation follows the approved A/legacy/reanalysis invariants, with passing focused regression evidence.
+- **Disproven:** No material part of the implementation claim was contradicted. An assertion that the entire review workflow was compliant would be contradicted by reviewer 2’s disclosure.
+- **Unknown:** Repository-wide regression status, observation authenticity, seed/censoring provenance, and real-world scientific validity.
+- **Evidence qualification:** Both reviewer primary reports were available and inspected. Reviewer 1’s reported 180 independent numerical checks remain attributed reviewer evidence; their underlying session/tool transcript was not independently audited here.
+- The prior no-tools run remains **insufficient_data**, not substantive acceptance evidence. Startup preflights likewise do not prove correctness.
+- No downstream merger or judge result exists among the supplied evidence; none is assumed.
+
+## Risks
+- Contradiction calibration depends on valid marginal tests and supplied observations.
+- Error control is per hypothesis and contradiction direction—not joint support/refutation or cross-hypothesis contradiction control.
+- Method tags and source digests identify supplied content; they do not authenticate it.
+- The concurrent migration-study directory was outside this verification scope and supplies no acceptance evidence here.
+
+## Next Actions
+Retain both original reviewer reports and this verification, including the degraded workflow qualification, for downstream merger/judgment.
+
+No implementation remediation is supported by the inspected evidence. Broader readiness requires separately authorized validation; do not rerun the prohibited historical-implementation confirmation test under this review contract.

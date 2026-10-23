@@ -97,6 +97,8 @@ test('CLI historical reanalysis permits a valid old implementation but never a c
   }));
   assert.equal(facety('register', spec, '--out', registrationFile).code, 0);
   const historical = JSON.parse(readFileSync(registrationFile, 'utf8'));
+  historical.schema = 'facety-hypothesis/v1';
+  delete historical.analysisPolicy;
   historical.implementation.digest = '0'.repeat(64);
   historical.hash = digestOf({ schema: historical.schema, spec: historical.spec,
     implementation: historical.implementation.digest, randomness: historical.randomness });
@@ -131,6 +133,10 @@ test('CLI registration, confirmation and offline reanalysis agree', t => {
   assert.equal(facety('register', spec, '--out', registration).code, 0);
   assert.equal(facety('confirm', registration, '--workers', '2', '--out', confirmation).code, 0);
   const confirmed = JSON.parse(readFileSync(confirmation, 'utf8'));
+  assert.equal(JSON.parse(readFileSync(registration, 'utf8')).schema, 'facety-hypothesis/v2');
+  assert.equal(confirmed.schema, 'facety-confirmation/v2');
+  assert.equal(confirmed.analysisPolicy, 'family-contradiction/v1');
+  assert.equal(confirmed.analysis.contradiction.controlled, true);
   const reanalyzed = facety('reanalyze-confirmation', registration, confirmation);
   assert.equal(reanalyzed.code, 0);
   assert.deepEqual(JSON.parse(reanalyzed.stdout), confirmed.analysis);

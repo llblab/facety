@@ -45,7 +45,7 @@ Use the following labels:
 - [Part VIII — Threat Model, Research, and Delivery](#part-viii-threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
 - [Part IX — Condensed Protocol Constitution](#part-ix-condensed-protocol-constitution): the rules and final thesis.
 - [Part X — Network Difficulty and Topology Safeguards](#part-x-network-difficulty-and-topology-safeguards-d33): D33's invitation thresholds, dynamic consuls, independent support, cluster quotas, privacy and explicit conflicts.
-- [Part XI — Research Evidence Contracts](#part-xi-research-evidence-contracts): D37's statistical contradiction promise, distinct from protocol adjudication.
+- [Part XI — Research Evidence Contracts](#part-xi-research-evidence-contracts): D37's statistical contradiction promise and D38's versioned migration, distinct from protocol adjudication.
 - [Appendix A — Decision log and supersession ledger](#appendix-a-decision-log-and-supersession-ledger): dated decisions and what they replaced.
 - [Appendix B — Sources and confidence](#appendix-b-sources-and-confidence): scope and evidence limits.
 
@@ -2086,7 +2086,7 @@ This decision changes the specification only. A future reference implementation 
 
 ## 47. Calibrated aggregate contradiction in simulator research (D37)
 
-**D37 — [SELECTED research contract; implementation pending], documented 2026-10-23.** Source: the owner's Telegram reply “A” to the [E1 decision packet](../studies/2026-10-23-e1-contract/README.md), selecting calibrated aggregate refutation rather than diagnostic-only component flags. This governs statistical interpretation of simulator research, not human identity adjudication, Council voting or protocol sanctions.
+**D37 — [SELECTED research contract; implemented for new v2 registrations through D38], documented 2026-10-23.** Source: the owner's Telegram reply “A” to the [E1 decision packet](../studies/2026-10-23-e1-contract/README.md), selecting calibrated aggregate refutation rather than diagnostic-only component flags. This governs statistical interpretation of simulator research, not human identity adjudication, Council voting or protocol sanctions.
 
 For one registered hypothesis, the contradiction family MUST include every registered **claim × context**, including presence, necessity and alternative-control claims. Let `M` be that family's size and `p_contradiction,j` each component's raw lower-tail p-value. The aggregate contradiction p-value MUST be `min(1, M × min_j p_contradiction,j)`, or the identical minimum of Holm-adjusted component p-values. It MUST be at most the registered `alpha` before the aggregate is called `contradicted`. Holm's later steps MAY be reported for component attribution, but raw and adjusted quantities MUST remain distinguishable; that reporting does not change the aggregate rule.
 
@@ -2094,7 +2094,19 @@ The support rule MUST remain the existing intersection-union rule: every compone
 
 The selected error guarantee is **per hypothesis and per contradiction direction**, conditional on valid marginal tests and the declared replica/seed model. It is not a joint support-plus-contradiction guarantee and not a cross-hypothesis/study guarantee. The existing support-only `adjustStudy` contract MUST NOT be represented as contradiction correction. This selects neither evidence authentication nor the separate offline retained-input trust model, and proves no empirical error rate, personhood, useful contribution or attack resistance.
 
-**Runtime and history boundary — [OPEN implementation contract].** The native engine still uses the labeled legacy unadjusted any-component contradiction rule. D37 selects its target semantics, not an already completed repair. Explicit analysis-method/version binding and historical native/CLI compatibility MUST be approved before migration; implementation-drift permission alone MUST NOT be treated as permission to reinterpret a historical registered design. Historical artifacts MUST remain unchanged. Intentionally requested new-method reanalysis MUST identify the changed method in a separate result rather than claiming retroactive preregistration or automatically replaying confirmation. The [evidence contract](evidence.en.md#proposed-migration-approval-pending) owns the proposed rollout; it is not selected by this decision. D33–D36 topology and D34 liability/correction gates remain unchanged.
+**Runtime and history boundary.** D37's initial record selected the target without approving migration; D38 subsequently approves and implements the versioned transition in §48. New v2 registrations use the controlled rule; old v1 registrations deliberately retain the labeled unadjusted method by default. Implementation-drift permission alone MUST NOT switch methods. Historical artifacts MUST remain unchanged. Intentionally requested new-method reanalysis MUST identify the changed method in a separate result rather than claiming retroactive preregistration or automatically replaying confirmation. The [evidence contract](evidence.en.md#versioned-analysis-and-reanalysis-d38) owns the implemented API. D33–D36 topology and D34 liability/correction gates remain unchanged.
+
+## 48. Versioned analysis and historical compatibility (D38)
+
+**D38 — [SELECTED implementation contract], documented 2026-10-23.** Source: the owner's explicit approval of versioned A for new registrations/results, legacy-by-default old v1 JSON in native/CLI analysis, and separately identified explicit A reanalysis without rewriting original registrations/artifacts or automatically running historical studies.
+
+New registrations MUST use `facety-hypothesis/v2` and bind `analysisPolicy: "family-contradiction/v1"` into the design digest and reserved namespace. New confirmations MUST identify `facety-confirmation/v2` and that policy. Ordinary native analysis MUST use the verified registration's bound method; it MUST NOT accept an unrecorded method override.
+
+Historical `facety-hypothesis/v1` digests and their namespaces MUST remain verifiable with their original hash layout. V1's inferred method is `unadjusted-contradiction/v1`: old numeric/statistical classifications stay legacy by default, including in CLI offline analysis. A v1 registration MUST NOT acquire a policy field that was not bound by its digest. The existing explicit permission for implementation drift MAY allow valid historical input; it MUST NOT relax design/namespace/randomness integrity or change its method.
+
+Applying A to old retained data MUST require an explicit separate reanalysis request. Its `facety-reanalysis/v1` result MUST identify the original registration, original/bound and requested methods, current implementation and source-content digest; it MUST NOT claim to be the original confirmation or rewrite/re-digest its registration. No such request may silently launch model runs. The native `reanalyzeConfirmation` API and CLI `--analysis-policy family-contradiction/v1` provide this path. Output method tags and artifact kind MUST remain visible in mixed study summaries; support-only Holm correction remains support-only.
+
+This changes the statistical contract and its transport, not protocol economics or the separate trust/authentication boundary for supplied scalar rows. Source fingerprints change, so old results still require their original source/method for exact reproduction. Frozen synthetic compatibility inputs are regression evidence, not a replay of historical scientific studies.
 
 ---
 
@@ -2160,7 +2172,11 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 ### Research contradiction semantics selected 2026-10-23
 
-**D37 — [SELECTED research contract; implementation pending], §47.** Source: the owner's explicit Telegram selection “A” after the calibrated-refutation versus diagnostic-flag comparison. Aggregate contradiction MUST control the one-hypothesis, one-direction registered claim/context family through `min(1, M × min(raw contradiction p))`; support remains the existing maximum-p-value intersection-union rule. Unknowns do not shrink the family; raw quantities and historical artifacts are preserved. This closes E1's inferential-promise choice, not method/version/native/CLI migration, joint-direction or cross-hypothesis control, offline input trust, or a protocol-economic rule. The unadjusted native reference remains explicitly labeled until the compatibility contract is approved and behavior is separately validated; no historical confirmation is replayed.
+**D37 — [SELECTED research contract; implemented for new v2 through D38], §47.** Source: the owner's explicit Telegram selection “A” after the calibrated-refutation versus diagnostic-flag comparison. Aggregate contradiction MUST control the one-hypothesis, one-direction registered claim/context family through `min(1, M × min(raw contradiction p))`; support remains the existing maximum-p-value intersection-union rule. Unknowns do not shrink the family; raw quantities and historical artifacts are preserved. This closes E1's inferential-promise choice, not method/version/native/CLI migration, joint-direction or cross-hypothesis control, offline input trust, or a protocol-economic rule. At this decision's initial record the unadjusted native reference remained pending compatibility approval; D38 subsequently supplies that transition, keeping v1 legacy on purpose. No historical confirmation is replayed.
+
+### Versioned research migration approved 2026-10-23
+
+**D38 — [SELECTED implementation contract], §48.** Source: the owner's approval of the concrete transition. New v2 registrations/confirmations bind A's versioned method; existing v1 JSON keeps its original digest and legacy statistics by default. Explicit new-method reanalysis produces a separate identified artifact, not a rewritten registration or retroactive confirmation. Implementation permission is not method permission; method identity travels through native/CLI/study output. No historical study is run automatically, no scalar evidence authentication is inferred, and D33–D36/D34 protocol gates remain unchanged.
 
 ### Earlier supersessions
 

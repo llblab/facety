@@ -6,7 +6,7 @@ import { runExperiment } from '../src/experiment.mjs';
 import { runTrials, sweepParameter } from '../src/trials.mjs';
 import { runLandscape, runLandscapeParallel, diagnoseLandscape } from '../src/discovery.mjs';
 import { compareExperiments, analyzePairs } from '../src/controls.mjs';
-import { registerHypothesis, confirmHypothesis, analyzeConfirmation, verifyRegistration, adjustStudy } from '../src/evidence.mjs';
+import { registerHypothesis, confirmHypothesis, reanalyzeConfirmation, adjustStudy } from '../src/evidence.mjs';
 import { runGame, runGameGrid, analyzeGame, sweepValuation, assessViability } from '../src/games.mjs';
 import { createGraphArtifact, extractGraphArtifact, mutateGraphArtifact, searchGraphArtifact, verifyGraphArtifact, benchmarkGraphArtifact } from '../src/graph-workbench.mjs';
 
@@ -25,6 +25,7 @@ Evidence (preregistered confirmation on reserved seeds):
   register <hypothesis.json>            Normalize, validate and digest a design.
   confirm <registration.json>           Run the registered design (--workers).
   reanalyze-confirmation <registration.json> <confirmation.json>
+    [--analysis-policy family-contradiction/v1]   Explicit method request emits a separate reanalysis artifact.
   study <confirmation.json ...>         Holm adjustment across hypotheses.
 
 Strategy games (payoff facts from simulation, utilities from explicit valuations):
@@ -75,12 +76,11 @@ const COMMANDS = {
   },
   register: ([file]) => registerHypothesis(read(file)),
   confirm: ([file], options) => confirmHypothesis(read(file), { workers: workers(options.workers), allowImplementationChange: options['allow-implementation-change'] }),
-  'reanalyze-confirmation': ([registrationFile, confirmationFile]) => {
-    const registration = read(registrationFile);
-    verifyRegistration(registration, { allowImplementationChange: true });
-    const confirmation = read(confirmationFile);
-    if (confirmation.registrationHash !== registration.hash) throw new Error('confirmation does not belong to this registration');
-    return analyzeConfirmation(registration, confirmation.values, { allowImplementationChange: true });
+  'reanalyze-confirmation': ([registrationFile, confirmationFile], options) => {
+    const result = reanalyzeConfirmation(read(registrationFile), read(confirmationFile), {
+      allowImplementationChange: true, analysisPolicy: options['analysis-policy'],
+    });
+    return options['analysis-policy'] === undefined ? result.analysis : result;
   },
   study: files => adjustStudy(files.map(read)),
   game: ([file], options) => runGame(read(file), { workers: workers(options.workers) }),
@@ -107,7 +107,7 @@ async function main(argv) {
     args: argv, allowPositionals: true,
     options: {
       out: { type: 'string' }, force: { type: 'boolean', default: false }, workers: { type: 'string' },
-      'allow-implementation-change': { type: 'boolean', default: false }, help: { type: 'boolean', default: false },
+      'allow-implementation-change': { type: 'boolean', default: false }, 'analysis-policy': { type: 'string' }, help: { type: 'boolean', default: false },
     },
   });
   const [command, ...args] = positionals;
@@ -116,6 +116,7 @@ async function main(argv) {
     return options.help ? 0 : 2;
   }
   if (!Object.hasOwn(COMMANDS, command)) throw new Error('unknown command: ' + command + '\n\n' + USAGE);
+  if (options['analysis-policy'] !== undefined && command !== 'reanalyze-confirmation') throw new Error('--analysis-policy is only for explicit reanalyze-confirmation');
   if (options.out && existsSync(options.out) && !options.force) throw new Error('refusing to overwrite existing output: ' + options.out);
   const result = await COMMANDS[command](args, options);
   const json = JSON.stringify(result, null, 2) + '\n';

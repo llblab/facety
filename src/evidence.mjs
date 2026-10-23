@@ -7,8 +7,13 @@ import { binomialUpperTail, binomialLowerTail, clopperPearson, holm, bootstrapMe
 import { canonicalJson, digestOf, implementationDigest } from './provenance.mjs';
 import { mapTasks } from './parallel.mjs';
 
-export const HYPOTHESIS_SCHEMA = 'facety-hypothesis/v1';
-export const CONFIRMATION_SCHEMA = 'facety-confirmation/v1';
+export const HYPOTHESIS_SCHEMA = 'facety-hypothesis/v2';
+export const CONFIRMATION_SCHEMA = 'facety-confirmation/v2';
+export const LEGACY_HYPOTHESIS_SCHEMA = 'facety-hypothesis/v1';
+export const LEGACY_CONFIRMATION_SCHEMA = 'facety-confirmation/v1';
+export const ANALYSIS_POLICY = 'family-contradiction/v1';
+export const LEGACY_ANALYSIS_POLICY = 'unadjusted-contradiction/v1';
+export const REANALYSIS_SCHEMA = 'facety-reanalysis/v1';
 export const CLAIM_ROLES = Object.freeze(['presence', 'necessity', 'alternative']);
 export const SUMMARIES = Object.freeze(['endpoint', 'mean', 'min', 'max', 'change', 'trend']);
 const OUTCOME_METRIC = 'outcome.success';
@@ -164,8 +169,9 @@ function normalizeSpec(spec) {
   };
 }
 
-function registrationDigest(spec, implementation, randomness) {
-  return digestOf({ schema: HYPOTHESIS_SCHEMA, spec, implementation: implementation.digest, randomness });
+function registrationDigest(spec, implementation, randomness, schema = HYPOTHESIS_SCHEMA, analysisPolicy = ANALYSIS_POLICY) {
+  return digestOf({ schema, spec, implementation: implementation.digest, randomness,
+    ...(schema === HYPOTHESIS_SCHEMA ? { analysisPolicy } : {}) });
 }
 
 // Freezes the full test design before any confirmation run. The digest binds the design,
@@ -177,22 +183,25 @@ export function registerHypothesis(spec) {
   const confirmationSeed = 'confirm:' + hash;
   if (normalized.exploration.seeds.some(seed => seed.includes(hash))) fail('exploration seeds overlap the reserved confirmation namespace');
   return {
-    schema: HYPOTHESIS_SCHEMA, hash, spec: normalized, implementation, randomness: { ...RANDOMNESS_POLICY }, confirmationSeed,
+    schema: HYPOTHESIS_SCHEMA, analysisPolicy: ANALYSIS_POLICY, hash, spec: normalized, implementation, randomness: { ...RANDOMNESS_POLICY }, confirmationSeed,
     plannedRuns: normalized.replicas * normalized.contexts.length * Object.keys(normalized.arms).length,
   };
 }
 
 export function verifyRegistration(registration, { allowImplementationChange = false } = {}) {
-  record(registration, ['schema', 'hash', 'spec', 'implementation', 'randomness', 'confirmationSeed', 'plannedRuns'], 'registration');
-  if (registration.schema !== HYPOTHESIS_SCHEMA) fail('unsupported registration schema');
+  const legacy = registration?.schema === LEGACY_HYPOTHESIS_SCHEMA;
+  if (!legacy && registration?.schema !== HYPOTHESIS_SCHEMA) fail('unsupported registration schema');
+  record(registration, ['schema', 'hash', 'spec', 'implementation', 'randomness', 'confirmationSeed', 'plannedRuns', ...(legacy ? [] : ['analysisPolicy'])], 'registration');
+  const analysisPolicy = legacy ? LEGACY_ANALYSIS_POLICY : registration.analysisPolicy;
+  if (!legacy && analysisPolicy !== ANALYSIS_POLICY) fail('unsupported registered analysis policy');
   const spec = normalizeSpec(registration.spec);
   if (canonicalJson(spec) !== canonicalJson(registration.spec)) fail('registered specification is not in normalized form');
-  if (registrationDigest(spec, registration.implementation, registration.randomness) !== registration.hash || registration.confirmationSeed !== 'confirm:' + registration.hash) fail('registration digest does not match its content');
+  if (registrationDigest(spec, registration.implementation, registration.randomness, registration.schema, analysisPolicy) !== registration.hash || registration.confirmationSeed !== 'confirm:' + registration.hash) fail('registration digest does not match its content');
   if (canonicalJson(registration.randomness) !== canonicalJson(RANDOMNESS_POLICY)) fail('registered randomness policy differs from the current implementation');
   const current = implementationDigest();
   const implementationMatched = current.digest === registration.implementation.digest;
   if (!implementationMatched && !allowImplementationChange) fail('implementation changed since registration; re-register or pass allowImplementationChange');
-  return { spec, implementationMatched, implementation: current };
+  return { spec, analysisPolicy, implementationMatched, implementation: current };
 }
 
 function plannedTasks(registration) {
@@ -222,8 +231,10 @@ export function runStatisticsTask(task) {
   return { values: Object.fromEntries(Object.entries(task.statistics).map(([name, statistic]) => [name, runStatistic(run, statistic)])), censored: run.outcome.censored, seed: run.config.seed };
 }
 
-export async function confirmHypothesis(registration, { workers = 0, allowImplementationChange = false } = {}) {
-  const { spec, implementationMatched, implementation } = verifyRegistration(registration, { allowImplementationChange });
+export async function confirmHypothesis(registration, options = {}) {
+  record(options, ['workers', 'allowImplementationChange'], 'confirmation options');
+  const { workers = 0, allowImplementationChange = false } = options;
+  const { spec, analysisPolicy, implementationMatched, implementation } = verifyRegistration(registration, { allowImplementationChange });
   const tasks = plannedTasks(registration);
   const results = await mapTasks(tasks, { workers, module: new URL('./evidence.mjs', import.meta.url).href, exportName: 'runStatisticTask' });
   const values = {};
@@ -233,7 +244,8 @@ export async function confirmHypothesis(registration, { workers = 0, allowImplem
     values[task.context][task.arm][task.replica] = results[index];
   });
   return {
-    schema: CONFIRMATION_SCHEMA, registrationHash: registration.hash, hypothesis: spec.id, statement: spec.statement,
+    schema: registration.schema === LEGACY_HYPOTHESIS_SCHEMA ? LEGACY_CONFIRMATION_SCHEMA : CONFIRMATION_SCHEMA,
+    analysisPolicy, registrationHash: registration.hash, hypothesis: spec.id, statement: spec.statement,
     implementation, implementationMatched, randomness: { ...RANDOMNESS_POLICY }, values,
     analysis: analyzeConfirmation(registration, values, { allowImplementationChange }),
   };
@@ -276,9 +288,14 @@ function testClaim(claim, rows, { alpha, seed }) {
   };
 }
 
-// Pure reanalysis verifies the registered design; only implementation drift has an explicit override.
-export function analyzeConfirmation(registration, values, { allowImplementationChange = false } = {}) {
-  const { spec } = verifyRegistration(registration, { allowImplementationChange });
+// Ordinary analysis is bound to the verified registration's method. Method changes need a separate artifact.
+export function analyzeConfirmation(registration, values, options = {}) {
+  record(options, ['allowImplementationChange'], 'analysis options; use reanalyzeConfirmation for an explicit method change');
+  const { spec, analysisPolicy } = verifyRegistration(registration, options);
+  return analyzeValues(registration, values, spec, analysisPolicy);
+}
+
+function analyzeValues(registration, values, spec, analysisPolicy) {
   const tests = [];
   for (const context of spec.contexts) {
     const byArm = values[context.id];
@@ -291,9 +308,15 @@ export function analyzeConfirmation(registration, values, { allowImplementationC
   }
   const supported = tests.every(test => test.supported);
   const contradicted = tests.filter(test => test.contradicted).map(test => ({ context: test.context, claim: test.claim, role: test.role }));
-  const verdict = supported ? 'supported' : contradicted.length ? 'contradicted' : 'inconclusive';
+  const rawMinimumPValue = Math.min(...tests.map(test => test.contradictionPValue));
+  const controlled = analysisPolicy === ANALYSIS_POLICY;
+  const contradictionPValue = controlled ? Math.min(1, tests.length * rawMinimumPValue) : null;
+  const rejected = controlled ? contradictionPValue <= spec.alpha : contradicted.length > 0;
+  const verdict = supported ? 'supported' : rejected ? 'contradicted' : 'inconclusive';
   return {
-    alpha: spec.alpha,
+    analysisPolicy, alpha: spec.alpha,
+    contradiction: { familySize: tests.length, rawMinimumPValue, pValue: contradictionPValue, controlled,
+      scope: controlled ? 'one-hypothesis/contradiction-direction' : 'unadjusted-component-flags' },
     method: 'Exact one-sided binomial test per claim and context of P(contrast satisfies the claim) > declared probability; replicas are independent seeds; unknown values count against the tested direction. The hypothesis is an intersection-union test: its p-value is the maximum component p-value, valid at alpha without within-hypothesis correction.',
     tests,
     pValue: Math.max(...tests.map(test => test.pValue)),
@@ -303,9 +326,36 @@ export function analyzeConfirmation(registration, values, { allowImplementationC
     cautions: [
       'Support is conditional on the declared scenario, policies, ablation semantics, horizon, contexts and replica distribution; it is not a real-world claim.',
       'A supported mechanism means the effect appeared, required the ablated mechanism and survived the named alternative controls; unnamed explanations remain untested.',
-      'Inconclusive is not evidence of absence. A contradicted claim refutes the registered design in this model only.',
-      'Combine several hypotheses only with a study-level correction such as adjustStudy (Holm).',
+      controlled ? 'Aggregate contradiction controls one hypothesis and one direction only; not joint support/refutation or cross-hypothesis error.'
+        : 'Legacy contradiction is an unadjusted any-component flag, not a calibrated hypothesis-level refutation.',
+      'Inconclusive is not evidence of absence. All conclusions are conditional on the declared model and valid supplied inputs.',
+      'adjustStudy (Holm) corrects support across hypotheses, not their contradiction verdicts.',
     ],
+  };
+}
+
+// Validates the transport/method binding, not authentication or seed/censoring provenance of supplied values.
+export function reanalyzeConfirmation(registration, confirmation, options = {}) {
+  record(options, ['analysisPolicy', 'allowImplementationChange'], 'reanalysis options');
+  const { allowImplementationChange = false } = options;
+  const verified = verifyRegistration(registration, { allowImplementationChange });
+  if (!confirmation || confirmation.registrationHash !== registration.hash) fail('confirmation does not belong to this registration');
+  const expectedSchema = registration.schema === LEGACY_HYPOTHESIS_SCHEMA ? LEGACY_CONFIRMATION_SCHEMA : CONFIRMATION_SCHEMA;
+  if (confirmation.schema !== expectedSchema && !(expectedSchema === LEGACY_CONFIRMATION_SCHEMA && confirmation.schema === undefined)) fail('confirmation schema does not match registration');
+  if ((confirmation.analysisPolicy !== undefined || expectedSchema === CONFIRMATION_SCHEMA) && confirmation.analysisPolicy !== verified.analysisPolicy) fail('confirmation analysis policy does not match registration');
+  if (confirmation.analysis?.analysisPolicy !== undefined && confirmation.analysis.analysisPolicy !== verified.analysisPolicy) fail('recorded analysis policy does not match registration');
+  if (options.analysisPolicy !== undefined && options.analysisPolicy !== ANALYSIS_POLICY) fail('explicit reanalysis policy must be ' + ANALYSIS_POLICY);
+  const analysisPolicy = options.analysisPolicy ?? verified.analysisPolicy;
+  return {
+    schema: REANALYSIS_SCHEMA, registrationHash: registration.hash, hypothesis: verified.spec.id,
+    registeredAnalysisPolicy: verified.analysisPolicy, analysisPolicy, methodChanged: analysisPolicy !== verified.analysisPolicy,
+    source: { schema: confirmation.schema ?? null, analysisPolicy: verified.analysisPolicy,
+      registeredImplementation: structuredClone(registration.implementation), recordedImplementation: structuredClone(confirmation.implementation ?? null),
+      inputDigest: digestOf(confirmation) },
+    implementation: verified.implementation, implementationMatched: verified.implementationMatched,
+    analysis: analyzeValues(registration, confirmation.values, verified.spec, analysisPolicy),
+    cautions: ['Reanalysis of supplied retained values, not a new preregistered confirmation.',
+      'The source digest identifies supplied content, not authentication or preregistration time.'],
   };
 }
 
@@ -319,6 +369,7 @@ export function adjustStudy(confirmations, { alpha = 0.05 } = {}) {
     alpha, method: 'Holm step-down family-wise error control over hypothesis-level intersection-union p-values',
     hypotheses: confirmations.map((item, index) => ({
       hypothesis: item.hypothesis, registrationHash: item.registrationHash, pValue: item.analysis.pValue,
+      analysisPolicy: item.analysis.analysisPolicy ?? item.analysisPolicy ?? LEGACY_ANALYSIS_POLICY, artifactSchema: item.schema ?? null,
       adjustedPValue: adjusted[index], supported: adjusted[index] <= alpha, unadjustedVerdict: item.analysis.verdict,
     })),
   };

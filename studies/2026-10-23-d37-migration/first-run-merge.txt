@@ -1,0 +1,72 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+insufficient_data
+
+## Summary
+The claim that the D37 implementation honors approved versioned analysis, legacy compatibility, and explicit reanalysis semantics remains **unverified—not disproven**.
+
+The supplied verifier reports that both reviewer branches completed but provided no source inspection or test execution. This merger has only the verifier’s report and retained reviewer references, not the original reviewer bodies or implementation artifacts. No substantive implementation consensus can be established.
+
+## Consensus Findings
+The available report supports an **evidence-gap disposition**, not implementation approval:
+
+- Statistical-correctness reviewer: reported as `insufficient_data`.
+  - ACTOR_EVIDENCE_REF: execution.json#command-005
+- Method-binding and native/CLI compatibility reviewer: reported as `insufficient_data`.
+  - ACTOR_EVIDENCE_REF: execution.json#command-006
+- Verifier: explicitly concluded `insufficient_data`.
+  - ACTOR_EVIDENCE_REF: execution.json#command-007
+
+The reported header, `complete usable: 2 expected: 2 minimum: 2`, describes branch completion and report availability. It does not establish two substantive reviews or satisfaction of primary-source acceptance requirements.
+
+## Minority Findings
+No confirmed minority implementation findings are available. Neither reviewer is reported to have identified a reproducible defect.
+
+Potential statistical and compatibility failures remain **untested hypotheses**, not findings.
+
+## Verification
+**Established from the supplied verifier report**
+- Both reviewers reportedly declined substantive approval.
+- Neither reportedly inspected source, compared the implementation against `77ba07c`, checked source stability, or executed focused tests.
+- The verifier performed no independent repository inspection or execution.
+
+**Not independently checked by this merger**
+- The original reviewer report bodies and branch metadata.
+- Any repository source, diff, test result, or historical artifact.
+- Required operating Skills; their contents and declared locations were not supplied, and no tools are available to load them.
+
+**Implementation questions remaining unknown**
+- Whether v2 registrations hash-bind `family-contradiction/v1`.
+- Whether contradiction adjustment covers the full registered claims × contexts family at the specified alpha while preserving IUT support and raw flags.
+- Whether true historical v1 digests verify and retain legacy statistics by default, including under implementation-drift permission.
+- Whether native and CLI explicit reanalysis produce separately identified `facety-reanalysis/v1` results without altering or misrepresenting originals.
+- Whether mixed-study reports consistently expose method identity.
+- Whether the scoped changes introduce inference or compatibility defects.
+
+**Missing primary evidence**
+- Baseline/current diff and contents of `src/evidence.mjs`, `bin/facety.mjs`, and scoped tests.
+- Migration guidance in `docs/evidence.en.md`.
+- Focused test results, synthetic retained-value probes, and a verified stable source snapshot.
+
+## Judge Notes
+The owner’s approval is accepted as task context, not as evidence of implementation correctness.
+
+This merge preserves the reported insufficient-data status of both reviewers and the verifier. It does not upgrade successful invocation, available report text, or absence of findings into approval. No implementation claim has been disproven by the supplied evidence.
+
+Original reviewer reports should remain in the evidence record; their retained references are not substitutes for reviewing their contents.
+
+## Risks
+- Treating completed branches as substantive reviews would conceal the primary-source evidence gap.
+- Statistical-method or legacy-compatibility defects could remain undetected; none is established here.
+- No implementation-defect severity is justified by the available evidence.
+
+## Next Actions
+1. Hold substantive acceptance and escalate missing review capabilities to the coordinator.
+2. Preserve existing logical Recipe identities and all insufficient-data reports. Restore required Skill access, repository reads, and focused-test execution before relaunching.
+3. Pin the source snapshot, compare against `77ba07c`, and stop if scoped sources change.
+4. Inspect the implementation, migration documentation, and scoped tests; reproduce material findings using synthetic retained values only.
+5. Retain the evidence chain without inferring approval:
+   - ACTOR_EVIDENCE_REF: execution.json#command-005
+   - ACTOR_EVIDENCE_REF: execution.json#command-006
+   - ACTOR_EVIDENCE_REF: execution.json#command-007

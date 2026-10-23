@@ -1,0 +1,81 @@
+{
+  "baseline": "77ba07c",
+  "level": "diagnostic",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "0313a30912eb2a1caffeec361e769debc47750cceece0946c49d367d0ed84d9a",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "changes": {
+    "existingSourceChanged": [
+      "src/evidence.mjs"
+    ],
+    "otherSourceModulesUnchanged": 26,
+    "newSourceModules": 0,
+    "modelEconomicsAndRandomnessPolicyChanged": false,
+    "historicalStudiesChanged": false
+  },
+  "focused": {
+    "command": "node --test test/evidence-policy.test.mjs test/evidence-policy-cli.test.mjs test/evidence.test.mjs test/cli.test.mjs",
+    "passed": 21,
+    "exitCode": 0,
+    "includedInFullSuite": true
+  },
+  "aggregate": {
+    "command": "npm test",
+    "passed": 234,
+    "failed": 0,
+    "exitCode": 0,
+    "retained": "tests.txt"
+  },
+  "dag": {
+    "modules": 27,
+    "localEdges": 65,
+    "errors": 0,
+    "warnings": 0,
+    "exitCode": 0,
+    "retained": "dag.txt"
+  },
+  "historicalGuard": {
+    "command": "git diff --exit-code 77ba07c -- studies ':(exclude)studies/2026-10-23-d37-migration/**'",
+    "exitCode": 0
+  },
+  "review": {
+    "firstRun": {
+      "run": "facety-d37-policy-review",
+      "recipe": "swarm/lens-review",
+      "status": "insufficient_data",
+      "cause": "Empty tools default produced --no-tools; no source inspection",
+      "originalBodiesRetained": 6
+    },
+    "retry": {
+      "run": "facety-d37-policy-review-tools",
+      "recipe": "swarm/lens-review",
+      "tools": "read,bash",
+      "statistics": "complete; no supported defects; 180 independent synthetic recurrence checks",
+      "compatibility": "degraded; no supported defects; failed exclusion ran a newly constructed synthetic fake-old-digest confirmation test, not a stored scientific study",
+      "pipeline": { "status": "degraded", "boundedImplementationSupport": true, "unqualifiedAcceptance": false, "verifierReadBothPrimaryReviewers": true, "verifierPolicyTests": 6, "verifierExactSelectedTests": 3, "lateStagePrimaryFidelityAudit": false, "qualifications": ["Compatibility reviewer synthetic test-selection deviation", "Generic force-output path limitation", "Merger/judge/normalizer mediated upstream evidence"] },
+      "originalBodiesReadByCoordinator": [
+        "review-statistics.txt",
+        "review-compatibility.txt",
+        "review-verifier.txt",
+        "review-merge.txt",
+        "review-judge.txt",
+        "review-normalized.txt"
+      ]
+    }
+  },
+  "context": { "exitCode": 0, "errors": 0, "warnings": 27, "retained": "context.txt", "warningDisposition": "Existing structural/wide-table conventions; no orphan/phantom docs", "earlierFailure": "Two backlog anchors still referenced the pending migration section during reconciliation; updated/closed with the implemented contract" },
+  "whitespace": { "command": "git diff --cached --check", "exitCode": 0 },
+  "limits": [
+    "No stored historical scientific confirmation executed",
+    "No authenticity or seed/censoring provenance contract inferred",
+    "Per-hypothesis contradiction-direction control only",
+    "Generic CLI --force can overwrite a caller-chosen path; select a new output file"
+  ]
+}

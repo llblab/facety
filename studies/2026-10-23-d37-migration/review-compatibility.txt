@@ -1,0 +1,49 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+degraded
+
+## Summary
+No confirmed implementation defect found in the reviewed method binding, registration integrity, or native/CLI compatibility. The implementation matches the approved D37/D38 contract within the inspected scope.
+
+Qualification: A test-selection filter failed to exclude a synthetic historical-implementation confirmation test. That test executed despite the task’s prohibition on historical `confirmHypothesis` calls. No stored historical scientific registration was replayed, but this execution-boundary deviation must be retained.
+
+## Consensus Findings
+Independent reviewer conclusions only; no consensus is claimed.
+
+- **Method binding is preserved.** `src/evidence.mjs:172–209` hash-binds the v2 policy while retaining the original v1 digest layout. A v1 registration cannot acquire an unbound policy field.
+- **Implementation override does not change statistical method.** `src/evidence.mjs:292–296` obtains the method from the verified registration and rejects analysis-option method overrides.
+- **Aggregate contradiction covers the registered family.** `src/evidence.mjs:298–334` uses all registered claims × contexts, applies `min(1, M × minimum component contradiction p)`, preserves support IUT behavior, and retains raw component contradiction flags.
+- **Explicit reanalysis is separately identified.** `src/evidence.mjs:338–360` checks registration/confirmation binding, returns `facety-reanalysis/v1`, identifies registered and requested methods, and records the source-content digest without mutating inputs.
+- **CLI compatibility is intentional.** `bin/facety.mjs:79–85` returns bare analysis without the method flag and the separate artifact with it. `adjustStudy` carries supplied policy and artifact-schema identity (`src/evidence.mjs:363–375`).
+
+## Minority Findings
+No confirmed blocking findings.
+
+**Operational limitation, not a newly discovered defect:** CLI `--force` retains its general overwrite capability. The approved documentation explicitly requires writing reanalysis to a new path; the implementation does not enforce source-path protection. See `docs/evidence.en.md:90` and `bin/facety.mjs:120–124`.
+
+## Verification
+- Read `AGENTS.md`, the coding-contract and re-review skills, all six scoped source/test files, and the approved versioned-analysis documentation.
+- Inspected the implementation diff against `77ba07c`, including the untracked policy tests.
+- Executed:
+  - `node --test test/evidence-policy.test.mjs test/evidence-policy-cli.test.mjs` — **6 passed**. Covers synthetic family partitions, historical retained-value reanalysis, transport/method rejection, input preservation, and CLI artifact behavior.
+  - A filtered invocation of `test/evidence.test.mjs` and `test/cli.test.mjs` — **15 passed**, but **the intended exclusion did not work**. `test/evidence.test.mjs:71` executed a confirmation using a newly created synthetic registration with a fabricated old implementation digest.
+- All six target-file SHA-256 hashes were identical before and after review. Implementation source remained stable:
+  - `src/evidence.mjs`: `bcbd8a09363ceba3365f14e9d6b9e6ca60b891bf0b0ced9099d1b08d4c21bea2`
+  - `bin/facety.mjs`: `a0aa56d19fad161a45f40c534d8e1522653cd94c0e1be114a8143613430b50c1`
+- No implementation edits, commits, or pushes performed. Tests used temporary files; a migration-study directory appeared concurrently in repository status and was not authored or inspected by this reviewer.
+
+## Judge Notes
+Passing tests support the specific assertions inspected; they do not establish general readiness or evidence authenticity. The earlier no-tools run and startup preflights supply no substantive review evidence and were not used as such.
+
+The test-execution deviation is a workflow qualification, not evidence of a product defect. Preserve it rather than presenting this branch as unqualified acceptance.
+
+## Risks
+- Seed/censoring authentication and preregistration-time authentication remain outside scope by explicit instruction.
+- Study metadata reports supplied artifact identity; it does not authenticate supplied analyses.
+- Review covered the named implementation and compatibility boundary, not the entire simulator.
+
+## Next Actions
+- Retain this report, including the execution-boundary deviation, in downstream verification and judgment.
+- Proceed with reconciliation against other reviewers’ primary evidence; no implementation remediation is recommended from this lens.
+- Do not rerun the historical-implementation confirmation test under this review contract.

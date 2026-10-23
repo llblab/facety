@@ -1,0 +1,58 @@
+ACTOR_REVIEW_RESULT
+
+## Status
+complete
+
+## Summary
+No statistical-decision defects found in the inspected diff versus `77ba07c`. The implementation matches the explicitly approved D37/D38 contract within this review’s scope.
+
+This is an independent statistical-correctness review, not a consensus or repository-readiness judgment.
+
+## Consensus Findings
+No cross-reviewer consensus assessed. Direct inspection supports these conclusions:
+
+- **Calibrated contradiction uses the full registered family.** `src/evidence.mjs:299–321` evaluates every registered claim/context pair and computes `min(1, M × minimum raw contradiction p-value)`. Unknown observations do not shrink `M`. This controls the any-component contradiction decision without requiring independence between components, conditional on valid marginal tests.
+- **Support remains unchanged.** The hypothesis support p-value remains the maximum component support p-value, and support requires every component to support. Raw component contradiction flags and the `contradicted` list remain separate from the calibrated aggregate verdict.
+- **Historical statistical behavior is preserved by default.** `src/evidence.mjs:172–205` preserves the v1 digest layout and infers the legacy method. Implementation-drift permission does not change that method. Newly computed metadata is consistent with the approved compatibility envelope.
+- **Explicit reanalysis is method-identified and separate.** `src/evidence.mjs:339–361` returns an identified reanalysis artifact; `bin/facety.mjs:79–84` preserves bare analysis without a flag and returns the artifact with the explicit policy flag.
+- **Study adjustment remains support-only.** `src/evidence.mjs:365–376` retains Holm adjustment of support p-values and records each supplied row’s method and artifact schema.
+
+## Minority Findings
+None established. No other substantive reviewer reports were supplied for reconciliation.
+
+## Verification
+Read actual implementation and focused tests in all six scoped files, `AGENTS.md`, the requested review/coding skills, the approved contract in `docs/evidence.en.md`, and the relevant binomial/Holm implementation in `src/statistics.mjs`.
+
+Executed:
+
+1. `node --test test/evidence-policy.test.mjs test/evidence-policy-cli.test.mjs`
+   - **6 passed, 0 failed.**
+   - Exercises policy binding, full-family decisions, unknowns, duplicate claims, historical retained-value reanalysis, method/schema rejection, input preservation, and CLI behavior.
+
+2. `node --test --test-name-pattern='exact claim|A/A null|native reanalysis verifies|CLI historical reanalysis' test/evidence.test.mjs test/cli.test.mjs`
+   - **4 passed, 0 failed.**
+   - No historical `confirmHypothesis` replay was executed.
+
+3. Independently executed **180 synthetic retained-value decision checks**, comparing native outputs with binomial tails calculated using an independent mass recurrence.
+   - Covered probabilities `0.5` and `0.75`; one, two, and four contexts; `greater`, `less`, and `within`; varying held counts and unknown observations.
+   - All support p-values, aggregate contradiction p-values, and verdicts matched.
+
+All six scoped file SHA-256 hashes were identical before and after review. In particular:
+- `src/evidence.mjs`: `bcbd8a09363ceba3365f14e9d6b9e6ca60b891bf0b0ced9099d1b08d4c21bea2`
+- `bin/facety.mjs`: `a0aa56d19fad161a45f40c534d8e1522653cd94c0e1be114a8143613430b50c1`
+
+No repository files were written, committed, or pushed.
+
+## Judge Notes
+- The prior `facety-d37-policy-review` no-tools failure remains **insufficient_data**; this review does not reinterpret it as substantive evidence.
+- The supplied preflight reports establish invocation only and were not used as substantive acceptance evidence.
+- No downstream reviewer/verifier/merger/judge primary bodies were referenced for this independent lens to assess.
+- The user’s explicit D38 approval resolves the stale “not yet implemented” wording in `AGENTS.md` for this bounded review.
+
+## Risks
+- Calibration remains conditional on valid supplied observations and marginal tests. Seed authentication, censoring provenance, and observation authenticity were explicitly excluded.
+- Control is per hypothesis and contradiction direction—not joint support/refutation control or cross-hypothesis contradiction control.
+- The full test suite and historical scientific studies were not run; the conclusions are bounded to inspected code, focused regressions, and synthetic checks.
+
+## Next Actions
+Retain this report and its executed evidence in the downstream verification. No statistical-correctness remediation is recommended from this lens; integrate other independent findings before making a broader acceptance judgment.

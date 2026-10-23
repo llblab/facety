@@ -72,7 +72,7 @@ test('native reanalysis and confirmation preserve explicit historical implementa
   const registration = registerHypothesis(minimal());
   const historical = structuredClone(registration);
   historical.implementation.digest = '0'.repeat(64);
-  historical.hash = digestOf({ schema: historical.schema, spec: historical.spec,
+  historical.hash = digestOf({ schema: historical.schema, spec: historical.spec, analysisPolicy: historical.analysisPolicy,
     implementation: historical.implementation.digest, randomness: historical.randomness });
   historical.confirmationSeed = 'confirm:' + historical.hash;
   const retained = values([3, 3, 3, 3, 3], [1, 1, 1, 1, 1]);
@@ -104,7 +104,7 @@ test('exact claim tests support, contradict or withhold judgment and count unkno
   assert.throws(() => analyzeConfirmation(registration, values([1], [1])), /incomplete/);
 });
 
-test('an A/A null control under common random numbers refutes a difference and supports equivalence', async () => {
+test('an A/A null control flags a component difference and supports equivalence without overclaiming aggregate refutation', async () => {
   const registration = registerHypothesis(minimal({
     arms: { a: {}, b: {} },
     claims: [
@@ -116,7 +116,8 @@ test('an A/A null control under common random numbers refutes a difference and s
   const [different, equal] = result.analysis.tests;
   assert.equal(different.contradicted, true);
   assert.equal(equal.supported, true);
-  assert.equal(result.analysis.verdict, 'contradicted');
+  assert.equal(result.analysis.verdict, 'inconclusive');
+  assert.equal(result.analysis.contradiction.pValue, 1 / 16);
 });
 
 test('a mechanism claim needs presence, necessity and a named alternative control on reserved seeds', async () => {
