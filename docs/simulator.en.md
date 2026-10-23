@@ -52,7 +52,7 @@ The model never receives a hidden label saying that a subject is an attacker or 
 | XP halving, debt, no fictitious burns | §24, §30 | `penalize` |
 | Challenge XP gate; Chekharda stake ladder; Council intervention | §25–§27 | `disputes.procedure`, `stakeGrowth`, `councilDepth` (experiment layer) |
 | Historical Council: top-101 among active subjects | §27.1, superseded target in D33 | `council()`, `councilEligibility`; unchanged legacy reference |
-| D33 verified difficulty, independent support/quotas, dynamic non-placeholder Council and privacy | §46 | Not implemented; definitions/transition contracts remain OPEN |
+| D33/D35 verified difficulty, guarantees plus XP-centered paths, pre-guaranteed genesis, dynamic Council and privacy; no cluster quotas for now | §46, especially §46.14 | Not implemented; anchor/path/genesis/transition contracts remain OPEN; cluster quotas/boundary gates deferred |
 | Trust formation and detection channels | §20.4, §40.1 | `social.*` (experiment layer) |
 
 Mechanics marked as the experiment layer are behavioral or procedural abstractions in `src/experiment.mjs`. Protocol state changes still go through `FacetyModel`. Atmo/Treasury D, key recovery, media detection and the Council merits procedure are not implemented.

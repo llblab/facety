@@ -1760,6 +1760,8 @@ That is the proposed foundation of Facety as a protocol for social self-identifi
 
 **D33 — [SELECTED / DIRECTION / OPEN], documented 2026-10-23.** Source: the owner's explicit design-discussion directive on BrightID-inspired topology, invitation thresholds and dynamic consuls. MUST statements below are selected design requirements; SHOULD statements are design guidance, and MAY statements identify permitted options. Formulas retain the status stated in their subsection; the weighted-factor product is a template, not a selection of factor scales. Unspecified verification predicates, factor scales, graph algorithms, epochs and voting procedures remain **[OPEN]**. This is a protocol-documentation decision, not an implemented runtime migration, independent BrightID audit, proof of Sybil resistance or empirical mechanism finding. “BrightID-inspired” credits the discussion's inspiration; it does not assert that these exact formulas or policies are BrightID's deployed rules.
 
+**Later clarification — D35, documented 2026-10-23:** [§46.14](#4614-xp-centered-paths-pre-guaranteed-genesis-and-no-cluster-quotas-d35) adds a separate `D`-path requirement toward the XP apex/core, selects a pre-guaranteed genesis starting group, and defers cluster invitation quotas. Earlier D33 text is retained for history; D35 takes precedence where stated.
+
 The design serves D32's goal of distribution resistant to farming while keeping uniqueness, contribution/reputation and emission/distribution distinct. Topological support is not truth or useful contribution. A dense genuine community is not automatically a farm. Evaluator-only ownership labels MUST NOT become protocol observations. Oracle/evidence validity, Sybil inflation, collusion, arbitration/core capture, bootstrap vulnerability and real attack costs remain explicit research obligations.
 
 ### 46.1 Network Difficulty
@@ -1778,6 +1780,8 @@ For `N = 1..9`, `D = 1`; for `10..99`, `D = 2`; for `100..999`, `D = 3`; for `10
 Network Difficulty represents the required level of independent social confirmation for invitation rights and governance expansion. Section 46.10 distinguishes instantaneous formula targets from epoch-adopted values when hysteresis is used; the examples below are the direct formula reference.
 
 ### 46.2 Minimum guarantor threshold
+
+**D35 refinement:** the `D` guarantees and `D` paths toward the XP apex/core are separate, conjunctive requirements (§46.14). The owner's term “mutual guarantees” does not by itself select a new reciprocal-edge counting rule.
 
 The minimum number of qualifying guarantors for the **invitation creator**, not the invitee, MUST equal Network Difficulty:
 
@@ -1800,6 +1804,8 @@ Raw incoming edge count MUST be distinguished from effective independent guarant
 The exact age, dispute admissibility, penalty expiry, independence and external-support tests remain OPEN. A mere unsupported allegation is not proof of misconduct; dispute-triggered exclusion needs anti-harassment safeguards and review. Exclusion from this eligibility calculation MUST NOT silently erase a guarantee, its history or its established liability. Existing matching consent for a directed edge remains required; consent does not create a reciprocal edge.
 
 ### 46.3 Bootstrap and genesis rules
+
+**D35 refinement:** bootstrap starts from an explicitly recorded, already mutually guaranteed genesis group; roughly 7–12 participants is the owner's example, not a mandatory range (§46.14). The earlier unresolved first-guarantee question below is historical for that selected starting route; exact genesis contents and activation remain to be specified.
 
 The protocol MUST allow cold-start operation from a very small network. For `N < 10`, difficulty is `1`; a participant MAY become eligible with one qualifying guarantor, and the network MAY operate without a formal Council. Governance and dispute resolution SHOULD rely primarily on XP, public accountability, preventive cancellation, time delays and Chekharda-style escalation, subject to the no-special-authority rule in §46.5.
 
@@ -1894,6 +1900,8 @@ These factors concern support for a declared purpose. They MUST NOT silently col
 
 ### 46.7 Cluster boundary and invitation quota
 
+**Superseded for the current design stage by D35:** the owner selected no cluster invitation quotas or cluster-boundary admission gates for now. The following formulas and rationale are retained as deferred design material, not active requirements. They MUST NOT be enforced by default or kept as prerequisites for the current path-based invitation design (§46.14).
+
 The protocol MUST constrain invitation capacity of closed clusters. Let `C` be a cluster, invitation subtree or detected community. Define:
 
 ```math
@@ -1927,6 +1935,8 @@ B_eff(C) = 12 -> quota = 3
 The intended effect is to prevent a closed cluster from turning a few external links into unlimited invitations. This is not established by the quotient alone. The protocol MUST define the accounting window, quota consumption/reservation/release, pending versus accepted invitations, reuse of external support across clusters, overlap and split/merge/reset behavior before enforcement. These choices remain OPEN; repeatedly renaming a cluster MUST NOT be assumed to create independent capacity. The existing own-emission burn and invitation contest window still apply separately.
 
 ### 46.8 BrightID-inspired graph topology rules
+
+**D35 scope:** the XP-centered path requirement replaces an unspecified healthy-core direction with the owner's chosen XP anchor concept; exact anchor membership remains OPEN. Conductance/community observations remain research material, but MUST NOT impose the deferred cluster capacity limits described below.
 
 **Trusted seed or healthy core.** The protocol MAY maintain high-trust seeds, such as long-term participants, Council members or highly effective XP holders. Trust propagation SHOULD be weighted by proximity to this core. Core selection, rotation, correction and compromised-seed recovery MUST be explicit; proximity and founder status are not proofs of honesty or uniqueness.
 
@@ -1985,11 +1995,15 @@ This refines D15's earlier no-ZK direction **for the external application interf
 
 ### 46.12 Canonical protocol addition
 
+**Historical D33 summary:** preserved verbatim as requested. D35 (§46.14) supersedes its mandatory cluster-boundary capacity constraint for now and adds the separate XP-centered path gate. This paragraph MUST NOT be read as reactivating cluster quotas.
+
 Facety MUST use dynamic Network Difficulty based on the number of active verified participants. The minimum number of effective independent guarantors required for invitation rights MUST equal Network Difficulty. The protocol MUST allow cold-start operation with one guarantor. For networks below approximately 100 active verified participants, the formal council mechanism MAY be absent, and coordination SHOULD rely on XP, public accountability, time delays, preventive cancellation, and Chekharda-style dispute escalation. At larger scales, council size MUST expand dynamically according to the rounded square root of Network Difficulty, using the sequence 1, 11, 101, 1001, 10001, 100001. Invitation capacity MUST be constrained not only by individual guarantors but also by cluster effective external boundary, independent support, temporal aging, and dispute history.
 
 This owner-provided summary is interpreted with the exact phase rule, genesis limitations and unresolved transition contracts above. It is not a new allocation formula: one-unit Self-ID emission, non-transferable XP and accountable guarantees remain distinct from useful-contribution measurement and sustainable distribution. Success requires useful honest participation and correctable influence with bounded extraction, capture and wrongful exclusion; more graph edges, XP or payouts alone establish none of these.
 
 ### 46.13 Conflicts, supersession and proposed resolutions
+
+**D35 update:** pre-guaranteed genesis resolves the starting-route choice, not every initial-state field; the cluster quota/accounting gate below is deferred rather than a blocker. XP-centered paths narrow the core concept but leave path independence, graph direction and anchor membership OPEN. Remaining D33 conflicts below apply only where not superseded by §46.14.
 
 - **Earlier §18.2 active-subject count versus verified count:** D33 selects `N_verified` as the design input and retains the decimal threshold. Proposed resolution: specify a publicly auditable verification/activity predicate without evaluator truth, then migrate count/guarantor eligibility. Until then, the simulator's active-accepted count is a legacy reference, not implementation of verified independence.
 - **Fixed top-101 Council in §27/D3:** D33 supersedes fixed size prospectively with the selected lookup and no formal one-consul institution. Equal votes remain. Proposed resolution: parameterize Council target/phase after verification, eligible-candidate and case-transition rules are settled. Old 101-member simulations remain historical evidence under their original source and assumptions.
@@ -2001,6 +2015,33 @@ This owner-provided summary is interpreted with the exact phase rule, genesis li
 - **Topology suspicion versus liability and truth:** low conductance, shared guarantors, a failed challenge or an allegation cannot alone prove a false identity or inherited guilt. Proposed resolution: keep eligibility observations contestable and use declared adjudication/authorized model transitions for sanctions. No mandatory stake, bought XP, verified-contribution reward or all-purpose trust score is selected.
 
 The [simulator coverage map](simulator.en.md#protocol-coverage), [insight register](insights.en.md) and [backlog](../BACKLOG.md) record implementation gaps. No runtime change or new empirical evidence accompanies D33.
+
+---
+
+### 46.14 XP-centered paths, pre-guaranteed genesis and no cluster quotas (D35)
+
+**D35 — [SELECTED / DIRECTION / OPEN], documented 2026-10-23.** Source: the owner's voice clarification of the three D33 blockers. This records the chosen direction without silently supplying a graph algorithm, reciprocal guarantee semantics or a simulator migration.
+
+**Two invitation requirements.** An invitation issuer MUST satisfy both the difficulty-sized guarantee threshold and a separate difficulty-sized path threshold toward the top of the XP ordering. In threshold notation:
+
+```math
+qualifying_guarantees(u) >= D
+qualifying_paths(u, XP_anchor) >= D
+```
+
+`D` is the applicable Network Difficulty from §46.1/§46.10. Having more than `D` qualifying guarantees or paths is not a disqualification. Guarantees alone MUST NOT replace the path test; paths alone MUST NOT replace guarantees. The owner described “mutual guarantees” and connections to “consuls or first place,” with the highest XP as the center from which paths are sought. Thus the XP apex/core is the selected anchor concept, not arbitrary omniscient healthy seeds. Reaching it does not grant it extra governance powers or create a formal Council in the one-consul phase.
+
+The exact `XP_anchor` remains OPEN: one highest-XP subject versus a defined set of XP-ranked consuls, active/verified eligibility, ties, raw versus effective ranking and the snapshot/update rule require a contract. Graph edges and traversal direction also remain OPEN: searching outward from the center and certifying a path to it are not interchangeable in a directed graph. “Mutual” MUST NOT silently create reverse guarantees; whether this eligibility test requires two separately authorized opposite edges is an unresolved refinement of D31/§46.2, not a selected rewrite of every guarantee.
+
+Path counting MUST have an explicit definition before enforcement. Counting arbitrary walks, cycles or many routes through the same bridge does not establish independent support. Edge-disjoint paths, internally vertex-disjoint paths and distinct terminal anchors have different meanings; none is silently selected here. In particular, multiple paths to a single anchor necessarily share that endpoint; this does not settle whether they may share intermediaries. The apex's own eligibility, zero-length/self paths, paths wholly inside genesis and behavior after anchor loss MUST also be specified. XP rank, graph reachability and even disjoint paths do not prove unique people, honest review or useful contribution. D33's operational verified-count and source-independence questions therefore remain, narrowed but not solved by this path direction.
+
+**Pre-guaranteed genesis.** The network MUST support starting from an explicit genesis state containing a small initial participant set and its already established guarantees. The owner's example is roughly 7–12 initial participants who already guarantee one another and then begin operation. This is a supplied starting trust assumption, not ordinary funded admission and not proof of Sybil resistance. It replaces the need to manufacture the first guarantee through normal invitations from an empty graph. It does not select an exact population, a complete graph, free money/XP, permanently honest founders or immunity from later correction.
+
+The genesis record MUST make its actual members and directed guarantees explicit. Initial verification/activity status, XP/balances/emission rights, authorization evidence, financing and activation of ordinary invitation/path checks still require a declared contract. The decade formula is unchanged: 7–9 active verified founders imply `D = 1`; 10–12 imply `D = 2`, not a special bootstrap difficulty of one. No formal Council is created at these sizes under D33. The initial group need not acquire external cluster support: the cluster-boundary gate is deferred below. Applicability of other age/lineage/independence filters to the starting graph remains OPEN and MUST NOT silently make the chosen starting route unusable or create permanent exceptions.
+
+**No cluster quotas for now.** The protocol MUST NOT currently impose a cluster invitation quota, a `B_eff(C) >= D` cluster gate or a `floor(B_eff(C) / D)` capacity budget. D35 defers those parts of §46.7, associated capacity reductions in §46.8 and the corresponding requirement in §46.12; their historical text remains available for reconsideration. Quota windows, source reuse and cluster split/merge accounting are not prerequisites for this current design stage. This is not a promise of unlimited or free invitations: the individual guarantee/path conditions, own-emission cost and selected 24-hour contest/cancellation mechanics remain. No new numerical invitation cap is selected by this clarification; earlier pending-cap suggestions remain unimplemented guidance, not permission to introduce a quota covertly.
+
+**Implementation and follow-up.** No runtime behavior changes with this decision. The simulator remains the labeled legacy reference until a separate migration is authorized. The next useful bounded design slice is the anchor/path contract, with counterexamples distinguishing a shared bridge, edge versus vertex independence, one versus several anchors, directed traversal and apex/genesis self-eligibility. A subsequent implementation MUST compare any optimized path algorithm with its reference and an independent certificate verifier. No empirical anti-cartel mechanism, safe-bootstrap result or attack probability is claimed.
 
 ---
 
@@ -2055,6 +2096,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Historical liability and early correction documented 2026-10-23
 
 **D34 — [SELECTED / DIRECTION / OPEN], §19.3, §20.5–§20.6, §21.1.** Source: the owner's voice clarification after the chain-replay question. Historical guarantees at each relevant event determine liability; link exit does not erase responsibility for previously guaranteed confirmations. This supersedes §19.3's adjudication-time current-link direction, not the ability to leave or the separate relation-XP rule. Early self-initiated dispute/correction should undo the affected event: recover/burn its corresponding emission and revoke that transaction's XP from all historically credited parties, without ordinary punitive treatment for eligible early correction (D29). Eligibility, clock/order boundaries, spent/transferred-value recovery, repeat-abuse safeguards, case/penalty deduplication and overlap remain OPEN. The ordinary greater-XP challenge gate does not itself implement self-correction. The simulator remains the current-link reference; no historical-liability or self-dispute migration, universal immunity, extra burn or empirical finding is introduced by this record.
+
+### XP-centered paths and genesis clarification documented 2026-10-23
+
+**D35 — [SELECTED / DIRECTION / OPEN], §46.14.** Source: the owner's voice response to the D33 blockers. Invitation rights require both `D` qualifying guarantees and `D` qualifying paths toward the highest-XP center / XP-ranked consul core. A small, already mutually guaranteed genesis group is the selected starting route (roughly 7–12 people is an example, not a mandated size). No cluster invitation quotas or external-boundary capacity gate are imposed for now; §46.7 and the capacity language in §46.8/§46.12 are retained as deferred material. Exact anchors, path independence/direction, reciprocity counting, apex self-eligibility and genesis activation fields remain OPEN. This narrows D33's blockers without selecting a verifier, creating single-consul authority or authorizing a runtime migration; D34 is unchanged.
 
 ### Earlier supersessions
 
