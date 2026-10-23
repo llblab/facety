@@ -4,9 +4,7 @@ Scope: a reproducible Node.js / ESM research simulator for [the proposed protoco
 
 The bounded causal-clarity checkpoint is documented in the [retained study](studies/2026-10-23-causal-core/README.md); completed work is in [CHANGELOG.md](CHANGELOG.md). The owner resumed the bounded Facety correctness audit on 2026-10-23 after selecting it over DEOS review. Enforcement changes remain paused at the repeat-verdict/D34 contract gate below. After the D34 clarification the owner's new Grow Loop request selects bounded, non-mutating timeline/witness preparation only; no unresolved penalty or self-correction rule is inferred. D33 implementation and research expansion remain gated. The research queue is not automatic feature growth or replay of old confirmations.
 
-<a id="paused-correctness-loop-repeat-verdict-authority-gate"></a>
-
-## Active D34 preparation: enforcement remains gated
+## Paused correctness loop: repeat-verdict authority gate
 
 D34 partially resolves the gate: historical event-time guarantees retain past responsibility after exit, and early self-correction should reverse the affected emission/XP. Same-event/guarantor/duty deduplication across cases, overlap and precise correction eligibility/funding still need an owner contract (§20.6/§21.1). Enforcement remains paused; the latest explicit Grow Loop request resumes only useful safe preparation of that gate. Retain D32 as a strategic lens rather than a proven outcome. Saved-game repairs are complete at the recorded checkpoints; the remaining scope is the native transition/provenance audit below. Work one validated cohort at a time, commit/push completed checkpoints, and stop at an owner-dependent rule or exhausted useful preparation. Do not expand into broad sweeps, new institutions or automatic confirmation.
 
