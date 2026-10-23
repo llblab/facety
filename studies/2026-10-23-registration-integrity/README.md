@@ -2,6 +2,8 @@
 
 **Bounded E2 correctness repair plus independent regression coverage.** Baseline: `14266db`, with the same runtime implementation reviewed at `a40fdb0`. E1 aggregate contradiction semantics, retained-value provenance policy, D33/D35/D36 migration and D34 legal-event/correction decisions are not selected here.
 
+**Checkpoint identity reconciliation:** the initially observed review-record commit `14266db` was externally replaced by `6c20b8b` before integration. Their sole tree difference is one added `experiment.mjs` refactoring backlog item, which is preserved. The simulator source trees are identical (`943b131b05906f4d9b39d98fc8716362384204e4`); tests, CLI and historical study inputs are also unchanged between those commits. This does not invalidate the source-bound validation below and is not a history rewrite performed by this repair.
+
 ## 1. E2: Verify at the public native boundary
 
 The [prior independent review](../2026-10-23-evidence-debt-review/README.md) and retained coordinator witness showed that direct `analyzeConfirmation` accepted a changed registered margin while `verifyRegistration` rejected the same unchanged-hash document. CLI and confirmation callers already verified before reaching analysis.

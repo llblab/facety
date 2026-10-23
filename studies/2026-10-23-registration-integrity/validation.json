@@ -1,5 +1,12 @@
 {
   "baseline": "14266db",
+  "parentCheckpointReconciliation": {
+    "actualParent": "6c20b8b",
+    "differenceFromInitiallyObservedBaseline": "One added local experiment.mjs refactoring item in BACKLOG.md; preserved",
+    "equivalenceCommand": "git diff 14266db 6c20b8b; git rev-parse 14266db:src 6c20b8b:src",
+    "identicalSourceTreeOid": "943b131b05906f4d9b39d98fc8716362384204e4",
+    "validationEffect": "No runtime/test/study inputs changed; prior checks remain applicable"
+  },
   "provenance": {
     "implementation": {
       "method": "sha256-src-mjs-v1",
