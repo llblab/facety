@@ -2003,7 +2003,7 @@ This owner-provided summary is interpreted with the exact phase rule, genesis li
 
 ### 46.13 Conflicts, supersession and proposed resolutions
 
-**D35 update:** pre-guaranteed genesis resolves the starting-route choice, not every initial-state field; the cluster quota/accounting gate below is deferred rather than a blocker. XP-centered paths narrow the core concept but leave path independence, graph direction and anchor membership OPEN. Remaining D33 conflicts below apply only where not superseded by §46.14.
+**D35 update:** pre-guaranteed genesis resolves the starting-route choice, not every initial-state field; the cluster quota/accounting gate below is deferred rather than a blocker. XP-centered paths narrow the core concept; D36 (§46.15) subsequently selects internal vertex disjointness. Graph direction and anchor membership remain OPEN. Remaining D33 conflicts below apply only where not superseded by §46.14.
 
 - **Earlier §18.2 active-subject count versus verified count:** D33 selects `N_verified` as the design input and retains the decimal threshold. Proposed resolution: specify a publicly auditable verification/activity predicate without evaluator truth, then migrate count/guarantor eligibility. Until then, the simulator's active-accepted count is a legacy reference, not implementation of verified independence.
 - **Fixed top-101 Council in §27/D3:** D33 supersedes fixed size prospectively with the selected lookup and no formal one-consul institution. Equal votes remain. Proposed resolution: parameterize Council target/phase after verification, eligible-candidate and case-transition rules are settled. Old 101-member simulations remain historical evidence under their original source and assumptions.
@@ -2033,7 +2033,7 @@ qualifying_paths(u, XP_anchor) >= D
 
 The exact `XP_anchor` remains OPEN: one highest-XP subject versus a defined set of XP-ranked consuls, active/verified eligibility, ties, raw versus effective ranking and the snapshot/update rule require a contract. Graph edges and traversal direction also remain OPEN: searching outward from the center and certifying a path to it are not interchangeable in a directed graph. “Mutual” MUST NOT silently create reverse guarantees; whether this eligibility test requires two separately authorized opposite edges is an unresolved refinement of D31/§46.2, not a selected rewrite of every guarantee.
 
-Path counting MUST have an explicit definition before enforcement. Counting arbitrary walks, cycles or many routes through the same bridge does not establish independent support. Edge-disjoint paths, internally vertex-disjoint paths and distinct terminal anchors have different meanings; none is silently selected here. In particular, multiple paths to a single anchor necessarily share that endpoint; this does not settle whether they may share intermediaries. The apex's own eligibility, zero-length/self paths, paths wholly inside genesis and behavior after anchor loss MUST also be specified. XP rank, graph reachability and even disjoint paths do not prove unique people, honest review or useful contribution. D33's operational verified-count and source-independence questions therefore remain, narrowed but not solved by this path direction.
+**D36 refinement (§46.15):** qualifying paths MUST be internally vertex-disjoint; common intermediaries are not permitted. The earlier edge-versus-vertex independence choice is resolved, not an implementation blocker. Multiple paths to a single anchor share their issuer and anchor endpoints, not intermediate participants. Graph direction, anchor membership, the apex's own eligibility, zero-length/self paths, paths wholly inside genesis and behavior after anchor loss still require a contract. XP rank, graph reachability and even disjoint paths do not prove unique people, honest review or useful contribution. D33's operational verified-count and source-independence questions therefore remain, narrowed but not solved by this path direction.
 
 **Pre-guaranteed genesis.** The network MUST support starting from an explicit genesis state containing a small initial participant set and its already established guarantees. The owner's example is roughly 7–12 initial participants who already guarantee one another and then begin operation. This is a supplied starting trust assumption, not ordinary funded admission and not proof of Sybil resistance. It replaces the need to manufacture the first guarantee through normal invitations from an empty graph. It does not select an exact population, a complete graph, free money/XP, permanently honest founders or immunity from later correction.
 
@@ -2041,7 +2041,43 @@ The genesis record MUST make its actual members and directed guarantees explicit
 
 **No cluster quotas for now.** The protocol MUST NOT currently impose a cluster invitation quota, a `B_eff(C) >= D` cluster gate or a `floor(B_eff(C) / D)` capacity budget. D35 defers those parts of §46.7, associated capacity reductions in §46.8 and the corresponding requirement in §46.12; their historical text remains available for reconsideration. Quota windows, source reuse and cluster split/merge accounting are not prerequisites for this current design stage. This is not a promise of unlimited or free invitations: the individual guarantee/path conditions, own-emission cost and selected 24-hour contest/cancellation mechanics remain. No new numerical invitation cap is selected by this clarification; earlier pending-cap suggestions remain unimplemented guidance, not permission to introduce a quota covertly.
 
-**Implementation and follow-up.** No runtime behavior changes with this decision. The simulator remains the labeled legacy reference until a separate migration is authorized. The next useful bounded design slice is the anchor/path contract, with counterexamples distinguishing a shared bridge, edge versus vertex independence, one versus several anchors, directed traversal and apex/genesis self-eligibility. A subsequent implementation MUST compare any optimized path algorithm with its reference and an independent certificate verifier. No empirical anti-cartel mechanism, safe-bootstrap result or attack probability is claimed.
+**Implementation and follow-up.** No runtime behavior changes with this decision. The simulator remains the labeled legacy reference until a separate migration is authorized. After D36's internal vertex-disjointness selection, the next bounded design slice is the remaining anchor/traversal contract: one versus several anchors, directed traversal and apex/genesis self-eligibility. Shared-bridge and edge-versus-vertex examples are acceptance controls, not unresolved choices. A subsequent implementation MUST compare any optimized path algorithm with its reference and an independent certificate verifier. No empirical anti-cartel mechanism, safe-bootstrap result or attack probability is claimed.
+
+---
+
+### 46.15 Internally vertex-disjoint invitation paths (D36)
+
+**D36 — [SELECTED], documented 2026-10-23.** Source: the owner's explicit response “do not count them; all paths are unique” to the shared-intermediary example and the recommendation that only the issuer and final center may be common. This selects **internal vertex disjointness**, not merely different edge sequences or edge-disjoint routes, for D35's path gate.
+
+For an issuer `u` and a chosen single XP anchor `a != u`, qualifying paths MUST be distinct simple paths: a path MUST NOT repeat a vertex, and the same path MUST NOT be counted twice. For every pair of counted paths `p_i`, `p_j`:
+
+```math
+V(p_i) ∩ V(p_j) = {u, a}  for i != j
+λ_V(u, a) = maximum number of qualifying internally vertex-disjoint paths
+λ_V(u, a) >= D
+```
+
+The shared endpoints are permitted; every intermediate participant MUST be exclusive to one counted path. Merely changing edges while retaining a shared intermediate vertex MUST NOT provide another unit of support. A direct issuer-to-anchor path has no internal vertex and can count once, not repeatedly. This is a threshold, so finding more than `D` disjoint paths is acceptable; the issuer still separately needs `D` qualifying guarantees.
+
+At `D = 2`, the following pairs distinguish the requirement (arrows show illustrative traversal, not a selection of the underlying graph's direction):
+
+```text
+Does not satisfy the two-path gate: shared intermediary X
+u -> A -> X -> a
+u -> B -> X -> a
+
+Does not satisfy it even with different edges: shared intermediary X
+u -> A -> X -> C -> a
+u -> B -> X -> E -> a
+
+Satisfies the structural two-path condition: no shared intermediary
+u -> A -> a
+u -> B -> a
+```
+
+The examples evaluate the displayed pair; additional paths elsewhere in a graph can change its maximum. They prove neither personhood nor all invitation eligibility. Shared endpoints do not grant unilateral authority to the XP apex. D36 does not select one versus multiple anchors, traversal direction, reciprocal-edge counting, active/verified eligibility, XP tie/snapshot rules or apex/self-path handling. If multiple terminal anchors are selected later, their endpoint and transit treatment MUST preserve the no-shared-intermediary condition rather than silently weakening it. D35's pre-guaranteed genesis and absence of cluster quotas remain unchanged.
+
+This decision changes the specification only. A future reference implementation and independent certificate verifier MUST check path simplicity, distinctness, allowed edges/endpoints, pairwise internal vertex exclusion and the `D` threshold before any optimized algorithm is accepted. No source algorithm, default runtime behavior or empirical security claim changes here.
 
 ---
 
@@ -2100,6 +2136,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### XP-centered paths and genesis clarification documented 2026-10-23
 
 **D35 — [SELECTED / DIRECTION / OPEN], §46.14.** Source: the owner's voice response to the D33 blockers. Invitation rights require both `D` qualifying guarantees and `D` qualifying paths toward the highest-XP center / XP-ranked consul core. A small, already mutually guaranteed genesis group is the selected starting route (roughly 7–12 people is an example, not a mandated size). No cluster invitation quotas or external-boundary capacity gate are imposed for now; §46.7 and the capacity language in §46.8/§46.12 are retained as deferred material. Exact anchors, path independence/direction, reciprocity counting, apex self-eligibility and genesis activation fields remain OPEN. This narrows D33's blockers without selecting a verifier, creating single-consul authority or authorizing a runtime migration; D34 is unchanged.
+
+### Invitation-path independence documented 2026-10-23
+
+**D36 — [SELECTED], §46.15.** Source: the owner's explicit rejection of counting routes through a common intermediary. D35's qualifying paths MUST be internally vertex-disjoint: only the issuer and common final center may be shared. Merely distinct routes or edge-disjoint paths with a shared internal vertex do not suffice; duplicate/cyclic walks do not create support. This closes the edge-versus-vertex independence choice, while anchor membership, traversal direction, eligibility/snapshots and apex self-path handling remain OPEN. No runtime migration, cluster quota or proof of personhood is introduced.
 
 ### Earlier supersessions
 
