@@ -1,0 +1,308 @@
+{
+  "level": "diagnostic",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "7ee4559d2a4819aa5e17dd90bd2ee61e1d5b0074cbe3b8cc382ecce49acf6d6f",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "method": "Native analysis of newly supplied synthetic scalar rows, plus unselected arithmetic overlays. No confirmHypothesis, model execution or historical reanalysis.",
+  "fixtures": [
+    {
+      "id": "single-negative",
+      "replicas": 5,
+      "registrationHash": "2335f31521e084f2acd4bdd5c28e9ac78818388780902a24577bf35bdbecdbd7",
+      "components": 1,
+      "supportP": 1,
+      "nativeVerdict": "contradicted",
+      "unselectedCandidateA": "contradicted",
+      "unselectedCandidateB": "component-flagged",
+      "familyContradictionP": 0.03125,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 0,
+          "rawContradictionP": 0.03125,
+          "holmContradictionP": 0.03125
+        }
+      ]
+    },
+    {
+      "id": "two-claims",
+      "replicas": 5,
+      "registrationHash": "ff80192046ff855627e3e74452dcbfd9b651a257292aef9d34fc19e155c94736",
+      "components": 2,
+      "supportP": 1,
+      "nativeVerdict": "contradicted",
+      "unselectedCandidateA": "inconclusive",
+      "unselectedCandidateB": "component-flagged",
+      "familyContradictionP": 0.0625,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 0,
+          "rawContradictionP": 0.03125,
+          "holmContradictionP": 0.0625
+        },
+        {
+          "context": "ctx0",
+          "claim": "c1",
+          "held": 5,
+          "unknown": 0,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        }
+      ]
+    },
+    {
+      "id": "two-contexts",
+      "replicas": 5,
+      "registrationHash": "fc43b4c0a312a35b73f91effc03320b0acac3ed1710e94787cca1d11edbdc5fc",
+      "components": 2,
+      "supportP": 1,
+      "nativeVerdict": "contradicted",
+      "unselectedCandidateA": "inconclusive",
+      "unselectedCandidateB": "component-flagged",
+      "familyContradictionP": 0.0625,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 0,
+          "rawContradictionP": 0.03125,
+          "holmContradictionP": 0.0625
+        },
+        {
+          "context": "ctx1",
+          "claim": "c0",
+          "held": 5,
+          "unknown": 0,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        }
+      ]
+    },
+    {
+      "id": "unknown-context-counted",
+      "replicas": 5,
+      "registrationHash": "55a0c7f0ba91b5408aeae524afb335b0bb5344bd1eb01f6f1df5fd2313082e8e",
+      "components": 2,
+      "supportP": 1,
+      "nativeVerdict": "contradicted",
+      "unselectedCandidateA": "inconclusive",
+      "unselectedCandidateB": "component-flagged",
+      "familyContradictionP": 0.0625,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 0,
+          "rawContradictionP": 0.03125,
+          "holmContradictionP": 0.0625
+        },
+        {
+          "context": "ctx1",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 5,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        }
+      ]
+    },
+    {
+      "id": "single-one-unknown",
+      "replicas": 5,
+      "registrationHash": "6a82c90bd196518010ade4a5c6422a0674898b55f8613d1f1344b6b0c945d38c",
+      "components": 1,
+      "supportP": 1,
+      "nativeVerdict": "inconclusive",
+      "unselectedCandidateA": "inconclusive",
+      "unselectedCandidateB": "inconclusive",
+      "familyContradictionP": 0.18750000000000003,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 1,
+          "rawContradictionP": 0.18750000000000003,
+          "holmContradictionP": 0.18750000000000003
+        }
+      ]
+    },
+    {
+      "id": "all-unknown",
+      "replicas": 5,
+      "registrationHash": "5f163af89bc4ba3a3e7e12845b031f4d258fbcaa426fccbe3bc97116de0b9502",
+      "components": 1,
+      "supportP": 1,
+      "nativeVerdict": "inconclusive",
+      "unselectedCandidateA": "inconclusive",
+      "unselectedCandidateB": "inconclusive",
+      "familyContradictionP": 1,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 5,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        }
+      ]
+    },
+    {
+      "id": "two-claims-stronger",
+      "replicas": 6,
+      "registrationHash": "91cecdaa9c7442cc9b45023ad5e85ee4ae6a9a911c7e60ee60b2b0c5456ed9ec",
+      "components": 2,
+      "supportP": 1,
+      "nativeVerdict": "contradicted",
+      "unselectedCandidateA": "contradicted",
+      "unselectedCandidateB": "component-flagged",
+      "familyContradictionP": 0.031250000000000014,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 0,
+          "rawContradictionP": 0.015625000000000007,
+          "holmContradictionP": 0.031250000000000014
+        },
+        {
+          "context": "ctx0",
+          "claim": "c1",
+          "held": 6,
+          "unknown": 0,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        }
+      ]
+    },
+    {
+      "id": "all-supported",
+      "replicas": 5,
+      "registrationHash": "3bbf05a66e41d45f2e966f4146b5eb7d19dc4432b45d6b7597f24a773afa9755",
+      "components": 4,
+      "supportP": 0.03125,
+      "nativeVerdict": "supported",
+      "unselectedCandidateA": "supported",
+      "unselectedCandidateB": "supported",
+      "familyContradictionP": 1,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 5,
+          "unknown": 0,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        },
+        {
+          "context": "ctx0",
+          "claim": "c1",
+          "held": 5,
+          "unknown": 0,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        },
+        {
+          "context": "ctx1",
+          "claim": "c0",
+          "held": 5,
+          "unknown": 0,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        },
+        {
+          "context": "ctx1",
+          "claim": "c1",
+          "held": 5,
+          "unknown": 0,
+          "rawContradictionP": 1,
+          "holmContradictionP": 1
+        }
+      ]
+    },
+    {
+      "id": "duplicate-tests",
+      "replicas": 5,
+      "registrationHash": "07f196b49f5476a7e969cfbc863c31074f89103786ce88a2fbc7b46d71c78933",
+      "components": 2,
+      "supportP": 1,
+      "nativeVerdict": "contradicted",
+      "unselectedCandidateA": "inconclusive",
+      "unselectedCandidateB": "component-flagged",
+      "familyContradictionP": 0.0625,
+      "componentTests": [
+        {
+          "context": "ctx0",
+          "claim": "c0",
+          "held": 0,
+          "unknown": 0,
+          "rawContradictionP": 0.03125,
+          "holmContradictionP": 0.0625
+        },
+        {
+          "context": "ctx0",
+          "claim": "c1",
+          "held": 0,
+          "unknown": 0,
+          "rawContradictionP": 0.03125,
+          "holmContradictionP": 0.0625
+        }
+      ]
+    }
+  ],
+  "permutation": {
+    "components": 4,
+    "decisionFieldsAndKeyedComponentsEqual": true,
+    "bootstrapIntervalsNotCompared": true
+  },
+  "missingContext": "Native analysis rejects a missing registered context; it is not removed from the family",
+  "studyCorrection": {
+    "method": "Holm step-down family-wise error control over hypothesis-level intersection-union p-values",
+    "onlySupportAdjusted": true,
+    "unadjustedVerdict": "contradicted"
+  },
+  "reusedHistoricalWitness": {
+    "path": "studies/2026-10-23-evidence-debt-review/witness.json",
+    "originalImplementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "8111fe51d69687e2a944ba5ddd0fdd9a97ccf14058ee2bcb92d674a31bd28422",
+      "files": 25
+    },
+    "nativeVerdictRecordedPreviously": "contradicted",
+    "rawContradictionP": 0.03125,
+    "comparisonPRecordedPreviously": 1,
+    "currentNativeReanalysisExecuted": false
+  },
+  "conditionalMathematics": {
+    "replicas": 5,
+    "components": 32,
+    "trueHoldProbability": 0.6,
+    "declaredHoldProbability": 0.5,
+    "independentComponentFalseFlagProbability": 0.010240000000000006,
+    "independentAnyFalseFlagProbability": 0.28062267211876313,
+    "perfectlyDependentAnyFalseFlagProbability": 0.010240000000000006,
+    "note": "Two specified joint-distribution examples, not simulator or historical error-rate estimates"
+  },
+  "boundaries": [
+    "Candidates A/B are unselected",
+    "Source/registration verification and unknown semantics unchanged",
+    "No claim of joint support/refutation or cross-hypothesis error control",
+    "Synthetic values are not native-generator realizations or evidence-authenticated inputs"
+  ]
+}
