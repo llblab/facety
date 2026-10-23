@@ -1631,6 +1631,13 @@
       "change": "Separate raw chain-cut repeat effects, case-owned finality and unkeyed explicit verdict inputs; retain the repeat-penalty/overlap contract as owner-gated.",
       "why": "Native same-range cuts do not repeat money/XP removal without new acts, but events/void markers change. The bare verdict helper can impose another guarantor penalty outside case ownership; existing guarded relay/book paths block finalized-case replay.",
       "evidence": "studies/2026-10-23-chain-replay records three raw terminal states, appended-suffix effects, a funded bare-helper contrast and four guarded relay outcome/backing combinations. This is not an established scheduler exploit or a selected deduplication policy; no code or mechanism claim changes."
+    },
+    {
+      "id": "S11",
+      "kind": "D34 diagnostic preparation; no runtime change",
+      "change": "Retain funded historical/current-role timelines, actual terminal XP, same-hour event ordering and five emission recovery states before selecting D34 execution contracts.",
+      "why": "Current graph, historical subject-ID snapshots and actual credits can differ; an already consumed right can have funded admission or debt repayment, so generic cancellation/deduplication would silently choose policy.",
+      "evidence": "studies/2026-10-23-d34-timelines contains eleven asserted public-API worlds with one common prefix. Runtime and prior evidence remain unchanged. Legal event/duty, instance attribution, penalty identity, early admission and actual recovery stay OPEN; preparation is complete, not implementation or mechanism confirmation."
     }
   ]
 }
