@@ -1,0 +1,262 @@
+{
+  "schema": "facety-native-id-diagnostic/v1",
+  "level": "diagnostic",
+  "baseline": "8391c9e90eba74fb1eed9bec5625192590c10da9",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "a3a5c26e6e34ece29a967d135ccde81ed132f9e7bd226673b4ef26ba7844e0f8",
+      "files": 25
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": null,
+    "decisions": "supplied-native-inputs-v1"
+  },
+  "method": "Funded public-API prefixes and identical successful suffixes after zero or two rejected registrations; old model with unchanged graph dependency, not historical full-scheduler replay.",
+  "previous": [
+    {
+      "name": "unknown-publisher",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": false,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:7",
+        "selfId": "self-id:8",
+        "invitation": "invitation:9"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "b85ffd20d6362f19bad734ca7473ef7d8c077a21f4680c9b70da77a27278b41d"
+    },
+    {
+      "name": "invalidated-publisher",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": false,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:7",
+        "selfId": "self-id:8",
+        "invitation": "invitation:9"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "b85ffd20d6362f19bad734ca7473ef7d8c077a21f4680c9b70da77a27278b41d"
+    },
+    {
+      "name": "invalid-face-count",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": false,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:7",
+        "selfId": "self-id:8",
+        "invitation": "invitation:9"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "b85ffd20d6362f19bad734ca7473ef7d8c077a21f4680c9b70da77a27278b41d"
+    },
+    {
+      "name": "invalid-hash",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": false,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:7",
+        "selfId": "self-id:8",
+        "invitation": "invitation:9"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "b85ffd20d6362f19bad734ca7473ef7d8c077a21f4680c9b70da77a27278b41d"
+    },
+    {
+      "name": "duplicate-hash",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": false,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:7",
+        "selfId": "self-id:8",
+        "invitation": "invitation:9"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "b85ffd20d6362f19bad734ca7473ef7d8c077a21f4680c9b70da77a27278b41d"
+    },
+    {
+      "name": "explicit-invalid-id-control",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": true,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "bdf2f6bab385c2a47504c28b240348a741e855d1cbc4505a5a28767da0811ee7"
+    }
+  ],
+  "current": [
+    {
+      "name": "unknown-publisher",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": true,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "bdf2f6bab385c2a47504c28b240348a741e855d1cbc4505a5a28767da0811ee7"
+    },
+    {
+      "name": "invalidated-publisher",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": true,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "bdf2f6bab385c2a47504c28b240348a741e855d1cbc4505a5a28767da0811ee7"
+    },
+    {
+      "name": "invalid-face-count",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": true,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "bdf2f6bab385c2a47504c28b240348a741e855d1cbc4505a5a28767da0811ee7"
+    },
+    {
+      "name": "invalid-hash",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": true,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "bdf2f6bab385c2a47504c28b240348a741e855d1cbc4505a5a28767da0811ee7"
+    },
+    {
+      "name": "duplicate-hash",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": true,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "bdf2f6bab385c2a47504c28b240348a741e855d1cbc4505a5a28767da0811ee7"
+    },
+    {
+      "name": "explicit-invalid-id-control",
+      "rejectedCalls": 2,
+      "immediateExposedStateEqual": true,
+      "laterFullStateAndIdsEqual": true,
+      "controlIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "actualIds": {
+        "artifact": "artifact:5",
+        "selfId": "self-id:6",
+        "invitation": "invitation:7"
+      },
+      "ledgerEqual": true,
+      "stateDigest": "bdf2f6bab385c2a47504c28b240348a741e855d1cbc4505a5a28767da0811ee7"
+    }
+  ],
+  "occupied": {
+    "previous": {
+      "error": {
+        "name": "ProtocolRejection",
+        "message": "invalid or duplicate artifact"
+      }
+    },
+    "current": {
+      "id": "artifact:2"
+    }
+  },
+  "preservation": {
+    "unchangedOtherSourceModules": 24,
+    "unchangedHistoricalStudyFiles": 166,
+    "rawBlobsEqual": true
+  },
+  "limits": [
+    "Observed defect is ID/event/claim-reference drift, not a demonstrated extra mint or realized economic loss.",
+    "Automatic-name collisions deliberately change from rejection/retry to deterministic skipping; explicit duplicate IDs still reject.",
+    "Model validation rejection does not erase separately charged scheduler work or authorize rollback of a successful earlier registration.",
+    "No general rollback, callback/out-of-band mutation recovery or numeric counter-exhaustion proof; no D33 implementation or mechanism confirmation."
+  ]
+}

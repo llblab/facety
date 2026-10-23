@@ -161,12 +161,17 @@ export class FacetyModel {
     this.#event('key-rotated', { subject: id, key });
   }
   // A content hash, when supplied, may be registered only once: the same media cannot be reused.
-  registerArtifact(publisher, { id = this.#id('artifact'), faceCount = 1, contentHash = null } = {}) {
+  registerArtifact(publisher, { id, faceCount = 1, contentHash = null } = {}) {
     this.#subject(publisher, true);
     natural(faceCount, 'faceCount', 1);
-    if (typeof id !== 'string' || !id.length || this.#artifacts.has(id)) throw new ProtocolRejection('invalid or duplicate artifact');
+    if (id !== undefined && (typeof id !== 'string' || !id.length || this.#artifacts.has(id))) throw new ProtocolRejection('invalid or duplicate artifact');
     if (contentHash !== null && (typeof contentHash !== 'string' || !contentHash.length)) throw new ProtocolRejection('invalid content hash');
     if (contentHash !== null && this.#contentHashes.has(contentHash)) throw new ProtocolRejection('duplicate media content');
+    if (id === undefined) {
+      // Allocate only after validation; caller-supplied IDs can occupy generated names.
+      while (this.#artifacts.has('artifact:' + this.#sequence)) this.#sequence++;
+      id = this.#id('artifact');
+    }
     if (contentHash !== null) this.#contentHashes.add(contentHash);
     this.#artifacts.set(id, Object.freeze({ id, publisher, faceCount, registeredAt: this.now }));
     this.#event('artifact-registered', { artifact: id, publisher });

@@ -100,6 +100,12 @@ Other explicit assumptions:
 - A monetary fine burns collectible liquid FACY first and assigns the remainder to subject debt. Existing Emitter balances and reserved dispute stakes are not seized. Future Self-ID repays one unit of debt per mature uncancelled right under the selected `debtRecovery` policy; its valid identity work can still earn XP. Nominal debt is never counted as an actual burn. Tying the reservation to the spend window follows the selected veto rule; the seizure order itself remains OPEN.
 - Monetary amounts use safe-integer FACY units, not production token precision. `penalize` rejects a fine that would make accumulated individual or aggregate debt unrepresentable before changing money, XP history or events. This is a numeric representation limit, not a calibrated economic ceiling. Signatures, key possession, media capture/detection, publication rights and lawful identity judgments are abstract inputs, not validated here.
 
+### Native artifact registration and ID provenance
+
+`registerArtifact` allocates an automatic ID only after publisher, face count, explicit ID and content-hash validation succeed. Rejected registrations reserve neither an ID nor a hash; identical later funded transitions retain their IDs and ordered events. Explicit IDs do not advance the generator, and automatic allocation skips names already occupied by explicit registrations. This deliberately changes generated-name collisions from rejection/retry to successful fresh allocation; explicit duplicate IDs still reject. The [native-ID diagnostic](../studies/2026-10-23-native-id/README.md) records the old drift and new controls.
+
+This is model-validation atomicity, not rollback of a successful earlier action in a caller's multi-call helper. A successful artifact registration followed by a failed Self-ID remains a successful registration. Separately charged scheduler attempts/work are not refunded by this guard. Counter exhaustion, allocation failure and arbitrary callback/out-of-band mutation recovery are outside this bounded proof; no economic rule or D33 migration is selected.
+
 ## Invitation freeze and link-break XP
 
 - `spendMaturityHours` and `conversionMaturityHours` (both 24 by default, protocol §17.3) set when an unspent right can be spent on an invitation or converted. The superseded 3/7-day schedule is `72`/`168`; the bounded incentive fixtures pin it (`LEGACY_FIXTURE_TIMING`) because their documented measurements were taken under it.

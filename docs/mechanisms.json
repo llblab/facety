@@ -1617,6 +1617,13 @@
       "change": "Bind analysis to typed canonical retained inputs, normalized valuation, alpha, semantic strategy order and current source/runtime; reject absent/stale inputDigest before summaries.",
       "why": "Complete-looking stale descriptors could still supply favorable results after raw facts changed. Association must not depend only on descriptive completeness.",
       "evidence": "studies/2026-10-23-game-binding retains the old false-safe result, explicit rejection/fresh reanalysis and 36-run/three-valuation conclusions comparison excluding only new binding metadata. JSON migration and typed unknowns are tested. This is not evidence/output authentication, independent sampling or a protocol change."
+    },
+    {
+      "id": "S9",
+      "kind": "native rejection/provenance correctness repair",
+      "change": "Allocate automatic artifact IDs after validation; skip explicitly occupied generated names without consuming IDs on rejected registrations.",
+      "why": "Parameter-default allocation advanced a shared private counter before rejection, changing later Self-ID/invitation IDs and ordered events despite unchanged immediate balances/state.",
+      "evidence": "studies/2026-10-23-native-id retains five old drift classes, an explicit-invalid-ID control, six repaired funded suffixes and the deliberate automatic-collision admission change. No extra mint or economic loss is demonstrated; no general rollback, numeric-exhaustion or mechanism claim."
     }
   ]
 }

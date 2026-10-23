@@ -69,6 +69,59 @@ test('shared artifacts flag different subjects, not submission order, and preser
   assert.throws(() => identify(model, 'missing'));
 });
 
+test('rejected artifact registration preserves later funded IDs, events and transitions', () => {
+  const funded = () => {
+    const model = new FacetyModel({ genesis: ['a', 'b', 'c'] });
+    guarantee(model, 'b', 'a');
+    const b = identify(model, 'b');
+    const a = model.createSelfId('a', model.registerArtifact('a', { contentHash: 'existing' }));
+    model.advanceTo(DAY);
+    model.convertToCollector('a', a);
+    model.convertToCollector('b', b);
+    model.invalidateIdentity('c');
+    return model;
+  };
+  const suffix = model => {
+    const artifact = model.registerArtifact('a', { contentHash: 'suffix' });
+    const act = model.createSelfId('a', artifact);
+    model.advanceTo(2 * DAY);
+    const invitation = model.createInvitation('a', act, 'new');
+    model.advanceTo(3 * DAY);
+    model.acceptInvitation(invitation, 'new');
+    return { ids: { artifact, act, invitation }, state: protocolState(model) };
+  };
+  const expected = suffix(funded());
+  for (const [label, publisher, options, reason] of [
+    ['unknown publisher', 'missing', { contentHash: 'suffix' }, /unknown subject/],
+    ['invalidated publisher', 'c', { contentHash: 'suffix' }, /not accepted/],
+    ['invalid detector count', 'a', { faceCount: 0, contentHash: 'suffix' }, /faceCount/],
+    ['invalid hash', 'a', { contentHash: '' }, /invalid content hash/],
+    ['duplicate media', 'a', { contentHash: 'existing' }, /duplicate media/],
+    ['invalid explicit ID', 'a', { id: null }, /invalid or duplicate artifact/],
+  ]) {
+    const model = funded();
+    const before = protocolState(model);
+    for (let attempt = 0; attempt < 2; attempt++) {
+      assert.throws(() => model.registerArtifact(publisher, options), reason, label);
+      assert.deepEqual(protocolState(model), before, label + ': immediate state');
+    }
+    assert.deepEqual(suffix(model), expected, label + ': later funded prefix');
+  }
+});
+
+test('automatic artifact IDs skip explicit namespace occupancy only on successful registration', () => {
+  const model = new FacetyModel();
+  model.registerArtifact('root', { id: 'artifact:0' });
+  model.registerArtifact('root', { id: 'artifact:1' });
+  const before = protocolState(model);
+  assert.throws(() => model.registerArtifact('root', { id: 'artifact:0' }), /duplicate artifact/);
+  assert.throws(() => model.registerArtifact('root', { faceCount: 0 }), /faceCount/);
+  assert.deepEqual(protocolState(model), before);
+  assert.equal(model.registerArtifact('root'), 'artifact:2');
+  assert.equal(model.registerArtifact('root', { id: 'external' }), 'external');
+  assert.equal(model.registerArtifact('root', { id: undefined }), 'artifact:3');
+});
+
 test('same subject repeating a face at exactly 24 hours is not a cross-subject collision', () => {
   const model = fixture();
   const artifact = model.registerArtifact('a');
