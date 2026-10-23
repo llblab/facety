@@ -2,7 +2,7 @@
 
 - [Facety protocol](facety.protocol.en.md): Living manifesto and protocol specification; D32's accountability/emission-growth thesis; D33's Network Difficulty, dynamic consuls and BrightID-inspired topology, D34's historical liability and early self-correction; D35's XP-centered paths, pre-guaranteed genesis and deferred cluster quotas; explicit conflicts and unimplemented boundaries; selected rules, open choices and the dated decision log.
 - [Insight register](insights.en.md): Every owner decision and simulator finding, with its evidence level and source study.
-- [Simulator model](simulator.en.md): Implemented abstractions, subsystem/spec/source/test coverage, explicit research policies, graph certificates and unresolved risks.
+- [Simulator model](simulator.en.md): Implemented abstractions, subsystem/spec/source/test coverage, explicit research policies, graph certificates, reference-checked path benchmarks and unresolved risks.
 - [Accountable-correction research](research.en.md): One mechanism chapter and [structured inventory/register](mechanisms.json), executable causal walkthroughs, hypothesis/control matrix, survivability vector, utility boundary and safe human-calibration design (not collected data).
 - [2026-10-23 topology contract preparation](../studies/2026-10-23-topology-contract/README.md): D35/D36 anchor, traversal, apex and genesis alternatives with executable graph witnesses; canonical-edge certificate repair, no admission-policy migration.
 - [2026-10-23 D34 timeline preparation](../studies/2026-10-23-d34-timelines/README.md): Historical/terminal guarantor roles, actual XP, same-hour order and five correction-funding states; no runtime migration.

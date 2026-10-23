@@ -29,6 +29,32 @@ test('CLI writes JSON only to stdout, reports errors on stderr and refuses overw
   assert.equal(facety('unknown').code, 1);
 });
 
+test('CLI graph benchmark retains deterministic JSON and rejects invalid requests without output', t => {
+  const directory = mkdtempSync(join(tmpdir(), 'facety-cli-benchmark-'));
+  t.after(() => rmSync(directory, { recursive: true, force: true }));
+  const config = join(directory, 'graph.json');
+  const artifact = join(directory, 'artifact.json');
+  const options = join(directory, 'queries.json');
+  const output = join(directory, 'benchmark.json');
+  writeFileSync(config, JSON.stringify({ topology: 'tree', size: 12, rootCount: 1, seed: 'cli-benchmark' }));
+  writeFileSync(options, JSON.stringify({ queries: [{ target: 'n11' }], iterations: 2, warmup: 0 }));
+  assert.equal(facety('graph-create', config, '--out', artifact).code, 0);
+  const first = facety('graph-benchmark', artifact, options);
+  assert.equal(first.code, 0);
+  assert.equal(first.stderr, '');
+  const result = JSON.parse(first.stdout);
+  assert.equal(result.schema, 'facety-graph-benchmark/v1');
+  assert.equal(result.cases[0].algorithms.bidirectional.verified, true);
+  assert.equal(facety('graph-benchmark', artifact, options, '--out', output).code, 0);
+  assert.deepEqual(JSON.parse(readFileSync(output, 'utf8')), result);
+  assert.equal(facety('graph-benchmark', artifact, options, '--out', output).code, 1);
+  writeFileSync(options, JSON.stringify({ queries: [{ target: 'n11', algorithm: 'unknown' }] }));
+  const invalid = facety('graph-benchmark', artifact, options);
+  assert.equal(invalid.code, 1);
+  assert.equal(invalid.stdout, '');
+  assert.match(invalid.stderr, /unknown benchmark query field/);
+});
+
 test('CLI game JSON transport and legacy raw-fact reanalysis retain input bindings', t => {
   const directory = mkdtempSync(join(tmpdir(), 'facety-cli-game-'));
   t.after(() => rmSync(directory, { recursive: true, force: true }));

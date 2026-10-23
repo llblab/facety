@@ -8,7 +8,7 @@ import { runLandscape, runLandscapeParallel, diagnoseLandscape } from '../src/di
 import { compareExperiments, analyzePairs } from '../src/controls.mjs';
 import { registerHypothesis, confirmHypothesis, analyzeConfirmation, verifyRegistration, adjustStudy } from '../src/evidence.mjs';
 import { runGame, runGameGrid, analyzeGame, sweepValuation, assessViability } from '../src/games.mjs';
-import { createGraphArtifact, extractGraphArtifact, mutateGraphArtifact, searchGraphArtifact, verifyGraphArtifact } from '../src/graph-workbench.mjs';
+import { createGraphArtifact, extractGraphArtifact, mutateGraphArtifact, searchGraphArtifact, verifyGraphArtifact, benchmarkGraphArtifact } from '../src/graph-workbench.mjs';
 
 const USAGE = `Usage: facety <command> [input.json ...] [--out file] [--force] [--workers n|auto]
 
@@ -40,6 +40,7 @@ Graphs (synthetic or extracted views; never protocol admission):
   graph-mutate <artifact.json> <mutation.json>
   graph-search <artifact.json> <query.json>
   graph-verify <artifact.json> <proof.json> <query.json>
+  graph-benchmark <artifact.json> <{queries, iterations?, warmup?, measureTime?}.json>
 
 Output goes to stdout unless --out is given; existing files are refused without --force.`;
 
@@ -98,6 +99,7 @@ const COMMANDS = {
   'graph-mutate': ([artifact, mutation]) => mutateGraphArtifact(read(artifact), read(mutation)),
   'graph-search': ([artifact, query]) => searchGraphArtifact(read(artifact), read(query)),
   'graph-verify': ([artifact, proof, query]) => verifyGraphArtifact(read(artifact), read(proof), read(query)),
+  'graph-benchmark': ([artifact, options]) => benchmarkGraphArtifact(read(artifact), read(options)),
 };
 
 async function main(argv) {

@@ -143,7 +143,7 @@ const sweep = sweepParameter(scenario, {
 console.log(sweep.results.map(row => [row.value, row.experiment.probability]));
 ```
 
-Three scenarios are available: `honest-growth`, `sybil-cone`, and `real-cartel`. Cost is realized weighted attempted work, not a token balance or elapsed time. Read [experiment semantics](docs/experiments.en.md) before interpreting a probability. Both APIs and CLI work; algorithm benchmarks remain open.
+Three scenarios are available: `honest-growth`, `sybil-cone`, and `real-cartel`. Cost is realized weighted attempted work, not a token balance or elapsed time. Read [experiment semantics](docs/experiments.en.md) before interpreting a probability. Both APIs and CLI work; a [verified graph-algorithm benchmark](#graph-experiments) is also available without choosing new admission rules.
 
 ## Graph experiments
 
@@ -167,6 +167,17 @@ console.log(journal, verifyPath(damaged, bfs.proof, request));
 ```
 
 A certificate proves a directed path in the verifier's canonical graph from an independently supplied trusted root. It does **not** prove that a person is real or unique. Search-budget exhaustion is distinct from an unreachable target.
+
+### Verified algorithm benchmark
+
+```sh
+node examples/graph-benchmark.mjs
+node bin/facety.mjs graph-benchmark artifact.json queries.json --out benchmark.json
+```
+
+`queries.json` contains, for example, `{ "queries": [{ "target": "n99" }], "iterations": 5, "warmup": 1, "measureTime": true }`. Create the artifact with `graph-create` first, or call `benchmarkGraphArtifact(artifact, options)` from `src/graph-workbench.mjs`. Bare graph snapshots require a top-level `roots` array. The example uses deterministic counters with timing disabled; enable `measureTime` explicitly for noisy local timing samples.
+
+Both algorithms receive identical snapshots and queries. Every case is checked against unbounded BFS and the independent certificate verifier before timing; measured search order alternates. Raw samples retain visited-node/edge-check counters, proofs, the input snapshot/digest and implementation/runtime provenance. Parsing, graph generation/restoration, verification and warmup are excluded from timings. Budget-exhausted cases are marked non-comparable, not unreachable. These benchmarks measure ordinary directed reachability, **not D36 disjoint support, Sybil resistance or protocol growth**. See [benchmark contract and limits](docs/simulator.en.md#path-algorithm-benchmark).
 
 ## Code map
 
@@ -194,7 +205,7 @@ A certificate proves a directed path in the verifier's canonical graph from an i
 - `src/generators.mjs`: Tree, random fixed-outdegree, preferential, community and clique topologies; node/edge removal and rewiring.
 - `src/metrics.mjs`: Connectivity, concentration, reciprocity, weak components, rank correlation, lineage depth, Council and ledger observations.
 - `src/random.mjs`: Reproducible, non-cryptographic SHA-256-seeded xoshiro128** streams and draw-equivalent excluded-index picking.
-- `src/graph-workbench.mjs`: Portable graph artifacts, extraction, standalone mutation and independently verified path queries.
+- `src/graph-workbench.mjs`: Portable graph artifacts, extraction, standalone mutation, independently verified path queries and reference-checked algorithm benchmarks.
 - `studies/`: Preregistered hypotheses, registrations and confirmations with their exploration record.
 - `test/`: Native Node tests, including exhaustive BFS equivalence on all four-node directed simple graphs, A/A null controls and parallel/sequential equivalence.
 
