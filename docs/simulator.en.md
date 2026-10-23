@@ -112,6 +112,14 @@ Other explicit assumptions:
 
 This is model-validation atomicity, not rollback of a successful earlier action in a caller's multi-call helper. A successful artifact registration followed by a failed Self-ID remains a successful registration. Separately charged scheduler attempts/work are not refunded by this guard. Counter exhaustion, allocation failure and arbitrary callback/out-of-band mutation recovery are outside this bounded proof; no economic rule or D33 migration is selected.
 
+## Invitation-time guarantor authorization (D41)
+
+`createInvitation` already rejects when `eligibleGuarantors(creator).length < requiredGuarantors()`, before allocating the invitation ID, consuming the emission, crediting XP or recording an invitation. `src/experiment.mjs` calls this same method; the scheduler has no separate admission bypass. With defaults and no counterfactual ablation, `D = decimal_digits(max(1, activeCount()))`, and the counted sources are distinct accepted subjects with current incoming guarantees and activity within 28 days. A proposal, an outgoing guarantee, XP, liquid funds or an expired/ended/invalidated source cannot substitute for an eligible guarantor. A Self-ID's recording-time guarantor snapshot does not freeze the later invitation count.
+
+[D41/§18.2](facety.protocol.en.md#182-dynamic-guarantor-threshold) prioritizes this authorization boundary. Five regression families in `test/invitation-gate.test.mjs` cover rejection with `D-1` versus admission with `D` at N28=2/9/10/99/100, surplus support, unchanged rejected-call state/later IDs, fresh threshold/relation checks and a scheduler no-support/sufficient-support control. Rejection atomicity concerns the model transition; scheduler attempt/recruitment effort remains charged under its existing work contract.
+
+**Boundary:** this check is the existing legacy raw-support mechanic, not a new behavioral rule or complete topology migration. It does not authenticate unique humans, establish independence, enforce D35/D36 XP-centered paths or choose the OPEN verified-population/genesis/epoch contracts. The control checks creation; it does not add an acceptance-time recheck or choose pending-invitation transition rules. Native source/defaults, randomness and historical study artifacts are unchanged.
+
 ## Invitation freeze and link-break XP
 
 - `spendMaturityHours` and `conversionMaturityHours` (both 24 by default, protocol §17.3) set when an unspent right can be spent on an invitation or converted. The superseded 3/7-day schedule is `72`/`168`; the legacy `runIncentiveForks` pins it (`LEGACY_FIXTURE_TIMING`) because its documented measurements were taken under it. The separate [one-day counterpart](incentives.en.md#one-day-counterpart-contract-p23) uses explicit 24-hour spend/conversion/freeze windows without changing the legacy fixture or implementing D33/D34.

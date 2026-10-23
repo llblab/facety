@@ -624,6 +624,8 @@ At zero the numeric target is also one; the formula creates neither a founder no
 
 **No cluster invitation quota or external-boundary capacity gate is imposed for now (D35).** The own-emission burn, individual guarantee/path conditions and invitation freeze still apply. Difficulty changes must not retroactively invalidate identity. Epoch/hysteresis adoption, grace periods, pending-invitation handling and recovery after an anchor/count change remain OPEN; direct formula examples do not choose those policies.
 
+**D41 — [SELECTED enforcement priority], documented 2026-10-24.** The difficulty-sized guarantee threshold is a hard authorization barrier at **invitation creation**, not merely a graph statistic or an XP effect. A creator with fewer than `D` qualifying guarantors MUST NOT create an invitation, even with a mature own emission, high XP or liquid FACY. The authorization check MUST precede the invitation burn and recording. The owner explicitly prioritizes implementing/verifying this boundary. This reaffirms the guarantee gate; it neither removes the separate D35/D36 path gate nor selects the still-OPEN verification/independence, anchor, graph, genesis-activation or difficulty-adoption contracts. A legacy raw-count check is only an implemented subset, not verified independence or full topology compliance.
+
 **Historical/simulator reference, not the current selected count:** the earlier threshold was `decimal_digit_count(N28)` for distinct active accepted subjects, without the new verification/path contract. That reference explains older results and the current simulator; it must not be presented as verified independence or full D33/D35/D36 admission. The decimal bands survive, while their qualifying population and support semantics have changed.
 
 ### 18.3 Economic effect
@@ -2194,6 +2196,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Self-contained living protocol documented 2026-10-24
 
 **D40 — [SELECTED documentary role], introduction, “Self-contained living protocol.”** Source: the owner's explicit instruction to strengthen project cohesion, especially its relationship to this document, without making the protocol a hub. The protocol must remain independently intelligible at the intersection of manifesto and specification: purpose, connected mechanisms, current rules, unresolved contracts and limits belong here. Project navigation, implementation APIs, task state and detailed experiment records belong in their own project surfaces and must identify the protocol question/rule they serve. Supporting evidence may challenge the proposal but cannot silently select rules. Earlier decisions and their full research contracts remain preserved; this is not a new edition, an economic/governance change, or permission to fill OPEN mechanics.
+
+### Invitation authorization priority documented 2026-10-24
+
+**D41 — [SELECTED enforcement priority], §18.2.** Source: the owner's explicit instruction to prioritize preventing invitations before the creator reaches the network-difficulty-sized guarantor threshold. The count is an authorization barrier at creation, before burning the own emission or recording an invitation, not just a degree/XP measurement. The separate independent-path requirement remains; this instruction does not supply missing verification, independence, anchor, graph, genesis or difficulty-transition contracts. It authorizes the bounded guarantee-gate implementation/validation, not an inferred full D33/D35/D36 migration or a new research run.
 
 ### Earlier supersessions
 
