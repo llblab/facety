@@ -1,0 +1,71 @@
+{
+  "baseline": "72bc817",
+  "before": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "f76fee265aa0b1135c87624566bc9a3ff38e968a5aeb8018aadd149b62eb26d5",
+      "files": 26
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "after": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "7ee4559d2a4819aa5e17dd90bd2ee61e1d5b0074cbe3b8cc382ecce49acf6d6f",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "sourceProof": {
+    "added": [
+      "src/social-graph.mjs"
+    ],
+    "changed": [
+      "src/experiment.mjs"
+    ],
+    "unchangedExistingSourceModules": 25,
+    "exactImportRemovalWrapperTransformation": true,
+    "literalHelperBodiesPreserved": true,
+    "graphOwnerImports": 0,
+    "experimentLinesBefore": 990,
+    "experimentLinesAfter": 957
+  },
+  "directControls": {
+    "directedGraphs": 64,
+    "orderedGraphPairs": 4096,
+    "neighborhoodChecks": 65536,
+    "trustChecks": 320,
+    "note": "Finite standalone graph inputs, including empty support, isolated nodes and duplicate supplied seeds; not verified people."
+  },
+  "preservation": {
+    "command": "node studies/2026-10-23-social-graph/preservation.mjs",
+    "exitCode": 0,
+    "pairedContexts": 17,
+    "orderedEvents": 29528,
+    "serializedBytesIdenticalExceptProvenance": true,
+    "historicalFilesUnchanged": 215
+  },
+  "focused": {
+    "command": "node --test test/social-graph.test.mjs test/social.test.mjs test/experiment.test.mjs test/perturbations.test.mjs",
+    "passed": 28,
+    "exitCode": 0
+  },
+  "aggregate": { "command": "npm test", "passed": 228, "failed": 0, "exitCode": 0, "retained": "tests.txt", "includesFocusedTests": true },
+  "dag": { "sourceModules": 27, "localEdges": 65, "errors": 0, "warnings": 0, "exitCode": 0, "retained": "dag.txt" },
+  "context": { "errors": 0, "warnings": 27, "exitCode": 0, "retained": "context.txt", "warningDisposition": "Existing structural/wide-table conventions; no broken links or orphan docs", "earlierFailure": "Parallel documentation validation preceded creation of its linked tests.txt log; rerun after retaining completed test output passes" },
+  "whitespace": { "command": "git diff --cached --check", "exitCode": 0 },
+  "boundaries": [
+    "No evaluator inputs or mutation callbacks in graph owner",
+    "No public experiment export changes",
+    "No keyed-draw, generator, economic or protocol policy changes",
+    "No independent review, performance or empirical mechanism claim"
+  ]
+}

@@ -451,7 +451,8 @@
       "bottleneck": "Communication access, finite inspection effort and correlated mistakes.",
       "basis": "Optional behavioral reference; acquaintance channels are not guarantee or invitation rights.",
       "code": [
-        "src/experiment.mjs#spreadSuspicion/neighborhood/inspectionWork"
+        "src/experiment.mjs#spreadSuspicion/neighborhood/inspectionWork",
+        "src/social-graph.mjs#graphNeighborhood"
       ],
       "observable": [
         "trust.gossipShares/gossipInspections",
@@ -1178,7 +1179,7 @@
         "scope": "structural targeting",
         "status": "research-assumption",
         "meaning": "Root-seeded graph rank selects candidates; rank is not guilt. Quantile and share have distinct roles.",
-        "provenance": "src/experiment.mjs inspectionWork",
+        "provenance": "src/social-graph.mjs propagatedTrust; src/experiment.mjs inspectionWork",
         "mechanisms": [
           "M05",
           "M12"

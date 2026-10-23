@@ -1,6 +1,6 @@
 # Cohort experiments and attack effort
 
-This document owns the research runner in `src/experiment.mjs`, its configuration/defaults and daily activity views in `src/experiment-config.mjs`, effort accounting in `src/effort.mjs`, and statistical aggregation in `src/trials.mjs`. [The model contract](simulator.en.md) owns protocol abstractions and OPEN-policy defaults.
+This document owns the research runner in `src/experiment.mjs`, its configuration/defaults and daily activity views in `src/experiment-config.mjs`, read-only public-graph neighborhoods/rank in `src/social-graph.mjs`, effort accounting in `src/effort.mjs`, and statistical aggregation in `src/trials.mjs`. [The model contract](simulator.en.md) owns protocol abstractions and OPEN-policy defaults.
 
 ## Reproducible entry points
 
@@ -9,7 +9,7 @@ This document owns the research runner in `src/experiment.mjs`, its configuratio
 - `runTrials(config, { trials, seed, includeRuns })`: Runs pseudo-random replicas with replayable derived seed labels. Full individual runs are optional.
 - `sweepParameter(config, { parameter, values, trials, seed })`: Sweeps a known dotted configuration path such as `attackerShare`, `activity.honest.inspect` or `budgets.attackers`. Every candidate validates before the sweep runs.
 
-Existing callers still import configuration functions and constants from `src/experiment.mjs`; these are identity-preserving re-exports of the configuration owner. The internal normalized `dayActivity` helper is not added to that public facade. The [extraction checkpoint](../studies/2026-10-23-experiment-config/README.md) checks configuration, rejection, API and exact trajectory/event preservation.
+Existing callers still import configuration functions and constants from `src/experiment.mjs`; these are identity-preserving re-exports of the configuration owner. The internal normalized `dayActivity` helper is not added to that public facade. The scheduler's neighborhood wrapper passes guarantees before lineage to the graph-only owner; graph order, outgoing-before-incoming adjacency and breadth-first discovery order stay observable and unchanged. Root propagation remains the legacy structural targeting reference, not D33/D36 verified independence. [The social-graph checkpoint](../studies/2026-10-23-social-graph/README.md) retains direct helper and scheduler controls. The [extraction checkpoint](../studies/2026-10-23-experiment-config/README.md) checks configuration, rejection, API and exact trajectory/event preservation.
 
 See [the root example](../README.md#cohort-and-attack-experiments). Both native ESM APIs and CLI `run`, `trials`, `sweep`, `landscape` and `compare` require no installation.
 
