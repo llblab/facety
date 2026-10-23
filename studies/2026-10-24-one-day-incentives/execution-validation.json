@@ -1,0 +1,55 @@
+{
+  "schema": "facety-p23-execution-checkpoint/v1",
+  "date": "2026-10-24",
+  "classification": "diagnostic encoded-rule accounting and conditional arithmetic, not mechanism confirmation or empirical willingness",
+  "frozenRunnerCommit": "5f4ec1b014a49ba062bd68f4a749c961109d9e8e",
+  "runnerSha256": "dbe0fea795da023fed198a434eddf5c5f6e06d92a1b6b7b98018e937f1a1e2d2",
+  "designDigest": "583f02340f18743ea0c063e005c0f369bb9781da48d75eeb578b853118c8d5c1",
+  "nativeImplementation": "6e94fb9d4c886078011b08aae0e8a701267c9984d90fa03353a4661ee95d1d19",
+  "runtime": "v26.8.1",
+  "execution": {
+    "command": "node studies/2026-10-24-one-day-incentives/run.mjs",
+    "invocations": 1,
+    "exitCode": 0,
+    "status": "complete",
+    "modeArtifacts": 2,
+    "nativeBranches": 6,
+    "checkpointRows": 30,
+    "valuationCasesPerMode": 14,
+    "payoffAnalyses": 28,
+    "sponsorComparisons": 56,
+    "ownershipAnalyses": 2,
+    "evaluatorWorlds": 4,
+    "evaluatorBranchOutcomes": 12,
+    "sampling": "No sampled seeds or human observations. Repeated mode scores are not independent replications."
+  },
+  "artifacts": [
+    { "path": "results/manifest.json", "sha256": "56deab2322009ce7049ee7e540610c81c244f5a65418f603719707262e19fb6a" },
+    { "path": "results/raw.json", "bytes": 244549, "sha256": "c77ecd596e3478596336bf7bfb01328f0b47bb15ac52f2a2de41ebb61595aabc" },
+    { "path": "results/report.json", "bytes": 556966, "sha256": "38024006fcae97e8eecd8acc43770384e6809b592ba3b6a142942477f00726c9" }
+  ],
+  "audit": {
+    "command": "node studies/2026-10-24-one-day-incentives/audit.mjs",
+    "exitCode": 0,
+    "codeSha256": "c3dd6b68b81a2c17defc871e7ef5a1bc1476cd26ebb53fd570eac2af751344ab",
+    "report": "execution-audit.json",
+    "postDataAuthorAudit": true,
+    "independentReviewer": false,
+    "modelReplays": 0,
+    "economicAnalyzerCalls": 0,
+    "reconstructed": { "checkpointAccountsAndCreditViews": 30, "scoresComponentsThresholdsChoiceSummaries": 56, "overlayBranchOutcomes": 12, "operatorComparisons": 8 },
+    "scoreRows": { "negative": 36, "zero": 4, "positive": 2, "unknown": 14 }
+  },
+  "checks": {
+    "context": { "exitCode": 0, "errors": 0, "warnings": 27 },
+    "whitespace": { "command": "git diff --check", "exitCode": 0 },
+    "existingSourceAndEvidence": {
+      "command": "/usr/bin/git diff --exit-code 5f4ec1b -- src examples test studies/2026-10-24-one-day-incentives/run.mjs studies/2026-10-24-one-day-incentives/controls.mjs studies/2026-10-24-one-day-incentives/controls.json studies/2026-10-24-one-day-incentives/validation.json studies/2026-10-24-one-day-incentives/report-validation.json",
+      "exitCode": 0,
+      "boundary": "Native/frozen runner/previous test and compatibility evidence are unchanged. The audit is a new read-only post-data inspection script, checked directly against all retained results."
+    },
+    "reusedEvidence": "252 native tests, exact legacy byte-preservation and the 27-module/66-edge acyclic DAG are reused from source-identical prior checkpoints, not rerun for new confidence.",
+    "tracking": "Generic results/ ignore remains unchanged; force-track only the three exact dated study JSON artifacts."
+  },
+  "remaining": "Bounded port/report complete. Existing A3 guarantee-selection/alignment owners retain competing choices, future opportunities, unknown losses and unresolved D34 historical-risk contracts. No new policy, calibration, input authentication, voluntary retention, useful distribution or independent-review assurance."
+}

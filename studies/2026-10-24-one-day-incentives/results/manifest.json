@@ -1,0 +1,283 @@
+{
+  "schema": "facety-p23-incentive-manifest/v1",
+  "status": "complete",
+  "runner": {
+    "path": "studies/2026-10-24-one-day-incentives/run.mjs",
+    "commit": "5f4ec1b014a49ba062bd68f4a749c961109d9e8e",
+    "sha256": "dbe0fea795da023fed198a434eddf5c5f6e06d92a1b6b7b98018e937f1a1e2d2"
+  },
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "6e94fb9d4c886078011b08aae0e8a701267c9984d90fa03353a4661ee95d1d19",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "design": {
+    "schema": "facety-p23-incentive-design/v1",
+    "method": "diagnostic-fixed-scripts-and-conditional-terminal-arithmetic",
+    "nativeSource": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "6e94fb9d4c886078011b08aae0e8a701267c9984d90fa03353a4661ee95d1d19",
+        "files": 27
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "modes": [
+      {
+        "xpFinality": "terminal",
+        "role": "selected-reference"
+      },
+      {
+        "xpFinality": "immediate",
+        "role": "counterfactual-not-protocol-option"
+      }
+    ],
+    "strategies": [
+      "wait-collector",
+      "invite-only",
+      "invite-and-guarantee"
+    ],
+    "horizonHour": 72,
+    "checkpoints": [
+      0,
+      24,
+      48,
+      48,
+      72
+    ],
+    "sampling": "Two deterministic mode artifacts, each replaying three funded scripts. No sampled seeds, replicates, p-values or confidence intervals.",
+    "valuationCases": [
+      {
+        "id": "zero-value-control",
+        "preferences": {
+          "facyValue": 0,
+          "xpValue": 0,
+          "workUnitCost": 0,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "cash-only",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 0,
+          "workUnitCost": 0,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "cash-and-work",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 0,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "cash-tenfold",
+        "preferences": {
+          "facyValue": 10,
+          "xpValue": 0,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "xp-unit",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 1,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "xp-tenfold",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 10,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "admission-unit",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 0,
+          "workUnitCost": 1,
+          "admissionBenefit": 1,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "guarantee-unit",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 0,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 1,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "added-loss-unit",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 0,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 1,
+            "invite-and-guarantee": 1
+          }
+        }
+      },
+      {
+        "id": "avoided-loss-unit",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 0,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": -1,
+            "invite-and-guarantee": -1
+          }
+        }
+      },
+      {
+        "id": "unknown-xp",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": null,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "unknown-losses",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 0,
+          "workUnitCost": 1,
+          "admissionBenefit": 0,
+          "guaranteeBenefit": 0,
+          "expectedLosses": {
+            "invite-only": null,
+            "invite-and-guarantee": null
+          }
+        }
+      },
+      {
+        "id": "unknown-benefits",
+        "preferences": {
+          "facyValue": 1,
+          "xpValue": 0,
+          "workUnitCost": 1,
+          "admissionBenefit": null,
+          "guaranteeBenefit": null,
+          "expectedLosses": {
+            "invite-only": 0,
+            "invite-and-guarantee": 0
+          }
+        }
+      },
+      {
+        "id": "all-unknown",
+        "preferences": {
+          "facyValue": null,
+          "xpValue": null,
+          "workUnitCost": null,
+          "admissionBenefit": null,
+          "guaranteeBenefit": null,
+          "expectedLosses": {
+            "invite-only": null,
+            "invite-and-guarantee": null
+          }
+        }
+      }
+    ],
+    "valuationBoundary": "Supplied 0/1/10 unit contrasts, signed incremental losses and null controls; not calibrated prices, preference estimates or data-chosen break-even points. Existing analysis computes thresholds from fresh facts.",
+    "ownershipBoundary": "Retain both existing evaluator worlds and per-subject XP; no operator utility aggregator, live fabricated admission or pooled procedural authority.",
+    "timingBoundary": "First credited checkpoint is a sparse retained observation, not an independently measured exact XP-credit timestamp. Do not filter same-hour work by time and spill newcomer Self-ID into the admission checkpoint.",
+    "inferenceBoundary": "Encoded accounting, not emergent mechanism, voluntary retention, equilibrium, personhood, calibrated risk, useful distribution, D33 or D34. Unknown expected losses never become zero from observed debt."
+  },
+  "designDigest": "583f02340f18743ea0c063e005c0f369bb9781da48d75eeb578b853118c8d5c1",
+  "files": [
+    {
+      "name": "raw.json",
+      "bytes": 244549,
+      "sha256": "c77ecd596e3478596336bf7bfb01328f0b47bb15ac52f2a2de41ebb61595aabc"
+    },
+    {
+      "name": "report.json",
+      "bytes": 556966,
+      "sha256": "38024006fcae97e8eecd8acc43770384e6809b592ba3b6a142942477f00726c9"
+    }
+  ],
+  "counts": {
+    "modeArtifacts": 2,
+    "nativeBranches": 6,
+    "checkpointRows": 30,
+    "payoffAnalyses": 28,
+    "sponsorComparisons": 56,
+    "ownershipAnalyses": 2,
+    "evaluatorWorlds": 4,
+    "evaluatorBranchOutcomes": 12
+  },
+  "assurance": "Author-coordinated diagnostic execution; not independent review, preregistered mechanism confirmation or calibrated human evidence."
+}

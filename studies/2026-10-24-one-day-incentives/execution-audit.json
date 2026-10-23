@@ -1,0 +1,767 @@
+{
+  "schema": "facety-p23-diagnostic-audit/v1",
+  "source": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "6e94fb9d4c886078011b08aae0e8a701267c9984d90fa03353a4661ee95d1d19",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "checks": {
+    "manifestAndCodeHashes": true,
+    "completeRawInputs": true,
+    "checkpoints": 30,
+    "sponsorComparisons": 56,
+    "ownershipBranches": 12,
+    "ownershipComparisons": 8,
+    "noOmittedValuationCases": true
+  },
+  "scoreCounts": {
+    "positive": 2,
+    "negative": 36,
+    "zero": 4,
+    "unknown": 14
+  },
+  "summaries": [
+    {
+      "xpFinality": "terminal",
+      "facts": [
+        {
+          "baseline": "wait-collector",
+          "treatment": "invite-only",
+          "sponsor": {
+            "liquidFacy": -1,
+            "xp": 0,
+            "debt": 0,
+            "effort": 1,
+            "acceptedActions": 1
+          },
+          "subjects": 1,
+          "guaranteeEdges": 0,
+          "lineageEdges": 1,
+          "privateUtility": null,
+          "expectedLiability": null,
+          "networkExternality": null
+        },
+        {
+          "baseline": "wait-collector",
+          "treatment": "invite-and-guarantee",
+          "sponsor": {
+            "liquidFacy": -1,
+            "xp": 1,
+            "debt": 0,
+            "effort": 2,
+            "acceptedActions": 2
+          },
+          "subjects": 1,
+          "guaranteeEdges": 1,
+          "lineageEdges": 1,
+          "privateUtility": null,
+          "expectedLiability": null,
+          "networkExternality": null
+        }
+      ],
+      "cases": [
+        {
+          "id": "zero-value-control",
+          "values": [
+            0,
+            0
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "cash-only",
+          "values": [
+            -1,
+            -1
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "cash-and-work",
+          "values": [
+            -2,
+            -3
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "cash-tenfold",
+          "values": [
+            -11,
+            -12
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "xp-unit",
+          "values": [
+            -2,
+            -2
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "xp-tenfold",
+          "values": [
+            -2,
+            7
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "admission-unit",
+          "values": [
+            -1,
+            -2
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "guarantee-unit",
+          "values": [
+            -2,
+            -2
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "added-loss-unit",
+          "values": [
+            -3,
+            -4
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "avoided-loss-unit",
+          "values": [
+            -1,
+            -2
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "unknown-xp",
+          "values": [
+            -2,
+            null
+          ],
+          "status": "partial"
+        },
+        {
+          "id": "unknown-losses",
+          "values": [
+            null,
+            null
+          ],
+          "status": "partial"
+        },
+        {
+          "id": "unknown-benefits",
+          "values": [
+            null,
+            null
+          ],
+          "status": "partial"
+        },
+        {
+          "id": "all-unknown",
+          "values": [
+            null,
+            null
+          ],
+          "status": "partial"
+        }
+      ],
+      "terminalSponsor": [
+        {
+          "strategy": "wait-collector",
+          "liquidFacy": 1,
+          "xp": 1,
+          "work": 3
+        },
+        {
+          "strategy": "invite-only",
+          "liquidFacy": 0,
+          "xp": 1,
+          "work": 4
+        },
+        {
+          "strategy": "invite-and-guarantee",
+          "liquidFacy": 0,
+          "xp": 2,
+          "work": 5
+        }
+      ],
+      "creditCheckpoints": [
+        {
+          "strategy": "wait-collector",
+          "acts": [
+            {
+              "selfId": "self-id:2",
+              "subject": "peer",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "decision",
+                "atHour": 24
+              }
+            },
+            {
+              "selfId": "self-id:4",
+              "subject": "sponsor",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "sponsor",
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "decision",
+                "atHour": 24
+              }
+            }
+          ]
+        },
+        {
+          "strategy": "invite-only",
+          "acts": [
+            {
+              "selfId": "self-id:2",
+              "subject": "peer",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "decision",
+                "atHour": 24
+              }
+            },
+            {
+              "selfId": "self-id:4",
+              "subject": "sponsor",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "sponsor",
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "decision",
+                "atHour": 24
+              }
+            },
+            {
+              "selfId": "self-id:7",
+              "subject": "newcomer",
+              "recordedAt": 48,
+              "xpRecipients": [
+                "newcomer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "horizon",
+                "atHour": 72
+              }
+            }
+          ]
+        },
+        {
+          "strategy": "invite-and-guarantee",
+          "acts": [
+            {
+              "selfId": "self-id:2",
+              "subject": "peer",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "decision",
+                "atHour": 24
+              }
+            },
+            {
+              "selfId": "self-id:4",
+              "subject": "sponsor",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "sponsor",
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "decision",
+                "atHour": 24
+              }
+            },
+            {
+              "selfId": "self-id:8",
+              "subject": "newcomer",
+              "recordedAt": 48,
+              "xpRecipients": [
+                "newcomer",
+                "sponsor"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "horizon",
+                "atHour": 72
+              }
+            }
+          ]
+        }
+      ],
+      "ownership": [
+        {
+          "world": "independent-newcomer",
+          "sponsorComparisons": [
+            {
+              "strategy": "invite-only",
+              "liquidFacy": -1,
+              "observedDebt": 0,
+              "effort": 1,
+              "effortMicroUnits": 1000000,
+              "acceptedActions": 1,
+              "xpBySubject": {
+                "before": {
+                  "sponsor": 1
+                },
+                "after": {
+                  "sponsor": 1
+                }
+              }
+            },
+            {
+              "strategy": "invite-and-guarantee",
+              "liquidFacy": -1,
+              "observedDebt": 0,
+              "effort": 2,
+              "effortMicroUnits": 2000000,
+              "acceptedActions": 2,
+              "xpBySubject": {
+                "before": {
+                  "sponsor": 1
+                },
+                "after": {
+                  "sponsor": 2
+                }
+              }
+            }
+          ]
+        },
+        {
+          "world": "sponsor-controlled-newcomer",
+          "sponsorComparisons": [
+            {
+              "strategy": "invite-only",
+              "liquidFacy": 0,
+              "observedDebt": 0,
+              "effort": 4,
+              "effortMicroUnits": 4000000,
+              "acceptedActions": 4,
+              "xpBySubject": {
+                "before": {
+                  "sponsor": 1
+                },
+                "after": {
+                  "sponsor": 1,
+                  "newcomer": 1
+                }
+              }
+            },
+            {
+              "strategy": "invite-and-guarantee",
+              "liquidFacy": 0,
+              "observedDebt": 0,
+              "effort": 6,
+              "effortMicroUnits": 6000000,
+              "acceptedActions": 6,
+              "xpBySubject": {
+                "before": {
+                  "sponsor": 1
+                },
+                "after": {
+                  "sponsor": 2,
+                  "newcomer": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "xpFinality": "immediate",
+      "facts": [
+        {
+          "baseline": "wait-collector",
+          "treatment": "invite-only",
+          "sponsor": {
+            "liquidFacy": -1,
+            "xp": 0,
+            "debt": 0,
+            "effort": 1,
+            "acceptedActions": 1
+          },
+          "subjects": 1,
+          "guaranteeEdges": 0,
+          "lineageEdges": 1,
+          "privateUtility": null,
+          "expectedLiability": null,
+          "networkExternality": null
+        },
+        {
+          "baseline": "wait-collector",
+          "treatment": "invite-and-guarantee",
+          "sponsor": {
+            "liquidFacy": -1,
+            "xp": 1,
+            "debt": 0,
+            "effort": 2,
+            "acceptedActions": 2
+          },
+          "subjects": 1,
+          "guaranteeEdges": 1,
+          "lineageEdges": 1,
+          "privateUtility": null,
+          "expectedLiability": null,
+          "networkExternality": null
+        }
+      ],
+      "cases": [
+        {
+          "id": "zero-value-control",
+          "values": [
+            0,
+            0
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "cash-only",
+          "values": [
+            -1,
+            -1
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "cash-and-work",
+          "values": [
+            -2,
+            -3
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "cash-tenfold",
+          "values": [
+            -11,
+            -12
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "xp-unit",
+          "values": [
+            -2,
+            -2
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "xp-tenfold",
+          "values": [
+            -2,
+            7
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "admission-unit",
+          "values": [
+            -1,
+            -2
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "guarantee-unit",
+          "values": [
+            -2,
+            -2
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "added-loss-unit",
+          "values": [
+            -3,
+            -4
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "avoided-loss-unit",
+          "values": [
+            -1,
+            -2
+          ],
+          "status": "complete"
+        },
+        {
+          "id": "unknown-xp",
+          "values": [
+            -2,
+            null
+          ],
+          "status": "partial"
+        },
+        {
+          "id": "unknown-losses",
+          "values": [
+            null,
+            null
+          ],
+          "status": "partial"
+        },
+        {
+          "id": "unknown-benefits",
+          "values": [
+            null,
+            null
+          ],
+          "status": "partial"
+        },
+        {
+          "id": "all-unknown",
+          "values": [
+            null,
+            null
+          ],
+          "status": "partial"
+        }
+      ],
+      "terminalSponsor": [
+        {
+          "strategy": "wait-collector",
+          "liquidFacy": 1,
+          "xp": 1,
+          "work": 3
+        },
+        {
+          "strategy": "invite-only",
+          "liquidFacy": 0,
+          "xp": 1,
+          "work": 4
+        },
+        {
+          "strategy": "invite-and-guarantee",
+          "liquidFacy": 0,
+          "xp": 2,
+          "work": 5
+        }
+      ],
+      "creditCheckpoints": [
+        {
+          "strategy": "wait-collector",
+          "acts": [
+            {
+              "selfId": "self-id:2",
+              "subject": "peer",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "common-prefix",
+                "atHour": 0
+              }
+            },
+            {
+              "selfId": "self-id:4",
+              "subject": "sponsor",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "sponsor",
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "common-prefix",
+                "atHour": 0
+              }
+            }
+          ]
+        },
+        {
+          "strategy": "invite-only",
+          "acts": [
+            {
+              "selfId": "self-id:2",
+              "subject": "peer",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "common-prefix",
+                "atHour": 0
+              }
+            },
+            {
+              "selfId": "self-id:4",
+              "subject": "sponsor",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "sponsor",
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "common-prefix",
+                "atHour": 0
+              }
+            },
+            {
+              "selfId": "self-id:7",
+              "subject": "newcomer",
+              "recordedAt": 48,
+              "xpRecipients": [
+                "newcomer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "newcomer-work",
+                "atHour": 48
+              }
+            }
+          ]
+        },
+        {
+          "strategy": "invite-and-guarantee",
+          "acts": [
+            {
+              "selfId": "self-id:2",
+              "subject": "peer",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "common-prefix",
+                "atHour": 0
+              }
+            },
+            {
+              "selfId": "self-id:4",
+              "subject": "sponsor",
+              "recordedAt": 0,
+              "xpRecipients": [
+                "sponsor",
+                "peer"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "common-prefix",
+                "atHour": 0
+              }
+            },
+            {
+              "selfId": "self-id:8",
+              "subject": "newcomer",
+              "recordedAt": 48,
+              "xpRecipients": [
+                "newcomer",
+                "sponsor"
+              ],
+              "firstCreditedCheckpoint": {
+                "stage": "newcomer-work",
+                "atHour": 48
+              }
+            }
+          ]
+        }
+      ],
+      "ownership": [
+        {
+          "world": "independent-newcomer",
+          "sponsorComparisons": [
+            {
+              "strategy": "invite-only",
+              "liquidFacy": -1,
+              "observedDebt": 0,
+              "effort": 1,
+              "effortMicroUnits": 1000000,
+              "acceptedActions": 1,
+              "xpBySubject": {
+                "before": {
+                  "sponsor": 1
+                },
+                "after": {
+                  "sponsor": 1
+                }
+              }
+            },
+            {
+              "strategy": "invite-and-guarantee",
+              "liquidFacy": -1,
+              "observedDebt": 0,
+              "effort": 2,
+              "effortMicroUnits": 2000000,
+              "acceptedActions": 2,
+              "xpBySubject": {
+                "before": {
+                  "sponsor": 1
+                },
+                "after": {
+                  "sponsor": 2
+                }
+              }
+            }
+          ]
+        },
+        {
+          "world": "sponsor-controlled-newcomer",
+          "sponsorComparisons": [
+            {
+              "strategy": "invite-only",
+              "liquidFacy": 0,
+              "observedDebt": 0,
+              "effort": 4,
+              "effortMicroUnits": 4000000,
+              "acceptedActions": 4,
+              "xpBySubject": {
+                "before": {
+                  "sponsor": 1
+                },
+                "after": {
+                  "sponsor": 1,
+                  "newcomer": 1
+                }
+              }
+            },
+            {
+              "strategy": "invite-and-guarantee",
+              "liquidFacy": 0,
+              "observedDebt": 0,
+              "effort": 6,
+              "effortMicroUnits": 6000000,
+              "acceptedActions": 6,
+              "xpBySubject": {
+                "before": {
+                  "sponsor": 1
+                },
+                "after": {
+                  "sponsor": 2,
+                  "newcomer": 1
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Post-data author audit of retained data, independently coded raw-ledger/effort/payoff/ownership reconstruction. Not an independent reviewer, new model execution, authenticity proof or registered mechanism test."
+}

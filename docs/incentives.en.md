@@ -29,13 +29,13 @@ console.log(measured.comparisons);
 
 The scripts are deterministic. Repeating them tests replay, not a statistical sample or independent corroboration.
 
-**Timing note:** the fixture and its measured tables use the superseded 3/7-day schedule (`LEGACY_FIXTURE_TIMING`: spend 72 h, conversion 168 h, no invitation freeze, XP kept on link break). They remain valid as recorded measurements under that schedule. It is kept unchanged. The separate one-day counterpart below is implemented; new source-bound research tables remain a backlog item.
+**Timing note:** the fixture and its measured tables use the superseded 3/7-day schedule (`LEGACY_FIXTURE_TIMING`: spend 72 h, conversion 168 h, no invitation freeze, XP kept on link break). They remain valid as recorded measurements under that schedule. It is kept unchanged. The separate one-day counterpart below is implemented; its fresh [F45 diagnostic tables](../studies/2026-10-24-one-day-incentives/README.md#executed-diagnostic-results-f45) remain distinct from these historical measurements.
 
 <a id="one-day-counterpart-contract-p23-not-implemented"></a>
 
 ## One-day counterpart contract (P23)
 
-**Design prepared and software implementation validated 2026-10-24; new research tables not yet executed.** This is the [P23/D39 programme](research-interactions.en.md#root-pair-interaction-inventory) counterpart to the existing one-day port item in [BACKLOG.md](../BACKLOG.md). It changes neither protocol rules nor the legacy fixture described below. “Current-runtime” means the labeled fixed-101/current-link simulator, **not** implementation of D33/D34. Liability, pause, risk caps, correction funding, human preferences and usefulness remain outside this accounting slice.
+**Design/code fixed before execution, 2026-10-24; source-bound F45 diagnostic tables now retained.** This is the [P23/D39 programme](research-interactions.en.md#root-pair-interaction-inventory) counterpart to the existing one-day port item in [BACKLOG.md](../BACKLOG.md). It changes neither protocol rules nor the legacy fixture described below. “Current-runtime” means the labeled fixed-101/current-link simulator, **not** implementation of D33/D34. Liability, pause, risk caps, correction funding, human preferences and usefulness remain outside this accounting slice.
 
 ### Inspected seam and chosen compatibility boundary
 
@@ -43,7 +43,7 @@ The legacy path in `src/incentives.mjs` pins more than two maturity constants: i
 
 **Implemented boundary:** `runIncentiveForks({ xpFinality })`, its default output and v1 acceptance/output behavior stay unchanged. The same owner now exports `runOneDayIncentiveForks({ xpFinality })`. Its output tuple is `schema: "facety-incentive-forks/v2"`, `fixture: "marginal-admission-24h-v1"`. Default XP finality is selected `terminal`; `immediate` is only an explicitly labeled counterfactual comparison, never a protocol option. Do not add arbitrary policy, schedule, state, price, loss, ownership or actor callbacks to either factory.
 
-Run the separate thin example with `node examples/incentive-one-day.mjs`; it emits one v2 JSON artifact without writing files. Both pure consumers below accept it as well as legacy v1. [Implementation and preservation controls](../studies/2026-10-24-one-day-incentives/README.md) record the software checkpoint, not new research tables.
+Run the separate thin example with `node examples/incentive-one-day.mjs`; it emits one v2 JSON artifact without writing files. Both pure consumers below accept it as well as legacy v1. [Implementation and preservation controls](../studies/2026-10-24-one-day-incentives/README.md) record software validation and the separately executed diagnostic report, not human calibration or mechanism confirmation.
 
 The new fixed descriptor records the complete implemented policy: 24-hour spend/conversion/freeze and relation-credit revocation, with the remaining current reference fields explicit. In particular the zero guarantee fee is still a named fixture assumption, not resolution of the production fee question. A future policy/timeline meaning change needs another fixture identity, not a floating interpretation of “current.” Trusted two-person genesis and abstract genuine recruitment remain supplied assumptions, not D35 bootstrap verification or measured acquisition costs.
 
@@ -85,7 +85,7 @@ All private preferences and relative expected losses remain explicitly supplied 
 - **Closed versioning:** reject unknown fixture/schema combinations, unsupported options and malformed policy/schedule/provenance. Do not weaken old bad-input cases or add v2 fields to old output. One new thin example may emit v2; existing examples remain legacy. Broader research runs/reporting are a later checkpoint after source/tests are locked.
 - **Integration gate:** behavior implementation needs `npm test`, default differential checks and DAG/context validation. The existing flat ownership stays `incentives → model/graph/effort` and `payoffs/ownership → incentives`; adding `incentives → provenance` cannot introduce a local cycle because provenance imports only Node libraries. It does not require a new generic framework or model change.
 
-The software checkpoint passes 247 native tests (eight new one-day families) and the full v1 differential controls, with a 27-module/66-edge acyclic DAG. Fresh source-bound tables/valuation reporting remain with the canonical backlog. Validation was inline/author-coordinated while the P16 actor-workflow qualification is unresolved; no independent-review assurance or repeated delegated workflow is substituted for that missing gate.
+The implementation checkpoint passes 247 native tests (eight new one-day families) and the full v1 differential controls, with a 27-module/66-edge acyclic DAG; reporting preparation adds five families for 252 passing tests. The [executed F45 diagnostic](../studies/2026-10-24-one-day-incentives/README.md#executed-diagnostic-results-f45) retains every fresh case and raw input. Its sponsor differences are `(-1 FACY,0 XP,+1 work)` and `(-1,+1,+2)`; conditional zero-loss/unit-cash/unit-work guarantee preference needs XP value above 3, not a measured willingness threshold. Unknown losses remain unknown. Broader voluntary relation choice stays with its existing backlog owner. Validation was inline/author-coordinated while the P16 actor-workflow qualification is unresolved; no independent-review assurance or repeated delegated workflow is substituted for that missing gate.
 
 ## Common prefix and alternatives
 
