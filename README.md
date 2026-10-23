@@ -197,6 +197,8 @@ console.log(journal, verifyPath(damaged, bfs.proof, request));
 
 A certificate proves a directed path in the verifier's canonical graph from an independently supplied trusted root. It does **not** prove that a person is real or unique. Search-budget exhaustion is distinct from an unreachable target.
 
+For an explicit directed `source`/`target`, `findInternallyDisjointPaths` and `verifyInternallyDisjointPaths` in `src/proofs.mjs` produce/check a requested family with no shared intermediary; see the [API and exhaustive-reference boundary](docs/simulator.en.md#internally-vertex-disjoint-path-families-d36-primitive). This is a standalone prerequisite, **not an implemented invitation gate**, selected XP anchor or proof of independent people.
+
 ### Verified algorithm benchmark
 
 ```sh
@@ -232,7 +234,7 @@ Both algorithms receive identical snapshots and queries. Every case is checked a
 - `src/model.mjs`: Deterministic subjects, two-sided guarantees, Self-ID, Emitter, invitations, FACY accounting (including reference stake custody), chronological XP, veto-preserving debt recovery, explicit penalties and labeled mechanism ablations.
 - `src/dispute-stakes.mjs`: Open/settled/mooted commitment records, actual-versus-promised collection, exclusive reserved backing and replay guards; no truth, XP or merits authority.
 - `src/graph.mjs`: Directed adjacency indexes, immutable edge identities, pure capacity preflights, revisioned mutations and JSON snapshots.
-- `src/proofs.mjs`: BFS / bidirectional BFS, independent certificate verification and reachable sets.
+- `src/proofs.mjs`: BFS / bidirectional BFS, internally vertex-disjoint fixed-endpoint path families, independent certificate verification and reachable sets.
 - `src/generators.mjs`: Tree, random fixed-outdegree, preferential, community and clique topologies; node/edge removal and rewiring.
 - `src/metrics.mjs`: Connectivity, concentration, reciprocity, weak components, rank correlation, lineage depth, Council and ledger observations.
 - `src/random.mjs`: Reproducible, non-cryptographic SHA-256-seeded xoshiro128** streams and draw-equivalent excluded-index picking.

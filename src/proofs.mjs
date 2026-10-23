@@ -1,4 +1,4 @@
-// Owns: Directed reachability certificates and search, not human-identity proofs.
+// Owns: Directed reachability and disjoint-path certificates/search, not identity truth or admission policy.
 function prepare(graph, { roots, target, blockedNodes = [], maxVisited = Infinity }) {
   if (!Array.isArray(roots) || roots.some(id => !graph.hasNode(id))) throw new Error('roots must be canonical graph nodes');
   if (!graph.hasNode(target)) throw new Error('target must be a graph node');
@@ -135,4 +135,106 @@ export function reachableNodes(graph, roots, { blockedNodes = [] } = {}) {
     }
   }
   return visited;
+}
+
+// This primitive requires explicit, distinct endpoints; it selects no XP anchor or apex exception.
+export function findInternallyDisjointPaths(graph, { source, target, minimumPaths, blockedNodes = [] }) {
+  if (!Number.isSafeInteger(minimumPaths) || minimumPaths < 1) throw new RangeError('minimumPaths must be a positive safe integer');
+  if (!Array.isArray(blockedNodes)) throw new TypeError('blockedNodes must be an array');
+  const { roots, blocked } = prepare(graph, { roots: [source], target, blockedNodes });
+  if (source === target) throw new Error('distinct source and target required; apex policy is not supplied');
+  const stats = { augmentations: 0, searches: 0, residualEdgeChecks: 0 };
+  const paths = [];
+  const finish = () => ({
+    status: paths.length >= minimumPaths ? 'found' : 'insufficient', count: paths.length, required: minimumPaths,
+    proof: { version: 1, kind: 'internally-vertex-disjoint-paths', graph: graph.name, revision: graph.revision, source, target, paths }, stats,
+  });
+  if (!roots.length || blocked.has(target)) return finish();
+  const nodes = [...graph.nodeIds()].filter(id => !blocked.has(id));
+  const indexes = new Map(nodes.map((id, i) => [id, i]));
+  const residual = Array.from({ length: 2 * nodes.length }, () => []);
+  const originals = [];
+  function arc(from, to) {
+    const forward = { to, reverse: residual[to].length, capacity: 1 };
+    const backward = { to: from, reverse: residual[from].length, capacity: 0 };
+    residual[from].push(forward);
+    residual[to].push(backward);
+    return forward;
+  }
+  // Splitting each internal vertex caps its total flow at one, not merely each original edge.
+  for (const [id, index] of indexes) if (id !== source && id !== target) arc(2 * index, 2 * index + 1);
+  for (const edge of graph.edges()) {
+    if (blocked.has(edge.from) || blocked.has(edge.to) || edge.to === source || edge.from === target) continue;
+    originals.push({ edge, forward: arc(2 * indexes.get(edge.from) + 1, 2 * indexes.get(edge.to)) });
+  }
+  const start = 2 * indexes.get(source) + 1;
+  const end = 2 * indexes.get(target);
+  while (stats.augmentations < minimumPaths) {
+    stats.searches++;
+    const parents = Array(residual.length).fill(null);
+    parents[start] = { from: start, index: -1 };
+    const queue = [start];
+    for (let head = 0; head < queue.length && parents[end] === null; head++) {
+      const from = queue[head];
+      for (let index = 0; index < residual[from].length; index++) {
+        stats.residualEdgeChecks++;
+        const edge = residual[from][index];
+        if (!edge.capacity || parents[edge.to] !== null) continue;
+        parents[edge.to] = { from, index };
+        queue.push(edge.to);
+        if (edge.to === end) break;
+      }
+    }
+    if (parents[end] === null) break;
+    for (let at = end; at !== start;) {
+      const { from, index } = parents[at];
+      const edge = residual[from][index];
+      edge.capacity--;
+      residual[at][edge.reverse].capacity++;
+      at = from;
+    }
+    stats.augmentations++;
+  }
+  // Decompose the final flow, not the augmenting walks: later residual walks can reroute earlier ones.
+  const used = new Set(originals.filter(({ forward }) => !forward.capacity).map(({ edge }) => edge.id));
+  for (let count = 0; count < stats.augmentations; count++) {
+    const parents = new Map([[source, null]]);
+    const queue = [source];
+    for (let head = 0; head < queue.length && !parents.has(target); head++) {
+      for (const edge of graph.outEdges(queue[head])) {
+        if (!used.has(edge.id) || parents.has(edge.to)) continue;
+        parents.set(edge.to, edge.from);
+        queue.push(edge.to);
+      }
+    }
+    if (!parents.has(target)) throw new Error('disjoint path flow decomposition failed');
+    const route = [];
+    for (let at = target; at !== null; at = parents.get(at)) route.push(at);
+    route.reverse();
+    for (let i = 1; i < route.length; i++) used.delete(graph.edge(route[i - 1], route[i]).id);
+    paths.push(certificate(graph, route));
+  }
+  return finish();
+}
+
+// A family certifies a lower bound only; this verifier does not trust solver counts or prove a maximum.
+export function verifyInternallyDisjointPaths(graph, proof, { source, target, minimumPaths, blockedNodes = [], requireRevision = true }) {
+  if (!Number.isSafeInteger(minimumPaths) || minimumPaths < 1 || !Array.isArray(blockedNodes) || typeof requireRevision !== 'boolean') return false;
+  if (!graph.hasNode(source) || !graph.hasNode(target) || source === target) return false;
+  if (!proof || proof.version !== 1 || proof.kind !== 'internally-vertex-disjoint-paths' || proof.graph !== graph.name) return false;
+  if (proof.source !== source || proof.target !== target || (requireRevision && proof.revision !== graph.revision)) return false;
+  if (!Array.isArray(proof.paths) || proof.paths.length < minimumPaths) return false;
+  const routes = new Set();
+  const internal = new Set();
+  for (const path of proof.paths) {
+    if (!verifyPath(graph, path, { roots: [source], target, blockedNodes, requireRevision }) || path.nodes.length < 2) return false;
+    const key = JSON.stringify(path.nodes);
+    if (routes.has(key)) return false;
+    routes.add(key);
+    for (const id of path.nodes.slice(1, -1)) {
+      if (internal.has(id)) return false;
+      internal.add(id);
+    }
+  }
+  return true;
 }
