@@ -1,0 +1,3711 @@
+{
+  "schema": "facety-d42-migration-controls/v1",
+  "evidence": "diagnostic-software-reference-not-D42-runtime",
+  "source": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "db930fbc29f6d18c4ddfd32897668cd2d3acd1a07f07cda674e1cb7bc3e09fc4",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "runnerSha256": "92445d17f5502035c9876b01e091eda34c8536735c0d6603c879c4ea8e299cc7",
+  "policy": {
+    "xpFinality": "terminal",
+    "cancellationAuthority": "snapshot",
+    "guarantorEligibility": "active",
+    "guaranteeFee": 0,
+    "councilSize": 101,
+    "debtRecovery": "reserve-until-mature",
+    "councilEligibility": "active",
+    "invitationFreezeHours": 24,
+    "linkBreakXp": "revoke",
+    "spendMaturityHours": 24,
+    "conversionMaturityHours": 24,
+    "artifactReuse": "registration-only"
+  },
+  "selectedD42": {
+    "ordinaryMaturityAgeHours": 24,
+    "ordinarySubjectXp": 1,
+    "ordinaryEligibleGuarantorXp": 1,
+    "freeVetoEndsAtAgeHours": 24,
+    "retainOwnRightWithoutChosenUse": true,
+    "automaticCollectorConversion": false,
+    "spendingOrWithdrawalCreatesAnotherCredit": false
+  },
+  "assumptions": [
+    "Supplied accepted genesis identities are trusted fixture inputs; acquisition cost, personhood and evidence authenticity are not measured.",
+    "All funding, guarantees, rights, debt and penalties use FacetyModel public transitions; no direct graph or balance mutation.",
+    "Target ages are relative to originHour; the funded prefix ends at hour 24, or hour 48 in the two-credit halving case.",
+    "Snapshots retain a public account projection and the whole target act; all other prefix act records are retained once and checked unchanged at every snapshot.",
+    "Events are the complete native journal; it has no explicit XP-credit event. Snapshot flags/recipient arrays are not current-credit receipts or exact independent credit timestamps.",
+    "Locks, unlocks and penalties are supplied transition inputs, not executed court verdicts or new selected procedures.",
+    "The 2-before-halving versus 1-at-maturity arithmetic uses the existing floor-halving reference, not a newly selected rounding rule.",
+    "No randomness, strategy optimization, human preference, attack probability or mechanism confirmation is estimated."
+  ],
+  "cases": [
+    {
+      "id": "idle-veto-24",
+      "originHour": 24,
+      "target": "self-id:6",
+      "prefixActs": [
+        {
+          "id": "self-id:1",
+          "subject": "old",
+          "artifact": "artifact:0",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "old"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:3",
+          "subject": "new",
+          "artifact": "artifact:2",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "new"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "recorded",
+          "atHour": 24,
+          "ageHours": 0,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "fefe5e6a41b27df5b9a9fc44b98e40886a353640922a76079135039ea2fd7011"
+        },
+        {
+          "label": "before-maturity",
+          "atHour": 47,
+          "ageHours": 23,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "cbc41297f189f3cf0089cc8ca0346fb42a471e3d78069e38a3e3611f96555406"
+        },
+        {
+          "label": "at-maturity",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "c56e6f8786903c3d6701ffd58525c04810a6a8ce3a1e511a749ecd52a07a76a1"
+        },
+        {
+          "label": "legacy-veto-accepted",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "cancelled",
+            "disposition": "guarantor-veto",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 1,
+            "supply": 2,
+            "emitterVault": 0,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "c2e110c4e85af332e1e5a3ac7061171511f998fd07e61cafbd4ce192963a06b0"
+        }
+      ],
+      "attempts": [
+        {
+          "atHour": 48,
+          "ageHours": 24,
+          "operation": "free-veto-at-24",
+          "accepted": true,
+          "error": null
+        }
+      ],
+      "finalRelations": [
+        {
+          "id": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject",
+          "proposedAt": 24,
+          "activatedAt": 24,
+          "endedAt": null,
+          "status": "active"
+        }
+      ],
+      "finalGuarantees": {
+        "version": 1,
+        "name": "guarantees",
+        "revision": 4,
+        "nextEdge": 1,
+        "nodes": [
+          "subject",
+          "old",
+          "new"
+        ],
+        "edges": [
+          {
+            "id": "edge:0",
+            "from": "old",
+            "to": "subject"
+          }
+        ]
+      },
+      "events": [
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "subject",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "old",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "new",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:0",
+          "publisher": "old"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:1",
+          "subject": "old",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:2",
+          "publisher": "new"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:3",
+          "subject": "new",
+          "collision": false
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:1",
+          "subject": "old"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:3",
+          "subject": "new"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-activated",
+          "relation": "guarantee:4"
+        },
+        {
+          "at": 24,
+          "type": "artifact-registered",
+          "artifact": "artifact:5",
+          "publisher": "subject"
+        },
+        {
+          "at": 24,
+          "type": "self-id-created",
+          "selfId": "self-id:6",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 48,
+          "type": "self-id-cancelled",
+          "selfId": "self-id:6",
+          "guarantor": "old"
+        }
+      ]
+    },
+    {
+      "id": "withdraw-24",
+      "originHour": 24,
+      "target": "self-id:6",
+      "prefixActs": [
+        {
+          "id": "self-id:1",
+          "subject": "old",
+          "artifact": "artifact:0",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "old"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:3",
+          "subject": "new",
+          "artifact": "artifact:2",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "new"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "recorded",
+          "atHour": 24,
+          "ageHours": 0,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "fefe5e6a41b27df5b9a9fc44b98e40886a353640922a76079135039ea2fd7011"
+        },
+        {
+          "label": "before-maturity",
+          "atHour": 47,
+          "ageHours": 23,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "cbc41297f189f3cf0089cc8ca0346fb42a471e3d78069e38a3e3611f96555406"
+        },
+        {
+          "label": "at-maturity",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "c56e6f8786903c3d6701ffd58525c04810a6a8ce3a1e511a749ecd52a07a76a1"
+        },
+        {
+          "label": "withdrawn",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "converted",
+            "disposition": "collector",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 0,
+            "collector": 3,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "5b1327fd2ee801b05e18ee6d52ca5fdb9621784eb4f562263a2068c3e5210c8a"
+        },
+        {
+          "label": "later-no-second-credit",
+          "atHour": 72,
+          "ageHours": 48,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "converted",
+            "disposition": "collector",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 0,
+            "collector": 3,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "67d7e4562309251678734c2760c030295ad6b911ade193d5506c45b0f7bed838"
+        }
+      ],
+      "attempts": [
+        {
+          "atHour": 48,
+          "ageHours": 24,
+          "operation": "repeat-withdrawal",
+          "accepted": false,
+          "error": "emission is spent or disputed"
+        }
+      ],
+      "finalRelations": [
+        {
+          "id": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject",
+          "proposedAt": 24,
+          "activatedAt": 24,
+          "endedAt": null,
+          "status": "active"
+        }
+      ],
+      "finalGuarantees": {
+        "version": 1,
+        "name": "guarantees",
+        "revision": 4,
+        "nextEdge": 1,
+        "nodes": [
+          "subject",
+          "old",
+          "new"
+        ],
+        "edges": [
+          {
+            "id": "edge:0",
+            "from": "old",
+            "to": "subject"
+          }
+        ]
+      },
+      "events": [
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "subject",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "old",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "new",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:0",
+          "publisher": "old"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:1",
+          "subject": "old",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:2",
+          "publisher": "new"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:3",
+          "subject": "new",
+          "collision": false
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:1",
+          "subject": "old"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:3",
+          "subject": "new"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-activated",
+          "relation": "guarantee:4"
+        },
+        {
+          "at": 24,
+          "type": "artifact-registered",
+          "artifact": "artifact:5",
+          "publisher": "subject"
+        },
+        {
+          "at": 24,
+          "type": "self-id-created",
+          "selfId": "self-id:6",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 48,
+          "type": "collector-converted",
+          "selfId": "self-id:6",
+          "subject": "subject"
+        }
+      ]
+    },
+    {
+      "id": "invite-cancel-25",
+      "originHour": 24,
+      "target": "self-id:6",
+      "prefixActs": [
+        {
+          "id": "self-id:1",
+          "subject": "old",
+          "artifact": "artifact:0",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "old"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:3",
+          "subject": "new",
+          "artifact": "artifact:2",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "new"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "recorded",
+          "atHour": 24,
+          "ageHours": 0,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "fefe5e6a41b27df5b9a9fc44b98e40886a353640922a76079135039ea2fd7011"
+        },
+        {
+          "label": "before-maturity",
+          "atHour": 47,
+          "ageHours": 23,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "cbc41297f189f3cf0089cc8ca0346fb42a471e3d78069e38a3e3611f96555406"
+        },
+        {
+          "label": "at-maturity",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "c56e6f8786903c3d6701ffd58525c04810a6a8ce3a1e511a749ecd52a07a76a1"
+        },
+        {
+          "label": "invitation-created",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "consumed",
+            "disposition": "invitation",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [
+            {
+              "id": "invitation:7",
+              "creator": "subject",
+              "sourceSelfId": "self-id:6",
+              "target": "invitee",
+              "createdAt": 48,
+              "acceptedAt": null,
+              "status": "open"
+            }
+          ],
+          "ledger": {
+            "minted": 3,
+            "burned": 1,
+            "supply": 2,
+            "emitterVault": 0,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "7bf2763035ebd08f7b5f7d8cdab2cb2523730c629ff529671b55a6fef8cd2456"
+        },
+        {
+          "label": "invitation-still-frozen",
+          "atHour": 49,
+          "ageHours": 25,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "consumed",
+            "disposition": "invitation",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [
+            {
+              "id": "invitation:7",
+              "creator": "subject",
+              "sourceSelfId": "self-id:6",
+              "target": "invitee",
+              "createdAt": 48,
+              "acceptedAt": null,
+              "status": "open"
+            }
+          ],
+          "ledger": {
+            "minted": 3,
+            "burned": 1,
+            "supply": 2,
+            "emitterVault": 0,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "0d121ed1d4675b361fbfca158ef7af826b0295eff2acec1c11a240b6524a4ec4"
+        },
+        {
+          "label": "invitation-cancelled",
+          "atHour": 49,
+          "ageHours": 25,
+          "eventCursor": 15,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "consumed",
+            "disposition": "invitation-cancelled",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [
+            {
+              "id": "invitation:7",
+              "creator": "subject",
+              "sourceSelfId": "self-id:6",
+              "target": "invitee",
+              "createdAt": 48,
+              "acceptedAt": null,
+              "status": "cancelled"
+            }
+          ],
+          "ledger": {
+            "minted": 3,
+            "burned": 1,
+            "supply": 2,
+            "emitterVault": 0,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "6f8f51fa2130c31ed7d3a0ba2c27560789806e2f0a9d8ca1c160b891d79fa155"
+        }
+      ],
+      "attempts": [],
+      "finalRelations": [
+        {
+          "id": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject",
+          "proposedAt": 24,
+          "activatedAt": 24,
+          "endedAt": null,
+          "status": "active"
+        }
+      ],
+      "finalGuarantees": {
+        "version": 1,
+        "name": "guarantees",
+        "revision": 4,
+        "nextEdge": 1,
+        "nodes": [
+          "subject",
+          "old",
+          "new"
+        ],
+        "edges": [
+          {
+            "id": "edge:0",
+            "from": "old",
+            "to": "subject"
+          }
+        ]
+      },
+      "events": [
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "subject",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "old",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "new",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:0",
+          "publisher": "old"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:1",
+          "subject": "old",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:2",
+          "publisher": "new"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:3",
+          "subject": "new",
+          "collision": false
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:1",
+          "subject": "old"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:3",
+          "subject": "new"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-activated",
+          "relation": "guarantee:4"
+        },
+        {
+          "at": 24,
+          "type": "artifact-registered",
+          "artifact": "artifact:5",
+          "publisher": "subject"
+        },
+        {
+          "at": 24,
+          "type": "self-id-created",
+          "selfId": "self-id:6",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 48,
+          "type": "invitation-created",
+          "invitation": "invitation:7",
+          "creator": "subject",
+          "target": "invitee"
+        },
+        {
+          "at": 49,
+          "type": "invitation-cancelled",
+          "invitation": "invitation:7",
+          "guarantor": "old"
+        }
+      ]
+    },
+    {
+      "id": "debt-24",
+      "originHour": 24,
+      "target": "self-id:6",
+      "prefixActs": [
+        {
+          "id": "self-id:1",
+          "subject": "old",
+          "artifact": "artifact:0",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "old"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:3",
+          "subject": "new",
+          "artifact": "artifact:2",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "new"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "recorded",
+          "atHour": 24,
+          "ageHours": 0,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 1
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": true
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 1
+          },
+          "digest": "8ffc8a4f2b8d6291f8dbae13e797eab79f11e870ea326306bd45e42b28320e66"
+        },
+        {
+          "label": "before-maturity",
+          "atHour": 47,
+          "ageHours": 23,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 1
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": true
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 1
+          },
+          "digest": "7fa874c4fdc919c996f2bc4ad32f87bc990322ffcadcc941457857079338c6b0"
+        },
+        {
+          "label": "at-maturity",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 15,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "consumed",
+            "disposition": "debt-repayment",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 1,
+            "supply": 2,
+            "emitterVault": 0,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "be63e5d818b82e83ff7a939e546b832c92f91f3e8e8c8a5005de7656593645ec"
+        },
+        {
+          "label": "later-no-second-recovery",
+          "atHour": 72,
+          "ageHours": 48,
+          "eventCursor": 15,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "consumed",
+            "disposition": "debt-repayment",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 1,
+            "supply": 2,
+            "emitterVault": 0,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "3d428f3181e34d946dd9960b6adbcb513a6b25432f98d3736ff389957aa626da"
+        }
+      ],
+      "attempts": [],
+      "finalRelations": [
+        {
+          "id": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject",
+          "proposedAt": 24,
+          "activatedAt": 24,
+          "endedAt": null,
+          "status": "active"
+        }
+      ],
+      "finalGuarantees": {
+        "version": 1,
+        "name": "guarantees",
+        "revision": 4,
+        "nextEdge": 1,
+        "nodes": [
+          "subject",
+          "old",
+          "new"
+        ],
+        "edges": [
+          {
+            "id": "edge:0",
+            "from": "old",
+            "to": "subject"
+          }
+        ]
+      },
+      "events": [
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "subject",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "old",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "new",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:0",
+          "publisher": "old"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:1",
+          "subject": "old",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:2",
+          "publisher": "new"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:3",
+          "subject": "new",
+          "collision": false
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:1",
+          "subject": "old"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:3",
+          "subject": "new"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-activated",
+          "relation": "guarantee:4"
+        },
+        {
+          "at": 24,
+          "type": "penalty-applied",
+          "subject": "subject",
+          "fine": 1,
+          "collected": 0,
+          "debtAdded": 1,
+          "halveXp": false
+        },
+        {
+          "at": 24,
+          "type": "artifact-registered",
+          "artifact": "artifact:5",
+          "publisher": "subject"
+        },
+        {
+          "at": 24,
+          "type": "self-id-created",
+          "selfId": "self-id:6",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 48,
+          "type": "debt-recovered",
+          "selfId": "self-id:6",
+          "subject": "subject"
+        }
+      ]
+    },
+    {
+      "id": "locked-debt-48",
+      "originHour": 24,
+      "target": "self-id:6",
+      "prefixActs": [
+        {
+          "id": "self-id:1",
+          "subject": "old",
+          "artifact": "artifact:0",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "old"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:3",
+          "subject": "new",
+          "artifact": "artifact:2",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "new"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "recorded",
+          "atHour": 24,
+          "ageHours": 0,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 1
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": true
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 1
+          },
+          "digest": "8ffc8a4f2b8d6291f8dbae13e797eab79f11e870ea326306bd45e42b28320e66"
+        },
+        {
+          "label": "before-maturity",
+          "atHour": 47,
+          "ageHours": 23,
+          "eventCursor": 14,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 1
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": true
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 1
+          },
+          "digest": "7fa874c4fdc919c996f2bc4ad32f87bc990322ffcadcc941457857079338c6b0"
+        },
+        {
+          "label": "locked-before-maturity",
+          "atHour": 47,
+          "ageHours": 23,
+          "eventCursor": 15,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 1
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": "declared-case",
+            "collision": false,
+            "debtReserved": true
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 1
+          },
+          "digest": "58c9023dc36347eb7616f0138d74ec854e0fe70963e67b0ccab50e0ca8a5555f"
+        },
+        {
+          "label": "at-maturity",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 15,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 1
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": "declared-case",
+            "collision": false,
+            "debtReserved": true
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 1
+          },
+          "digest": "1befa42e51a2c2faeddeaff143cafd38dda79ecf2d4f2a71d9f894236d0e736b"
+        },
+        {
+          "label": "still-locked",
+          "atHour": 72,
+          "ageHours": 48,
+          "eventCursor": 15,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 1
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": "declared-case",
+            "collision": false,
+            "debtReserved": true
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 1
+          },
+          "digest": "e89df723297df35b46ee090a3bac86f9b5b1ec26ac946d7282e5956926ce5678"
+        },
+        {
+          "label": "unlocked-and-recovered",
+          "atHour": 72,
+          "ageHours": 48,
+          "eventCursor": 17,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "consumed",
+            "disposition": "debt-repayment",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 1,
+            "supply": 2,
+            "emitterVault": 0,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "cfb1daba4fdfc9c8fab9cab6e9ae666c84e648c23a3acb4b86a9184a79a6ff4c"
+        }
+      ],
+      "attempts": [
+        {
+          "atHour": 48,
+          "ageHours": 24,
+          "operation": "withdraw-while-locked",
+          "accepted": false,
+          "error": "emission is reserved for debt recovery"
+        },
+        {
+          "atHour": 48,
+          "ageHours": 24,
+          "operation": "veto-while-locked",
+          "accepted": false,
+          "error": "emission is spent or disputed"
+        }
+      ],
+      "finalRelations": [
+        {
+          "id": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject",
+          "proposedAt": 24,
+          "activatedAt": 24,
+          "endedAt": null,
+          "status": "active"
+        }
+      ],
+      "finalGuarantees": {
+        "version": 1,
+        "name": "guarantees",
+        "revision": 4,
+        "nextEdge": 1,
+        "nodes": [
+          "subject",
+          "old",
+          "new"
+        ],
+        "edges": [
+          {
+            "id": "edge:0",
+            "from": "old",
+            "to": "subject"
+          }
+        ]
+      },
+      "events": [
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "subject",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "old",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "new",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:0",
+          "publisher": "old"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:1",
+          "subject": "old",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:2",
+          "publisher": "new"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:3",
+          "subject": "new",
+          "collision": false
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:1",
+          "subject": "old"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:3",
+          "subject": "new"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-activated",
+          "relation": "guarantee:4"
+        },
+        {
+          "at": 24,
+          "type": "penalty-applied",
+          "subject": "subject",
+          "fine": 1,
+          "collected": 0,
+          "debtAdded": 1,
+          "halveXp": false
+        },
+        {
+          "at": 24,
+          "type": "artifact-registered",
+          "artifact": "artifact:5",
+          "publisher": "subject"
+        },
+        {
+          "at": 24,
+          "type": "self-id-created",
+          "selfId": "self-id:6",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 47,
+          "type": "self-id-frozen",
+          "selfId": "self-id:6",
+          "lockId": "declared-case"
+        },
+        {
+          "at": 72,
+          "type": "self-id-unfrozen",
+          "selfId": "self-id:6",
+          "lockId": "declared-case"
+        },
+        {
+          "at": 72,
+          "type": "debt-recovered",
+          "selfId": "self-id:6",
+          "subject": "subject"
+        }
+      ]
+    },
+    {
+      "id": "guarantor-switch-23",
+      "originHour": 24,
+      "target": "self-id:6",
+      "prefixActs": [
+        {
+          "id": "self-id:1",
+          "subject": "old",
+          "artifact": "artifact:0",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "old"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:3",
+          "subject": "new",
+          "artifact": "artifact:2",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "new"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "recorded",
+          "atHour": 24,
+          "ageHours": 0,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "fefe5e6a41b27df5b9a9fc44b98e40886a353640922a76079135039ea2fd7011"
+        },
+        {
+          "label": "before-maturity",
+          "atHour": 47,
+          "ageHours": 23,
+          "eventCursor": 13,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 2,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "cbc41297f189f3cf0089cc8ca0346fb42a471e3d78069e38a3e3611f96555406"
+        },
+        {
+          "label": "switched-before-maturity",
+          "atHour": 47,
+          "ageHours": 23,
+          "eventCursor": 16,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "new"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 1,
+            "feeVault": 1,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "2d432c1bcb3ead851e59134e854cb85a8e2e53e9e765e4a78c610d3a49c100e8"
+        },
+        {
+          "label": "at-maturity",
+          "atHour": 48,
+          "ageHours": 24,
+          "eventCursor": 16,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "new"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 1,
+            "feeVault": 1,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "bf25ee3b88249d2ce1900c5ead4e2f0745db18d4f16e519916c76f170981241b"
+        },
+        {
+          "label": "before-late-withdrawal",
+          "atHour": 72,
+          "ageHours": 48,
+          "eventCursor": 16,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 0,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "new"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 1,
+            "collector": 1,
+            "feeVault": 1,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "26a511bb21788a6092e633b717809065f079332d99194b10cba4cb495e49c90d"
+        },
+        {
+          "label": "withdrawn-after-switch",
+          "atHour": 72,
+          "ageHours": 48,
+          "eventCursor": 17,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 1,
+              "liquidFacy": 0,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:6",
+            "subject": "subject",
+            "artifact": "artifact:5",
+            "faceIndex": 0,
+            "recordedAt": 24,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "converted",
+            "disposition": "collector",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "new"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 3,
+            "burned": 0,
+            "supply": 3,
+            "emitterVault": 0,
+            "collector": 2,
+            "feeVault": 1,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "dde8a5860bb9434817a9e6230f80120092163d51bc1371d5eb222df2c6aa63b5"
+        }
+      ],
+      "attempts": [],
+      "finalRelations": [
+        {
+          "id": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject",
+          "proposedAt": 24,
+          "activatedAt": 24,
+          "endedAt": 47,
+          "status": "ended"
+        },
+        {
+          "id": "guarantee:7",
+          "guarantor": "new",
+          "guaranteed": "subject",
+          "proposedAt": 47,
+          "activatedAt": 47,
+          "endedAt": null,
+          "status": "active"
+        }
+      ],
+      "finalGuarantees": {
+        "version": 1,
+        "name": "guarantees",
+        "revision": 6,
+        "nextEdge": 2,
+        "nodes": [
+          "subject",
+          "old",
+          "new"
+        ],
+        "edges": [
+          {
+            "id": "edge:1",
+            "from": "new",
+            "to": "subject"
+          }
+        ]
+      },
+      "events": [
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "subject",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "old",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "new",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:0",
+          "publisher": "old"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:1",
+          "subject": "old",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:2",
+          "publisher": "new"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:3",
+          "subject": "new",
+          "collision": false
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:1",
+          "subject": "old"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:3",
+          "subject": "new"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:4",
+          "guarantor": "old",
+          "guaranteed": "subject"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-activated",
+          "relation": "guarantee:4"
+        },
+        {
+          "at": 24,
+          "type": "artifact-registered",
+          "artifact": "artifact:5",
+          "publisher": "subject"
+        },
+        {
+          "at": 24,
+          "type": "self-id-created",
+          "selfId": "self-id:6",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 47,
+          "type": "guarantee-ended",
+          "relation": "guarantee:4",
+          "actor": "old"
+        },
+        {
+          "at": 47,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:7",
+          "guarantor": "new",
+          "guaranteed": "subject"
+        },
+        {
+          "at": 47,
+          "type": "guarantee-activated",
+          "relation": "guarantee:7"
+        },
+        {
+          "at": 72,
+          "type": "collector-converted",
+          "selfId": "self-id:6",
+          "subject": "subject"
+        }
+      ]
+    },
+    {
+      "id": "late-credit-after-halving",
+      "originHour": 48,
+      "target": "self-id:10",
+      "prefixActs": [
+        {
+          "id": "self-id:1",
+          "subject": "subject",
+          "artifact": "artifact:0",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "subject"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:3",
+          "subject": "old",
+          "artifact": "artifact:2",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "old"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:5",
+          "subject": "new",
+          "artifact": "artifact:4",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "new"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:8",
+          "subject": "subject",
+          "artifact": "artifact:7",
+          "faceIndex": 0,
+          "recordedAt": 24,
+          "guarantors": [
+            "old"
+          ],
+          "xpRecipients": [
+            "subject",
+            "old"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "recorded",
+          "atHour": 48,
+          "ageHours": 0,
+          "eventCursor": 19,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 2,
+              "liquidFacy": 2,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:10",
+            "subject": "subject",
+            "artifact": "artifact:9",
+            "faceIndex": 0,
+            "recordedAt": 48,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 5,
+            "burned": 0,
+            "supply": 5,
+            "emitterVault": 1,
+            "collector": 4,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "7f7030af16b326a73435e940eeaea74cdfb42e3ac14c647e58bec1a28c86d0f7"
+        },
+        {
+          "label": "before-maturity",
+          "atHour": 71,
+          "ageHours": 23,
+          "eventCursor": 19,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 2,
+              "liquidFacy": 2,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:10",
+            "subject": "subject",
+            "artifact": "artifact:9",
+            "faceIndex": 0,
+            "recordedAt": 48,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 5,
+            "burned": 0,
+            "supply": 5,
+            "emitterVault": 1,
+            "collector": 4,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "4f4310cb467b03e06e98c350308d5139872632d2369516b488b85afa5f71063d"
+        },
+        {
+          "label": "at-maturity",
+          "atHour": 72,
+          "ageHours": 24,
+          "eventCursor": 19,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 2,
+              "liquidFacy": 2,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:10",
+            "subject": "subject",
+            "artifact": "artifact:9",
+            "faceIndex": 0,
+            "recordedAt": 48,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 5,
+            "burned": 0,
+            "supply": 5,
+            "emitterVault": 1,
+            "collector": 4,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "1d551f0646286b30954d2f70b5c8280384f9f457b2e9c6d1c012b99a167337a2"
+        },
+        {
+          "label": "before-later-halving",
+          "atHour": 73,
+          "ageHours": 25,
+          "eventCursor": 19,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 2,
+              "liquidFacy": 2,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:10",
+            "subject": "subject",
+            "artifact": "artifact:9",
+            "faceIndex": 0,
+            "recordedAt": 48,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 5,
+            "burned": 0,
+            "supply": 5,
+            "emitterVault": 1,
+            "collector": 4,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "210dafaa9968fe5c4ea9e09f7b02dd2ba54a2d3ff307841cb24b55b0d5b6965d"
+        },
+        {
+          "label": "halved-before-late-credit",
+          "atHour": 73,
+          "ageHours": 25,
+          "eventCursor": 20,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 2,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:10",
+            "subject": "subject",
+            "artifact": "artifact:9",
+            "faceIndex": 0,
+            "recordedAt": 48,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 5,
+            "burned": 0,
+            "supply": 5,
+            "emitterVault": 1,
+            "collector": 4,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "f0eea2002008392f7f258f8ed584eb8e0d8f1670b23280e9f014d462a900525f"
+        },
+        {
+          "label": "before-late-withdrawal",
+          "atHour": 96,
+          "ageHours": 48,
+          "eventCursor": 20,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 1,
+              "liquidFacy": 2,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 2,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:10",
+            "subject": "subject",
+            "artifact": "artifact:9",
+            "faceIndex": 0,
+            "recordedAt": 48,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": false,
+            "status": "unspent",
+            "disposition": null,
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 5,
+            "burned": 0,
+            "supply": 5,
+            "emitterVault": 1,
+            "collector": 4,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "c6e993d85c07586feadcc1f5dd881de53bf0f4acee60bdc4568b8df8a1babf4b"
+        },
+        {
+          "label": "late-credit-after-halving",
+          "atHour": 96,
+          "ageHours": 48,
+          "eventCursor": 21,
+          "accounts": [
+            {
+              "id": "subject",
+              "xp": 2,
+              "liquidFacy": 3,
+              "debt": 0
+            },
+            {
+              "id": "old",
+              "xp": 3,
+              "liquidFacy": 1,
+              "debt": 0
+            },
+            {
+              "id": "new",
+              "xp": 1,
+              "liquidFacy": 1,
+              "debt": 0
+            }
+          ],
+          "target": {
+            "id": "self-id:10",
+            "subject": "subject",
+            "artifact": "artifact:9",
+            "faceIndex": 0,
+            "recordedAt": 48,
+            "guarantors": [
+              "old"
+            ],
+            "xpRecipients": [
+              "subject",
+              "old"
+            ],
+            "xpCredited": true,
+            "status": "converted",
+            "disposition": "collector",
+            "disputeLock": null,
+            "collision": false,
+            "debtReserved": false
+          },
+          "currentGuarantors": [
+            "old"
+          ],
+          "invitations": [],
+          "ledger": {
+            "minted": 5,
+            "burned": 0,
+            "supply": 5,
+            "emitterVault": 0,
+            "collector": 5,
+            "feeVault": 0,
+            "stakeVault": 0,
+            "debt": 0
+          },
+          "digest": "3cf36c3f9e72201baf4555f1689f5ef9bc3d16319a36ce9007658af8b4e35994"
+        }
+      ],
+      "attempts": [],
+      "finalRelations": [
+        {
+          "id": "guarantee:6",
+          "guarantor": "old",
+          "guaranteed": "subject",
+          "proposedAt": 24,
+          "activatedAt": 24,
+          "endedAt": null,
+          "status": "active"
+        }
+      ],
+      "finalGuarantees": {
+        "version": 1,
+        "name": "guarantees",
+        "revision": 4,
+        "nextEdge": 1,
+        "nodes": [
+          "subject",
+          "old",
+          "new"
+        ],
+        "edges": [
+          {
+            "id": "edge:0",
+            "from": "old",
+            "to": "subject"
+          }
+        ]
+      },
+      "events": [
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "subject",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "old",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "new",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:0",
+          "publisher": "subject"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:1",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:2",
+          "publisher": "old"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:3",
+          "subject": "old",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:4",
+          "publisher": "new"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:5",
+          "subject": "new",
+          "collision": false
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:3",
+          "subject": "old"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:5",
+          "subject": "new"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:1",
+          "subject": "subject"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:6",
+          "guarantor": "old",
+          "guaranteed": "subject"
+        },
+        {
+          "at": 24,
+          "type": "guarantee-activated",
+          "relation": "guarantee:6"
+        },
+        {
+          "at": 24,
+          "type": "artifact-registered",
+          "artifact": "artifact:7",
+          "publisher": "subject"
+        },
+        {
+          "at": 24,
+          "type": "self-id-created",
+          "selfId": "self-id:8",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 48,
+          "type": "collector-converted",
+          "selfId": "self-id:8",
+          "subject": "subject"
+        },
+        {
+          "at": 48,
+          "type": "artifact-registered",
+          "artifact": "artifact:9",
+          "publisher": "subject"
+        },
+        {
+          "at": 48,
+          "type": "self-id-created",
+          "selfId": "self-id:10",
+          "subject": "subject",
+          "collision": false
+        },
+        {
+          "at": 73,
+          "type": "penalty-applied",
+          "subject": "subject",
+          "fine": 0,
+          "collected": 0,
+          "debtAdded": 0,
+          "halveXp": true
+        },
+        {
+          "at": 96,
+          "type": "collector-converted",
+          "selfId": "self-id:10",
+          "subject": "subject"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "facety-d42-preparation-validation/v1",
+  "date": "2026-10-24",
+  "baselineCommit": "9ac299e",
+  "evidence": "coordinator-software-controls; no independent journal audit yet",
+  "source": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "db930fbc29f6d18c4ddfd32897668cd2d3acd1a07f07cda674e1cb7bc3e09fc4",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "runnerSha256": "92445d17f5502035c9876b01e091eda34c8536735c0d6603c879c4ea8e299cc7",
+  "artifact": {
+    "path": "controls.json",
+    "bytes": 93382,
+    "sha256": "706d8d78ebcd670be74ab0cfab2d539ee2c90639564af420e40851cb79fd8a41"
+  },
+  "controls": {
+    "worlds": 7,
+    "checkpoints": 38,
+    "nativeEvents": 113,
+    "captureExecutionsForRetainedArtifact": 1,
+    "assertionsPassed": true,
+    "randomness": null
+  },
+  "checks": {
+    "nativeTests": {
+      "command": "npm test",
+      "exitCode": 0,
+      "passed": 262,
+      "failed": 0,
+      "newTestFamilies": 0
+    },
+    "context": {
+      "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+      "exitCode": 0,
+      "errors": 0,
+      "warnings": 27
+    },
+    "whitespace": {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    "preservation": {
+      "nativeSourceTestsExamplesPackageAndDagUnchanged": true,
+      "priorD34P23P16ArtifactsUnchanged": true
+    },
+    "dag": {
+      "reusedFromPreviousCheckpoint": true,
+      "reason": "Native source and domain-dag.json are byte-identical",
+      "modules": 27,
+      "edges": 66,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "notEstablished": [
+    "D42 runtime compliance",
+    "freeze-time XP eligibility",
+    "new recipient or re-link rule",
+    "same-time maturity/penalty priority",
+    "invitation-cancellation treatment of prior matured XP",
+    "an empirical mechanism or human behavior",
+    "independent reviewer acceptance"
+  ],
+  "nextCohort": "Offline retained-journal/act-metadata replay of all 38 account/target/ledger checkpoints; no model execution or recapture."
+}
