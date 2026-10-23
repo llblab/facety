@@ -1,0 +1,135 @@
+{
+  "schema": "facety-service-order-design/v1",
+  "classification": "unregistered exploratory, no mechanism confirmation",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "0313a30912eb2a1caffeec361e769debc47750cceece0946c49d367d0ed84d9a",
+      "files": 27
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "design": [
+    {
+      "path": "examples/causal-walkthroughs.mjs",
+      "sha256": "4b6c8e7bbb729febbd3579c20ba4a05efd53dd44bb764e9a0985184eb8c17d3e"
+    },
+    {
+      "path": "examples/causal-relay.mjs",
+      "sha256": "dcd13fcd3b4b0140bc6af36dc95868a5e766a9c382f943830ede67d94eb3df2e"
+    },
+    {
+      "path": "studies/2026-10-24-service-order/run.mjs",
+      "sha256": "8dd8712c5ed0e7ec75a4444c95f9e7a67f9615aefdf8e13961165a345b0fef0e"
+    },
+    {
+      "path": "studies/2026-10-24-service-order/controls.mjs",
+      "sha256": "b3434add8de39ef47dd1165cfaedf623f9d1362ad85eaa0a172432cd57e237d5"
+    },
+    {
+      "path": "test/causal-relay.test.mjs",
+      "sha256": "81ebe1a096017c87ec3e698c10ba81b88bba86e141fe2471369aa4cafac93c20"
+    }
+  ],
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "causal-relay-input-keyed-v1"
+  },
+  "inputs": {
+    "violationPrevalence": 0.5,
+    "sensitivity": 0.8,
+    "falsePositiveRate": 0.2,
+    "reviewSensitivity": 0.85,
+    "reviewFalsePositiveRate": 0.2,
+    "adjudicationAccuracy": 0.8,
+    "startHour": 72,
+    "endHour": 96
+  },
+  "seeds": [
+    "d39-order-explore-00",
+    "d39-order-explore-01",
+    "d39-order-explore-02",
+    "d39-order-explore-03",
+    "d39-order-explore-04",
+    "d39-order-explore-05",
+    "d39-order-explore-06",
+    "d39-order-explore-07",
+    "d39-order-explore-08",
+    "d39-order-explore-09",
+    "d39-order-explore-10",
+    "d39-order-explore-11",
+    "d39-order-explore-12",
+    "d39-order-explore-13",
+    "d39-order-explore-14",
+    "d39-order-explore-15",
+    "d39-order-explore-16",
+    "d39-order-explore-17",
+    "d39-order-explore-18",
+    "d39-order-explore-19",
+    "d39-order-explore-20",
+    "d39-order-explore-21",
+    "d39-order-explore-22",
+    "d39-order-explore-23"
+  ],
+  "contexts": [
+    {
+      "id": "independent-capacity2",
+      "reviewCapacity": 2,
+      "sharedReviewError": 0
+    },
+    {
+      "id": "independent-capacity1",
+      "reviewCapacity": 1,
+      "sharedReviewError": 0
+    },
+    {
+      "id": "correlated-capacity1",
+      "reviewCapacity": 1,
+      "sharedReviewError": 0.75
+    }
+  ],
+  "arms": [
+    "member",
+    "external-unrouted",
+    "external-relay"
+  ],
+  "orders": [
+    {
+      "id": "mira-first",
+      "processingOrder": [
+        "Mira",
+        "Aster"
+      ]
+    },
+    {
+      "id": "aster-first",
+      "processingOrder": [
+        "Aster",
+        "Mira"
+      ]
+    }
+  ],
+  "runBound": 432,
+  "traceLimit": 64,
+  "bootstrap": {
+    "resamples": 2000,
+    "confidence": 0.95,
+    "seedKey": [
+      "d39-order-descriptive",
+      "context",
+      "arm",
+      "metric"
+    ]
+  },
+  "assumptions": [
+    "Fixed sequential exploratory labels, synthetic worlds, two opportunities and supplied accuracy/work; not a population sample or actual willingness.",
+    "Only package service priority changes. Discovery/package construction and settlement stay canonical; all latent inputs are keyed by subject/stage.",
+    "Reserved backing, strict individual-subject XP and one-step verdicts are references, not D34/D33 migration or new payment/authority rules.",
+    "Ten total work units per arm: member 10 or external 6 plus sponsor 4; adjudication work is abstracted. No extra workforce, compensation or useful demand.",
+    "Missing stage clocks remain null. Debt is not recovery; genuine burden is not necessarily wrongful. Member/relay arms are paired, not independent extra worlds.",
+    "Correlated-capacity2, different prevalences/qualities, target populations, long horizons, live arrivals, human calendars and voluntary guarantee retention are not tested.",
+    "Bootstrap intervals describe the declared seed-world model, are unadjusted and do not supply familywise or real-world guarantees. Zero effects do not establish equivalence."
+  ]
+}

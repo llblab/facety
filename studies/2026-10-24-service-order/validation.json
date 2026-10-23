@@ -1,5 +1,6 @@
 {
-  "phase": "pre-execution",
+  "phase": "post-execution",
+  "sourceDesignCommit": "3d895567f473dbdda436c10c666d722866f5c023",
   "focusedTests": {
     "passed": 8,
     "failed": 0,
@@ -10,8 +11,45 @@
     "passed": 239,
     "failed": 0
   },
-  "defaultCompatibility": "controls.json; source baseline 94fec29; only control labels, no stored historical scientific study",
-  "nativeSource": "src and examples/causal-walkthroughs.mjs unchanged from baseline",
-  "experimentalRunsExecuted": 0,
-  "remaining": "Commit concrete source/design, then execute the fixed 432-run study if controls remain valid"
+  "defaultCompatibility": "controls.json; 72 full arm comparisons plus 18 wrapper runs/version; control labels only",
+  "nativeSource": "src and examples/causal-walkthroughs.mjs unchanged from 94fec29",
+  "experimentalRunsExecuted": 432,
+  "seedLabels": 24,
+  "worldContextCombinations": 72,
+  "independence": "Shared world labels across contexts and arms; not 72 independent populations",
+  "experimentalControls": {
+    "completeUniquePairs": true,
+    "fixedDiscoveryAndSettlement": true,
+    "matchedMemberRelay": true,
+    "unroutedBlocked": true,
+    "noDroppedTraceRecords": true
+  },
+  "compressedRawIntegrity": "gzip -t passed",
+  "artifacts": {
+    "manifest.json": "9ec245043aa18d9ba54468041f681936f3416ef31e67e184260d3a01f210ef81",
+    "runs.json.gz": "539f30508527eb0cf3cab25255bb7c7c5b2bf0539f9ee3587a035a310eaf4dfb",
+    "analysis.json": "52952a91350fe6df608d3f0b49723f9a084bc1accf9cf9448c7e1feccc73abd7"
+  },
+  "witness": {
+    "seed": "d39-order-explore-03",
+    "context": "correlated-capacity1",
+    "arms": [
+      "member",
+      "external-relay"
+    ],
+    "canonicalCorrected": 1,
+    "reversedCorrected": 0,
+    "sameWork": 8,
+    "blockingReason": "review-capacity-exhausted",
+    "workBudgetDenials": 0,
+    "genuineXpLost": {
+      "canonical": 8,
+      "reversed": 4
+    },
+    "genuineCollectedPenalties": {
+      "canonical": 3,
+      "reversed": 0
+    }
+  },
+  "independentReview": "Not yet performed; next canonical cohort. No registered mechanism confirmation or historical scientific replay."
 }
