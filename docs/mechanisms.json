@@ -554,6 +554,15 @@
         ]
       },
       {
+        "paths": ["stepHours", "actorProfiles"],
+        "units": "4/6/24-hour opportunity grid; explicit subject activity and transaction/attention hour plans",
+        "scope": "run; per accepted subject/calendar day; whole-run budgets unchanged",
+        "status": "declared-timing-assumption-not-human-calibration",
+        "meaning": "24 retains legacy scheduling; 4/6 allocate one daily floor-plus-Bernoulli quota to keyed slots, with a fixed Self-ID phase. Explicit profiles may restrict availability or override rates; no population distribution is inferred. Conditional responses remain per observation; stale slots expire.",
+        "provenance": "src/activity-schedule.mjs; src/experiment-config.mjs actorProfilesFrom; docs/simulator.en.md D43",
+        "mechanisms": ["M02", "M04", "M10"]
+      },
+      {
         "paths": [
           "seed"
         ],

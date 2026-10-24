@@ -10,7 +10,9 @@ import { propagatedTrust, graphNeighborhood } from './social-graph.mjs';
 import { provenance } from './provenance.mjs';
 import { DisputeStakes } from './dispute-stakes.mjs';
 import { challengeAccess, settleOneStepPosition, enforceIdentityVerdict } from './disputes.mjs';
-import { experimentConfig, dayActivity, RANDOMNESS_POLICY, EXPERIMENT_ASSUMPTIONS } from './experiment-config.mjs';
+import { experimentConfig, dayActivity, experimentRandomness, EXPERIMENT_ASSUMPTIONS } from './experiment-config.mjs';
+import { clockAgenda } from './clock-agenda.mjs';
+import { createActivitySchedule } from './activity-schedule.mjs';
 
 export {
   SCENARIOS, EXPERIMENT_ABLATIONS, RANDOMNESS_POLICY, DEFAULT_ACTIVITY, DEFAULT_DISPUTES,
@@ -44,6 +46,8 @@ function respondToObservation(model, observer, act, observation) {
 
 export function runExperiment(overrides = {}) {
   const config = experimentConfig(overrides);
+  const randomness = experimentRandomness(config);
+  const schedule = config.stepHours === 24 ? null : createActivitySchedule(config);
   const random = new Random(config.seed);
   const roles = random.fork('initial-roles');
   const sensing = random.fork('observations');
@@ -123,6 +127,8 @@ export function runExperiment(overrides = {}) {
   let completedDays = 0;
   let previousSampleCosts = null;
   let previousCouncilIds = null;
+  let previousDailyCosts = null;
+  let previousDailyCouncilIds = null;
   let activity = config.activity;
   let activePerturbations = [];
   let deviantActivity = {};
@@ -136,14 +142,22 @@ export function runExperiment(overrides = {}) {
   // Activity for one actor: deviant operators (and fakes they control) follow their declared strategy.
   function activityOf(actor) {
     const identity = truth.get(actor);
-    return deviantOperators.has(identity.operator) && deviantActivity[identity.cohort] ? deviantActivity[identity.cohort] : activity[identity.cohort];
+    const base = deviantOperators.has(identity.operator) && deviantActivity[identity.cohort] ? deviantActivity[identity.cohort] : activity[identity.cohort];
+    return schedule ? schedule.activity(actor, base) : base;
   }
 
   function decision(channel, actor = '', slot = 0) {
-    return random.fork(JSON.stringify([RANDOMNESS_POLICY.decisions, model.now, channel, actor, slot]));
+    return random.fork(JSON.stringify([randomness.decisions, model.now, channel, actor, slot]));
   }
 
+  function dailyChoice(channel, actor, probability, key = 0, kind = 'transaction') {
+    return schedule ? schedule.slots(actor, model.now, channel, probability, key, kind).length > 0 : decision(channel, actor, key).chance(probability);
+  }
+  function actionSlots(channel, actor, rate, kind = 'transaction') {
+    return schedule ? schedule.slots(actor, model.now, channel, rate, 0, kind) : Array.from({ length: workCount(rate, decision(channel, actor)) }, (_, i) => i);
+  }
   function attempt(actor, action, operation, phase = 'maintenance') {
+    if (schedule && phase !== 'setup' && action !== 'acceptInvitation' && !schedule.available(actor, model.now, ['inspect', 'verify'].includes(action) ? 'attention' : 'transaction')) return { ok: false, reason: 'unavailable' };
     const ticket = effort.begin(truth.get(actor).cohort, action, phase);
     if (!ticket) return { ok: false, reason: 'budget-denied' };
     const operator = truth.get(actor).operator;
@@ -199,12 +213,13 @@ export function runExperiment(overrides = {}) {
     const falseConversions = acts.filter(act => act.status === 'converted' && !truth.get(act.subject).genuine).length;
     if (falseConversions !== falseConversionCount) throw new Error('conversion evaluator invariant failed');
     const costs = effort.summary().cohorts;
-    const network = measureNetwork(model, truth, { previousCouncilIds });
+    const daily = schedule && stage === 'day-end';
+    const network = measureNetwork(model, truth, { previousCouncilIds: daily ? previousDailyCouncilIds : previousCouncilIds });
     history.push({
       atHour: model.now, stage, ...network,
       attackerSeats: seats, councilSeats: council.length, falseConversions,
       attackerEffort: costs.attackers.effort, defenderEffort: costs.honest.effort,
-      cohorts: measureWork(costs, previousSampleCosts),
+      cohorts: measureWork(costs, daily ? previousDailyCosts : previousSampleCosts),
       effectiveActivity: activity, activePerturbations: [...activePerturbations],
       ...(deviantOperators.size ? { deviantActivity } : {}),
       sanctions: { ...sanctions },
@@ -213,11 +228,15 @@ export function runExperiment(overrides = {}) {
     });
     previousSampleCosts = costs;
     previousCouncilIds = network.council.memberIds;
+    if (schedule && (stage === 'initial' || daily)) {
+      previousDailyCosts = costs;
+      previousDailyCouncilIds = network.council.memberIds;
+    }
   }
   function guaranteeWork(actors) {
     for (const actor of actors) {
       const cohort = truth.get(actor).cohort;
-      for (let i = 0, count = workCount(activityOf(actor).guarantee, decision('guarantee-count', actor)); i < count; i++) {
+      for (const i of actionSlots('guarantee-count', actor, activityOf(actor).guarantee)) {
         const choice = decision('guarantee-target', actor, i);
         const excluded = [actor, ...[...model.guarantees.outEdges(actor)].map(edge => edge.to)];
         let target;
@@ -245,10 +264,10 @@ export function runExperiment(overrides = {}) {
       const identity = truth.get(actor);
       const subject = model.subject(actor);
       if (!identity.genuine && subject.liquidFacy > 0 && identity.operator !== actor && model.subject(identity.operator).identityStatus === 'accepted'
-        && decision('cashout', actor).chance(activityOf(actor).cashout)) {
+        && dailyChoice('cashout', actor, activityOf(actor).cashout)) {
         if (attempt(actor, 'cashout', () => model.transferFacy(actor, identity.operator, subject.liquidFacy)).ok) trustWork.cashouts++;
       } else if (identity.genuine && identity.cohort === 'honest' && subject.liquidFacy > 0 && config.social.honestTransferRate > 0
-        && decision('honest-transfer', actor).chance(config.social.honestTransferRate)) {
+        && dailyChoice('honest-transfer', actor, config.social.honestTransferRate)) {
         const known = [...neighborhood(actor, config.social.hops)].filter(id => model.subject(id).identityStatus === 'accepted').sort((a, b) => rosterPositions.all.get(a) - rosterPositions.all.get(b));
         if (known.length) model.transferFacy(actor, decision('honest-transfer-target', actor).pick(known), 1);
       }
@@ -275,7 +294,7 @@ export function runExperiment(overrides = {}) {
   function briberyWork(actors) {
     for (const actor of actors) {
       if (truth.get(actor).cohort !== 'attackers' || model.subject(actor).identityStatus !== 'accepted') continue;
-      for (let i = 0, count = workCount(activityOf(actor).bribe, decision('bribe-count', actor)); i < count; i++) {
+      for (const i of actionSlots('bribe-count', actor, activityOf(actor).bribe)) {
         const target = pickExcluding(rosters.honest, rosterPositions.honest, [...model.guarantees.inEdges(actor)].map(edge => edge.from), decision('bribe-target', actor, i));
         if (target === null || model.subject(target).identityStatus !== 'accepted') continue;
         const offer = attempt(actor, 'bribe', () => {
@@ -302,7 +321,7 @@ export function runExperiment(overrides = {}) {
       if (pending.cancelled || model.now - pending.createdAt >= model.policy.invitationFreezeHours) continue;
       for (const guarantor of [...model.guarantees.inEdges(pending.sponsor)].map(edge => edge.from)) {
         if (pending.cancelled || truth.get(guarantor).cohort !== 'honest' || model.subject(guarantor).identityStatus !== 'accepted') continue;
-        if (!decision('invitation-review', guarantor, [pending.invitation]).chance(activityOf(guarantor).review)) continue;
+        if (!dailyChoice('invitation-review', guarantor, activityOf(guarantor).review, [pending.invitation], 'attention')) continue;
         const look = attempt(guarantor, 'inspect', () => observe(pending.candidate.id, ['invitation-review', model.now, guarantor], pending.candidate));
         if (!look.ok || !look.value.suspicious) continue;
         if (config.social.verification) {
@@ -429,6 +448,7 @@ export function runExperiment(overrides = {}) {
   // honest candidates follow their private signal (sharpened by evidence) and join when expected stake
   // gain plus civic value outweighs the stake and XP-halving risk.
   function willing(dispute, id, next, evidenceBoost) {
+    if (schedule && (!schedule.available(id, model.now, 'attention') || !schedule.available(id, model.now, 'transaction'))) return false;
     const rules = config.disputes;
     if (truth.get(id).cohort === 'attackers') {
       return (next.side === 'genuine') === dispute.coalitionSubject
@@ -571,7 +591,7 @@ export function runExperiment(overrides = {}) {
   }
   // Daily attention: the higher the dispute relative to the network, the more people notice it and the
   // more evidence surfaces. The lowest-XP willing noticer takes the next position.
-  function timedDisputeWork() {
+  function timedDisputeWork(attention = true) {
     const rules = config.disputes;
     if (!openDisputes.length) return;
     const accepted = acceptedByXp();
@@ -582,8 +602,9 @@ export function runExperiment(overrides = {}) {
         resolveTimedDispute(dispute, model.now - dispute.lastMoveAt >= rules.disputeWindowHours ? 'response-window-expired' : 'round-limit');
         continue;
       }
-      if (model.now === dispute.lastMoveAt) continue;
-      for (let round = 0; round < rules.roundsPerDay && !councilReached(dispute) && dispute.entrants.length < rules.maxRounds; round++) {
+      if (model.now === dispute.lastMoveAt || !attention) continue;
+      for (const round of schedule ? actionSlots('dispute-round', dispute.id, rules.roundsPerDay, 'attention') : Array.from({ length: rules.roundsPerDay }, (_, i) => i)) {
+        if (councilReached(dispute) || dispute.entrants.length >= rules.maxRounds) break;
         const height = Math.max(...dispute.entrants.map(entrant => model.subject(entrant.id).xp)) / Math.max(1, meanXp);
         const count = Math.min(accepted.length, Math.ceil(rules.noticeBase * accepted.length * (1 + height)));
         // Distinct uniform sample of noticers, visited in the declared order.
@@ -702,7 +723,7 @@ export function runExperiment(overrides = {}) {
       const cohort = truth.get(actor).cohort;
       const inspected = seen.get(actor) ?? new Set();
       seen.set(actor, inspected);
-      for (let i = 0, count = workCount(activityOf(actor).inspect, decision('inspection-count', actor)); i < count; i++) {
+      for (const i of actionSlots('inspection-count', actor, activityOf(actor).inspect, 'attention')) {
         const candidates = candidatesFor(actor, cohort, inspected);
         if (!candidates.size) break;
         const choice = decision('inspection-target', actor, i);
@@ -750,7 +771,7 @@ export function runExperiment(overrides = {}) {
   function admissionWork(actors) {
     for (const actor of actors) {
       const identity = truth.get(actor);
-      for (let i = 0, count = workCount(activityOf(actor).invite, decision('invitation-count', actor)); i < count; i++) {
+      for (const i of actionSlots('invitation-count', actor, activityOf(actor).invite)) {
         const [source] = model.eligibleEmissions(actor);
         if (!source) break;
         let candidate = prepared.get(actor);
@@ -773,6 +794,9 @@ export function runExperiment(overrides = {}) {
         prepared.delete(actor);
       }
     }
+    settleInvitations();
+  }
+  function settleInvitations() {
     for (let i = pendingInvitations.length - 1; i >= 0; i--) {
       const pending = pendingInvitations[i];
       if (model.subject(pending.sponsor).identityStatus !== 'accepted' || pending.cancelled) {
@@ -792,6 +816,21 @@ export function runExperiment(overrides = {}) {
     }
   }
 
+  function advanceSubdayTo(target) {
+    while (true) {
+      const hours = [
+        ...pendingInvitations.filter(row => !row.cancelled).map(row => row.createdAt + model.policy.invitationFreezeHours),
+        ...openDisputes.map(row => row.lastMoveAt + config.disputes.disputeWindowHours),
+        ...model.selfIds().filter(row => row.debtReserved && row.disputeLock === null).map(row => row.recordedAt + model.policy.spendMaturityHours),
+      ].filter(hour => hour > model.now && hour < target);
+      if (!hours.length) break;
+      model.advanceTo(hours.reduce((minimum, hour) => Math.min(minimum, hour), target));
+      timedDisputeWork(false);
+      settleInvitations();
+    }
+    model.advanceTo(target);
+  }
+
   noteSuccess();
   try {
     if (config.initialTopology !== 'none') {
@@ -799,14 +838,24 @@ export function runExperiment(overrides = {}) {
       for (const edge of initial.graph.edges()) establish(edge.from, edge.to, 'setup', true);
     }
     sample('initial');
-    for (let day = 0; day < config.days; day++) {
-      model.advanceTo(day * DAY);
+    for (const marker of clockAgenda({ horizonHour: config.days * DAY, stepHours: config.stepHours })) {
+      if (!schedule && marker.horizon) break;
+      if (schedule) advanceSubdayTo(marker.atHour);
+      else model.advanceTo(marker.atHour);
+      if (schedule && marker.horizon) { timedDisputeWork(false); settleInvitations(); }
+      if (schedule && marker.atHour > 0 && marker.atHour % DAY === 0) {
+        completedDays++;
+        model.audit();
+        sample('day-end');
+      }
+      if (marker.horizon) break;
+      const day = Math.floor(marker.atHour / DAY);
       ({ activity, activePerturbations } = dayActivity(config, day));
       deviantActivity = deviantActivityAt(day);
       // Invalidated subjects cannot act; filtering after the shuffle keeps other actors' order.
       const actors = decision('actor-order').shuffle([...model.guarantees.nodeIds()]).filter(id => model.subject(id).identityStatus === 'accepted');
       for (const actor of actors) {
-        if (!decision('self-id', actor).chance(activityOf(actor).selfId)) continue;
+        if (!dailyChoice('self-id', actor, activityOf(actor).selfId)) continue;
         // A false subject must fabricate fresh, never-reused media every day; its work is priced separately.
         attempt(actor, truth.get(actor).genuine ? 'selfId' : 'fakeSelfId', () => model.createSelfId(actor, model.registerArtifact(actor)));
       }
@@ -820,14 +869,14 @@ export function runExperiment(overrides = {}) {
       cashFlowWork(stillAccepted());
       for (const actor of stillAccepted()) {
         for (const act of model.eligibleEmissions(actor, model.policy.conversionMaturityHours)) {
-          if (decision('collector-conversion', actor, model.selfId(act).recordedAt).chance(activityOf(actor).convert)) attempt(actor, 'convert', () => model.convertToCollector(actor, act));
+          if (dailyChoice('collector-conversion', actor, activityOf(actor).convert, model.selfId(act).recordedAt)) attempt(actor, 'convert', () => model.convertToCollector(actor, act));
         }
       }
-      completedDays++;
+      if (!schedule) completedDays++;
       model.audit();
-      sample('day-end');
+      sample(schedule ? 'tick-end' : 'day-end');
     }
-    model.advanceTo(config.days * DAY);
+    if (!schedule) model.advanceTo(config.days * DAY);
     ({ activity, activePerturbations } = dayActivity(config, config.days));
     deviantActivity = deviantActivityAt(config.days);
   } catch (error) {
@@ -933,11 +982,12 @@ export function runExperiment(overrides = {}) {
   };
   return {
     schema: 'facety-experiment/v1',
-    config, randomness: RANDOMNESS_POLICY, provenance: provenance(), assumptions: [...EXPERIMENT_ASSUMPTIONS],
+    config, randomness, provenance: provenance(), assumptions: schedule ? [...EXPERIMENT_ASSUMPTIONS.filter(text => !text.startsWith('Self-ID, guarantee work')), 'D43: 4/6-hour decision opportunities retain daily floor-plus-Bernoulli quotas. Keyed uniform slot placement is a timing assumption, not measured human activity; Self-ID phase is fixed per subject. Unavailable, preadmission or ineligible slots expire without catch-up. Profiles override declared subject activity and separate transaction/attention hours; null means all decision ticks, not measured availability. Conditional responses remain per observation. Whole-run effort caps never reset. Invitation reviews have one Bernoulli/slot per guarantor-invitation-calendar-day, not per tick. Timed attention rounds retain a per-case daily quota. Council settlement keeps the automatic all-seats reference; availability supplies no quorum or recusal rule. Known off-grid invitation, dispute and reserved-debt deadlines are processed without extra actor rounds; horizon settlement does not issue daily quotas. Native terminal XP and unlimited unspent veto remain legacy, not D42 compliance.'] : [...EXPERIMENT_ASSUMPTIONS],
     outcome: {
       success: firstSuccess !== null ? true : censoredReason ? null : false,
       firstSuccess, censored: censoredReason !== null, censoredReason, completedDays, elapsedHours: model.now,
       criterion: config.successCriterion, horizonDays: config.days,
+      ...(schedule ? { dailySampleOffsetHours: DAY } : {}),
     },
     population,
     effort: effort.audit(),
@@ -952,6 +1002,6 @@ export function runExperiment(overrides = {}) {
       attackerLiquidFacy: model.subjects().filter(subject => attackerIds.includes(subject.id)).reduce((sum, subject) => sum + subject.liquidFacy, 0),
     },
     metrics, history,
-    ...(config.includeState ? { state: { subjects: model.subjects(), selfIds: acts, disputeStakes: stakeReservations, truth: identities, guarantees: model.guarantees.toJSON(), lineage: model.lineage.toJSON(), roots: [...model.roots] } } : {}),
+    ...(config.includeState ? { state: { subjects: model.subjects(), selfIds: acts, disputeStakes: stakeReservations, truth: identities, guarantees: model.guarantees.toJSON(), lineage: model.lineage.toJSON(), roots: [...model.roots], ...(schedule ? { events: model.events(), invitations: model.invitations() } : {}) } } : {}),
   };
 }

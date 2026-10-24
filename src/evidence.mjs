@@ -1,6 +1,7 @@
 // Owns: Preregistered confirmatory tests of macro-level claims on reserved seeds; excludes exploration and real-world validity.
 import { DAY } from './model.mjs';
-import { experimentConfig, withExperimentParameters, runExperiment, RANDOMNESS_POLICY } from './experiment.mjs';
+import { experimentConfig, withExperimentParameters, runExperiment } from './experiment.mjs';
+import { experimentRandomness, combineExperimentRandomness } from './experiment-config.mjs';
 import { OBSERVABLES, metricSeries } from './discovery.mjs';
 import { replicaSeed, describeValues } from './trials.mjs';
 import { binomialUpperTail, binomialLowerTail, clopperPearson, holm, bootstrapMeanInterval } from './statistics.mjs';
@@ -83,7 +84,7 @@ export function runStatistic(run, statistic) {
   const days = run.outcome.horizonDays;
   const { startDay = 0, endDay = days } = statistic.window ?? {};
   if (endDay > days) throw new RangeError('statistic window exceeds the run horizon');
-  const value = metric => summarize(metricSeries(run.history, metric, { days }).slice(startDay, endDay), statistic.summary);
+  const value = metric => summarize(metricSeries(run.history, metric, { days, offsetHours: run.outcome.dailySampleOffsetHours ?? 0 }).slice(startDay, endDay), statistic.summary);
   const primary = value(statistic.metric);
   if (statistic.subtract === null || primary === null) return primary;
   const secondary = value(statistic.subtract);
@@ -169,6 +170,16 @@ function normalizeSpec(spec) {
   };
 }
 
+function specRandomness(spec) {
+  const base = experimentConfig(spec.base);
+  const policies = new Map();
+  for (const context of spec.contexts) for (const parameters of Object.values(spec.arms)) {
+    const policy = experimentRandomness(withExperimentParameters(base, { ...context.parameters, ...parameters }));
+    policies.set(policy.decisions, policy);
+  }
+  return combineExperimentRandomness(policies.values());
+}
+
 function registrationDigest(spec, implementation, randomness, schema = HYPOTHESIS_SCHEMA, analysisPolicy = ANALYSIS_POLICY) {
   return digestOf({ schema, spec, implementation: implementation.digest, randomness,
     ...(schema === HYPOTHESIS_SCHEMA ? { analysisPolicy } : {}) });
@@ -179,11 +190,12 @@ function registrationDigest(spec, implementation, randomness, schema = HYPOTHESI
 export function registerHypothesis(spec) {
   const normalized = normalizeSpec(spec);
   const implementation = implementationDigest();
-  const hash = registrationDigest(normalized, implementation, RANDOMNESS_POLICY);
+  const randomness = specRandomness(normalized);
+  const hash = registrationDigest(normalized, implementation, randomness);
   const confirmationSeed = 'confirm:' + hash;
   if (normalized.exploration.seeds.some(seed => seed.includes(hash))) fail('exploration seeds overlap the reserved confirmation namespace');
   return {
-    schema: HYPOTHESIS_SCHEMA, analysisPolicy: ANALYSIS_POLICY, hash, spec: normalized, implementation, randomness: { ...RANDOMNESS_POLICY }, confirmationSeed,
+    schema: HYPOTHESIS_SCHEMA, analysisPolicy: ANALYSIS_POLICY, hash, spec: normalized, implementation, randomness: structuredClone(randomness), confirmationSeed,
     plannedRuns: normalized.replicas * normalized.contexts.length * Object.keys(normalized.arms).length,
   };
 }
@@ -197,7 +209,7 @@ export function verifyRegistration(registration, { allowImplementationChange = f
   const spec = normalizeSpec(registration.spec);
   if (canonicalJson(spec) !== canonicalJson(registration.spec)) fail('registered specification is not in normalized form');
   if (registrationDigest(spec, registration.implementation, registration.randomness, registration.schema, analysisPolicy) !== registration.hash || registration.confirmationSeed !== 'confirm:' + registration.hash) fail('registration digest does not match its content');
-  if (canonicalJson(registration.randomness) !== canonicalJson(RANDOMNESS_POLICY)) fail('registered randomness policy differs from the current implementation');
+  if (canonicalJson(registration.randomness) !== canonicalJson(specRandomness(spec))) fail('registered randomness policy differs from the current implementation');
   const current = implementationDigest();
   const implementationMatched = current.digest === registration.implementation.digest;
   if (!implementationMatched && !allowImplementationChange) fail('implementation changed since registration; re-register or pass allowImplementationChange');
@@ -246,7 +258,7 @@ export async function confirmHypothesis(registration, options = {}) {
   return {
     schema: registration.schema === LEGACY_HYPOTHESIS_SCHEMA ? LEGACY_CONFIRMATION_SCHEMA : CONFIRMATION_SCHEMA,
     analysisPolicy, registrationHash: registration.hash, hypothesis: spec.id, statement: spec.statement,
-    implementation, implementationMatched, randomness: { ...RANDOMNESS_POLICY }, values,
+    implementation, implementationMatched, randomness: structuredClone(registration.randomness), values,
     analysis: analyzeConfirmation(registration, values, { allowImplementationChange }),
   };
 }

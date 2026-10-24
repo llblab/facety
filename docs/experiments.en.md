@@ -27,6 +27,14 @@ Scenarios:
 
 Population percentages evolve with admission; they are not forcibly held constant. Output distinguishes subjects, false subjects, controlled subjects and human operators. `includeState: true` exports evaluator truth in a **separate** state field, never in protocol subject records.
 
+## Sub-day opportunities (D43)
+
+`stepHours: 4` enables six opportunity phases/day; `6` enables four; omitted/`24` retains the legacy engine. Run `node bin/facety.mjs run examples/four-hour.json`. Daily rates/quota units and whole-run resource budgets do not multiply with ticks. Placement is an explicitly declared keyed-uniform timing reference, not a human activity distribution. Daily scalar choices have one slot per trial unit/day, and conditional responses remain per observation. Self-ID phase is fixed across days. Missed/unavailable/preadmission/ineligible slots expire without catch-up.
+
+Optional `actorProfiles` entries have `subject`, partial `activity`, `transactionHours` and `attentionHours`. Null hour lists mean unrestricted opportunities; empty lists mean none; otherwise supply exact decision hours inside the horizon. For example, `{ "subject": "n0", "transactionHours": [], "attentionHours": null }` permits paid observation without voluntary transactions. Profiles are explicit scenarios, not assigned population proportions; they are rejected in legacy mode. New admissions first act on a subsequent decision tick. Setup keeps its funded bootstrap script.
+
+The phase order below repeats at opportunity ticks, but only daily allocated ordinals execute. Known off-grid invitation/debt/dispute follow-ups settle without new actor rounds. History separates tick samples from daily endpoints at `24,48,…,H`, declares `outcome.dailySampleOffsetHours: 24`, and keeps null missing endpoints. Daily/tick work deltas overlap and must not be summed together as disjoint work. Analytical readers and row-retention caps understand both cadences. Sub-day randomness is separately identified and bound in registrations; complete manifests are required for paired analysis. The [model contract](simulator.en.md#integrated-participant-scheduling) specifies units, validation, reference boundaries and tests. Native XP/veto remains legacy, not D42 compliance.
+
 ## Activity and event ordering
 
 Each cohort has its own `activity` profile:
@@ -45,7 +53,7 @@ For the non-probability rates, the scheduler takes the integer part plus a Berno
 
 The scheduler initializes the requested synthetic guarantee topology through actual model proposal/confirmation operations, charging both cohorts' setup effort. The topology can be `none`. Initial accepted people are already trusted, so bootstrap relation matching does not use noisy re-vetting. A positive configured guarantee fee still requires real liquid FACY.
 
-Every simulated day:
+In legacy 24-hour mode, every simulated day:
 
 1. Seeded actor order is selected from subjects already admitted at the start of the day.
 2. Subjects create Self-ID at their cohort's activity rate.
@@ -55,7 +63,7 @@ Every simulated day:
 6. Fakes may consolidate money to their operator (`cashout`), honest people may make small payments to acquaintances (`social.honestTransferRate`), and agents may convert mature rights.
 7. Monetary invariants are checked and a history sample is recorded.
 
-New members first act on the following day. Simulation time advances on a 24-hour grid; within-day action ordering is explicit, not physically timed. Success is checked after every accepted action that can change the success criterion, as well as against the given initial state. The run continues to the horizon after first success, while retaining its exact effort prefix.
+In legacy mode, new members first act on the following day. That mode advances on a 24-hour grid; within-day action ordering is explicit, not physically timed. Success is checked after every accepted action that can change the success criterion, as well as against the given initial state. The run continues to the horizon after first success, while retaining its exact effort prefix.
 
 ## Scheduled activity and random coupling
 

@@ -3,7 +3,7 @@ import { DAY } from './model.mjs';
 import { experimentConfig, runExperiment, withExperimentParameters } from './experiment.mjs';
 import { DEFAULT_OBSERVABLES, OBSERVABLES, metricSeries } from './discovery.mjs';
 import { replicaSeed, describeValues, summarizeOutcomes } from './trials.mjs';
-import { provenance } from './provenance.mjs';
+import { provenance, canonicalJson } from './provenance.mjs';
 
 function integer(value, name, minimum, maximum = Number.MAX_SAFE_INTEGER) {
   if (!Number.isSafeInteger(value) || value < minimum || value > maximum) throw new RangeError(name + ' is outside its integer bounds');
@@ -110,15 +110,15 @@ function analysisSettings(overrides) {
   return { ...settings, metrics: [...settings.metrics], practicalChanges, windows: checked };
 }
 
-function alignedSeries(baseline, treatment, metric, days) {
-  const a = metricSeries(baseline, metric, { days });
-  const b = metricSeries(treatment, metric, { days });
+function alignedSeries(baseline, treatment, metric, days, offsetHours) {
+  const a = metricSeries(baseline, metric, { days, offsetHours });
+  const b = metricSeries(treatment, metric, { days, offsetHours });
   return Array.from({ length: days }, (_, day) => {
     const left = a[day].value;
     const right = b[day].value;
     const difference = left !== null && right !== null ? right - left : null;
     if (difference !== null && !Number.isFinite(difference)) throw new RangeError('paired difference overflow');
-    return { day, atHour: day * DAY, baseline: left, treatment: right, difference };
+    return { day, atHour: day * DAY + offsetHours, baseline: left, treatment: right, difference };
   });
 }
 
@@ -132,12 +132,13 @@ export function analyzePairs(pairs, overrides) {
       if (![true, false, null].includes(branch.outcome.success) || (branch.outcome.censored && branch.outcome.success === false)) throw new Error('a censored unresolved outcome must be null, not false');
       if (typeof branch.randomness?.generator !== 'string' || typeof branch.randomness?.decisions !== 'string') throw new Error('pair branches require a randomness manifest');
     }
-    if (pair.baseline.randomness.generator !== pair.treatment.randomness.generator || pair.baseline.randomness.decisions !== pair.treatment.randomness.decisions) throw new Error('paired randomness policies must match');
+    if ((pair.baseline.outcome.dailySampleOffsetHours ?? 0) !== (pair.treatment.outcome.dailySampleOffsetHours ?? 0)) throw new Error('paired daily sampling policies must match');
+    if (canonicalJson(pair.baseline.randomness) !== canonicalJson(pair.treatment.randomness)) throw new Error('paired randomness policies must match');
   }
   const trajectories = pairs.map(pair => ({
     seed: pair.seed,
     metrics: Object.fromEntries(settings.metrics.map(metric => {
-      const series = alignedSeries(pair.baseline.history, pair.treatment.history, metric, settings.days);
+      const series = alignedSeries(pair.baseline.history, pair.treatment.history, metric, settings.days, pair.baseline.outcome.dailySampleOffsetHours ?? 0);
       const windows = Object.fromEntries(settings.windows.map(window => {
         const rows = series.slice(window.startDay, window.endDay);
         const available = rows.filter(row => row.difference !== null).length;
@@ -208,7 +209,8 @@ export function compareExperiments(overrides = {}, options = {}) {
     recoveryAfterDay: Object.hasOwn(options, 'recoveryAfterDay') ? options.recoveryAfterDay : shock?.endDay ?? null,
     holdDays: options.holdDays === undefined ? 3 : options.holdDays,
   });
-  const plannedSamples = 2 * trials * (baseline.days + 2);
+  const samples = config => config.days * (config.stepHours === 24 ? 1 : 24 / config.stepHours + 1) + 2;
+  const plannedSamples = trials * (samples(baseline) + samples(treatment));
   if (!Number.isSafeInteger(plannedSamples) || plannedSamples > maxRecordedSamples) throw new RangeError('paired experiment exceeds maxRecordedSamples');
   const pairs = [];
   for (let index = 0; index < trials; index++) {

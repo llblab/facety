@@ -4,6 +4,7 @@ import { experimentConfig, withExperimentParameters, runExperiment } from './exp
 import { describeValues, summarizeOutcomes, replicaSeed } from './trials.mjs';
 import { mapTasks } from './parallel.mjs';
 import { provenance } from './provenance.mjs';
+import { combineExperimentRandomness } from './experiment-config.mjs';
 
 export const OBSERVABLES = Object.freeze({
   subjects: 1, activeSubjects: 1, requiredGuarantors: 1, humanOperators: 1,
@@ -65,7 +66,8 @@ function settingsFrom(overrides = {}) {
   return { ...settings, metrics: [...settings.metrics] };
 }
 
-export function metricSeries(history, metric, { days } = {}) {
+export function metricSeries(history, metric, { days, offsetHours = 0 } = {}) {
+  if (![0, DAY].includes(offsetHours)) throw new RangeError('daily sampling offset must be 0 or 24 hours');
   if (!Array.isArray(history) || !Object.hasOwn(OBSERVABLES, metric)) throw new Error('unknown history or observable');
   const series = history.filter(point => point.stage === 'day-end').map(point => {
     let value = point;
@@ -81,12 +83,12 @@ export function metricSeries(history, metric, { days } = {}) {
   const values = new Map();
   let previous = -1;
   for (const point of series) {
-    const day = point.atHour / DAY;
+    const day = (point.atHour - offsetHours) / DAY;
     if (!Number.isSafeInteger(point.atHour) || !Number.isInteger(day) || day < 0 || day >= days || day <= previous) throw new Error('daily samples must be ordered, distinct and inside the horizon');
     values.set(day, point.value);
     previous = day;
   }
-  return Array.from({ length: days }, (_, day) => ({ atHour: day * DAY, value: values.get(day) ?? null }));
+  return Array.from({ length: days }, (_, day) => ({ atHour: day * DAY + offsetHours, value: values.get(day) ?? null }));
 }
 
 export function describeTrajectory(series, { practicalChange = 0, jumpFactor = 3, plateauSteps = 3 } = {}) {
@@ -174,7 +176,7 @@ function summarizeCell(cell, settings) {
     completeRuns: complete.length, censoredRuns: cell.samples.length - complete.length,
     metrics: Object.fromEntries(settings.metrics.map(metric => {
       const data = complete.map(sample => {
-        const series = metricSeries(sample.history, metric, { days });
+        const series = metricSeries(sample.history, metric, { days, offsetHours: sample.outcome.dailySampleOffsetHours ?? 0 });
         return {
           endpoint: series.at(-1)?.value ?? null,
           trajectory: describeTrajectory(series, {
@@ -305,7 +307,7 @@ function planLandscape(overrides, options, extra = []) {
   let coordinates = [{}];
   for (const [parameter, values] of Object.entries(dimensions)) coordinates = coordinates.flatMap(point => values.map(value => ({ ...point, [parameter]: value })));
   const variants = coordinates.map(point => withExperimentParameters(config, point));
-  const plannedSamples = variants.reduce((sum, variant) => sum + (variant.days + 2) * trials, 0);
+  const plannedSamples = variants.reduce((sum, variant) => sum + (variant.days * (variant.stepHours === 24 ? 1 : 24 / variant.stepHours + 1) + 2) * trials, 0);
   if (!Number.isSafeInteger(plannedSamples) || plannedSamples > maxRecordedSamples) throw new RangeError('landscape exceeds maxRecordedSamples');
   return { config, dimensions, settings, coordinates, variants, trials, seed: String(seed), limits: { maxCells, maxRecordedSamples, plannedSamples } };
 }
@@ -317,7 +319,7 @@ function assembleLandscape(plan, samplesByCell) {
     samples: samplesByCell[index],
   }));
   return {
-    schema: 'facety-landscape/v1', config: plan.config, axes: plan.dimensions, trials: plan.trials, masterSeed: plan.seed, randomness: cells[0].samples[0].randomness, provenance: provenance(),
+    schema: 'facety-landscape/v1', config: plan.config, axes: plan.dimensions, trials: plan.trials, masterSeed: plan.seed, randomness: combineExperimentRandomness(cells.map(cell => cell.samples[0].randomness)), provenance: provenance(),
     limits: plan.limits,
     cells, diagnostics: diagnoseLandscape(cells, plan.dimensions, plan.settings),
     interpretation: 'Bounded exploratory ensemble with recorded decision-keyed randomness. Matching logical decisions share draws; changed populations, candidate sets and paths need not match.',

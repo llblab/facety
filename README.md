@@ -28,10 +28,10 @@ An outside observer finds an inconsistency in an influential participant's publi
 
 **D33/D35 implementation boundary:** the topology design is documented, not implemented here. [D35](docs/facety.protocol.en.md#4614-xp-centered-paths-pre-guaranteed-genesis-and-no-cluster-quotas-d35) requires both `D` guarantees and `D` paths toward the XP apex/core, selects an already guaranteed genesis group (roughly 7–12 is illustrative), and defers cluster invitation quotas/boundary gates for now. Verification, path/anchor semantics, genesis activation, epoch and voting contracts remain open; the simulator keeps its labeled legacy active-count/raw-guarantor/fixed-101 reference until a separately validated migration. See [conflicts and proposed resolutions](docs/facety.protocol.en.md#4613-conflicts-supersession-and-proposed-resolutions).
 
-Simulator defaults combine pre-D33 selected rules with explicitly labeled direction/reference mechanics:
+Simulator defaults combine selected rules with explicitly labeled legacy and direction/reference mechanics:
 
 - **Selected:** one-day Self-ID spending/conversion and invitation-freeze windows;
-- **Selected:** terminal XP for the subject and eligible guarantors;
+- **Legacy (D42 migration pending):** terminal XP for the subject and eligible guarantors, not the selected automatic 24-hour XP rule;
 - **Direction/reference:** relation-derived XP revocation, with detailed either-party and historical semantics kept explicit;
 - **Selected:** active-subject Council eligibility and one equal vote per member;
 - **Selected principle:** debt recovery preserves the veto; seizure priority remains an explicit reference;
@@ -63,7 +63,10 @@ Requires Node.js 22 or newer. No installation or build step is needed.
 ```sh
 npm test
 node bin/facety.mjs --help
+node bin/facety.mjs run examples/four-hour.json
 ```
+
+The [D43 sub-day mode](docs/simulator.en.md#integrated-participant-scheduling) runs actual four-hour opportunities with daily quotas, optional explicit per-subject transaction/attention profiles and exact known deadlines. Set `stepHours: 4` (or `6`); omitted/`24` retains historical daily scheduling. The example inherits illustrative cohort rates, not calibrated human behavior. This does not migrate D42 XP/veto semantics.
 
 ## Command line
 

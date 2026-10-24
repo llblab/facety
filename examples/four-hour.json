@@ -1,0 +1,7 @@
+{
+  "stepHours": 4,
+  "seed": "four-hour-reference",
+  "days": 5,
+  "initialSize": 12,
+  "includeState": true
+}

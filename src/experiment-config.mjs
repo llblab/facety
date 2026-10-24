@@ -4,6 +4,7 @@ import { RANDOM_GENERATOR } from './random.mjs';
 import { TOPOLOGIES } from './generators.mjs';
 import { EffortLedger, DEFAULT_WEIGHTS, effortWeights, COHORTS } from './effort.mjs';
 import { STAKE_BACKINGS } from './dispute-stakes.mjs';
+import { SUBDAY_RANDOMNESS } from './activity-schedule.mjs';
 
 export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-cartel']);
 // Model ablations remove protocol mechanisms; behavior ablations remove scripted agent choices.
@@ -16,7 +17,7 @@ export const DEFAULT_ACTIVITY = Object.freeze({
 });
 const DEFAULTS = Object.freeze({
   scenario: 'sybil-cone', seed: 'facety', initialSize: 30, attackerShare: 0.1,
-  days: 30, initialTopology: 'random', initialDegree: 3,
+  days: 30, stepHours: 24, actorProfiles: [], initialTopology: 'random', initialDegree: 3,
   localInspectionShare: 0.8, sensitivity: 0.8, falsePositiveRate: 0.01,
   maxSubjects: 2000, maxActions: 500_000, targetFalseConversions: 1,
   successCriterion: 'false-liquidity', includeState: false,
@@ -220,6 +221,36 @@ export function activityAtDay(overrides, day) {
   return dayActivity(config, day);
 }
 
+export function experimentRandomness(config) {
+  return config.stepHours === 24 ? RANDOMNESS_POLICY : SUBDAY_RANDOMNESS;
+}
+
+export function combineExperimentRandomness(policies) {
+  const distinct = [...new Map([...policies].map(policy => [policy.decisions, policy])).values()].sort((a, b) => a.decisions < b.decisions ? -1 : 1);
+  if (distinct.length === 1) return distinct[0];
+  return { generator: RANDOM_GENERATOR, decisions: 'decision-keyed-mixed-subday-v1', policies: distinct };
+}
+
+function actorProfilesFrom(profiles, config) {
+  if (!Array.isArray(profiles)) throw new TypeError('actorProfiles must be an array');
+  if (profiles.length && config.stepHours === 24) throw new Error('actorProfiles require a sub-day stepHours');
+  const ids = new Set();
+  return Object.freeze(profiles.map(profile => {
+    const value = mergeRecord({ subject: undefined, activity: {}, transactionHours: null, attentionHours: null }, profile, 'actor profile');
+    if (typeof value.subject !== 'string' || !value.subject.length || ids.has(value.subject)) throw new Error('actor profile subjects must be nonempty and distinct');
+    ids.add(value.subject);
+    const activity = activityOverrides({ honest: value.activity }).honest;
+    const hours = key => {
+      if (value[key] === null) return null;
+      if (!Array.isArray(value[key])) throw new TypeError(key + ' must be an array or null');
+      const copy = [...value[key]];
+      for (const hour of copy) if (!Number.isSafeInteger(hour) || hour < 0 || hour >= config.days * 24 || hour % config.stepHours) throw new RangeError(key + ' must contain decision hours inside the horizon');
+      return Object.freeze([...new Set(copy)].sort((a, b) => a - b));
+    };
+    return Object.freeze({ subject: value.subject, activity, transactionHours: hours('transactionHours'), attentionHours: hours('attentionHours') });
+  }));
+}
+
 export function experimentConfig(overrides = {}) {
   const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, ablations: {}, perturbations: [], disputes: {}, deviants: {}, social: {} };
   const config = mergeRecord({ ...DEFAULTS, ...nested }, overrides, 'experiment');
@@ -231,6 +262,8 @@ export function experimentConfig(overrides = {}) {
   for (const key of ['localInspectionShare', 'sensitivity', 'falsePositiveRate']) probability(config[key], key);
   integer(config.initialSize, 'initialSize', 1, 10000);
   integer(config.days, 'days', 0, 3650);
+  if (![4, 6, 24].includes(config.stepHours)) throw new RangeError('stepHours must be 4, 6 or 24');
+  config.actorProfiles = actorProfilesFrom(config.actorProfiles, config);
   integer(config.initialDegree, 'initialDegree', 1, 10000);
   integer(config.maxSubjects, 'maxSubjects', config.initialSize);
   integer(config.maxActions, 'maxActions', 1);
