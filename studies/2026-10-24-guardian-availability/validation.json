@@ -1,0 +1,17 @@
+{
+  "status": "verified-within-declared-exploratory-scope",
+  "predataCheckpoint": "d295092",
+  "capture": { "exclusiveAttempts": 4, "cases": 24, "completeSevenDayRuns": 24, "recapturedCases": 0 },
+  "tests": { "command": "npm test", "passed": 295, "failed": 0, "focusedFamilies": 4, "modelRecaptureInRetainedPacketTests": false },
+  "context": { "errors": 0, "warnings": 27, "warningsUnchanged": true },
+  "preservation": {
+    "implementation": "30a6d69e3e7b384b48dfbda4dece7af7d6077f5948a1e6f135ab00bb21431379",
+    "sourceModules": 29,
+    "nativeSourceUnchanged": true,
+    "predataRunnerAnalyzerDesignUnchanged": true,
+    "oldStudiesUnchanged": true,
+    "dagEvidence": "Reused unchanged-source 29-module/73-edge acyclic checkpoint; no new native dependency edge."
+  },
+  "assurance": "Author capture/analysis/audit and software validation, not independent review, authentication, population calibration or registered mechanism confirmation.",
+  "remaining": "Offline legal-window/slot attribution on this retained packet; sparse/shared-error/resource and genuine-harm controls remain. D41/D42 protocol gates and broad D39 pause unchanged."
+}

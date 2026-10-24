@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { auditBlocks } from '../studies/2026-10-24-guardian-availability/audit.mjs';
 import { digestOf, implementationDigest } from '../src/provenance.mjs';
 import { studyDesign, caseConfig, runBlock } from '../studies/2026-10-24-guardian-availability/run.mjs';
 import { analyzeBlocks } from '../studies/2026-10-24-guardian-availability/analyze.mjs';
@@ -12,7 +14,7 @@ function blocks() {
   return design.seeds.map((seed, block) => ({
     schema: 'facety-guardian-availability-block/v1', block, designDigest: digestOf(design), runnerDigest, captureCommit: 'a'.repeat(40), source: structuredClone(design.source),
     rows: design.contexts.flatMap(context => design.arms.map(arm => ({
-      seed, context: context.id, arm: arm.id, configDigest: digestOf(caseConfig(design, seed, context, arm)), randomness: structuredClone(design.randomness),
+      seed, context: context.id, arm: arm.id, configDigest: digestOf({ ...design.base, seed, actorProfiles: context.offset === null ? [] : Array.from({ length: 12 }, (_, index) => ({ subject: 'n' + index, activity: {}, transactionHours: null, attentionHours: Array.from({ length: 7 }, (_, day) => day * 24 + 4 * ((index + context.offset) % 6)) })), ablations: { ...design.base.ablations, disableInvitationVeto: arm.disabled } }), randomness: structuredClone(design.randomness),
       outcome: { horizonDays: 7, elapsedHours: 168, censored: false, success: false },
       state: { truth: [], subjects: [], selfIds: [], events: [], invitations: [] },
       metrics: { falseAccepted: 0, falseConverted: 0, falseActs: 0, falseXp: 0, defenderEffort: 2, attackerEffort: 1, cancelled: 0 },
@@ -30,6 +32,7 @@ test('availability design preserves daily units and makes calendars explicit wit
     assert.deepEqual(config.activity, design.base.activity);
     assert.deepEqual(config.budgets, design.base.budgets);
     assert.equal(config.stepHours, 4);
+    if (implementationDigest().digest === design.source.implementation) assert.equal(digestOf(config), blocks()[0].rows.find(row => row.context === context.id && row.arm === arm.id).configDigest);
     assert.equal(config.actorProfiles.length, context.offset === null ? 0 : 12);
     for (const [index, profile] of config.actorProfiles.entries()) {
       assert.equal(profile.subject, 'n' + index);
@@ -50,6 +53,27 @@ test('availability design preserves daily units and makes calendars explicit wit
   assert.equal(report.genuineHarmEvaluable, false);
   assert.deepEqual(analyzeBlocks(JSON.parse(JSON.stringify(raw)).reverse()), report);
   assert.deepEqual(raw, before);
+});
+
+test('availability retained packet, audit and byte hashes verify without simulation or recapture', () => {
+  const raw = [0, 1, 2, 3].map(index => JSON.parse(readFileSync(new URL('block-' + index + '.json', directory), 'utf8')));
+  const report = JSON.parse(readFileSync(new URL('report.json', directory), 'utf8'));
+  const audit = JSON.parse(readFileSync(new URL('audit.json', directory), 'utf8'));
+  assert.deepEqual(analyzeBlocks(raw), report);
+  assert.deepEqual(auditBlocks(raw), audit);
+  assert.equal(report.cases, 24);
+  assert.ok(report.cells.every(cell => cell.complete === 4));
+  assert.deepEqual(audit.observeOnlyStateEqual, [true, true, true, true]);
+  for (const block of raw) {
+    const attempt = JSON.parse(readFileSync(new URL('attempt-' + block.block + '.json', directory), 'utf8'));
+    for (const field of ['block', 'designDigest', 'runnerDigest', 'captureCommit']) assert.deepEqual(attempt[field], block[field]);
+  }
+  const manifest = JSON.parse(readFileSync(new URL('manifest.json', directory), 'utf8'));
+  for (const [file, expected] of Object.entries(manifest.artifacts)) {
+    const bytes = readFileSync(new URL(file, directory));
+    assert.equal(bytes.length, expected.bytes);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256);
+  }
 });
 
 test('availability analysis rejects matrix, source, config, endpoint and process drift', () => {

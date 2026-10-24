@@ -1,0 +1,1466 @@
+{
+  "schema": "facety-guardian-availability-analysis/v1",
+  "level": "exploratory-not-confirmation",
+  "designDigest": "f3e38fcfcc185c3e797d9809acbb07909ec4198af5bd4fbcef808110c444210c",
+  "runnerDigest": "0bcd24ebb41be061cddb8fddb93a571da9dd6327c234dab269e9dd26ed4618c6",
+  "captureCommit": "d2950927b6423b31fc17b9e2207a320c9fa2422c",
+  "cases": 24,
+  "cells": [
+    {
+      "context": "all-ticks",
+      "arm": "observe-only",
+      "cases": 4,
+      "complete": 4,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            5,
+            2,
+            6,
+            3
+          ],
+          "mean": 4,
+          "min": 2,
+          "max": 6
+        },
+        "falseConverted": {
+          "values": [
+            5,
+            3,
+            3,
+            5
+          ],
+          "mean": 4,
+          "min": 3,
+          "max": 5
+        },
+        "falseActs": {
+          "values": [
+            14,
+            6,
+            11,
+            11
+          ],
+          "mean": 10.5,
+          "min": 6,
+          "max": 14
+        },
+        "falseXp": {
+          "values": [
+            21,
+            9,
+            18,
+            21
+          ],
+          "mean": 17.25,
+          "min": 9,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            378,
+            332,
+            326,
+            338
+          ],
+          "mean": 343.5,
+          "min": 326,
+          "max": 378
+        },
+        "attackerEffort": {
+          "values": [
+            207,
+            134,
+            207,
+            176
+          ],
+          "mean": 181,
+          "min": 134,
+          "max": 207
+        },
+        "cancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-availability-01",
+          "counters": {
+            "pairTickOpportunities": 198,
+            "reviewSlots": 35,
+            "inspections": 35,
+            "inspectionDenied": 0,
+            "positiveSignals": 32,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 32,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 32,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 35,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 32,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-02",
+          "counters": {
+            "pairTickOpportunities": 90,
+            "reviewSlots": 14,
+            "inspections": 14,
+            "inspectionDenied": 0,
+            "positiveSignals": 13,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 13,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 13,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 14,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 13,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-03",
+          "counters": {
+            "pairTickOpportunities": 164,
+            "reviewSlots": 25,
+            "inspections": 25,
+            "inspectionDenied": 0,
+            "positiveSignals": 16,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 16,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 16,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 25,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 16,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-04",
+          "counters": {
+            "pairTickOpportunities": 135,
+            "reviewSlots": 24,
+            "inspections": 24,
+            "inspectionDenied": 0,
+            "positiveSignals": 19,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 19,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 19,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 24,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 19,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "context": "all-ticks",
+      "arm": "veto",
+      "cases": 4,
+      "complete": 4,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseActs": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            310,
+            300,
+            286,
+            290
+          ],
+          "mean": 296.5,
+          "min": 286,
+          "max": 310
+        },
+        "attackerEffort": {
+          "values": [
+            109,
+            105,
+            108,
+            108
+          ],
+          "mean": 107.5,
+          "min": 105,
+          "max": 109
+        },
+        "cancelled": {
+          "values": [
+            5,
+            2,
+            3,
+            3
+          ],
+          "mean": 3.25,
+          "min": 2,
+          "max": 5
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-availability-01",
+          "counters": {
+            "pairTickOpportunities": 32,
+            "reviewSlots": 6,
+            "inspections": 6,
+            "inspectionDenied": 0,
+            "positiveSignals": 5,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 5,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 5
+          },
+          "evaluator": {
+            "falseTargetsInspected": 6,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 5,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-02",
+          "counters": {
+            "pairTickOpportunities": 19,
+            "reviewSlots": 3,
+            "inspections": 3,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 2
+          },
+          "evaluator": {
+            "falseTargetsInspected": 3,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-03",
+          "counters": {
+            "pairTickOpportunities": 53,
+            "reviewSlots": 8,
+            "inspections": 8,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 3
+          },
+          "evaluator": {
+            "falseTargetsInspected": 8,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-04",
+          "counters": {
+            "pairTickOpportunities": 14,
+            "reviewSlots": 3,
+            "inspections": 3,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 3
+          },
+          "evaluator": {
+            "falseTargetsInspected": 3,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "context": "one-tick-phase-0",
+      "arm": "observe-only",
+      "cases": 4,
+      "complete": 4,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            5,
+            2,
+            6,
+            3
+          ],
+          "mean": 4,
+          "min": 2,
+          "max": 6
+        },
+        "falseConverted": {
+          "values": [
+            5,
+            3,
+            3,
+            5
+          ],
+          "mean": 4,
+          "min": 3,
+          "max": 5
+        },
+        "falseActs": {
+          "values": [
+            14,
+            6,
+            11,
+            11
+          ],
+          "mean": 10.5,
+          "min": 6,
+          "max": 14
+        },
+        "falseXp": {
+          "values": [
+            21,
+            9,
+            18,
+            21
+          ],
+          "mean": 17.25,
+          "min": 9,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            319,
+            307,
+            286,
+            307
+          ],
+          "mean": 304.75,
+          "min": 286,
+          "max": 319
+        },
+        "attackerEffort": {
+          "values": [
+            207,
+            134,
+            207,
+            176
+          ],
+          "mean": 181,
+          "min": 134,
+          "max": 207
+        },
+        "cancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-availability-01",
+          "counters": {
+            "pairTickOpportunities": 198,
+            "reviewSlots": 4,
+            "inspections": 4,
+            "inspectionDenied": 0,
+            "positiveSignals": 4,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 4,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 4,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 4,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 4,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-02",
+          "counters": {
+            "pairTickOpportunities": 90,
+            "reviewSlots": 1,
+            "inspections": 1,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 1,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 1,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 1,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-03",
+          "counters": {
+            "pairTickOpportunities": 164,
+            "reviewSlots": 1,
+            "inspections": 1,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 1,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-04",
+          "counters": {
+            "pairTickOpportunities": 135,
+            "reviewSlots": 6,
+            "inspections": 6,
+            "inspectionDenied": 0,
+            "positiveSignals": 6,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 6,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 6,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 6,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 6,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "context": "one-tick-phase-0",
+      "arm": "veto",
+      "cases": 4,
+      "complete": 4,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            3,
+            1,
+            6,
+            0
+          ],
+          "mean": 2.5,
+          "min": 0,
+          "max": 6
+        },
+        "falseConverted": {
+          "values": [
+            4,
+            0,
+            3,
+            0
+          ],
+          "mean": 1.75,
+          "min": 0,
+          "max": 4
+        },
+        "falseActs": {
+          "values": [
+            9,
+            1,
+            11,
+            0
+          ],
+          "mean": 5.25,
+          "min": 0,
+          "max": 11
+        },
+        "falseXp": {
+          "values": [
+            12,
+            0,
+            18,
+            0
+          ],
+          "mean": 7.5,
+          "min": 0,
+          "max": 18
+        },
+        "defenderEffort": {
+          "values": [
+            315,
+            299,
+            286,
+            290
+          ],
+          "mean": 297.5,
+          "min": 286,
+          "max": 315
+        },
+        "attackerEffort": {
+          "values": [
+            172,
+            109,
+            207,
+            108
+          ],
+          "mean": 149,
+          "min": 108,
+          "max": 207
+        },
+        "cancelled": {
+          "values": [
+            2,
+            1,
+            0,
+            3
+          ],
+          "mean": 1.5,
+          "min": 0,
+          "max": 3
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-availability-01",
+          "counters": {
+            "pairTickOpportunities": 178,
+            "reviewSlots": 2,
+            "inspections": 2,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 2
+          },
+          "evaluator": {
+            "falseTargetsInspected": 2,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-02",
+          "counters": {
+            "pairTickOpportunities": 67,
+            "reviewSlots": 1,
+            "inspections": 1,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 1
+          },
+          "evaluator": {
+            "falseTargetsInspected": 1,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 1,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-03",
+          "counters": {
+            "pairTickOpportunities": 164,
+            "reviewSlots": 1,
+            "inspections": 1,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 1,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-04",
+          "counters": {
+            "pairTickOpportunities": 64,
+            "reviewSlots": 3,
+            "inspections": 3,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 3
+          },
+          "evaluator": {
+            "falseTargetsInspected": 3,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "context": "one-tick-phase-4",
+      "arm": "observe-only",
+      "cases": 4,
+      "complete": 4,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            5,
+            2,
+            6,
+            3
+          ],
+          "mean": 4,
+          "min": 2,
+          "max": 6
+        },
+        "falseConverted": {
+          "values": [
+            5,
+            3,
+            3,
+            5
+          ],
+          "mean": 4,
+          "min": 3,
+          "max": 5
+        },
+        "falseActs": {
+          "values": [
+            14,
+            6,
+            11,
+            11
+          ],
+          "mean": 10.5,
+          "min": 6,
+          "max": 14
+        },
+        "falseXp": {
+          "values": [
+            21,
+            9,
+            18,
+            21
+          ],
+          "mean": 17.25,
+          "min": 9,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            317,
+            315,
+            291,
+            301
+          ],
+          "mean": 306,
+          "min": 291,
+          "max": 317
+        },
+        "attackerEffort": {
+          "values": [
+            207,
+            134,
+            207,
+            176
+          ],
+          "mean": 181,
+          "min": 134,
+          "max": 207
+        },
+        "cancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-availability-01",
+          "counters": {
+            "pairTickOpportunities": 198,
+            "reviewSlots": 3,
+            "inspections": 3,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 3,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 3,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-02",
+          "counters": {
+            "pairTickOpportunities": 90,
+            "reviewSlots": 5,
+            "inspections": 5,
+            "inspectionDenied": 0,
+            "positiveSignals": 5,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 5,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 5,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 5,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 5,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-03",
+          "counters": {
+            "pairTickOpportunities": 164,
+            "reviewSlots": 4,
+            "inspections": 4,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 2,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 4,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-04",
+          "counters": {
+            "pairTickOpportunities": 135,
+            "reviewSlots": 4,
+            "inspections": 4,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 2,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 4,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "context": "one-tick-phase-4",
+      "arm": "veto",
+      "cases": 4,
+      "complete": 4,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            2,
+            0,
+            4,
+            1
+          ],
+          "mean": 1.75,
+          "min": 0,
+          "max": 4
+        },
+        "falseConverted": {
+          "values": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "mean": 0.5,
+          "min": 0,
+          "max": 1
+        },
+        "falseActs": {
+          "values": [
+            5,
+            0,
+            8,
+            2
+          ],
+          "mean": 3.75,
+          "min": 0,
+          "max": 8
+        },
+        "falseXp": {
+          "values": [
+            7,
+            0,
+            12,
+            0
+          ],
+          "mean": 4.75,
+          "min": 0,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            312,
+            299,
+            292,
+            293
+          ],
+          "mean": 299,
+          "min": 292,
+          "max": 312
+        },
+        "attackerEffort": {
+          "values": [
+            137,
+            105,
+            174,
+            123
+          ],
+          "mean": 134.75,
+          "min": 105,
+          "max": 174
+        },
+        "cancelled": {
+          "values": [
+            3,
+            2,
+            2,
+            2
+          ],
+          "mean": 2.25,
+          "min": 2,
+          "max": 3
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-availability-01",
+          "counters": {
+            "pairTickOpportunities": 169,
+            "reviewSlots": 3,
+            "inspections": 3,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 3
+          },
+          "evaluator": {
+            "falseTargetsInspected": 3,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-02",
+          "counters": {
+            "pairTickOpportunities": 38,
+            "reviewSlots": 2,
+            "inspections": 2,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 2
+          },
+          "evaluator": {
+            "falseTargetsInspected": 2,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-03",
+          "counters": {
+            "pairTickOpportunities": 146,
+            "reviewSlots": 5,
+            "inspections": 5,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 2
+          },
+          "evaluator": {
+            "falseTargetsInspected": 5,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-availability-04",
+          "counters": {
+            "pairTickOpportunities": 56,
+            "reviewSlots": 2,
+            "inspections": 2,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 2
+          },
+          "evaluator": {
+            "falseTargetsInspected": 2,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "context": "all-ticks",
+      "contrast": "veto-minus-observe-only",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            -5,
+            -2,
+            -6,
+            -3
+          ],
+          "mean": -4,
+          "min": -6,
+          "max": -2
+        },
+        "falseConverted": {
+          "values": [
+            -5,
+            -3,
+            -3,
+            -5
+          ],
+          "mean": -4,
+          "min": -5,
+          "max": -3
+        },
+        "falseActs": {
+          "values": [
+            -14,
+            -6,
+            -11,
+            -11
+          ],
+          "mean": -10.5,
+          "min": -14,
+          "max": -6
+        },
+        "falseXp": {
+          "values": [
+            -21,
+            -9,
+            -18,
+            -21
+          ],
+          "mean": -17.25,
+          "min": -21,
+          "max": -9
+        },
+        "defenderEffort": {
+          "values": [
+            -68,
+            -32,
+            -40,
+            -48
+          ],
+          "mean": -47,
+          "min": -68,
+          "max": -32
+        },
+        "attackerEffort": {
+          "values": [
+            -98,
+            -29,
+            -99,
+            -68
+          ],
+          "mean": -73.5,
+          "min": -99,
+          "max": -29
+        },
+        "cancelled": {
+          "values": [
+            5,
+            2,
+            3,
+            3
+          ],
+          "mean": 3.25,
+          "min": 2,
+          "max": 5
+        }
+      }
+    },
+    {
+      "context": "one-tick-phase-0",
+      "contrast": "veto-minus-observe-only",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            -2,
+            -1,
+            0,
+            -3
+          ],
+          "mean": -1.5,
+          "min": -3,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            -1,
+            -3,
+            0,
+            -5
+          ],
+          "mean": -2.25,
+          "min": -5,
+          "max": 0
+        },
+        "falseActs": {
+          "values": [
+            -5,
+            -5,
+            0,
+            -11
+          ],
+          "mean": -5.25,
+          "min": -11,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            -9,
+            -9,
+            0,
+            -21
+          ],
+          "mean": -9.75,
+          "min": -21,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -4,
+            -8,
+            0,
+            -17
+          ],
+          "mean": -7.25,
+          "min": -17,
+          "max": 0
+        },
+        "attackerEffort": {
+          "values": [
+            -35,
+            -25,
+            0,
+            -68
+          ],
+          "mean": -32,
+          "min": -68,
+          "max": 0
+        },
+        "cancelled": {
+          "values": [
+            2,
+            1,
+            0,
+            3
+          ],
+          "mean": 1.5,
+          "min": 0,
+          "max": 3
+        }
+      }
+    },
+    {
+      "context": "one-tick-phase-4",
+      "contrast": "veto-minus-observe-only",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            -3,
+            -2,
+            -2,
+            -2
+          ],
+          "mean": -2.25,
+          "min": -3,
+          "max": -2
+        },
+        "falseConverted": {
+          "values": [
+            -4,
+            -3,
+            -2,
+            -5
+          ],
+          "mean": -3.5,
+          "min": -5,
+          "max": -2
+        },
+        "falseActs": {
+          "values": [
+            -9,
+            -6,
+            -3,
+            -9
+          ],
+          "mean": -6.75,
+          "min": -9,
+          "max": -3
+        },
+        "falseXp": {
+          "values": [
+            -14,
+            -9,
+            -6,
+            -21
+          ],
+          "mean": -12.5,
+          "min": -21,
+          "max": -6
+        },
+        "defenderEffort": {
+          "values": [
+            -5,
+            -16,
+            1,
+            -8
+          ],
+          "mean": -7,
+          "min": -16,
+          "max": 1
+        },
+        "attackerEffort": {
+          "values": [
+            -70,
+            -29,
+            -33,
+            -53
+          ],
+          "mean": -46.25,
+          "min": -70,
+          "max": -29
+        },
+        "cancelled": {
+          "values": [
+            3,
+            2,
+            2,
+            2
+          ],
+          "mean": 2.25,
+          "min": 2,
+          "max": 3
+        }
+      }
+    }
+  ],
+  "genuineHarmEvaluable": false,
+  "interpretation": [
+    "Exactly four new fixed labels and 24 cases; descriptive paired outcomes, not representative probabilities or mechanism confirmation.",
+    "Only attention availability changes across contexts. Each initial subject i is available at one four-hour tick/day: phase 4*((i+offset)%6). Allocation uses declared IDs, not evaluator roles; the second phase rotates every calendar by four hours.",
+    "Transaction hours, Self-ID phase, daily quotas, evidence quality and whole-run budgets stay fixed. Unavailable quota slots expire without catch-up; this tests that encoded intersection rule, not an optimal human rescheduling policy.",
+    "Honest invitations and general Self-ID inspections are disabled to isolate invitation review and keep all honest guarantors in the initial calendar-covered pool. Genuine invitation/act harm and useful growth are therefore not evaluated, not demonstrated safe.",
+    "New descendants are fabricated coalition subjects with review zero under this sybil-cone script. No measured human activity distribution, private utility or endogenous vigilance is supplied.",
+    "Observe-only uses an explicit veto-effect counterfactual; signal/work prefixes match before cancellation divergence, not after differing populations and workloads.",
+    "Dense trusted genesis, illustrative work weights, independent noisy evidence, unstrained budgets, raw topology and legacy terminal XP/indefinite unspent veto remain supplied references, not D33/D34/D42 compliance.",
+    "F48 is retained unchanged and is not re-executed. This new matched baseline belongs only to this availability intervention and new labels."
+  ]
+}

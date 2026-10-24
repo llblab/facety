@@ -1,0 +1,71 @@
+{
+  "schema": "facety-guardian-availability-manifest/v1",
+  "captureCommit": "d2950927b6423b31fc17b9e2207a320c9fa2422c",
+  "designDigest": "f3e38fcfcc185c3e797d9809acbb07909ec4198af5bd4fbcef808110c444210c",
+  "runnerDigest": "0bcd24ebb41be061cddb8fddb93a571da9dd6327c234dab269e9dd26ed4618c6",
+  "capture": {
+    "attempts": 4,
+    "casesPerBlock": 6,
+    "executions": 24,
+    "complete": 24
+  },
+  "assurance": "Author capture/offline checks only; byte hashes and attempt markers are not authenticated evidence or independent review.",
+  "artifacts": {
+    "run.mjs": {
+      "bytes": 7122,
+      "sha256": "d4278ecf49c299b3f36daa21eebed9233e94c8d2cf8343d0d113aedca798aa2d"
+    },
+    "analyze.mjs": {
+      "bytes": 8060,
+      "sha256": "0d7f55b703858f009c38eb5a8cf8a2837d7dc75a1a6e85637f9c8cdbe66b29e1"
+    },
+    "design.json": {
+      "bytes": 6261,
+      "sha256": "26f60840391f461b92c7cd8e3bcf12dfc4a21ad250d3b2919c19032f6a3aec1f"
+    },
+    "audit.mjs": {
+      "bytes": 1604,
+      "sha256": "344ccf80697b10bc809bb4f0bd2261ab79c957fbdc746ab8d7925ff710b4a304"
+    },
+    "audit.json": {
+      "bytes": 7162,
+      "sha256": "6faf741edff8b95d89c87175e3f41b39cbb15da74f9d74a8f4ebd8da73adf870"
+    },
+    "report.json": {
+      "bytes": 48042,
+      "sha256": "9073ba54e15680014b25e18b099eb5fc7ab3768a522feb064724ec42be96fe94"
+    },
+    "attempt-0.json": {
+      "bytes": 235,
+      "sha256": "da34e2decd8a83b7ba91a2609e2a39b7ff691b16bb3c1794d24f2a5bb26bec6d"
+    },
+    "block-0.json": {
+      "bytes": 551403,
+      "sha256": "2bd3ed2b81151aa0d4a44998bd0fe3a777e4c00079282f594e01eb08732e6e35"
+    },
+    "attempt-1.json": {
+      "bytes": 235,
+      "sha256": "b906cf16d420cbd91985e5e9239eb3e938c5a6ae65427946d3e534ab64654359"
+    },
+    "block-1.json": {
+      "bytes": 486832,
+      "sha256": "68830288362211094fa4aef91ac363bb4d934eff710bc498f8637816fd7ed409"
+    },
+    "attempt-2.json": {
+      "bytes": 235,
+      "sha256": "e05c1bb35173d2b2804f8adccee3d2fa90246d4f446762e839c28121a1c1062a"
+    },
+    "block-2.json": {
+      "bytes": 516016,
+      "sha256": "56b7c4c0b58eb91118220beaa1a5e620d1077c220596b831483888bce5fbe3e4"
+    },
+    "attempt-3.json": {
+      "bytes": 235,
+      "sha256": "c803bd6a74b5c446ffe1a46e9a16c3f14394a6b6c1ac2a8a875f9783a111a8fb"
+    },
+    "block-3.json": {
+      "bytes": 489620,
+      "sha256": "387fbef8fb5a99afb52268fe9b75d65a9712dcd61e38649252e4482f10abbcd0"
+    }
+  }
+}
