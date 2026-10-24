@@ -1,0 +1,1408 @@
+{
+  "schema": "facety-attended-comparison-postdata-audit/v1",
+  "level": "postdata-author-diagnostic-not-independent-review",
+  "cases": 96,
+  "completeEventPrefixChecks": 48,
+  "censoredPrefixChecksSkipped": 0,
+  "observeOnlyInvariants": [
+    {
+      "seed": "d44-attended-compare-01",
+      "population": "fabricated-descendants",
+      "cases": 6,
+      "sameNativeState": true
+    },
+    {
+      "seed": "d44-attended-compare-01",
+      "population": "genuine-coalition-descendants",
+      "cases": 6,
+      "sameNativeState": true
+    },
+    {
+      "seed": "d44-attended-compare-02",
+      "population": "fabricated-descendants",
+      "cases": 6,
+      "sameNativeState": true
+    },
+    {
+      "seed": "d44-attended-compare-02",
+      "population": "genuine-coalition-descendants",
+      "cases": 6,
+      "sameNativeState": true
+    },
+    {
+      "seed": "d44-attended-compare-03",
+      "population": "fabricated-descendants",
+      "cases": 6,
+      "sameNativeState": true
+    },
+    {
+      "seed": "d44-attended-compare-03",
+      "population": "genuine-coalition-descendants",
+      "cases": 6,
+      "sameNativeState": true
+    },
+    {
+      "seed": "d44-attended-compare-04",
+      "population": "fabricated-descendants",
+      "cases": 6,
+      "sameNativeState": true
+    },
+    {
+      "seed": "d44-attended-compare-04",
+      "population": "genuine-coalition-descendants",
+      "cases": 6,
+      "sameNativeState": true
+    }
+  ],
+  "cells": [
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "timing": "daily-slot",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        38,
+        57,
+        53,
+        31
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:307",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "timing": "daily-slot",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        8,
+        9,
+        10,
+        6
+      ],
+      "cancelledAges": [
+        [
+          8,
+          4,
+          4
+        ],
+        [
+          4,
+          4,
+          8,
+          8
+        ],
+        [
+          12,
+          8,
+          4,
+          8
+        ],
+        [
+          4,
+          4,
+          4
+        ]
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "timing": "first-attended",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        81,
+        104,
+        126,
+        99
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:307",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "timing": "first-attended",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        6,
+        8,
+        9,
+        6
+      ],
+      "cancelledAges": [
+        [
+          4,
+          4,
+          4
+        ],
+        [
+          4,
+          4,
+          4,
+          4
+        ],
+        [
+          4,
+          4,
+          4,
+          4
+        ],
+        [
+          4,
+          4,
+          4
+        ]
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "timing": "daily-slot",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        6,
+        16,
+        15,
+        4
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:307",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "timing": "daily-slot",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        5,
+        8,
+        10,
+        4
+      ],
+      "cancelledAges": [
+        [
+          12,
+          12
+        ],
+        [
+          20,
+          8,
+          8,
+          20
+        ],
+        [
+          12,
+          8,
+          4,
+          20
+        ],
+        [
+          8
+        ]
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:306",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "timing": "first-attended",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        40,
+        58,
+        58,
+        37
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:307",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "timing": "first-attended",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        9,
+        9,
+        10,
+        7
+      ],
+      "cancelledAges": [
+        [
+          4,
+          4,
+          8
+        ],
+        [
+          4,
+          4,
+          4,
+          4
+        ],
+        [
+          8,
+          4,
+          4,
+          4
+        ],
+        [
+          4,
+          4,
+          8
+        ]
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-4",
+      "timing": "daily-slot",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        3,
+        6,
+        4,
+        10
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:307",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-4",
+      "timing": "daily-slot",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        3,
+        9,
+        4,
+        4
+      ],
+      "cancelledAges": [
+        [
+          4
+        ],
+        [
+          20,
+          20,
+          12,
+          8
+        ],
+        [
+          20
+        ],
+        [
+          4,
+          4
+        ]
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-4",
+      "timing": "first-attended",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        39,
+        56,
+        55,
+        41
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:307",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-4",
+      "timing": "first-attended",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        7,
+        9,
+        8,
+        6
+      ],
+      "cancelledAges": [
+        [
+          4,
+          4,
+          4
+        ],
+        [
+          4,
+          8,
+          4,
+          4
+        ],
+        [
+          4,
+          4,
+          4,
+          4
+        ],
+        [
+          4,
+          4,
+          4
+        ]
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        []
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "timing": "daily-slot",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        20,
+        30,
+        30,
+        21
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "timing": "daily-slot",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        20,
+        30,
+        30,
+        21
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "timing": "first-attended",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        45,
+        54,
+        72,
+        57
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "timing": "first-attended",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        45,
+        54,
+        72,
+        57
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "timing": "daily-slot",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        1,
+        6,
+        8,
+        4
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "timing": "daily-slot",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        1,
+        6,
+        8,
+        4
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "timing": "first-attended",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        23,
+        30,
+        32,
+        25
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "timing": "first-attended",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        23,
+        30,
+        32,
+        25
+      ],
+      "cancelledAges": [
+        [
+          20
+        ],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-4",
+      "timing": "daily-slot",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        3,
+        7,
+        3,
+        4
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-4",
+      "timing": "daily-slot",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        3,
+        7,
+        3,
+        4
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-4",
+      "timing": "first-attended",
+      "arm": "observe-only",
+      "grossReviewResponseWork": [
+        23,
+        31,
+        30,
+        24
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-4",
+      "timing": "first-attended",
+      "arm": "veto",
+      "grossReviewResponseWork": [
+        23,
+        31,
+        30,
+        24
+      ],
+      "cancelledAges": [
+        [],
+        [],
+        [],
+        []
+      ],
+      "inspectionDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelBudgetDenied": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "openInvitations": [
+        [],
+        [],
+        [],
+        [
+          {
+            "id": "invitation:314",
+            "createdAt": 164,
+            "deadline": 188
+          }
+        ]
+      ]
+    }
+  ],
+  "genuineWitnesses": [
+    {
+      "seed": "d44-attended-compare-01",
+      "calendar": "one-tick-phase-0",
+      "timing": "first-attended",
+      "event": {
+        "at": 128,
+        "type": "invitation-cancelled",
+        "invitation": "invitation:244",
+        "guarantor": "n8"
+      },
+      "invitation": {
+        "id": "invitation:244",
+        "creator": "n7",
+        "sourceSelfId": "self-id:196",
+        "target": "member:2",
+        "createdAt": 108,
+        "acceptedAt": null,
+        "status": "cancelled"
+      },
+      "controlInvitation": {
+        "id": "invitation:244",
+        "creator": "n7",
+        "sourceSelfId": "self-id:196",
+        "target": "member:2",
+        "createdAt": 108,
+        "acceptedAt": 132,
+        "status": "accepted"
+      },
+      "sourceAct": {
+        "id": "self-id:196",
+        "subject": "n7",
+        "artifact": "artifact:195",
+        "faceIndex": 0,
+        "recordedAt": 72,
+        "guarantors": [
+          "n0",
+          "n1",
+          "n2",
+          "n3",
+          "n4",
+          "n5",
+          "n6",
+          "n8",
+          "n9",
+          "n10",
+          "n11"
+        ],
+        "xpRecipients": [
+          "n7",
+          "n0",
+          "n1",
+          "n2",
+          "n3",
+          "n4",
+          "n5",
+          "n6",
+          "n8",
+          "n9",
+          "n10",
+          "n11"
+        ],
+        "xpCredited": true,
+        "status": "consumed",
+        "disposition": "invitation-cancelled",
+        "disputeLock": null,
+        "collision": false,
+        "debtReserved": false
+      },
+      "controlSourceAct": {
+        "id": "self-id:196",
+        "subject": "n7",
+        "artifact": "artifact:195",
+        "faceIndex": 0,
+        "recordedAt": 72,
+        "guarantors": [
+          "n0",
+          "n1",
+          "n2",
+          "n3",
+          "n4",
+          "n5",
+          "n6",
+          "n8",
+          "n9",
+          "n10",
+          "n11"
+        ],
+        "xpRecipients": [
+          "n7",
+          "n0",
+          "n1",
+          "n2",
+          "n3",
+          "n4",
+          "n5",
+          "n6",
+          "n8",
+          "n9",
+          "n10",
+          "n11"
+        ],
+        "xpCredited": true,
+        "status": "consumed",
+        "disposition": "invitation",
+        "disputeLock": null,
+        "collision": false,
+        "debtReserved": false
+      },
+      "sharedSubjectXp": [
+        {
+          "subject": "n0",
+          "activeXp": 52,
+          "controlXp": 53,
+          "delta": -1
+        },
+        {
+          "subject": "n1",
+          "activeXp": 39,
+          "controlXp": 40,
+          "delta": -1
+        },
+        {
+          "subject": "n2",
+          "activeXp": 55,
+          "controlXp": 56,
+          "delta": -1
+        },
+        {
+          "subject": "n3",
+          "activeXp": 55,
+          "controlXp": 56,
+          "delta": -1
+        },
+        {
+          "subject": "n4",
+          "activeXp": 58,
+          "controlXp": 59,
+          "delta": -1
+        },
+        {
+          "subject": "n5",
+          "activeXp": 55,
+          "controlXp": 56,
+          "delta": -1
+        },
+        {
+          "subject": "n6",
+          "activeXp": 46,
+          "controlXp": 47,
+          "delta": -1
+        },
+        {
+          "subject": "n7",
+          "activeXp": 60,
+          "controlXp": 61,
+          "delta": -1
+        },
+        {
+          "subject": "n8",
+          "activeXp": 49,
+          "controlXp": 50,
+          "delta": -1
+        },
+        {
+          "subject": "n9",
+          "activeXp": 53,
+          "controlXp": 54,
+          "delta": -1
+        },
+        {
+          "subject": "n10",
+          "activeXp": 51,
+          "controlXp": 52,
+          "delta": -1
+        },
+        {
+          "subject": "n11",
+          "activeXp": 42,
+          "controlXp": 43,
+          "delta": -1
+        }
+      ],
+      "controlOnlySubjects": [
+        {
+          "id": "member:2",
+          "genesis": false,
+          "key": "member:2:key:0",
+          "identityStatus": "accepted",
+          "xp": 0,
+          "liquidFacy": 0,
+          "debt": 0,
+          "lastRewardAt": 144
+        }
+      ],
+      "ledgerActive": {
+        "minted": 79,
+        "burned": 3,
+        "supply": 76,
+        "emitterVault": 18,
+        "collector": 58,
+        "feeVault": 0,
+        "stakeVault": 0,
+        "debt": 0
+      },
+      "ledgerControl": {
+        "minted": 80,
+        "burned": 3,
+        "supply": 77,
+        "emitterVault": 19,
+        "collector": 58,
+        "feeVault": 0,
+        "stakeVault": 0,
+        "debt": 0
+      },
+      "ledgerDeltas": {
+        "minted": -1,
+        "burned": 0,
+        "supply": -1,
+        "emitterVault": -1,
+        "collector": 0,
+        "feeVault": 0,
+        "stakeVault": 0,
+        "debt": 0
+      },
+      "sanctionsActive": {
+        "challenges": 0,
+        "upheld": 0,
+        "rejected": 0,
+        "falseInvalidated": 0,
+        "wrongfulInvalidated": 0,
+        "excluded": 0,
+        "missedFalse": 0,
+        "voidedActs": 0,
+        "ladderEntries": 0,
+        "ladderDepth": 0,
+        "councilInterventions": 0,
+        "disputesResolved": 0,
+        "disputesMooted": 0,
+        "disputesOpen": 0,
+        "disputeNotices": 0,
+        "clusterChallenges": 0
+      },
+      "sanctionsControl": {
+        "challenges": 0,
+        "upheld": 0,
+        "rejected": 0,
+        "falseInvalidated": 0,
+        "wrongfulInvalidated": 0,
+        "excluded": 0,
+        "missedFalse": 0,
+        "voidedActs": 0,
+        "ladderEntries": 0,
+        "ladderDepth": 0,
+        "councilInterventions": 0,
+        "disputesResolved": 0,
+        "disputesMooted": 0,
+        "disputesOpen": 0,
+        "disputeNotices": 0,
+        "clusterChallenges": 0
+      }
+    }
+  ],
+  "interpretation": [
+    "No Model/capture call. Native-state invariance and witness projections are post-data author checks, not registered confirmation or independent review.",
+    "Gross review/response work uses actual inspect/verify/respond effort; ordinary inspection is disabled and exit/verification are off by design. Total work also contains bootstrap and changed downstream actions.",
+    "Genuine invitation targets are declared by the supplied real-cartel control; coordination is not guilt or evidence of other misconduct.",
+    "Shared-account XP differences are terminal recorded deltas, not a full chronological credit replay or D42 compliance. xpCredited is not a current-credit receipt.",
+    "Lower supply/minting is not extra burn or recovery. Open invitation lifetimes extend beyond the declared run; zero sampled harm does not establish safety."
+  ]
+}

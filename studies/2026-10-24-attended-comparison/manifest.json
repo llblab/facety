@@ -1,0 +1,90 @@
+{
+  "schema": "facety-attended-comparison-manifest/v1",
+  "captureCommit": "d202a87bc9e8f7e7fa2ba7350d6f2e6a41ddd02a",
+  "source": {
+    "baseCheckpoint": "edc6c0f",
+    "implementation": "5070d49ac2a99edd707d84adb80afb3a28d000098133657de5b6dfe23d6eb2e5",
+    "node": "v26.8.1"
+  },
+  "designDigest": "2a98c5fd3089bd6d212667a771ad80e34290cb1761a6f4fd39bd06d18c482d64",
+  "methodDigests": {
+    "run.mjs": "e54ccb439ee24ce7856f3cabe4896d8d64c6e3bd2181170e000aa92203b96792",
+    "contract.mjs": "3a0968caf4a632f45b4a1a5c6269b92e6bfd4a10b73333a6f26f35158e3df588",
+    "analyze.mjs": "f02604c5f4d27917ca3f50513658bb72de02602004030f2ce5a939d437ee6271",
+    "design.json": "db1b51cad741bd43de168ea0ebc1ea615e4c72565a00b1bce0eebaeedecf16d7"
+  },
+  "capture": {
+    "blocks": 4,
+    "casesPerBlock": 24,
+    "executions": 96,
+    "complete": 96,
+    "failedRecords": 0
+  },
+  "artifacts": {
+    "run.mjs": {
+      "bytes": 8150,
+      "sha256": "e54ccb439ee24ce7856f3cabe4896d8d64c6e3bd2181170e000aa92203b96792"
+    },
+    "contract.mjs": {
+      "bytes": 4435,
+      "sha256": "3a0968caf4a632f45b4a1a5c6269b92e6bfd4a10b73333a6f26f35158e3df588"
+    },
+    "analyze.mjs": {
+      "bytes": 13486,
+      "sha256": "f02604c5f4d27917ca3f50513658bb72de02602004030f2ce5a939d437ee6271"
+    },
+    "design.json": {
+      "bytes": 8248,
+      "sha256": "db1b51cad741bd43de168ea0ebc1ea615e4c72565a00b1bce0eebaeedecf16d7"
+    },
+    "predata-validation.json": {
+      "bytes": 1607,
+      "sha256": "096d17ce0a5fa0f09e8accd126bab612afbfeef04ec0a6c439c83cdda1223a76"
+    },
+    "report.json": {
+      "bytes": 266663,
+      "sha256": "87f980472cec12ed8bad8fdfa4aa31feb81b8b931aa7e34aa1ad384105185438"
+    },
+    "audit.mjs": {
+      "bytes": 4999,
+      "sha256": "57656fb512c1e7501764e98f47ebf307083067241715aca55f49444cabaa6d2b"
+    },
+    "audit.json": {
+      "bytes": 25440,
+      "sha256": "c2aac4e57f677388ae1480cd8f8f1e1d713b52cacaec40ff4fe633636e416dc0"
+    },
+    "attempt-0.json": {
+      "bytes": 631,
+      "sha256": "534b2139e71e027de54d6d65063b37f7ca3a1f147f397fee0ac84ee9f88c87b2"
+    },
+    "block-0.json": {
+      "bytes": 2166763,
+      "sha256": "df6677fa92c38d8b2f3865bcfe1bfb5dbb6c26e1ed2afc5b9b404c48acbceec8"
+    },
+    "attempt-1.json": {
+      "bytes": 631,
+      "sha256": "6b75e2b0c73fd886e98dff7f90fc3f549567f7c86aec554a1627758446a29a5b"
+    },
+    "block-1.json": {
+      "bytes": 2078694,
+      "sha256": "bb4d015ca5e56bf27cd7e04f7bed626690dd61fa6fd2d08c5da0b457e1ff6113"
+    },
+    "attempt-2.json": {
+      "bytes": 631,
+      "sha256": "dee975826721fcaa3ec8b650694b42464ca334a051c520c319656873bb570d67"
+    },
+    "block-2.json": {
+      "bytes": 2176789,
+      "sha256": "23ec64107147c48d840d884974e3605ec433d6fdff7a44303c3b3a1593d13fab"
+    },
+    "attempt-3.json": {
+      "bytes": 631,
+      "sha256": "79d77ce545b978e0ca1f967dbd7ca9e1a232d8741e1505a7fd902e79e4936073"
+    },
+    "block-3.json": {
+      "bytes": 2105123,
+      "sha256": "9297298e80b96a0bf4bb80e7712639bbdc0ee240923e38f1a00c2130942a9645"
+    }
+  },
+  "assurance": "Author capture/offline analysis and post-data audit, not input authentication, independent review, calibrated population data or mechanism confirmation."
+}

@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { auditBlocks } from '../studies/2026-10-24-attended-comparison/audit.mjs';
 import { studyDesign, runBlock } from '../studies/2026-10-24-attended-comparison/run.mjs';
 import { caseConfig, projectRun, methodDigests, COUNTERS, EVALUATOR } from '../studies/2026-10-24-attended-comparison/contract.mjs';
 import { analyzeBlocks, validateRow } from '../studies/2026-10-24-attended-comparison/analyze.mjs';
@@ -74,6 +76,42 @@ test('fixed timing study declares 96 fresh-label cases, genuine control and unch
   assert.deepEqual(analyzeBlocks(JSON.parse(JSON.stringify(raw)).reverse()), report);
   assert.deepEqual(raw, before);
   assert.ok(report.cells.every(cell => !Object.hasOwn(cell, 'successRate')));
+});
+
+test('retained comparison and post-data audit verify without model recapture or source relabeling', () => {
+  const raw = [0, 1, 2, 3].map(index => JSON.parse(readFileSync(new URL('block-' + index + '.json', directory))));
+  const report = JSON.parse(readFileSync(new URL('report.json', directory)));
+  const audit = JSON.parse(readFileSync(new URL('audit.json', directory)));
+  assert.deepEqual(analyzeBlocks(raw), report);
+  assert.deepEqual(auditBlocks(raw), audit);
+  assert.equal(report.cases, 96);
+  assert.ok(report.cells.every(cell => cell.completeRuns === 4));
+  assert.equal(audit.completeEventPrefixChecks, 48);
+  assert.equal(audit.censoredPrefixChecksSkipped, 0);
+  assert.ok(audit.observeOnlyInvariants.every(row => row.sameNativeState));
+  assert.equal(audit.genuineWitnesses.length, 1);
+  const witness = audit.genuineWitnesses[0];
+  assert.equal(witness.event.at - witness.invitation.createdAt, 20);
+  assert.equal(witness.sharedSubjectXp.length, 12);
+  assert.ok(witness.sharedSubjectXp.every(row => row.delta === -1));
+  assert.equal(witness.ledgerDeltas.burned, 0);
+  assert.equal(witness.ledgerDeltas.supply, -1);
+  assert.equal(witness.ledgerDeltas.debt, 0);
+  for (const block of raw) {
+    const attempt = JSON.parse(readFileSync(new URL('attempt-' + block.block + '.json', directory)));
+    for (const field of ['block', 'captureCommit', 'designDigest', 'methodDigests', 'source']) assert.deepEqual(attempt[field], block[field]);
+  }
+  const manifest = JSON.parse(readFileSync(new URL('manifest.json', directory)));
+  assert.equal(manifest.captureCommit, report.captureCommit);
+  assert.equal(manifest.designDigest, report.designDigest);
+  assert.deepEqual(manifest.methodDigests, report.methodDigests);
+  assert.deepEqual(manifest.source, design.source);
+  assert.deepEqual(manifest.capture, { blocks: 4, casesPerBlock: 24, executions: 96, complete: 96, failedRecords: 0 });
+  for (const [file, expected] of Object.entries(manifest.artifacts)) {
+    const bytes = readFileSync(new URL(file, directory));
+    assert.equal(bytes.length, expected.bytes);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256);
+  }
 });
 
 test('fixed study rejects changed matrices, methods, source, policies, missingness and native/state disagreements', () => {
