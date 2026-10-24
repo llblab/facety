@@ -20,6 +20,7 @@ export const DEFAULT_POLICY = Object.freeze({
 // Counterfactual mechanism removals for evidence experiments. They are not protocol options.
 export const DEFAULT_ABLATIONS = Object.freeze({
   withholdGuarantorXp: false,
+  disableInvitationVeto: false,
   fixedInvitationThreshold: null,
 });
 
@@ -54,6 +55,7 @@ export function ablationsFrom(overrides = {}) {
   for (const key of Object.keys(overrides)) if (!Object.hasOwn(DEFAULT_ABLATIONS, key)) throw new Error('unknown ablation: ' + key);
   const ablations = { ...DEFAULT_ABLATIONS, ...overrides };
   if (typeof ablations.withholdGuarantorXp !== 'boolean') throw new TypeError('withholdGuarantorXp must be boolean');
+  if (typeof ablations.disableInvitationVeto !== 'boolean') throw new TypeError('disableInvitationVeto must be boolean');
   if (ablations.fixedInvitationThreshold !== null) natural(ablations.fixedInvitationThreshold, 'fixedInvitationThreshold', 1);
   return Object.freeze(ablations);
 }
@@ -364,6 +366,7 @@ export class FacetyModel {
     const invitation = this.#invitations.get(invitationId);
     if (!invitation || invitation.status !== 'open' || this.now - invitation.createdAt >= this.policy.invitationFreezeHours) throw new ProtocolRejection('invitation is not cancellable');
     if (!this.guarantees.edge(guarantor, invitation.creator)) throw new ProtocolRejection('no authority to cancel invitation');
+    if (this.ablations.disableInvitationVeto) throw new ProtocolRejection('invitation veto disabled by counterfactual ablation');
     invitation.status = 'cancelled';
     const act = this.#act(invitation.sourceSelfId);
     act.disposition = 'invitation-cancelled';

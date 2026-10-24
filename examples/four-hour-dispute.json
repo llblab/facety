@@ -1,0 +1,17 @@
+{
+  "seed": "timed",
+  "stepHours": 4,
+  "days": 12,
+  "initialSize": 30,
+  "attackerShare": 0.2,
+  "includeState": true,
+  "activity": { "honest": { "inspect": 3, "challenge": 1, "review": 1 } },
+  "disputes": {
+    "enabled": true,
+    "procedure": "chekharda-timed",
+    "entryTiming": "each-tick",
+    "roundsPerDay": 6,
+    "noticeBase": 1,
+    "entrantChoice": "highest"
+  }
+}

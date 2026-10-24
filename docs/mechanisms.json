@@ -52,24 +52,27 @@
       "question": "Does responsibility produce timely preventive correction?",
       "initiatingChange": "A suspicious act is observed while a guarantor retains cancellation authority.",
       "path": [
-        "Fallible observation→declared response and work gate.",
-        "Authorized veto burns the right, removes attributable XP and can prevent funded admission."
+        "Declared attention slot → paid fallible observation → optional paid verification → available, funded response attempt.",
+        "An authorized pre-deadline invitation veto prevents this admission; its already burned source stays burned. Legacy source XP is replayed separately from the pending D42 rule.",
+        "Self-ID veto is a separate native operation with its explicitly labeled legacy unspent timing."
       ],
       "feedback": {
         "implemented": "Prevention changes later usable rights, active count and admission opportunities.",
         "missing": "Liability-induced vigilance, D34 historical event-time liability/early self-correction and revised guarantee willingness are absent; D34's eligibility, funding and repeat-event contracts remain OPEN."
       },
       "signs": "− suspicious usable rights if timely/correct; − genuine rights on false positives; no general welfare sign.",
-      "delay": "Before terminal disposition; invitation cancellation is strictly before the freeze endpoint.",
+      "delay": "Invitation cancellation strictly precedes its freeze endpoint; native Self-ID unspent veto remains legacy pending D42.",
       "bottleneck": "Attention, veto authority and timing; a free protocol veto does not mean zero human work.",
-      "basis": "Selected model transitions plus explicit fallible observation/response assumptions.",
+      "basis": "D44 modeling focus; selected invitation-veto window with explicit attention/evidence/response assumptions and legacy native XP/custody semantics.",
       "code": [
         "src/model.mjs#cancelSelfId/cancelInvitation",
-        "src/experiment.mjs#guardianWork/inspectionWork"
+        "src/experiment.mjs#guardianWork/inspectionWork",
+        "test/guarantor-response.test.mjs"
       ],
       "observable": [
         "selfIds[].status/disposition",
         "invitations[].status",
+        "invitationReview.counters/evaluator",
         "observations",
         "effort"
       ],
@@ -77,10 +80,10 @@
         "early-veto",
         "missed-veto"
       ],
-      "intervention": "Remove timely response at the same fresh-act prefix; hold knowledge/timing fixed before studying forgiveness.",
+      "intervention": "disableInvitationVeto removes only an otherwise-authorized veto effect; it is a counterfactual, never a protocol option. Match the signal/work prefix before first cancellation; downstream work may diverge.",
       "alternative": "Earlier removal alone, perfect attention, or free unmeasured work.",
       "falsifier": "Matched late/early evidence produces no usable prevention or false veto harm outweighs it.",
-      "status": "Native timing diagnostic; vigilance incentive not established.",
+      "status": "Explicit staged prevention trace and funded veto-effect ablation diagnostic; liability-induced vigilance and net reliability remain unconfirmed.",
       "diagram": "M02 [A] suspicion --[R authority, before spend]--> veto → fewer rights --[? vigilance]--x review"
     },
     {
@@ -901,13 +904,14 @@
       {
         "paths": [
           "ablations.withholdGuarantorXp",
+          "ablations.disableInvitationVeto",
           "ablations.fixedInvitationThreshold",
           "ablations.randomGuaranteeTargets"
         ],
-        "units": "boolean; nullable guarantor count; boolean",
+        "units": "boolean; boolean; nullable guarantor count; boolean",
         "scope": "model/behavior counterfactual",
         "status": "intervention",
-        "meaning": "Remove guarantor credit, replace digit threshold, or remove preferential matching independently. Never protocol options.",
+        "meaning": "Remove guarantor credit, block otherwise-authorized invitation veto, replace digit threshold, or remove preferential matching independently. Never protocol options.",
         "provenance": "src/model.mjs DEFAULT_ABLATIONS; src/experiment-config.mjs EXPERIMENT_ABLATIONS",
         "mechanisms": [
           "M01",
@@ -917,12 +921,13 @@
       {
         "paths": [
           "disputes.enabled",
-          "disputes.procedure"
+          "disputes.procedure",
+          "disputes.entryTiming"
         ],
         "units": "boolean; enum",
         "scope": "optional procedural reference",
         "status": "research-assumption",
-        "meaning": "Enable one-step, instant ladder or timed ladder; all merits institutions remain OPEN.",
+        "meaning": "Enable one-step, instant ladder or timed ladder. entryTiming daily-quota retains the reference; each-tick offers one opposing timed entry per 4/6-hour tick, requiring matching roundsPerDay and eligible funded willingness. No forced entrants, quorum or new merits rules.",
         "provenance": "src/experiment-config.mjs DEFAULT_DISPUTES; docs/simulator.en.md",
         "mechanisms": [
           "M04",

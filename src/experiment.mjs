@@ -120,6 +120,15 @@ export function runExperiment(overrides = {}) {
   const history = [];
   const rejections = {};
   const observations = { inspections: 0, suspicious: 0, noVetoAuthority: 0, eligibleForUnmodeledXpChallenge: 0 };
+  const invitationReview = schedule ? Object.fromEntries(['pairTickOpportunities', 'reviewSlots', 'inspections', 'inspectionDenied', 'positiveSignals', 'verificationCalls', 'verificationDenied', 'verificationPassed', 'cancelCalls', 'cancelBudgetDenied', 'cancelUnavailable', 'cancelRejected', 'cancelled'].map(key => [key, 0])) : null;
+  const countReview = key => { if (invitationReview) invitationReview[key]++; };
+  const reviewEvidence = schedule ? { falseTargetsInspected: 0, genuineTargetsInspected: 0, falseTargetPositive: 0, genuineTargetPositive: 0 } : null;
+  function measureReviewEvidence(candidate, observation) {
+    if (!reviewEvidence) return;
+    // Evaluator-only measurement; this record is never read by the defense or model.
+    reviewEvidence[candidate.genuine ? 'genuineTargetsInspected' : 'falseTargetsInspected']++;
+    if (observation.suspicious) reviewEvidence[candidate.genuine ? 'genuineTargetPositive' : 'falseTargetPositive']++;
+  }
   let nextSubject = 0;
   let firstSuccess = null;
   let falseConversionCount = 0;
@@ -225,6 +234,7 @@ export function runExperiment(overrides = {}) {
       sanctions: { ...sanctions },
       stakes: stakeBook.summary(),
       trust: { ...trustWork },
+      ...(invitationReview ? { invitationReview: { ...invitationReview } } : {}),
     });
     previousSampleCosts = costs;
     previousCouncilIds = network.council.memberIds;
@@ -321,20 +331,34 @@ export function runExperiment(overrides = {}) {
       if (pending.cancelled || model.now - pending.createdAt >= model.policy.invitationFreezeHours) continue;
       for (const guarantor of [...model.guarantees.inEdges(pending.sponsor)].map(edge => edge.from)) {
         if (pending.cancelled || truth.get(guarantor).cohort !== 'honest' || model.subject(guarantor).identityStatus !== 'accepted') continue;
+        countReview('pairTickOpportunities');
         if (!dailyChoice('invitation-review', guarantor, activityOf(guarantor).review, [pending.invitation], 'attention')) continue;
+        countReview('reviewSlots');
         const look = attempt(guarantor, 'inspect', () => observe(pending.candidate.id, ['invitation-review', model.now, guarantor], pending.candidate));
-        if (!look.ok || !look.value.suspicious) continue;
+        if (!look.ok) { countReview('inspectionDenied'); continue; }
+        countReview('inspections');
+        measureReviewEvidence(pending.candidate, look.value);
+        if (!look.value.suspicious) continue;
+        countReview('positiveSignals');
         if (config.social.verification) {
+          countReview('verificationCalls');
           const check = attempt(guarantor, 'verify', () => verified(guarantor, pending.candidate.id, 'invitation-review', pending.candidate));
           if (!check.ok || !check.value) {
             if (check.ok) trustWork.verificationsCleared++;
+            else countReview('verificationDenied');
             continue;
           }
+          countReview('verificationPassed');
         }
+        countReview('cancelCalls');
         const cancel = attempt(guarantor, 'respond', () => model.cancelInvitation(guarantor, pending.invitation));
-        if (!cancel.ok) continue;
+        if (!cancel.ok) {
+          countReview(cancel.reason === 'budget-denied' ? 'cancelBudgetDenied' : cancel.reason === 'unavailable' ? 'cancelUnavailable' : 'cancelRejected');
+          continue;
+        }
         pending.cancelled = true;
         trustWork.invitationsCancelled++;
+        countReview('cancelled');
         if (!config.social.exitOnFraud) continue;
         const relation = model.guaranteeRelations().find(row => row.status === 'active' && row.guarantor === guarantor && row.guaranteed === pending.sponsor);
         if (relation && attempt(guarantor, 'respond', () => model.endGuarantee(guarantor, relation.id)).ok) trustWork.guardianExits++;
@@ -602,8 +626,9 @@ export function runExperiment(overrides = {}) {
         resolveTimedDispute(dispute, model.now - dispute.lastMoveAt >= rules.disputeWindowHours ? 'response-window-expired' : 'round-limit');
         continue;
       }
-      if (model.now === dispute.lastMoveAt || !attention) continue;
-      for (const round of schedule ? actionSlots('dispute-round', dispute.id, rules.roundsPerDay, 'attention') : Array.from({ length: rules.roundsPerDay }, (_, i) => i)) {
+      if (model.now === dispute.lastMoveAt || !attention || (rules.entryTiming === 'each-tick' && model.now - dispute.lastMoveAt < config.stepHours)) continue;
+      const rounds = rules.entryTiming === 'each-tick' ? [Math.floor((model.now % DAY) / config.stepHours)] : schedule ? actionSlots('dispute-round', dispute.id, rules.roundsPerDay, 'attention') : Array.from({ length: rules.roundsPerDay }, (_, i) => i);
+      for (const round of rounds) {
         if (councilReached(dispute) || dispute.entrants.length >= rules.maxRounds) break;
         const height = Math.max(...dispute.entrants.map(entrant => model.subject(entrant.id).xp)) / Math.max(1, meanXp);
         const count = Math.min(accepted.length, Math.ceil(rules.noticeBase * accepted.length * (1 + height)));
@@ -982,7 +1007,7 @@ export function runExperiment(overrides = {}) {
   };
   return {
     schema: 'facety-experiment/v1',
-    config, randomness, provenance: provenance(), assumptions: schedule ? [...EXPERIMENT_ASSUMPTIONS.filter(text => !text.startsWith('Self-ID, guarantee work')), 'D43: 4/6-hour decision opportunities retain daily floor-plus-Bernoulli quotas. Keyed uniform slot placement is a timing assumption, not measured human activity; Self-ID phase is fixed per subject. Unavailable, preadmission or ineligible slots expire without catch-up. Profiles override declared subject activity and separate transaction/attention hours; null means all decision ticks, not measured availability. Conditional responses remain per observation. Whole-run effort caps never reset. Invitation reviews have one Bernoulli/slot per guarantor-invitation-calendar-day, not per tick. Timed attention rounds retain a per-case daily quota. Council settlement keeps the automatic all-seats reference; availability supplies no quorum or recusal rule. Known off-grid invitation, dispute and reserved-debt deadlines are processed without extra actor rounds; horizon settlement does not issue daily quotas. Native terminal XP and unlimited unspent veto remain legacy, not D42 compliance.'] : [...EXPERIMENT_ASSUMPTIONS],
+    config, randomness, provenance: provenance(), assumptions: schedule ? [...EXPERIMENT_ASSUMPTIONS.filter(text => !text.startsWith('Self-ID, guarantee work')), 'D43: 4/6-hour decision opportunities retain daily floor-plus-Bernoulli quotas. Keyed uniform slot placement is a timing assumption, not measured human activity; Self-ID phase is fixed per subject. Unavailable, preadmission or ineligible slots expire without catch-up. Profiles override declared subject activity and separate transaction/attention hours; null means all decision ticks, not measured availability. Conditional responses remain per observation. Whole-run effort caps never reset. Invitation review stage counters are process diagnostics; their separate evaluator class counts never feed the defense or protocol state. Invitation reviews have one Bernoulli/slot per guarantor-invitation-calendar-day, not per tick. Timed attention rounds retain a per-case daily quota; entryTiming each-tick instead offers one opposing entry per decision tick after at least one step, never a forced participant. Council settlement keeps the automatic all-seats reference; availability supplies no quorum or recusal rule. Known off-grid invitation, dispute and reserved-debt deadlines are processed without extra actor rounds; horizon settlement does not issue daily quotas. Native terminal XP and unlimited unspent veto remain legacy, not D42 compliance.'] : [...EXPERIMENT_ASSUMPTIONS],
     outcome: {
       success: firstSuccess !== null ? true : censoredReason ? null : false,
       firstSuccess, censored: censoredReason !== null, censoredReason, completedDays, elapsedHours: model.now,
@@ -992,6 +1017,14 @@ export function runExperiment(overrides = {}) {
     population,
     effort: effort.audit(),
     observations, rejections, money, agents, system,
+    ...(invitationReview ? { invitationReview: {
+      counters: { ...invitationReview },
+      evaluator: { ...reviewEvidence },
+      attention: 'activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation',
+      evidence: 'sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth',
+      response: 'always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility',
+      responsibility: 'prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented',
+    } } : {}),
     disputes: { stakes: stakeBook.summary(), cases: stakeBook.cases().map(record => ({ ...record, ...caseContexts.get(record.id) })) },
     impact: {
       falseConversions: acts.filter(act => act.status === 'converted' && !truth.get(act.subject).genuine).length,

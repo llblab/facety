@@ -43,7 +43,7 @@ Each cohort has its own `activity` profile:
 - `invite`: Expected invitation opportunities per subject per day; only available mature personal rights are considered.
 - `guarantee`: Expected new directed-guarantee proposals per subject per day. Confirmations are separate actions charged to the counterparty's cohort.
 - `inspect`: Expected distinct public unspent-act inspections per subject per day.
-- `respond`: Probability of acting on a suspicious observation when veto authority exists, in [0, 1].
+- `respond`: Probability of a Self-ID veto response to a suspicious observation when authority exists, in [0, 1]. The invitation-guardian script separately always attempts cancellation after its evidence gate, subject to availability, work and model authority.
 - `convert`: Probability of converting each right that has reached conversion maturity, on a daily pass, in [0, 1].
 - `challenge`, `review`: probability of challenging an eligible suspicious act, and of reviewing a frozen invitation of a guaranteed subject (honest only).
 - `bribe`: expected bribe offers per coalition actor per day.
@@ -64,6 +64,12 @@ In legacy 24-hour mode, every simulated day:
 7. Monetary invariants are checked and a history sample is recorded.
 
 In legacy mode, new members first act on the following day. That mode advances on a 24-hour grid; within-day action ordering is explicit, not physically timed. Success is checked after every accepted action that can change the success criterion, as well as against the given initial state. The run continues to the horizon after first success, while retaining its exact effort prefix.
+
+## Explicit prevention and regular dispute scenarios
+
+D44 exposes `invitationReview.counters` (attention → paid inspection → signal → optional verification → cancellation gates/results) and separate evaluator-only target-class counts. `activity.review`, observation quality and actual authorized action are not one probability. `ablations.disableInvitationVeto` is an atomic effect-removal counterfactual, not a protocol option; it retains the observation/paid-attempt prefix so that evidence without enforcement can be distinguished from a working veto. The [fixed diagnostic](../studies/2026-10-24-d43-cadence/README.md) is prepared before data, not registered confirmation of endogenous vigilance.
+
+D45's `disputes.entryTiming: each-tick` offers one opposing timed-dispute entry per 4/6-hour decision tick; `roundsPerDay` must equal `24 / stepHours`. It requires enabled `chekharda-timed`; default `daily-quota` is unchanged. Eligibility, declared stake backing and willingness still bind, and the default 168-hour last-move window restarts on actual entry. Run `node bin/facety.mjs run examples/four-hour-dispute.json` for an illustrative scenario. It is neither forced participation nor a new universal escalation rate. The [model contract](simulator.en.md#regular-timed-entries-d45) states the exact gates and limitations.
 
 ## Scheduled activity and random coupling
 

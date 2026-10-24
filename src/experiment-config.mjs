@@ -5,6 +5,7 @@ import { TOPOLOGIES } from './generators.mjs';
 import { EffortLedger, DEFAULT_WEIGHTS, effortWeights, COHORTS } from './effort.mjs';
 import { STAKE_BACKINGS } from './dispute-stakes.mjs';
 import { SUBDAY_RANDOMNESS } from './activity-schedule.mjs';
+import { canonicalJson } from './provenance.mjs';
 
 export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-cartel']);
 // Model ablations remove protocol mechanisms; behavior ablations remove scripted agent choices.
@@ -36,7 +37,7 @@ export const DEFAULT_DISPUTES = Object.freeze({
   disputeWindowHours: 168, noticeBase: 0.02, evidenceGain: 0.1, civicValue: 0,
   // Who takes the next position among willing candidates, and how many entries a timed dispute can
   // take per day (owner: many entrants a day, XP jumping by multiples toward the most senior people).
-  entrantChoice: 'lowest', roundsPerDay: 1,
+  entrantChoice: 'lowest', roundsPerDay: 1, entryTiming: 'daily-quota',
   // Dispute-resolution reputation: public win/loss records. Regulars notice disputes more often, and a
   // candidate weighs the record of the entrant it would oppose.
   trackRecordWeight: 0, regularsNotice: 0,
@@ -126,6 +127,7 @@ function disputesFrom(overrides) {
   if (!['one-step', 'chekharda', 'chekharda-timed'].includes(disputes.procedure)) throw new Error('disputes.procedure must be one-step, chekharda or chekharda-timed');
   integer(disputes.disputeWindowHours, 'disputes.disputeWindowHours', 1, 10000);
   integer(disputes.roundsPerDay, 'disputes.roundsPerDay', 1, 1000);
+  if (!['daily-quota', 'each-tick'].includes(disputes.entryTiming)) throw new Error('unknown dispute entryTiming');
   if (!['lowest', 'highest', 'random'].includes(disputes.entrantChoice)) throw new Error('disputes.entrantChoice must be lowest, highest or random');
   probability(disputes.trackRecordWeight, 'disputes.trackRecordWeight');
   if (!['private-signal', 'public-proof'].includes(disputes.evidence)) throw new Error('disputes.evidence must be private-signal or public-proof');
@@ -222,11 +224,12 @@ export function activityAtDay(overrides, day) {
 }
 
 export function experimentRandomness(config) {
-  return config.stepHours === 24 ? RANDOMNESS_POLICY : SUBDAY_RANDOMNESS;
+  if (config.stepHours === 24) return RANDOMNESS_POLICY;
+  return config.disputes.entryTiming === 'each-tick' ? { ...SUBDAY_RANDOMNESS, disputeSchedule: 'one-opportunity-per-tick-v1' } : SUBDAY_RANDOMNESS;
 }
 
 export function combineExperimentRandomness(policies) {
-  const distinct = [...new Map([...policies].map(policy => [policy.decisions, policy])).values()].sort((a, b) => a.decisions < b.decisions ? -1 : 1);
+  const distinct = [...new Map([...policies].map(policy => [canonicalJson(policy), policy])).values()].sort((a, b) => canonicalJson(a) < canonicalJson(b) ? -1 : 1);
   if (distinct.length === 1) return distinct[0];
   return { generator: RANDOM_GENERATOR, decisions: 'decision-keyed-mixed-subday-v1', policies: distinct };
 }
@@ -277,6 +280,7 @@ export function experimentConfig(overrides = {}) {
   config.activity = Object.freeze(Object.fromEntries(COHORTS.map(cohort => [cohort, Object.freeze({ ...DEFAULT_ACTIVITY[cohort], ...partialActivity[cohort] })])));
   config.perturbations = perturbationsFrom(config.perturbations, config.days);
   config.disputes = disputesFrom(config.disputes);
+  if (config.disputes.entryTiming === 'each-tick' && (config.stepHours === 24 || !config.disputes.enabled || config.disputes.procedure !== 'chekharda-timed' || config.disputes.roundsPerDay !== 24 / config.stepHours)) throw new Error('each-tick requires sub-day timed disputes and roundsPerDay = 24 / stepHours');
   config.social = socialFrom(config.social);
   config.deviants = deviantsFrom(config.deviants, config.days);
   config.budgets = Object.freeze(mergeRecord({ honest: 100_000, attackers: 100_000 }, config.budgets, 'budgets'));

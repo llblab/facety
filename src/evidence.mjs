@@ -175,7 +175,7 @@ function specRandomness(spec) {
   const policies = new Map();
   for (const context of spec.contexts) for (const parameters of Object.values(spec.arms)) {
     const policy = experimentRandomness(withExperimentParameters(base, { ...context.parameters, ...parameters }));
-    policies.set(policy.decisions, policy);
+    policies.set(canonicalJson(policy), policy);
   }
   return combineExperimentRandomness(policies.values());
 }
