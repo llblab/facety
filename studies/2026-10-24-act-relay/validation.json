@@ -1,0 +1,55 @@
+{
+  "schema": "facety-act-relay-engineering-validation/v1",
+  "level": "author-software-validation-not-research",
+  "baselineCommit": "ad28fb2",
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "cb2173071482929f61b74b598e0fd044539445821f5799b82c0800276bfafd82",
+    "files": 31
+  },
+  "node": "v26.8.1",
+  "artifacts": {
+    "src/accountability.mjs": {
+      "bytes": 18855,
+      "sha256": "f9053a87586e8c7b5b57d16949f5f2224b4c8bc4d3a0d9856f7d0550efa13412"
+    },
+    "src/act-observations.mjs": {
+      "bytes": 4149,
+      "sha256": "0f41aa2d998924ced3d8c2dfd24b2c8c7d08d0f3c1daf45168d1c5882b249c62"
+    },
+    "test/act-relay.test.mjs": {
+      "bytes": 11878,
+      "sha256": "e4b5d90cca036b36b947e2ae198c3e7d42ad7e640aba76348d3434c1bb1eb66f"
+    },
+    "examples/act-relay.mjs": {
+      "bytes": 3517,
+      "sha256": "31cf4728dfa158deecc35eb5c108121e5bcd9110c945d47751aa06677783344a"
+    },
+    "studies/2026-10-24-act-relay/software-example.json": {
+      "bytes": 11050,
+      "sha256": "f18c69a26c4fab40e1c95c6b6bb33bc7b77617c569666d5a414f393618dd5177"
+    }
+  },
+  "checks": {
+    "focused": { "passed": 27, "failed": 0, "skipped": 0, "command": "node --test test/act-relay.test.mjs test/accountability.test.mjs test/act-observations.test.mjs" },
+    "suite": { "passed": 350, "failed": 0, "skipped": 0, "command": "npm test" },
+    "context": { "errors": 0, "warnings": 27, "command": "validate-context.mjs /home/llb/Repos/facety" },
+    "dag": {
+      "modules": 31,
+      "edges": 76,
+      "acyclic": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "whitespace": "git diff --check: passed",
+    "legacy": "Ten pre-change software walkthrough canonical digests excluding only top-level provenance fixed in test before source edit; all match. Not sealed research recapture.",
+    "preservation": "Old scheduler/config/model/identity-observation/random/dispute/stake modules and prior studies unchanged; old source-gated guards not overridden.",
+    "example": "Software-only example executed; actual funded native refs, supplied extreme rates/facts, no new formal act case/stake/consequences."
+  },
+  "retainedCorrections": [
+    "DAG invocation initially failed on unsupported --cwd; corrected --root with --json validated successfully.",
+    "Added no-pending-route fixture initially dereferenced an absent route row; fixed assertion to preserve missingness, no implementation change."
+  ],
+  "scope": "Only opt-in Self-ID pre-case relay. Existing actor budgets/capacities remain explicit reference accounting; generator and act-observation-keyed-v1 unchanged.",
+  "assurance": "No independent review, calibrated rates/attention, verified independence, act authentication, case-frequency evidence, mechanism confirmation or protocol remedy selection. Court/remedy/willingness/learning remain open."
+}

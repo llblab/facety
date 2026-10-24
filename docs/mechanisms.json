@@ -129,9 +129,9 @@
       "question": "Can open discovery reach qualified authority?",
       "initiatingChange": "A member or external observer obtains a fallible public-event signal.",
       "path": [
-        "Costed observation→package with observation/source IDs→explicit route.",
+        "Costed observation→package with observation/source IDs→explicit route; opt-in act-defect mode binds keyed observations to a native Self-ID.",
         "A sponsor can refuse/conflict/miss notice; independent supplied review precedes the existing strict XP/stake gate.",
-        "A funded one-step reference case→supplied verdict→shared stake/XP/liability enforcement."
+        "Identity-claim mode: funded one-step reference case→supplied verdict→shared stake/XP/liability enforcement. Act-defect mode: eligibility checked, but no case/stake or identity sanctions until act-specific contracts exist."
       ],
       "feedback": {
         "implemented": "Native consequences can change the next formal-access decision (see M07/M09).",
@@ -145,6 +145,8 @@
         "src/accountability.mjs#EvidenceRelay",
         "src/act-observations.mjs#actObservationEnvironment",
         "test/act-observations.test.mjs",
+        "test/act-relay.test.mjs",
+        "examples/act-relay.mjs",
         "src/disputes.mjs",
         "examples/causal-relay.mjs"
       ],
@@ -163,7 +165,7 @@
       "intervention": "Matched-budget member, external-unrouted and external-relay arms; no resource addition. Multi-sponsor/compensation effects remain deferred.",
       "alternative": "Extra workforce, oracle review, source allegiance or copies counted as corroboration.",
       "falsifier": "At equal resources relay adds no access, overloads reviewers, or causes unacceptable genuine harm.",
-      "status": "Executed relay diagnostic reference and small exploration; separate D47 per-act fact/keyed-signal primitive now software-tested, not integrated discovery/relay/act adjudication or mechanism confirmation.",
+      "status": "Executed historical identity-relay diagnostic reference and small exploration; D47 fact/keyed-signal environment plus funded Self-ID act-defect observation/package/sponsor pre-case adapter now software-tested. No endogenous contact/willingness, act-level case/remedy or new research/mechanism confirmation.",
       "diagram": "M04 [A work/capacity] observation → package → review --[R XP/stake]--> case → sanctions --[? investigation]--x discovery"
     },
     {

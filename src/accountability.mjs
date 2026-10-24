@@ -1,6 +1,7 @@
 // Owns: A bounded, input-driven evidence/sponsor reference and optional causal journal; excludes truth and calibration.
 import { ProtocolRejection } from './model.mjs';
 import { DisputeStakes } from './dispute-stakes.mjs';
+import { ACT_OBSERVATION_RANDOMNESS } from './act-observations.mjs';
 import { challengeAccess, settleOneStepPosition, enforceIdentityVerdict, preflightIdentityVerdict } from './disputes.mjs';
 
 function integer(value, label) {
@@ -70,6 +71,7 @@ export class EvidenceRelay {
   #model;
   #book;
   #rules;
+  #claim;
   #actors = new Map();
   #observations = new Map();
   #packages = new Map();
@@ -78,7 +80,9 @@ export class EvidenceRelay {
   #refs = new Map();
   #sequence = 0;
   #journal;
-  constructor(model, { actors, rules, traceLimit = 0, journal = null }) {
+  constructor(model, { actors, rules, traceLimit = 0, journal = null, claim = 'false-identity' }) {
+    if (!['false-identity', 'act-defect'].includes(claim)) throw new Error('unsupported relay claim');
+    this.#claim = claim;
     if (!rules?.enabled || rules.procedure !== 'one-step') throw new Error('relay reference requires normalized enabled one-step rules');
     this.#model = model;
     this.#rules = Object.freeze(structuredClone(rules));
@@ -118,15 +122,40 @@ export class EvidenceRelay {
     if (typeof result.value === 'string' && !this.#refs.has(result.value)) this.#refs.set(result.value, result.traceRef);
     return result;
   }
-  observe(actor, selfId, input) {
-    const observation = signal(input);
+  #acquireAct(actor, selfId, environment, request) {
+    if (this.#claim !== 'act-defect') throw new Error('act observation requires an act-defect relay');
+    if (!request || Object.keys(request).sort().join() !== 'opportunity,role,sourceGroup'
+      || !['ordinary', 'guarantor'].includes(request.role) || typeof request.opportunity !== 'string' || !request.opportunity.length) throw new TypeError('act observation requires role, opportunity and sourceGroup only');
+    const { role, opportunity, sourceGroup } = request;
+    signal({ suspicious: false, sourceGroup });
+    const native = this.#model.selfId(selfId);
+    if (role === 'guarantor' && !native.guarantors.includes(this.#actor(actor).subject)) throw new Error('guarantor observation requires a recorded guarantor');
+    const reference = environment?.acts?.find(row => row.id === selfId);
+    if (typeof environment?.observe !== 'function' || environment?.randomness?.observations !== ACT_OBSERVATION_RANDOMNESS.observations
+      || !reference || reference.kind !== 'self-id' || reference.subject !== native.subject || reference.recordedAt !== native.recordedAt) throw new Error('act observation requires a matching native Self-ID reference');
+    const atHour = this.#model.now;
+    return { acquire: () => signal({ ...environment.observe({ act: selfId, observer: actor, role, atHour, opportunity }), sourceGroup }),
+      context: { role, opportunity, observationPolicy: ACT_OBSERVATION_RANDOMNESS.observations } };
+  }
+  #observe(actor, selfId, visible, acquire, context = {}) {
     const act = this.#model.selfId(selfId);
     const event = this.#model.events().findIndex(row => row.type === 'self-id-created' && row.selfId === selfId);
-    return this.#act(actor, 'observe', act.subject, { selfId, ...observation }, ['protocol:' + event], ['M04'], 1, () => {
+    return this.#act(actor, 'observe', act.subject, visible, ['protocol:' + event], ['M04'], 1, () => {
+      const observation = acquire();
+      Object.assign(visible, observation);
       const id = 'observation:' + this.#sequence++;
-      this.#observations.set(id, { id, actor, selfId, subject: act.subject, atHour: this.#model.now, ...observation });
-      return { ok: true, value: id, basis: 'supplied fallible public-event observation; no truth label' };
+      this.#observations.set(id, { id, actor, selfId, subject: act.subject, atHour: this.#model.now, ...context, ...observation });
+      return { ok: true, value: id, basis: this.#claim === 'false-identity' ? 'supplied fallible public-event observation; no truth label'
+        : 'funded native act reference and fallible evidence; no validity verdict' };
     });
+  }
+  observe(actor, selfId, input) {
+    const observation = signal(input);
+    return this.#observe(actor, selfId, { selfId, ...observation }, () => observation);
+  }
+  observeAct(actor, selfId, environment, request) {
+    const { acquire, context } = this.#acquireAct(actor, selfId, environment, request);
+    return this.#observe(actor, selfId, { selfId, sourceGroup: request.sourceGroup, suspicious: null, ...context }, acquire, context);
   }
   package(actor, observationIds) {
     if (!Array.isArray(observationIds) || !observationIds.length || observationIds.length > 32) throw new Error('package needs 1..32 recorded observations');
@@ -139,7 +168,7 @@ export class EvidenceRelay {
       if (this.#packageKeys.has(key)) return { ok: false, reason: 'duplicate-package', value: this.#packageKeys.get(key) };
       const id = 'package:' + this.#sequence++;
       this.#packages.set(id, { id, origin: actor, selfId: observations[0].selfId, subject: observations[0].subject,
-        claim: 'false-identity', observationIds: ids, sourceGroups: [...new Set(observations.map(value => value.sourceGroup))],
+        claim: this.#claim, observationIds: ids, sourceGroups: [...new Set(observations.map(value => value.sourceGroup))],
         createdAt: this.#model.now, status: 'open', routes: [] });
       this.#packageKeys.set(key, id);
       return { ok: true, value: id, basis: 'event-linked allegation, not a correctness certificate' };
@@ -163,6 +192,16 @@ export class EvidenceRelay {
     const { available = true, conflicted = false } = options;
     if (typeof available !== 'boolean' || typeof conflicted !== 'boolean') throw new TypeError('availability/conflict must be declared booleans');
     const observation = signal(input);
+    return this.#review(sponsor, packageId, available, conflicted, observation, () => observation);
+  }
+  reviewAct(sponsor, packageId, environment, request, options = {}) {
+    if (!options || Object.keys(options).some(key => !['available', 'conflicted'].includes(key))) throw new TypeError('unknown review option');
+    const { available = true, conflicted = false } = options;
+    if (typeof available !== 'boolean' || typeof conflicted !== 'boolean') throw new TypeError('availability/conflict must be declared booleans');
+    const { acquire, context } = this.#acquireAct(sponsor, this.#package(packageId).selfId, environment, request);
+    return this.#review(sponsor, packageId, available, conflicted, null, acquire, context);
+  }
+  #review(sponsor, packageId, available, conflicted, supplied, acquire, context = {}) {
     const item = this.#package(packageId);
     const actor = this.#actor(sponsor);
     const route = item.routes.find(route => route.sponsor === sponsor);
@@ -170,18 +209,22 @@ export class EvidenceRelay {
     const blocked = !route || route.status !== 'pending' || item.status !== 'open' ? 'no-pending-route'
       : !available ? 'missed-notification-or-unavailable' : conflicted ? 'disclosed-conflict'
       : (actor.reviews.get(day) ?? 0) >= actor.reviewCapacity ? 'review-capacity-exhausted' : null;
-    return this.#act(sponsor, 'review', item.subject, { packageId, observation: blocked ? null : observation, available, conflicted, dailyCapacity: actor.reviewCapacity },
+    const visible = { packageId, observation: blocked ? null : supplied, available, conflicted, dailyCapacity: actor.reviewCapacity, ...context };
+    return this.#act(sponsor, 'review', item.subject, visible,
       [this.#refs.get(packageId), ...(route ? [this.#refs.get(route.id)] : [])], ['M04', 'M09'], blocked ? 0 : 1, () => {
       if (blocked) {
         if (blocked === 'disclosed-conflict') route.status = 'refused';
         return { ok: false, reason: blocked };
       }
+      const observation = acquire();
+      visible.observation = observation;
       actor.reviews.set(day, (actor.reviews.get(day) ?? 0) + 1);
-      route.review = { id: 'review:' + route.id, ...observation, atHour: this.#model.now };
+      route.review = { id: 'review:' + route.id, ...context, ...observation, atHour: this.#model.now };
       const independent = !item.sourceGroups.includes(observation.sourceGroup);
       route.status = observation.suspicious && independent ? 'reviewed' : 'refused';
       return { ok: route.status === 'reviewed', value: route.review.id, reason: !independent ? 'review-source-not-independent' : !observation.suspicious ? 'review-not-suspicious' : null,
-        basis: 'independent supplied review signal, never origin allegiance or an evaluator correctness flag' };
+        basis: this.#claim === 'false-identity' ? 'independent supplied review signal, never origin allegiance or an evaluator correctness flag'
+          : 'fallible act review; distinct declared source tags do not certify independence' };
     });
   }
   sponsor(sponsor, packageId) {
@@ -193,6 +236,8 @@ export class EvidenceRelay {
       if ([...this.#cases.values()].some(record => record.subject === item.subject && record.resolvedAt === null)) return { ok: false, reason: 'subject-already-under-dispute' };
       const access = challengeAccess(this.#model, actor.subject, item.subject, this.#rules.stake);
       if (!access.allowed) return { ok: false, reason: access.reason, preconditions: access.preconditions };
+      if (item.claim === 'act-defect') return { ok: false, reason: 'act-defect-adjudication-unimplemented', preconditions: access.preconditions,
+        basis: 'XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened' };
       const id = 'relay-case:' + this.#sequence++;
       this.#book.open(id, actor.subject, this.#rules.stake);
       this.#cases.set(id, { id, packageId, challenger: actor.subject, subject: item.subject, openedAt: this.#model.now, resolvedAt: null, upheld: null });
@@ -201,6 +246,7 @@ export class EvidenceRelay {
     });
   }
   resolve(caseId, upheld) {
+    if (this.#claim === 'act-defect') throw new Error('act-defect adjudication cannot use identity verdict enforcement');
     if (typeof upheld !== 'boolean') throw new TypeError('resolution requires a supplied reference verdict, not truth');
     const record = this.#cases.get(caseId);
     if (!record) throw new Error('unknown relay case');

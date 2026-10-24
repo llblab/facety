@@ -1,0 +1,432 @@
+{
+  "schema": "facety-act-relay-software-example/v1",
+  "level": "software-interface-example-not-research",
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "cb2173071482929f61b74b598e0fd044539445821f5799b82c0800276bfafd82",
+    "files": 31
+  },
+  "assumptions": [
+    "Native funded admission/acts, but legacy reference XP/custody, not D42 migration; prefix setup work remains unpriced.",
+    "Validity is a supplied external act fact, not a selected requirement, media authentication or court conclusion.",
+    "Extreme all-one rates are software boundary witnesses, not a detector recommendation, tenfold calibration or case-frequency model.",
+    "Budgets/capacities use existing illustrative non-refilling relay work accounting, not calibrated human attention or D46 scheduler replacement.",
+    "Distinct sourceGroup tags are declared scenario provenance only, not verified independent evidence or humans.",
+    "Eligible act-defect sponsorship deliberately opens no case/stake and cannot invoke identity sanctions."
+  ],
+  "evaluatorInputs": {
+    "facts": {
+      "subjects": [
+        {
+          "id": "Mira",
+          "genuine": true,
+          "behaviorProfile": "good-faith"
+        }
+      ],
+      "acts": [
+        {
+          "id": "self-id:15",
+          "subject": "Mira",
+          "kind": "self-id",
+          "recordedAt": 48,
+          "valid": false
+        }
+      ]
+    },
+    "options": {
+      "seed": "act-relay-example-software-only",
+      "rates": {
+        "self-id": {
+          "ordinary": {
+            "valid": 1,
+            "invalid": 1
+          },
+          "guarantor": {
+            "valid": 1,
+            "invalid": 1
+          }
+        },
+        "invitation": {
+          "ordinary": {
+            "valid": 1,
+            "invalid": 1
+          },
+          "guarantor": {
+            "valid": 1,
+            "invalid": 1
+          }
+        },
+        "guarantee": {
+          "ordinary": {
+            "valid": 1,
+            "invalid": 1
+          },
+          "guarantor": {
+            "valid": 1,
+            "invalid": 1
+          }
+        }
+      }
+    }
+  },
+  "observationPolicy": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "observations": "act-observation-keyed-v1",
+    "trialUnit": "observer-act-hour-opportunity",
+    "dependence": "keyed-per-declared-opportunity"
+  },
+  "sourceAccess": {
+    "allowed": false,
+    "reason": "challenge XP gate",
+    "preconditions": {
+      "challengerStatus": "accepted",
+      "targetStatus": "accepted",
+      "challengerXp": 3,
+      "targetXp": 3,
+      "liquidFacy": 1,
+      "stake": 1
+    }
+  },
+  "observation": {
+    "ok": true,
+    "value": "observation:0",
+    "basis": "funded native act reference and fallible evidence; no validity verdict",
+    "work": 1,
+    "traceRef": "decision:0"
+  },
+  "evidence": {
+    "ok": true,
+    "value": "package:1",
+    "basis": "event-linked allegation, not a correctness certificate",
+    "work": 1,
+    "traceRef": "decision:1"
+  },
+  "route": {
+    "ok": true,
+    "value": "route:[\"package:1\",\"Bela\"]",
+    "basis": "explicit routing choice; no automatic fallback or payment",
+    "work": 1,
+    "traceRef": "decision:2"
+  },
+  "review": {
+    "ok": true,
+    "value": "review:route:[\"package:1\",\"Bela\"]",
+    "reason": null,
+    "basis": "fallible act review; distinct declared source tags do not certify independence",
+    "work": 1,
+    "traceRef": "decision:3"
+  },
+  "attemptedEntry": {
+    "ok": false,
+    "reason": "act-defect-adjudication-unimplemented",
+    "preconditions": {
+      "challengerStatus": "accepted",
+      "targetStatus": "accepted",
+      "challengerXp": 7,
+      "targetXp": 3,
+      "liquidFacy": 2,
+      "stake": 1
+    },
+    "basis": "XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened",
+    "work": 1,
+    "traceRef": "decision:4"
+  },
+  "relay": {
+    "actors": [
+      {
+        "id": "Aster",
+        "subject": "Aster",
+        "budget": 12,
+        "reviewCapacity": 2,
+        "spent": 3,
+        "denied": 0,
+        "reviews": []
+      },
+      {
+        "id": "Bela",
+        "subject": "Bela",
+        "budget": 12,
+        "reviewCapacity": 2,
+        "spent": 2,
+        "denied": 0,
+        "reviews": [
+          [
+            3,
+            1
+          ]
+        ]
+      }
+    ],
+    "observations": [
+      {
+        "id": "observation:0",
+        "actor": "Aster",
+        "selfId": "self-id:15",
+        "subject": "Mira",
+        "atHour": 72,
+        "role": "guarantor",
+        "opportunity": "source-look",
+        "observationPolicy": "act-observation-keyed-v1",
+        "suspicious": true,
+        "sourceGroup": "public-media"
+      }
+    ],
+    "packages": [
+      {
+        "id": "package:1",
+        "origin": "Aster",
+        "selfId": "self-id:15",
+        "subject": "Mira",
+        "claim": "act-defect",
+        "observationIds": [
+          "observation:0"
+        ],
+        "sourceGroups": [
+          "public-media"
+        ],
+        "createdAt": 72,
+        "status": "open",
+        "routes": [
+          {
+            "id": "route:[\"package:1\",\"Bela\"]",
+            "sponsor": "Bela",
+            "atHour": 72,
+            "status": "reviewed",
+            "review": {
+              "id": "review:route:[\"package:1\",\"Bela\"]",
+              "role": "guarantor",
+              "opportunity": "sponsor-look",
+              "observationPolicy": "act-observation-keyed-v1",
+              "suspicious": true,
+              "sourceGroup": "declared-other-source",
+              "atHour": 72
+            }
+          }
+        ]
+      }
+    ],
+    "cases": [],
+    "stakes": {
+      "backing": "reserved",
+      "cases": 0,
+      "openCases": 0,
+      "nominalCommitted": 0,
+      "pendingNominal": 0,
+      "nominalLosing": 0,
+      "transferred": 0,
+      "burned": 0,
+      "released": 0,
+      "unpaid": 0
+    }
+  },
+  "trace": {
+    "limit": 100,
+    "omitted": 0,
+    "records": [
+      {
+        "id": "decision:0",
+        "startedAt": 72,
+        "atHour": 72,
+        "actor": "Aster",
+        "action": "observe",
+        "target": "Mira",
+        "visible": {
+          "selfId": "self-id:15",
+          "sourceGroup": "public-media",
+          "suspicious": true,
+          "role": "guarantor",
+          "opportunity": "source-look",
+          "observationPolicy": "act-observation-keyed-v1"
+        },
+        "preconditions": {},
+        "basis": "funded native act reference and fallible evidence; no validity verdict",
+        "outcome": {
+          "ok": true,
+          "reason": null
+        },
+        "work": 1,
+        "error": null,
+        "changes": {
+          "subjects": [],
+          "ledger": {},
+          "council": {
+            "entered": [],
+            "left": []
+          }
+        },
+        "supports": [
+          "protocol:29"
+        ],
+        "mechanisms": [
+          "M04"
+        ],
+        "protocolEvents": []
+      },
+      {
+        "id": "decision:1",
+        "startedAt": 72,
+        "atHour": 72,
+        "actor": "Aster",
+        "action": "package",
+        "target": [
+          "observation:0"
+        ],
+        "visible": {
+          "observationIds": [
+            "observation:0"
+          ]
+        },
+        "preconditions": {},
+        "basis": "event-linked allegation, not a correctness certificate",
+        "outcome": {
+          "ok": true,
+          "reason": null
+        },
+        "work": 1,
+        "error": null,
+        "changes": {
+          "subjects": [],
+          "ledger": {},
+          "council": {
+            "entered": [],
+            "left": []
+          }
+        },
+        "supports": [
+          "decision:0"
+        ],
+        "mechanisms": [
+          "M04"
+        ],
+        "protocolEvents": []
+      },
+      {
+        "id": "decision:2",
+        "startedAt": 72,
+        "atHour": 72,
+        "actor": "Aster",
+        "action": "route",
+        "target": "Bela",
+        "visible": {
+          "packageId": "package:1",
+          "sponsor": "Bela"
+        },
+        "preconditions": {},
+        "basis": "explicit routing choice; no automatic fallback or payment",
+        "outcome": {
+          "ok": true,
+          "reason": null
+        },
+        "work": 1,
+        "error": null,
+        "changes": {
+          "subjects": [],
+          "ledger": {},
+          "council": {
+            "entered": [],
+            "left": []
+          }
+        },
+        "supports": [
+          "decision:1"
+        ],
+        "mechanisms": [
+          "M04"
+        ],
+        "protocolEvents": []
+      },
+      {
+        "id": "decision:3",
+        "startedAt": 72,
+        "atHour": 72,
+        "actor": "Bela",
+        "action": "review",
+        "target": "Mira",
+        "visible": {
+          "packageId": "package:1",
+          "observation": {
+            "suspicious": true,
+            "sourceGroup": "declared-other-source"
+          },
+          "available": true,
+          "conflicted": false,
+          "dailyCapacity": 2,
+          "role": "guarantor",
+          "opportunity": "sponsor-look",
+          "observationPolicy": "act-observation-keyed-v1"
+        },
+        "preconditions": {},
+        "basis": "fallible act review; distinct declared source tags do not certify independence",
+        "outcome": {
+          "ok": true,
+          "reason": null
+        },
+        "work": 1,
+        "error": null,
+        "changes": {
+          "subjects": [],
+          "ledger": {},
+          "council": {
+            "entered": [],
+            "left": []
+          }
+        },
+        "supports": [
+          "decision:1",
+          "decision:2"
+        ],
+        "mechanisms": [
+          "M04",
+          "M09"
+        ],
+        "protocolEvents": []
+      },
+      {
+        "id": "decision:4",
+        "startedAt": 72,
+        "atHour": 72,
+        "actor": "Bela",
+        "action": "formal-challenge",
+        "target": "Mira",
+        "visible": {
+          "packageId": "package:1"
+        },
+        "preconditions": {
+          "challengerStatus": "accepted",
+          "targetStatus": "accepted",
+          "challengerXp": 7,
+          "targetXp": 3,
+          "liquidFacy": 2,
+          "stake": 1
+        },
+        "basis": "XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened",
+        "outcome": {
+          "ok": false,
+          "reason": "act-defect-adjudication-unimplemented"
+        },
+        "work": 1,
+        "error": null,
+        "changes": {
+          "subjects": [],
+          "ledger": {},
+          "council": {
+            "entered": [],
+            "left": []
+          }
+        },
+        "supports": [
+          "decision:1",
+          "decision:3"
+        ],
+        "mechanisms": [
+          "M04",
+          "M07",
+          "M09"
+        ],
+        "protocolEvents": []
+      }
+    ],
+    "interpretation": "Execution ancestry and mechanism tags are explanations, not independent causal evidence."
+  },
+  "protocolStateUnchanged": true
+}
