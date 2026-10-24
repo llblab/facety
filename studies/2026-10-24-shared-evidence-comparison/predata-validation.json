@@ -1,0 +1,68 @@
+{
+  "schema": "facety-shared-evidence-predata-validation/v1",
+  "checkpoint": "fixed-method-preparation-before-research-data",
+  "baseCheckpoint": "fbc8a43",
+  "source": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "50a20767e9e4829bdb1ba4aaf8b4fda0388faf5d22c70ded04a8d266b87dd3c3",
+    "files": 30
+  },
+  "node": "v26.8.1",
+  "designDigest": "2799ee80faf11c6c368440cd3865b14cf0e48eb53041eb2d659015002e71aa28",
+  "methodDigests": {
+    "studies/2026-10-24-shared-evidence-comparison/run.mjs": "e199312b6f8037789abf415ebc540350baa2ebdb380dcec495ba5ccbf05ea3bc",
+    "studies/2026-10-24-shared-evidence-comparison/contract.mjs": "70b2a22f15e5a7afdc2622e8c54c704416d303483e9a139f742b61be3dd81c0c",
+    "studies/2026-10-24-shared-evidence-comparison/analyze.mjs": "27777eca1cc95ed4181b3de3f7afa1b39fa74e692a332e55a0597eeff3413978",
+    "studies/2026-10-24-shared-evidence-comparison/design.json": "3e2c30909cfd08c191037dd9f213358b8cf8706dd491a1993c4af8536e1684a7",
+    "studies/2026-10-24-attended-comparison/contract.mjs": "3a0968caf4a632f45b4a1a5c6269b92e6bfd4a10b73333a6f26f35158e3df588",
+    "studies/2026-10-24-attended-comparison/analyze.mjs": "f02604c5f4d27917ca3f50513658bb72de02602004030f2ce5a939d437ee6271",
+    "studies/2026-10-24-attended-comparison/design.json": "db1b51cad741bd43de168ea0ebc1ea615e4c72565a00b1bce0eebaeedecf16d7"
+  },
+  "outputsVerifiedAbsent": [
+    "attempt-0.json",
+    "block-0.json",
+    "failed-0.json",
+    "attempt-1.json",
+    "block-1.json",
+    "failed-1.json",
+    "attempt-2.json",
+    "block-2.json",
+    "failed-2.json",
+    "attempt-3.json",
+    "block-3.json",
+    "failed-3.json",
+    "report.json"
+  ],
+  "planned": {
+    "labels": 4,
+    "blocks": 4,
+    "casesPerBlock": 16,
+    "cases": 64,
+    "days": 7,
+    "stepHours": 4,
+    "timing": "first-attended"
+  },
+  "execution": {
+    "researchLabelsExecuted": 0,
+    "researchAttempts": 0,
+    "researchBlocks": 0,
+    "reportWritten": false,
+    "softwareOnlyZeroDaySmokes": 4,
+    "softwareSeed": "shared-study-schema-software",
+    "softwareInvitations": 0
+  },
+  "validation": {
+    "focused": "node --test test/shared-evidence-study.test.mjs: 5 passed",
+    "suite": "npm test: 320 passed / 0 failed / 0 skipped",
+    "nativeAndHistoricalMethods": "git diff --quiet fbc8a43: passed; no native/historical method/data changes",
+    "dag": "30 modules / 74 edges / acyclic / 0 errors and warnings reused from unchanged fbc8a43 source",
+    "whitespace": "git diff --check: passed",
+    "context": "validate-context.mjs: 0 errors / 27 unchanged warnings"
+  },
+  "assurance": [
+    "Author synthetic/interface checks only; not scientific outcome data, input authentication or independent reviewer acceptance.",
+    "All seven new/imported method/config byte identities must be committed unchanged before actual capture.",
+    "No method registration/mechanism confirmation, default/protocol selection, human calibration or D33/D34/D42 migration."
+  ],
+  "next": "After this checkpoint is committed/pushed, capture four fixed blocks once at one method commit; preserve any existing/failed/orphan attempt rather than retry."
+}
