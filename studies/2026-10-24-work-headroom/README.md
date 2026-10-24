@@ -74,7 +74,38 @@ Baseline pending deadlines are **172/180/none/184 h**. Active independent 261 re
 
 [`report.json`](report.json) is the original fixed-method output. [`audit.mjs`](audit.mjs)/[`audit.json`](audit.json) are separately labeled **post-data author projections**, not a changed primary method, per-invitation work-scarcity replay, contemporaneous denial receipts, input authentication or independent acceptance. They retain all 96 work/admission/genuine-veto/pending records and 64 lower-cap/reference equality/ledger comparisons.
 
-[`manifest.json`](manifest.json) binds **19** method/dependency/pre-data/attempt/block/report/audit byte identities; [`validation.json`](validation.json) records actual closure checks. The six study test families reproduce primary/author outputs and all attempt/byte bindings without recapture. Source, seven methods and all historical packets stay unchanged. This cohort is closed: **no label extension or rerun**. D44's next narrow work is retained-only temporal work-denial/window/allocation attribution; F53's scarcity-rejecting decoder is not that implementation. Sparse/compromised support, human capacity, calibrated evidence and real private costs remain separate gates.
+[`manifest.json`](manifest.json) binds **19** method/dependency/pre-data/attempt/block/report/audit byte identities; [`validation.json`](validation.json) records actual closure checks. The six study test families reproduce primary/author outputs and all attempt/byte bindings without recapture. Source, seven methods and all historical packets stay unchanged. This cohort is closed: **no label extension or rerun**. F55 below completes the retained-only temporal work-denial/window/allocation attribution with a separate scarcity decoder; F53's scarcity-rejecting method is unchanged. Sparse/compromised support, human capacity, calibrated evidence and real private costs remain separate gates.
+
+## Window/work reconstruction (F55 diagnostic)
+
+The separate [`window-audit.mjs`](window-audit.mjs)/[`window-audit.json`](window-audit.json) reconstruct **all 96** retained cases against nine pinned source kernels and the original 19-artifact manifest. Native stage/evaluator vectors and every supported paid/denied honest work channel reconcile. This is post-data author/source reconstruction, not a new world, changed primary method, contemporaneous ticket receipts, authentic inputs or independent confirmation.
+
+### What is inferred and what is measured
+
+Within one guardian phase, unit-cost paid inspections must form a prefix: there is one non-refilling honest pool, no interleaved other honest work and no zero/variable prices. A denied response can only follow the final paid positive inspection. The decoder conditions on journal cancellation/stop witnesses, reconstructs historical activation/invitation order, consumed daily pair trials and key-implied **paid** signals, then validates funding against the native denied-stage and action counts. It never supplies a signal to an unfunded look.
+
+End-of-guardian spend is tick-end cumulative honest work **minus successful honest conversions**, the only paid honest channel after that phase in this fixed script. The decoder requires conversion rejection count zero and reconciles all conversion events/attempts. Before-guardian paid Self-ID/accepted proposals/confirmations come from the journal; rejected proposal work is the nonnegative phase residual, checked against the native rejected total—not an invented actor, rejection reason or exact private choice. Bootstrap costs are removed from hour-zero maintenance. Daily/tick denial streams are not blindly summed.
+
+Unsupported weights/channels, failed conversions, verification, profiles, honest recruitment, transfers, exits/relinks/invalidation, altered phase/snapshot/role history or censoring reject. This is deliberately **not a general economic/duty replay**. Five test families include **4096 independent forward-ticket partitions**, all 96 native reconciliations, source-window/horizon witnesses, unsupported/corrupt-input rejection and sealed report/code/test byte reproduction.
+
+### Four tight-independent false admissions
+
+All four admitted false invitations at honest cap 261 have **nine scripted supporters at creation**, **45 pair-tick opportunities** and **nine first-attended daily trials each**. **All 36 inspection slots are budget-denied; no paid look or negative signal exists for these targets.** The **180 total pair-tick opportunities** include consumed-trial revisits, not additional daily appointments or independently negligent people. Each invitation's first trials consume that day even when no ticket can be bought.
+
+- Seed 02 `invitation:231`, created **120 h**, admitted **144 h**: at 124 h, honest spend is 259 before actor work; **two paid Self-IDs** exhaust the last two units before guardian work. Its nine inspection slots at 124 h are denied. Creation was after guardian work at 120 h; there was no omitted same-tick review. Its new false subject later emits at 164 h and leaves that act unspent.
+- Seed 03 `invitation:243`/`244`, created **140 h**, admitted **164 h**: the pool was already exhausted at **116 h** (one paid Self-ID takes 259→260, then one paid conversion reaches 261). Each invitation receives nine denied slots at 144 h, not a fallible negative observation.
+- Seed 04 `invitation:241`, created **140 h**, admitted **164 h**: **four paid Self-IDs** exhaust the 257→261 pool before guardian work at **100 h**; its nine 144-hour slots are denied.
+- Seed 01 has no admitted false target. Its pool reaches 261 at **116 h** after one paid Self-ID (257→258) and three conversions; later denied conversions do not spend extra units. The **148→172 h** invitation has no funded pre-horizon look but is still pending at 168 h, not a completed failure.
+
+These phases account for where the supplied shared work went; they do not establish that reserving/reordering work would improve welfare or implement such a policy. Self-ID/conversion work is not a fine, recovered attack cost or intrinsically useless work.
+
+### Genuine witnesses and measurement clocks
+
+All six overlapping genuine-veto case-records also reconstruct as **paid positive looks and paid legal responses**, each with nine scripted supporters: seed 03/n7 at 64 h across all budgets, seed 03/n10 at 144 h in 324/reference, and seed 01/n8 at 152 h in reference. These are scenario-genuine classification harms, not adjudicated guarantor misconduct or six independent errors. The reference seed-01 control invitation still has deadline 172 h: no horizon-complete admission loss for it is inferred.
+
+**Exhaustion is not the first denial.** Six case-records differ: fabricated seed-01 324/independent/observe exhausts at 132 h (conversion), first denial 136; fabricated seed-02 261/shared/veto exhausts at 96 h (conversion), first denial 100; genuine seed-04 324 in either law/effect arm exhausts at 116 h (pre-guardian), first denial 124. Repeated budget/law arms are not independent delay estimates. A pool can be empty before the next attempted call; first denied sample is not an exhaustion timestamp.
+
+The separate [manifest](window-audit-manifest.json) binds the new decoder/report/test only; [validation](window-audit-validation.json) records actual checks. Original F54/F53 methods, reports, manifests, attempts, native source and randomness layout remain unchanged. This closes the specified retained-only cohort. Further sparse/compromised support, calibrated/adversarial evidence, real human/private cost or a changed work-allocation strategy needs its own question/assumption contract; none is silently chosen here.
 
 ## Source, dependency and failure boundary
 

@@ -1,0 +1,19 @@
+{
+  "schema": "facety-f54-window-audit-manifest/v1",
+  "level": "postdata-author-diagnostic-not-confirmation",
+  "primaryManifestSha256": "b051f5dea1299026b2a1a4f6db7a6f3e9b28c325841f48ceda1c62eae868e847",
+  "artifacts": {
+    "studies/2026-10-24-work-headroom/window-audit.mjs": {
+      "bytes": 22172,
+      "sha256": "a0dca4c421de7e4249b732039509b7deea3b578ad8e479c3bb4c750385146c30"
+    },
+    "studies/2026-10-24-work-headroom/window-audit.json": {
+      "bytes": 3722408,
+      "sha256": "0a5103be7ea13f776be6e2034fb95a09ca54dba363f18ec1f572f34779d307a6"
+    },
+    "test/work-windows.test.mjs": {
+      "bytes": 8518,
+      "sha256": "6db245e297470826f7a243f229a252868c222bd51c9cb4722cc8416f9be6fcb6"
+    }
+  }
+}

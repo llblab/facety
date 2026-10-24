@@ -1,0 +1,79 @@
+{
+  "schema": "facety-f54-window-audit-validation/v1",
+  "level": "postdata-author-diagnostic-not-confirmation",
+  "primaryManifestSha256": "b051f5dea1299026b2a1a4f6db7a6f3e9b28c325841f48ceda1c62eae868e847",
+  "separateManifestSha256": "dcd2f4a89b39d6b192202e28c26b3cc5be35c271b0288e08150b43dcd81eb805",
+  "reportSha256": "0a5103be7ea13f776be6e2034fb95a09ca54dba363f18ec1f572f34779d307a6",
+  "kernels": {
+    "src/experiment.mjs": "37d41881cb85b64b2270599b09bba1a07d2a9edf7167777b142df26b5a4f1dfe",
+    "src/experiment-config.mjs": "3d46fac681bfef159e10c38342dd013c69778d97fc427e271e242e45beb0fec3",
+    "src/random.mjs": "bb73976902a0e4954b61e7f09c1ac01d8187ec9d092f0ebd2e181f0257c0f7d1",
+    "src/activity-schedule.mjs": "59a5a128f14a96cea22d59b45efc309526e72bdbdf1c241728dc8c920af101ec",
+    "src/identity-observations.mjs": "fa900922d2490e01bc8b4618ee9df57e5850be8b893ebd11d2c3d6da2b8dcef0",
+    "src/model.mjs": "4f2487a09048165de9c59b4c96ce47f302149f1981d0e25fd9a6cdd49a7717dc",
+    "src/graph.mjs": "98f85af17b154428108fb8063df9b1a31a6639e446f41afdb7a305d3aac56296",
+    "src/effort.mjs": "852c8e6a797d16f4acd1ebf1cea4c83860e00814a3958f2fc44ab07233379e3c",
+    "src/observables.mjs": "61f90f61ab00b196bc8f1c739c959509765fb7b1dc6047643145c1e566a2113e"
+  },
+  "cases": 96,
+  "reconstructedStageEvaluatorVectors": 96,
+  "reconstructedHonestActionWorkCases": 96,
+  "forwardFundingPartitions": 4096,
+  "newResearchModelCalls": 0,
+  "newResearchLabels": 0,
+  "tightIndependentAccepted": [
+    {
+      "seed": "d44-work-headroom-02",
+      "invitation": "invitation:231",
+      "scriptedSupport": 9,
+      "opportunities": 45,
+      "trials": 9,
+      "deniedInspections": 9,
+      "paidLooks": 0
+    },
+    {
+      "seed": "d44-work-headroom-03",
+      "invitation": "invitation:243",
+      "scriptedSupport": 9,
+      "opportunities": 45,
+      "trials": 9,
+      "deniedInspections": 9,
+      "paidLooks": 0
+    },
+    {
+      "seed": "d44-work-headroom-03",
+      "invitation": "invitation:244",
+      "scriptedSupport": 9,
+      "opportunities": 45,
+      "trials": 9,
+      "deniedInspections": 9,
+      "paidLooks": 0
+    },
+    {
+      "seed": "d44-work-headroom-04",
+      "invitation": "invitation:241",
+      "scriptedSupport": 9,
+      "opportunities": 45,
+      "trials": 9,
+      "deniedInspections": 9,
+      "paidLooks": 0
+    }
+  ],
+  "earlierExhaustionCaseRecords": 6,
+  "checks": {
+    "focused": "node --test test/work-windows.test.mjs: 5 passed",
+    "suite": "npm test: 337 passed / 0 failed / 0 skipped",
+    "sealed": "All 19 original F54 artifacts/source-method closure plus separate three-file decoder/report/test manifest match, with exact retained reproduction",
+    "preservation": "git diff --quiet 6834536 -- src and original F54/F53/F51 primary methods/reports/manifests/pre-data records: passed; original attempts/blocks remain byte-bound",
+    "context": "validate-context.mjs: 0 errors / 27 unchanged warnings",
+    "whitespace": "git diff --check: passed",
+    "nativeDag": "Unchanged 30-module/74-edge native source; previous acyclic validation reused"
+  },
+  "limits": [
+    "Conditional source/journal/aggregate-denial reconstruction, not independent ticket receipts, authenticity or a full protocol-economic/duty replay.",
+    "Paid successful conversions only after guardian; rejected proposal work is an aggregate pre-phase residual, not an actor/reason/ticket-order record. Unsupported prices/channels/histories/censoring reject.",
+    "Scripted reviewer support is not verified independent humans or negligence. Unfunded looks have no inferred signal; genuine errors/overlapping arms/pending windows remain distinct.",
+    "No registered confirmation, calibrated welfare/private cost/attack probability, new work reservation/default/RNG/strategy or D33/D34/D42 migration."
+  ],
+  "terminal": "Specified capture/reconstruction cohort complete. Further experimental support/evidence/allocation questions need a separately scoped assumption/verification contract; human/private cost calibration and independent authenticity remain unsupplied."
+}
