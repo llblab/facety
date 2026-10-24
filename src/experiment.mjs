@@ -13,17 +13,13 @@ import { challengeAccess, settleOneStepPosition, enforceIdentityVerdict } from '
 import { experimentConfig, dayActivity, experimentRandomness, EXPERIMENT_ASSUMPTIONS } from './experiment-config.mjs';
 import { clockAgenda } from './clock-agenda.mjs';
 import { createActivitySchedule, SUBDAY_RANDOMNESS } from './activity-schedule.mjs';
+import { observationEnvironment } from './identity-observations.mjs';
 
 export {
   SCENARIOS, EXPERIMENT_ABLATIONS, RANDOMNESS_POLICY, DEFAULT_ACTIVITY, DEFAULT_DISPUTES,
   LIABILITY_POLICIES, DEFAULT_DEVIANTS, DEFAULT_SOCIAL, EXPERIMENT_ASSUMPTIONS,
   activityAtDay, experimentConfig, withExperimentParameters,
 } from './experiment-config.mjs';
-
-// Truth is confined to this environment/evaluator, not supplied to the defense handler.
-function observationEnvironment(truth, random, config) {
-  return (id, context, identity = truth.get(id)) => Object.freeze({ suspicious: random.fork(JSON.stringify([id, context])).chance(identity.genuine ? config.falsePositiveRate : config.sensitivity) });
-}
 
 // Uniform choice from `list` without `excluded` members; identical to picking from the filtered
 // list with the same draw, without rebuilding that list for every opportunity.
@@ -46,6 +42,8 @@ function respondToObservation(model, observer, act, observation) {
 
 export function runExperiment(overrides = {}) {
   const config = experimentConfig(overrides);
+  const assumptions = config.invitationEvidence === 'shared-target' ? EXPERIMENT_ASSUMPTIONS.map(text => text.startsWith('These are fixed reference strategies')
+    ? 'These are fixed reference strategies, not optimized worst-case attackers. Counterfactual shared-target invitation evidence is one persistent first-stage signal per public target across reviewers/times at the supplied marginal sensitivity/FPR. Other observations and verification retain their keyed references. Repeated paid looks do not independently validate this signal. This is an extremal common-mode stress assumption, not calibrated evidence, notification or a protocol/default choice.' : text) : EXPERIMENT_ASSUMPTIONS;
   const randomness = experimentRandomness(config);
   const schedule = config.stepHours === 24 ? null : createActivitySchedule(config);
   const attendedReviewRandom = config.invitationReviewTiming === 'first-attended' ? new Random(config.seed).fork(SUBDAY_RANDOMNESS.placement) : null;
@@ -1023,7 +1021,7 @@ export function runExperiment(overrides = {}) {
   };
   return {
     schema: 'facety-experiment/v1',
-    config, randomness, provenance: provenance(), assumptions: schedule ? [...EXPERIMENT_ASSUMPTIONS.filter(text => !text.startsWith('Self-ID, guarantee work')), 'D43: 4/6-hour decision opportunities retain daily floor-plus-Bernoulli quotas. Keyed uniform slot placement is a timing assumption, not measured human activity; Self-ID phase is fixed per subject. Unavailable, preadmission or ineligible slots expire without catch-up. Profiles override declared subject activity and separate transaction/attention hours; null means all decision ticks, not measured availability. Conditional responses remain per observation. Whole-run effort caps never reset. Invitation review stage counters are process diagnostics; their separate evaluator class counts never feed the defense or protocol state. Invitation reviews have one Bernoulli/slot per guarantor-invitation-calendar-day, not per tick. Timed attention rounds retain a per-case daily quota; entryTiming each-tick instead offers one opposing entry per decision tick after at least one step, never a forced participant. Council settlement keeps the automatic all-seats reference; availability supplies no quorum or recusal rule. Known off-grid invitation, dispute and reserved-debt deadlines are processed without extra actor rounds; horizon settlement does not issue daily quotas. Native terminal XP and unlimited unspent veto remain legacy, not D42 compliance.', ...(attendedReviewRandom ? ['Counterfactual first-attended invitation review: one daily Bernoulli trial per currently eligible guarantor/invitation, consumed at its first attended tick. It reuses the daily count key, not uniform slot placement; evidence/work/transaction/authority failures do not retry that day. Public pending-list awareness is inherited from the script, not measured notification or human vigilance. No future-calendar lookup, catch-up quota, budget refill or protocol/default change.'] : [])] : [...EXPERIMENT_ASSUMPTIONS],
+    config, randomness, provenance: provenance(), assumptions: schedule ? [...assumptions.filter(text => !text.startsWith('Self-ID, guarantee work')), 'D43: 4/6-hour decision opportunities retain daily floor-plus-Bernoulli quotas. Keyed uniform slot placement is a timing assumption, not measured human activity; Self-ID phase is fixed per subject. Unavailable, preadmission or ineligible slots expire without catch-up. Profiles override declared subject activity and separate transaction/attention hours; null means all decision ticks, not measured availability. Conditional responses remain per observation. Whole-run effort caps never reset. Invitation review stage counters are process diagnostics; their separate evaluator class counts never feed the defense or protocol state. Invitation reviews have one Bernoulli/slot per guarantor-invitation-calendar-day, not per tick. Timed attention rounds retain a per-case daily quota; entryTiming each-tick instead offers one opposing entry per decision tick after at least one step, never a forced participant. Council settlement keeps the automatic all-seats reference; availability supplies no quorum or recusal rule. Known off-grid invitation, dispute and reserved-debt deadlines are processed without extra actor rounds; horizon settlement does not issue daily quotas. Native terminal XP and unlimited unspent veto remain legacy, not D42 compliance.', ...(attendedReviewRandom ? ['Counterfactual first-attended invitation review: one daily Bernoulli trial per currently eligible guarantor/invitation, consumed at its first attended tick. It reuses the daily count key, not uniform slot placement; evidence/work/transaction/authority failures do not retry that day. Public pending-list awareness is inherited from the script, not measured notification or human vigilance. No future-calendar lookup, catch-up quota, budget refill or protocol/default change.'] : [])] : [...assumptions],
     outcome: {
       success: firstSuccess !== null ? true : censoredReason ? null : false,
       firstSuccess, censored: censoredReason !== null, censoredReason, completedDays, elapsedHours: model.now,
@@ -1037,7 +1035,7 @@ export function runExperiment(overrides = {}) {
       counters: { ...invitationReview },
       evaluator: { ...reviewEvidence },
       attention: attendedReviewRandom ? 'counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance' : 'activity.review: one daily Bernoulli/slot per guarantor/invitation; not recognition or guaranteed observation',
-      evidence: 'sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth',
+      evidence: config.invitationEvidence === 'shared-target' ? 'counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth' : 'sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth',
       response: 'always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility',
       responsibility: 'prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented',
     } } : {}),

@@ -1,0 +1,114 @@
+{
+  "schema": "facety-shared-observation-validation/v1",
+  "level": "software-author-validation-not-research-confirmation",
+  "referenceCheckpoint": "0d6ba4d",
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "50a20767e9e4829bdb1ba4aaf8b4fda0388faf5d22c70ded04a8d266b87dd3c3",
+    "files": 30
+  },
+  "node": "v26.8.1",
+  "preservation": {
+    "schema": "facety-shared-observation-preservation/v1",
+    "referenceCheckpoint": "0d6ba4d",
+    "baseline": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "5070d49ac2a99edd707d84adb80afb3a28d000098133657de5b6dfe23d6eb2e5",
+      "files": 29
+    },
+    "current": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "50a20767e9e4829bdb1ba4aaf8b4fda0388faf5d22c70ded04a8d266b87dd3c3",
+      "files": 30
+    },
+    "node": "v26.8.1",
+    "comparisons": 48,
+    "bytes": 9649197,
+    "sha256": "f7d4406de7e93f33a9473b96a7340a45b013a1a95047c1b618bacbbf3392e7be",
+    "exclusions": [
+      "provenance",
+      "config.invitationEvidence"
+    ],
+    "interpretation": "Fixed fresh software fixtures across 24/6/4-hour clocks, first-attended calendars and regular-dispute combinations. No historical research seed, common-mode outcome cohort or confirmation."
+  },
+  "artifacts": {
+    "src/identity-observations.mjs": {
+      "bytes": 678,
+      "sha256": "fa900922d2490e01bc8b4618ee9df57e5850be8b893ebd11d2c3d6da2b8dcef0"
+    },
+    "src/experiment-config.mjs": {
+      "bytes": 25902,
+      "sha256": "3d46fac681bfef159e10c38342dd013c69778d97fc427e271e242e45beb0fec3"
+    },
+    "src/experiment.mjs": {
+      "bytes": 67377,
+      "sha256": "37d41881cb85b64b2270599b09bba1a07d2a9edf7167777b142df26b5a4f1dfe"
+    },
+    "test/identity-observations.test.mjs": {
+      "bytes": 10253,
+      "sha256": "0abd14953c9d15ff802db954e9fed867dc89ffe9f82572291ee37af376734d17"
+    },
+    "examples/shared-invitation-evidence.json": {
+      "bytes": 338,
+      "sha256": "e7d664311a638d48e802c927866a42a18c3ff4ec280440d0cb1e8cb544adf13c"
+    },
+    "studies/2026-10-24-shared-observation/preservation.mjs": {
+      "bytes": 3950,
+      "sha256": "d7b2884742680e018b67ca697a12b6fde7de07e833e4e05ccd08a737a88060ce"
+    },
+    "studies/2026-10-24-shared-observation/preservation.json": {
+      "bytes": 830,
+      "sha256": "7774de9ee56a5964b0f74e7b7f30831a571eac6a790fd96f49d01ff028d46be9"
+    }
+  },
+  "tests": {
+    "focused": "11 identity-observation/first-attended tests passed; 7 observation/mechanism-inventory tests passed",
+    "suite": "npm test: 315 passed / 0 failed / 0 skipped",
+    "example": "JSON/experimentConfig validation only; no example outcome capture"
+  },
+  "architecture": {
+    "errors": 0,
+    "warnings": 0,
+    "items": [
+      {
+        "level": "info",
+        "message": "Root: /home/llb/Repos/facety",
+        "details": {}
+      },
+      {
+        "level": "info",
+        "message": "Config: /home/llb/Repos/facety/domain-dag.json",
+        "details": {}
+      },
+      {
+        "level": "info",
+        "message": "Source files 30, local edges 74",
+        "details": {}
+      },
+      {
+        "level": "pass",
+        "message": "Local source import graph is acyclic",
+        "details": {}
+      },
+      {
+        "level": "pass",
+        "message": "Domain modules do not import configured entrypoints",
+        "details": {}
+      },
+      {
+        "level": "pass",
+        "message": "Domain headers are present",
+        "details": {}
+      },
+      {
+        "level": "pass",
+        "message": "No shared-bucket candidates found",
+        "details": {}
+      }
+    ]
+  },
+  "preservationBoundary": "48 fixed software fixtures; only provenance/new config.invitationEvidence excluded. No research label replay or outcome cohort. Existing study files unchanged.",
+  "context": "validate-context.mjs: 0 errors / 27 unchanged warnings; git diff --check passed",
+  "review": "Inline author inspection/property controls, not independent reviewer acceptance, input authentication or calibrated oracle covariance.",
+  "next": "Fixed 64-case source/runtime/method preparation before any new capture; D33/D34/D42 remain separately gated."
+}

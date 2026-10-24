@@ -1,0 +1,17 @@
+{
+  "stepHours": 4,
+  "invitationReviewTiming": "first-attended",
+  "invitationEvidence": "shared-target",
+  "seed": "shared-invitation-reference",
+  "days": 5,
+  "initialSize": 12,
+  "initialTopology": "clique",
+  "activity": {
+    "honest": {
+      "review": 1,
+      "invite": 0,
+      "inspect": 0
+    }
+  },
+  "includeState": true
+}

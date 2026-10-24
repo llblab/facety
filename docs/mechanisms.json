@@ -67,6 +67,8 @@
       "code": [
         "src/model.mjs#cancelSelfId/cancelInvitation",
         "src/experiment.mjs#guardianWork/inspectionWork",
+        "src/identity-observations.mjs#observationEnvironment",
+        "test/identity-observations.test.mjs",
         "test/guarantor-response.test.mjs",
         "test/first-attended-review.test.mjs"
       ],
@@ -84,7 +86,7 @@
       "intervention": "disableInvitationVeto removes only an otherwise-authorized veto effect. invitationReviewTiming:first-attended is a separate behavioral counterfactual, reusing one daily pair trial at first present attention without retry or future-calendar knowledge. Neither is a protocol option. Match prefixes before the first changed action; downstream work may diverge.",
       "alternative": "Earlier removal alone, perfect attention, or free unmeasured work.",
       "falsifier": "Matched late/early evidence produces no usable prevention or false veto harm outweighs it.",
-      "status": "Explicit staged prevention trace, funded veto-effect diagnostic and software-tested first-attended timing counterfactual; no new timing study or evidence of liability-induced vigilance/net reliability.",
+      "status": "Explicit prevention trace and qualified F48/F49/F51 timing/harm controls; optional shared-target evidence environment is software-tested only, not calibrated or outcome-confirmed. Liability-induced vigilance/net reliability remain unestablished.",
       "diagram": "M02 [A] suspicion --[R authority, before spend]--> veto → fewer rights --[? vigilance]--x review"
     },
     {
@@ -558,6 +560,15 @@
         ]
       },
       {
+        "paths": ["invitationEvidence"],
+        "units": "supplied marginal hit/false-positive probability; persistent first-stage bit per public target in shared mode",
+        "scope": "invitation-review observation environment only; no defense truth input or free look",
+        "status": "independent-default; shared-target-extremal-common-mode-counterfactual-not-calibrated",
+        "meaning": "independent retains original observer/time keys. shared-target reuses one target-keyed first-stage signal across reviewers/times with the same supplied sensitivity/FPR and paid look count; other observations/verification and authority remain unchanged. Distinct full randomness policy; no outcome cohort or evidence authenticity follows from software tests.",
+        "provenance": "src/identity-observations.mjs observationEnvironment; src/experiment-config.mjs experimentRandomness; test/identity-observations.test.mjs",
+        "mechanisms": ["M02"]
+      },
+      {
         "paths": ["invitationReviewTiming"],
       "units": "one Bernoulli trial per eligible guarantor/invitation/calendar day; 4/6-hour decision ticks",
       "scope": "run-level behavioral timing reference; current public pending-list awareness; no extra budget",
@@ -625,7 +636,7 @@
         "scope": "observation/vetting opportunity",
         "status": "calibration-target",
         "meaning": "Fallible first-stage hit/false-suspicion rates, distinct from review/verdict accuracy.",
-        "provenance": "src/experiment.mjs observation environment",
+        "provenance": "src/identity-observations.mjs observationEnvironment",
         "mechanisms": [
           "M02",
           "M04",

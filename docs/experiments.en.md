@@ -1,6 +1,6 @@
 # Cohort experiments and attack effort
 
-This document owns the research runner in `src/experiment.mjs`, its configuration/defaults and daily activity views in `src/experiment-config.mjs`, read-only public-graph neighborhoods/rank in `src/social-graph.mjs`, effort accounting in `src/effort.mjs`, and statistical aggregation in `src/trials.mjs`. [The model contract](simulator.en.md) owns protocol abstractions and OPEN-policy defaults.
+This document owns the research runner in `src/experiment.mjs`, its configuration/defaults and daily activity views in `src/experiment-config.mjs`, read-only public-graph neighborhoods/rank in `src/social-graph.mjs`, environment-only identity signals in `src/identity-observations.mjs`, effort accounting in `src/effort.mjs`, and statistical aggregation in `src/trials.mjs`. [The model contract](simulator.en.md) owns protocol abstractions and OPEN-policy defaults.
 
 ## Reproducible entry points
 
@@ -132,7 +132,7 @@ Scheduler optimizations choose targets by index arithmetic over admission-ordere
 
 The environment knows the evaluator's identity labels and emits noisy observations according to `sensitivity` and `falsePositiveRate`. The honest response handler receives only a public act, protocol state, observer ID and observation. It does not receive the subject's truth label or coalition membership.
 
-The baseline assumes conditionally independent observation draws. There is no shared blind spot, correlated detector error or calibrated media classifier. Guarantee vetting uses the same observation quality. Each observer inspects a given act at most once. `localInspectionShare` biases attention toward acts the observer can cancel; other attention is global.
+The baseline (`invitationEvidence: independent`) retains conditionally independent observer/time-keyed draws and no calibrated media classifier. Optional `shared-target` is an explicit extremal **invitation first-stage** common-mode control: a target's signal persists across reviewers/times, using the same supplied sensitivity/FPR, while every look remains paid. Other observation channels (including guarantee vetting/ordinary act inspection) and verification retain their original keys/quality. It is not a full correlated-media/verdict model, adversarial evidence process or human calibration; see the [model contract](simulator.en.md#shared-target-evidence-counterfactual). Full manifests add `invitationEvidence: shared-target-first-stage-v1` for this changed key layout on 24/6/4-hour clocks, composing with the timing/dispute markers. Ordinary Self-ID inspection is at most once per observer/act; invitation review retains its daily pair trial. `localInspectionShare` biases attention toward acts the observer can cancel; other attention is global.
 
 Attackers with inspection/response activity may deliberately veto non-coalition acts when they have authority. This can hurt genuine people without proving identity fraud.
 

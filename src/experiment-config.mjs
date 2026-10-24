@@ -18,7 +18,7 @@ export const DEFAULT_ACTIVITY = Object.freeze({
 });
 const DEFAULTS = Object.freeze({
   scenario: 'sybil-cone', seed: 'facety', initialSize: 30, attackerShare: 0.1,
-  days: 30, stepHours: 24, actorProfiles: [], invitationReviewTiming: 'daily-slot', initialTopology: 'random', initialDegree: 3,
+  days: 30, stepHours: 24, actorProfiles: [], invitationReviewTiming: 'daily-slot', invitationEvidence: 'independent', initialTopology: 'random', initialDegree: 3,
   localInspectionShare: 0.8, sensitivity: 0.8, falsePositiveRate: 0.01,
   maxSubjects: 2000, maxActions: 500_000, targetFalseConversions: 1,
   successCriterion: 'false-liquidity', includeState: false,
@@ -224,11 +224,12 @@ export function activityAtDay(overrides, day) {
 }
 
 export function experimentRandomness(config) {
-  if (config.stepHours === 24) return RANDOMNESS_POLICY;
+  const base = config.stepHours === 24 ? RANDOMNESS_POLICY : SUBDAY_RANDOMNESS;
   const variants = {};
   if (config.disputes.entryTiming === 'each-tick') variants.disputeSchedule = 'one-opportunity-per-tick-v1';
   if (config.invitationReviewTiming === 'first-attended') variants.invitationReviewSchedule = 'first-attended-pair-day-v1';
-  return Object.keys(variants).length ? { ...SUBDAY_RANDOMNESS, ...variants } : SUBDAY_RANDOMNESS;
+  if (config.invitationEvidence === 'shared-target') variants.invitationEvidence = 'shared-target-first-stage-v1';
+  return Object.keys(variants).length ? { ...base, ...variants } : base;
 }
 
 export function combineExperimentRandomness(policies) {
@@ -271,6 +272,7 @@ export function experimentConfig(overrides = {}) {
   if (![4, 6, 24].includes(config.stepHours)) throw new RangeError('stepHours must be 4, 6 or 24');
   if (!['daily-slot', 'first-attended'].includes(config.invitationReviewTiming)) throw new Error('invitationReviewTiming must be daily-slot or first-attended');
   if (config.invitationReviewTiming === 'first-attended' && config.stepHours === 24) throw new Error('first-attended invitation review requires sub-day stepHours');
+  if (!['independent', 'shared-target'].includes(config.invitationEvidence)) throw new Error('invitationEvidence must be independent or shared-target');
   config.actorProfiles = actorProfilesFrom(config.actorProfiles, config);
   integer(config.initialDegree, 'initialDegree', 1, 10000);
   integer(config.maxSubjects, 'maxSubjects', config.initialSize);
