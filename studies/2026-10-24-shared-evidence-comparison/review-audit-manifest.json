@@ -1,0 +1,20 @@
+{
+  "schema": "facety-f52-review-audit-manifest/v1",
+  "level": "postdata-author-diagnostic-not-confirmation",
+  "closedManifestSha256": "09743c579f8196d9828223e9ac466c22c8b412d603a843d6bc4c3262d338a0d1",
+  "referenceImplementation": "50a20767e9e4829bdb1ba4aaf8b4fda0388faf5d22c70ded04a8d266b87dd3c3",
+  "artifacts": {
+    "studies/2026-10-24-shared-evidence-comparison/review-audit.mjs": {
+      "bytes": 18297,
+      "sha256": "60be4f4e6c98c159fdd02c1c46e75642810299d75901a295641e096d85ee713f"
+    },
+    "studies/2026-10-24-shared-evidence-comparison/review-audit.json": {
+      "bytes": 2804107,
+      "sha256": "bd58f774ee452aa64a163e818eebe0f9da4d4ec6a472164c213d0849c2d57e6a"
+    },
+    "test/review-reconstruction.test.mjs": {
+      "bytes": 12568,
+      "sha256": "d4a9e3a96d9269820c7f19f1b42de4db914660ff9a346d14d72901d0e3accd1a"
+    }
+  }
+}
