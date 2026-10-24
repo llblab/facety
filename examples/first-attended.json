@@ -1,0 +1,9 @@
+{
+  "stepHours": 4,
+  "invitationReviewTiming": "first-attended",
+  "seed": "first-attended-reference",
+  "days": 5,
+  "initialSize": 12,
+  "activity": { "honest": { "review": 1 } },
+  "includeState": true
+}

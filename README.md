@@ -66,7 +66,7 @@ node bin/facety.mjs --help
 node bin/facety.mjs run examples/four-hour.json
 ```
 
-The [D43 sub-day mode](docs/simulator.en.md#integrated-participant-scheduling) runs actual four-hour opportunities with daily quotas, optional explicit per-subject transaction/attention profiles and exact known deadlines. Set `stepHours: 4` (or `6`); omitted/`24` retains historical daily scheduling. The example inherits illustrative cohort rates, not calibrated human behavior. This does not migrate D42 XP/veto semantics.
+The [D43 sub-day mode](docs/simulator.en.md#integrated-participant-scheduling) runs actual four-hour opportunities with daily quotas, optional explicit per-subject transaction/attention profiles and exact known deadlines. Set `stepHours: 4` (or `6`); omitted/`24` retains historical daily scheduling. The example inherits illustrative cohort rates, not calibrated human behavior. This does not migrate D42 XP/veto semantics. The explicit [first-attended review counterfactual](docs/simulator.en.md#first-attended-timing-counterfactual) (`examples/first-attended.json`) tests an alternative placement of the same daily invitation-review trial; it is not a new default or measured human policy.
 
 ## Command line
 

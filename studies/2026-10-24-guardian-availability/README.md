@@ -60,6 +60,8 @@ Allocation ledgers distinguish pre-/same-creation, pre-link, expiry, unavailable
 
 Validation includes 288 independent dense-hour/key-oracle partitions plus successful-stop, pending-horizon, temporal/snapshot, missing-role, altered-input and byte-binding controls. The new audit leaves F49's original capture/runner/analyzer/design/report/audit/manifest byte-unchanged. It is author source-fidelity verification, not independent review, input authenticity, calibrated behavior, mechanism confirmation or a new protocol selection.
 
+**Subsequent implementation, separate source:** the [first-attended software checkpoint](../2026-10-24-review-timing/README.md) now provides this optional counterfactual with unit/prefix/default-preservation checks, not a new outcome study. F49/F50 retain the original source/data/method identities above; these results are not rerun or relabeled under the new implementation.
+
 ## Capture and preservation
 
 After the pre-data checkpoint, execute each block once: `node studies/2026-10-24-guardian-availability/run.mjs 0` (then 1, 2, 3). The runner pins source/runtime/design/committed runner, reserves `attempt-N.json` exclusively before any model execution and writes `block-N.json` exclusively after six cases. An existing attempt or failed partial capture is a stop, never permission to retry or overwrite. There are no scenario, output or drift overrides.

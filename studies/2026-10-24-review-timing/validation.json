@@ -1,0 +1,41 @@
+{
+  "status": "verified-software-checkpoint-not-outcome-study",
+  "baselineCheckpoint": "c4b700f",
+  "implementation": "5070d49ac2a99edd707d84adb80afb3a28d000098133657de5b6dfe23d6eb2e5",
+  "tests": {
+    "command": "npm test",
+    "passed": 305,
+    "failed": 0,
+    "newFamilies": 6
+  },
+  "preservation": {
+    "comparisons": 38,
+    "bytes": 6993983,
+    "sha256": "2624ba9b9e0e101ba559c92b9fc37a898b2827664d5535f7ba314dce09f47fc7",
+    "exclusions": [
+      "provenance",
+      "config.invitationReviewTiming"
+    ]
+  },
+  "dag": {
+    "modules": 29,
+    "edges": 73,
+    "acyclic": true,
+    "errors": 0,
+    "warnings": 0
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 27,
+    "warningsUnchanged": true
+  },
+  "boundaries": {
+    "nativeEconomicModelUnchanged": true,
+    "randomAndUniformSlotKernelsUnchanged": true,
+    "oldResearchArtifactsUnchanged": true,
+    "researchCaptures": 0,
+    "softwareFixturesAreNotPopulationData": true,
+    "independentReviewClaimed": false
+  },
+  "remaining": "Separate committed fixed-design timing-policy outcome comparison on fresh labels, with explicit observation-time, genuine-harm, availability, costs and horizon limits; D41/D42 protocol gates and broad D39 pause unchanged."
+}

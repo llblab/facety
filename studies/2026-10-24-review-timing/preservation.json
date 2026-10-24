@@ -1,0 +1,22 @@
+{
+  "schema": "facety-review-timing-preservation/v1",
+  "referenceCheckpoint": "c4b700f",
+  "baseline": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "30a6d69e3e7b384b48dfbda4dece7af7d6077f5948a1e6f135ab00bb21431379",
+    "files": 29
+  },
+  "current": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "5070d49ac2a99edd707d84adb80afb3a28d000098133657de5b6dfe23d6eb2e5",
+    "files": 29
+  },
+  "comparisons": 38,
+  "bytes": 6993983,
+  "sha256": "2624ba9b9e0e101ba559c92b9fc37a898b2827664d5535f7ba314dce09f47fc7",
+  "exclusions": [
+    "provenance",
+    "config.invitationReviewTiming"
+  ],
+  "interpretation": "Fixed software fixtures across 24/6/4-hour defaults and regular-dispute variants; no historical research capture or first-attended outcome study."
+}

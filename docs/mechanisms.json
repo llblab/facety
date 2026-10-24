@@ -52,7 +52,7 @@
       "question": "Does responsibility produce timely preventive correction?",
       "initiatingChange": "A suspicious act is observed while a guarantor retains cancellation authority.",
       "path": [
-        "Declared attention slot → paid fallible observation → optional paid verification → available, funded response attempt.",
+        "Declared daily-slot attention (or explicit first-attended counterfactual) → paid fallible observation → optional paid verification → available, funded response attempt.",
         "An authorized pre-deadline invitation veto prevents this admission; its already burned source stays burned. Legacy source XP is replayed separately from the pending D42 rule.",
         "Self-ID veto is a separate native operation with its explicitly labeled legacy unspent timing."
       ],
@@ -67,7 +67,8 @@
       "code": [
         "src/model.mjs#cancelSelfId/cancelInvitation",
         "src/experiment.mjs#guardianWork/inspectionWork",
-        "test/guarantor-response.test.mjs"
+        "test/guarantor-response.test.mjs",
+        "test/first-attended-review.test.mjs"
       ],
       "observable": [
         "selfIds[].status/disposition",
@@ -80,10 +81,10 @@
         "early-veto",
         "missed-veto"
       ],
-      "intervention": "disableInvitationVeto removes only an otherwise-authorized veto effect; it is a counterfactual, never a protocol option. Match the signal/work prefix before first cancellation; downstream work may diverge.",
+      "intervention": "disableInvitationVeto removes only an otherwise-authorized veto effect. invitationReviewTiming:first-attended is a separate behavioral counterfactual, reusing one daily pair trial at first present attention without retry or future-calendar knowledge. Neither is a protocol option. Match prefixes before the first changed action; downstream work may diverge.",
       "alternative": "Earlier removal alone, perfect attention, or free unmeasured work.",
       "falsifier": "Matched late/early evidence produces no usable prevention or false veto harm outweighs it.",
-      "status": "Explicit staged prevention trace and funded veto-effect ablation diagnostic; liability-induced vigilance and net reliability remain unconfirmed.",
+      "status": "Explicit staged prevention trace, funded veto-effect diagnostic and software-tested first-attended timing counterfactual; no new timing study or evidence of liability-induced vigilance/net reliability.",
       "diagram": "M02 [A] suspicion --[R authority, before spend]--> veto → fewer rights --[? vigilance]--x review"
     },
     {
@@ -557,7 +558,16 @@
         ]
       },
       {
-        "paths": ["stepHours", "actorProfiles"],
+        "paths": ["invitationReviewTiming"],
+      "units": "one Bernoulli trial per eligible guarantor/invitation/calendar day; 4/6-hour decision ticks",
+      "scope": "run-level behavioral timing reference; current public pending-list awareness; no extra budget",
+      "status": "daily-slot-default; first-attended-explicit-counterfactual-not-calibrated",
+      "meaning": "daily-slot retains keyed uniform placement and expiry. first-attended consumes the same daily count-key trial at the first currently attended eligible tick, even if work/evidence/transaction gates later fail. No same-day retry, future-calendar lookup, catch-up or default/protocol change. It requires sub-day scheduling and has a distinct full randomness manifest.",
+      "provenance": "src/experiment-config.mjs experimentRandomness/experimentConfig; src/experiment.mjs invitationReviewChoice; test/first-attended-review.test.mjs",
+      "mechanisms": ["M02"]
+    },
+    {
+      "paths": ["stepHours", "actorProfiles"],
         "units": "4/6/24-hour opportunity grid; explicit subject activity and transaction/attention hour plans",
         "scope": "run; per accepted subject/calendar day; whole-run budgets unchanged",
         "status": "declared-timing-assumption-not-human-calibration",

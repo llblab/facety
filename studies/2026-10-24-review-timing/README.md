@@ -1,0 +1,23 @@
+# First-attended review: implementation checkpoint
+
+This is software-validation evidence for D44's optional attention-placement counterfactual, **not a fresh outcome study**, calibrated human policy or protocol/default change. F49/F50 remain closed at their own source identities; no research worlds or historical captures were replayed here. Native software fixtures and archived-source compatibility checks are distinguished from research data.
+
+## Contract
+
+`runExperiment({ stepHours: 4, invitationReviewTiming: 'first-attended', activity: { honest: { review: 1 } } })` enables the counterfactual; six-hour operation is also supported. Default `invitationReviewTiming: 'daily-slot'` preserves the uniform keyed placement/expiry reference in all modes. First-attended rejects legacy 24-hour operation rather than silently pretending to add opportunities.
+
+For a currently eligible scripted guarantor and published pending invitation, the first attended tick in each calendar day consumes one trial, using the **same** daily count key and `activity.review` probability as the uniform reference. No future hour is consulted. Probability-zero/failed evidence/verification, denied inspection work or unavailable/rejected cancellation does not obtain another trial that day. A later calendar day can have its own trial only while the original strict invitation window remains open; the creation tick is after guardian work and the expiry/horizon tick grants no late review. There is no rolling-day catch-up, automatic rescheduling of other channels or budget refill.
+
+Availability, paid work, recognition, verification and transaction/model authority remain separate. Multiple pending invitations can consume separate trials at one tick; this is not a measured per-person service-capacity model. The existing script's public pending-list awareness is inherited, not an authenticated notification channel or observed vigilance. Response remains scripted after positive evidence, not liability-derived utility. The timing change does not select D33/D34/D42 contracts, mature XP, create immunity, pay compensation or change economic transitions.
+
+The existing randomness generator, daily count key and unrelated decision/observation channels are unchanged. The full manifest adds `invitationReviewSchedule: 'first-attended-pair-day-v1'`; it composes with D45's separate `disputeSchedule` marker. Observation keys still include actual time, so moving review can reveal different keyed noisy evidence; a future matched study must not claim identical received signals. Both config and assumptions/attention metadata identify the counterfactual. Code/state remains local to the experiment orchestrator; the pure random/activity kernels used by F50 are byte-unchanged.
+
+## Evidence and preservation
+
+`npm test`: **305 passed**. The DAG remains 29 modules/73 edges, acyclic with zero errors/warnings; context/link/whitespace validation has zero errors/27 unchanged warnings. [Validation record](validation.json) keeps software tests and zero new research captures distinct.
+
+Six native test families cover 4/6-hour daily-count oracles for zero/fractional/unit probabilities and unrestricted/empty/staggered calendars; creation/expiry/no-window cases; work/verification failures; transaction and veto-effect gates; future-calendar-prefix and inert-inspection controls; enum/default validation and mixed timing-manifest registration transport. These synthetic fixtures establish implementation properties, not adoption or a security probability.
+
+The [fixed compatibility script](preservation.mjs) compares the archived `c4b700f` source against the current default path in 38 software fixtures: twelve configurations × 24/6/4-hour clocks plus both regular-dispute variants. [Retained result](preservation.json): **6,993,983 bytes** compare exactly after excluding only provenance and the new default `config.invitationReviewTiming` field; SHA-256 `2624ba9b9e0e101ba559c92b9fc37a898b2827664d5535f7ba314dce09f47fc7`. These are not old study-seed reruns or new first-attended outcome measurements. Reproduce against a `git archive c4b700f src` directory with `node studies/2026-10-24-review-timing/preservation.mjs /path/to/archive`.
+
+Native implementation digest: `5070d49ac2a99edd707d84adb80afb3a28d000098133657de5b6dfe23d6eb2e5` (`sha256-src-mjs-v1`, 29 files). A changed fingerprint identifies the new optional behavior even though default trajectories are preserved. A new empirical comparison requires its own committed fixed design/runner/source and fresh labels before capture; implementation tests do not retroactively register a mechanism claim or expand F49/F50.
