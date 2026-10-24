@@ -143,6 +143,8 @@
       "basis": "DIRECTION: discovery is open, formal rights qualified. Unpaid, staged one-step relay is an explicit research reference, not an owner-selected merits procedure.",
       "code": [
         "src/accountability.mjs#EvidenceRelay",
+        "src/act-observations.mjs#actObservationEnvironment",
+        "test/act-observations.test.mjs",
         "src/disputes.mjs",
         "examples/causal-relay.mjs"
       ],
@@ -161,7 +163,7 @@
       "intervention": "Matched-budget member, external-unrouted and external-relay arms; no resource addition. Multi-sponsor/compensation effects remain deferred.",
       "alternative": "Extra workforce, oracle review, source allegiance or copies counted as corroboration.",
       "falsifier": "At equal resources relay adds no access, overloads reviewers, or causes unacceptable genuine harm.",
-      "status": "Executed diagnostic reference and small exploration; no mechanism confirmation.",
+      "status": "Executed relay diagnostic reference and small exploration; separate D47 per-act fact/keyed-signal primitive now software-tested, not integrated discovery/relay/act adjudication or mechanism confirmation.",
       "diagram": "M04 [A work/capacity] observation → package → review --[R XP/stake]--> case → sanctions --[? investigation]--x discovery"
     },
     {

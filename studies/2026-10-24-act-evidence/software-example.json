@@ -1,0 +1,94 @@
+{
+  "level": "software-interface-example-not-research",
+  "assumptions": [
+    "Supplied act validity, not inferred from personhood or intent.",
+    "Extreme software rate boundaries only, not a selected probability/guarantor multiplier.",
+    "One explicitly supplied observation opportunity; no discovery schedule, work policy, challenge or verdict."
+  ],
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "observations": "act-observation-keyed-v1",
+    "trialUnit": "observer-act-hour-opportunity",
+    "dependence": "keyed-per-declared-opportunity"
+  },
+  "evaluatorInputs": {
+    "subjects": [
+      {
+        "id": "Anna",
+        "genuine": true,
+        "behaviorProfile": "good-faith"
+      },
+      {
+        "id": "Mira",
+        "genuine": true,
+        "behaviorProfile": "adversarial"
+      }
+    ],
+    "acts": [
+      {
+        "id": "anna-correct",
+        "subject": "Anna",
+        "kind": "self-id",
+        "recordedAt": 0,
+        "valid": true
+      },
+      {
+        "id": "anna-defective",
+        "subject": "Anna",
+        "kind": "self-id",
+        "recordedAt": 24,
+        "valid": false
+      },
+      {
+        "id": "mira-correct",
+        "subject": "Mira",
+        "kind": "self-id",
+        "recordedAt": 0,
+        "valid": true
+      }
+    ]
+  },
+  "publicActs": [
+    {
+      "id": "anna-correct",
+      "subject": "Anna",
+      "kind": "self-id",
+      "recordedAt": 0
+    },
+    {
+      "id": "anna-defective",
+      "subject": "Anna",
+      "kind": "self-id",
+      "recordedAt": 24
+    },
+    {
+      "id": "mira-correct",
+      "subject": "Mira",
+      "kind": "self-id",
+      "recordedAt": 0
+    }
+  ],
+  "observations": [
+    {
+      "act": "anna-correct",
+      "observer": "Boris",
+      "role": "ordinary",
+      "atHour": 4,
+      "suspicious": false
+    },
+    {
+      "act": "anna-defective",
+      "observer": "Boris",
+      "role": "ordinary",
+      "atHour": 28,
+      "suspicious": true
+    },
+    {
+      "act": "mira-correct",
+      "observer": "Boris",
+      "role": "ordinary",
+      "atHour": 4,
+      "suspicious": false
+    }
+  ]
+}
