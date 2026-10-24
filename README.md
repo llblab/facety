@@ -56,6 +56,8 @@ purpose / selected rules / OPEN contracts in the protocol
 
 A failure can expose a code defect, a model limitation, an unsupported behavioral thesis or a protocol choice that needs revision. Those are different outcomes. Do not modify rules merely to make tests or an experiment look successful, and do not present a simulated reference as deployed Facety. This entrypoint summarizes the design; the living protocol owns its full meaning.
 
+**Latest owner-documented development directions (D46–D48):** the [six-line research map](docs/research.en.md#new-behavioral-development-lines-d46d48) separates per-act correctness from intent, role-sensitive suspicion, low-XP discovery/senior sponsorship, rare false challenges, changing network loyalty and distinct outcome/cost measurements. These are documented directions and hypotheses, **not implemented adaptive behavior or validated human probabilities**. The [canonical backlog](BACKLOG.md#new-behavioral-model-directions-d46d48-documentation-first) owns the pending contracts and checks; this documentation does not restart autonomous research.
+
 ## Run
 
 Requires Node.js 22 or newer. No installation or build step is needed.

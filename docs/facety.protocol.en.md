@@ -258,6 +258,12 @@ Facety aims to create conditions in which:
 
 **[HYPOTHESIS, 2026-10-22; scope clarified 2026-10-23] The honest network effect prevails.** The owner's hypothesis is that acquaintance, repeated cooperation and information propagation can give an honest community an advantage. A denser honest graph and roughly quadratic efficiency were predictions, not runtime formulas or established facts. Both genuine and adversarial communities can be dense and exploit the same rewards and gossip. Useful service value, population growth, arithmetic XP scaling and demonstrated manipulation resistance must be measured separately.
 
+### Changing participation and network loyalty (D48)
+
+**D48 — [OWNER HYPOTHESIS and selected research direction; no transition law selected], 2026-10-24.** The owner proposes that participants **may become more loyal to the network over time**. A participant's behavior/intent profile therefore need not be an immutable good/bad type. This extends the D32 participation/growth question and D46–D47's act/observer model; it does not turn XP, membership age or repeated presence into factual truth, verified personhood or permanent honesty. A person's intent can change without rewriting the validity of past acts or erasing past responsibility.
+
+For investigation, distinguish continued participation, willingness to inspect/respond/sponsor, and support for the network's rules from mere obedience to established members. Whether beneficial participation, perceived fairness, useful future opportunities or experienced costs change those choices is **[RESEARCH QUESTION]**, not a selected favorable feedback coefficient. Loss of confidence, reduced participation, concealment and attachment to one's own group are **[COMPETING RESEARCH EXPLANATIONS]**, not owner-selected outcomes. No monotone age/XP loyalty bonus, new reward, automatic forgiveness or mandatory service is introduced. Evidence must distinguish supplied preferences and scripted behavior from observed learning, voluntary retention and independently justified usefulness. The behavioral state, observable experience inputs, update law, heterogeneity and human calibration remain OPEN; native implementation is absent.
+
 **[DIRECTION, 2026-10-22; clarified 2026-10-23] A bounded fraud budget.** Perfect detection is not required. The owner's 80% honest / 20% undetected-fake coin example illustrates tolerable bounded harm; it is not a calibrated acceptance threshold or proof of usefulness. Conditions must include:
 
 - **Authority and actual action:** XP contamination, procedural gates, Council seats, voting independence and demonstrated obstruction separately. A small XP change can cross a decisive gate; a seat share alone is not a wrongful verdict.
@@ -2250,6 +2256,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Intent, act correctness and false suspicion clarified 2026-10-24
 
 **D47 — [SELECTED modeling distinctions; quantitative/evidence contracts OPEN], §25.2.** Source: the owner's explanation that good or bad intent, a valid or invalid Self-ID, suspicion, opening a dispute and its outcome are different events. A good-faith person's act can be defective; a valid act can be wrongly suspected and successfully defended, with the challenging side losing. Preserve genuine personhood separately, admit rare false-accusation chains and use conditional stage probabilities without assuming independent rare events or a perfect oracle. D46's low-XP source is not automatically the formal risk-bearing challenger. This chooses no new fault/sanction rule, calibration or adjudication procedure and makes no runtime/history change.
+
+### Changing loyalty and documentation-first development recorded 2026-10-24
+
+**D48 — [OWNER HYPOTHESIS / selected research direction], §9, “Changing participation and network loyalty.”** Source: the owner's statement that participants may become more loyal to the network with time, followed by the explicit request to document all new insights/development lines before developing them. Preserve the possibility of changing behavior rather than a permanent good/bad classification. This selects a research question, not inevitable improvement, an age/XP coefficient, a verified-identity predicate or a new economic rule. Favorable feedback, decline and group attachment must remain separately testable interpretations; update/calibration contracts are OPEN. D46–D48 documentation is not a runtime migration, new experiment, automatic Grow Loop restart or revival of the paused whole D39 programme.
 
 ### Earlier supersessions
 

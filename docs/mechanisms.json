@@ -283,7 +283,7 @@
       "signs": "Unknown: accountability or concealment can both protect perceived future value.",
       "delay": "Discounted remaining future income, not sunk effort; no endogenous clock yet.",
       "bottleneck": "Calibrated opportunities, preferences, exit options and independent utility evidence.",
-      "basis": "Behavioral hypotheses; xpValue/civicValue are explicit reference valuations, not universal reputation multipliers.",
+      "basis": "Behavioral hypotheses, including D48's owner-stated possibility of increasing network loyalty over time; xpValue/civicValue remain explicit reference valuations, not universal reputation multipliers or a selected loyalty update law.",
       "code": [
         "src/games.mjs",
         "src/incentive-payoffs.mjs",
@@ -297,7 +297,7 @@
       "intervention": "Declared valuation/discount/loyalty sweeps and individual deviations; no uncalibrated alignment coefficient.",
       "alternative": "Fixed loyalty scripts or favorable civic utility manufacture alignment.",
       "falsifier": "Concealment remains individually profitable or utility depends on free external support.",
-      "status": "Hypothesis; offline conditional analysis only.",
+      "status": "Hypothesis; offline conditional analysis only. D48 adds a documented adaptive-behavior research direction, not implemented learning or measured retention.",
       "diagram": "M08 [O] consequences → supplied valuation --[? beliefs/future choices]--x participation"
     },
     {
