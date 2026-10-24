@@ -1,0 +1,83 @@
+ACTOR_REVIEW_RESULT
+
+## Question
+
+The exact research question and acceptance criteria are unavailable. The supplied synthesis concerns whether three proposed pilots are feasible or executable and what evidence would establish their mechanisms:
+
+- **A:** Recruitment incentives.
+- **B:** Scrutiny following public high-XP defense.
+- **C:** D42 maturity behavior.
+
+Full coverage of the original question and research constraints is **not verified**. A bounded evidence-gap synthesis cannot substitute for a demonstrated executable pilot.
+
+## Evidence Map
+
+| Material | Availability and evidentiary limit |
+|---|---|
+| Merged research synthesis — `execution.json#command-005` | Supplied normalization input; retains degraded-review qualifications. |
+| Verifier output — `execution.json#command-004` | Reported as the only directly available reviewer output in the merge. |
+| Contradiction map — `execution.json#command-003` | Known through the verifier’s account; indirect evidence, not independently inspected corroboration. |
+| Exact question, standalone plan, original evidence map, completed candidate synthesis | Unavailable. |
+| Implementation, callers, tests, reproducible execution traces | No inspected native evidence supplied in this review packet. |
+| Other reviewer outputs and upstream branch completion | Independent consensus, completion, and success are not verified. |
+
+Repeated citations do not constitute independent corroboration. The contradiction map reportedly inherits documentary leads from an unavailable evidence map.
+
+## Synthesis
+
+**Status: degraded / partially supported.** The supplied material supports a cautious synthesis of evidence gaps. It does not establish that pilots A, B, or C are executable end to end, demonstrate their proposed mechanisms, or satisfy every original research constraint.
+
+The following positions reflect the supplied reviewer’s account, **not independently established multi-reviewer consensus**:
+
+| Pilot | Supported bounded endpoint | What remains unestablished |
+|---|---|---|
+| **A — Recruitment incentives** | An accounting/private-utility contrast can be proposed. | Incentive-sensitive recruitment through a finite external pool, connecting opportunity → choice → funded admission. |
+| **B — Scrutiny following public high-XP defense** | A restricted pre-case scrutiny contrast can be proposed. | Scrutiny caused specifically by public defense, independently of XP, prominence, resources, and displaced attention. |
+| **C — D42 maturity behavior** | Restricted ordinary-state contract tests can be proposed. | An executable maturity transition implementing selected D42 rules, with specified ordering and cancellation boundaries. |
+
+Across all three pilots:
+
+- Selected protocol rules must remain distinct from legacy executable behavior.
+- Public defense is not independent evidence of wrongdoing.
+- A narrower proposed contrast is neither a completed experiment nor execution authorization.
+- Documentary gaps do not prove that implementations are absent.
+- Mechanism claims remain subject to separate registration and confirmation requirements.
+
+## Contradictions
+
+The available material identifies unsupported inference jumps, rather than resolved implementation conflicts:
+
+1. **Reward arithmetic → recruitment behavior:** Scripted utility comparisons do not establish opportunity-sensitive choice, finite-pool depletion, or funded admissions.
+2. **Attention allocation → defense-specific scrutiny:** Generic attention effects do not isolate the causal role of public high-XP defense.
+3. **Legacy maturity controls → D42 compliance:** Reported terminal credit and continuing unspent veto cannot demonstrate the selected maturity rule.
+4. **Proposed endpoints → execution readiness:** Narrower designs reduce scope but do not establish that required adapters, contracts, or executors exist.
+
+These limitations reject the inferences; they do **not** establish that the proposed mechanisms are impossible.
+
+## Confidence
+
+- **High** confidence that a cautious evidence-gap answer is necessary.
+- **Limited** confidence in underlying implementation claims.
+- Repository capability is **unknown, not disproven**.
+- Upstream completion and success are **not verified**.
+
+No separate minority-review output is available. The verifier’s consequential qualifications remain: full question coverage is unverified; repository capability has not been inspected; repeated citations are not independent corroboration; and feasibility assessment differs from demonstrated execution.
+
+## Missing Evidence
+
+- Exact research question, acceptance criteria, standalone plan, original evidence map, and actual candidate synthesis.
+- **A:** Acquaintance-pool semantics, opportunity observations, choice inputs, depletion behavior, and funded-admission traces.
+- **B:** Defense/XP insertion points, own-history selection, admissibility routing, and attention-budget controls.
+- **C:** Maturity executor, transition ordering, cancellation boundaries, and invariant tests.
+- Evidence of any required execution authorization and separately registered confirmation claims.
+
+## Next Evidence Slice
+
+1. Recover the exact question and acceptance criteria alongside the plan and original evidence map; preserve snapshot and degraded-review qualifications.
+2. Inspect the pilot-specific native evidence listed above before asserting feasibility.
+3. Review the actual candidate synthesis against every original constraint, retaining **“not verified”** wherever evidence is missing.
+4. Keep execution gates separate: obtain any required authorization and register confirmation claims before confirmation runs.
+
+**Conclusion:** Retain this as a qualified evidence-gap synthesis—not an affirmative feasibility finding, completed pilot report, or mechanism confirmation.
+
+**Evidence references:** `execution.json#command-004`; `execution.json#command-005`.

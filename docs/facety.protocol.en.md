@@ -175,6 +175,28 @@ real people -> guarantees -> repeated Self-ID
 
 **[HYPOTHESIS]** If honest participation remains easier and more profitable than fraud, a trusted early community can accumulate a durable advantage over later Sybil operations. This is a design thesis, not a security proof.
 
+### 2.1 Recruiting existing social capital (D51)
+
+**D51 — [DIRECTION and falsifiable growth hypothesis, not demonstrated protection], documented 2026-10-24.** Real relationships precede Facety. An established participant can know a finite set of non-members through acquaintance, shared history, external reputation and existing communities. The protocol need not create those relationships; it can give the participant a reason to recognize, invite and maintain genuine newcomers. External recognition is evidence context, **not verified unique personhood or permission to skip admission**.
+
+The intended incentive loop refines the earlier network-building compensation direction:
+
+```text
+existing off-chain acquaintance opportunities
+    -> choice to recruit a genuine newcomer and fund an eligible invitation
+    -> mutually authorized guarantees and maintained participation
+    -> repeated uncancelled qualifying Self-ID acts
+    -> applicable guarantor XP at each ordinary maturation
+    -> greater prospective value of recruiting and maintaining genuine contacts
+    -> a larger, responsibility-bearing network
+```
+
+**Invitation alone awards no guarantor XP.** That XP comes from qualifying Self-ID by the guaranteed participant under §17.5, with D42's cancellation-conditioned maturity and the applicable eligibility/relation rules. A relationship can continue producing such credits when recruitment pauses but its participant continues valid identity work; authority accumulation after growth stops therefore needs testing, not a presumption that a transient honest lead is permanent. Expected XP is procedural opportunity, not demonstrated reliability, external reputation or application value. D9 exit-credit effects and D34 historical duties remain distinct costs; unknown legal exposure is not zero risk.
+
+An established genuine network may have a recruitment advantage over a new Sybil coalition because it already reaches real people and separate communities. **This is a hypothesis.** Genuine coordinating groups and fabricated-identity operations may also acquire dense connections and XP; equal-size/degree/resource and patient-coalition controls can defeat the proposed honest advantage. Finite acquaintances, time, willingness, declining marginal opportunities and responsibility limit recruitment. Choices must respond to observed opportunities and supplied preferences; fixed invitation rates or an offline utility maximum do not establish endogenous growth or human adoption.
+
+Evaluate this incentive together with **both** difficulty-sized qualifying guarantees and internally vertex-disjoint XP-centered paths (§18.2/§46). These requirements may encourage bridges between genuine communities or instead block honest newcomers. Neither benefit is automatic. Verification, anchors, direction, genesis activation and epoch contracts remain OPEN; no new anchor, raw-degree replacement, deferred cluster quota or exemption is selected. Removing a required gate or guarantor rewards is only a labeled research counterfactual. D48 permits changing participation/intent as a research question; it does not prescribe increasing loyalty. Useful retention and Atmo/application demand need evidence beyond more subjects or XP.
+
 ## 3. Time is part of the security model
 
 Money can move instantly. A credible history of human work cannot be bought instantly under the selected rules.
@@ -282,7 +304,7 @@ Facety aims to create conditions in which:
 
 **D48 — [OWNER HYPOTHESIS and selected research direction; no transition law selected], 2026-10-24.** The owner proposes that participants **may become more loyal to the network over time**. A participant's behavior/intent profile therefore need not be an immutable good/bad type. This extends the D32 participation/growth question and D46–D47's act/observer model; it does not turn XP, membership age or repeated presence into factual truth, verified personhood or permanent honesty. A person's intent can change without rewriting the validity of past acts or erasing past responsibility.
 
-For investigation, distinguish continued participation, willingness to inspect/respond/sponsor, and support for the network's rules from mere obedience to established members. Whether beneficial participation, perceived fairness, useful future opportunities or experienced costs change those choices is **[RESEARCH QUESTION]**, not a selected favorable feedback coefficient. Loss of confidence, reduced participation, concealment and attachment to one's own group are **[COMPETING RESEARCH EXPLANATIONS]**, not owner-selected outcomes. No monotone age/XP loyalty bonus, new reward, automatic forgiveness or mandatory service is introduced. Evidence must distinguish supplied preferences and scripted behavior from observed learning, voluntary retention and independently justified usefulness. The behavioral state, observable experience inputs, update law, heterogeneity and human calibration remain OPEN; native implementation is absent.
+For investigation, distinguish continued participation, willingness to inspect/respond/sponsor, and support for the network's rules from mere obedience to established members. Whether beneficial participation, perceived fairness, useful future opportunities or experienced costs change those choices is **[RESEARCH QUESTION]**, not a selected favorable feedback coefficient. Loss of confidence, reduced participation, concealment and attachment to one's own group are **[COMPETING RESEARCH EXPLANATIONS]**, not owner-selected outcomes. No monotone age/XP loyalty bonus, new reward, automatic forgiveness or mandatory service is introduced. Evidence must distinguish supplied preferences and scripted behavior from observed learning, voluntary retention and independently justified usefulness. The behavioral state, observable experience inputs, update law, heterogeneity and human calibration remain OPEN; native implementation is absent. D51 recruitment/maintenance experience and D52 scrutiny or harassment may change later choices in either direction; neither loop establishes that loyalty grows. Fixed-profile, no-feedback, time-only and group-allegiance alternatives must remain distinguishable.
 
 **[DIRECTION, 2026-10-22; clarified 2026-10-23] A bounded fraud budget.** Perfect detection is not required. The owner's 80% honest / 20% undetected-fake coin example illustrates tolerable bounded harm; it is not a calibrated acceptance threshold or proof of usefulness. Conditions must include:
 
@@ -565,6 +587,23 @@ A guarantee commitment is also a permitted network operation after 24 hours. **[
 The owner's phrase “a normal irrevocable coin after one day” selects maturity against the **original free guarantor veto**, not immunity from adjudicated fraud, sanctions or an authorized dispute freeze. D42 does not abolish the separate 24-hour invitation freeze or permit invitation spending before emission maturity.
 
 **[SELECTED D42 clarification, 2026-10-24] No automatic withdrawal.** After 24 hours the subject retains its own matured, non-vetoable emission right. The holder separately chooses withdrawal to ordinary Collector FACY or spending that own right on an eligible invitation. XP credit and expiry of the original free veto occur at maturity without waiting for that choice; neither subsequent operation credits XP again. Maturation MUST NOT itself move the backing into the ordinary Collector balance. Own-emission provenance, one-time use and the prohibition on market-funded invitations remain intact.
+
+**D42 preventive-maturation clarification, 2026-10-24 — [SELECTED meaning, not a new rule].** Cancellation and ordinary maturation are branches of **one conditional 24-hour boundary**, not independent reward and veto processes. The holder's reward vests only if the original act was not validly cancelled during its initial window. Under a minted-escrow representation the restricted backing may already exist at recording; maturation does not mint it again.
+
+```text
+Self-ID recorded at t0
+    -> before t0 + 24h: eligible free cancellation; no owner spend/withdrawal
+        -> cancelled: emission right invalidated; no ordinary maturation XP
+        -> uncancelled at ordinary maturity:
+             original free veto ends
+             subject +1 XP; each eligible guarantor +1 XP, once
+             own emission right matures and remains with its holder
+             no automatic Collector transfer
+                 -> later withdrawal OR eligible invitation use
+                 -> neither disposition awards another Self-ID XP credit
+```
+
+The independence in D42 concerns **later disposition**, not independence of cancellation from the right/XP maturation condition. The invitation has its own separate 24-hour freeze after its creation. Cancelling that invitation does not by itself retroactively cancel the already matured original Self-ID or its XP; any such effect needs a separately specified rule. This ordinary diagram chooses no precedence for frozen/disputed acts, debt, link changes or same-hour competing events, and is not a native migration.
 
 **[OPEN implementation details]** The final mint/escrow representation, disputed/locked maturity, debt and same-time event ordering, relation eligibility and prior-credit effects still require a migration contract. The no-automatic-transfer choice is resolved; these remaining details do not reopen it.
 
@@ -1043,7 +1082,7 @@ On the illustrative money-only calculation this needs slightly better than even 
 
 **[HYPOTHESIS, 2026-10-22] Calling seniors.** A dispute participant can call a more senior acquaintance for help, one with, say, ten times the XP. With some probability (for example 10%), such a person joins if one exists in the graph, so stakes and seniority rise in jumps.
 
-**[DIRECTION, 2026-10-22] Cluster disputes.** A participant who defends a proven violator without evidence draws attention to itself and may be part of the same scheme. After a violation is proven, disputes can be opened automatically and in parallel against the cluster that defended it.
+**[EARLIER D26 DIRECTION, 2026-10-22; qualified by D52] Cluster scrutiny.** Earlier discussion proposed automatic parallel disputes against those defending a proven violator. The retained purpose is public scrutiny, not automatic admissibility or guilt. D52 below makes each further investigation/claim/evidence/access step separate; mere defense, association or loss cannot supply a new violation or sanction.
 
 **[REFERENCE / OPEN, clarified 2026-10-23]** Attention is not a finding of guilt. Legitimate defense, mistaken judgment and knowing obstruction of established evidence differ. A separate sanction needs evidence of a defined identity or procedural duty, not mere association with a losing side or political disagreement. The legacy `clusterFollowUp` option is a scripted stress test, not a complete standard for proving obstruction.
 
@@ -1062,6 +1101,27 @@ On the illustrative money-only calculation this needs slightly better than even 
 **[OPEN]** The evidence standard, treatment of innocent mistakes, and safeguards against fabricated disputes are not final.
 
 A final result must be attributable to a specified procedure. The mere willingness of a wealthy or high-XP participant to join a side does not prove that side true.
+
+### 26.6 Second-order public accountability (D52)
+
+**D52 — [DIRECTION and falsifiable accountability hypothesis], documented 2026-10-24.** A high-XP participant's public defense can attract attention to that participant's own history, guarantees, invitation activity, Self-ID acts, XP sources and economic behavior. The first-order process concerns the originally challenged transaction. A **second-order investigation concerns a separately admissible alleged violation in the defender's own or otherwise applicable history**. It may continue after the original dispute ends, including after a successful defense; winning one claim supplies no immunity from a different, evidenced claim. Public history is attributable evidence to inspect, not proof that any violation exists.
+
+Keep eight stages separate:
+
+1. A public position is recorded and attributed.
+2. Some audience is exposed, depending on visibility, dispute significance and the declared reach model.
+3. Some exposed observers notice and choose to investigate, with their own time, goals and work limits.
+4. Investigators obtain and inspect available historical evidence.
+5. They may discover grounds for an independently admissible allegation, with error/correlation/missingness retained.
+6. Evidence reaches a willing qualified sponsor through actual contacts (§25.1), or stops/refuses/remains pending.
+7. A distinct formal case may open only under its own XP/stake/admissibility rules.
+8. A specified adjudication may produce only that case's authorized consequences, including actual collection and unpaid debt separately.
+
+No stage is guaranteed by the previous one. Exposure is not detection; detection is not admission, a verdict or recovery. Higher XP/significance may increase exposure under a declared hypothesis, not a new guilt probability or evidence-quality multiplier. Local collusive contacts may suppress investigation; outside-community observers may help only if they can access evidence and procedural authority. The Council's intended apex route retains OPEN referral, quorum and merits contracts; a wider audience does not invent them or transfer low-XP observers' responsibility to themselves as challengers.
+
+A defender can be correct, honestly mistaken, misinformed or knowingly dishonest. **Taking a public position, defending a suspicious act or being on a losing side is not an independent violation.** This mechanism adds no automatic monetary/XP penalty or blanket defender-chain liability; any already defined procedural exposure remains subject to its own duty/scope and OPEN contracts. A later case must identify its separate target, duty, supporting evidence, time and authorized remedy. Genuine coalitions are not false identities, and an act defect cannot be silently converted into false-person enforcement.
+
+**Hypotheses and competing explanations:** increased visibility can expose pre-existing misconduct and make dishonest defense less attractive; equally it can enable harassment of honest senior participants, crowd out other scrutiny, repeat one shared error or fail at sponsor/court capacity. A dishonest participant might win the original case yet lose more through independently justified later consequences, but that is a possible outcome to test—not a guaranteed offset, encoded punishment or proven deterrent. Match attention/work and histories, include no-extra-exposure, equivalent non-defense publicity, local/outside reach, ineffective routing and clean-history controls. Record public-position→inspection→discovery→opening→resolution times and pending stages, plus harms to innocent participants. The current `attentionFeedback` and legacy `clusterFollowUp` references are components/limited scripts, not a completed demonstration of this chain.
 
 <a id="27-council-of-101"></a>
 
@@ -1271,7 +1331,7 @@ more genuine active people
 
 This is a **hypothesis about useful coordination**, not a mathematical law of token prices. Counts of wallets, emitted tokens, selfie files, or XP alone do not establish it.
 
-Atmo's Bucket D should therefore be understood as a **protocol-native marketing mechanism**: it can amplify social-network development, but it cannot manufacture credible identities merely by spending.
+Atmo's Bucket D should therefore be understood as a **protocol-native marketing mechanism**: it can amplify social-network development, but it cannot manufacture credible identities merely by spending. D51 adds the hypothesis that existing external relationships plus continuing guarantor Self-ID XP motivate genuine recruitment and maintenance; D52 adds the possibility that accumulated authority increases investigative exposure rather than immunity. These may reinforce useful growth or enable collusive concentration/harassment. Neither more emission nor publicity supplies application demand, and no new payment or increasing-loyalty coefficient is selected.
 
 ### 34.1 Application-level uses and optional extensions
 
@@ -2290,6 +2350,14 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Honest-participation aim and tenfold research target recorded 2026-10-24
 
 **D50 — [SELECTED manifesto intent / research target], §1, “Honest participation and incentive asymmetry.”** Source: the owner's proposed English wording and recommendation to make **10× incentive asymmetry** measurable rather than claim a proven tenfold advantage. Honest participation should be substantially easier/more profitable; existing relationships, earned authority, public accountability, prevention and liability aim to raise fraud costs/reduce expected returns as the network grows. Test genuine-person violation coalitions as well as Sybil farms. Sustained fraud unprofitability with viable honest participation is a significant weaker target, not proof of tenfold superiority; defined common units/denominators, actual recovery and explicit strategy/horizon scope remain necessary. No achieved result, calibration, new reward/sanction or blanket guilt for coordination is selected.
+
+### Recruitment, public scrutiny and preventive maturation clarified 2026-10-24
+
+**D51 — [DIRECTION / HYPOTHESIS], §2.1, “Recruiting existing social capital.”** Source: the owner's explicit A/B/C integration/research task. Clarifies D17/D32's network-building incentive: finite pre-existing acquaintances can supply genuine recruitment opportunities; repeated qualifying Self-ID by guaranteed participants, not invitation alone, can return guarantor XP and motivate maintenance/bridging. Actual endogenous choice, honest-over-coalition advantage, retention and usefulness remain hypotheses; D33/D35/D36 admission gates stay conjunctive and unresolved operational fields remain OPEN. No reward rule or verified-personhood predicate changes.
+
+**D52 — [DIRECTION / HYPOTHESIS], §26.6, “Second-order public accountability.”** Same source task. A public high-XP defense can create audience/notice/work/evidence opportunities for a separately admissible own-history allegation, sponsorship and a new case, even after the first ends. It selects neither automatic guilt/defender sanctions nor a detection guarantee. Honest/mistaken/collusive actors, harassment, local versus outside reach, evidence dependence, routing and capacity remain separate controls. Qualifies the earlier D26 automatic-cluster proposal rather than treating it as the required independent evidence chain.
+
+**D42 further clarification — [SELECTED meaning reaffirmed, no migration].** Same task: valid cancellation within the initial window and ordinary maturity are branches of a single 24-hour condition. Uncancelled maturity credits ordinary subject/eligible-guarantor XP once and matures the retained own right while ending the original free veto. Only the holder's later withdrawal/invitation choice is independent. No automatic Collector transfer, disposition re-credit or automatic retroactive Self-ID cancellation from invitation cancellation; disputed/debt/relation/chronology effects remain OPEN.
 
 ### Earlier supersessions
 

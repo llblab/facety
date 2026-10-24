@@ -1,0 +1,118 @@
+## Goal
+
+Prepare a **read-only, evidence-traceable reconciliation** of three owner requests:
+
+- **A — Recruitment:** endogenous recruitment of genuine people from a finite, pre-existing external acquaintance pool, driven by applicable guarantor **Self-ID XP**, not invitation XP.
+- **B — Scrutiny:** public high-XP defense may trigger staged scrutiny of the defender’s independently admissible own-history violations; defense itself is not guilt or a sanctionable act.
+- **C — D42:** one conditional 24-hour veto/reward/mature-right boundary; later disposition remains independent, with no native migration.
+
+For each, distinguish **selected rule, research direction, hypothesis, executable reference, and missing causal links**. Identify the smallest discriminatory restricted pilot—or its precise blocker. This plan does not establish repository findings or authorize execution.
+
+## Constraints
+
+- All participants are **read-only**: no writes, Git mutations, tests, model runs, network requests, captures, or scheduler calls.
+- Reference state: supplied HEAD `26f1d8f`, plus coordinator-owned uncommitted D49 documentation changes. Distinguish committed evidence from that working-tree overlay; do not overwrite or adopt authorship of it.
+- The evidence-map participant owns complete primary-document reading. Later participants inspect cited passages and resolve contradictions rather than repeat full-document dumps.
+- Coordinator owns native-code investigation, integration, and final delivery.
+- Preserve existing boundaries:
+  - D33/D35/D36 require verified guarantees **and** internally vertex-disjoint XP-centered admission; unresolved anchors and activation contracts remain unresolved. No cluster quotas.
+  - D34 historical liability and D42 chronology remain gated and unimplemented.
+  - Native terminal XP, current-link liability, raw-degree admission, and fixed-Council mechanics remain explicitly labeled legacy/reference behavior.
+  - D49 resilience-growth is a priority hypothesis, not proof.
+  - The prepared 16-label sponsor-pipeline capture remains deferred and data-free.
+- Existing actor preflight does not resolve earlier lens-review semantic-preflight/source-delivery problems or constitute acceptance of future code.
+
+## Plan Slices
+
+### 1. Evidence map: complete reading and provenance
+
+Assign exclusively to **evidence-map**:
+
+1. Read completely, paging to EOF without tool-output gaps:
+   - `AGENTS.md`
+   - `docs/facety.protocol.en.md`
+   - `docs/insights.en.md`
+   - `docs/research.en.md`
+   - `docs/research-interactions.en.md`
+   - `docs/mechanisms.json`
+   - `docs/simulator.en.md`
+   - `BACKLOG.md`
+2. Record coverage:
+
+   | Exact path | Full line count | Full byte count | Read ranges / completion | Snapshot qualification |
+   |---|---:|---:|---|---|
+
+   A truncated read is not complete until remaining content is inspected. Recheck snapshot stability; flag changes that prevent consistent citations.
+3. Discover actual study README/checkpoint paths before citing them. Inspect relevant material for coalition-council, social-trust-threshold, timed-chekharda, causal-relay/accountability, one-day-incentives, topology-contract, d42-maturity, and prepared act-evidence/act-relay/sponsor-assessment/sponsor-pipeline work.
+4. Produce a compact citation ledger: exact path and line range, decision/finding identifier where available, evidence class, applicability, and limitation. Separate owner decisions, author proposals, findings, hypotheses, prepared contracts, and executed evidence.
+
+### 2. Coordinator: bounded native executable cross-check
+
+Coordinator traces only the implementation links needed to assess A/B/C. Evidence-map may inspect referenced source to substantiate a blocker, but does not duplicate the investigation.
+
+| Topic | Required causal trace | Discriminatory contrast to assess—not execute |
+|---|---|---|
+| **A** | Finite external acquaintances → recruitment choice → applicable guarantor Self-ID XP incentive → funded admission → measured outcome. Locate existing recruitment/social-graph and incentive/game pieces; identify which arrows are scripted, absent, or blocked by admission contracts. | Same finite acquaintance pool and keyed randomness; vary only the explicitly supplied valuation of applicable Self-ID XP, holding invitation XP separate. Determine whether current contracts support an actual recruitment choice or only a scripted-choice sensitivity analysis. |
+| **B** | Public defense → attention allocation → staged own-history observation → independent admissibility → adjudication → lawful consequence. Locate attentionFeedback, relay, and act-observation support; distinguish attention from evidence and evidence from liability. | Matched independently admissible history with versus without public defense; include clean-history defense and non-defense scrutiny controls. Defense may affect scrutiny exposure, never establish guilt. |
+| **C** | Original conditional entitlement/veto → 24-hour boundary → XP credit and mature own-emission right → separately chosen later disposition. Map selected D42 semantics against legacy terminal-credit/unspent-veto behavior. | Assess a restricted contract/state-transition pilot separating maturity from later withdrawal or invitation use. If current executable contracts cannot express it without choosing unresolved chronology or prior-credit rules, state that exact blocker; do not migrate native behavior. |
+
+For each contrast, identify reusable existing contracts, minimum additional assumptions, outcomes, falsifier, and prohibited inference. “Smallest executable” must mean executable with inspected components—not merely plausible pseudocode.
+
+### 3. Contradiction map: challenge fidelity and causal identification
+
+Using the plan and evidence ledger, **contradictions** checks:
+
+- Are executable components being mistaken for faithful implementations of selected rules?
+- Does A substitute invitation XP, unlimited recruits, scripted activity, or evaluator-known genuine identity for the requested mechanism?
+- Does B conflate defense, association, suspicion, admissibility, verdict, and sanction?
+- Does C accidentally restore consumption-triggered maturity, indefinite veto, or automatic Collector conversion?
+- Are prepared checkpoints represented as completed studies?
+- Are legacy-safe restricted pilots falsely blocked by requirements needed only for full protocol fidelity?
+- Are private-utility sensitivity results overclaimed as adoption, useful retention, network effects, or mechanism confirmation?
+
+Preserve unresolved disagreements with exact citations and the evidence needed to resolve them.
+
+### 4. Verification and concise synthesis
+
+**Verifier** checks citation support, full-read coverage, status labels, causal gaps, and pilot feasibility against inspected evidence. Missing coordinator source evidence remains missing—not silently inferred.
+
+**Merger/normalizer** return a concise synthesis, approximately 3,500 words maximum, containing:
+
+- Full-read coverage.
+- A three-row **selected / direction / executable / gap / contrast** matrix.
+- Strongest blockers and legacy-safe bounded pilots.
+- Alternatives, falsifiers, untested contexts, and uncertainties.
+- Honest `complete`, `degraded`, or `insufficient_data` status.
+
+Coordinator retains final integration and delivery responsibility.
+
+## Risks
+
+- **Snapshot drift:** working-tree D49 text may change while participants read.
+- **Semantic substitution:** available recruitment, attention, relay, or incentive machinery may resemble—but not implement—the requested causal chain.
+- **Oracle leakage:** evaluator identity/history truth may enter protocol choices without a declared observation channel.
+- **Chronology contamination:** C may require unresolved event ordering, disputes, debt, eligibility, or prior-credit effects.
+- **False causal certainty:** supplied valuations and scripts can discriminate conditional consequences without demonstrating endogenous real-world behavior.
+- **Evidence inflation:** a registration, README, deferred capture, or multi-reviewer agreement is not a measured result.
+
+## Validation Gates
+
+1. **Coverage:** all eight mandatory documents have verified complete reads; discovered study paths are exact.
+2. **Traceability:** every material assertion has a passage/source location or is explicitly labeled unknown/proposed.
+3. **Classification:** selected rules, directions, hypotheses, legacy executable behavior, and observations remain distinct.
+4. **Feasibility:** each pilot names existing entrypoints/contracts, controlled variation, observable outcome, assumptions, and a falsifier—or specifies the missing contract that prevents execution.
+5. **Safety:** no defense-only penalty, omniscient protocol input, invented OPEN rule, deferred capture execution, or native migration.
+6. **Handoff:** synthesis incorporates coordinator source findings without claiming that research delivery, code acceptance, or execution has occurred.
+
+## Stop Conditions
+
+Stop or downgrade the affected conclusion when:
+
+- A mandatory source cannot be fully read or citations cannot be tied to a stable inspected snapshot.
+- A proposed pilot requires selecting an unresolved protocol rule rather than declaring a legitimate restricted simulation assumption.
+- Native feasibility cannot be substantiated from inspected source.
+- Evidence requires personal data, execution, mutation, or deferred capture.
+- Contradictory sources cannot be reconciled without owner authority.
+- The requested conclusion exceeds conditional scripted/supplied-utility evidence.
+
+An isolated blocker should not suppress other safe restricted pilots. Report the exact unresolved arrow and return the remaining supported analysis.

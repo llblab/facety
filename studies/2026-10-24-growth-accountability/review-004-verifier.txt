@@ -1,0 +1,44 @@
+ACTOR_REVIEW_RESULT
+
+## Verdict
+
+**Partially supported: sufficient for a bounded gap synthesis, insufficient for an affirmative feasibility or mechanism conclusion.**
+
+The supplied contradiction map supports an answer distinguishing selected rules, legacy behavior, narrower contrasts, and missing execution evidence. It does **not** establish that A, B, or C is presently executable end to end.
+
+The exact research question, standalone plan, original evidence map, and completed synthesis are not present in this handoff. Consequently, whether the synthesis fully answers the intended question **within all stated constraints remains not verified**.
+
+## Evidence
+
+The only substantive research artifact supplied here is the contradiction map identified as `execution.json#command-003`. Its citations are documentary leads inherited from an earlier evidence map, not independently inspected source or test evidence in this review.
+
+| Classification | Finding | Basis and limit |
+|---|---|---|
+| **Proven within the supplied packet** | The analysis explicitly distinguishes selected D42 rules from legacy executable behavior. | Contradictions §1 and Resolution Evidence C. This proves the distinction is preserved in the analysis, not that native behavior has been verified. |
+| **Proven within the supplied packet** | Each requested pilot has a named evidence gap and a narrower proposed endpoint. | A: accounting/utility contrast; B: pre-case scrutiny; C: restricted ordinary-state contract tests. These are bounded proposals, not completed experiments. |
+| **Disproven as an inference** | Reward arithmetic or scripted utility comparisons establish incentive-sensitive recruitment from a finite external pool. | The reported evidence lacks the connected opportunity → choice → funded-admission chain. This rejects the inference, not the possibility that such recruitment could occur. |
+| **Disproven as an inference** | Generic attention allocation establishes scrutiny caused specifically by public high-XP defense. | Defense, XP, prominence, resources, and displaced scrutiny are not shown to be separately controlled. |
+| **Disproven as an inference** | Legacy maturity controls demonstrate executable D42 compliance. | The map explicitly reports terminal credit and continuing unspent veto as legacy behavior, distinct from the selected maturity rule. |
+| **Unknown** | The required adapters or executor exist in native source. | No inspected implementation, callers, tests, or reproducible traces are supplied. Absence from this packet is not proof of absence from the repository. |
+| **Unknown** | The eventual synthesis satisfies the original research question and every constraint. | Neither the exact question and complete constraints nor a completed synthesis is available for comparison. |
+
+The map also correctly preserves two important limits: public defense is not independent evidence of wrongdoing, and restricted contrasts neither authorize execution nor satisfy mechanism-confirmation requirements.
+
+## Gaps
+
+1. **Question and acceptance criteria:** Supply the exact research question, constraints, and required answer type. A feasibility question may be answered “not established”; a request for a demonstrated executable pilot requires stronger evidence.
+2. **Upstream artifacts:** Supply the standalone plan and original evidence map, retaining snapshot and degraded-review qualifications. Repetition through the contradiction map is not independent corroboration.
+3. **Native execution evidence:**
+   - **A:** finite acquaintance-pool semantics, opportunity observations, choice-policy inputs, depletion handling, and funded admissions.
+   - **B:** public-defense and XP insertion points, own-history selection, admissibility routing, and controlled attention-budget measurements.
+   - **C:** maturity executor, exact transition ordering, cancellation-boundary contract, and invariant tests.
+4. **Candidate synthesis:** Review its actual wording before certifying completeness. It must preserve “not verified” rather than convert documentary omissions into implementation-absence claims.
+5. **Execution and confirmation authority:** Any subsequent runs or mechanism claims need the project’s separate authorization and registration gates.
+
+## Confidence
+
+**High** that the supplied material supports a cautious evidence-gap answer and does not establish end-to-end feasibility.
+
+**Limited** confidence in the underlying source claims because their citations were not independently inspected.
+
+**Overall status: degraded / partially supported.** A constraint-preserving synthesis is possible, but full question coverage and executable feasibility are not verified.

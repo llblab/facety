@@ -25,6 +25,16 @@ test('every normalized experiment control has inventory meaning, units, scope, p
   }
 });
 
+test('native terminal XP and fixed Council inventory remain legacy references, not selected D42/D33 rules', () => {
+  const config = experimentConfig();
+  assert.equal(config.policy.xpFinality, 'terminal');
+  assert.equal(config.policy.councilSize, 101);
+  for (const path of ['policy.xpFinality', 'policy.councilSize']) {
+    const row = register.inventory.parameters.find(row => row.paths.includes(path));
+    assert.equal(row.status, 'legacy-reference', path);
+  }
+});
+
 test('mechanism records retain open links, falsifiers, source paths and trace bindings without asserting emergence', () => {
   const ids = register.mechanisms.map(row => row.id);
   assert.equal(new Set(ids).size, ids.length);

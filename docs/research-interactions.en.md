@@ -2,6 +2,12 @@
 
 Design-only appendix of the [integrated programme](research.en.md#integrated-research-programme-d39-2026-10-24). The parent owns R1–R7, I1–I9 and shared measurement/method contracts; this appendix owns the detailed interaction contrasts and the first bounded discriminator. [BACKLOG.md](../BACKLOG.md#integrated-research-programme-d39) remains the only execution owner. No experiment or protocol choice follows from this design inventory.
 
+## Current A/B/C interaction focus
+
+**D51/D52, owner task 2026-10-24:** [the existing research owner](research.en.md#endogenous-recruitment-and-second-order-accountability) now makes the recruitment/public-scrutiny feedback explicit. P23/P24 connect finite external acquaintances, reward-sensitive recruitment, repeated guarantor Self-ID XP and liability; P34 adds the selected independent-path/bridging constraint, with unresolved D33 anchors/verification preserved. P45/P56 connect earned procedural influence/public defense to paid own-history scrutiny, qualified sponsorship and a separately admissible case, not automatic defender guilt. M01/M02's D42 cancellation-conditioned ordinary maturation is the reward/prevention boundary; later holder disposition is independent, not a parallel unconditional reward process.
+
+The favorable higher-order loop is genuine recruitment→reach/earned XP→public influence/exposure→evidence-backed correction→credible participation. The competing loop is collusive recruitment→concentrated XP→obstructed evidence/sponsors→concealment/extraction. Compare size/degree/resources, external pools, reward/path counterfactuals, original-case outcomes, local/outside exposure, common evidence, routing/capacity and innocent-defender harm; record stage clocks and no-feedback/fixed-profile alternatives. Source-supplied private value or an XP rise alone cannot close the loop. Current native `withholdGuarantorXp`, attention/relay and identity-reference transitions permit restricted research; actual endogenous pool choice, defense-to-history routing and full selected path/maturation/merits fidelity must be demonstrated or marked as their precise blockers. No new data, selected rule, blanket sanction or parallel execution ledger is created here; BACKLOG owns the bounded pilots.
+
 ## Reference handles and applicability
 
 The following handles identify inspected code, not new APIs or interchangeable models:

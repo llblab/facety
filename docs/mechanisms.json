@@ -1,6 +1,6 @@
 {
   "schema": "facety-mechanisms/v1",
-  "documentedOn": "2026-10-23",
+  "documentedOn": "2026-10-24",
   "owner": "docs/research.en.md",
   "intent": "Facety is a coordination protocol for mutual identification through mutual guarantees and public accountability.",
   "legend": {
@@ -21,12 +21,12 @@
       ],
       "feedback": {
         "implemented": "Reward→XP→future eligibility is implemented.",
-        "missing": "No outcome-driven increase in participation or contribution quality; this is an open behavioral pathway."
+        "missing": "D51's finite pre-existing external acquaintance pool and incentive-sensitive recruitment/maintenance choices are not implemented by exogenous activity; contribution-quality and actual retention returns remain unproved."
       },
       "signs": "+ contribution→XP conditional on finality and retained source; XP→quality has no implemented sign.",
-      "delay": "24-hour maturity by default; cancelled acts never finalize XP.",
+      "delay": "D42 selects cancellation-conditioned ordinary credit at 24h; native terminal credit waits for disposition and remains legacy.",
       "bottleneck": "Fresh work, qualifying guarantees, attention and fees are distinct resources.",
-      "basis": "Selected terminal XP and non-transferability; behavioral activity rates are exogenous.",
+      "basis": "Non-transferable XP is selected; D42 selects ordinary uncancelled 24h maturity, not native legacy terminal credit. D51 clarifies pre-existing relationships→recruitment/guarantees→repeated Self-ID XP, never invitation XP; endogenous feedback remains a hypothesis.",
       "code": [
         "src/model.mjs#createSelfId/#credit",
         "src/experiment.mjs#willing",
@@ -54,7 +54,7 @@
       "path": [
         "Declared daily-slot attention (or explicit first-attended counterfactual) → paid fallible observation → optional paid verification → available, funded response attempt.",
         "An authorized pre-deadline invitation veto prevents this admission; its already burned source stays burned. Legacy source XP is replayed separately from the pending D42 rule.",
-        "Self-ID veto is a separate native operation with its explicitly labeled legacy unspent timing."
+        "D42 couples valid initial-window cancellation and ordinary right/XP maturation in one 24h condition; the native separate unspent-veto/terminal-credit operations remain explicitly legacy, not two selected independent economic processes."
       ],
       "feedback": {
         "implemented": "Prevention changes later usable rights, active count and admission opportunities.",
@@ -63,7 +63,7 @@
       "signs": "− suspicious usable rights if timely/correct; − genuine rights on false positives; no general welfare sign.",
       "delay": "Invitation cancellation strictly precedes its freeze endpoint; native Self-ID unspent veto remains legacy pending D42.",
       "bottleneck": "Attention, veto authority and timing; a free protocol veto does not mean zero human work.",
-      "basis": "D44 modeling focus; selected invitation-veto window with explicit attention/evidence/response assumptions and legacy native XP/custody semantics.",
+      "basis": "D42 preventive maturation and D44 attention/evidence focus; selected original Self-ID window and separate invitation freeze, with legacy native XP/unspent-veto/custody deviations. Independence concerns later disposition, not cancellation versus maturation.",
       "code": [
         "src/model.mjs#cancelSelfId/cancelInvitation",
         "src/experiment.mjs#guardianWork/inspectionWork",
@@ -173,19 +173,19 @@
     {
       "id": "M05",
       "question": "Does public exposure attract useful investigative response?",
-      "initiatingChange": "A challenge/entry or conspicuous public history becomes an attention target.",
+      "initiatingChange": "A challenge/entry, public high-XP defense or conspicuous attributable history can become an attention target; public defense is not guilt.",
       "path": [
         "Optional attentionFeedback adds challengers/entrants to the screening pool.",
         "Fixed inspection opportunities are redirected; fallible findings can cause more challenges."
       ],
       "feedback": {
         "implemented": "Challenge→attention→later target allocation is a conditional returning path.",
-        "missing": "No learned investigative intensity or demonstrated net correction benefit; targets are not only accused subjects."
+        "missing": "D52's explicit audience→notice→paid historical inspection→independent allegation→sponsor→case→consequence chain is not supplied by a screening flag. No learned intensity or demonstrated net benefit; harassment/displacement and post-original-case scrutiny remain separate."
       },
       "signs": "+ attention→target probability; ± correct/wrongful correction; fixed work can crowd out other subjects.",
       "delay": "Later screening/inspection opportunities; public does not mean noticed immediately.",
       "bottleneck": "Fixed inspection effort and candidate availability; source/decision quality remain assumptions.",
-      "basis": "Optional behavioral reference, disabled by default.",
+      "basis": "Optional attentionFeedback reference, disabled by default; D52 refines existing public-exposure hypotheses without selecting automatic discovery, admissibility or punishment.",
       "code": [
         "src/experiment.mjs#attention/inspectionWork",
         "test/disputes.test.mjs"
@@ -213,12 +213,12 @@
       ],
       "feedback": {
         "implemented": "Admission→population→opportunities/thresholds/budget exhaustion→later admission is implemented.",
-        "missing": "Fresh-media production economies, useful services and calibrated co-presence learning are not endogenous."
+        "missing": "D51 finite external acquaintances, endogenous recruitment/maintenance, fresh-media production economies, useful services and calibrated learning are not implemented by scheduled invitation rates."
       },
       "signs": "+ opportunities/workload; + threshold at powers of ten restricts admission; net capacity sign conditional.",
       "delay": "24-hour invitation freeze; 28-day activity window; per-day reference scheduler.",
       "bottleneck": "Finite operator/cohort effort, independent human count, qualifying guarantors and access.",
-      "basis": "Selected admission/activity mechanics plus exogenous activity/matching/cost references.",
+      "basis": "D33/D35/D36 select qualifying guarantees AND internally vertex-disjoint XP-centered paths; runtime uses a labeled legacy active-count/raw-support reference, with exogenous activity/matching/costs. D51 bridging/recruitment effects are hypotheses, not gate exemptions.",
       "code": [
         "src/model.mjs#requiredGuarantors/createInvitation/acceptInvitation",
         "src/experiment.mjs#runExperiment",
@@ -253,7 +253,7 @@
       "signs": "+ XP→rank/access; − losing-case XP→later access; seat counts do not sign actual decisions.",
       "delay": "Terminal XP, case finality and active-member expiry; past decisions are not silently reversed.",
       "bottleneck": "Qualified/funded challengers, final human judgment and OPEN case-admission/merits rules.",
-      "basis": "Selected active top-101 equal-vote architecture; smaller Council and depth-triggered merits are named references.",
+      "basis": "D33 selects difficulty-sized consuls/equal votes and no formal one-consul authority; fixed top-101 and depth-triggered merits remain native legacy/research references. No independent voting, apex referral or selected merits is inferred.",
       "code": [
         "src/model.mjs#council/penalize",
         "src/disputes.mjs#challengeAccess",
@@ -284,7 +284,7 @@
       ],
       "feedback": {
         "implemented": "Current resources affect feasibility; post-run utility has no automatic return into simulation.",
-        "missing": "Network credibility, remaining future opportunities, belief updating, sincere loyalty and adaptive participation are unimplemented."
+        "missing": "D51 finite outside recruitment opportunities and D48 outcome-driven credibility, belief updating, sincere loyalty and adaptive participation are unimplemented. M04's optional prospective sponsor assessment is not cohort recruitment, actual payoff or learning."
       },
       "signs": "Unknown: accountability or concealment can both protect perceived future value.",
       "delay": "Discounted remaining future income, not sunk effort; no endogenous clock yet.",
@@ -539,7 +539,7 @@
       "intervention": "Toggle follow-ups with equal work, genuine/collusive matched neighborhoods and erroneous seed verdicts.",
       "alternative": "Encoded association sanctions or a non-executing branch (a >=0 counter is not a positive witness).",
       "falsifier": "False initial judgment produces a cascade, or cluster follow-up never actually executes in claimed evidence.",
-      "status": "Lineage work bounded by tests; cluster positive-execution/effect evidence incomplete.",
+      "status": "Lineage work bounded by tests; cluster positive-execution/effect evidence incomplete. Legacy association-driven cluster cases do not implement D52 independent allegations or prove guilt from defense; do not use them as the requested secondary-investigation mechanism.",
       "diagram": "M15 [A] verdict → lineage/defender follow-up → cases → verdict (±; no guilt inference)"
     }
   ],
@@ -796,8 +796,8 @@
         ],
         "units": "enum",
         "scope": "XP-source credit",
-        "status": "selected-rule",
-        "meaning": "Terminal credit default; immediate is comparison, not interchangeable timing.",
+        "status": "legacy-reference",
+        "meaning": "D42 selects ordinary cancellation-conditioned 24h maturity credit; native terminal default/immediate comparison are retained historical research semantics, not selected D42 timing.",
         "provenance": "docs/facety.protocol.en.md; src/model.mjs DEFAULT_POLICY",
         "mechanisms": [
           "M01"
@@ -851,8 +851,8 @@
         ],
         "units": "seats",
         "scope": "Council rank cutoff",
-        "status": "selected-rule",
-        "meaning": "Selected target 101; small named boundary references do not change it. XP ranks seats, not vote weight.",
+        "status": "legacy-reference",
+        "meaning": "Native fixed target101 remains legacy; D33 selects difficulty-sized consuls with population caps and no formal one-consul authority. XP ranks seats, not equal vote weight; referral/merits contracts remain OPEN.",
         "provenance": "docs/facety.protocol.en.md §27; src/model.mjs council",
         "mechanisms": [
           "M07"

@@ -1,0 +1,146 @@
+## Question
+
+What is already selected, proposed, hypothesized, executable or missing for:
+
+- **A:** genuine recruitment from a finite pre-existing external acquaintance pool, motivated by applicable guarantor **Self-ID XP**, not invitation XP;
+- **B:** public high-XP defense increasing scrutiny of independently admissible violations in the defender’s own history, without defense establishing guilt;
+- **C:** D42’s conditional 24-hour XP/veto/mature-right boundary, independently of later disposition?
+
+**Status: `degraded` for end-to-end feasibility; complete for mandatory primary-document reading.** This evidence-map handoff establishes documentary support and contradictions, not coordinator source verification, execution authorization or acceptance of code.
+
+## Evidence Map
+
+### Snapshot and reading coverage
+
+Inspected HEAD was **`26f1d8f3c31b0ed130759c87d940082db7f44d7e`**. Read-only Git inspection showed coordinator-owned changes in nine documentation files. The mandatory documents modified relative to HEAD were `BACKLOG.md`, protocol, insights, research and simulator documentation.
+
+All eight mandatory documents were read completely through EOF. Reads below were not truncated; continuation notices were followed. SHA-256 hashes were checked before and after reading and remained identical; HEAD and the dirty-path list also remained unchanged.
+
+| Exact path | Lines | Bytes | Read ranges; completion | Snapshot qualification; SHA-256 prefix |
+|---|---:|---:|---|---|
+| `AGENTS.md` | 25 | 7,486 | 1–25; complete | HEAD-identical; `c6b3dcf0729ea24b` |
+| `docs/facety.protocol.en.md` | 2,352 | 237,971 | 1–300, 301–600, 601–900, 901–1200, 1201–1550, 1551–1900, 1901–2150, 2151–EOF; complete | D49 working-tree overlay; `3ec5b2959cde7d2c` |
+| `docs/insights.en.md` | 276 | 123,149 | 1–70, 71–130, 131–180, 181–230, 231–EOF; complete | D49 overlay; `08400469dbbb22f8` |
+| `docs/research.en.md` | 266 | 63,158 | 1–90, 91–180, 181–EOF; complete | D49 overlay; `2395aab574529aa1` |
+| `docs/research-interactions.en.md` | 136 | 31,394 | 1–80, 81–EOF; complete | HEAD-identical; `0187ff01192ed2b8` |
+| `docs/mechanisms.json` | 1,685 | 81,778 | 1–400, 401–850, 851–1300, 1301–EOF; complete | HEAD-identical; `8d6d2741d6734705` |
+| `docs/simulator.en.md` | 366 | 98,479 | 1–80, 81–150, 151–220, 221–300, 301–EOF; complete | D49 overlay; `c705a362481c8be8` |
+| `BACKLOG.md` | 141 | 47,334 | 1–65, 66–EOF; complete | D49 overlay; `3eccf37168069892` |
+
+**Citation convention:** line numbers below refer to this stable inspected working tree. Non-D49 passages are committed content but can have shifted line numbers following overlay insertions. The overlay was inspected, not altered or adopted as this participant’s authorship.
+
+Actual study paths were discovered with `find`, not inferred. These READMEs were also read completely:
+
+| Exact README path | Lines / bytes | Evidence/status |
+|---|---:|---|
+| `studies/2026-10-22-coalition-council/README.md` | 83 / 7,615 | Historical H1/H2 model confirmations |
+| `studies/2026-10-22-social-trust-threshold/README.md` | 99 / 8,508 | Exploratory finite-menu games |
+| `studies/2026-10-22-timed-chekharda/README.md` | 92 / 8,130 | Exploratory games; diagnostic XP obstruction |
+| `studies/2026-10-23-causal-core/README.md` | 104 / 16,277 | Executed diagnostic/exploratory relay |
+| `studies/2026-10-23-accountability-audit/README.md` | 65 / 11,629 | Diagnostic audit and custody checkpoints |
+| `studies/2026-10-23-topology-contract/README.md` | 87 / 8,604 | Standalone graph witnesses; unselected recommendations |
+| `studies/2026-10-24-one-day-incentives/README.md` | 143 / 18,418 | Executed F45 accounting/conditional utility diagnostic |
+| `studies/2026-10-24-d42-maturity/README.md` | 67 / 11,934 | Executed legacy-boundary controls and author audit |
+| `studies/2026-10-24-act-evidence/README.md` | 24 / 4,809 | Engineering checkpoint, not research outcomes |
+| `studies/2026-10-24-act-relay/README.md` | 26 / 5,617 | Engineering checkpoint; deliberately blocked cases |
+| `studies/2026-10-24-sponsor-assessment/README.md` | 24 / 5,812 | Engineering checkpoint; supplied private utility |
+| `studies/2026-10-24-sponsor-pipeline/README.md` | 43 / 8,209 | Prepared method, no capture |
+
+The sponsor-pipeline directory contained only README, design, contract, runner, analyzer and pre-data validation files—no listed attempt/block/report outputs. Its **deferral** is the D49 overlay’s current instruction, not a change to the committed frozen method.
+
+### Compact citation ledger
+
+| Citation | Identifier / class | Applicability and limitation |
+|---|---|---|
+| `docs/facety.protocol.en.md:149–165`, `769–775`, `871–887` | D17/D10; direction plus selected XP arithmetic | Guarantees compensate network building; acquaintances matter; XP derives from qualifying Self-ID. Does not define finite external recruitment or endogenous choice. |
+| `docs/facety.protocol.en.md:545–597` | D42; selected ordinary lifecycle, remaining OPEN contracts | XP and original free-veto expiry at 24 hours; retained mature own right; later disposition independent. Not native implementation. |
+| `docs/facety.protocol.en.md:603–661` | D33/D35/D36/D41; selected admission requirements | Own-emission funding plus conjunctive guarantees/path support; verification, anchors and transitions remain OPEN. |
+| `docs/facety.protocol.en.md:930–952` | D28/D46/D47; direction/model distinctions | Discovery, sponsorship, evidence, entry and adjudication differ. Neither signals nor high XP establish truth. |
+| `docs/facety.protocol.en.md:1036–1038` | D26; direction qualified by reference/OPEN safeguard | Defense can attract attention; separate sanctions need a defined independent violation/duty. |
+| `docs/mechanisms.json:15–47`, `206–237`, `278–309` | M01/M06/M08; implemented/missing-link inventory | Reward/eligibility and population constraint returns exist; behavioral participation, future value and learning returns are absent. Contains stale selection labels discussed below. |
+| `docs/mechanisms.json:174–203`, `513–544` | M05/M15; optional reference hypotheses | Attention reallocates inspections; cluster follow-up positive/effect evidence incomplete. Not a faithful B implementation. |
+| `docs/simulator.en.md:93–135` | D46–D48; implementation contract | Per-act environment, funded Self-ID relay and optional assessment exist. Act-defect cases stop before opening/enforcement. |
+| `docs/simulator.en.md:189–217`, `235–258` | Coverage / legacy model contract | Terminal XP, unspent veto, raw support, fixed Council and current-link liability explicitly distinguished from selected rules. |
+| `studies/2026-10-24-one-day-incentives/README.md:74–125` | F45; executed diagnostic | Invitation-only sponsor delta is `(-1 FACY, 0 XP, +1 work)`; invitation-plus-guarantee is `(-1,+1,+2)`. Fixed scripts and supplied terminal utility, not recruitment choice. |
+| `studies/2026-10-22-coalition-council/README.md:69–74` | H1/H2; historical confirmed model claims | XP does not feed back into behavior; H1 retains population-size alternative. Not evidence for XP-induced recruitment. |
+| `studies/2026-10-22-timed-chekharda/README.md:38–54`, `88–92` | Exploratory/diagnostic; historical proposals | Attention prioritizes inspection, coalition conduct scripted. Historical defender-liability proposal and broad XP-only conclusion require later qualifications. |
+| `studies/2026-10-23-causal-core/README.md:42–70` | F26; executed exploratory relay | Matched-resource routing can make evidence actionable; supplied review/verdict and genuine harm remain. Not integrated defense-to-history scrutiny. |
+| `studies/2026-10-24-d42-maturity/README.md:15–32` | F46; executed legacy diagnostic/source account | Idle XP zero and veto succeeds at 24; disposition triggers credit; chronology, link recipients and prior-credit issues exposed. |
+| `studies/2026-10-24-act-relay/README.md:5–12`; `studies/2026-10-24-sponsor-assessment/README.md:5–10` | Engineering evidence | Funded pre-case stages and supplied willingness exist; no act court, actual act payoff or completed B consequences. |
+| `studies/2026-10-24-sponsor-pipeline/README.md:3–24` | Prepared contract | 16 labels/1600 episodes planned; request-to-guard endpoint, structural zero cases. No captured findings. |
+| `docs/research.en.md:5–23`; `BACKLOG.md:5–10` | **D49 overlay**, owner hypothesis/research priority | Four-way resilience/growth comparison and same-unit accounting proposal; no runnable system-level study or proof. |
+
+### Three-question reconciliation
+
+| Topic | Selected / direction / hypothesis | Documented executable reference | Exact gap and discriminatory contrast |
+|---|---|---|---|
+| **A — Recruitment** | Selected qualifying Self-ID XP goes to subject/eligible guarantors; guarantee XP compensates network building. Acquaintance-based growth is direction; willingness/growth return is hypothesis. The new finite external-pool recruitment request is not already implemented merely by these passages. | Cohort acquaintance/activity machinery; funded admission; games; F45’s three fixed local scripts and explicit utility calculations. | Missing demonstrated chain: **finite external pool → observed recruitment opportunities → actual incentive-sensitive recruitment choice → funded admission**. Vary only applicable guarantor Self-ID-XP valuation, keeping invitation-only XP separate, same finite pool/resources/keyed opportunities. Existing documentation substantiates fixed-script sensitivity, not this endogenous choice adapter. |
+| **B — Scrutiny** | Public prominence/defender scrutiny is direction. Independent admissibility and guilt separation are mandatory boundaries; attention causing useful correction is hypothesis. | `attentionFeedback` target allocation; optional verification; legacy identity disputes; bounded evidence relay; act-observation/pre-case adapter. | Missing demonstrated integration: **public defense → staged inspection of a specific own-history allegation → independent admission → lawful remedy**. Compare matched history with/without defense, plus clean-history defense and non-defense scrutiny controls. Existing act-defect path deliberately blocks adjudication. |
+| **C — D42** | Selected ordinary uncancelled act credits XP once and ends original free veto at 24 hours; mature own right remains; withdrawal/invitation use is independent. Freeze/debt/eligibility/prior-credit ordering remains OPEN. | Native explicit disposition/custody and historical F46 controls/audit; terminal XP and indefinite unspent veto are legacy. | No documented native age-maturity mode. An ordinary restricted state-transition contract need not settle disputed histories, but **existing inspected documentation does not establish an executable D42 pilot**. Native migration remains gated. |
+
+## Contradictions
+
+1. **The structured register has stale present-tense selection labels.**  
+   `docs/mechanisms.json:799–800` calls terminal XP `selected-rule`; `854–855` calls 101 the selected Council target. M01 and M07 likewise retain older selection language. The current protocol and simulator boundary explicitly supersede these meanings. Treat the JSON entries as historical/reference implementation descriptions—not competing owner decisions. **No files were repaired.**
+
+2. **Historical “liability for defenders” is not authority to punish defense.**  
+   `studies/2026-10-22-timed-chekharda/README.md:51` proposes defender chain liability. The later protocol qualification at `1038` requires independent evidence of a defined identity/procedural duty. B cannot inherit blanket defender liability from the old lever list.
+
+3. **Historical strong causal wording exceeds current retained scope.**  
+   The timed study’s final paragraph attributes all wins to XP dominance and realistic fake costs. `docs/insights.en.md:118–122` retains narrower F19–F21 interpretations: assumed costs, finite menus and one diagnostic obstruction witness, not universal necessities.
+
+4. **Preparation and software implementation are distinct.**  
+   Act-evidence, act-relay and sponsor-assessment are implemented engineering checkpoints. Sponsor-pipeline is a prepared diagnostic method. Calling all four “completed studies,” or treating request-to-guard counts as case-opening evidence, would be false.
+
+5. **Full-protocol gates must not falsely prohibit limited references.**  
+   `docs/research-interactions.en.md:14–16` explicitly permits restricted native-reference contrasts while distinguishing stronger design/calibration work. D33/D34 fidelity is not required to study a declared legacy reference. Conversely, this permission does not conjure missing recruitment choice, act remedies or age-maturity execution.
+
+6. **Review provenance remains qualified.**  
+   The causal-core README `:72–88` and accountability-audit README `:21–25` preserve degraded synthesis/source-delivery limitations. Agreement or successful actor preflight cannot retroactively resolve them.
+
+## Missing Evidence
+
+### Smallest bounded pilots—or exact blockers
+
+**A: currently supported candidate is accounting/utility discrimination, not actual recruitment.**
+
+- **Reusable contracts:** `runOneDayIncentiveForks`, payoff analysis, funded invitation/guarantee operations.
+- **Observable contrast:** extra applicable guarantor Self-ID XP has a distinct conditional value; invitation alone supplies no additional terminal sponsor XP in F45.
+- **Minimum assumptions:** explicit XP valuation, FACY/work valuation and incremental expected losses; unknown losses stay unknown.
+- **Falsifier:** at supplied valuations, waiting or invitation-only remains preferable; unknown required loss inputs make preference undetermined.
+- **Prohibited inference:** adoption, finite-pool endogenous recruitment, useful retention or network effects.
+- **Precise blocker for requested A:** no inspected documentary evidence establishes a finite external-pool depletion/opportunity contract and recruitment-choice policy connected to these valuations. Coordinator must inspect source before declaring such an adapter present or absent. D33 is an additional full-fidelity gate, not the reason this legacy-sensitive choice arrow is missing.
+
+**B: pre-case scrutiny is potentially separable from act adjudication.**
+
+- **Reusable contracts:** attention allocation; funded observation/package/routing/review; strict XP/stake checks.
+- **Smallest safe endpoint:** paid looks, positive/negative/missing observations, usable independently specified packages and sponsor refusal/request—**not sanctions**.
+- **Controls:** identical own-history evidence with/without public defense; clean defender; equivalent non-defender scrutiny; fixed attention budget and displaced-target reporting.
+- **Falsifier:** defense changes guilt/consequence with the same admitted evidence, or clean-history defense alone causes punishment. A null allocation effect also rejects the proposed attention effect in that setting.
+- **Precise blockers:** defense-to-own-act-history adapter is not substantiated here; `act-defect-adjudication-unimplemented` prevents the full act-level consequence chain. A separately admissible **false-identity** allegation might reuse legacy identity adjudication, but that is a narrower jurisdiction and requires coordinator source verification; an act defect must not be substituted with false personhood.
+
+**C: a restricted ordinary contract can be specified without selecting all disputed-case rules, but is not yet an inspected executable.**
+
+- **Restriction:** fixed eligible guarantors; no dispute/lock, debt, link change, penalty, invitation cancellation or existing historical credit.
+- **Contrast:** cancel at 23; idle through exactly 24; remain idle longer; separately withdraw or invitation-use later. Require one XP credit at maturity, no original veto thereafter, no automatic Collector transfer and no disposition re-credit.
+- **Outcomes:** XP provenance, custody, right status, original-veto result and terminal disposition.
+- **Falsifier:** unused maturity leaves XP zero; post-maturity original veto succeeds; maturity transfers custody; later disposition duplicates XP.
+- **Exact feasibility limit:** documentation exposes legacy counterexamples and hooks, not a native maturity implementation or standalone selected-rule transition engine. A new isolated contract checker could be proposed later; it is not an existing executable and would not authorize migration. Extending beyond this restriction additionally requires the named chronology/eligibility/prior-credit decisions.
+
+### Coordinator handoff
+
+Native source was deliberately **not independently investigated** by this participant. Therefore entrypoint names above are documentary evidence, not fresh source-certified feasibility findings. Coordinator must substantiate:
+
+1. A’s pool representation and choice-to-valuation linkage.
+2. B’s actual attention insertion/selection and any independently admissible own-history route.
+3. C’s available state-transition surface and absence/presence of an age-maturity reference.
+
+No tests, model runs, network requests, writes, Git mutations, captures or scheduler calls were performed.
+
+## Confidence
+
+- **High:** complete primary-document coverage, stable snapshot qualification, selected-versus-legacy distinctions, D49 overlay provenance, prepared sponsor-pipeline status and documented act-case guard.
+- **Moderate:** component-level pilot designs and documentary gap mapping.
+- **Insufficient data:** claims that the requested A/B/C contrasts are already executable end to end, calibrated human behavior, real useful growth, lawful new act remedies or selected-rule native compliance.
+
+An isolated blocker should not suppress the narrower accounting, pre-case or ordinary-contract contrasts. None of them should be promoted to mechanism confirmation or execution readiness without coordinator source evidence and a separately authorized contract.

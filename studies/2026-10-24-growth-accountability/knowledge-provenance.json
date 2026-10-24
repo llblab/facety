@@ -1,0 +1,74 @@
+{
+  "schema": "facety-growth-accountability-knowledge-provenance/v1",
+  "level": "documentary-source-reconciliation-not-research-or-independent-acceptance",
+  "run": "facety-abc-gap-synthesis",
+  "instance": "73afcbc9-cef8-407f-90ce-840dd9ceba20",
+  "recipe": "swarm/research-synthesis",
+  "preflight": "Separate startup returned exact ACTOR_PREFLIGHT_OK; no source-fidelity or code acceptance follows.",
+  "inspectedHead": "26f1d8f3c31b0ed130759c87d940082db7f44d7e",
+  "snapshot": "Original source reader saw a stable uncommitted D49 overlay; later D50/D51/D52 edits are not that snapshot.",
+  "originalExecution": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-abc-gap-synthesis/execution.json",
+  "reports": [
+    {
+      "command": "command-001",
+      "stage": "planner",
+      "path": "studies/2026-10-24-growth-accountability/review-001-planner.txt",
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-abc-gap-synthesis/captures/command-001/attempt-001/stdout.log",
+      "sourceBytes": 9781,
+      "exitCode": 0,
+      "semanticAcceptance": "not_required",
+      "sha256": "6f21dacc0cf57aaca5fe23ceb3fdb5b4688892c914d21fb029993491f91216f8"
+    },
+    {
+      "command": "command-002",
+      "stage": "evidence",
+      "path": "studies/2026-10-24-growth-accountability/review-002-evidence.txt",
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-abc-gap-synthesis/captures/command-002/attempt-001/stdout.log",
+      "sourceBytes": 18114,
+      "exitCode": 0,
+      "semanticAcceptance": "not_required",
+      "sha256": "d6a2ac33d62c36dff833436b25101c4aef1aa368d2c679a21a7935f55b620843"
+    },
+    {
+      "command": "command-003",
+      "stage": "contradictions",
+      "path": "studies/2026-10-24-growth-accountability/review-003-contradictions.txt",
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-abc-gap-synthesis/captures/command-003/attempt-001/stdout.log",
+      "sourceBytes": 9165,
+      "exitCode": 0,
+      "semanticAcceptance": "not_required",
+      "sha256": "cba906dc6bcc1fcd799ffb36e221df2ac0af37786ae4f28f0e476a88d6a13517"
+    },
+    {
+      "command": "command-004",
+      "stage": "verifier",
+      "path": "studies/2026-10-24-growth-accountability/review-004-verifier.txt",
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-abc-gap-synthesis/captures/command-004/attempt-001/stdout.log",
+      "sourceBytes": 4703,
+      "exitCode": 0,
+      "semanticAcceptance": "accepted",
+      "sha256": "114eb883a8ed0a63528162daa70ee5745d886648e518537c0997b8d01d8a16e9"
+    },
+    {
+      "command": "command-005",
+      "stage": "merger",
+      "path": "studies/2026-10-24-growth-accountability/review-005-merger.txt",
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-abc-gap-synthesis/captures/command-005/attempt-001/stdout.log",
+      "sourceBytes": 4955,
+      "exitCode": 0,
+      "semanticAcceptance": "accepted",
+      "sha256": "a4ab9e2570e58974d86d68fd2380b6e24ca6d93d5b7844b2719d76989265e284"
+    },
+    {
+      "command": "command-006",
+      "stage": "normalizer",
+      "path": "studies/2026-10-24-growth-accountability/review-006-normalizer.txt",
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-abc-gap-synthesis/captures/command-006/attempt-001/stdout.log",
+      "sourceBytes": 5927,
+      "exitCode": 0,
+      "semanticAcceptance": "accepted",
+      "sha256": "d9a109623e2c7d94e7fbeab9e04763fec20a8949b2ddcf4f228894b7515054c6"
+    }
+  ],
+  "assurance": "Source evidence-map complete-read claim retained with counts/ranges/hashes. Later handoffs lost earlier context; final synthesis degraded, not independent consensus or verified native pilot feasibility. Coordinator separately inspects source and owns execution. No actor restart/retry/repair or new study capture."
+}

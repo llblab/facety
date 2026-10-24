@@ -1,0 +1,139 @@
+{
+  "schema": "facety-growth-accountability-documentation-validation/v1",
+  "level": "author-engineering-and-documentary-reconciliation-not-research-or-independent-acceptance",
+  "baseCommit": "b10ec018e4bcb0d51266a2a0b6e35a872e6895f0",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "c5ba0d17415344a0fb5b9b71409798560998b8db79970b81b7e18b2222831d62",
+      "files": 32
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "checks": {
+    "focusedMechanisms": {
+      "command": "node --test test/mechanisms.test.mjs",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "fullSuite": {
+      "command": "npm test",
+      "passed": 365,
+      "failed": 0,
+      "skipped": 0
+    },
+    "context": {
+      "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+      "errors": 0,
+      "warnings": 27,
+      "warningSetIdenticalToPriorD49D50Checkpoint": true
+    },
+    "domainDag": {
+      "command": "node /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.mjs --root /home/llb/Repos/facety --json",
+      "modules": 32,
+      "edges": 77,
+      "acyclic": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "preservation": {
+      "originalReports": 6,
+      "originalReportBytes": 52645,
+      "allCopiesMatchOriginalBytesAndHashes": true,
+      "nativeSourcesExamplesPriorStudiesUnchanged": true,
+      "deferredSponsorPacketOnlyOriginalSixFiles": true,
+      "abcResearchCaptures": 0
+    }
+  },
+  "developmentCorrections": [
+    "Fixed two missing JSON property keys introduced during the metadata edit; focused guard then exposed its own Council config-path typo, corrected to policy.councilSize.",
+    "Removed a changelog blank line between list items after the context check caught it.",
+    "Local archival-hash utility initially failed shell quoting and then referenced non-persisted failed-script scratch state; no research/actor attempt occurred. Subsequent exact original-byte/hash checks passed."
+  ],
+  "assurance": "The source-map complete-read claim and all six original reports are retained with Run/command provenance; later handoffs lost question/evidence context. Final synthesis remains degraded, not independent acceptance or native pilot verification. No replay, actor retry, new planned-label capture or mechanism confirmation.",
+  "boundArtifacts": {
+    "AGENTS.md": {
+      "bytes": 8607,
+      "sha256": "c46430549e70453eed8364ab4967b2d54b0ed208cb714bdae6d44ce17ed82b6b"
+    },
+    "BACKLOG.md": {
+      "bytes": 50106,
+      "sha256": "2ec2269398a6781cc26f4414c53bd699f0fae436689eab86483878b7b53a33f2"
+    },
+    "CHANGELOG.md": {
+      "bytes": 79056,
+      "sha256": "7fa3d93e0711009c7dab6f83eacd25ee9cfba13fc2fc1c6c7d504df8480e92a7"
+    },
+    "README.md": {
+      "bytes": 30560,
+      "sha256": "400c9e2e76c07e3b45cb3e99a5cbf318afee2f00d1524e4ccdaf3c7b5132a86e"
+    },
+    "docs/README.md": {
+      "bytes": 12193,
+      "sha256": "67f0196be5fc52a6a364f0761aaf257ac65cb5966a8efc0421fe2d0c0b3f8ded"
+    },
+    "docs/facety.protocol.en.md": {
+      "bytes": 252349,
+      "sha256": "976ef8e24a99fcf1be3f91b697a2127efc4869f5b6e91953815570f094798f5b"
+    },
+    "docs/insights.en.md": {
+      "bytes": 127169,
+      "sha256": "50d566b30e9c37eded7e9bf45054d75a73b6948890c1d4479125137fa153d1de"
+    },
+    "docs/mechanisms.json": {
+      "bytes": 83660,
+      "sha256": "18ddee371518f87bb6cd407bf9c3646a86e20518d4a97700f64b0f2cb78c326e"
+    },
+    "docs/research-interactions.en.md": {
+      "bytes": 33224,
+      "sha256": "cc9134fed742755c7bec4d11cd0959e10fc2b892e606bf441faa27445401c944"
+    },
+    "docs/research.en.md": {
+      "bytes": 73969,
+      "sha256": "d9b70760888dc0baa040d04deb8a31de429cc64536a156f76466176b4c10e505"
+    },
+    "docs/simulator.en.md": {
+      "bytes": 101875,
+      "sha256": "f265aab12d55545b1d8187ccce968bfacb39113808f955903d47ee3ba12cd060"
+    },
+    "studies/2026-10-24-growth-accountability/README.md": {
+      "bytes": 6772,
+      "sha256": "2331a8ac9090086753ed91be6e6ccef588c1ba657f4f3c04e54fed1db62e1204"
+    },
+    "studies/2026-10-24-growth-accountability/knowledge-provenance.json": {
+      "bytes": 3785,
+      "sha256": "a76988ba79ecd6d7c5ec7088f555fdd8e1b1f71b5baf7c9b29d6670ab1eca57a"
+    },
+    "studies/2026-10-24-growth-accountability/review-001-planner.txt": {
+      "bytes": 9781,
+      "sha256": "6f21dacc0cf57aaca5fe23ceb3fdb5b4688892c914d21fb029993491f91216f8"
+    },
+    "studies/2026-10-24-growth-accountability/review-002-evidence.txt": {
+      "bytes": 18114,
+      "sha256": "d6a2ac33d62c36dff833436b25101c4aef1aa368d2c679a21a7935f55b620843"
+    },
+    "studies/2026-10-24-growth-accountability/review-003-contradictions.txt": {
+      "bytes": 9165,
+      "sha256": "cba906dc6bcc1fcd799ffb36e221df2ac0af37786ae4f28f0e476a88d6a13517"
+    },
+    "studies/2026-10-24-growth-accountability/review-004-verifier.txt": {
+      "bytes": 4703,
+      "sha256": "114eb883a8ed0a63528162daa70ee5745d886648e518537c0997b8d01d8a16e9"
+    },
+    "studies/2026-10-24-growth-accountability/review-005-merger.txt": {
+      "bytes": 4955,
+      "sha256": "a4ab9e2570e58974d86d68fd2380b6e24ca6d93d5b7844b2719d76989265e284"
+    },
+    "studies/2026-10-24-growth-accountability/review-006-normalizer.txt": {
+      "bytes": 5927,
+      "sha256": "d9a109623e2c7d94e7fbeab9e04763fec20a8949b2ddcf4f228894b7515054c6"
+    },
+    "test/mechanisms.test.mjs": {
+      "bytes": 3261,
+      "sha256": "e016ddeca418e56add166d5884e658ca821c9ef634e9afb60f7de9932565af05"
+    }
+  }
+}

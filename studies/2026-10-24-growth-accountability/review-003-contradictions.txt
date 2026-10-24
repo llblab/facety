@@ -1,0 +1,124 @@
+## Contradictions
+
+**Scope:** This analysis uses the supplied evidence map, not independently inspected native source or test results. Citations inherit its working-tree snapshot qualification. No separate planner output was supplied. End-to-end feasibility remains **degraded / not verified**.
+
+### 1. Selected rules conflict with legacy implementation labels—not necessarily with implementation behavior
+
+The map reports `docs/mechanisms.json:799–800` describing terminal XP as `selected-rule`, and `:854–855` describing 101 as the selected Council target. These labels conflict with the later protocol/simulator distinctions.
+
+For C, the material conflict is explicit:
+
+- **Selected:** conditional 24-hour XP credit, expiry of the original free veto, and retention of the mature own-emission right independently of later disposition.
+- **Legacy executable reference:** terminal credit and continuing unspent veto.
+
+Sources: `docs/facety.protocol.en.md:545–597`; `docs/simulator.en.md:189–217,235–258`; `studies/2026-10-24-d42-maturity/README.md:15–32`.
+
+**Consequence:** legacy controls can demonstrate noncompliance with D42; they cannot establish an executable D42 pilot. Conversely, stale JSON labels do not overturn D42.
+
+### 2. A’s reward arithmetic supports a motive, not the requested recruitment mechanism
+
+F45 distinguishes invitation-only from invitation-plus-guarantee accounting. Its sponsor deltas support separating **applicable guarantor Self-ID XP** from invitation XP. But fixed scripts and supplied utility do not demonstrate:
+
+> finite pre-existing external acquaintances → observed opportunity → incentive-sensitive recruitment choice → funded admission.
+
+Sources: `studies/2026-10-24-one-day-incentives/README.md:74–125`; `docs/facety.protocol.en.md:149–165,769–775,871–887`.
+
+This is a **causal-evidence gap**, not a contradiction in the selected reward rule. Historical confirmations without XP-to-behavior feedback cannot fill it (`studies/2026-10-22-coalition-council/README.md:69–74`).
+
+### 3. B’s attention direction does not authorize defender liability
+
+The historical defender-chain-liability proposal cannot be carried forward as blanket liability for public defense. The later safeguard requires independent evidence of a defined violation or duty.
+
+Sources: `studies/2026-10-22-timed-chekharda/README.md:51`; `docs/facety.protocol.en.md:1036–1038`.
+
+Three distinct claims must remain separate:
+
+1. Defense increases attention.
+2. Attention produces independently admissible own-history evidence.
+3. Admitted evidence supports a lawful consequence.
+
+Existing attention allocation and pre-case components do not establish the complete chain. An act defect also cannot be silently recast as false identity to access legacy adjudication.
+
+### 4. “Prepared,” “implemented,” and “confirmed” are incompatible completion claims
+
+Sponsor-pipeline has a prepared method, not captured findings. Act-evidence, act-relay and sponsor-assessment are engineering checkpoints, not demonstrations of completed act adjudication or endogenous recruitment.
+
+Sources: `studies/2026-10-24-sponsor-pipeline/README.md:3–24`; `studies/2026-10-24-act-relay/README.md:5–12`; `studies/2026-10-24-sponsor-assessment/README.md:5–10`.
+
+Likewise, D49’s proposed resilience/growth comparison is not executable-system evidence or authorization merely because it appears in an inspected overlay (`docs/research.en.md:5–23`; `BACKLOG.md:5–10`).
+
+### 5. Full-protocol blockers do not invalidate all narrower contrasts
+
+`docs/research-interactions.en.md:14–16` permits restricted reference contrasts. Therefore:
+
+- unresolved D33 fidelity does not prohibit A’s accounting contrast;
+- absent act adjudication does not prohibit B’s pre-case scrutiny contrast;
+- unresolved disputed-history chronology does not logically prohibit specifying C’s restricted ordinary-state contract.
+
+But this permission supplies neither missing adapters nor execution authorization.
+
+## Affected Claims
+
+| Topic | Supported by the supplied map | Not established |
+|---|---|---|
+| **A** | Qualifying guarantor Self-ID XP; funded operations; conditional utility comparisons | Finite external-pool semantics, depletion and repeat-contact handling; opportunity-to-choice linkage; recruitment response to XP value |
+| **B** | Attention direction; optional inspection allocation; funded evidence/pre-case stages; independent-guilt boundary | Public **high-XP defense** as an actual trigger; selection of specific own-history allegations; independently admissible act-to-remedy integration |
+| **C** | D42 selection; independent later disposition; legacy counterexamples and custody hooks | Existing restricted age-maturity executor; exact transition ordering demonstrated in source/tests; safe migration |
+
+Two particularly weak inferences should be rejected:
+
+- An XP-sensitive programmed choice rule demonstrates behavior **under that supplied policy**, not an empirically established human response.
+- A generic attention effect does not establish that **public defense**, **high XP**, or their interaction caused scrutiny.
+
+## Resolution Evidence
+
+### A — Smallest supported contrast, and blocker for the requested pilot
+
+**Existing narrower candidate:** reproduce accounting/utility discrimination among waiting, invitation-only, and invitation-plus-guarantee under explicit valuations and loss assumptions. This does not test finite-pool recruitment.
+
+**Requested pilot requires source evidence of:**
+
+- a finite, pre-existing acquaintance pool outside current membership;
+- observable opportunity, availability and depletion rules;
+- an explicit recruitment-choice policy consuming applicable guarantor Self-ID-XP value;
+- funded invitation/admission through `FacetyModel`;
+- evaluator-only genuine-person labels, inaccessible to the choice policy.
+
+Then compare paired opportunities/resources while varying only the relevant XP valuation. Report invitations, admissions, pool depletion and costs separately.
+
+**Precise current blocker:** that connected adapter is not established by the supplied documentary evidence. Whether it exists in source is **not verified**, not proven absent.
+
+### B — Smallest permissible endpoint is pre-case scrutiny
+
+First verify source-level insertion points for public defense, defender XP, own-history selection and evidence routing.
+
+A bounded contrast should hold history and admissibility rules fixed and compare defense/no-defense, with clean-history and equivalent non-defense scrutiny controls. To attribute an effect specifically to **high-XP defense**, vary or otherwise control XP rather than letting XP, resources and defense prominence move together.
+
+Measure staged inspections, observations, usable packages, refusals/requests, expenditure and displaced inspections.
+
+**Stop before sanctions** unless a lawful, independently admissible route is verified. The documented act-adjudication guard remains a blocker for full act-level consequences.
+
+**Rejection condition:** defense alone changes guilt or causes punishment of clean history. A null scrutiny effect rejects the attention claim in that tested setting.
+
+### C — Restricted contract test is specifiable, not established executable
+
+A proposed ordinary-state test can exclude disputes, debt, locks, link changes and prior credit while fixing eligible guarantors. Test:
+
+- cancellation before maturity;
+- idle passage through exactly 24 hours;
+- continued mature custody;
+- later withdrawal or invitation use.
+
+Required invariants: one conditional maturity credit, expiry of the original free veto, retained mature right, no automatic Collector transfer, and no disposition re-credit.
+
+**Precise current blocker:** no inspected source/test evidence establishes an executor implementing those transitions. Existing F46 controls establish legacy behavior, not the proposed checker. At-boundary cancellation/event ordering must not be silently selected if unspecified.
+
+## Unresolved Risks
+
+- **Source-class gap:** native implementations, callers, tests and reproducible traces are missing from this handoff. Documentary entrypoint names are leads, not source certification.
+- **Selection circularity:** an imposed XP-responsive recruitment policy may encode the predicted effect; report it as a model assumption.
+- **Attention-budget confounding:** additional defender scrutiny may merely displace equally useful scrutiny elsewhere.
+- **Jurisdiction substitution:** false identity and act defects require distinct admissibility and remedy contracts.
+- **Boundary leakage:** C’s restricted checker would not resolve disputed histories, changing eligibility, historical credits or native migration.
+- **Provenance:** snapshot stability and complete reading strengthen documentary coverage, not independent corroboration. D49 overlay status and historical degraded-review qualifications must survive synthesis.
+- **Authority:** none of these contrasts is authorized for execution by this reconciliation. None supports mechanism confirmation without the project’s separate registration and evidence requirements.
