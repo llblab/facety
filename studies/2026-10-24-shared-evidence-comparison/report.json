@@ -1,0 +1,6390 @@
+{
+  "schema": "facety-shared-evidence-analysis/v1",
+  "level": "exploratory-diagnostic-not-confirmation",
+  "designDigest": "2799ee80faf11c6c368440cd3865b14cf0e48eb53041eb2d659015002e71aa28",
+  "methodDigests": {
+    "studies/2026-10-24-shared-evidence-comparison/run.mjs": "e199312b6f8037789abf415ebc540350baa2ebdb380dcec495ba5ccbf05ea3bc",
+    "studies/2026-10-24-shared-evidence-comparison/contract.mjs": "70b2a22f15e5a7afdc2622e8c54c704416d303483e9a139f742b61be3dd81c0c",
+    "studies/2026-10-24-shared-evidence-comparison/analyze.mjs": "27777eca1cc95ed4181b3de3f7afa1b39fa74e692a332e55a0597eeff3413978",
+    "studies/2026-10-24-shared-evidence-comparison/design.json": "3e2c30909cfd08c191037dd9f213358b8cf8706dd491a1993c4af8536e1684a7",
+    "studies/2026-10-24-attended-comparison/contract.mjs": "3a0968caf4a632f45b4a1a5c6269b92e6bfd4a10b73333a6f26f35158e3df588",
+    "studies/2026-10-24-attended-comparison/analyze.mjs": "f02604c5f4d27917ca3f50513658bb72de02602004030f2ce5a939d437ee6271",
+    "studies/2026-10-24-attended-comparison/design.json": "db1b51cad741bd43de168ea0ebc1ea615e4c72565a00b1bce0eebaeedecf16d7"
+  },
+  "captureCommit": "9f906221cb5d6b8981615fb4dea77f8ffae1c331",
+  "cases": 64,
+  "cells": [
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "evidence": "independent",
+      "arm": "observe-only",
+      "completeRuns": 4,
+      "metricApplicability": "Fabricated identities remain distinct from genuine coalition operators; genuine newcomer harm is not tested in this population.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            9,
+            3,
+            1
+          ],
+          "mean": 3.25,
+          "min": 0,
+          "max": 9
+        },
+        "falseXp": {
+          "values": [
+            1,
+            39,
+            11,
+            5
+          ],
+          "mean": 14,
+          "min": 1,
+          "max": 39
+        },
+        "genuineXp": {
+          "values": [
+            552,
+            643,
+            630,
+            622
+          ],
+          "mean": 611.75,
+          "min": 552,
+          "max": 643
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "mean": 12,
+          "min": 12,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            436,
+            502,
+            396,
+            381
+          ],
+          "mean": 428.75,
+          "min": 381,
+          "max": 502
+        },
+        "coalitionEffort": {
+          "values": [
+            165,
+            271,
+            166,
+            141
+          ],
+          "mean": 185.75,
+          "min": 141,
+          "max": 271
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 217,
+            "reviewSlots": 82,
+            "inspections": 82,
+            "inspectionDenied": 0,
+            "positiveSignals": 64,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 64,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 64,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 82,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 64,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 325,
+            "reviewSlots": 110,
+            "inspections": 110,
+            "inspectionDenied": 0,
+            "positiveSignals": 91,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 91,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 91,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 110,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 91,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 144,
+            "reviewSlots": 54,
+            "inspections": 54,
+            "inspectionDenied": 0,
+            "positiveSignals": 43,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 43,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 43,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 54,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 43,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 121,
+            "reviewSlots": 47,
+            "inspections": 47,
+            "inspectionDenied": 0,
+            "positiveSignals": 38,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 38,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 38,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 47,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 38,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "evidence": "independent",
+      "arm": "veto",
+      "completeRuns": 4,
+      "metricApplicability": "Fabricated identities remain distinct from genuine coalition operators; genuine newcomer harm is not tested in this population.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            491,
+            535,
+            576,
+            582
+          ],
+          "mean": 546,
+          "min": 491,
+          "max": 582
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            5,
+            7,
+            4,
+            3
+          ],
+          "mean": 4.75,
+          "min": 3,
+          "max": 7
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            5,
+            7,
+            4,
+            3
+          ],
+          "mean": 4.75,
+          "min": 3,
+          "max": 7
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "mean": 12,
+          "min": 12,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            291,
+            300,
+            298,
+            295
+          ],
+          "mean": 296,
+          "min": 291,
+          "max": 300
+        },
+        "coalitionEffort": {
+          "values": [
+            108,
+            112,
+            108,
+            108
+          ],
+          "mean": 109,
+          "min": 108,
+          "max": 112
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 5,
+            "reviewSlots": 5,
+            "inspections": 5,
+            "inspectionDenied": 0,
+            "positiveSignals": 5,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 5,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 5
+          },
+          "evaluator": {
+            "falseTargetsInspected": 5,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 5,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 9,
+            "reviewSlots": 9,
+            "inspections": 9,
+            "inspectionDenied": 0,
+            "positiveSignals": 7,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 7,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 7
+          },
+          "evaluator": {
+            "falseTargetsInspected": 9,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 7,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 4,
+            "reviewSlots": 4,
+            "inspections": 4,
+            "inspectionDenied": 0,
+            "positiveSignals": 4,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 4,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 4
+          },
+          "evaluator": {
+            "falseTargetsInspected": 4,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 4,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 3,
+            "reviewSlots": 3,
+            "inspections": 3,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 3
+          },
+          "evaluator": {
+            "falseTargetsInspected": 3,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "evidence": "shared-target",
+      "arm": "observe-only",
+      "completeRuns": 4,
+      "metricApplicability": "Fabricated identities remain distinct from genuine coalition operators; genuine newcomer harm is not tested in this population.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            9,
+            3,
+            1
+          ],
+          "mean": 3.25,
+          "min": 0,
+          "max": 9
+        },
+        "falseXp": {
+          "values": [
+            1,
+            39,
+            11,
+            5
+          ],
+          "mean": 14,
+          "min": 1,
+          "max": 39
+        },
+        "genuineXp": {
+          "values": [
+            552,
+            643,
+            630,
+            622
+          ],
+          "mean": 611.75,
+          "min": 552,
+          "max": 643
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "mean": 12,
+          "min": 12,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            436,
+            467,
+            398,
+            370
+          ],
+          "mean": 417.75,
+          "min": 370,
+          "max": 467
+        },
+        "coalitionEffort": {
+          "values": [
+            165,
+            271,
+            166,
+            141
+          ],
+          "mean": 185.75,
+          "min": 141,
+          "max": 271
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 217,
+            "reviewSlots": 82,
+            "inspections": 82,
+            "inspectionDenied": 0,
+            "positiveSignals": 64,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 64,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 64,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 82,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 64,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 325,
+            "reviewSlots": 110,
+            "inspections": 110,
+            "inspectionDenied": 0,
+            "positiveSignals": 56,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 56,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 56,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 110,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 56,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 144,
+            "reviewSlots": 54,
+            "inspections": 54,
+            "inspectionDenied": 0,
+            "positiveSignals": 45,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 45,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 45,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 54,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 45,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 121,
+            "reviewSlots": 47,
+            "inspections": 47,
+            "inspectionDenied": 0,
+            "positiveSignals": 27,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 27,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 27,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 47,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 27,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "evidence": "shared-target",
+      "arm": "veto",
+      "completeRuns": 4,
+      "metricApplicability": "Fabricated identities remain distinct from genuine coalition operators; genuine newcomer harm is not tested in this population.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            1,
+            1,
+            0,
+            1
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 1
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            3,
+            0,
+            0
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 3
+        },
+        "falseXp": {
+          "values": [
+            0,
+            8,
+            0,
+            0
+          ],
+          "mean": 2,
+          "min": 0,
+          "max": 8
+        },
+        "genuineXp": {
+          "values": [
+            502,
+            561,
+            576,
+            594
+          ],
+          "mean": 558.25,
+          "min": 502,
+          "max": 594
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            4,
+            6,
+            4,
+            2
+          ],
+          "mean": 4,
+          "min": 2,
+          "max": 6
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            5,
+            7,
+            4,
+            3
+          ],
+          "mean": 4.75,
+          "min": 3,
+          "max": 7
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "mean": 12,
+          "min": 12,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            309,
+            323,
+            298,
+            312
+          ],
+          "mean": 310.5,
+          "min": 298,
+          "max": 323
+        },
+        "coalitionEffort": {
+          "values": [
+            122,
+            137,
+            108,
+            119
+          ],
+          "mean": 121.5,
+          "min": 108,
+          "max": 137
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 49,
+            "reviewSlots": 22,
+            "inspections": 22,
+            "inspectionDenied": 0,
+            "positiveSignals": 4,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 4,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 4
+          },
+          "evaluator": {
+            "falseTargetsInspected": 22,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 4,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 51,
+            "reviewSlots": 24,
+            "inspections": 24,
+            "inspectionDenied": 0,
+            "positiveSignals": 6,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 6,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 6
+          },
+          "evaluator": {
+            "falseTargetsInspected": 24,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 6,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 4,
+            "reviewSlots": 4,
+            "inspections": 4,
+            "inspectionDenied": 0,
+            "positiveSignals": 4,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 4,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 4
+          },
+          "evaluator": {
+            "falseTargetsInspected": 4,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 4,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 47,
+            "reviewSlots": 20,
+            "inspections": 20,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 2
+          },
+          "evaluator": {
+            "falseTargetsInspected": 20,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "independent",
+      "arm": "observe-only",
+      "completeRuns": 4,
+      "metricApplicability": "Fabricated identities remain distinct from genuine coalition operators; genuine newcomer harm is not tested in this population.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            9,
+            3,
+            1
+          ],
+          "mean": 3.25,
+          "min": 0,
+          "max": 9
+        },
+        "falseXp": {
+          "values": [
+            1,
+            39,
+            11,
+            5
+          ],
+          "mean": 14,
+          "min": 1,
+          "max": 39
+        },
+        "genuineXp": {
+          "values": [
+            552,
+            643,
+            630,
+            622
+          ],
+          "mean": 611.75,
+          "min": 552,
+          "max": 643
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "mean": 12,
+          "min": 12,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            361,
+            397,
+            338,
+            330
+          ],
+          "mean": 356.5,
+          "min": 330,
+          "max": 397
+        },
+        "coalitionEffort": {
+          "values": [
+            165,
+            271,
+            166,
+            141
+          ],
+          "mean": 185.75,
+          "min": 141,
+          "max": 271
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 217,
+            "reviewSlots": 38,
+            "inspections": 38,
+            "inspectionDenied": 0,
+            "positiveSignals": 33,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 33,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 33,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 38,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 33,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 325,
+            "reviewSlots": 56,
+            "inspections": 56,
+            "inspectionDenied": 0,
+            "positiveSignals": 40,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 40,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 40,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 56,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 40,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 144,
+            "reviewSlots": 22,
+            "inspections": 22,
+            "inspectionDenied": 0,
+            "positiveSignals": 17,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 17,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 17,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 22,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 17,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 121,
+            "reviewSlots": 20,
+            "inspections": 20,
+            "inspectionDenied": 0,
+            "positiveSignals": 14,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 14,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 14,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 20,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 14,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "independent",
+      "arm": "veto",
+      "completeRuns": 4,
+      "metricApplicability": "Fabricated identities remain distinct from genuine coalition operators; genuine newcomer harm is not tested in this population.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            491,
+            535,
+            588,
+            582
+          ],
+          "mean": 549,
+          "min": 491,
+          "max": 588
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            5,
+            7,
+            3,
+            3
+          ],
+          "mean": 4.5,
+          "min": 3,
+          "max": 7
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            5,
+            7,
+            4,
+            3
+          ],
+          "mean": 4.75,
+          "min": 3,
+          "max": 7
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "mean": 0.25,
+          "min": 0,
+          "max": 1
+        },
+        "operators": {
+          "values": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "mean": 12,
+          "min": 12,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            292,
+            300,
+            300,
+            296
+          ],
+          "mean": 297,
+          "min": 292,
+          "max": 300
+        },
+        "coalitionEffort": {
+          "values": [
+            108,
+            112,
+            108,
+            108
+          ],
+          "mean": 109,
+          "min": 108,
+          "max": 112
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 22,
+            "reviewSlots": 6,
+            "inspections": 6,
+            "inspectionDenied": 0,
+            "positiveSignals": 5,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 5,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 5
+          },
+          "evaluator": {
+            "falseTargetsInspected": 6,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 5,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 39,
+            "reviewSlots": 9,
+            "inspections": 9,
+            "inspectionDenied": 0,
+            "positiveSignals": 7,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 7,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 7
+          },
+          "evaluator": {
+            "falseTargetsInspected": 9,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 7,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 43,
+            "reviewSlots": 7,
+            "inspections": 7,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 3
+          },
+          "evaluator": {
+            "falseTargetsInspected": 7,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 17,
+            "reviewSlots": 4,
+            "inspections": 4,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 3
+          },
+          "evaluator": {
+            "falseTargetsInspected": 4,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "shared-target",
+      "arm": "observe-only",
+      "completeRuns": 4,
+      "metricApplicability": "Fabricated identities remain distinct from genuine coalition operators; genuine newcomer harm is not tested in this population.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            9,
+            3,
+            1
+          ],
+          "mean": 3.25,
+          "min": 0,
+          "max": 9
+        },
+        "falseXp": {
+          "values": [
+            1,
+            39,
+            11,
+            5
+          ],
+          "mean": 14,
+          "min": 1,
+          "max": 39
+        },
+        "genuineXp": {
+          "values": [
+            552,
+            643,
+            630,
+            622
+          ],
+          "mean": 611.75,
+          "min": 552,
+          "max": 643
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "mean": 12,
+          "min": 12,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            359,
+            390,
+            343,
+            328
+          ],
+          "mean": 355,
+          "min": 328,
+          "max": 390
+        },
+        "coalitionEffort": {
+          "values": [
+            165,
+            271,
+            166,
+            141
+          ],
+          "mean": 185.75,
+          "min": 141,
+          "max": 271
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 217,
+            "reviewSlots": 38,
+            "inspections": 38,
+            "inspectionDenied": 0,
+            "positiveSignals": 31,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 31,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 31,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 38,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 31,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 325,
+            "reviewSlots": 56,
+            "inspections": 56,
+            "inspectionDenied": 0,
+            "positiveSignals": 33,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 33,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 33,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 56,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 33,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 144,
+            "reviewSlots": 22,
+            "inspections": 22,
+            "inspectionDenied": 0,
+            "positiveSignals": 22,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 22,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 22,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 22,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 22,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 121,
+            "reviewSlots": 20,
+            "inspections": 20,
+            "inspectionDenied": 0,
+            "positiveSignals": 12,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 12,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 12,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 20,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 12,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "shared-target",
+      "arm": "veto",
+      "completeRuns": 4,
+      "metricApplicability": "Fabricated identities remain distinct from genuine coalition operators; genuine newcomer harm is not tested in this population.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            1,
+            1,
+            0,
+            1
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 1
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            3,
+            0,
+            0
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 3
+        },
+        "falseXp": {
+          "values": [
+            0,
+            8,
+            0,
+            0
+          ],
+          "mean": 2,
+          "min": 0,
+          "max": 8
+        },
+        "genuineXp": {
+          "values": [
+            502,
+            561,
+            588,
+            594
+          ],
+          "mean": 561.25,
+          "min": 502,
+          "max": 594
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            4,
+            6,
+            3,
+            2
+          ],
+          "mean": 3.75,
+          "min": 2,
+          "max": 6
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            5,
+            7,
+            4,
+            3
+          ],
+          "mean": 4.75,
+          "min": 3,
+          "max": 7
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            1,
+            0
+          ],
+          "mean": 0.25,
+          "min": 0,
+          "max": 1
+        },
+        "operators": {
+          "values": [
+            12,
+            12,
+            12,
+            12
+          ],
+          "mean": 12,
+          "min": 12,
+          "max": 12
+        },
+        "defenderEffort": {
+          "values": [
+            298,
+            313,
+            296,
+            301
+          ],
+          "mean": 302,
+          "min": 296,
+          "max": 313
+        },
+        "coalitionEffort": {
+          "values": [
+            122,
+            137,
+            108,
+            119
+          ],
+          "mean": 121.5,
+          "min": 108,
+          "max": 137
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 59,
+            "reviewSlots": 11,
+            "inspections": 11,
+            "inspectionDenied": 0,
+            "positiveSignals": 4,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 4,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 4
+          },
+          "evaluator": {
+            "falseTargetsInspected": 11,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 4,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 73,
+            "reviewSlots": 14,
+            "inspections": 14,
+            "inspectionDenied": 0,
+            "positiveSignals": 6,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 6,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 6
+          },
+          "evaluator": {
+            "falseTargetsInspected": 14,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 6,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 24,
+            "reviewSlots": 3,
+            "inspections": 3,
+            "inspectionDenied": 0,
+            "positiveSignals": 3,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 3,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 3
+          },
+          "evaluator": {
+            "falseTargetsInspected": 3,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 3,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 55,
+            "reviewSlots": 9,
+            "inspections": 9,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 2
+          },
+          "evaluator": {
+            "falseTargetsInspected": 9,
+            "genuineTargetsInspected": 0,
+            "falseTargetPositive": 2,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "evidence": "independent",
+      "arm": "observe-only",
+      "completeRuns": 4,
+      "metricApplicability": "False-identity zeros are structural; declared genuine-coalition invitation harm is not general welfare.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            554,
+            699,
+            649,
+            629
+          ],
+          "mean": 632.75,
+          "min": 554,
+          "max": 699
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            16,
+            21,
+            15,
+            14
+          ],
+          "mean": 16.5,
+          "min": 14,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            379,
+            422,
+            355,
+            345
+          ],
+          "mean": 375.25,
+          "min": 345,
+          "max": 422
+        },
+        "coalitionEffort": {
+          "values": [
+            173,
+            283,
+            173,
+            145
+          ],
+          "mean": 193.5,
+          "min": 145,
+          "max": 283
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 223,
+            "reviewSlots": 88,
+            "inspections": 88,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 1,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 88,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 1
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 355,
+            "reviewSlots": 119,
+            "inspections": 119,
+            "inspectionDenied": 0,
+            "positiveSignals": 2,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 2,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 2,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 119,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 2
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 150,
+            "reviewSlots": 57,
+            "inspections": 57,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 57,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 127,
+            "reviewSlots": 50,
+            "inspections": 50,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 50,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "evidence": "independent",
+      "arm": "veto",
+      "completeRuns": 4,
+      "metricApplicability": "False-identity zeros are structural; declared genuine-coalition invitation harm is not general welfare.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            3,
+            7,
+            3,
+            2
+          ],
+          "mean": 3.75,
+          "min": 2,
+          "max": 7
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            543,
+            677,
+            649,
+            629
+          ],
+          "mean": 624.5,
+          "min": 543,
+          "max": 677
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "mean": 0.5,
+          "min": 0,
+          "max": 1
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            9,
+            5,
+            4
+          ],
+          "mean": 6,
+          "min": 4,
+          "max": 9
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            15,
+            19,
+            15,
+            14
+          ],
+          "mean": 15.75,
+          "min": 14,
+          "max": 19
+        },
+        "defenderEffort": {
+          "values": [
+            369,
+            402,
+            355,
+            345
+          ],
+          "mean": 367.75,
+          "min": 345,
+          "max": 402
+        },
+        "coalitionEffort": {
+          "values": [
+            159,
+            246,
+            173,
+            145
+          ],
+          "mean": 180.75,
+          "min": 145,
+          "max": 246
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 186,
+            "reviewSlots": 78,
+            "inspections": 78,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 1
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 78,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 1
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 301,
+            "reviewSlots": 101,
+            "inspections": 101,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 1
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 101,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 1
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 150,
+            "reviewSlots": 57,
+            "inspections": 57,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 57,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 127,
+            "reviewSlots": 50,
+            "inspections": 50,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 50,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "evidence": "shared-target",
+      "arm": "observe-only",
+      "completeRuns": 4,
+      "metricApplicability": "False-identity zeros are structural; declared genuine-coalition invitation harm is not general welfare.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            554,
+            699,
+            649,
+            629
+          ],
+          "mean": 632.75,
+          "min": 554,
+          "max": 699
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            16,
+            21,
+            15,
+            14
+          ],
+          "mean": 16.5,
+          "min": 14,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            378,
+            420,
+            355,
+            345
+          ],
+          "mean": 374.5,
+          "min": 345,
+          "max": 420
+        },
+        "coalitionEffort": {
+          "values": [
+            173,
+            283,
+            173,
+            145
+          ],
+          "mean": 193.5,
+          "min": 145,
+          "max": 283
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 223,
+            "reviewSlots": 88,
+            "inspections": 88,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 88,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 355,
+            "reviewSlots": 119,
+            "inspections": 119,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 119,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 150,
+            "reviewSlots": 57,
+            "inspections": 57,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 57,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 127,
+            "reviewSlots": 50,
+            "inspections": 50,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 50,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "evidence": "shared-target",
+      "arm": "veto",
+      "completeRuns": 4,
+      "metricApplicability": "False-identity zeros are structural; declared genuine-coalition invitation harm is not general welfare.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            554,
+            699,
+            649,
+            629
+          ],
+          "mean": 632.75,
+          "min": 554,
+          "max": 699
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            16,
+            21,
+            15,
+            14
+          ],
+          "mean": 16.5,
+          "min": 14,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            378,
+            420,
+            355,
+            345
+          ],
+          "mean": 374.5,
+          "min": 345,
+          "max": 420
+        },
+        "coalitionEffort": {
+          "values": [
+            173,
+            283,
+            173,
+            145
+          ],
+          "mean": 193.5,
+          "min": 145,
+          "max": 283
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 223,
+            "reviewSlots": 88,
+            "inspections": 88,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 88,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 355,
+            "reviewSlots": 119,
+            "inspections": 119,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 119,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 150,
+            "reviewSlots": 57,
+            "inspections": 57,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 57,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 127,
+            "reviewSlots": 50,
+            "inspections": 50,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 50,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "independent",
+      "arm": "observe-only",
+      "completeRuns": 4,
+      "metricApplicability": "False-identity zeros are structural; declared genuine-coalition invitation harm is not general welfare.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            554,
+            699,
+            649,
+            629
+          ],
+          "mean": 632.75,
+          "min": 554,
+          "max": 699
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            16,
+            21,
+            15,
+            14
+          ],
+          "mean": 16.5,
+          "min": 14,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            330,
+            361,
+            321,
+            315
+          ],
+          "mean": 331.75,
+          "min": 315,
+          "max": 361
+        },
+        "coalitionEffort": {
+          "values": [
+            173,
+            283,
+            173,
+            145
+          ],
+          "mean": 193.5,
+          "min": 145,
+          "max": 283
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 223,
+            "reviewSlots": 39,
+            "inspections": 39,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 1,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 39,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 1
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 355,
+            "reviewSlots": 60,
+            "inspections": 60,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 60,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 150,
+            "reviewSlots": 22,
+            "inspections": 22,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 1,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 22,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 1
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 127,
+            "reviewSlots": 20,
+            "inspections": 20,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 20,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "independent",
+      "arm": "veto",
+      "completeRuns": 4,
+      "metricApplicability": "False-identity zeros are structural; declared genuine-coalition invitation harm is not general welfare.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            3,
+            9,
+            2,
+            2
+          ],
+          "mean": 4,
+          "min": 2,
+          "max": 9
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            543,
+            699,
+            637,
+            629
+          ],
+          "mean": 627,
+          "min": 543,
+          "max": 699
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "mean": 0.5,
+          "min": 0,
+          "max": 1
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            15,
+            21,
+            14,
+            14
+          ],
+          "mean": 16,
+          "min": 14,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            325,
+            361,
+            320,
+            315
+          ],
+          "mean": 330.25,
+          "min": 315,
+          "max": 361
+        },
+        "coalitionEffort": {
+          "values": [
+            159,
+            283,
+            157,
+            145
+          ],
+          "mean": 186,
+          "min": 145,
+          "max": 283
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 186,
+            "reviewSlots": 34,
+            "inspections": 34,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 1
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 34,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 1
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 355,
+            "reviewSlots": 60,
+            "inspections": 60,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 60,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 146,
+            "reviewSlots": 21,
+            "inspections": 21,
+            "inspectionDenied": 0,
+            "positiveSignals": 1,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 1,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 1
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 21,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 1
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 127,
+            "reviewSlots": 20,
+            "inspections": 20,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 20,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "sensitivity/falsePositiveRate, optionally verificationSensitivity/verificationFalsePositiveRate; noisy observations, never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "shared-target",
+      "arm": "observe-only",
+      "completeRuns": 4,
+      "metricApplicability": "False-identity zeros are structural; declared genuine-coalition invitation harm is not general welfare.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            554,
+            699,
+            649,
+            629
+          ],
+          "mean": 632.75,
+          "min": 554,
+          "max": 699
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            16,
+            21,
+            15,
+            14
+          ],
+          "mean": 16.5,
+          "min": 14,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            329,
+            361,
+            320,
+            315
+          ],
+          "mean": 331.25,
+          "min": 315,
+          "max": 361
+        },
+        "coalitionEffort": {
+          "values": [
+            173,
+            283,
+            173,
+            145
+          ],
+          "mean": 193.5,
+          "min": 145,
+          "max": 283
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 223,
+            "reviewSlots": 39,
+            "inspections": 39,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 39,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 355,
+            "reviewSlots": 60,
+            "inspections": 60,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 60,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 150,
+            "reviewSlots": 22,
+            "inspections": 22,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 22,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 127,
+            "reviewSlots": 20,
+            "inspections": 20,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 20,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "shared-target",
+      "arm": "veto",
+      "completeRuns": 4,
+      "metricApplicability": "False-identity zeros are structural; declared genuine-coalition invitation harm is not general welfare.",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            4,
+            9,
+            3,
+            2
+          ],
+          "mean": 4.5,
+          "min": 2,
+          "max": 9
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            554,
+            699,
+            649,
+            629
+          ],
+          "mean": 632.75,
+          "min": 554,
+          "max": 699
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            6,
+            10,
+            5,
+            4
+          ],
+          "mean": 6.25,
+          "min": 4,
+          "max": 10
+        },
+        "openInvitations": {
+          "values": [
+            2,
+            1,
+            2,
+            2
+          ],
+          "mean": 1.75,
+          "min": 1,
+          "max": 2
+        },
+        "operators": {
+          "values": [
+            16,
+            21,
+            15,
+            14
+          ],
+          "mean": 16.5,
+          "min": 14,
+          "max": 21
+        },
+        "defenderEffort": {
+          "values": [
+            329,
+            361,
+            320,
+            315
+          ],
+          "mean": 331.25,
+          "min": 315,
+          "max": 361
+        },
+        "coalitionEffort": {
+          "values": [
+            173,
+            283,
+            173,
+            145
+          ],
+          "mean": 193.5,
+          "min": 145,
+          "max": 283
+        }
+      },
+      "process": [
+        {
+          "seed": "d44-shared-evidence-01",
+          "counters": {
+            "pairTickOpportunities": 223,
+            "reviewSlots": 39,
+            "inspections": 39,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 39,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-02",
+          "counters": {
+            "pairTickOpportunities": 355,
+            "reviewSlots": 60,
+            "inspections": 60,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 60,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-03",
+          "counters": {
+            "pairTickOpportunities": 150,
+            "reviewSlots": 22,
+            "inspections": 22,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 22,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        },
+        {
+          "seed": "d44-shared-evidence-04",
+          "counters": {
+            "pairTickOpportunities": 127,
+            "reviewSlots": 20,
+            "inspections": 20,
+            "inspectionDenied": 0,
+            "positiveSignals": 0,
+            "verificationCalls": 0,
+            "verificationDenied": 0,
+            "verificationPassed": 0,
+            "cancelCalls": 0,
+            "cancelBudgetDenied": 0,
+            "cancelUnavailable": 0,
+            "cancelRejected": 0,
+            "cancelled": 0
+          },
+          "evaluator": {
+            "falseTargetsInspected": 0,
+            "genuineTargetsInspected": 20,
+            "falseTargetPositive": 0,
+            "genuineTargetPositive": 0
+          },
+          "attention": "counterfactual first-attended: one daily Bernoulli per eligible guarantor/invitation at first attended tick, consumed even when later gates fail; not measured notification or vigilance",
+          "evidence": "counterfactual shared-target: persistent first-stage signal across reviewers/times at supplied sensitivity/falsePositiveRate; repeated looks remain paid, not independent evidence; optional verification keeps its separate keyed reference; never supplied truth",
+          "response": "always attempt after positive evidence, subject to availability, budget and model authority; scripted motive, not endogenous utility",
+          "responsibility": "prevents this invitation, not immunity for past or other duties; D34 historical liability remains unimplemented"
+        }
+      ]
+    }
+  ],
+  "evidenceEffects": [
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "arm": "observe-only",
+      "contrast": "shared-target-minus-independent",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            0,
+            -35,
+            2,
+            -11
+          ],
+          "mean": -11,
+          "min": -35,
+          "max": 2
+        },
+        "coalitionEffort": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      }
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "arm": "veto",
+      "contrast": "shared-target-minus-independent",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            1,
+            1,
+            0,
+            1
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 1
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            3,
+            0,
+            0
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 3
+        },
+        "falseXp": {
+          "values": [
+            0,
+            8,
+            0,
+            0
+          ],
+          "mean": 2,
+          "min": 0,
+          "max": 8
+        },
+        "genuineXp": {
+          "values": [
+            11,
+            26,
+            0,
+            12
+          ],
+          "mean": 12.25,
+          "min": 0,
+          "max": 26
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            -1,
+            -1,
+            0,
+            -1
+          ],
+          "mean": -0.75,
+          "min": -1,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            18,
+            23,
+            0,
+            17
+          ],
+          "mean": 14.5,
+          "min": 0,
+          "max": 23
+        },
+        "coalitionEffort": {
+          "values": [
+            14,
+            25,
+            0,
+            11
+          ],
+          "mean": 12.5,
+          "min": 0,
+          "max": 25
+        }
+      }
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "arm": "observe-only",
+      "contrast": "shared-target-minus-independent",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -2,
+            -7,
+            5,
+            -2
+          ],
+          "mean": -1.5,
+          "min": -7,
+          "max": 5
+        },
+        "coalitionEffort": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      }
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "arm": "veto",
+      "contrast": "shared-target-minus-independent",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            1,
+            1,
+            0,
+            1
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 1
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            3,
+            0,
+            0
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 3
+        },
+        "falseXp": {
+          "values": [
+            0,
+            8,
+            0,
+            0
+          ],
+          "mean": 2,
+          "min": 0,
+          "max": 8
+        },
+        "genuineXp": {
+          "values": [
+            11,
+            26,
+            0,
+            12
+          ],
+          "mean": 12.25,
+          "min": 0,
+          "max": 26
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            -1,
+            -1,
+            0,
+            -1
+          ],
+          "mean": -0.75,
+          "min": -1,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            6,
+            13,
+            -4,
+            5
+          ],
+          "mean": 5,
+          "min": -4,
+          "max": 13
+        },
+        "coalitionEffort": {
+          "values": [
+            14,
+            25,
+            0,
+            11
+          ],
+          "mean": 12.5,
+          "min": 0,
+          "max": 25
+        }
+      }
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "arm": "observe-only",
+      "contrast": "shared-target-minus-independent",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -1,
+            -2,
+            0,
+            0
+          ],
+          "mean": -0.75,
+          "min": -2,
+          "max": 0
+        },
+        "coalitionEffort": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      }
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "arm": "veto",
+      "contrast": "shared-target-minus-independent",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            1,
+            2,
+            0,
+            0
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 2
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            11,
+            22,
+            0,
+            0
+          ],
+          "mean": 8.25,
+          "min": 0,
+          "max": 22
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            -1,
+            -1,
+            0,
+            0
+          ],
+          "mean": -0.5,
+          "min": -1,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            1,
+            0,
+            0
+          ],
+          "mean": 0.25,
+          "min": 0,
+          "max": 1
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            1,
+            2,
+            0,
+            0
+          ],
+          "mean": 0.75,
+          "min": 0,
+          "max": 2
+        },
+        "defenderEffort": {
+          "values": [
+            9,
+            18,
+            0,
+            0
+          ],
+          "mean": 6.75,
+          "min": 0,
+          "max": 18
+        },
+        "coalitionEffort": {
+          "values": [
+            14,
+            37,
+            0,
+            0
+          ],
+          "mean": 12.75,
+          "min": 0,
+          "max": 37
+        }
+      }
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "arm": "observe-only",
+      "contrast": "shared-target-minus-independent",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -1,
+            0,
+            -1,
+            0
+          ],
+          "mean": -0.5,
+          "min": -1,
+          "max": 0
+        },
+        "coalitionEffort": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      }
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "arm": "veto",
+      "contrast": "shared-target-minus-independent",
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "mean": 0.5,
+          "min": 0,
+          "max": 1
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            11,
+            0,
+            12,
+            0
+          ],
+          "mean": 5.75,
+          "min": 0,
+          "max": 12
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            -1,
+            0,
+            -1,
+            0
+          ],
+          "mean": -0.5,
+          "min": -1,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "mean": 0.5,
+          "min": 0,
+          "max": 1
+        },
+        "defenderEffort": {
+          "values": [
+            4,
+            0,
+            0,
+            0
+          ],
+          "mean": 1,
+          "min": 0,
+          "max": 4
+        },
+        "coalitionEffort": {
+          "values": [
+            14,
+            0,
+            16,
+            0
+          ],
+          "mean": 7.5,
+          "min": 0,
+          "max": 16
+        }
+      }
+    }
+  ],
+  "vetoEffects": [
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "evidence": "independent",
+      "contrast": "veto-minus-observe-only",
+      "completeEventPrefixChecks": 4,
+      "censoredPrefixChecksSkipped": 0,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            -4,
+            -9,
+            -3,
+            -2
+          ],
+          "mean": -4.5,
+          "min": -9,
+          "max": -2
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            -9,
+            -3,
+            -1
+          ],
+          "mean": -3.25,
+          "min": -9,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            -1,
+            -39,
+            -11,
+            -5
+          ],
+          "mean": -14,
+          "min": -39,
+          "max": -1
+        },
+        "genuineXp": {
+          "values": [
+            -61,
+            -108,
+            -54,
+            -40
+          ],
+          "mean": -65.75,
+          "min": -108,
+          "max": -40
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            5,
+            7,
+            4,
+            3
+          ],
+          "mean": 4.75,
+          "min": 3,
+          "max": 7
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            -1,
+            -3,
+            -1,
+            -1
+          ],
+          "mean": -1.5,
+          "min": -3,
+          "max": -1
+        },
+        "openInvitations": {
+          "values": [
+            -2,
+            -1,
+            -2,
+            -2
+          ],
+          "mean": -1.75,
+          "min": -2,
+          "max": -1
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -145,
+            -202,
+            -98,
+            -86
+          ],
+          "mean": -132.75,
+          "min": -202,
+          "max": -86
+        },
+        "coalitionEffort": {
+          "values": [
+            -57,
+            -159,
+            -58,
+            -33
+          ],
+          "mean": -76.75,
+          "min": -159,
+          "max": -33
+        }
+      }
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "all-ticks",
+      "evidence": "shared-target",
+      "contrast": "veto-minus-observe-only",
+      "completeEventPrefixChecks": 4,
+      "censoredPrefixChecksSkipped": 0,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            -3,
+            -8,
+            -3,
+            -1
+          ],
+          "mean": -3.75,
+          "min": -8,
+          "max": -1
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            -6,
+            -3,
+            -1
+          ],
+          "mean": -2.5,
+          "min": -6,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            -1,
+            -31,
+            -11,
+            -5
+          ],
+          "mean": -12,
+          "min": -31,
+          "max": -1
+        },
+        "genuineXp": {
+          "values": [
+            -50,
+            -82,
+            -54,
+            -28
+          ],
+          "mean": -53.5,
+          "min": -82,
+          "max": -28
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            4,
+            6,
+            4,
+            2
+          ],
+          "mean": 4,
+          "min": 2,
+          "max": 6
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            -1,
+            -3,
+            -1,
+            -1
+          ],
+          "mean": -1.5,
+          "min": -3,
+          "max": -1
+        },
+        "openInvitations": {
+          "values": [
+            -2,
+            -1,
+            -2,
+            -2
+          ],
+          "mean": -1.75,
+          "min": -2,
+          "max": -1
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -127,
+            -144,
+            -100,
+            -58
+          ],
+          "mean": -107.25,
+          "min": -144,
+          "max": -58
+        },
+        "coalitionEffort": {
+          "values": [
+            -43,
+            -134,
+            -58,
+            -22
+          ],
+          "mean": -64.25,
+          "min": -134,
+          "max": -22
+        }
+      }
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "independent",
+      "contrast": "veto-minus-observe-only",
+      "completeEventPrefixChecks": 4,
+      "censoredPrefixChecksSkipped": 0,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            -4,
+            -9,
+            -3,
+            -2
+          ],
+          "mean": -4.5,
+          "min": -9,
+          "max": -2
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            -9,
+            -3,
+            -1
+          ],
+          "mean": -3.25,
+          "min": -9,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            -1,
+            -39,
+            -11,
+            -5
+          ],
+          "mean": -14,
+          "min": -39,
+          "max": -1
+        },
+        "genuineXp": {
+          "values": [
+            -61,
+            -108,
+            -42,
+            -40
+          ],
+          "mean": -62.75,
+          "min": -108,
+          "max": -40
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            5,
+            7,
+            3,
+            3
+          ],
+          "mean": 4.5,
+          "min": 3,
+          "max": 7
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            -1,
+            -3,
+            -1,
+            -1
+          ],
+          "mean": -1.5,
+          "min": -3,
+          "max": -1
+        },
+        "openInvitations": {
+          "values": [
+            -2,
+            -1,
+            -1,
+            -2
+          ],
+          "mean": -1.5,
+          "min": -2,
+          "max": -1
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -69,
+            -97,
+            -38,
+            -34
+          ],
+          "mean": -59.5,
+          "min": -97,
+          "max": -34
+        },
+        "coalitionEffort": {
+          "values": [
+            -57,
+            -159,
+            -58,
+            -33
+          ],
+          "mean": -76.75,
+          "min": -159,
+          "max": -33
+        }
+      }
+    },
+    {
+      "population": "fabricated-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "shared-target",
+      "contrast": "veto-minus-observe-only",
+      "completeEventPrefixChecks": 4,
+      "censoredPrefixChecksSkipped": 0,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            -3,
+            -8,
+            -3,
+            -1
+          ],
+          "mean": -3.75,
+          "min": -8,
+          "max": -1
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            -6,
+            -3,
+            -1
+          ],
+          "mean": -2.5,
+          "min": -6,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            -1,
+            -31,
+            -11,
+            -5
+          ],
+          "mean": -12,
+          "min": -31,
+          "max": -1
+        },
+        "genuineXp": {
+          "values": [
+            -50,
+            -82,
+            -42,
+            -28
+          ],
+          "mean": -50.5,
+          "min": -82,
+          "max": -28
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            4,
+            6,
+            3,
+            2
+          ],
+          "mean": 3.75,
+          "min": 2,
+          "max": 6
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            -1,
+            -3,
+            -1,
+            -1
+          ],
+          "mean": -1.5,
+          "min": -3,
+          "max": -1
+        },
+        "openInvitations": {
+          "values": [
+            -2,
+            -1,
+            -1,
+            -2
+          ],
+          "mean": -1.5,
+          "min": -2,
+          "max": -1
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -61,
+            -77,
+            -47,
+            -27
+          ],
+          "mean": -53,
+          "min": -77,
+          "max": -27
+        },
+        "coalitionEffort": {
+          "values": [
+            -43,
+            -134,
+            -58,
+            -22
+          ],
+          "mean": -64.25,
+          "min": -134,
+          "max": -22
+        }
+      }
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "evidence": "independent",
+      "contrast": "veto-minus-observe-only",
+      "completeEventPrefixChecks": 4,
+      "censoredPrefixChecksSkipped": 0,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            -1,
+            -2,
+            0,
+            0
+          ],
+          "mean": -0.75,
+          "min": -2,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            -11,
+            -22,
+            0,
+            0
+          ],
+          "mean": -8.25,
+          "min": -22,
+          "max": 0
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            1,
+            1,
+            0,
+            0
+          ],
+          "mean": 0.5,
+          "min": 0,
+          "max": 1
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            -1,
+            0,
+            0
+          ],
+          "mean": -0.25,
+          "min": -1,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            -1,
+            -2,
+            0,
+            0
+          ],
+          "mean": -0.75,
+          "min": -2,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -10,
+            -20,
+            0,
+            0
+          ],
+          "mean": -7.5,
+          "min": -20,
+          "max": 0
+        },
+        "coalitionEffort": {
+          "values": [
+            -14,
+            -37,
+            0,
+            0
+          ],
+          "mean": -12.75,
+          "min": -37,
+          "max": 0
+        }
+      }
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "all-ticks",
+      "evidence": "shared-target",
+      "contrast": "veto-minus-observe-only",
+      "completeEventPrefixChecks": 4,
+      "censoredPrefixChecksSkipped": 0,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "coalitionEffort": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      }
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "independent",
+      "contrast": "veto-minus-observe-only",
+      "completeEventPrefixChecks": 4,
+      "censoredPrefixChecksSkipped": 0,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            -1,
+            0,
+            -1,
+            0
+          ],
+          "mean": -0.5,
+          "min": -1,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            -11,
+            0,
+            -12,
+            0
+          ],
+          "mean": -5.75,
+          "min": -12,
+          "max": 0
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            1,
+            0,
+            1,
+            0
+          ],
+          "mean": 0.5,
+          "min": 0,
+          "max": 1
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            -1,
+            0,
+            -1,
+            0
+          ],
+          "mean": -0.5,
+          "min": -1,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            -5,
+            0,
+            -1,
+            0
+          ],
+          "mean": -1.5,
+          "min": -5,
+          "max": 0
+        },
+        "coalitionEffort": {
+          "values": [
+            -14,
+            0,
+            -16,
+            0
+          ],
+          "mean": -7.5,
+          "min": -16,
+          "max": 0
+        }
+      }
+    },
+    {
+      "population": "genuine-coalition-descendants",
+      "calendar": "one-tick-phase-0",
+      "evidence": "shared-target",
+      "contrast": "veto-minus-observe-only",
+      "completeEventPrefixChecks": 4,
+      "censoredPrefixChecksSkipped": 0,
+      "metrics": {
+        "falseAccepted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineAcceptedDescendants": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseConverted": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineXp": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "falseInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "genuineInvitationsCancelled": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "invitationsCreated": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "openInvitations": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "operators": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "defenderEffort": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        },
+        "coalitionEffort": {
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "mean": 0,
+          "min": 0,
+          "max": 0
+        }
+      }
+    }
+  ],
+  "harmCoverage": "Declared genuine-coalition invitation harm only; coordination is not guilt. No ordinary Self-ID/unaffiliated recruitment/useful growth or universal welfare assessment.",
+  "interpretation": [
+    "Four fixed labels: retain raw values/ranges and paired descriptive means, not population trials, p-values or mechanism confirmation. Signal keys change across evidence laws; event-prefix comparisons apply within a law only.",
+    "Exactly four new fixed labels, 64 seven-day four-hour cases. Timing is first-attended throughout; no daily-slot, six-hour, phase-4 or horizon extension. No seed search or historical replay.",
+    "Two supplied descendant classes, two initial-ID calendars, two first-stage signal laws and two veto-effect arms. Twelve declared genuine trusted clique roots include three genuine coalition operators. Fabricated descendants share an operator; genuine recruits are declared operators. Coordination alone is not misconduct or authenticated personhood.",
+    "Sensitivity 0.8/FPR 0.01 are nominal single-look probabilities, not measured covariance or received-evidence equality. Shared-target persists per public target across reviewers/times; different IDs are separately keyed, not verified independent humans. Switching modes changes actual signal keys even at the same first-look time; post-divergence IDs/graphs need not describe the same later opportunities.",
+    "Shared-target is an extremal target-specific first-stage common-mode counterfactual, not a full shared-media/observer/network-wide/adversarial evidence process. Other observations retain their reference keys. Verification is disabled; no fallback is invented after a negative first stage.",
+    "All-ticks attention or one tick/day at 4*(initial index%6); transaction availability is unrestricted. Honest invitations/general Self-ID inspection and descendant review are zero. Public pending-list awareness and willingness are inherited scripts, not notification, human capacity or liability-derived incentives.",
+    "Genuine-coalition invitation veto harm is measured separately from structural false-identity zeros. This does not test unaffiliated honest recruitment, ordinary Self-ID harm, usefulness, voluntary retention or welfare. Initial genuine coalition operators remain a separate real-person collusion risk.",
+    "Daily pair trials, unit work weights, whole-run 100000-unit cohort budgets, protocol authority/windows and safety caps remain fixed. Net cost/XP differences include downstream trajectories, not marginal veto prices, calibrated human work or real attack-acquisition/private liability costs.",
+    "Dense inherited support, raw active-degree/fixed Council, current-link liability, terminal XP and unspent veto remain legacy references, not D33/D34/D42 compliance. Ordinary XP maturation, historical duties and revised merits/appeals are not selected here.",
+    "Retain full native states/events, process/evaluator counts, effort, money/system/ledger, class-specific admissions/conversions/XP, genuine harm and daily endpoints. Run completion at 168 h need not finish horizon-open invitation lifetimes; censoring retains partial raw values but not complete means.",
+    "Match native-event prefixes only within a given evidence law before its first effect-changing veto; skip/count censored prefix checks explicitly. Native success criteria differ across descendant classes and are not pooled into a success/health rate.",
+    "Methods and every imported historical method/data dependency have separate raw-byte digests and committed-before-capture gates. Reusing frozen offline validation/projection does not migrate F51, authenticate inputs or supply independent reviewer acceptance.",
+    "No p-values, calibrated population uncertainty, universal policy ranking, endogenous vigilance or registered mechanism confirmation. Sparse/compromised support, scarce work, additional error/timing contexts and application externalities remain untested."
+  ]
+}

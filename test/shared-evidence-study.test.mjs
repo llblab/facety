@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { auditBlocks } from '../studies/2026-10-24-shared-evidence-comparison/audit.mjs';
 import { execFileSync } from 'node:child_process';
 import { studyDesign, runBlock } from '../studies/2026-10-24-shared-evidence-comparison/run.mjs';
 import { caseConfig, projectRun, measure, methodDigests, METHOD_FILES } from '../studies/2026-10-24-shared-evidence-comparison/contract.mjs';
@@ -75,6 +77,38 @@ test('four zero-day software-only interface smokes project both classes/laws wit
   }
   for (const index of [-1, 4, 0.5, null]) assert.throws(() => runBlock(index), /index 0\.\.3/);
   assert.throws(() => execFileSync(process.execPath, [new URL('run.mjs', directory).pathname, '0', '--override'], { stdio: 'pipe' }), /no scenario\/output\/drift overrides/);
+});
+
+test('retained shared-evidence packet binds attempts, methods and projections without model recapture', () => {
+  const raw = [0, 1, 2, 3].map(index => JSON.parse(readFileSync(new URL('block-' + index + '.json', directory))));
+  const report = JSON.parse(readFileSync(new URL('report.json', directory)));
+  const audit = JSON.parse(readFileSync(new URL('audit.json', directory)));
+  assert.deepEqual(analyzeBlocks(raw), report);
+  assert.deepEqual(auditBlocks(raw), audit);
+  assert.equal(report.cases, 64);
+  assert.ok(report.cells.every(cell => cell.completeRuns === 4));
+  assert.equal(audit.completeEventPrefixChecks, 32);
+  assert.equal(audit.censoredPrefixChecksSkipped, 0);
+  assert.ok(audit.observeOnlyInvariants.every(item => item.sameNativeState));
+  assert.equal(audit.sharedFalseAdmissions.length, 6);
+  assert.ok(audit.sharedFalseAdmissions.every(item => item.keyImpliedSuspicious === false));
+  assert.equal(audit.genuineWitnesses.length, 4);
+  assert.ok(audit.genuineWitnesses.every(item => item.sameCreation && item.evidence === 'independent'));
+  for (const block of raw) {
+    const attempt = JSON.parse(readFileSync(new URL('attempt-' + block.block + '.json', directory)));
+    for (const field of ['block', 'captureCommit', 'designDigest', 'methodDigests', 'source']) assert.deepEqual(attempt[field], block[field]);
+  }
+  const manifest = JSON.parse(readFileSync(new URL('manifest.json', directory)));
+  assert.equal(manifest.captureCommit, report.captureCommit);
+  assert.equal(manifest.designDigest, report.designDigest);
+  assert.deepEqual(manifest.methodDigests, report.methodDigests);
+  assert.deepEqual(manifest.source, design.source);
+  assert.deepEqual(manifest.capture, { blocks: 4, casesPerBlock: 16, executions: 64, complete: 64, failedRecords: 0 });
+  for (const [file, expected] of Object.entries(manifest.artifacts)) {
+    const bytes = readFileSync(new URL('../' + file, import.meta.url));
+    assert.equal(bytes.length, expected.bytes);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256);
+  }
 });
 
 test('offline shared-evidence matrix rejects changed identity, source, dependencies, policy, counts and prefixes', () => {

@@ -1,6 +1,6 @@
 # Shared invitation evidence: fixed comparison contract
 
-**Pre-data checkpoint only. No research label, attempt/block or report has been collected.** This fixes the bounded D44 comparison after the [shared-target software implementation](../2026-10-24-shared-observation/README.md). It neither replays F48–F51 nor registers a mechanism confirmation or selects a protocol/human policy.
+**Completed fixed diagnostic (F52, exploratory).** `9f90622` committed/pushed the method before four exclusive 16-case captures. All 64 seven-day cases completed without run-level censoring at the pinned source/runtime. This follows the [shared-target software implementation](../2026-10-24-shared-observation/README.md); it neither replays F48–F51 nor registers a mechanism confirmation or selects a protocol/human policy.
 
 ## Question and fixed matrix
 
@@ -29,15 +29,56 @@ The new contract deliberately reuses F51's unchanged `caseConfig`/`projectRun`/`
 
 `METHOD_FILES` binds **seven repo-relative raw-byte hashes**: four new method/config files and the imported historical contract/analyzer/design. The old design is pinned because its analyzer loads it; the old capture runner is not imported or executed. Native `src/*.mjs` dependencies are separately bound by `sha256-src-mjs-v1` **`50a20767e9e4829bdb1ba4aaf8b4fda0388faf5d22c70ded04a8d266b87dd3c3`** (30 files), base `fbc8a43`, Node **`v26.8.1`**. No old method, artifact or source is changed to make this comparison pass. Fingerprints bind local fidelity, not authentic evidence or independent acceptance.
 
-## Preparation validation
+## Results (F52, exploratory)
+
+Seed order is 01…04. These are four fixed labels and overlapping calendar/key contexts, **not** population attack probabilities. Both modes retain nominal sensitivity 0.8/FPR 0.01, not the same received bits.
+
+| Fabricated descendants | False admitted | False converted | False XP |
+| --- | --- | --- | --- |
+| Observe-only, either law/calendar | 4, 9, 3, 2 | 0, 9, 3, 1 | 1, 39, 11, 5 |
+| Active independent, either calendar | 0, 0, 0, 0 | 0, 0, 0, 0 | 0, 0, 0, 0 |
+| Active shared-target, either calendar | 1, 1, 0, 1 | 0, 3, 0, 0 | 0, 8, 0, 0 |
+
+The supplied persistent-error alternative removes the zero-admission result even when all ticks are available. This is conditional sensitivity to an encoded evidence law, not a confirmed emergent failure mechanism or real detector covariance. It is not a comparison of daily-slot versus first-attended or a universal ranking. Genuine initial coalition operators persist; preventing fabricated admissions alone does not defeat real-person collusion.
+
+The separate [post-data author audit](audit.mjs)/[output](audit.json) retains six shared-mode admission records (three labels × two calendars), all initial-root invitations. Each has a **key-implied negative** first-stage signal under the pinned law. They reuse keys across calendars and are not six independent trials. This audit does not yet reconstruct per-invitation paid looks or historical support/timing; latent signals are not journaled inspection receipts. That attribution remains an explicit offline follow-up, not grounds to transplant another world's graph or received signals.
+
+Active shared-target false Self-ID acts are `[1,4,0,1]`, with unspent false rights `[1,1,0,1]`, in either calendar. Thus seed 01/04's zero conversion/XP is **not zero false emission**: each has a false unspent act recorded at 148/164 h. Seed 02's false member records at 80/104/128/152 h, three converted/one unspent; total false XP 8 is terminal account XP, not automatically only its own emission credits or verified usefulness. The horizon is 168 h; future disposition is unknown.
+
+### Genuine harm and trajectory consequences
+
+Every genuine observe-only cell admits `[4,9,3,2]`. Active independent cancels `[1,1,0,0]` genuine invitations with all-ticks attention, yielding admissions `[3,7,3,2]`; phase 0 cancels `[1,0,1,0]`, yielding `[3,9,2,2]`. Active shared-target has zero sampled positives/cancellations in either calendar and retains `[4,9,3,2]` admissions. **Zero here is not proof of safety or a welfare advantage.** The rare nominal FPR, only four fixed labels and reused source keys do not establish population harm rates; genuine structural false-identity zeros remain inapplicable as defense success.
+
+The four cancellation **case records** include the same seed-01 event in both calendars: `n9` vetoes `invitation:223` at 108 h (created 104). Seed-02/all-ticks `n8` vetoes at 68 h (created 64); seed-03/phase-0 `n3` vetoes at 132 h (created 112). Matching creation/prefixes precede each world's first changed cancellation; later IDs/people need not be counterfactual matches. These lawful authority/window passes are classification harm against declared genuine targets, not adjudicated guarantor wrongdoing.
+
+Net genuine XP deltas against observe-only are `[-11,-22,0,0]` / `[-11,0,-12,0]`, under the legacy source-credit/trajectory reference, not formal fines or selected D42 cancellation effects. Net admissions can fall by more than the direct veto count: seed 02 all-ticks loses two admissions after one cancellation. Its terminal ledger changes by **minted −3, burned −1, supply −2, Collector −1**; those are whole-trajectory differences, not extra veto burn, collection or a marginal sanction. Debt and procedural sanctions remain zero; private loss, compensation, useful participation and ordinary Self-ID harm were not evaluated.
+
+### Work, horizons and assurance
+
+Across four active cases per cell:
+
+| Attention / law | False-target inspections / cancellations | Gross review-response work | Mean total defender work |
+| --- | ---: | ---: | ---: |
+| All / independent | 21 / 19 | 40 | 296 |
+| All / shared-target | 70 / 16 | 86 | 310.5 |
+| Phase 0 / independent | 26 / 18 | 44 | 297 |
+| Phase 0 / shared-target | 37 / 15 | 52 | 302 |
+
+Shared-target has **54/22 recorded negative inspections** in those active cells versus independent 2/8; these are aggregate actual paid counters, not yet allocated to individual invitations by this audit. Different downstream populations/work prevent a marginal cancellation-price interpretation. Genuine active gross work is independent/shared **288/314** (all) and **137/141** (phase 0), total defender means **367.75/374.5** and **330.25/331.25**. Avoided erroneous exclusion can retain more downstream work; neither cost reduction nor greater work by itself establishes welfare or retention. Inspection/response budget denials are zero throughout; unit weights and generous whole-run budgets do not calibrate real costs/capacity.
+
+All **32** complete-pair native-event prefix checks pass. Within each population/label, four observe-only law/calendar native states match despite changed paid work. Active fabricated all-ticks cells have no open invitation; both phase-0 laws retain seed-03 `invitation:277`, created 160/deadline **184**. Genuine active cells retain `[2,1,2,2]` invitations with deadlines 172–188 h. Complete runs do not complete those lifetimes or prove their future outcomes.
+
+[Report](report.json) preserves the fixed descriptive output; [manifest](manifest.json) binds all seven method/config files, four attempt/block pairs, report and separate author audit bytes. Native source and pre-data method/dependencies remain unchanged. [Completion validation](validation.json) records retained-only reanalysis/hash checks. No data-dependent extension, historical replay, input authenticity, independent scientific acceptance, human calibration, default/protocol selection or D33/D34/D42 migration follows. Common-mode error is an explicit stress assumption, not real-world evidence validity; the remaining resource/support/behavior/attack-cost gates stay open.
+
+## Preparation validation (historical)
 
 Five software families in [`test/shared-evidence-study.test.mjs`](../../test/shared-evidence-study.test.mjs) cover the entire synthetic matrix/config/policy closure, raw source/method/dependency/label/count/census/ledger/prefix tampering, genuine harm/applicability, censoring and horizon-pending lifetimes. Four **zero-day** native interface smokes use only `shared-study-schema-software`, never a planned label, and create no invitation/capture artifact. Synthetic analyzed blocks are in-memory software fixtures, not study observations or a retained result.
 
 [Pre-data validation](predata-validation.json) records actual suite/context/source and method hashes. No scientific outcome is assumed by these checks; they are author validation, not independent scientific review.
 
-## Capture/failure boundary (after the pre-data commit)
+## Capture/failure boundary (closed)
 
-Do **not** execute these commands at preparation. After the validated method is committed/pushed, a later cohort executes each index once at the same commit:
+The following commands document the **completed** capture, not an instruction to rerun it. Keep every existing attempt/block/report intact. Tests use retained-only functions without overwriting those artifacts. All four blocks ran once at the same pre-data method commit:
 
 ```sh
 node studies/2026-10-24-shared-evidence-comparison/run.mjs 0
@@ -49,4 +90,4 @@ The runner checks source/runtime/design and all seven committed byte identities,
 
 Unexpected case/block-write failure preserves completed projections, assumptions, failure phase/case, any returned native result and error in exclusive `failed-N.json`, then throws. An unreturned in-flight model state/process abort remains unknown; the attempt is retained and cannot be retried. Do not silently repair/relabel the committed method after a failure or analyzability defect. Preserve original evidence and qualify the failure first.
 
-Analysis reads only the four retained blocks and exclusively writes `report.json`; it accepts no input/output/policy overrides and never calls the simulator. A later completion checkpoint must bind raw/report/attempt bytes and qualified findings, including harm, work, debt/collection, censoring and pending lifetimes. `BACKLOG.md` alone owns that later execution and remaining boundaries; no broad D39 restart follows.
+Analysis reads only the four retained blocks and exclusively writes `report.json`; it accepts no input/output/policy overrides and never calls the simulator. This completion checkpoint's manifest/retained-only tests bind raw/report/attempt bytes and qualified findings, including harm, work, debt/collection, censoring and pending lifetimes. `BACKLOG.md` alone owns the remaining offline attribution and boundaries, not another execution of this closed packet; no broad D39 restart follows.
