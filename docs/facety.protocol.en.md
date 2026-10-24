@@ -923,6 +923,14 @@ The investigator and sponsor may negotiate compensation outside protocol. A buil
 
 Evidence must be evaluated apart from source allegiance: a malicious source can reveal a real violation; a respected source can submit a false accusation. An allegation is not a verdict. Repeated circulation of one package is not independent confirmation. **[REFERENCE / OPEN]** Packages may retain public-event references, claimed duty, supporting observations/source identities, timestamps and review history without publishing additional sensitive personal data. Evidence admission, clarification/refusal, conflict handling, retries and harassment safeguards remain to be specified and tested. See the [research program](research.en.md).
 
+### 25.2 Intent, act validity, suspicion and adjudication (D47)
+
+**D47 — [SELECTED modeling distinctions; distributions and evidence procedure OPEN], 2026-10-24.** The owner's clarification separates a participant's supplied behavior/intent profile from whether a particular Self-ID act satisfies the rules. A genuine, good-faith participant can accidentally produce an invalid act or one that fails to establish the required identity claim. Conversely, the intent assigned to an actor does not by itself make every act invalid. Unique personhood, intent, act-level validity, observed evidence/belief and an adjudicated result are distinct. An act defect is not automatically proof of a false person or malicious intent, and good intent does not automatically make a defective act valid. This distinction grants neither automatic immunity nor a new sanction/fault standard.
+
+A valid Self-ID can nevertheless evoke suspicion and lead an eligible participant to open a dispute. The model must admit the owner's example: evidence establishes that the act is valid, so the challenge fails and the challenging procedural side loses. The low-XP noticer/contact source in D46 is not automatically that formal challenger; existing participation/responsibility rules still apply. Discovery, suspicion, a contact request, actual case entry, presentation of evidence and adjudication are separate transitions. An allegation is not a violation, and opening a case is not winning one.
+
+The owner expects some such chains to be very rare; this is **[HYPOTHESIS / SCENARIO ASSUMPTION]**, not a measured frequency or permission to omit them. Compose conditional probabilities for the stages rather than silently multiplying independent marginal rates. Act validity and person/intent labels belong in the observation/evaluation environment, not omniscient defense state; participants and the dispute abstraction act on declared evidence and uncertainty. The successful-defense example does not select infallible adjudication in every case. The intent-to-act-validity distribution, act-specific false suspicion/recognition, escalation willingness and evidence-to-verdict error/correlation law remain OPEN. Existing merits, monetary/XP consequences, D34 liability and D42 maturity contracts are not replaced. The current identity-class observation/dispute reference is not this full act-level model, and historical results must not be relabeled as its implementation.
+
 ## 26. Chekharda / Leapfrog
 
 ### 26.1 Alternating positions
@@ -2238,6 +2246,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Probabilistic suspicion and low-XP relay clarified 2026-10-24
 
 **D46 — [SELECTED modeling direction; quantitative contracts OPEN], §18.5 and §25.1.** Source: the owner's proposal to model suspicion around Self-ID/invitation/guarantee acts rather than hard inspection limits, with roughly an order-of-magnitude guarantor suspicion advantage, followed by the explicit clarification that low XP belongs to the person who notices and can call a higher-XP participant. This refines D44's research focus and reaffirms D28's discovery/sponsorship separation, not a new truth rule, guaranteed senior response, removal of entry/stake gates, free guarantee cancellation or automatic audience/quorum. Probability/time/XP/evidence/contact contracts and native implementation remain open. Old studies/limits remain pinned reference evidence; no rerun, default/RNG change or general D39 restart follows.
+
+### Intent, act correctness and false suspicion clarified 2026-10-24
+
+**D47 — [SELECTED modeling distinctions; quantitative/evidence contracts OPEN], §25.2.** Source: the owner's explanation that good or bad intent, a valid or invalid Self-ID, suspicion, opening a dispute and its outcome are different events. A good-faith person's act can be defective; a valid act can be wrongly suspected and successfully defended, with the challenging side losing. Preserve genuine personhood separately, admit rare false-accusation chains and use conditional stage probabilities without assuming independent rare events or a perfect oracle. D46's low-XP source is not automatically the formal risk-bearing challenger. This chooses no new fault/sanction rule, calibration or adjudication procedure and makes no runtime/history change.
 
 ### Earlier supersessions
 
