@@ -41,7 +41,17 @@ Four test families in `test/d42-audit.test.mjs` check purity/transport, changed 
 
 This is an **author audit with an independent arithmetic implementation**, not independent reviewer acceptance, a new court policy or real-world evidence. Original capture/validation files remain unchanged; [audit validation](audit-validation.json) owns the subsequent evidence. All **266 native tests pass**, including the four focused audit families; the earlier capture checkpoint's 262-test record is retained as history, not overwritten or added to this count.
 
-**Stop / next owner input:** the safe audit cohort is complete. For an act already disputed/frozen before age 24, select immediately usable XP, credited-but-quarantined XP, or credit deferred until resolution. The underlying value remains locked under the existing freeze. No further automatic iteration is useful before that contract choice; do not infer it from the legacy lock example or reopen the resolved custody choice.
+**Audit stop:** this cohort is complete; its arithmetic/legacy findings do not choose usable, quarantined or deferred XP for a frozen act. The subsequent owner redirect raises the scheduler issue below first. Neither contract may be guessed, and the resolved custody choice stays closed.
+
+## Daily cadence prerequisite: source inspection
+
+**F47 — diagnostic source analysis, 2026-10-24; no additional model execution.** Inspection of `src/experiment.mjs` shows one loop at `day * DAY` and this ordering: Self-ID creation, guarantees, inspection, timed disputes, `guardianWork`, then `admissionWork` (which creates new invitations). `guardianWork` has only that one scheduled call and skips a pending invitation when `now - createdAt >= invitationFreezeHours`.
+
+For invitations created by this scheduler with the default 24-hour freeze, the review phase at their creation tick has already passed. Its next invocation is at the next daily tick, exactly when the freeze is no longer eligible. Therefore this **scheduled frozen-invitation review path has zero eligible opportunities**, even if configured review willingness is positive. This does not prove that every other defense route fails. Self-ID inspection differs: it can observe acts in the creation tick; under D42, the next daily tick is too late for the original free veto. The current legacy indefinite unspent veto can hide that latter discretization problem.
+
+The owner's proposed 6-hour scheduler would supply intermediate ticks at ages 6, 12 and 18 before a 24-hour deadline. These are opportunities, not guaranteed inspections of every act. Both protocol windows, rolling daily emission limits and exact deadline meanings stay unchanged. Per-day rates/probabilities, daily work/attention budgets, action phase ordering, keyed randomness, daily measurements and legacy compatibility need an explicit implementation contract; running the old daily workload four times is not a neutral resolution change. Whether to preserve daily intensity or intentionally increase checking is the nearest owner clarification, not a selected new protocol rule.
+
+The seven retained controls above use explicit native hours, not the daily cohort scheduler, and remain source-bound valid reference captures. No control, audit, default, random policy or historical result was rerun or modified for this source finding.
 
 [Validation](validation.json) retains the raw/runner hashes, capture count and coordinator checks: all 262 native tests pass; context/links/whitespace pass with zero errors and 27 existing warnings. The previous DAG result (27 modules/66 edges) is reused because native source/configuration are byte-identical, not rerun or counted as independent assurance.
 
