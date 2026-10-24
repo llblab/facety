@@ -1,0 +1,62 @@
+{
+  "schema": "facety-sponsor-pipeline-predata-validation/v1",
+  "level": "author-software-method-validation-not-data",
+  "source": {
+    "baseCheckpoint": "a642bfb",
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "c5ba0d17415344a0fb5b9b71409798560998b8db79970b81b7e18b2222831d62",
+      "files": 32
+    },
+    "node": "v26.8.1"
+  },
+  "designDigest": "f9a027876c81f0eebedf5ca4efcf5f01e65d73d229aa9dba2b5ab26a4673b549",
+  "methodDigests": {
+    "studies/2026-10-24-sponsor-pipeline/contract.mjs": "2fb044a65038056e44a449bd6a6fc76846c86b882fd6f3baab94bdd6d8929836",
+    "studies/2026-10-24-sponsor-pipeline/run.mjs": "2c5b0cc5a3fff1250391df8bde9e6d069d19bfc3a0a9dab7f2307e11a47e25ac",
+    "studies/2026-10-24-sponsor-pipeline/analyze.mjs": "8a27ad4253622b7ff36e8ed42b278ca8561aeb6688cadcf70feada40a91996ce",
+    "studies/2026-10-24-sponsor-pipeline/design.json": "81e80ad465582037c94ae0085d6016d79f3d9b68805500a87d0bd648436e7784",
+    "examples/causal-walkthroughs.mjs": "4b6c8e7bbb729febbd3579c20ba4a05efd53dd44bb764e9a0985184eb8c17d3e"
+  },
+  "test": {
+    "file": "test/sponsor-pipeline-study.test.mjs",
+    "bytes": 7656,
+    "sha256": "421a9caf065bc8e082bac94f1866d9ccd4fbe398e20ebc9e76deb99c2e32b624"
+  },
+  "checks": {
+    "focused": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    "suite": {
+      "passed": 364,
+      "failed": 0,
+      "skipped": 0,
+      "command": "npm test"
+    },
+    "software": {
+      "labels": [
+        "d47-sponsor-pipeline-software-01",
+        "d47-sponsor-pipeline-software-02",
+        "d47-sponsor-pipeline-software-03",
+        "d47-sponsor-pipeline-software-04"
+      ],
+      "mainEpisodes": 400,
+      "otherControls": "inert future inspection/trace retention, exact keys, corruption, missingness, pure exclusivity/order states",
+      "plannedLabelsExecuted": 0,
+      "exclusiveCaptures": 0
+    },
+    "dag": {
+      "modules": 32,
+      "edges": 77,
+      "acyclic": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "whitespace": "git diff --check: passed",
+    "context": { "errors": 0, "warnings": 27, "command": "validate-context.mjs /home/llb/Repos/facety" },
+    "preservation": "Native source/example/old test/old study bytes unchanged against a642bfb; no RNG policy change or historical capture."
+  },
+  "limits": "No planned seed sampled, exclusive CLI launched, original block/report written, live disk/crash fault injection, independent review, calibrated behavior, actual act-case result or mechanism confirmation. Four ordered original captures and analysis remain pending after commit/push."
+}

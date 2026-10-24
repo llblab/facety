@@ -13,6 +13,10 @@ Existing callers still import configuration functions and constants from `src/ex
 
 See [the root example](../README.md#cohort-and-attack-experiments). Both native ESM APIs and CLI `run`, `trials`, `sweep`, `landscape` and `compare` require no installation.
 
+## Separate pre-case pipeline diagnostic
+
+The [D46–D47 fixed sponsor-pipeline method](../studies/2026-10-24-sponsor-pipeline/README.md) is prepared/validated **before data**: 16 fresh labels, 1600 matched native-funded Self-ID episodes, fixed role/rate/private-value/contact arms and exclusive original captures/analysis. It uses the act evidence/relay/assessment APIs, **not** `runExperiment`'s population/growth scheduler, and changes no defaults. The [model contract](simulator.en.md#fixed-sponsor-pipeline-diagnostic-method-prepared-capture-pending) names its assumptions. The endpoint is a guard-reaching pre-case request and work/missingness, never formal disputes or calibrated behavior; all cases/custody/sanctions remain structurally blocked. No planned-label observation or exclusive attempt has run at preparation. Original methods/source/runtime must be committed unchanged before capture; any failure/orphan/repetition stops without retry or overwrite.
+
 ## Population and ownership
 
 `initialSize` and `attackerShare` define the starting accepted population. The attacker count rounds to the nearest integer; output includes both requested and realized shares. A seeded shuffle assigns roles independently of lexicographic XP tie-breaking.

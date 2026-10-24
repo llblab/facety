@@ -1,0 +1,806 @@
+{
+  "schema": "facety-sponsor-pipeline-design/v1",
+  "level": "encoded-rule-pipeline-diagnostic-not-confirmation",
+  "source": {
+    "baseCheckpoint": "a642bfb",
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "c5ba0d17415344a0fb5b9b71409798560998b8db79970b81b7e18b2222831d62",
+      "files": 32
+    },
+    "node": "v26.8.1"
+  },
+  "seeds": [
+    "d47-sponsor-pipeline-01",
+    "d47-sponsor-pipeline-02",
+    "d47-sponsor-pipeline-03",
+    "d47-sponsor-pipeline-04",
+    "d47-sponsor-pipeline-05",
+    "d47-sponsor-pipeline-06",
+    "d47-sponsor-pipeline-07",
+    "d47-sponsor-pipeline-08",
+    "d47-sponsor-pipeline-09",
+    "d47-sponsor-pipeline-10",
+    "d47-sponsor-pipeline-11",
+    "d47-sponsor-pipeline-12",
+    "d47-sponsor-pipeline-13",
+    "d47-sponsor-pipeline-14",
+    "d47-sponsor-pipeline-15",
+    "d47-sponsor-pipeline-16"
+  ],
+  "blocks": 4,
+  "seedsPerBlock": 4,
+  "casesPerSeed": 100,
+  "cases": 1600,
+  "episode": {
+    "atHour": 72,
+    "target": "Mira",
+    "selfId": "self-id:15",
+    "sourceActor": "Aster",
+    "sourceOpportunity": "source",
+    "reviewOpportunity": "review",
+    "sourceGroup": "media",
+    "distinctReviewGroup": "other-tag",
+    "traceLimit": 200,
+    "budgetPerActor": 12,
+    "reviewCapacity": 2,
+    "stakeBacking": "unsecured",
+    "rules": {
+      "enabled": true
+    },
+    "normalizedRules": {
+      "enabled": true,
+      "accuracy": 0.9,
+      "stake": 1,
+      "fine": 5,
+      "liability": "inviter-chain",
+      "rewardShare": 0.5,
+      "loserHalvesXp": true,
+      "excludeLiable": false,
+      "fineMode": "chain",
+      "stakeBacking": "unsecured",
+      "procedure": "one-step",
+      "stakeGrowth": 0.2,
+      "signalAccuracy": 0.7,
+      "closeSignalAccuracy": 0.9,
+      "xpValue": 0.05,
+      "maxRounds": 60,
+      "maxScan": 60,
+      "councilDepth": 0,
+      "reputationWeight": 0,
+      "disputeWindowHours": 168,
+      "noticeBase": 0.02,
+      "evidenceGain": 0.1,
+      "civicValue": 0,
+      "entrantChoice": "lowest",
+      "roundsPerDay": 1,
+      "entryTiming": "daily-quota",
+      "trackRecordWeight": 0,
+      "regularsNotice": 0,
+      "evidence": "private-signal",
+      "proofStrength": 0.98,
+      "clusterFollowUp": false
+    }
+  },
+  "validity": [
+    true,
+    false
+  ],
+  "roles": [
+    "ordinary",
+    "guarantor"
+  ],
+  "rates": {
+    "self-id": {
+      "ordinary": {
+        "valid": 0.02,
+        "invalid": 0.08
+      },
+      "guarantor": {
+        "valid": 0.2,
+        "invalid": 0.8
+      }
+    },
+    "invitation": {
+      "ordinary": {
+        "valid": 0.02,
+        "invalid": 0.08
+      },
+      "guarantor": {
+        "valid": 0.2,
+        "invalid": 0.8
+      }
+    },
+    "guarantee": {
+      "ordinary": {
+        "valid": 0.02,
+        "invalid": 0.08
+      },
+      "guarantor": {
+        "valid": 0.2,
+        "invalid": 0.8
+      }
+    }
+  },
+  "profiles": [
+    {
+      "id": "optimistic-correction",
+      "value": {
+        "goal": "seek-correction",
+        "utilityUnit": "declared-private-units",
+        "beliefs": {
+          "positiveDistinct": 0.9,
+          "positiveShared": 0.1,
+          "negative": 0.05,
+          "missing": null
+        },
+        "payoffs": {
+          "upheld": 8,
+          "rejected": -4,
+          "participation": 0,
+          "workCost": 1,
+          "abstain": 0
+        }
+      }
+    },
+    {
+      "id": "apparently-futile-correction",
+      "value": {
+        "goal": "seek-correction",
+        "utilityUnit": "declared-private-units",
+        "beliefs": {
+          "positiveDistinct": 0,
+          "positiveShared": 0,
+          "negative": 0,
+          "missing": null
+        },
+        "payoffs": {
+          "upheld": 8,
+          "rejected": -4,
+          "participation": 0,
+          "workCost": 1,
+          "abstain": 0
+        }
+      }
+    },
+    {
+      "id": "private-participation-benefit",
+      "value": {
+        "goal": "adversarial-participation",
+        "utilityUnit": "declared-private-units",
+        "beliefs": {
+          "positiveDistinct": 0,
+          "positiveShared": 0,
+          "negative": 0,
+          "missing": 0
+        },
+        "payoffs": {
+          "upheld": 8,
+          "rejected": -4,
+          "participation": 10,
+          "workCost": 1,
+          "abstain": 0
+        }
+      }
+    },
+    {
+      "id": "unknown-prospects",
+      "value": {
+        "goal": "seek-correction",
+        "utilityUnit": "declared-private-units",
+        "beliefs": {
+          "positiveDistinct": null,
+          "positiveShared": null,
+          "negative": null,
+          "missing": null
+        },
+        "payoffs": {
+          "upheld": 8,
+          "rejected": -4,
+          "participation": 0,
+          "workCost": 1,
+          "abstain": 0
+        }
+      }
+    },
+    {
+      "id": "scripted-reference",
+      "value": null
+    }
+  ],
+  "paths": [
+    {
+      "id": "available",
+      "sponsor": "Bela",
+      "available": true,
+      "sameTag": false
+    },
+    {
+      "id": "unavailable",
+      "sponsor": "Bela",
+      "available": false,
+      "sameTag": false
+    },
+    {
+      "id": "ineligible",
+      "sponsor": "Aster",
+      "available": true,
+      "sameTag": false
+    },
+    {
+      "id": "absent",
+      "sponsor": "NoSponsor",
+      "available": true,
+      "sameTag": false
+    },
+    {
+      "id": "same-tag",
+      "sponsor": "Bela",
+      "available": true,
+      "sameTag": true
+    }
+  ],
+  "randomness": {
+    "observations": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "observations": "act-observation-keyed-v1",
+      "trialUnit": "observer-act-hour-opportunity",
+      "dependence": "keyed-per-declared-opportunity"
+    },
+    "sponsor": "two-outcome-private-utility-v1",
+    "seedSampling": "16 fixed fresh labels; no seed search, extension, retry, empirical calibration or independent context pool",
+    "coupling": "Same seed/act/observer/hour/opportunity draw across role, validity, profile and contact arms where the actual observer/opportunity matches. Role changes a threshold; profile changes no draw. Bela and Aster reviews are distinct keyed opportunities, not verified independent humans."
+  },
+  "bootstrap": {
+    "digest": "eb0949d41c60ecf46e8ef1ddfbe1fcf86076934ee7bf5621e53bd9a751269845",
+    "snapshot": {
+      "atHour": 72,
+      "subjects": [
+        {
+          "id": "Aster",
+          "genesis": true,
+          "key": "Aster:key:0",
+          "identityStatus": "accepted",
+          "xp": 3,
+          "liquidFacy": 1,
+          "debt": 0,
+          "lastRewardAt": 48
+        },
+        {
+          "id": "Bela",
+          "genesis": true,
+          "key": "Bela:key:0",
+          "identityStatus": "accepted",
+          "xp": 7,
+          "liquidFacy": 2,
+          "debt": 0,
+          "lastRewardAt": 48
+        },
+        {
+          "id": "Cato",
+          "genesis": true,
+          "key": "Cato:key:0",
+          "identityStatus": "accepted",
+          "xp": 4,
+          "liquidFacy": 2,
+          "debt": 0,
+          "lastRewardAt": 48
+        },
+        {
+          "id": "Mira",
+          "genesis": false,
+          "key": "Mira:key:0",
+          "identityStatus": "accepted",
+          "xp": 3,
+          "liquidFacy": 1,
+          "debt": 0,
+          "lastRewardAt": 48
+        }
+      ],
+      "ledger": {
+        "minted": 7,
+        "burned": 1,
+        "supply": 6,
+        "emitterVault": 0,
+        "collector": 6,
+        "feeVault": 0,
+        "stakeVault": 0,
+        "debt": 0
+      },
+      "council": [
+        {
+          "id": "Bela",
+          "xp": 7
+        },
+        {
+          "id": "Cato",
+          "xp": 4
+        },
+        {
+          "id": "Aster",
+          "xp": 3
+        },
+        {
+          "id": "Mira",
+          "xp": 3
+        }
+      ],
+      "relations": [
+        {
+          "id": "guarantee:0",
+          "guarantor": "Bela",
+          "guaranteed": "Aster",
+          "proposedAt": 0,
+          "activatedAt": 0,
+          "endedAt": null,
+          "status": "active"
+        },
+        {
+          "id": "guarantee:1",
+          "guarantor": "Cato",
+          "guaranteed": "Aster",
+          "proposedAt": 0,
+          "activatedAt": 0,
+          "endedAt": null,
+          "status": "active"
+        },
+        {
+          "id": "guarantee:2",
+          "guarantor": "Bela",
+          "guaranteed": "Cato",
+          "proposedAt": 0,
+          "activatedAt": 0,
+          "endedAt": null,
+          "status": "active"
+        },
+        {
+          "id": "guarantee:10",
+          "guarantor": "Mira",
+          "guaranteed": "Aster",
+          "proposedAt": 48,
+          "activatedAt": 48,
+          "endedAt": null,
+          "status": "active"
+        },
+        {
+          "id": "guarantee:11",
+          "guarantor": "Mira",
+          "guaranteed": "Cato",
+          "proposedAt": 48,
+          "activatedAt": 48,
+          "endedAt": null,
+          "status": "active"
+        },
+        {
+          "id": "guarantee:12",
+          "guarantor": "Bela",
+          "guaranteed": "Mira",
+          "proposedAt": 48,
+          "activatedAt": 48,
+          "endedAt": null,
+          "status": "active"
+        },
+        {
+          "id": "guarantee:13",
+          "guarantor": "Aster",
+          "guaranteed": "Mira",
+          "proposedAt": 48,
+          "activatedAt": 48,
+          "endedAt": null,
+          "status": "active"
+        }
+      ],
+      "acts": [
+        {
+          "id": "self-id:4",
+          "subject": "Bela",
+          "artifact": "artifact:3",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [],
+          "xpRecipients": [
+            "Bela"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:6",
+          "subject": "Cato",
+          "artifact": "artifact:5",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [
+            "Bela"
+          ],
+          "xpRecipients": [
+            "Cato",
+            "Bela"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:8",
+          "subject": "Aster",
+          "artifact": "artifact:7",
+          "faceIndex": 0,
+          "recordedAt": 0,
+          "guarantors": [
+            "Bela",
+            "Cato"
+          ],
+          "xpRecipients": [
+            "Aster",
+            "Bela",
+            "Cato"
+          ],
+          "xpCredited": true,
+          "status": "consumed",
+          "disposition": "invitation",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:15",
+          "subject": "Mira",
+          "artifact": "artifact:14",
+          "faceIndex": 0,
+          "recordedAt": 48,
+          "guarantors": [
+            "Bela",
+            "Aster"
+          ],
+          "xpRecipients": [
+            "Mira",
+            "Bela",
+            "Aster"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:17",
+          "subject": "Aster",
+          "artifact": "artifact:16",
+          "faceIndex": 0,
+          "recordedAt": 48,
+          "guarantors": [
+            "Bela",
+            "Cato",
+            "Mira"
+          ],
+          "xpRecipients": [
+            "Aster",
+            "Bela",
+            "Cato",
+            "Mira"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:19",
+          "subject": "Cato",
+          "artifact": "artifact:18",
+          "faceIndex": 0,
+          "recordedAt": 48,
+          "guarantors": [
+            "Bela",
+            "Mira"
+          ],
+          "xpRecipients": [
+            "Cato",
+            "Bela",
+            "Mira"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        },
+        {
+          "id": "self-id:21",
+          "subject": "Bela",
+          "artifact": "artifact:20",
+          "faceIndex": 0,
+          "recordedAt": 48,
+          "guarantors": [],
+          "xpRecipients": [
+            "Bela"
+          ],
+          "xpCredited": true,
+          "status": "converted",
+          "disposition": "collector",
+          "disputeLock": null,
+          "collision": false,
+          "debtReserved": false
+        }
+      ],
+      "events": [
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "Aster",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "Bela",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "subject-added",
+          "subject": "Cato",
+          "genesis": true
+        },
+        {
+          "at": 0,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:0",
+          "guarantor": "Bela",
+          "guaranteed": "Aster"
+        },
+        {
+          "at": 0,
+          "type": "guarantee-activated",
+          "relation": "guarantee:0"
+        },
+        {
+          "at": 0,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:1",
+          "guarantor": "Cato",
+          "guaranteed": "Aster"
+        },
+        {
+          "at": 0,
+          "type": "guarantee-activated",
+          "relation": "guarantee:1"
+        },
+        {
+          "at": 0,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:2",
+          "guarantor": "Bela",
+          "guaranteed": "Cato"
+        },
+        {
+          "at": 0,
+          "type": "guarantee-activated",
+          "relation": "guarantee:2"
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:3",
+          "publisher": "Bela"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:4",
+          "subject": "Bela",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:5",
+          "publisher": "Cato"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:6",
+          "subject": "Cato",
+          "collision": false
+        },
+        {
+          "at": 0,
+          "type": "artifact-registered",
+          "artifact": "artifact:7",
+          "publisher": "Aster"
+        },
+        {
+          "at": 0,
+          "type": "self-id-created",
+          "selfId": "self-id:8",
+          "subject": "Aster",
+          "collision": false
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:4",
+          "subject": "Bela"
+        },
+        {
+          "at": 24,
+          "type": "collector-converted",
+          "selfId": "self-id:6",
+          "subject": "Cato"
+        },
+        {
+          "at": 24,
+          "type": "invitation-created",
+          "invitation": "invitation:9",
+          "creator": "Aster",
+          "target": "Mira"
+        },
+        {
+          "at": 48,
+          "type": "subject-added",
+          "subject": "Mira",
+          "genesis": false
+        },
+        {
+          "at": 48,
+          "type": "invitation-accepted",
+          "invitation": "invitation:9",
+          "subject": "Mira"
+        },
+        {
+          "at": 48,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:10",
+          "guarantor": "Mira",
+          "guaranteed": "Aster"
+        },
+        {
+          "at": 48,
+          "type": "guarantee-activated",
+          "relation": "guarantee:10"
+        },
+        {
+          "at": 48,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:11",
+          "guarantor": "Mira",
+          "guaranteed": "Cato"
+        },
+        {
+          "at": 48,
+          "type": "guarantee-activated",
+          "relation": "guarantee:11"
+        },
+        {
+          "at": 48,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:12",
+          "guarantor": "Bela",
+          "guaranteed": "Mira"
+        },
+        {
+          "at": 48,
+          "type": "guarantee-activated",
+          "relation": "guarantee:12"
+        },
+        {
+          "at": 48,
+          "type": "guarantee-proposed",
+          "relation": "guarantee:13",
+          "guarantor": "Aster",
+          "guaranteed": "Mira"
+        },
+        {
+          "at": 48,
+          "type": "guarantee-activated",
+          "relation": "guarantee:13"
+        },
+        {
+          "at": 48,
+          "type": "artifact-registered",
+          "artifact": "artifact:14",
+          "publisher": "Mira"
+        },
+        {
+          "at": 48,
+          "type": "self-id-created",
+          "selfId": "self-id:15",
+          "subject": "Mira",
+          "collision": false
+        },
+        {
+          "at": 48,
+          "type": "artifact-registered",
+          "artifact": "artifact:16",
+          "publisher": "Aster"
+        },
+        {
+          "at": 48,
+          "type": "self-id-created",
+          "selfId": "self-id:17",
+          "subject": "Aster",
+          "collision": false
+        },
+        {
+          "at": 48,
+          "type": "artifact-registered",
+          "artifact": "artifact:18",
+          "publisher": "Cato"
+        },
+        {
+          "at": 48,
+          "type": "self-id-created",
+          "selfId": "self-id:19",
+          "subject": "Cato",
+          "collision": false
+        },
+        {
+          "at": 48,
+          "type": "artifact-registered",
+          "artifact": "artifact:20",
+          "publisher": "Bela"
+        },
+        {
+          "at": 48,
+          "type": "self-id-created",
+          "selfId": "self-id:21",
+          "subject": "Bela",
+          "collision": false
+        },
+        {
+          "at": 72,
+          "type": "collector-converted",
+          "selfId": "self-id:15",
+          "subject": "Mira"
+        },
+        {
+          "at": 72,
+          "type": "collector-converted",
+          "selfId": "self-id:17",
+          "subject": "Aster"
+        },
+        {
+          "at": 72,
+          "type": "collector-converted",
+          "selfId": "self-id:19",
+          "subject": "Cato"
+        },
+        {
+          "at": 72,
+          "type": "collector-converted",
+          "selfId": "self-id:21",
+          "subject": "Bela"
+        }
+      ],
+      "stakes": []
+    }
+  },
+  "interpretation": [
+    "Exactly 1600 separately constructed native-prefix episode executions but only 16 seed sampling units per cell; 100 matched contexts per seed are not independent replicas. No mechanism confirmation, data-dependent extension or historical recapture.",
+    "Both target classes are supplied genuine/good-faith people with one valid or defective act. Validity is evaluator/environment input, not a selected photo requirement, identity judgment, merits finding or defender feature.",
+    "Aster is a recorded guarantor with XP equal to Mira; ordinary-role Aster is an explicitly labeled role-threshold counterfactual, not an owner-selected overlap precedence. Bela is a recorded guarantor with strictly higher XP and available stake. Ineligible Aster self-referral is a direct-access control, not a discovered senior. Changing candidate Bela to Aster also changes the observer/review key; that contrast is not an isolated causal XP effect.",
+    "All new economic admission/rights in the common prefix use FacetyModel; three genesis members are given and native prefix setup work remains unpriced. Episode work alone is charged. This is not fully priced human acquisition or D33/D34/D42 migration.",
+    "Single decision episode at hour72, target act age24h. No daily discovery, time retries, notification, seven-day network growth, pending court horizon, self-correction or learning. No free veto is attempted.",
+    "Rates are arbitrary scenario stress values: ordinary valid/defective suspicion .02/.08 and guarantor .2/.8, exactly tenfold without saturation. Unused other-act rate rows satisfy the strict environment API; no invitation/guarantee adapter is tested. Neither role advantage nor evidence usefulness is measured in humans.",
+    "Source-positive signals alone create/route a package. Found routes get a review attempt and one scripted or conditional sponsor action, including missing/negative reviews. All budgets12/capacities2 are nonbinding accounting, not primary attention or human calibration.",
+    "Distinct source tags are scenario metadata, not authenticated evidence independence. Same-tag is a metadata-refusal control, not a common-source/correlated/media law. Reviewer profiles are supplied unchanged by target validity and no goal label itself determines action.",
+    "Private utility is prospective under a hypothetical outcome menu, not actual expected payoff from this universally blocked act procedure or application welfare. A request reaching the guard is not an opened formal case, wrongful verdict, adjudicated harm, actual sanction or recovery.",
+    "Retain full relay snapshots/trace, actually received bits or null, paid actor/subject work, decision/access receipts, full final protocol state and fixed bootstrap. Zero cases/monetary/XP changes are structural guards, not safety, successful defense or negligible burden.",
+    "Per-cell n16/counts and nominal Wilson95 under the declared seed-sampling model describe pre-case guard-reaching requests only; intervals are not simultaneous/family confirmation or real rates. Stage denominators retain missingness. Compare matched profiles, role thresholds and contact controls; do not pool 1600 rows as independent people.",
+    "All method/config/imported fixture bytes must be committed unchanged before four exclusive captures. Any failed/orphan/existing attempt means stop, no deletion/retry or overwrite. Preserve raw failures and original analysis. Additional/private review, calibrated beliefs/costs, common-source evidence and actual act-merits/remedies remain untested."
+  ]
+}
