@@ -2,6 +2,7 @@
 import { ProtocolRejection } from './model.mjs';
 import { DisputeStakes } from './dispute-stakes.mjs';
 import { ACT_OBSERVATION_RANDOMNESS } from './act-observations.mjs';
+import { assessSponsorship, SPONSOR_ASSESSMENT_POLICY } from './sponsor-assessment.mjs';
 import { challengeAccess, settleOneStepPosition, enforceIdentityVerdict, preflightIdentityVerdict } from './disputes.mjs';
 
 function integer(value, label) {
@@ -227,22 +228,43 @@ export class EvidenceRelay {
           : 'fallible act review; distinct declared source tags do not certify independence' };
     });
   }
-  sponsor(sponsor, packageId) {
+  #entry(actor, item, route) {
+    if (item.status !== 'open' || route?.status !== 'reviewed') return { ok: false, reason: 'no-reviewed-open-route' };
+    if (actor.subject === null) return { ok: false, reason: 'sponsor-has-no-protocol-membership' };
+    if ([...this.#cases.values()].some(record => record.subject === item.subject && record.resolvedAt === null)) return { ok: false, reason: 'subject-already-under-dispute' };
+    const access = challengeAccess(this.#model, actor.subject, item.subject, this.#rules.stake);
+    if (!access.allowed) return { ok: false, reason: access.reason, preconditions: access.preconditions };
+    if (item.claim === 'act-defect') return { ok: false, reason: 'act-defect-adjudication-unimplemented', preconditions: access.preconditions,
+      basis: 'XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened' };
+    const id = 'relay-case:' + this.#sequence++;
+    this.#book.open(id, actor.subject, this.#rules.stake);
+    this.#cases.set(id, { id, packageId: item.id, challenger: actor.subject, subject: item.subject, openedAt: this.#model.now, resolvedAt: null, upheld: null });
+    item.status = 'pending';
+    return { ok: true, value: id, preconditions: access.preconditions, basis: 'existing strict XP and liquid-stake access gates passed' };
+  }
+  sponsor(sponsor, packageId, profile = undefined) {
     const item = this.#package(packageId);
     const route = item.routes.find(row => row.sponsor === sponsor);
-    return this.#act(sponsor, 'formal-challenge', item.subject, { packageId }, [this.#refs.get(packageId), ...(route?.review ? [this.#refs.get(route.review.id)] : [])], ['M04', 'M07', 'M09'], 1, actor => {
-      if (item.status !== 'open' || route?.status !== 'reviewed') return { ok: false, reason: 'no-reviewed-open-route' };
-      if (actor.subject === null) return { ok: false, reason: 'sponsor-has-no-protocol-membership' };
-      if ([...this.#cases.values()].some(record => record.subject === item.subject && record.resolvedAt === null)) return { ok: false, reason: 'subject-already-under-dispute' };
-      const access = challengeAccess(this.#model, actor.subject, item.subject, this.#rules.stake);
-      if (!access.allowed) return { ok: false, reason: access.reason, preconditions: access.preconditions };
-      if (item.claim === 'act-defect') return { ok: false, reason: 'act-defect-adjudication-unimplemented', preconditions: access.preconditions,
-        basis: 'XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened' };
-      const id = 'relay-case:' + this.#sequence++;
-      this.#book.open(id, actor.subject, this.#rules.stake);
-      this.#cases.set(id, { id, packageId, challenger: actor.subject, subject: item.subject, openedAt: this.#model.now, resolvedAt: null, upheld: null });
-      item.status = 'pending';
-      return { ok: true, value: id, preconditions: access.preconditions, basis: 'existing strict XP and liquid-stake access gates passed' };
+    if (profile !== undefined && this.#claim !== 'act-defect') throw new Error('conditional sponsorship currently requires an act-defect relay');
+    const assessment = profile === undefined ? null : assessSponsorship(route?.review
+      ? { suspicious: route.review.suspicious, distinctSource: !item.sourceGroups.includes(route.review.sourceGroup) }
+      : { suspicious: null, distinctSource: null }, profile);
+    const visible = assessment ? { packageId, policy: SPONSOR_ASSESSMENT_POLICY, assessment: null } : { packageId };
+    return this.#act(sponsor, assessment ? 'sponsor-decision' : 'formal-challenge', item.subject, visible,
+      [this.#refs.get(packageId), ...(route?.review ? [this.#refs.get(route.review.id)] : [])], ['M04', 'M07', 'M09'], 1, actor => {
+      if (!assessment) return this.#entry(actor, item, route);
+      visible.assessment = assessment;
+      const access = actor.subject === null ? { allowed: false, reason: 'sponsor-has-no-protocol-membership', preconditions: {} }
+        : challengeAccess(this.#model, actor.subject, item.subject, this.#rules.stake);
+      const ready = item.status === 'open' && route?.status === 'reviewed';
+      const unopposed = ![...this.#cases.values()].some(record => record.subject === item.subject && record.resolvedAt === null);
+      const attempted = assessment.willing === true && ready && access.allowed && unopposed;
+      const result = assessment.willing === true ? this.#entry(actor, item, route)
+        : { ok: false, reason: assessment.willing === false ? 'sponsor-declined' : 'sponsor-willingness-undetermined', basis: 'explicit conditional private utility; no automatic action on ties or unknowns' };
+      const decision = { id: 'sponsor-decision:' + this.#sequence++, atHour: this.#model.now, assessment, access, reviewedRoute: ready,
+        attempted, caseOpened: result.ok, entrySupported: false, outcome: result.reason ?? null };
+      if (route) (route.decisions ??= []).push(structuredClone(decision));
+      return { ...result, decision };
     });
   }
   resolve(caseId, upheld) {

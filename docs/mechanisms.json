@@ -147,6 +147,8 @@
         "test/act-observations.test.mjs",
         "test/act-relay.test.mjs",
         "examples/act-relay.mjs",
+        "src/sponsor-assessment.mjs#assessSponsorship",
+        "test/sponsor-assessment.test.mjs",
         "src/disputes.mjs",
         "examples/causal-relay.mjs"
       ],
@@ -165,7 +167,7 @@
       "intervention": "Matched-budget member, external-unrouted and external-relay arms; no resource addition. Multi-sponsor/compensation effects remain deferred.",
       "alternative": "Extra workforce, oracle review, source allegiance or copies counted as corroboration.",
       "falsifier": "At equal resources relay adds no access, overloads reviewers, or causes unacceptable genuine harm.",
-      "status": "Executed historical identity-relay diagnostic reference and small exploration; D47 fact/keyed-signal environment plus funded Self-ID act-defect observation/package/sponsor pre-case adapter now software-tested. No endogenous contact/willingness, act-level case/remedy or new research/mechanism confirmation.",
+      "status": "Executed historical identity-relay diagnostic reference and small exploration; D47 fact/keyed-signal environment, funded Self-ID act-defect pre-case adapter and optional prospective two-outcome private-utility assessment now software-tested. No calibrated/endogenous contact/adoption, act-level case/remedy or new research/mechanism confirmation.",
       "diagram": "M04 [A work/capacity] observation → package → review --[R XP/stake]--> case → sanctions --[? investigation]--x discovery"
     },
     {
