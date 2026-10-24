@@ -57,7 +57,7 @@ Use the following labels:
 - [Part X — Network Difficulty and Topology Safeguards](#part-x-network-difficulty-and-topology-safeguards-d33): current D33/D35/D36 guarantees plus independent XP-centered paths, pre-guaranteed genesis, dynamic consuls and privacy; deferred cluster quotas remain labeled history.
 - [Appendix A — Decision log and supersession ledger](#appendix-a-decision-log-and-supersession-ledger): dated decisions and what they replaced.
 - [Appendix B — Sources and confidence](#appendix-b-sources-and-confidence): scope and evidence limits.
-- [Appendix C — Research and development decisions](#appendix-c-research-and-development-decisions): retained D37–D39 research contracts, separate from the protocol's participant-facing rules.
+- [Appendix C — Research and development decisions](#appendix-c-research-and-development-decisions): research/development contracts, separate from the protocol's participant-facing rules.
 
 ## From identity work to a maintained network
 
@@ -2215,6 +2215,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 **D42 — [SELECTED ordinary lifecycle and retained matured own right; asset implementation and disputed cases OPEN], §17.3–§17.6.** Source: the owner's explicit correction that everyone earns 1 XP after one day, not when a coin is withdrawn, and that the guarantor can no longer freely cancel after that day. An uncancelled ordinary Self-ID credits its subject and each eligible guarantor once at age 24 hours, even if unused; invitation use counts without a separate or forfeited reward. This supersedes D2's terminal-disposition trigger and indefinite unspent-right veto, not later adjudicated sanctions, D9/D34, the separate invitation freeze or own-emission invitation provenance. **Later owner clarification, 2026-10-24:** the matured own right remains in place until its holder separately chooses withdrawal or invitation use; automatic Collector conversion is explicitly excluded. XP credit and expiry of the original free veto still occur at age 24 hours independently of that choice. Exact asset representation, locked-case maturation, event ordering and invitation-cancellation effects on prior matured XP remain OPEN. Native migration remains unimplemented pending those contracts; historical results retain their original timing/policies and are not replayed or relabeled as D42 evidence. The owner's subsequent scoped Grow Loop request, documented 2026-10-24, resumes D42 migration work/preparation only: it does not select missing frozen-case/chronology/recipient contracts or resume unrelated research.
 
+### Six-hour simulator design contract documented 2026-10-24
+
+**D43 — [SELECTED design requirements; implementation draft, not runtime], Appendix C §50.** Source: the owner's explicit request for a compact six-hour scheduler contract, separate protocol/decision clocks, preserved daily intensity/resource units, multiple actions per tick, distinct transaction/attention profiles and heterogeneous participants without uncalibrated numeric distributions. Historical daily operation must remain separately identified. This is a simulator-design mandate, not a shorter protocol window, obligation to transact/check every six hours, new reward rule or approval to silently settle D42's disputed-maturity/chronology contracts. The first proposed implementation slice is a deterministic clock agenda with supplied deadlines, not a new population behavior model.
+
 ### Earlier supersessions
 
 | Earlier description | Status |
@@ -2278,5 +2282,13 @@ This changes the statistical contract and its transport, not protocol economics 
 The [integrated programme](research.en.md#integrated-research-programme-d39-2026-10-24) MUST connect root questions, detailed alternatives, known evidence, cross-root/same-root interactions, opposed explanations and falsifiers. Existing domain backlog owners and their gates MUST be reused. The immediate research priority is sustained genuine participation through maintained guarantees and readiness to check/react; liability risk is a working explanation of withdrawal, not a measured fact or the only allowed explanation. Uniqueness, contribution/reputation and distribution remain separate under D32.
 
 The canonical [convergence item](../BACKLOG.md#integrated-research-programme-d39) owns bounded execution, acceptance and stopping criteria. Grow Loop MAY continue through locally actionable or useful preparatory cohorts, without treating an OPEN contract as an implicitly selected default. D33–D36/D34 migration, human calibration, funding/ethics and evidence-authentication gates remain intact. New scientific mechanism claims still require committed registrations and reserved confirmations under the existing evidence contract; historical studies MUST NOT be replayed or relabeled automatically. A repeated checkpoint or exhausted safe preparation is a reason to stop, not to invent another rule or sweep.
+
+## 50. Simulator time resolution and heterogeneous opportunities (D43)
+
+**D43 — [SELECTED design requirements; implementation draft], documented 2026-10-24.** The owner requests a six-hour simulator design that separates protocol deadlines from participants' opportunities to act. One-day emission maturity, invitation freeze and rewarded Self-ID spacing remain 24 hours; a six-hour decision grid changes none of those rights or duties. Participants are not required to transact or inspect four times per day.
+
+Daily intensity and daily resource units MUST NOT be silently multiplied by four. Existing whole-run resource caps retain their scope. A tick may contain multiple valid operations, subject to authority, own-emission provenance, funds, work and rolling reward limits. Transaction inactivity and unavailability to observe/respond are distinct. Heterogeneous actor plans may be supplied explicitly, but population shares, activity distributions, reaction probabilities and XP-to-responsiveness relationships MUST NOT be invented as measured facts.
+
+The historical daily schedule remains a separately identified reference. New scheduling must retain honest time/measurement semantics, keyed reproducibility and source-bound evidence. Exact sub-day placement and unresolved same-time/disputed-XP consequences need declared contracts; a finer clock cannot select them by accident. The model contract owns the implementation draft and first deterministic agenda slice. This design checkpoint changes no runtime/default, assumes no calibrated behavior and authorizes no automatic study replay or unrelated research continuation.
 
 ---
