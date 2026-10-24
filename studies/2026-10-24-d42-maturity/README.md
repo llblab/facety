@@ -31,7 +31,17 @@ The last row is conditional arithmetic, not a new rounding choice or observed hu
 - `endGuarantee` and `penalize` interact with the chronological credit ledger. Later penalties must see already due ordinary credits; freeze effects, relation changes/re-linking, same-time ordering and invitation-cancellation effects still need explicit contracts.
 - Existing v1/v2 incentive readers/frozen reports are closed legacy references. Neither mutating their policy labels nor replaying them under new defaults establishes D42 evidence.
 
-**Next validation cohort:** independently replay the retained native journal and public act metadata, without executing `FacetyModel`, to audit every retained account/target/ledger checkpoint and its digest. This has not yet run. Then present the nearest owner choice: does a Self-ID already frozen by a dispute before maturity earn procedural XP at 24 hours, or wait for resolution? Do not infer the answer from this legacy lock example or alter the resolved custody choice.
+## Offline arithmetic audit
+
+[`audit.mjs`](audit.mjs) and retained [`audit.json`](audit.json) reconstruct **all 38 checkpoints, 114 account rows and 113 native events** without importing/calling the model or capture runner. The auditor imports only Node built-ins. It checks every snapshot digest, account/ledger total, target state, current qualified guarantor list, invitation state, settled prefix record, final relation and graph snapshot. Closed case/policy/source bindings and total counts prevent shrinking the cohort. File hashes bind the retained input and capture code; the analyzer's own content hash/runtime is reported separately, not substituted for input provenance.
+
+XP uses independently implemented exact scaled-integer arithmetic. For each still-valid credit, remember the number `h` of halvings already applied at credit time. With `H` total halvings, compute `floor(sum(2^h) / 2^H)` using BigInt, removing entries revoked by the declared link/source rules. This reproduces the captured chronological floor-halving reference without calling its private XP replay. The checked packet has one halving; this is not a general engine or confirmation of untested histories.
+
+Four test families in `test/d42-audit.test.mjs` check purity/transport, changed snapshots even after digest recomputation, journal/case/policy/source tampering and strict CLI/file bindings. Negative controls initially exposed an accepted negative first timestamp and a truthy string in the **new auditor**, both repaired before retaining the final audit; these were not defects in the simulator or captured data. The audit confirms the native legacy snapshots, not D42 correctness. Credit-event times and rejected-attempt occurrence are not independently authenticated: there is no explicit native XP-credit event, and rejected attempts leave no corresponding success event. Those qualifications and input metadata trust remain explicit in the audit output.
+
+This is an **author audit with an independent arithmetic implementation**, not independent reviewer acceptance, a new court policy or real-world evidence. Original capture/validation files remain unchanged; [audit validation](audit-validation.json) owns the subsequent evidence. All **266 native tests pass**, including the four focused audit families; the earlier capture checkpoint's 262-test record is retained as history, not overwritten or added to this count.
+
+**Stop / next owner input:** the safe audit cohort is complete. For an act already disputed/frozen before age 24, select immediately usable XP, credited-but-quarantined XP, or credit deferred until resolution. The underlying value remains locked under the existing freeze. No further automatic iteration is useful before that contract choice; do not infer it from the legacy lock example or reopen the resolved custody choice.
 
 [Validation](validation.json) retains the raw/runner hashes, capture count and coordinator checks: all 262 native tests pass; context/links/whitespace pass with zero errors and 27 existing warnings. The previous DAG result (27 modules/66 edges) is reused because native source/configuration are byte-identical, not rerun or counted as independent assurance.
 
@@ -41,6 +51,7 @@ No protocol default, scheduler/randomness key, source module or old study artifa
 
 ```sh
 node studies/2026-10-24-d42-maturity/controls.mjs
+node studies/2026-10-24-d42-maturity/audit.mjs
 ```
 
-The script prints JSON only, writes no files and refuses source drift or command-line overrides. Retained data must not be overwritten or treated as a fresh confirmation. Reproduction needs the original native source and runner; this checkpoint makes no performance or real-world claim.
+Both scripts print JSON only and write no files. The capture refuses source drift; the auditor reads only the fixed retained data/code with strict content bindings. Both reject command-line overrides. Retained data must not be overwritten or treated as a fresh confirmation. Reproduction needs the original native source and runner; this checkpoint makes no performance or real-world claim.

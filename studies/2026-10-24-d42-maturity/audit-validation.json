@@ -1,0 +1,87 @@
+{
+  "schema": "facety-d42-offline-audit-validation/v1",
+  "date": "2026-10-24",
+  "captureCheckpoint": "52d40a9",
+  "evidence": "post-capture author audit with independent arithmetic implementation; not independent reviewer acceptance",
+  "input": {
+    "sha256": "706d8d78ebcd670be74ab0cfab2d539ee2c90639564af420e40851cb79fd8a41",
+    "bytes": 93382,
+    "source": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "db930fbc29f6d18c4ddfd32897668cd2d3acd1a07f07cda674e1cb7bc3e09fc4",
+        "files": 27
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "runnerSha256": "92445d17f5502035c9876b01e091eda34c8536735c0d6603c879c4ea8e299cc7"
+  },
+  "analyzer": {
+    "sha256": "a21e341b0adff413bbd9f0ab423ea1353e29b43d10c2387ecc0554b80a634b74",
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "artifact": {
+    "path": "audit.json",
+    "bytes": 12104,
+    "sha256": "32bbf99deff1cab60a311d953aa4bf1ce08f1a79de514df7f88d7e337d5cd413"
+  },
+  "result": {
+    "status": "passed",
+    "cases": 7,
+    "checkpoints": 38,
+    "accountCheckpoints": 114,
+    "nativeEvents": 113,
+    "targetAndLedgerCheckpoints": 38,
+    "checkpointDigests": 38,
+    "modelExecutionsByAuditor": 0,
+    "captureWorldRecaptures": 0
+  },
+  "checks": {
+    "focused": {
+      "command": "node --test test/d42-audit.test.mjs",
+      "passed": 4,
+      "failed": 0
+    },
+    "native": {
+      "command": "npm test",
+      "passed": 266,
+      "failed": 0,
+      "includesFocusedFamilies": true
+    },
+    "negativeControls": [
+      "re-signed wrong XP/custody/roles/locks/credit flags/invitations",
+      "changed event chronology and scalar types",
+      "missing or duplicate cases/checkpoints",
+      "unknown events and substituted source/policy",
+      "CLI override refusal and separate input/analyzer bindings"
+    ],
+    "repairedAuditorGuardsBeforeRetention": [
+      "negative first event timestamp",
+      "truthy non-boolean halving flag"
+    ],
+    "preservation": {
+      "nativeSourceAndDefaultsUnchanged": true,
+      "existingTestsAndExamplesUnchanged": true,
+      "controlsCodeDataAndOriginalValidationUnchanged": true
+    },
+    "dag": {
+      "reused": true,
+      "reason": "Native source and graph configuration unchanged",
+      "modules": 27,
+      "edges": 66,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "qualifications": [
+    "Static act/media metadata and the supplied journal are inputs, not authenticated evidence.",
+    "Rejected-attempt occurrence is supported by capture assertions, not independently reconstructed from journal events.",
+    "The journal has no explicit XP-credit event; agreement is at retained event cursors under the declared legacy rules, not an independent exact credit timestamp.",
+    "Only these seven closed fixture worlds are audited; this is not a general court, D42 engine or proof of untested histories."
+  ],
+  "remainingGate": "Owner choice of immediately usable, credited-but-quarantined or deferred XP when a Self-ID is already disputed/frozen at 24-hour maturity; no automatic continuation before that choice."
+}
