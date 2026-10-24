@@ -260,7 +260,7 @@ This is not biometric identification by the runtime. The software deterministica
 
 DEOS supplies economic execution. Atmo is a network that uses DEOS. Facety is an application and a human-trust layer within Atmo. FACY is the Facety fungible token. XP is its independent measure of procedural authority.
 
-The Atmo instance assigns **Bucket D** to a demand-generation policy. Bucket D is dormant until approved activation. Released capital enters **Treasury D**. Treasury D can buy FACY on the market and burn the acquired tokens.
+The Atmo instance assigns **Bucket D** to a demand-generation policy. Bucket D is dormant until approved activation. Released capital enters **Treasury D**. Treasury D can buy FACY on the market and burn the acquired tokens. **D53 — [OWNER governance direction, 2026-10-24]:** Atmo governance using the **ATMO token** decides whether to authorize this economic support. This identifies the outside policy-control plane, not a completed ballot specification: voting weight, quorum, delegation, timing and execution permissions remain to be specified under Atmo's rules. FACY holdings and Facety XP do not themselves grant discretionary control over Bucket D; an authorization cannot bypass capital-release, Treasury budget or market-execution checks.
 
 ```text
 Bucket D (Dormant)
@@ -1231,6 +1231,16 @@ A debt entry of `-100 FACY` is **not** an actual burn of 100 existing tokens. A 
 
 Under the minted-escrow reference design, an invariant must connect the common Emitter vault to outstanding individual Self-ID rights. If guarantees reserve backing or split rights, the accounting must include all such commitments and ensure that no rights can claim the same FACY twice.
 
+### 29.1 Autonomous issuance and the monetary-stock question (D53)
+
+**D53 — [OWNER economic framing and hypotheses], documented 2026-10-24.** The owner distinguishes the original single-network/single-token value thesis from the actual Atmo-coupled economic design. Analyse **autonomous FACY economics without assumed external demand** separately from **conditional Atmo-supported economics**. These are analytical contexts, not a newly selected deployment mode or a change to the one-FACY reward, invitation rules or D42.
+
+With genuine unique participation, each person's normal rewarded acts are limited to at most one per rolling 24 h. This rate argument depends on uniqueness enforcement; admitted Sybil accounts need not respect the human-population bound. At a fixed participating population, full-rate gross issuance is linear in elapsed time; with changing participation it can accelerate or slow. A person's lifetime and the contemporaneous human population are finite. The owner's illustrative **four billion participants** is a saturation scenario, not a protocol cap, a forecast or a verified-population input. Future generations and continuing participation mean that a bounded simultaneous population does **not** by itself bound lifetime cumulative token issuance.
+
+For a simplified fully participating constant population `N`, no burns, unchanged reward and elapsed time `t` in days, gross daily issuance is `N FACY/day` and stock is `S(t) = S(0) + N*t`. A single added unit has relative size `1/S(t)`; the entire daily issue has relative size `N/S(t)`. Both can shrink, but **one tiny coin is not the entire issuance flow**. Actual supply always follows §29's mint-minus-actual-burn identity; cancellations, invitations and real market burns must not be replaced by nominal debt or assumed deflation. No automatic issuance end, aggregate hard cap or new emission-halving schedule is selected.
+
+**[HYPOTHESES, not price laws]** The earlier intuition compares roughly quadratic network opportunity with linear per-person issuance. `N*(N-1)/2` counts possible undirected pairs, not valuable interactions, token demand, market capitalization or a FACY price floor. Genuine useful links may create value; duplicate accounts, collusion, low utilization, review costs and saturation may not. A falling issue/stock ratio does not establish negligible monetary effects or nonzero long-run price. As a counterexample, an explicitly assumed fixed desired aggregate token holding value alongside indefinitely growing stock could make unit price tend toward zero even as percentage issuance falls. This is a toy alternative, not the selected market model. The owner also expects a maturing network's accumulated useful economy to make incremental issuance less significant. That is a hypothesis about economic development over time, not a result implied by age, token stock or population saturation; applications and useful activity can grow, stagnate or disappear even at fixed population. Demand, token value capture, holdings/velocity, application use, actual funding and burns require their own evidence.
+
 ## 30. Monetary penalties and negative emission balances
 
 **[SELECTED / DIRECTION]** A participant can incur a monetary penalty larger than its current liquid and recoverable balances. The remaining obligation becomes a negative emission balance or debt. Future valid identity work can reduce that debt before the participant receives free disposable FACY.
@@ -1312,6 +1322,30 @@ This is not a guarantee of price support or redemption. The buyback is capped an
 However, a pause may also reduce honest participants' incentives to inspect and challenge others. Health signals must be harder to manipulate than simply filing many false accusations. Measured health, credible proof of misconduct, public appeals, and recovery conditions all matter.
 
 The metaphor of an **isolation transformer** refers to controlled economic coupling. It does not imply zero contagion risk or strict independence of market prices.
+
+### 33.1 Conditional demand as an integrity incentive (D53)
+
+**D53 — [OWNER direction / falsifiable incentive hypothesis], 2026-10-24.** Atmo's ability to withhold or redirect support can discipline a captured Facety network **from outside its own XP/governance structure**. Capturing internal authority need not capture the sponsor's capital-allocation authority. The intended publicly intelligible incentive is that credible genuine participation preserves eligibility for outside economic demand, whereas farming/capture can destroy that future opportunity:
+
+```text
+credible and useful human network
+    -> Atmo governance can authorize bounded support
+    -> funded liquidity/demand policy and actual buyback/burn
+    -> valued future participation opportunities
+    -> a possible incentive to preserve integrity and correct abuse
+```
+
+“Support rewards honesty” describes this intended network-level conditionality; it is not an individual truth oracle, automatic wage or guarantee that all participants understand/believe it. The incentive depends on perceived future value, horizon, actual authorized resources, credible observable health signals and a sponsor able and willing to act. Short-horizon extraction, outside benefits or coordinated genuine-person violations can remain profitable. A private attack gain can exceed the attacker's own share of a funding loss borne by the whole network. A sponsor unwilling to harm innocent users or its own dependent applications may also make a threatened pause/redirection non-credible; these are competing incentive explanations, not selected behavior. Atmo governance can also be captured or misinformed; falsely alleged capture can punish an honest network, and a pause can reduce review capacity precisely when correction is needed. Preserve sponsor independence as a tested assumption, not a property inferred from different token names or source tags.
+
+External support supplies real order flow/resources, not free value or guaranteed redemption/price. §32's buy-and-burn route buys existing market FACY; it does not mint invitation-eligible emissions or XP. Support for liquidity must have its own approved route/budget/custody: buyback is not automatically a liquidity-provider position. Report actual sponsor spend and acquired/burned FACY in their own units, fees/depth/slippage, who receives the funds and who bears pause losses. Do not give autonomous-core experiments an undisclosed subsidy or value XP by an assumed protected FACY price.
+
+### 33.2 Redirectable sponsorship and a recovery fork (D53)
+
+**D53 — [OWNER-proposed recovery option, not an implemented rule or automatic remedy], 2026-10-24.** If a captured instance cannot be repaired, the owner proposes a possible fork/reconstituted Facety network excluding **independently evidenced violators**, with Atmo governance able to authorize support for that replacement instead. The threat matters only if identification, collective migration and funding redirection are credible and affordable; it is not proof that capture is temporary or economically irrational.
+
+Graph/history/flow analysis may suggest investigations. Graph membership, density, community labels, association or a losing defense alone cannot certify who violated a rule. Genuine dissenters, mistaken participants and innocents linked to violators must remain distinguishable. A recovery cannot silently use evaluator ownership/personhood labels as an exclusion oracle or convert Atmo's funding preference into a canonical identity verdict.
+
+**[OPEN recovery/governance contracts]** Define admissible exclusion evidence and contest/appeal, who authorizes the new instance, snapshot/genesis and anchor activation, migrated identity/evidence/guarantee/XP state, balances/asset identity, outstanding rights, debt and historical duties, concurrent claims/double funding, applications/liquidity/social coordination and genuine migration/fragmentation costs. The replacement token is not automatically the same asset or a redemption promise; a fork must not silently erase D34 responsibilities, confiscate balances or import the captured authority it is intended to escape. Selecting a funding destination does not rewrite the old ledger or constitute a selected punitive fork procedure. No automatic fork, graph filter, airdrop, balance/XP reset or governance threshold is authorized here.
 
 ## 34. The marketing and network-effect thesis
 
@@ -2358,6 +2392,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 **D52 — [DIRECTION / HYPOTHESIS], §26.6, “Second-order public accountability.”** Same source task. A public high-XP defense can create audience/notice/work/evidence opportunities for a separately admissible own-history allegation, sponsorship and a new case, even after the first ends. It selects neither automatic guilt/defender sanctions nor a detection guarantee. Honest/mistaken/collusive actors, harassment, local versus outside reach, evidence dependence, routing and capacity remain separate controls. Qualifies the earlier D26 automatic-cluster proposal rather than treating it as the required independent evidence chain.
 
 **D42 further clarification — [SELECTED meaning reaffirmed, no migration].** Same task: valid cancellation within the initial window and ordinary maturity are branches of a single 24-hour condition. Uncancelled maturity credits ordinary subject/eligible-guarantor XP once and matures the retained own right while ending the original free veto. Only the holder's later withdrawal/invitation choice is independent. No automatic Collector transfer, disposition re-credit or automatic retroactive Self-ID cancellation from invitation cancellation; disputed/debt/relation/chronology effects remain OPEN.
+
+### Autonomous economics and conditional external demand recorded 2026-10-24
+
+**D53 — [OWNER economic framing/governance direction, incentive hypothesis and recovery candidate], §8, §29.1 and §33.1–§33.2.** Source: the owner's voice addendum of 2026-10-24: distinguish Facety's original standalone single-token/network-effect thesis from Atmo-supported economics; person-level daily issuance/population saturation and a shrinking relative addition are relevant but do not prove price sustainability. Four billion is illustrative, not a cap. Finite concurrent people/lifetimes do not bound all-time stock, quadratic potential links are not quadratic token value, and no emission end/halving or price floor is selected. Atmo governance using ATMO decides whether to support liquidity/demand and FACY buyback/burn within its own capital/spend permissions; credible withholding/redirection may incentivize genuine integrity, but no benefit or universal awareness is established. A recovery fork without independently evidenced violators and possible redirected sponsorship is a candidate requiring identification, due process, state/asset/liability/migration and funding contracts—not an automatic graph purge or economic guarantee. Existing conditional Bucket D knowledge is refined, not newly invented; native economics and all historical studies remain unchanged.
 
 ### Earlier supersessions
 

@@ -284,12 +284,12 @@
       ],
       "feedback": {
         "implemented": "Current resources affect feasibility; post-run utility has no automatic return into simulation.",
-        "missing": "D51 finite outside recruitment opportunities and D48 outcome-driven credibility, belief updating, sincere loyalty and adaptive participation are unimplemented. M04's optional prospective sponsor assessment is not cohort recruitment, actual payoff or learning."
+        "missing": "D51 finite outside recruitment, D48 belief/loyalty updating and D53 actual conditional Atmo funding/markets/recovery-fork credibility are unimplemented. M04's prospective private assessment is not actual payoff, cohort recruitment, calibrated awareness or learning."
       },
       "signs": "Unknown: accountability or concealment can both protect perceived future value.",
       "delay": "Discounted remaining future income, not sunk effort; no endogenous clock yet.",
       "bottleneck": "Calibrated opportunities, preferences, exit options and independent utility evidence.",
-      "basis": "Behavioral hypotheses, including D48's owner-stated possibility of increasing network loyalty over time; xpValue/civicValue remain explicit reference valuations, not universal reputation multipliers or a selected loyalty update law.",
+      "basis": "D48/D51/D53 behavioral/economic hypotheses: valued future opportunities may motivate correction, while concealment/co-capture can preserve private returns. ATMO-governed funding and a candidate recovery fork are external unimplemented contexts; xpValue/civicValue are supplied valuations, not prices, verified usefulness or a selected update law.",
       "code": [
         "src/games.mjs",
         "src/incentive-payoffs.mjs",
@@ -301,9 +301,9 @@
       ],
       "diagnostic": null,
       "intervention": "Declared valuation/discount/loyalty sweeps and individual deviations; no uncalibrated alignment coefficient.",
-      "alternative": "Fixed loyalty scripts or favorable civic utility manufacture alignment.",
+      "alternative": "Fixed loyalty scripts, favorable civic utility, unlimited/protected outside support or an infallible fork/exclusion oracle manufacture alignment.",
       "falsifier": "Concealment remains individually profitable or utility depends on free external support.",
-      "status": "Hypothesis; offline conditional analysis only. D48 adds a documented adaptive-behavior research direction, not implemented learning or measured retention.",
+      "status": "Hypothesis; offline conditional analysis only. D48/D53 add adaptive behavior and conditional outside-demand/fork questions, not implemented learning, real Treasury/market execution, measured retention or guaranteed price/alignment.",
       "diagram": "M08 [O] consequences → supplied valuation --[? beliefs/future choices]--x participation"
     },
     {
