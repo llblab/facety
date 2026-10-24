@@ -1,0 +1,232 @@
+{
+  "schema": "facety-attended-comparison-design/v1",
+  "level": "exploratory-diagnostic-not-confirmation",
+  "source": {
+    "baseCheckpoint": "edc6c0f",
+    "implementation": "5070d49ac2a99edd707d84adb80afb3a28d000098133657de5b6dfe23d6eb2e5",
+    "node": "v26.8.1"
+  },
+  "seeds": [
+    "d44-attended-compare-01",
+    "d44-attended-compare-02",
+    "d44-attended-compare-03",
+    "d44-attended-compare-04"
+  ],
+  "populations": [
+    {
+      "id": "fabricated-descendants",
+      "scenario": "sybil-cone",
+      "descendantsGenuine": false,
+      "criterion": "false-liquidity"
+    },
+    {
+      "id": "genuine-coalition-descendants",
+      "scenario": "real-cartel",
+      "descendantsGenuine": true,
+      "criterion": "council-majority"
+    }
+  ],
+  "calendars": [
+    {
+      "id": "all-ticks",
+      "offset": null
+    },
+    {
+      "id": "one-tick-phase-0",
+      "offset": 0
+    },
+    {
+      "id": "one-tick-phase-4",
+      "offset": 1
+    }
+  ],
+  "timings": [
+    "daily-slot",
+    "first-attended"
+  ],
+  "arms": [
+    {
+      "id": "observe-only",
+      "disabled": true
+    },
+    {
+      "id": "veto",
+      "disabled": false
+    }
+  ],
+  "randomness": {
+    "daily-slot": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "decision-keyed-subday-v1",
+      "placement": "daily-quota-keyed-slots-v1"
+    },
+    "first-attended": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "decision-keyed-subday-v1",
+      "placement": "daily-quota-keyed-slots-v1",
+      "invitationReviewSchedule": "first-attended-pair-day-v1"
+    }
+  },
+  "base": {
+    "scenario": "sybil-cone",
+    "seed": "facety",
+    "initialSize": 12,
+    "attackerShare": 0.25,
+    "days": 7,
+    "stepHours": 4,
+    "actorProfiles": [],
+    "invitationReviewTiming": "daily-slot",
+    "initialTopology": "clique",
+    "initialDegree": 3,
+    "localInspectionShare": 0.8,
+    "sensitivity": 0.8,
+    "falsePositiveRate": 0.01,
+    "maxSubjects": 200,
+    "maxActions": 100000,
+    "targetFalseConversions": 1,
+    "successCriterion": "false-liquidity",
+    "includeState": true,
+    "activity": {
+      "honest": {
+        "selfId": 0.8,
+        "invite": 0,
+        "guarantee": 0.3,
+        "inspect": 0,
+        "respond": 0.9,
+        "challenge": 0,
+        "review": 1,
+        "defend": 0,
+        "bribe": 0,
+        "cashout": 0,
+        "convert": 1
+      },
+      "attackers": {
+        "selfId": 1,
+        "invite": 0.4,
+        "guarantee": 2,
+        "inspect": 0,
+        "respond": 0,
+        "challenge": 0,
+        "review": 0,
+        "defend": 1,
+        "bribe": 0,
+        "cashout": 0,
+        "convert": 1
+      }
+    },
+    "budgets": {
+      "honest": 100000,
+      "attackers": 100000
+    },
+    "weights": {
+      "selfId": 1,
+      "fakeSelfId": 1,
+      "fabricateIdentity": 1,
+      "recruitHuman": 1,
+      "invite": 1,
+      "acceptInvitation": 1,
+      "proposeGuarantee": 1,
+      "confirmGuarantee": 1,
+      "inspect": 1,
+      "respond": 1,
+      "challenge": 1,
+      "verify": 1,
+      "bribe": 1,
+      "cashout": 1,
+      "convert": 1
+    },
+    "policy": {
+      "xpFinality": "terminal",
+      "cancellationAuthority": "snapshot",
+      "guarantorEligibility": "active",
+      "guaranteeFee": 0,
+      "councilSize": 101,
+      "debtRecovery": "reserve-until-mature",
+      "councilEligibility": "active",
+      "invitationFreezeHours": 24,
+      "linkBreakXp": "revoke",
+      "spendMaturityHours": 24,
+      "conversionMaturityHours": 24,
+      "artifactReuse": "registration-only"
+    },
+    "ablations": {
+      "withholdGuarantorXp": false,
+      "disableInvitationVeto": false,
+      "fixedInvitationThreshold": null,
+      "randomGuaranteeTargets": false
+    },
+    "perturbations": [],
+    "disputes": {
+      "enabled": false,
+      "accuracy": 0.9,
+      "stake": 1,
+      "fine": 5,
+      "liability": "inviter-chain",
+      "rewardShare": 0.5,
+      "loserHalvesXp": true,
+      "excludeLiable": false,
+      "fineMode": "chain",
+      "stakeBacking": "unsecured",
+      "procedure": "one-step",
+      "stakeGrowth": 0.2,
+      "signalAccuracy": 0.7,
+      "closeSignalAccuracy": 0.9,
+      "xpValue": 0.05,
+      "maxRounds": 60,
+      "maxScan": 60,
+      "councilDepth": 0,
+      "reputationWeight": 0,
+      "disputeWindowHours": 168,
+      "noticeBase": 0.02,
+      "evidenceGain": 0.1,
+      "civicValue": 0,
+      "entrantChoice": "lowest",
+      "roundsPerDay": 1,
+      "entryTiming": "daily-quota",
+      "trackRecordWeight": 0,
+      "regularsNotice": 0,
+      "evidence": "private-signal",
+      "proofStrength": 0.98,
+      "clusterFollowUp": false
+    },
+    "deviants": {
+      "share": 0,
+      "honest": null,
+      "attackers": null
+    },
+    "social": {
+      "scope": "public",
+      "hops": 2,
+      "strangerRate": 0,
+      "screening": false,
+      "screeningQuantile": 0.2,
+      "screeningShare": 0.5,
+      "verification": false,
+      "verificationSensitivity": 0.9,
+      "verificationFalsePositiveRate": 0.01,
+      "investigation": false,
+      "maxFollowUps": 20,
+      "bribeAcceptance": 0,
+      "bribePrice": 5,
+      "exitOnFraud": false,
+      "flowTracing": false,
+      "flowHubThreshold": 3,
+      "honestTransferRate": 0,
+      "attentionFeedback": false,
+      "gossipHops": 0,
+      "gossipShare": 0.5
+    }
+  },
+  "interpretation": [
+    "Exactly four new fixed labels, 96 seven-day cases: two supplied descendant classes, three calendars, two timing policies and two veto-effect arms. No seed search, historical recapture or data-dependent extension.",
+    "Initial twelve operators are declared genuine trusted clique roots, including three coalition operators. Descendants are fabricated shared-operator subjects or declared genuine recruited operators; coordination alone is not misconduct. These are evaluator assumptions, never protocol judgments or authenticated personhood.",
+    "Initial subject i has unrestricted attention or one tick/day at 4*((i+offset)%6); offset 1 rotates by four hours. IDs define calendars, never evaluator roles. Transactions remain unrestricted. Honest invitations/general Self-ID inspection are zero in every case; new coalition descendants review zero, keeping the honest reviewer pool calendar-covered.",
+    "The genuine-only control evaluates erroneous invitation vetoes against genuine coalition descendants, not unaffiliated honest growth, ordinary Self-ID harm, overall welfare or sustained useful participation. Zero false-identity outcomes there are structural, not defense success.",
+    "Daily trial units, sensitivity 0.8/FPR 0.01, unit action weights and whole-run caps remain fixed across timing/effect arms. Real recruitment/fabrication/acquisition costs and private utility remain unknown; genuine operators and fabricated subjects are not equal human resources.",
+    "The first-attended policy is a behavioral counterfactual, not a new default, human reaction law or protocol change. It shares count keys, not actual review times or necessarily invitation IDs after divergence. Observation keys include time: moving a review can reveal different noisy evidence, not identical received signals.",
+    "Observe-only removes only veto effect. Match native-event prefixes before the first changed cancellation within each policy; subsequent populations, work and source keys may diverge. Net costs are not marginal per-cancellation prices.",
+    "Full native states, stage/evaluator counts, money/debt/ledger, cohort effort, daily endpoints and horizon-open invitations are retained. Complete runs need not complete pending invitation lifetimes; censored cells retain raw values but not complete means.",
+    "Native outcome criteria differ between populations and are not aggregated into a cross-population success or health rate. False emission/XP, genuine harm, work, nominal sanctions and actual money stay separate.",
+    "Dense inherited trust, independent noisy evidence, public pending-list awareness, unstrained budgets and scripted response remain assumptions. No sparse/shared-error/finite-capacity calibration, endogenous vigilance, real cost-of-attack condition, verified independence, D33/D34/D42 implementation or mechanism confirmation follows."
+  ]
+}

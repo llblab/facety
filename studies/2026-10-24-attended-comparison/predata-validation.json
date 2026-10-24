@@ -1,0 +1,46 @@
+{
+  "status": "verified-predata-method-not-outcome-evidence",
+  "sourceCheckpoint": "edc6c0f",
+  "methods": {
+    "run.mjs": "e54ccb439ee24ce7856f3cabe4896d8d64c6e3bd2181170e000aa92203b96792",
+    "contract.mjs": "3a0968caf4a632f45b4a1a5c6269b92e6bfd4a10b73333a6f26f35158e3df588",
+    "analyze.mjs": "f02604c5f4d27917ca3f50513658bb72de02602004030f2ce5a939d437ee6271",
+    "design.json": "db1b51cad741bd43de168ea0ebc1ea615e4c72565a00b1bce0eebaeedecf16d7"
+  },
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "5070d49ac2a99edd707d84adb80afb3a28d000098133657de5b6dfe23d6eb2e5",
+    "files": 29
+  },
+  "planned": {
+    "blocks": 4,
+    "casesPerBlock": 24,
+    "cases": 96,
+    "sourceLabelsExecuted": 0,
+    "researchAttemptsPresent": 0
+  },
+  "tests": {
+    "command": "npm test",
+    "passed": 309,
+    "failed": 0,
+    "newFamilies": 4,
+    "nativeInterfaceSmokes": {
+      "count": 4,
+      "days": 0,
+      "seed": "attended-schema-software",
+      "researchLabels": false
+    }
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 27,
+    "warningsUnchanged": true
+  },
+  "preservation": {
+    "nativeSourceUnchanged": true,
+    "priorResearchArtifactsUnchanged": true,
+    "dagEvidence": "Reused identical-source 29-module/73-edge acyclic checkpoint."
+  },
+  "assurance": "Synthetic/native-interface software validation only; no research outcomes, input authentication, independent reviewer acceptance or mechanism confirmation.",
+  "next": "Commit/push unchanged method, then one exclusive capture per fixed block; preserve partial/failing attempts and analyze retained data."
+}
