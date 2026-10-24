@@ -1,0 +1,265 @@
+{
+  "schema": "facety-work-headroom-design/v1",
+  "level": "exploratory-diagnostic-not-confirmation",
+  "source": {
+    "baseCheckpoint": "6d27bf9",
+    "implementation": "50a20767e9e4829bdb1ba4aaf8b4fda0388faf5d22c70ded04a8d266b87dd3c3",
+    "node": "v26.8.1"
+  },
+  "seeds": [
+    "d44-work-headroom-01",
+    "d44-work-headroom-02",
+    "d44-work-headroom-03",
+    "d44-work-headroom-04"
+  ],
+  "populations": [
+    {
+      "id": "fabricated-descendants",
+      "scenario": "sybil-cone",
+      "descendantsGenuine": false,
+      "criterion": "false-liquidity"
+    },
+    {
+      "id": "genuine-coalition-descendants",
+      "scenario": "real-cartel",
+      "descendantsGenuine": true,
+      "criterion": "council-majority"
+    }
+  ],
+  "resources": [
+    {
+      "id": "headroom-63",
+      "cap": 261,
+      "nominalPostSetup": 63
+    },
+    {
+      "id": "headroom-126",
+      "cap": 324,
+      "nominalPostSetup": 126
+    },
+    {
+      "id": "generous-reference",
+      "cap": 100000,
+      "nominalPostSetup": 99802
+    }
+  ],
+  "bootstrap": {
+    "atHour": 0,
+    "stage": "initial",
+    "subjects": 12,
+    "guaranteeEdges": 132,
+    "totalXp": 0,
+    "xpGini": null,
+    "cohorts": {
+      "honest": {
+        "attempts": 198,
+        "accepted": 198,
+        "rejected": 0,
+        "denied": 0,
+        "effort": 198
+      },
+      "attackers": {
+        "attempts": 66,
+        "accepted": 66,
+        "rejected": 0,
+        "denied": 0,
+        "effort": 66
+      }
+    }
+  },
+  "timing": "first-attended",
+  "evidence": [
+    "independent",
+    "shared-target"
+  ],
+  "arms": [
+    {
+      "id": "observe-only",
+      "disabled": true
+    },
+    {
+      "id": "veto",
+      "disabled": false
+    }
+  ],
+  "randomness": {
+    "independent": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "decision-keyed-subday-v1",
+      "placement": "daily-quota-keyed-slots-v1",
+      "invitationReviewSchedule": "first-attended-pair-day-v1"
+    },
+    "shared-target": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "decision-keyed-subday-v1",
+      "placement": "daily-quota-keyed-slots-v1",
+      "invitationReviewSchedule": "first-attended-pair-day-v1",
+      "invitationEvidence": "shared-target-first-stage-v1"
+    }
+  },
+  "base": {
+    "scenario": "sybil-cone",
+    "seed": "facety",
+    "initialSize": 12,
+    "attackerShare": 0.25,
+    "days": 7,
+    "stepHours": 4,
+    "actorProfiles": [],
+    "invitationReviewTiming": "first-attended",
+    "invitationEvidence": "independent",
+    "initialTopology": "clique",
+    "initialDegree": 3,
+    "localInspectionShare": 0.8,
+    "sensitivity": 0.8,
+    "falsePositiveRate": 0.01,
+    "maxSubjects": 200,
+    "maxActions": 100000,
+    "targetFalseConversions": 1,
+    "successCriterion": "false-liquidity",
+    "includeState": true,
+    "activity": {
+      "honest": {
+        "selfId": 0.8,
+        "invite": 0,
+        "guarantee": 0.3,
+        "inspect": 0,
+        "respond": 0.9,
+        "challenge": 0,
+        "review": 1,
+        "defend": 0,
+        "bribe": 0,
+        "cashout": 0,
+        "convert": 1
+      },
+      "attackers": {
+        "selfId": 1,
+        "invite": 0.4,
+        "guarantee": 2,
+        "inspect": 0,
+        "respond": 0,
+        "challenge": 0,
+        "review": 0,
+        "defend": 1,
+        "bribe": 0,
+        "cashout": 0,
+        "convert": 1
+      }
+    },
+    "budgets": {
+      "honest": 100000,
+      "attackers": 100000
+    },
+    "weights": {
+      "selfId": 1,
+      "fakeSelfId": 1,
+      "fabricateIdentity": 1,
+      "recruitHuman": 1,
+      "invite": 1,
+      "acceptInvitation": 1,
+      "proposeGuarantee": 1,
+      "confirmGuarantee": 1,
+      "inspect": 1,
+      "respond": 1,
+      "challenge": 1,
+      "verify": 1,
+      "bribe": 1,
+      "cashout": 1,
+      "convert": 1
+    },
+    "policy": {
+      "xpFinality": "terminal",
+      "cancellationAuthority": "snapshot",
+      "guarantorEligibility": "active",
+      "guaranteeFee": 0,
+      "councilSize": 101,
+      "debtRecovery": "reserve-until-mature",
+      "councilEligibility": "active",
+      "invitationFreezeHours": 24,
+      "linkBreakXp": "revoke",
+      "spendMaturityHours": 24,
+      "conversionMaturityHours": 24,
+      "artifactReuse": "registration-only"
+    },
+    "ablations": {
+      "withholdGuarantorXp": false,
+      "disableInvitationVeto": false,
+      "fixedInvitationThreshold": null,
+      "randomGuaranteeTargets": false
+    },
+    "perturbations": [],
+    "disputes": {
+      "enabled": false,
+      "accuracy": 0.9,
+      "stake": 1,
+      "fine": 5,
+      "liability": "inviter-chain",
+      "rewardShare": 0.5,
+      "loserHalvesXp": true,
+      "excludeLiable": false,
+      "fineMode": "chain",
+      "stakeBacking": "unsecured",
+      "procedure": "one-step",
+      "stakeGrowth": 0.2,
+      "signalAccuracy": 0.7,
+      "closeSignalAccuracy": 0.9,
+      "xpValue": 0.05,
+      "maxRounds": 60,
+      "maxScan": 60,
+      "councilDepth": 0,
+      "reputationWeight": 0,
+      "disputeWindowHours": 168,
+      "noticeBase": 0.02,
+      "evidenceGain": 0.1,
+      "civicValue": 0,
+      "entrantChoice": "lowest",
+      "roundsPerDay": 1,
+      "entryTiming": "daily-quota",
+      "trackRecordWeight": 0,
+      "regularsNotice": 0,
+      "evidence": "private-signal",
+      "proofStrength": 0.98,
+      "clusterFollowUp": false
+    },
+    "deviants": {
+      "share": 0,
+      "honest": null,
+      "attackers": null
+    },
+    "social": {
+      "scope": "public",
+      "hops": 2,
+      "strangerRate": 0,
+      "screening": false,
+      "screeningQuantile": 0.2,
+      "screeningShare": 0.5,
+      "verification": false,
+      "verificationSensitivity": 0.9,
+      "verificationFalsePositiveRate": 0.01,
+      "investigation": false,
+      "maxFollowUps": 20,
+      "bribeAcceptance": 0,
+      "bribePrice": 5,
+      "exitOnFraud": false,
+      "flowTracing": false,
+      "flowHubThreshold": 3,
+      "honestTransferRate": 0,
+      "attentionFeedback": false,
+      "gossipHops": 0,
+      "gossipShare": 0.5
+    }
+  },
+  "interpretation": [
+    "Exactly four fresh labels and 96 seven-day four-hour cases: two declared descendant classes, three honest-cohort whole-run caps, two first-stage evidence laws and two veto-effect arms. No seed search, historical recapture or data-dependent extension.",
+    "All-ticks attention and unrestricted transactions; first-attended timing stays fixed. Honest invitations/general Self-ID inspection, descendant review and verification are disabled. These inherited public-awareness/willingness scripts are not human availability, finite service capacity or liability-induced vigilance.",
+    "Twelve declared genuine clique roots include three genuine coalition operators. Each root pays 22 unit setup actions (11 proposals plus 11 confirmations): 198 honest and 66 coalition work, 132 active directed guarantees. Retain identical fully funded initial samples; low budgets must not produce an unfunded genesis. No initial money/XP or authentic personhood is inferred.",
+    "Honest caps are 198+9*7=261, 198+2*9*7=324 and 100000. Nominal post-setup headrooms 63/126/99802 are a whole-cohort/run counterfactual, not per-person/daily grants, measured human capacity or a refill. Coalition cap stays 100000; unit weights remain uncalibrated.",
+    "The whole honest work pool covers Self-ID, guarantee, conversion, inspection and response work. Cutting it can alter activity, eligibility, population, graph and available sources as well as review; this is not isolated attention scarcity, a pure marginal veto price, a utility equilibrium or a real attack-acquisition cost model.",
+    "Economic budget denial is not a computational censor: complete runs retain all denials and outcomes. maxSubjects/maxActions safety caps retain partial raw measurements; complete means are null for censored cells/pairs. Extra denied calls also consume the declared global action-call cap.",
+    "Capture retains full final state/events, invitation/evaluator stages, complete effort by cohort/action/phase, money/system/ledger/XP, daily endpoints, funded initial sample and all denial-sample traces. Day-end and tick streams overlap and must not be summed as disjoint work. First denied sample is an observation time, not exact within-tick action order; null through a partial prefix is not guaranteed future capacity.",
+    "Nominal first-look sensitivity 0.8/FPR 0.01 are not calibrated covariance or identical received bits. Shared-target is an extremal persistent target-specific first stage; other observations retain separate references. Changed budgets/keys after trajectory divergence need not refer to the same later people/opportunities.",
+    "Genuine-coalition invitation harm is separate from fabricated outcomes. Coordination is not misconduct; genuine false-identity zeros are structural, not defense success. Criteria false-liquidity versus Council-majority are never pooled into a universal success/health score. Useful growth, unaffiliated recruitment and ordinary Self-ID harm are not tested.",
+    "Compare lower caps minus generous reference within each population/law/effect arm, plus within-cap evidence/effect contrasts. Match event prefixes only for veto versus effect-disabled within a cap/law before the first changed cancellation; skip/count censored prefix checks.",
+    "Dense inherited trust, raw active-degree/fixed Council, current-link liability and terminal XP/unspent veto remain legacy, not D33/D34/D42 compliance. Sparse/compromised support, adversarial/calibrated evidence, notification, voluntary retention and real private liabilities remain untested.",
+    "Commit seven new/imported method/config byte identities and pin native source/runtime before capture. Frozen F51 measurement validation is reused with new bootstrap/resource/trace checks, not old data or F53 scarcity-incompatible reconstruction. No authentication, independent acceptance, calibrated probability, new default/protocol rule or mechanism confirmation follows."
+  ]
+}
