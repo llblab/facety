@@ -1,0 +1,54 @@
+{
+  "schema": "facety-d44-capture-manifest/v1",
+  "level": "exploratory-not-confirmation",
+  "source": {
+    "baseCheckpoint": "ddee5af",
+    "implementation": "30a6d69e3e7b384b48dfbda4dece7af7d6077f5948a1e6f135ab00bb21431379",
+    "node": "v26.8.1"
+  },
+  "codeCommit": "e4185b9933f088366ba8d1d43751561715ba87e1",
+  "designDigest": "2c395b213372f2dc799deba8c04115b6517f6ccea1cdbb407eb5ec62219cc09d",
+  "runnerDigest": "d068678f48899bf243e471308dcffc3ca3091a0b9096ef3dbdd523bf2a05c3cb",
+  "capture": {
+    "blocks": 4,
+    "runs": 36,
+    "complete": 36,
+    "blockExecutionsPerIndex": 1,
+    "modelExecutionsPerBlock": 9,
+    "totalModelExecutions": 36
+  },
+  "artifacts": {
+    "run.mjs": {
+      "bytes": 7808,
+      "sha256": "555fdc2a676db9bf8a07945a5f10c6eb2fa8bd9b5dd010bb201421e52db6c5ca"
+    },
+    "analyze.mjs": {
+      "bytes": 7357,
+      "sha256": "bd88e0b71d0bfd8a0f0daa2440d6000ed72826310ebe46a87a5d0711a73634f4"
+    },
+    "design.json": {
+      "bytes": 6245,
+      "sha256": "ea93848c384b0af149a93481910252b9a4c5524c6eb8a0e1f9653a5eac67fd5f"
+    },
+    "block-0.json": {
+      "bytes": 33877,
+      "sha256": "e77bf9d8ca54140bcf7360b6a0dc218b9054e17f5046c4fa8190654e3b620172"
+    },
+    "block-1.json": {
+      "bytes": 33437,
+      "sha256": "2cf05aa5508bcbcf67e3800697793d48b64ae2ee35dd5722b5ae0c3a69200d00"
+    },
+    "block-2.json": {
+      "bytes": 34241,
+      "sha256": "7d4f3567218901d5d0a704fe61274d0de6663fcb8875a6818ff077f5029de45b"
+    },
+    "block-3.json": {
+      "bytes": 34059,
+      "sha256": "8f48c97efeb29600c461173a0165a7dc04d02d5d00f697f188b9ce0a38871db8"
+    },
+    "report.json": {
+      "bytes": 28552,
+      "sha256": "fcedd46653ce89bd441dcc13ef1d508466431154b9ffc14066883d57549d6dd5"
+    }
+  }
+}

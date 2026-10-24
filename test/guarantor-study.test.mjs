@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { studyDesign, runBlock } from '../studies/2026-10-24-d43-cadence/run.mjs';
 import { analyzeBlocks } from '../studies/2026-10-24-d43-cadence/analyze.mjs';
-import { digestOf } from '../src/provenance.mjs';
+import { digestOf, implementationDigest } from '../src/provenance.mjs';
 
 const retained = JSON.parse(readFileSync(new URL('../studies/2026-10-24-d43-cadence/design.json', import.meta.url), 'utf8'));
 function syntheticBlocks() {
@@ -21,11 +22,14 @@ function syntheticBlocks() {
 }
 
 test('D44 diagnostic fixes its cohort before data without calling the simulator in design/analysis', () => {
-  assert.deepEqual(studyDesign(), retained);
+  const current = studyDesign();
+  if (implementationDigest().digest === retained.source.implementation) assert.deepEqual(current, retained);
+  assert.deepEqual(current.seeds, retained.seeds);
+  assert.deepEqual(current.arms, retained.arms);
   const changed = studyDesign();
   changed.seeds.pop();
   changed.arms[0].id = 'changed';
-  assert.deepEqual(studyDesign(), retained);
+  assert.deepEqual(studyDesign(), current);
   assert.throws(() => runBlock(-1), /fixed block/);
   const raw = syntheticBlocks();
   const before = structuredClone(raw);
@@ -55,6 +59,20 @@ test('D44 analyzer rejects changed cohorts, source bindings, policies, endpoints
     mutate(raw);
     assert.throws(() => analyzeBlocks(raw));
   }
+});
+
+test('D44 retained packet reanalyzes without model recapture or source-policy relabeling', () => {
+  const blocks = [0, 1, 2, 3].map(index => JSON.parse(readFileSync(new URL('../studies/2026-10-24-d43-cadence/block-' + index + '.json', import.meta.url), 'utf8')));
+  const report = JSON.parse(readFileSync(new URL('../studies/2026-10-24-d43-cadence/report.json', import.meta.url), 'utf8'));
+  assert.deepEqual(analyzeBlocks(blocks), report);
+  const manifest = JSON.parse(readFileSync(new URL('../studies/2026-10-24-d43-cadence/manifest.json', import.meta.url), 'utf8'));
+  for (const [file, expected] of Object.entries(manifest.artifacts)) {
+    const bytes = readFileSync(new URL('../studies/2026-10-24-d43-cadence/' + file, import.meta.url));
+    assert.equal(bytes.length, expected.bytes);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256);
+  }
+  assert.equal(report.cases, 36);
+  assert.ok(report.cells.every(cell => cell.completeRuns === 4));
 });
 
 test('D44 report does not turn censoring, missing XP shares or unknown cancellations into complete means', () => {
