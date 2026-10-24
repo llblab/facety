@@ -1,0 +1,41 @@
+{
+  "schema": "facety-f49-slot-audit-manifest/v1",
+  "method": "facety-f49-slot-audit/v1",
+  "nativeWorldsExecuted": 0,
+  "nativeCounterVectorsReconstructed": 24,
+  "keyBinding": {
+    "implementation": "30a6d69e3e7b384b48dfbda4dece7af7d6077f5948a1e6f135ab00bb21431379",
+    "randomness": {
+      "generator": "sha256-xoshiro128starstar-v2",
+      "decisions": "decision-keyed-subday-v1",
+      "placement": "daily-quota-keyed-slots-v1"
+    },
+    "sourceExperimentSha256": "3a3d319c0259cff2c94683bc321e92ea4d5246ba374f333bf05756fa2aef4649",
+    "kernels": {
+      "src/random.mjs": "bb73976902a0e4954b61e7f09c1ac01d8187ec9d092f0ebd2e181f0257c0f7d1",
+      "src/activity-schedule.mjs": "59a5a128f14a96cea22d59b45efc309526e72bdbdf1c241728dc8c920af101ec"
+    },
+    "closedManifestSha256": "15f279b78a525582d1664095e949b9c8f4bfb78031c61dc3dfaaa2d74d9fd4e8"
+  },
+  "inputDigests": [
+    "0d43737d0f23a3436095366c0aa32c2d85afdf226853f72893b30ec0691e91c2",
+    "75e18d1c21f506a8fce197b97e835b8cc64189302e9961501de58a30a79e3a7e",
+    "8a0bfc79e9fa8e1f018006f09c16bf3a6f8b7fb042a036d5e32d57c4fbff3058",
+    "03a998f1d28afdc975dba6576c023de7b7f9b0073302f5dcc8917985499fd3cb"
+  ],
+  "artifacts": {
+    "slot-audit.mjs": {
+      "bytes": 15239,
+      "sha256": "d8b1c5c2280f4af9f7bf1e79f15eb77623c87f66572866746453d53f1c1a6d9c"
+    },
+    "slot-audit.json": {
+      "bytes": 294162,
+      "sha256": "fa5986b2d1e08eac8b2ef72b4ed22c260033f558127022777453876e7636dc5d"
+    },
+    "manifest.json": {
+      "bytes": 2421,
+      "sha256": "15f279b78a525582d1664095e949b9c8f4bfb78031c61dc3dfaaa2d74d9fd4e8"
+    }
+  },
+  "assurance": "Post-data author reconstruction and software checks; not independent scientific review, authenticated evidence or mechanism confirmation."
+}

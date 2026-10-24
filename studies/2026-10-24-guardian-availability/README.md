@@ -30,13 +30,35 @@ Scarce-calendar active means are 2.5 / 1.75 false admissions, 1.75 / 0.5 convers
 
 Across four active worlds, all-ticks records **20 paid reviews / 13 positive signals and cancellations**; scarce phase 0 records **7 / 6**, phase +4 h **12 / 9**. Cancellation ages are respectively 4–16, 4–16 and 4–20 h. Inspection and cancellation budget denials are zero throughout: this packet demonstrates a calendar/timing boundary, not funding exhaustion. Every inspected invitation target is false by the fixed script. Genuine-harm coverage was disabled, so zero genuine cancellations is not evidence of safety.
 
-The phase-0 seed `d44-availability-03` records 164 pair/tick opportunities but only one inspection, no positive signal and no cancellation; six false admissions, three conversions and 18 false XP match its observe-only world. Full availability in the same declared world gives eight inspections/three cancellations and zero false admissions. Pair/tick opportunities are not paid attention or independent people. The selected counters do not separately attribute every missed allocation to pre-creation placement, calendar intersection or missing support; that decomposition remains a follow-up on this retained state, not permission to rerun it.
+The phase-0 seed `d44-availability-03` records 164 pair/tick opportunities but only one inspection, no positive signal and no cancellation; six false admissions, three conversions and 18 false XP match its observe-only world. Full availability in the same declared world gives eight inspections/three cancellations and zero false admissions. Pair/tick opportunities are not paid attention or independent people. The primary selected counters alone do not attribute every missed allocation to pre-creation placement, calendar intersection or missing support. The supplemental [F50 slot audit](#slotwindow-reconstruction-f50-diagnostic) below now supplies that decomposition from retained state, without rerunning a world.
 
 Gross active review/response work is **33 / 13 / 21** unit-weight work across four worlds (all/phase 0/phase +4). Total defender means are **296.5 / 297.5 / 299**, versus observe-only **343.5 / 304.75 / 306**. Net differences include changed downstream populations/guarantee work; they are not the marginal price of attention or cancellation. Money, sanctions and debt remain separately retained; private costs and real acquisition costs remain unknown.
 
 **Horizon boundary:** run-level completion does not complete every invitation's lifetime. Active worlds retain open-invitation counts `[0,0,1,0]` / `[1,0,1,0]` / `[1,0,1,0]`; late pending invitations do not establish prevention beyond hour 168. No endogenous vigilance, useful retention, universal cadence superiority, correlated/adversarial evidence resistance, sparse-support robustness or selected D34/D42 implementation follows.
 
 The [post-data author audit](audit.mjs)/[output](audit.json) separately records unchanged observe-only states, open invitations, cancellation ages and gross costs; it is not a pre-data-registered confirmation or independent review. Four software test families validate calendars/units, malformed inputs, journal/deadline accounting and offline byte-identical reanalysis; `npm test`: **295 passed**. Native source, pre-data capture/analyzer/design and historical studies are unchanged.
+
+## Slot/window reconstruction (F50, diagnostic)
+
+The separate post-data [auditor](slot-audit.mjs), [report](slot-audit.json) and [artifact manifest](slot-audit-manifest.json) reconstruct **all 24 stage-counter vectors, evaluator signal counts and actual cancellation witnesses**. It imports no `FacetyModel`, experiment runner or admission/enforcement code. It reads the sealed F49 manifest/inputs, checks exact random/placement-kernel hashes, derives the original keyed slots/signals, and orders incoming links from proposal/activation events rather than inferring historical support from a terminal graph. Only the fixed no-exit/no-adjudication/no-verification/unstrained-review contract is supported; unimplemented chronology is not invented.
+
+Across four seeds per active context:
+
+| Attention context | Accepted false invitations | No quota/calendar intersection | Actual checks, all negative |
+| --- | ---: | ---: | ---: |
+| All ticks | 0 | 0 | 0 |
+| One tick/day, phase 0 | 10 | 9 | 1 |
+| One tick/day, phase +4 h | 7 | 4 | 3 |
+
+**All 17 scarce-calendar admissions had some scripted review-capable incoming support and some legal calendar overlap.** Thirteen nevertheless had no actual inspection: the key-implied quota had legal placements and the calendar had legal availability, but their intersection was empty. Four had paid checks with no positive signal. This is a hierarchical description of the recorded stages, not proof that each outcome has exactly one causal explanation. The paired phase contexts share labels; these are not 17 independent population trials or an attack-probability estimate. Pending invitations remain a separate incomplete-lifetime class.
+
+The seed-03/phase-0 witness now resolves precisely: the first false invitation `invitation:164` (created hour 36, deadline 60) has nine scripted reviewers, eight legal calendar pairs and eight legal quota pairs, but only one intersection. `n0` inspects at hour 48 and receives a negative signal. The next five accepted invitations have no inspection despite legal calendar and quota opportunities separately; one late pending invitation has no next actor tick within the horizon and is not a completed escape. Thus the first recognition miss and later quota/calendar losses are distinct, not evidence of uniformly absent attention or unwillingness.
+
+The all-available observe-only reference additionally contains one admitted invitation with no scripted review-capable supporter in its actual window, and one with all-negative checks; the other 14 have positive signals but the effect is deliberately removed. These histories differ after prevention: do not transplant a downstream graph from observe-only into an active world. Scripted `honest`-cohort links are not verified independent people or all protocol-authorized guarantors; real coalition operators may be authorized while following the declared no-review script.
+
+Allocation ledgers distinguish pre-/same-creation, pre-link, expiry, unavailable calendar and actual inspection, with after-success slots explicitly not counted as missed duties. They are **key-implied latent placements**, not evidence that an appointment was scheduled or a person ignored it. Uniform placement over the calendar day plus expiry without catch-up is an encoded model assumption. F50 does not establish human neglect or test an alternative policy that checks at the first attended opportunity; that counterfactual remains separate, with unchanged quotas/budgets/defaults required.
+
+Validation includes 288 independent dense-hour/key-oracle partitions plus successful-stop, pending-horizon, temporal/snapshot, missing-role, altered-input and byte-binding controls. The new audit leaves F49's original capture/runner/analyzer/design/report/audit/manifest byte-unchanged. It is author source-fidelity verification, not independent review, input authenticity, calibrated behavior, mechanism confirmation or a new protocol selection.
 
 ## Capture and preservation
 
