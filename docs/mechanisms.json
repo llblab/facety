@@ -86,7 +86,7 @@
       "intervention": "disableInvitationVeto removes only an otherwise-authorized veto effect. invitationReviewTiming:first-attended is a separate behavioral counterfactual, reusing one daily pair trial at first present attention without retry or future-calendar knowledge. Neither is a protocol option. Match prefixes before the first changed action; downstream work may diverge.",
       "alternative": "Earlier removal alone, perfect attention, or free unmeasured work.",
       "falsifier": "Matched late/early evidence produces no usable prevention or false veto harm outweighs it.",
-      "status": "Explicit prevention trace and qualified F48/F49/F51/F52 controls plus F53 temporal source reconstruction; no calibrated covariance or confirmed emergence. Liability-induced vigilance, scarce-work robustness and net reliability remain unestablished.",
+      "status": "Explicit prevention trace, qualified F48/F49/F51/F52 controls and F53 temporal reconstruction. F54's 96-case whole-run work control preserves bootstrap but admits false descendants under tight independent work and shared evidence, with genuine harm/denials separate; no general safe capacity, calibrated covariance or confirmed emergence. Liability-induced vigilance, broader scarce-work robustness and net reliability remain unestablished.",
       "diagram": "M02 [A] suspicion --[R authority, before spend]--> veto → fewer rights --[? vigilance]--x review"
     },
     {

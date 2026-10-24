@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { auditBlocks } from '../studies/2026-10-24-work-headroom/audit.mjs';
 import { execFileSync } from 'node:child_process';
 import { studyDesign, runBlock } from '../studies/2026-10-24-work-headroom/run.mjs';
 import { caseConfig, projectRun, validateWork, methodDigests, METHOD_FILES } from '../studies/2026-10-24-work-headroom/contract.mjs';
@@ -196,4 +198,38 @@ test('capped prefixes retain unknown means and skip prefix assurance, while pend
   const harmed = analyzeBlocks(genuine).cells.find(item => item.population === treated.population && item.resource === treated.resource && item.evidence === treated.evidence && item.arm === treated.arm);
   assert.deepEqual(harmed.metrics.genuineInvitationsCancelled.values, [1, 0, 0, 0]);
   assert.equal(harmed.metrics.falseInvitationsCancelled.mean, 0);
+});
+
+test('sealed work-headroom packet reproduces exact primary/post-data analyses and binds all attempts/artifacts without recapture', () => {
+  const raw = [0, 1, 2, 3].map(index => JSON.parse(readFileSync(new URL('block-' + index + '.json', directory))));
+  const report = JSON.parse(readFileSync(new URL('report.json', directory)));
+  const audit = JSON.parse(readFileSync(new URL('audit.json', directory)));
+  const manifest = JSON.parse(readFileSync(new URL('manifest.json', directory)));
+  assert.deepEqual(analyzeBlocks(raw), report);
+  assert.deepEqual(auditBlocks(raw), audit);
+  assert.equal(report.cases, 96);
+  assert.ok(report.cells.every(cell => cell.completeRuns === 4));
+  assert.equal(audit.bootstrapChecks, 96);
+  assert.equal(audit.completeEventPrefixChecks, 48);
+  assert.equal(audit.censoredPrefixChecksSkipped, 0);
+  assert.equal(Object.keys(manifest.artifacts).length, 19);
+  for (const [file, expected] of Object.entries(manifest.artifacts)) {
+    const bytes = readFileSync(new URL('../' + file, import.meta.url));
+    assert.equal(bytes.length, expected.bytes);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), expected.sha256);
+  }
+  for (const [index, block] of raw.entries()) {
+    const attempt = JSON.parse(readFileSync(new URL('attempt-' + index + '.json', directory)));
+    for (const field of ['block', 'captureCommit', 'source', 'methodDigests', 'designDigest']) assert.deepEqual(block[field], attempt[field]);
+    assert.equal(block.captureCommit, manifest.captureCommit);
+    for (const field of ['source', 'methodDigests', 'designDigest']) assert.deepEqual(block[field], manifest[field]);
+  }
+  const matched = audit.budgetPairs.filter(row => row.population === 'fabricated-descendants' && row.resource === 'headroom-126' && row.evidence === 'independent' && row.arm === 'veto');
+  assert.equal(matched.length, 4);
+  assert.ok(matched.every(row => row.equalNativeState && row.equalProcess && row.equalActionWork));
+  const tight = report.cells.find(row => row.population === 'fabricated-descendants' && row.resource === 'headroom-63' && row.evidence === 'independent' && row.arm === 'veto');
+  assert.deepEqual(tight.metrics.falseAccepted.values, [0, 1, 2, 1]);
+  assert.deepEqual(tight.metrics.falseSelfIdActs.values, [0, 1, 0, 0]);
+  assert.equal(audit.cases.reduce((sum, row) => sum + row.genuineCancellations.length, 0), 6); // Overlapping budget histories, not six independent errors.
+  if (implementationDigest().digest === design.source.implementation && process.version === design.source.node) assert.throws(() => runBlock(0), /existing\/failed capture/);
 });

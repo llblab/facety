@@ -1,6 +1,6 @@
 # Whole-run work headroom: fixed comparison contract
 
-**Pre-data checkpoint only: no planned research label, attempt/block or outcome report executed.** This follows [F52/F53](../2026-10-24-shared-evidence-comparison/README.md#first-attended-temporal-reconstruction-f53-diagnostic), not a replay or mechanism confirmation. The [design](design.json), [runner](run.mjs), [case/work contract](contract.mjs) and [offline analyzer](analyze.mjs) are fixed before data.
+**Closed F54 exploratory capture:** all 96 planned cases ran once at `fcc8b05`, after the pre-data checkpoint, and completed without censoring/failure. Original method/source/dependencies and pre-data record remain unchanged. This follows [F52/F53](../2026-10-24-shared-evidence-comparison/README.md#first-attended-temporal-reconstruction-f53-diagnostic), not a replay or mechanism confirmation. The [design](design.json), [runner](run.mjs), [case/work contract](contract.mjs) and [offline analyzer](analyze.mjs) are fixed before data.
 
 ## Question and fixed matrix
 
@@ -41,13 +41,48 @@ The report keeps four values/ranges/descriptive complete means per cell, lower-c
 
 Dense inherited support, raw active-degree/fixed Council, current-link liability and terminal XP/unspent-veto references remain legacy, **not D33/D34/D42 implementation**. Sparse/compromised support, broader adversarial/calibrated evidence, human willingness, voluntary retention, real acquisition/private liability costs and application externalities stay untested. No p-values, calibrated population probabilities, universal policy ranking, new reward/default/protocol rule or registered mechanism confirmation follows.
 
+## Results (F54 exploratory)
+
+Four exclusive 24-case blocks completed once at **`fcc8b05`**, followed by retained-only primary analysis. All **96/96** cases are complete, all 96 bootstraps match, and **48** complete within-budget/law veto-event prefix checks pass with zero skips. Native source remains `50a20767…`/Node `v26.8.1`. This is four supplied labels, not calibrated probabilities, a population capacity threshold or a registered mechanism confirmation.
+
+For fabricated descendants, observe-only admissions are **[3,4,4,4]**, conversions **[4,3,0,6]**, terminal false XP **[18,9,3,18]**, false Self-ID acts **[9,9,3,10]** and unspent acts **[4,5,2,4]** under every cap/law. Matching those metrics does not mean identical whole states, work or genuine XP.
+
+Active results, in fixed label order:
+
+- **261 / independent:** admissions **[0,1,2,1]**, conversions/terminal false XP all zero. Seed 02 still records **one false Self-ID**, created at 164 h after admission at 144 h and left unspent. Zero conversion/XP is not zero emission or proof against later growth.
+- **324 / independent** and **100000 / independent:** zero false admissions/acts/conversions/XP. All four 324 native final states, process vectors and action-work records match their generous counterparts exactly; defender work is **[292,288,292,305]**, with no denials. This scoped equality does not establish a minimal/general safe budget.
+- **261 / shared-target:** admissions **[0,2,4,2]**, conversions **[0,2,0,1]**, terminal false XP **[0,4,3,2]**, false acts **[0,4,3,2]**, unspent **[0,2,2,1]**.
+- **324 / shared-target:** admissions **[0,1,3,2]**, conversions **[0,2,0,1]**, XP **[0,4,2,2]**, acts **[0,3,3,2]**, unspent **[0,1,2,1]**.
+- **100000 / shared-target:** the same admission/conversion/act/unspent arrays as 324, but XP **[0,4,2,1]**. The seed-04 XP difference is a legacy whole-trajectory result, not monotone safety, a fine or a causal explanation of allocation.
+
+All active fabricated 261 cases exhaust the honest pool. Independent first denied samples are **[116,124,116,100] h**, total denials **[47,40,54,71]**, including inspection denials **[9,9,18,18]**. Across these four cases, **212** denied calls split into Self-ID **54**, proposal **2**, inspection **54**, conversion **102**. Shared-target totals are **279**: Self-ID **77**, proposal **26**, inspection **63**, conversion **113**. No active response call is budget-denied in either law. Those are whole-work opportunity losses, not isolated review capacity or measured marginal human costs.
+
+At 324 shared-active, denials are **[0,0,1,16]**: proposal **2**, inspection **9**, conversion **6** in total. Generous cells have no budget denial. Observe-only cases also consume real inspection/response work, including paid effect-disabled rejections; four fabricated observe-only case records have a denied response (one per cap/law at 261/324), not free observations or successful vetoes. Paid rejection is not recovery or procedural punishment.
+
+### Genuine harm and horizon boundaries
+
+Observe-only declared-genuine admissions are **[3,4,4,4]** at every cap/law. Shared-target active keeps that array with zero sampled positive signals/cancellations—not safety. Independent active genuine cancellations are **[0,0,1,0]** at 261, **[0,0,2,0]** at 324 and **[1,0,2,0]** at 100000; admissions become **[3,4,2,4]**, **[3,4,1,4]**, **[3,4,1,4]**. Six cancellation case-records overlap across budgets; they are not six independent errors.
+
+- Seed 03: n7 cancels scenario-genuine `member:0` at **64 h** after creation 60 h, in all three budgets. At 324/reference, n10 additionally cancels `member:1` at **144 h**, created 140 h. Net missing admissions need not equal cancelled count because later trajectories diverge.
+- Seed 01/reference: n8 cancels `invitation:295` at **152 h**, created 148 h/deadline **172 h**. Its observe-only counterpart is still pending at 168 h: no completed admission difference is observed for that target, and its future is not measured.
+
+All genuine false-identity zeros are structural; coordination is not misconduct. Lawful free veto is not an adjudicated finding against its guarantor. Lower budgets can suppress sampled false positives alongside useful work/prevention; no welfare or policy ranking follows.
+
+Baseline pending deadlines are **172/180/none/184 h**. Active independent 261 retains deadlines 172/184 in seeds 01/04; 324/reference independent has no pending invitations. Shared-active 261 similarly retains 172/184, 324 retains 184 only, reference none. These are unfinished lifetimes, not completed escapes. Debt, procedural sanctions, fee/stake custody remain zero; work/XР/supply/Collector differences are not token burns or recovered attack costs.
+
+### Retained assurance and next boundary
+
+[`report.json`](report.json) is the original fixed-method output. [`audit.mjs`](audit.mjs)/[`audit.json`](audit.json) are separately labeled **post-data author projections**, not a changed primary method, per-invitation work-scarcity replay, contemporaneous denial receipts, input authentication or independent acceptance. They retain all 96 work/admission/genuine-veto/pending records and 64 lower-cap/reference equality/ledger comparisons.
+
+[`manifest.json`](manifest.json) binds **19** method/dependency/pre-data/attempt/block/report/audit byte identities; [`validation.json`](validation.json) records actual closure checks. The six study test families reproduce primary/author outputs and all attempt/byte bindings without recapture. Source, seven methods and all historical packets stay unchanged. This cohort is closed: **no label extension or rerun**. D44's next narrow work is retained-only temporal work-denial/window/allocation attribution; F53's scarcity-rejecting decoder is not that implementation. Sparse/compromised support, human capacity, calibrated evidence and real private costs remain separate gates.
+
 ## Source, dependency and failure boundary
 
 Native source is `50a20767e9e4829bdb1ba4aaf8b4fda0388faf5d22c70ded04a8d266b87dd3c3` (30 files, `sha256-src-mjs-v1`), base `6d27bf9`, Node **`v26.8.1`**. `METHOD_FILES` additionally pins seven repo-relative raw-byte hashes: the four new method/config files plus imported F51 contract/analyzer/design. Historical files are not modified or rerun; fingerprints identify fidelity, not authentic inputs or independent reviewer acceptance.
 
-[Pre-data validation](predata-validation.json) records actual software checks, funded bootstrap proof, source/runtime/method identities and absence of capture artifacts. [`test/work-headroom-study.test.mjs`](../../test/work-headroom-study.test.mjs) has five families covering all synthetic configurations, twelve zero-day smokes, tampered methods/bootstrap/work/trace, denied versus paid work with overlap, capped means/prefix skips and separate genuine harm/pending lifetimes. Synthetic accounting fixtures are not actual funded protocol trajectories.
+[Pre-data validation](predata-validation.json) preserves its original at-preparation software checks, funded bootstrap proof, source/runtime/method identities and absence of capture artifacts. [`test/work-headroom-study.test.mjs`](../../test/work-headroom-study.test.mjs) has six families: the original five cover all synthetic configurations, twelve zero-day smokes, tampered methods/bootstrap/work/trace, denied versus paid work with overlap, capped means/prefix skips and separate genuine harm/pending lifetimes. The added retained-packet family checks exact reports, 19 byte bindings, four attempts, native-state equivalence and the existing-output stop without recapture. Synthetic accounting fixtures are not actual funded protocol trajectories.
 
-**Do not run these at preparation.** After this checkpoint is committed/pushed, a later cohort executes all four indices once at the same method commit:
+**Execution is closed; do not repeat these commands.** The four indices ran once at the same pre-data method commit:
 
 ```sh
 node studies/2026-10-24-work-headroom/run.mjs 0
@@ -57,4 +92,4 @@ node studies/2026-10-24-work-headroom/analyze.mjs
 
 The runner checks native source/runtime/design and all seven committed byte identities, then exclusively reserves `attempt-N.json` before any of that block's 24 model calls. It checks each returned native config/policy/source and funded bootstrap, and exclusively persists the completed block. Existing current-index output, any failed/report record or unmatched attempt/block pair is a **stop**, not deletion/retry or permission to continue past interruption.
 
-Unexpected case/block-write failure retains completed projections, phase/case/config, assumptions, any returned native result and error in exclusive `failed-N.json`, then throws. An unreturned in-flight state/process abort stays unknown. Preserve the original attempt/data/method if an analyzability defect appears; do not silently repair or relabel the committed method after data. Analysis accepts no overrides and reads retained blocks only, never a model; report writing is exclusive. The later completion must bind raw/report/attempt bytes and qualified findings. `BACKLOG.md` alone owns capture and remaining work, not a broad D39 restart.
+Unexpected case/block-write failure retains completed projections, phase/case/config, assumptions, any returned native result and error in exclusive `failed-N.json`, then throws. An unreturned in-flight state/process abort stays unknown. Preserve the original attempt/data/method if an analyzability defect appears; do not silently repair or relabel the committed method after data. Analysis accepts no overrides and reads retained blocks only, never a model; report writing is exclusive. The closed completion binds raw/report/attempt bytes and qualified findings. `BACKLOG.md` alone owns capture and remaining work, not a broad D39 restart.

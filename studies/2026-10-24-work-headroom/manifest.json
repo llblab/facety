@@ -1,0 +1,105 @@
+{
+  "schema": "facety-work-headroom-manifest/v1",
+  "captureCommit": "fcc8b0510a6ed00b9a8f72283292172a77eadbbe",
+  "source": {
+    "baseCheckpoint": "6d27bf9",
+    "implementation": "50a20767e9e4829bdb1ba4aaf8b4fda0388faf5d22c70ded04a8d266b87dd3c3",
+    "node": "v26.8.1"
+  },
+  "designDigest": "1f53f572965aa895510bec1949ed3ff2d0193f108d53848f819a83ab2922ed38",
+  "methodDigests": {
+    "studies/2026-10-24-work-headroom/run.mjs": "6ec7c5e6d925c348da4944a933b5448abbc77c1fccca01cc48cf8764a00ffe37",
+    "studies/2026-10-24-work-headroom/contract.mjs": "480c3cebc4cc8ed46b332d0a22475392900f29d9acf3d8ed164ad1a3c23e3779",
+    "studies/2026-10-24-work-headroom/analyze.mjs": "955f25e8f2aa31b54a200da6558e5a7a0be44f60f2d6718beafcfe75d2704de9",
+    "studies/2026-10-24-work-headroom/design.json": "4fb41a44d47fedd431fa33f7801b16dbebbc94402437ffddfe15a39a76acfa2e",
+    "studies/2026-10-24-attended-comparison/contract.mjs": "3a0968caf4a632f45b4a1a5c6269b92e6bfd4a10b73333a6f26f35158e3df588",
+    "studies/2026-10-24-attended-comparison/analyze.mjs": "f02604c5f4d27917ca3f50513658bb72de02602004030f2ce5a939d437ee6271",
+    "studies/2026-10-24-attended-comparison/design.json": "db1b51cad741bd43de168ea0ebc1ea615e4c72565a00b1bce0eebaeedecf16d7"
+  },
+  "capture": {
+    "blocks": 4,
+    "casesPerBlock": 24,
+    "executions": 96,
+    "complete": 96,
+    "failedRecords": 0
+  },
+  "artifacts": {
+    "studies/2026-10-24-work-headroom/run.mjs": {
+      "bytes": 10317,
+      "sha256": "6ec7c5e6d925c348da4944a933b5448abbc77c1fccca01cc48cf8764a00ffe37"
+    },
+    "studies/2026-10-24-work-headroom/contract.mjs": {
+      "bytes": 9895,
+      "sha256": "480c3cebc4cc8ed46b332d0a22475392900f29d9acf3d8ed164ad1a3c23e3779"
+    },
+    "studies/2026-10-24-work-headroom/analyze.mjs": {
+      "bytes": 8941,
+      "sha256": "955f25e8f2aa31b54a200da6558e5a7a0be44f60f2d6718beafcfe75d2704de9"
+    },
+    "studies/2026-10-24-work-headroom/design.json": {
+      "bytes": 10051,
+      "sha256": "4fb41a44d47fedd431fa33f7801b16dbebbc94402437ffddfe15a39a76acfa2e"
+    },
+    "studies/2026-10-24-attended-comparison/contract.mjs": {
+      "bytes": 4435,
+      "sha256": "3a0968caf4a632f45b4a1a5c6269b92e6bfd4a10b73333a6f26f35158e3df588"
+    },
+    "studies/2026-10-24-attended-comparison/analyze.mjs": {
+      "bytes": 13486,
+      "sha256": "f02604c5f4d27917ca3f50513658bb72de02602004030f2ce5a939d437ee6271"
+    },
+    "studies/2026-10-24-attended-comparison/design.json": {
+      "bytes": 8248,
+      "sha256": "db1b51cad741bd43de168ea0ebc1ea615e4c72565a00b1bce0eebaeedecf16d7"
+    },
+    "studies/2026-10-24-work-headroom/predata-validation.json": {
+      "bytes": 4848,
+      "sha256": "886dbfd890e0e881b6f304fce750d08b7891017e7758c84d17733f5dad0f0b63"
+    },
+    "studies/2026-10-24-work-headroom/report.json": {
+      "bytes": 452001,
+      "sha256": "d0da5db018de5475dc87e5769d9bd760f8c43aba77936757c78d20e11825e668"
+    },
+    "studies/2026-10-24-work-headroom/audit.mjs": {
+      "bytes": 6719,
+      "sha256": "992f25bc953ef074005f47029c50f1a854c5e52a97e6bbed6ffffd413923565f"
+    },
+    "studies/2026-10-24-work-headroom/audit.json": {
+      "bytes": 913325,
+      "sha256": "ce82737f6686c75f30e800f5b4d993610f715bc60a1efa3e10985ee4c62e528c"
+    },
+    "studies/2026-10-24-work-headroom/attempt-0.json": {
+      "bytes": 1124,
+      "sha256": "ce66ed93f65f597bbe0b07dcbb3edd1bd7b79f91bdc94811b7d184795cd7f090"
+    },
+    "studies/2026-10-24-work-headroom/block-0.json": {
+      "bytes": 2770716,
+      "sha256": "cee322a806f5f61ae696e430360414c9e97cc84e0b83e257d99192882cf4f4a8"
+    },
+    "studies/2026-10-24-work-headroom/attempt-1.json": {
+      "bytes": 1124,
+      "sha256": "09964e87e8183f337b86384c7609ae8d2beb5079a6ef45857109011c4a582a5a"
+    },
+    "studies/2026-10-24-work-headroom/block-1.json": {
+      "bytes": 2774708,
+      "sha256": "c38bdcaceaad457671d354c6534e8730e021092780a2da79c13598b82386d530"
+    },
+    "studies/2026-10-24-work-headroom/attempt-2.json": {
+      "bytes": 1124,
+      "sha256": "abc6672c74179afd787576dd1d12a92990e347f28352a03a0e99238d57cb9123"
+    },
+    "studies/2026-10-24-work-headroom/block-2.json": {
+      "bytes": 2688619,
+      "sha256": "1323961deabdd4aa241b1d444418f0bdcdd5b11c30082ac8732a91275805fcd5"
+    },
+    "studies/2026-10-24-work-headroom/attempt-3.json": {
+      "bytes": 1124,
+      "sha256": "05ac967efc555735fcee466d1a82285c51f123ec6fe33ff9fe352c15f3b3dea5"
+    },
+    "studies/2026-10-24-work-headroom/block-3.json": {
+      "bytes": 2845389,
+      "sha256": "f89cf008961edfd93ca559b4839e34014f8bc1ebf2599b980521e0421b5124da"
+    }
+  },
+  "assurance": "Original pre-data method and retained capture/analysis, with separately labeled post-data author projections; not authenticity, independent review, human calibration, policy selection or confirmation."
+}
