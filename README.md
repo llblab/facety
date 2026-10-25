@@ -39,7 +39,7 @@ An outside observer finds an inconsistency in an influential participant's publi
 Simulator defaults combine selected rules with explicitly labeled legacy and direction/reference mechanics:
 
 - **Selected:** one-day Self-ID spending/conversion and invitation-freeze windows;
-- **Legacy (D42 migration pending):** terminal XP for the subject and eligible guarantors, not the selected automatic 24-hour XP rule;
+- **Legacy default / bounded selected mode:** terminal XP remains default; opt-in `xpFinality: 'maturity'` realizes ordinary fixed-snapshot24h credit/veto expiry, with frozen/debt/identity cases still gated;
 - **Direction/reference:** relation-derived XP revocation, with detailed either-party and historical semantics kept explicit;
 - **Selected:** active-subject Council eligibility and one equal vote per member;
 - **Selected principle:** debt recovery preserves the veto; seizure priority remains an explicit reference;
@@ -68,13 +68,16 @@ A failure can expose a code defect, a model limitation, an unsupported behaviora
 
 ## Run
 
-Requires Node.js 22 or newer. No installation or build step is needed.
+Requires Node.js 22 or newer. No installation or build step is needed. `npm test` also requires this Git checkout and its retained local history: current tests run on current source;21 unchanged source-pinned tests run in a temporary isolated local checkout of `aab881f`, reported separately as historical compatibility. No network fetch, drift override, historical rewrite or research capture is performed. The retained studies' original runtime requirements remain intact.
 
 ```sh
 npm test
 node bin/facety.mjs --help
 node bin/facety.mjs run examples/four-hour.json
+node examples/xp-state.mjs
 ```
+
+The [D54/D55 model contract](docs/simulator.en.md#self-id-sourced-xp-and-act-penalties-d54d55) covers canonical XP receipts, ordinary opt-in24h maturity and typed historical-roster penalties. Its [funded software example](studies/2026-10-25-xp-state/README.md) shows an exited original guarantor receiving pending XP and bearing later monetary liability without Self-ID-case XP halving. This is not full act adjudication, default migration or a new experimental result.
 
 The [D43 sub-day mode](docs/simulator.en.md#integrated-participant-scheduling) runs actual four-hour opportunities with daily quotas, optional explicit per-subject transaction/attention profiles and exact known deadlines. Set `stepHours: 4` (or `6`); omitted/`24` retains historical daily scheduling. The example inherits illustrative cohort rates, not calibrated human behavior. This does not migrate D42 XP/veto semantics. The explicit [first-attended review counterfactual](docs/simulator.en.md#first-attended-timing-counterfactual) (`examples/first-attended.json`) tests an alternative placement of the same daily invitation-review trial; it is not a new default or measured human policy. The optional [shared-target evidence stress control](docs/simulator.en.md#shared-target-evidence-counterfactual) (`examples/shared-invitation-evidence.json`) makes invitation reviewers share one persistent target signal; it preserves paid work/authority and the independent default, not evidence authenticity or a calibrated common-error process.
 

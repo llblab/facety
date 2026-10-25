@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { runOneDayIncentiveForks, runIncentiveForks, readIncentiveComparisons, INCENTIVE_STRATEGIES } from '../src/incentives.mjs';
 import { evaluateIncentivePayoffs } from '../src/incentive-payoffs.mjs';
 import { compareIncentiveOwnership } from '../src/incentive-ownership.mjs';
@@ -50,6 +51,36 @@ test('one-day v2 is a separate reproducible fixed reference with source identity
   assert.equal(runIncentiveForks().schedule.horizonDay, 11);
   for (const options of [null, [], { xpFinality: null }, { xpFinality: 'never' }, { schedule: {} }, { policy: DEFAULT_POLICY }, { seed: 'x' }, { guaranteeFee: 0 }, { expectedLosses: {} }]) {
     assert.throws(() => runOneDayIncentiveForks(options));
+  }
+});
+
+test('additive Self-ID provenance preserves old v2 accounting and rejects mixed, forged receipts or invitation roles', () => {
+  const retained = JSON.parse(readFileSync(new URL('../studies/2026-10-24-one-day-incentives/results/raw.json', import.meta.url), 'utf8'));
+  for (const { artifact } of retained.artifacts) assert.deepEqual(readIncentiveComparisons(artifact), artifact.comparisons);
+  for (const run of [runIncentiveForks, runOneDayIncentiveForks]) assert.throws(() => run({ xpFinality: 'maturity' }), /reference timing/);
+  for (const xpFinality of ['terminal', 'immediate']) {
+    const current = runOneDayIncentiveForks({ xpFinality });
+    const wrongMode = structuredClone(current);
+    wrongMode.policy.xpFinality = 'maturity';
+    assert.throws(() => readIncentiveComparisons(wrongMode), /unsupported incentive policy/);
+    const old = structuredClone(current);
+    for (const branch of old.branches) for (const point of branch.timeline) {
+      for (const subject of point.subjects) delete subject.xpHalvings;
+      for (const act of point.selfIds) delete act.xpCredit;
+      for (const invitation of point.invitations) delete invitation.guarantors;
+    }
+    assert.deepEqual(readIncentiveComparisons(old), readIncentiveComparisons(current));
+    for (const mutate of [
+      artifact => { delete artifact.branches[0].timeline[0].selfIds[0].xpCredit; },
+      artifact => { artifact.branches[0].timeline.at(-1).selfIds[0].xpCredit.recipients[0].halvingsBefore = 1; },
+      artifact => { artifact.branches[0].timeline.at(-1).selfIds[0].xpCredit.at++; },
+      artifact => { artifact.branches[0].timeline[0].subjects[0].xpHalvings = 1; },
+      artifact => { artifact.branches[1].timeline[1].invitations[0].guarantors = ['newcomer']; },
+    ]) {
+      const changed = structuredClone(current);
+      mutate(changed);
+      assert.throws(() => readIncentiveComparisons(changed), /one-day incentive/);
+    }
   }
 });
 

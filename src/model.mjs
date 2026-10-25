@@ -34,7 +34,7 @@ export function policyFrom(overrides = {}) {
   for (const key of Object.keys(overrides)) if (!Object.hasOwn(DEFAULT_POLICY, key)) throw new Error('unknown policy: ' + key);
   const policy = { ...DEFAULT_POLICY, ...overrides };
   for (const [key, allowed] of Object.entries({
-    xpFinality: ['terminal', 'immediate'],
+    xpFinality: ['terminal', 'immediate', 'maturity'],
     cancellationAuthority: ['snapshot', 'current'],
     guarantorEligibility: ['active', 'accepted'],
     debtRecovery: ['reserve-until-mature', 'immediate-burn'],
@@ -47,6 +47,8 @@ export function policyFrom(overrides = {}) {
   natural(policy.invitationFreezeHours, 'invitationFreezeHours');
   natural(policy.spendMaturityHours, 'spendMaturityHours');
   natural(policy.conversionMaturityHours, 'conversionMaturityHours');
+  if (policy.xpFinality === 'maturity' && (policy.cancellationAuthority !== 'snapshot' || policy.debtRecovery !== 'reserve-until-mature'
+    || policy.spendMaturityHours < DAY || policy.conversionMaturityHours < DAY)) throw new Error('maturity XP requires snapshot veto, reserved debt and no spending before24h');
   return Object.freeze(policy);
 }
 
@@ -75,7 +77,9 @@ export class FacetyModel {
   #guaranteeRecords = new Map();
   #invitations = new Map();
   #claims = new Map();
-  #xpSources = new Set();
+  #xpByRecipient = new Map();
+  #xpMaturities = new Set();
+  #actPenalties = new Map();
   #debtReservations = new Set();
   #disputeStakes = new Map();
   #contentHashes = new Set();
@@ -117,30 +121,48 @@ export class FacetyModel {
     if (typeof id !== 'string' || !id.length || this.#subjects.has(id)) throw new ProtocolRejection('invalid or duplicate subject ID');
     this.lineage.assertCapacity({ revisions: inviter === null ? 1 : 2, edgeIds: inviter === null ? 0 : 1 });
     this.guarantees.assertCapacity();
-    this.#subjects.set(id, { id, genesis, key: id + ':key:0', identityStatus: 'accepted', xp: 0, xpEvents: [], liquidFacy: 0, debt: 0, lastRewardAt: null });
+    this.#subjects.set(id, { id, genesis, key: id + ':key:0', identityStatus: 'accepted', xp: 0, xpHalvings: 0, liquidFacy: 0, debt: 0, lastRewardAt: null });
+    this.#xpByRecipient.set(id, []);
     this.#subjectActs.set(id, []);
     this.lineage.addNode(id);
     this.guarantees.addNode(id);
     if (inviter !== null) this.lineage.addEdge(inviter, id);
     this.#event('subject-added', { subject: id, genesis });
   }
-  subject(id) {
-    const { xpEvents, ...subject } = this.#subject(id);
-    return Object.freeze(subject);
-  }
+  subject(id) { return Object.freeze({ ...this.#subject(id) }); }
   subjects() { return [...this.#subjects.keys()].map(id => this.subject(id)); }
+  xpProvenance(id) {
+    const subject = this.#subject(id);
+    const credits = this.#xpByRecipient.get(id).map(({ act, receipt }) => Object.freeze({ selfId: act.id, at: act.xpCredit.at,
+      ...receipt, sourceRevokedAt: act.xpCredit.revokedAt, sourceRevocation: act.xpCredit.revocation }));
+    return Object.freeze({ subject: id, xp: this.#computeXp(subject), halvings: subject.xpHalvings, credits: Object.freeze(credits) });
+  }
   selfId(id) {
     const act = this.#act(id);
-    return Object.freeze({ ...act, guarantors: Object.freeze([...act.guarantors]), xpRecipients: Object.freeze([...act.xpRecipients]) });
+    const xpCredit = act.xpCredit === null ? null : Object.freeze({ ...act.xpCredit,
+      recipients: Object.freeze(act.xpCredit.recipients.map(receipt => Object.freeze({ ...receipt }))) });
+    return Object.freeze({ ...act, guarantors: Object.freeze([...act.guarantors]), xpRecipients: Object.freeze([...act.xpRecipients]), xpCredit });
   }
   selfIds() { return [...this.#acts.keys()].map(id => this.selfId(id)); }
-  invitations() { return [...this.#invitations.values()].map(value => Object.freeze({ ...value })); }
+  invitations() { return [...this.#invitations.values()].map(value => Object.freeze({ ...value, guarantors: Object.freeze([...value.guarantors]) })); }
+  #penaltySnapshot(value) { return Object.freeze({ ...value,
+    parties: Object.freeze([...value.parties]), penalties: Object.freeze(value.penalties.map(penalty => Object.freeze({ ...penalty }))) }); }
+  actPenalties() { return [...this.#actPenalties.values()].map(value => this.#penaltySnapshot(value)); }
   guaranteeRelations() { return [...this.#guaranteeRecords.values()].map(value => Object.freeze({ ...value })); }
   events() { return [...this.#events]; }
   disputeStakes() { return [...this.#disputeStakes.values()].map(value => Object.freeze({ ...value })); }
   advanceTo(hour) {
     natural(hour, 'hour');
     if (hour < this.now) throw new ProtocolRejection('simulation time cannot move backwards');
+    if (this.policy.xpFinality === 'maturity') {
+      const due = [...this.#xpMaturities].filter(act => act.recordedAt + DAY <= hour);
+      for (const act of due) {
+        if (act.disputeLock !== null) throw new ProtocolRejection('frozen maturity requires an explicit XP contract');
+        if (act.debtReserved || this.#subject(act.subject).debt > 0) throw new ProtocolRejection('debt/maturity ordering requires an explicit contract');
+        if (act.xpRecipients.some(id => this.#subject(id).identityStatus !== 'accepted')) throw new ProtocolRejection('changed identity at maturity requires an eligibility contract');
+      }
+      for (const act of due) { this.#now = act.recordedAt + DAY; this.#credit(act); }
+    }
     this.#now = hour;
     this.#settleDebtReservations();
   }
@@ -215,9 +237,12 @@ export class FacetyModel {
     relation.status = 'ended';
     relation.endedAt = this.now;
     if (this.policy.linkBreakXp === 'revoke') {
-      const sources = new Set(this.#subjectActs.get(relation.guaranteed));
       const guarantor = this.#subject(relation.guarantor);
-      guarantor.xpEvents = guarantor.xpEvents.filter(event => event.type !== 'credit' || !sources.has(event.source));
+      for (const { act, receipt } of this.#xpByRecipient.get(relation.guarantor)) {
+        if (act.subject !== relation.guaranteed || act.xpCredit.revokedAt !== null || receipt.revokedAt !== null) continue;
+        receipt.revokedAt = this.now;
+        receipt.revocation = 'guarantee-ended';
+      }
       this.#replayXp(guarantor);
     }
     this.#event('guarantee-ended', { relation: relationId, actor });
@@ -249,23 +274,38 @@ export class FacetyModel {
     return [...this.guarantees.inEdges(id)].map(edge => edge.from).filter(guarantor =>
       this.#subject(guarantor).identityStatus === 'accepted' && (this.policy.guarantorEligibility === 'accepted' || this.isActive(guarantor)));
   }
-  #replayXp(subject) {
-    let xp = 0;
-    for (const event of subject.xpEvents) {
-      if (event.type === 'credit' && this.#xpSources.has(event.source)) xp++;
-      if (event.type === 'halve') xp = Math.floor(xp / 2);
+  #computeXp(subject) {
+    let xp = 0, halvings = 0;
+    for (const { act, receipt } of this.#xpByRecipient.get(subject.id)) {
+      if (act.xpCredit.revokedAt !== null || receipt.revokedAt !== null) continue;
+      const elapsed = receipt.halvingsBefore - halvings;
+      xp = (elapsed >= 53 ? 0 : Math.floor(xp / 2 ** elapsed)) + 1;
+      halvings = receipt.halvingsBefore;
     }
-    subject.xp = xp;
+    const elapsed = subject.xpHalvings - halvings;
+    return elapsed >= 53 ? 0 : Math.floor(xp / 2 ** elapsed);
+  }
+  #replayXp(subject) { subject.xp = this.#computeXp(subject); }
+  #revokeXp(act, reason) {
+    if (act.xpCredit === null || act.xpCredit.revokedAt !== null) return false;
+    act.xpCredit.revokedAt = this.now;
+    act.xpCredit.revocation = reason;
+    return true;
   }
   #credit(act) {
-    if (act.xpCredited) return;
+    if (act.xpCredit !== null) return;
+    if (this.policy.xpFinality === 'maturity' && this.now - act.recordedAt < DAY) throw new ProtocolRejection('ordinary XP is not mature');
+    this.#xpMaturities.delete(act);
     act.xpCredited = true;
-    this.#xpSources.add(act.id);
+    act.xpCredit = { at: this.now, revokedAt: null, revocation: null, recipients: [] };
     for (const id of act.xpRecipients) {
-      // Under linkBreakXp "revoke", a guarantor who has since left the relation earns nothing more from it.
-      if (this.policy.linkBreakXp === 'revoke' && id !== act.subject && !this.guarantees.edge(id, act.subject)) continue;
+      // Legacy eligibility is unchanged; the receipt records actual credit, not the candidate list.
+      if (this.policy.xpFinality !== 'maturity' && this.policy.linkBreakXp === 'revoke' && id !== act.subject && !this.guarantees.edge(id, act.subject)) continue;
       const subject = this.#subject(id);
-      subject.xpEvents.push({ type: 'credit', source: act.id, at: this.now });
+      const receipt = { subject: id, role: id === act.subject ? 'subject' : 'guarantor', halvingsBefore: subject.xpHalvings,
+        revokedAt: null, revocation: null };
+      act.xpCredit.recipients.push(receipt);
+      this.#xpByRecipient.get(id).push({ act, receipt });
       subject.xp++;
     }
   }
@@ -285,11 +325,12 @@ export class FacetyModel {
     const xpRecipients = this.ablations.withholdGuarantorXp ? [subjectId] : [subjectId, ...guarantors];
     const reservedDebt = this.#subjectActs.get(subjectId).filter(actId => this.#acts.get(actId).debtReserved).length;
     const debtReserved = this.policy.debtRecovery === 'reserve-until-mature' && subject.debt > reservedDebt;
-    const act = { id, subject: subjectId, artifact: artifactId, faceIndex, recordedAt: this.now, guarantors, xpRecipients, xpCredited: false, status: 'unspent', disposition: null, disputeLock: null, collision, debtReserved };
+    const act = { id, subject: subjectId, artifact: artifactId, faceIndex, recordedAt: this.now, guarantors, xpRecipients, xpCredited: false, xpCredit: null, status: 'unspent', disposition: null, disputeLock: null, collision, debtReserved };
     if (collision) for (const claim of claims) this.#acts.get(claim).collision = true;
     claims.push(id);
     this.#claims.set(faceRef, claims);
     this.#acts.set(id, act);
+    if (this.policy.xpFinality === 'maturity') this.#xpMaturities.add(act);
     if (debtReserved) this.#debtReservations.add(act);
     this.#subjectActs.get(subjectId).push(id);
     this.#activityVersion++;
@@ -318,13 +359,14 @@ export class FacetyModel {
     else this.#burned++;
     if (status === 'cancelled') {
       this.#activityVersion++;
-      this.#xpSources.delete(act.id);
-      if (act.xpCredited) for (const id of act.xpRecipients) this.#replayXp(this.#subject(id));
+      this.#xpMaturities.delete(act);
+      if (this.#revokeXp(act, 'self-id-cancelled')) for (const receipt of act.xpCredit.recipients) this.#replayXp(this.#subject(receipt.subject));
     } else this.#credit(act);
   }
   cancelSelfId(guarantor, selfIdId) {
     this.#subject(guarantor, true);
     const act = this.#act(selfIdId);
+    if (this.policy.xpFinality === 'maturity' && this.now - act.recordedAt >= DAY) throw new ProtocolRejection('original Self-ID veto expired at24h');
     const authorized = this.policy.cancellationAuthority === 'snapshot' ? act.guarantors.includes(guarantor) : Boolean(this.guarantees.edge(guarantor, act.subject));
     if (!authorized) throw new ProtocolRejection('no cancellation authority');
     this.#dispose(act, 'cancelled', 'guarantor-veto');
@@ -345,7 +387,7 @@ export class FacetyModel {
     if (typeof target !== 'string' || !target.length || this.#subjects.has(target)) throw new ProtocolRejection('invitation must target a new subject');
     const id = this.#id('invitation');
     this.#dispose(act, 'consumed', 'invitation');
-    this.#invitations.set(id, { id, creator: creatorId, sourceSelfId: selfIdId, target, createdAt: this.now, acceptedAt: null, status: 'open' });
+    this.#invitations.set(id, { id, creator: creatorId, sourceSelfId: selfIdId, target, guarantors: [...this.eligibleGuarantors(creatorId)], createdAt: this.now, acceptedAt: null, status: 'open' });
     this.#event('invitation-created', { invitation: id, creator: creatorId, target });
     return id;
   }
@@ -370,7 +412,7 @@ export class FacetyModel {
     invitation.status = 'cancelled';
     const act = this.#act(invitation.sourceSelfId);
     act.disposition = 'invitation-cancelled';
-    if (this.#xpSources.delete(act.id) && act.xpCredited) for (const id of act.xpRecipients) this.#replayXp(this.#subject(id));
+    if (this.policy.xpFinality !== 'maturity' && this.#revokeXp(act, 'invitation-cancelled')) for (const receipt of act.xpCredit.recipients) this.#replayXp(this.#subject(receipt.subject));
     this.#event('invitation-cancelled', { invitation: invitationId, guarantor });
   }
   convertToCollector(owner, selfIdId) {
@@ -384,6 +426,7 @@ export class FacetyModel {
   freezeSelfId(selfIdId, lockId) {
     const act = this.#act(selfIdId);
     this.#requireUnspent(act);
+    if (this.policy.xpFinality === 'maturity' && act.xpCredit !== null) throw new ProtocolRejection('post-maturity XP freeze requires an explicit contract');
     if (typeof lockId !== 'string' || !lockId.length) throw new ProtocolRejection('invalid dispute lock');
     act.disputeLock = lockId;
     this.#event('self-id-frozen', { selfId: selfIdId, lockId });
@@ -446,15 +489,46 @@ export class FacetyModel {
     const collected = Math.min(subject.liquidFacy, fine);
     const debtAdded = fine - collected;
     natural(this.ledger().debt + debtAdded, 'aggregate debt');
+    if (halveXp) natural(subject.xpHalvings + 1, 'XP halvings');
     subject.liquidFacy -= collected;
     subject.debt += debtAdded;
     this.#burned += collected;
     if (halveXp) {
-      subject.xpEvents.push({ type: 'halve', at: this.now });
+      subject.xpHalvings++;
       subject.xp = Math.floor(subject.xp / 2);
     }
     this.#event('penalty-applied', { subject: id, fine, collected, debtAdded, halveXp });
     return { collected, debtAdded };
+  }
+  // Trusted sanction inputs, not admissibility, depth calculation or a verdict oracle.
+  applySelfIdPenalty(selfId, { caseId, fine } = {}) {
+    const act = this.#act(selfId);
+    natural(fine, 'Self-ID fine', 1);
+    return this.#applyActPenalty('self-id', act.id, act.subject, act.guarantors, caseId, fine, false);
+  }
+  applyInvitationPenalty(invitationId, { caseId, fine } = {}) {
+    const act = this.#invitations.get(invitationId);
+    if (!act) throw new ProtocolRejection('unknown invitation');
+    natural(fine, 'invitation fine');
+    return this.#applyActPenalty('invitation', act.id, act.creator, act.guarantors, caseId, fine, true);
+  }
+  #applyActPenalty(kind, act, owner, guarantors, caseId, fine, halveGuarantors) {
+    if (typeof caseId !== 'string' || !caseId.length) throw new ProtocolRejection('act penalty requires a case ID');
+    if (this.#actPenalties.has(caseId)) throw new ProtocolRejection('act penalty case already applied');
+    const parties = [...new Set([owner, ...guarantors])];
+    let debt = BigInt(this.ledger().debt);
+    for (const id of parties) {
+      const subject = this.#subject(id);
+      debt += BigInt(Math.max(0, fine - subject.liquidFacy));
+      if (id === owner || halveGuarantors) natural(subject.xpHalvings + 1, 'XP halvings');
+    }
+    if (debt > BigInt(Number.MAX_SAFE_INTEGER)) throw new RangeError('act penalty would overflow aggregate debt');
+    const penalties = parties.map(id => ({ subject: id, halveXp: id === owner || halveGuarantors,
+      ...this.penalize(id, { fine, halveXp: id === owner || halveGuarantors }) }));
+    const record = { caseId, kind, act, owner, at: this.now, fine, parties, penalties };
+    this.#actPenalties.set(caseId, record);
+    this.#event('act-penalty-applied', { caseId, kind, act });
+    return this.#penaltySnapshot(record);
   }
   invalidateIdentity(id) {
     this.#subject(id).identityStatus = 'false';
@@ -473,6 +547,7 @@ export class FacetyModel {
     const recipients = new Set();
     let burned = 0;
     for (const act of cut) {
+      this.#xpMaturities.delete(act);
       if (act.status === 'unspent') {
         act.status = 'cancelled';
         act.disposition = 'adjudicated-void';
@@ -482,7 +557,7 @@ export class FacetyModel {
         this.#burned++;
         burned++;
       } else act.disposition = act.disposition + '+voided';
-      if (this.#xpSources.delete(act.id) && act.xpCredited) for (const recipient of act.xpRecipients) recipients.add(recipient);
+      if (this.#revokeXp(act, 'adjudicated-void')) for (const recipient of act.xpRecipients) recipients.add(recipient);
     }
     for (const recipient of recipients) this.#replayXp(this.#subject(recipient));
     this.#activityVersion++;
@@ -506,6 +581,8 @@ export class FacetyModel {
     for (const value of Object.values(ledger)) natural(value, 'ledger value');
     for (const subject of this.#subjects.values()) {
       natural(subject.xp, 'XP');
+      natural(subject.xpHalvings, 'XP halvings');
+      if (subject.xp !== this.#computeXp(subject)) throw new Error('XP source/cache invariant failed');
       natural(subject.liquidFacy, 'liquidFacy');
       natural(subject.debt, 'debt');
     }

@@ -168,7 +168,7 @@ test('trace limits, inert inspection and repeated same-key environmental request
   assert.deepEqual(outputs[1], outputs[2]);
 });
 
-test('all ten legacy walkthroughs preserve pre-change canonical output digests except implementation provenance', () => {
+test('all ten legacy walkthroughs preserve economic digests except provenance and additive D54/D55 state', () => {
   // Captured at ad28fb2 before changing accountability.mjs; existing supplied-input software fixtures, not research labels.
   const expected = {
     'support-finalized': 'c5b436e0d909d25a91b0c1c866c1ca26d4dd2f6d9b58df55be782082210d32df',
@@ -184,6 +184,14 @@ test('all ten legacy walkthroughs preserve pre-change canonical output digests e
   };
   for (const [name, digest] of Object.entries(expected)) {
     const { provenance, ...run } = runWalkthrough(name);
-    assert.equal(digestOf(run), digest, name);
+    // New source receipts/counters and invitation snapshots are tested separately; no old economic field is dropped.
+    const legacy = value => {
+      if (Array.isArray(value)) return value.map(legacy);
+      if (!value || typeof value !== 'object') return value;
+      const invitation = Object.hasOwn(value, 'sourceSelfId') && Object.hasOwn(value, 'creator');
+      return Object.fromEntries(Object.entries(value).filter(([key]) => key !== 'xpCredit' && key !== 'xpHalvings' && !(invitation && key === 'guarantors'))
+        .map(([key, child]) => [key, legacy(child)]));
+    };
+    assert.equal(digestOf(legacy(run)), digest, name);
   }
 });

@@ -16,7 +16,7 @@
       "question": "Does contribution induce continued responsible participation?",
       "initiatingChange": "A subject records fresh identity work or confirms a directed guarantee.",
       "path": [
-        "FacetyModel terminal disposition credits the subject and recording-time eligible guarantors.",
+        "FacetyModel records actual Self-ID XP receipts for subject/guarantors; terminal remains the legacy default, with ordinary opt-in24h fixed-snapshot maturity implemented under D54.",
         "XP changes challenge eligibility, Council ranking and declared XP risk."
       ],
       "feedback": {
@@ -24,7 +24,7 @@
         "missing": "D51's finite pre-existing external acquaintance pool and incentive-sensitive recruitment/maintenance choices are not implemented by exogenous activity; contribution-quality and actual retention returns remain unproved."
       },
       "signs": "+ contribution→XP conditional on finality and retained source; XP→quality has no implemented sign.",
-      "delay": "D42 selects cancellation-conditioned ordinary credit at 24h; native terminal credit waits for disposition and remains legacy.",
+      "delay": "D42/D54 ordinary opt-in credits at24h without disposition; default terminal waits for disposition and remains legacy. Full frozen/debt/identity/default integration stays gated.",
       "bottleneck": "Fresh work, qualifying guarantees, attention and fees are distinct resources.",
       "basis": "Non-transferable XP is selected; D42 selects ordinary uncancelled 24h maturity, not native legacy terminal credit. D51 clarifies pre-existing relationships→recruitment/guarantees→repeated Self-ID XP, never invitation XP; endogenous feedback remains a hypothesis.",
       "code": [
@@ -34,7 +34,7 @@
       ],
       "observable": [
         "subjects[].xp",
-        "selfIds[].xpRecipients/xpCredited",
+        "selfIds[].xpCredit (actual receipts/revocations); xpRecipients/xpCredited are compatibility metadata",
         "trace.records[].changes"
       ],
       "diagnostic": [
@@ -53,7 +53,7 @@
       "initiatingChange": "A suspicious act is observed while a guarantor retains cancellation authority.",
       "path": [
         "Declared daily-slot attention (or explicit first-attended counterfactual) → paid fallible observation → optional paid verification → available, funded response attempt.",
-        "An authorized pre-deadline invitation veto prevents this admission; its already burned source stays burned. Legacy source XP is replayed separately from the pending D42 rule.",
+        "An authorized pre-deadline invitation veto prevents admission; its burned source stays burned. Legacy source-XP replay differs from ordinary maturity mode, where invitation veto does not revoke matured source XP.",
         "D42 couples valid initial-window cancellation and ordinary right/XP maturation in one 24h condition; the native separate unspent-veto/terminal-credit operations remain explicitly legacy, not two selected independent economic processes."
       ],
       "feedback": {
@@ -95,7 +95,7 @@
       "initiatingChange": "Either party ends an active directed guarantee.",
       "path": [
         "The ending party pays one liquid FACY into fee custody.",
-        "The edge ends; guarantor-derived historical XP is replayed; later credit depends on the edge."
+        "The edge ends and D9 issued relation credits are revoked with provenance. Under D54 ordinary maturity, pending initial-snapshot XP/veto/history survives exit; pending current-edge filtering is only legacy."
       ],
       "feedback": {
         "implemented": "Revoked XP changes later eligibility/rank; snapshot veto may persist.",
@@ -271,7 +271,7 @@
       "intervention": "Withhold one terminal disposition at a rank boundary; matched XP/age and tie-break controls before interpreting capture.",
       "alternative": "ID tie-breaking, arithmetic threshold or fixed coalition ballots.",
       "falsifier": "A seat shift without a wrongful decision cannot support capture; restored evidence access that removes influence weakens self-protection.",
-      "status": "Threshold and later-gate diagnostics; governance effectiveness not confirmed.",
+      "status": "Threshold/later-gate diagnostics; governance effectiveness unconfirmed. D55 trusted Self-ID/invitation snapshot penalties are separate: owner-only XP halving for Self-ID, creator/guarantors for invitation. Merits/N/remedies/case integration remain gated.",
       "diagram": "M07 [R] XP → access/seats --[A merits; R equal votes]--> consequence → later XP/access (±)"
     },
     {
@@ -797,7 +797,7 @@
         "units": "enum",
         "scope": "XP-source credit",
         "status": "legacy-reference",
-        "meaning": "D42 selects ordinary cancellation-conditioned 24h maturity credit; native terminal default/immediate comparison are retained historical research semantics, not selected D42 timing.",
+        "meaning": "D42/D54 ordinary cancellation-conditioned24h snapshot credit is available as maturity mode, with frozen/debt/identity boundaries explicit. Terminal default/immediate retain historical semantics, not selected D42 timing; legacy-reference labels that default, not the new ordinary branch.",
         "provenance": "docs/facety.protocol.en.md; src/model.mjs DEFAULT_POLICY",
         "mechanisms": [
           "M01"

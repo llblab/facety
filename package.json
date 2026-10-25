@@ -8,7 +8,7 @@
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test",
+    "test": "node scripts/test.mjs",
     "facety": "node bin/facety.mjs"
   },
   "bin": {

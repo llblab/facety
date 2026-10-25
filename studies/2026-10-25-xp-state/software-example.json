@@ -1,0 +1,269 @@
+{
+  "schema": "facety-xp-state-software/v1",
+  "level": "engineering-example-not-research-or-adjudication",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "7d36ee61a214ab86bbe5af0e4013a9c23be7662be69bf148b4684bf101813fbc",
+      "files": 32
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "assumptions": [
+    "Three supplied genesis subjects, no initial money or XP; inherited bootstrap is not verified independence.",
+    "Accepted guarantor qualification and immediate confirmed-link activation are explicit native references; proposed positive-guarantee24h cooling is not implemented.",
+    "Only ordinary unencumbered snapshot maturity is exercised; no frozen/debt maturity convention, human utility, price or attack probability is supplied.",
+    "Penalty is a trusted explicit one-unit input, not a court verdict or a depth formula; no source-credit remedy or identity invalidation is inferred."
+  ],
+  "matured": {
+    "selfId": {
+      "id": "self-id:4",
+      "subject": "author",
+      "artifact": "artifact:3",
+      "faceIndex": 0,
+      "recordedAt": 24,
+      "guarantors": [
+        "initial"
+      ],
+      "xpRecipients": [
+        "author",
+        "initial"
+      ],
+      "xpCredited": true,
+      "xpCredit": {
+        "at": 48,
+        "revokedAt": null,
+        "revocation": null,
+        "recipients": [
+          {
+            "subject": "author",
+            "role": "subject",
+            "halvingsBefore": 0,
+            "revokedAt": null,
+            "revocation": null
+          },
+          {
+            "subject": "initial",
+            "role": "guarantor",
+            "halvingsBefore": 0,
+            "revokedAt": null,
+            "revocation": null
+          }
+        ]
+      },
+      "status": "unspent",
+      "disposition": null,
+      "disputeLock": null,
+      "collision": false,
+      "debtReserved": false
+    },
+    "subjects": [
+      {
+        "id": "author",
+        "genesis": true,
+        "key": "author:key:0",
+        "identityStatus": "accepted",
+        "xp": 1,
+        "xpHalvings": 0,
+        "liquidFacy": 0,
+        "debt": 0,
+        "lastRewardAt": 24
+      },
+      {
+        "id": "initial",
+        "genesis": true,
+        "key": "initial:key:0",
+        "identityStatus": "accepted",
+        "xp": 2,
+        "xpHalvings": 0,
+        "liquidFacy": 0,
+        "debt": 0,
+        "lastRewardAt": 0
+      },
+      {
+        "id": "later",
+        "genesis": true,
+        "key": "later:key:0",
+        "identityStatus": "accepted",
+        "xp": 0,
+        "xpHalvings": 0,
+        "liquidFacy": 0,
+        "debt": 0,
+        "lastRewardAt": null
+      }
+    ],
+    "provenance": {
+      "subject": "initial",
+      "xp": 2,
+      "halvings": 0,
+      "credits": [
+        {
+          "selfId": "self-id:1",
+          "at": 24,
+          "subject": "initial",
+          "role": "subject",
+          "halvingsBefore": 0,
+          "revokedAt": null,
+          "revocation": null,
+          "sourceRevokedAt": null,
+          "sourceRevocation": null
+        },
+        {
+          "selfId": "self-id:4",
+          "at": 48,
+          "subject": "initial",
+          "role": "guarantor",
+          "halvingsBefore": 0,
+          "revokedAt": null,
+          "revocation": null,
+          "sourceRevokedAt": null,
+          "sourceRevocation": null
+        }
+      ]
+    }
+  },
+  "penalty": {
+    "caseId": "software-supplied-self-id-penalty",
+    "kind": "self-id",
+    "act": "self-id:4",
+    "owner": "author",
+    "at": 48,
+    "fine": 1,
+    "parties": [
+      "author",
+      "initial"
+    ],
+    "penalties": [
+      {
+        "subject": "author",
+        "halveXp": true,
+        "collected": 1,
+        "debtAdded": 0
+      },
+      {
+        "subject": "initial",
+        "halveXp": false,
+        "collected": 0,
+        "debtAdded": 1
+      }
+    ]
+  },
+  "final": {
+    "selfId": {
+      "id": "self-id:4",
+      "subject": "author",
+      "artifact": "artifact:3",
+      "faceIndex": 0,
+      "recordedAt": 24,
+      "guarantors": [
+        "initial"
+      ],
+      "xpRecipients": [
+        "author",
+        "initial"
+      ],
+      "xpCredited": true,
+      "xpCredit": {
+        "at": 48,
+        "revokedAt": null,
+        "revocation": null,
+        "recipients": [
+          {
+            "subject": "author",
+            "role": "subject",
+            "halvingsBefore": 0,
+            "revokedAt": null,
+            "revocation": null
+          },
+          {
+            "subject": "initial",
+            "role": "guarantor",
+            "halvingsBefore": 0,
+            "revokedAt": null,
+            "revocation": null
+          }
+        ]
+      },
+      "status": "converted",
+      "disposition": "collector",
+      "disputeLock": null,
+      "collision": false,
+      "debtReserved": false
+    },
+    "subjects": [
+      {
+        "id": "author",
+        "genesis": true,
+        "key": "author:key:0",
+        "identityStatus": "accepted",
+        "xp": 0,
+        "xpHalvings": 1,
+        "liquidFacy": 0,
+        "debt": 0,
+        "lastRewardAt": 24
+      },
+      {
+        "id": "initial",
+        "genesis": true,
+        "key": "initial:key:0",
+        "identityStatus": "accepted",
+        "xp": 2,
+        "xpHalvings": 0,
+        "liquidFacy": 0,
+        "debt": 1,
+        "lastRewardAt": 0
+      },
+      {
+        "id": "later",
+        "genesis": true,
+        "key": "later:key:0",
+        "identityStatus": "accepted",
+        "xp": 0,
+        "xpHalvings": 0,
+        "liquidFacy": 0,
+        "debt": 0,
+        "lastRewardAt": null
+      }
+    ],
+    "ledger": {
+      "minted": 2,
+      "burned": 1,
+      "supply": 1,
+      "emitterVault": 0,
+      "collector": 0,
+      "feeVault": 1,
+      "stakeVault": 0,
+      "debt": 1
+    },
+    "penalties": [
+      {
+        "caseId": "software-supplied-self-id-penalty",
+        "kind": "self-id",
+        "act": "self-id:4",
+        "owner": "author",
+        "at": 48,
+        "fine": 1,
+        "parties": [
+          "author",
+          "initial"
+        ],
+        "penalties": [
+          {
+            "subject": "author",
+            "halveXp": true,
+            "collected": 1,
+            "debtAdded": 0
+          },
+          {
+            "subject": "initial",
+            "halveXp": false,
+            "collected": 0,
+            "debtAdded": 1
+          }
+        ]
+      }
+    ]
+  }
+}

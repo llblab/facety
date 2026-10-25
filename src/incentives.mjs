@@ -215,6 +215,7 @@ function checkedOneDayTimeline(branch, policy) {
   branch.timeline.forEach(checkedSnapshot);
   const invited = branch.strategy !== 'wait-collector';
   const guaranteed = branch.strategy === 'invite-and-guarantee';
+  const sourceXp = Object.hasOwn(branch.timeline[0].subjects[0], 'xpHalvings');
   const acts = branch.timeline.at(-1).selfIds;
   const bySubject = new Map(acts.map(act => [act.subject, act]));
   if (bySubject.size !== 2 + Number(invited) || !bySubject.has('sponsor') || !bySubject.has('peer')
@@ -275,6 +276,7 @@ function checkedOneDayTimeline(branch, policy) {
     const expectedInvitation = !invited || i === 0 ? [] : [{
       id: invitation, creator: 'sponsor', sourceSelfId: bySubject.get('sponsor').id, target: 'newcomer',
       createdAt: 24, acceptedAt: admitted ? 48 : null, status: admitted ? 'accepted' : 'open',
+      ...(sourceXp ? { guarantors: ['peer'] } : {}),
     }];
     if (!isDeepStrictEqual(point.invitations, expectedInvitation)) throw new Error('one-day incentive invitation timeline mismatch');
     for (const name of ['guarantees', 'lineage']) {
@@ -293,8 +295,16 @@ function checkedOneDayTimeline(branch, policy) {
         || act.disposition !== (consumed ? 'invitation' : disposed ? 'collector' : null)
         || act.xpCredited !== (policy.xpFinality === 'immediate' || disposed) || act.collision !== false || act.debtReserved !== false || act.disputeLock !== null
         || !isDeepStrictEqual(act.guarantors, guarantors) || !isDeepStrictEqual(act.xpRecipients, [act.subject, ...guarantors])) throw new Error('one-day incentive Self-ID timeline mismatch');
+      if (Object.hasOwn(act, 'xpCredit') !== sourceXp) throw new Error('one-day incentive mixed XP provenance');
+      if (sourceXp) {
+        const expected = !act.xpCredited ? null : { at: policy.xpFinality === 'immediate' ? act.recordedAt : newborn ? 72 : 24,
+          revokedAt: null, revocation: null, recipients: [act.subject, ...guarantors].map(subject => ({ subject,
+            role: subject === act.subject ? 'subject' : 'guarantor', halvingsBefore: 0, revokedAt: null, revocation: null })) };
+        if (!isDeepStrictEqual(act.xpCredit, expected)) throw new Error('one-day incentive XP source receipt mismatch');
+      }
     }
     for (const subject of point.subjects) {
+      if (Object.hasOwn(subject, 'xpHalvings') !== sourceXp || (sourceXp && subject.xpHalvings !== 0)) throw new Error('one-day incentive XP penalty state mismatch');
       const own = point.selfIds.filter(act => act.subject === subject.id);
       if (subject.identityStatus !== 'accepted' || subject.genesis !== (subject.id !== 'newcomer')
         || subject.lastRewardAt !== (own[0]?.recordedAt ?? null)
@@ -328,7 +338,8 @@ function checkedOneDayTimeline(branch, policy) {
 export function readIncentiveComparisons(artifact) {
   const oneDay = artifact?.schema === 'facety-incentive-forks/v2' && artifact.fixture === 'marginal-admission-24h-v1';
   if (!oneDay && (artifact?.schema !== 'facety-incentive-forks/v1' || artifact.fixture !== 'marginal-admission-v1')) throw new Error('unsupported incentive artifact');
-  if (!isDeepStrictEqual(artifact.policy, policyFrom({ ...(oneDay ? ONE_DAY_POLICY : LEGACY_FIXTURE_TIMING), xpFinality: artifact.policy?.xpFinality }))
+  if (!['terminal', 'immediate'].includes(artifact.policy?.xpFinality)
+    || !isDeepStrictEqual(artifact.policy, policyFrom({ ...(oneDay ? ONE_DAY_POLICY : LEGACY_FIXTURE_TIMING), xpFinality: artifact.policy?.xpFinality }))
     || !isDeepStrictEqual(artifact.schedule, oneDay ? ONE_DAY_SCHEDULE : SCHEDULE)) throw new Error('unsupported incentive policy or schedule');
   if (oneDay) checkedOneDayIdentity(artifact);
   if (!Array.isArray(artifact.branches) || artifact.branches.length !== INCENTIVE_STRATEGIES.length
@@ -356,6 +367,7 @@ export function readIncentiveComparisons(artifact) {
 export function runIncentiveForks(options = {}) {
   if (!options || typeof options !== 'object' || Array.isArray(options)) throw new TypeError('incentive options must be an object');
   for (const key of Object.keys(options)) if (key !== 'xpFinality') throw new Error('unknown incentive option: ' + key);
+  if (Object.hasOwn(options, 'xpFinality') && !['terminal', 'immediate'].includes(options.xpFinality)) throw new Error('fixed incentive fixtures support only terminal/immediate reference timing');
   const policy = policyFrom({ xpFinality: 'terminal', ...options, ...LEGACY_FIXTURE_TIMING });
   const branches = INCENTIVE_STRATEGIES.map(strategy => runBranch(strategy, policy));
   return {
@@ -380,6 +392,7 @@ export function runIncentiveForks(options = {}) {
 export function runOneDayIncentiveForks(options = {}) {
   if (!options || typeof options !== 'object' || Array.isArray(options)) throw new TypeError('incentive options must be an object');
   for (const key of Object.keys(options)) if (key !== 'xpFinality') throw new Error('unknown incentive option: ' + key);
+  if (Object.hasOwn(options, 'xpFinality') && !['terminal', 'immediate'].includes(options.xpFinality)) throw new Error('fixed incentive fixtures support only terminal/immediate reference timing');
   const policy = policyFrom({ ...ONE_DAY_POLICY, ...options });
   const branches = INCENTIVE_STRATEGIES.map(strategy => runBranch(strategy, policy, ONE_DAY_SCHEDULE));
   return {
@@ -388,7 +401,7 @@ export function runOneDayIncentiveForks(options = {}) {
     assumptions: [
       'This is the fixed-101/current-link reference, not implementation of D33 topology or D34 historical liability.',
       'Two accepted genesis subjects and one recruited newcomer are supplied as distinct genuine people; the protocol trace does not establish this or verify D35 bootstrap.',
-      'Only xpFinality varies: terminal is selected, immediate is an explicitly counterfactual comparison, never a protocol option.',
+      'Only xpFinality varies: terminal is retained legacy timing; immediate is an explicitly counterfactual comparison, never a protocol option. The fixed fixture does not migrate to ordinary maturity timing.',
       'The full one-day reference policy is pinned, including zero guarantee fee as a fixture assumption rather than a resolved production rule.',
       'Each branch replays funded Model operations on an independent instance. No balance injection or live model/graph cloning occurs.',
       'Work is charged by acting subject with illustrative effort weights; abstract recruitment and unpriced genesis acquisition do not measure human costs.',

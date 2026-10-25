@@ -1,0 +1,93 @@
+{
+  "schema": "facety-xp-state-validation/v1",
+  "date": "2026-10-25",
+  "level": "author-engineering-not-independent-review-or-research",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "7d36ee61a214ab86bbe5af0e4013a9c23be7662be69bf148b4684bf101813fbc",
+      "files": 32
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "status": "validated-bounded-kernel-not-full-adjudication-or-default-migration",
+  "checks": {
+    "npmTest": {
+      "command": "npm test",
+      "current": {
+        "tests": 362,
+        "passed": 362,
+        "failed": 0,
+        "skipped": 0
+      },
+      "historicalCompatibilityOnly": {
+        "reference": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+        "tests": 21,
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0,
+        "groups": [
+          "incentive-report-study",
+          "review-reconstruction",
+          "work-windows",
+          "sponsor-pipeline-study"
+        ]
+      },
+      "logSha256": "94cd071e7991eb3f69932b8fd922c7b6d6ec8cd00a5d33d58701fb55516bf8ae"
+    },
+    "context": {
+      "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+      "errors": 0,
+      "warnings": 27,
+      "warningBaselineUnchanged": true
+    },
+    "domainDag": {
+      "files": 32,
+      "edges": 77,
+      "acyclic": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "diffCheck": true,
+    "publicStateOracle": "BigInt public Self-ID receipt reconstruction over256 eight-step credit/halving histories, revocation/relink and pooled/same-hour/1100-halving controls; no private cache/index oracle.",
+    "legacyEconomics": "Ten unchanged golden digests after removing only new xpCredit/xpHalvings/invitation-guarantors fields; new fields independently tested.",
+    "currentSourceDrift": "Old F52/F54 audits and deferred capture method refuse changed source; no drift override. Current packet-byte checks pass.",
+    "oldArtifactConsumer": "Current v2 reader validates original retained P23 artifacts, accepts consistent additive source metadata, rejects mixed/forged data; fixed fixture producers/readers explicitly exclude maturity mode."
+  },
+  "researchCapture": false,
+  "plannedSponsorLabelsConsumed": 0,
+  "randomnessPolicyChanged": false,
+  "historicalStudyFilesChanged": false,
+  "implementationLimits": [
+    "Terminal timing and current-link whole-identity enforcement remain legacy defaults; ordinary maturity is opt-in.",
+    "Frozen/debt/changed-identity maturity and post-credit freeze explicitly reject unsupported cases; this is not a selected network clock-halt rule.",
+    "Positive guarantee24h activation, N depth/overlap arithmetic, invitation monetary rule, cross-case identity, source-credit remedies, merits and appeals remain OPEN.",
+    "Typed per-act sanctions are trusted inputs, not a lifted act-case relay guard, false-person inference or independent court.",
+    "No performance benchmark, calibrated human behavior, D49 growth/resilience result, D50 deterrence factor or independent reviewer acceptance is claimed."
+  ],
+  "bindings": {
+    "AGENTS.md": "a65b7be7cde22bf5fac00b283eb1ba77ad8826454077786e3cea9525b4c421a5",
+    "BACKLOG.md": "af4ebe822d7f775c04ab6aeaf81c1672497fed4ad742ce82a687832d35dfb72e",
+    "CHANGELOG.md": "9e93211f5052a7d0dfcfe12b836cf8f6f7fe199f99faf4e5ad2bf7503f41487a",
+    "README.md": "b99a7badef7730a7285aa94aa44a002bfeed756f8b56c5a429df090af1f3a659",
+    "docs/README.md": "bc7ae27fccfa074a49255a47d8b067cff5e749649a4a423e3bb107bf4e278cc2",
+    "docs/facety.protocol.en.md": "8424b9d023b2828eaf7367e2163c4643bc958440bfef137689a8b6d293aeff4e",
+    "docs/insights.en.md": "599f33f5bd18b652c90ded657d0aaa240a7f5602ac36c99495d3df099a500d67",
+    "docs/mechanisms.json": "2414d6b79bbb212a865287b56d054eb24e797f22ca6e879d8b61571602b1f1cc",
+    "docs/simulator.en.md": "ac123e113da6b10ebdad73518e837f1c9ac6896a88f23cea01dd44f2865a5e1b",
+    "package.json": "35ca0c35cc87c04b3827c0dbb1abb48e98f221867be0143f544ab532db05a74d",
+    "scripts/test.mjs": "525ae82f4bf8cdec2e946ff4f23af6684aad394350733cc8698756d16e75c839",
+    "src/model.mjs": "ca3ee0613201336ca3e4622808bbd6cbb5b893b0cdae85dd8f498ded02ad3676",
+    "src/incentives.mjs": "840ae85c73a742a0db22c3673a1d14122ba016fee34df361e8de3e1c8235a31a",
+    "test/act-relay.test.mjs": "f604f9583353c288574d0c27b18ac68127761338f58973887eae0e71d6106c67",
+    "test/incentive-one-day.test.mjs": "3d8eeb7a5cdcba0c68dfbcb8d26f865acb29c58ecb14d3efcb4a498acf646495",
+    "test/xp-provenance.test.mjs": "408cc30ec74bd25da8064fb042d3101a89db33408c446004d150dba205dc1a0d",
+    "test/act-penalty.test.mjs": "4e90bde6f3e0598b049f477b476d5065c6c96f2e7c7562eb38c22d5f0b2fbcff",
+    "test/historical-source.test.mjs": "1016b2fbc902ef30128aeb16dd539d53f94d412bbbdbd0d41e519a70c6725252",
+    "examples/xp-state.mjs": "a679c9c695300aaae7a17de676b3063a3c9e992c73d1833f2dd15d192a6de97e",
+    "studies/2026-10-25-xp-state/README.md": "0b8f54cc2f5b4e6f76e1b91cdf8338dd74f2a504532709385cd55799cc805c6d",
+    "studies/2026-10-25-xp-state/software-example.json": "1e64c5311883b78f128fff39b74a00a7ed113627ee758fa78bc2c0bc90f1b369"
+  }
+}
