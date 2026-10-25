@@ -66,11 +66,20 @@ test('additive Self-ID provenance preserves old v2 accounting and rejects mixed,
     const old = structuredClone(current);
     for (const branch of old.branches) for (const point of branch.timeline) {
       for (const subject of point.subjects) delete subject.xpHalvings;
-      for (const act of point.selfIds) delete act.xpCredit;
+      for (const act of point.selfIds) { delete act.xpCredit; delete act.chainIndex; delete act.previousSelfId; }
       for (const invitation of point.invitations) delete invitation.guarantors;
     }
     assert.deepEqual(readIncentiveComparisons(old), readIncentiveComparisons(current));
+    const priorChainMetadata = structuredClone(current);
+    for (const branch of priorChainMetadata.branches) for (const point of branch.timeline) for (const act of point.selfIds) {
+      delete act.chainIndex;
+      delete act.previousSelfId;
+    }
+    assert.deepEqual(readIncentiveComparisons(priorChainMetadata), readIncentiveComparisons(current));
     for (const mutate of [
+      artifact => { artifact.branches[0].timeline[0].selfIds[0].chainIndex = 2; },
+      artifact => { artifact.branches[0].timeline[0].selfIds[0].previousSelfId = artifact.branches[0].timeline[0].selfIds[0].id; },
+      artifact => { delete artifact.branches[0].timeline[0].selfIds[0].previousSelfId; },
       artifact => { delete artifact.branches[0].timeline[0].selfIds[0].xpCredit; },
       artifact => { artifact.branches[0].timeline.at(-1).selfIds[0].xpCredit.recipients[0].halvingsBefore = 1; },
       artifact => { artifact.branches[0].timeline.at(-1).selfIds[0].xpCredit.at++; },

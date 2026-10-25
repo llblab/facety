@@ -325,14 +325,16 @@ export class FacetyModel {
     const xpRecipients = this.ablations.withholdGuarantorXp ? [subjectId] : [subjectId, ...guarantors];
     const reservedDebt = this.#subjectActs.get(subjectId).filter(actId => this.#acts.get(actId).debtReserved).length;
     const debtReserved = this.policy.debtRecovery === 'reserve-until-mature' && subject.debt > reservedDebt;
-    const act = { id, subject: subjectId, artifact: artifactId, faceIndex, recordedAt: this.now, guarantors, xpRecipients, xpCredited: false, xpCredit: null, status: 'unspent', disposition: null, disputeLock: null, collision, debtReserved };
+    const chain = this.#subjectActs.get(subjectId);
+    const act = { id, subject: subjectId, chainIndex: chain.length + 1, previousSelfId: chain.at(-1) ?? null,
+      artifact: artifactId, faceIndex, recordedAt: this.now, guarantors, xpRecipients, xpCredited: false, xpCredit: null, status: 'unspent', disposition: null, disputeLock: null, collision, debtReserved };
     if (collision) for (const claim of claims) this.#acts.get(claim).collision = true;
     claims.push(id);
     this.#claims.set(faceRef, claims);
     this.#acts.set(id, act);
     if (this.policy.xpFinality === 'maturity') this.#xpMaturities.add(act);
     if (debtReserved) this.#debtReservations.add(act);
-    this.#subjectActs.get(subjectId).push(id);
+    chain.push(id);
     this.#activityVersion++;
     subject.lastRewardAt = this.now;
     this.#minted++;
@@ -585,6 +587,11 @@ export class FacetyModel {
       if (subject.xp !== this.#computeXp(subject)) throw new Error('XP source/cache invariant failed');
       natural(subject.liquidFacy, 'liquidFacy');
       natural(subject.debt, 'debt');
+      const chain = this.#subjectActs.get(subject.id);
+      for (const [index, id] of chain.entries()) {
+        const act = this.#acts.get(id);
+        if (act.subject !== subject.id || act.chainIndex !== index + 1 || act.previousSelfId !== (chain[index - 1] ?? null)) throw new Error('Self-ID personal-chain invariant failed');
+      }
     }
     return ledger;
   }

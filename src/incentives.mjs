@@ -216,6 +216,8 @@ function checkedOneDayTimeline(branch, policy) {
   const invited = branch.strategy !== 'wait-collector';
   const guaranteed = branch.strategy === 'invite-and-guarantee';
   const sourceXp = Object.hasOwn(branch.timeline[0].subjects[0], 'xpHalvings');
+  const firstAct = branch.timeline[0].selfIds[0];
+  const personalChain = Object.hasOwn(firstAct, 'chainIndex') || Object.hasOwn(firstAct, 'previousSelfId');
   const acts = branch.timeline.at(-1).selfIds;
   const bySubject = new Map(acts.map(act => [act.subject, act]));
   if (bySubject.size !== 2 + Number(invited) || !bySubject.has('sponsor') || !bySubject.has('peer')
@@ -295,6 +297,8 @@ function checkedOneDayTimeline(branch, policy) {
         || act.disposition !== (consumed ? 'invitation' : disposed ? 'collector' : null)
         || act.xpCredited !== (policy.xpFinality === 'immediate' || disposed) || act.collision !== false || act.debtReserved !== false || act.disputeLock !== null
         || !isDeepStrictEqual(act.guarantors, guarantors) || !isDeepStrictEqual(act.xpRecipients, [act.subject, ...guarantors])) throw new Error('one-day incentive Self-ID timeline mismatch');
+      if (Object.hasOwn(act, 'chainIndex') !== personalChain || Object.hasOwn(act, 'previousSelfId') !== personalChain
+        || (personalChain && (act.chainIndex !== 1 || act.previousSelfId !== null))) throw new Error('one-day incentive personal chain mismatch');
       if (Object.hasOwn(act, 'xpCredit') !== sourceXp) throw new Error('one-day incentive mixed XP provenance');
       if (sourceXp) {
         const expected = !act.xpCredited ? null : { at: policy.xpFinality === 'immediate' ? act.recordedAt : newborn ? 72 : 24,
