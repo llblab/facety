@@ -58,7 +58,7 @@
       ],
       "feedback": {
         "implemented": "Prevention changes later usable rights, active count and admission opportunities.",
-        "missing": "Liability-induced vigilance, D34 historical event-time liability/early self-correction and revised guarantee willingness are absent; D34's eligibility, funding and repeat-event contracts remain OPEN."
+        "missing": "Liability-induced vigilance, D34 historical event-time correction, D57 historical-chain guarantee/mentor behavior and revised willingness are absent. D57 selects the broader promise, not its native enforcement or an age-based security law; event/funding/repeat contracts remain OPEN."
       },
       "signs": "− suspicious usable rights if timely/correct; − genuine rights on false positives; no general welfare sign.",
       "delay": "Invitation cancellation strictly precedes its freeze endpoint; native Self-ID unspent veto remains legacy pending D42.",
@@ -213,7 +213,7 @@
       ],
       "feedback": {
         "implemented": "Admission→population→opportunities/thresholds/budget exhaustion→later admission is implemented.",
-        "missing": "D51 finite external acquaintances, endogenous recruitment/maintenance, fresh-media production economies, useful services and calibrated learning are not implemented by scheduled invitation rates."
+        "missing": "D51 finite external acquaintances, endogenous recruitment/maintenance, D57 paid historical review/mentoring, fresh-media economies, useful services and calibrated learning are not implemented by scheduled invitation rates. More people/age/views do not prove independent historical checks."
       },
       "signs": "+ opportunities/workload; + threshold at powers of ten restricts admission; net capacity sign conditional.",
       "delay": "24-hour invitation freeze; 28-day activity window; per-day reference scheduler.",
@@ -289,7 +289,7 @@
       "signs": "Unknown: accountability or concealment can both protect perceived future value.",
       "delay": "Discounted remaining future income, not sunk effort; no endogenous clock yet.",
       "bottleneck": "Calibrated opportunities, preferences, exit options and independent utility evidence.",
-      "basis": "D48/D51/D53 behavioral/economic hypotheses: valued future opportunities may motivate correction, while concealment/co-capture can preserve private returns. ATMO-governed funding and a candidate recovery fork are external unimplemented contexts; xpValue/civicValue are supplied valuations, not prices, verified usefulness or a selected update law.",
+      "basis": "D48/D51/D53/D57 behavioral/economic hypotheses: valued future opportunities and collective accepted exposure may motivate mentoring/correction, while concealment/co-capture can preserve private returns. D57 historical-chain warranty is selected meaning, not implemented learning or demonstrated beneficial alignment. ATMO-governed funding and a candidate recovery fork are external unimplemented contexts; xpValue/civicValue are supplied valuations, not prices, verified usefulness or a selected update law.",
       "code": [
         "src/games.mjs",
         "src/incentive-payoffs.mjs",
