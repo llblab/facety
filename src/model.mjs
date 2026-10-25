@@ -120,6 +120,8 @@ export class FacetyModel {
   #vouchVault = 0;
   #vouchAdmissions = new Map();
   #vouchRelations = new Map();
+  #vouchBondCases = new Map();
+  #pendingVouchBondCases = new Map();
   #claims = new Map();
   #xpByRecipient = new Map();
   #xpMaturities = new Set();
@@ -235,7 +237,7 @@ export class FacetyModel {
     payer.liquidFacy -= B;
     this.#vouchVault += B;
     this.#vouches.set(id, { id, voucher, target, committedAt: this.now, expiresAt, exitedAt: null,
-      bond: B, bondStatus: 'reserved', releasedAt: null, clearanceId: null });
+      bond: B, bondRemaining: B, slashed: 0, refunded: 0, bondStatus: 'reserved', releasedAt: null, clearanceId: null });
     this.#lastVouchAt.set(voucher, this.now);
     this.#event('vouch-committed', { vouch: id, voucher, target, bond: B, expiresAt });
     return id;
@@ -253,7 +255,8 @@ export class FacetyModel {
     if (ids.some(id => typeof id !== 'string' || !id.length) || new Set(ids).size !== c) throw new ProtocolRejection('vouch admission requires exactly c distinct commitments');
     const records = ids.map(id => this.#vouches.get(id));
     if (records.some(record => !record || record.target !== target || record.exitedAt !== null || this.now >= record.expiresAt
-      || record.bondStatus !== 'reserved' || this.#vouchRelations.has(record.id))) throw new ProtocolRejection('vouch admission requires live funded target commitments');
+      || record.bondStatus !== 'reserved' || record.bondRemaining !== record.bond || this.#pendingVouchBondCases.has(record.id)
+      || this.#vouchRelations.has(record.id))) throw new ProtocolRejection('vouch admission requires live funded target commitments');
     if (new Set(records.map(record => record.voucher)).size !== c) throw new ProtocolRejection('vouch admission requires distinct voucher subjects');
     for (const record of records) this.#subject(record.voucher, true);
     records.sort((a, b) => idOrder(a.voucher, b.voucher));
@@ -298,16 +301,80 @@ export class FacetyModel {
     if (clear !== true || typeof clearanceId !== 'string' || !clearanceId.length) throw new TypeError('vouch release requires clearanceId and supplied clear=true');
     const record = this.#vouches.get(id);
     if (!record || record.bondStatus !== 'reserved') throw new ProtocolRejection('vouch bond is not reserved');
+    if (this.#pendingVouchBondCases.has(id)) throw new ProtocolRejection('pending vouch bond case blocks refund');
     if (this.now < record.expiresAt) throw new ProtocolRejection('vouch bond remains locked until V');
-    const owner = this.#subject(record.voucher);
-    natural(owner.liquidFacy + record.bond, 'vouch refund balance');
-    this.#vouchVault -= record.bond;
-    owner.liquidFacy += record.bond;
+    const owner = this.#subject(record.voucher), amount = record.bondRemaining;
+    natural(owner.liquidFacy + amount, 'vouch refund balance');
+    this.#vouchVault -= amount;
+    owner.liquidFacy += amount;
+    record.bondRemaining = 0;
+    record.refunded = amount;
     record.bondStatus = 'released';
     record.releasedAt = this.now;
     record.clearanceId = clearanceId;
-    this.#event('vouch-bond-released', { vouch: id, voucher: record.voucher, amount: record.bond, clearanceId: record.clearanceId });
-    return record.bond;
+    this.#event('vouch-bond-released', { vouch: id, voucher: record.voucher, amount, clearanceId: record.clearanceId });
+    return amount;
+  }
+  #vouchCaseSnapshot(record) { return Object.freeze({ ...record,
+    transfers: Object.freeze(record.transfers.map(transfer => Object.freeze({ ...transfer }))) }); }
+  vouchBondCases() { return [...this.#vouchBondCases.values()].map(record => this.#vouchCaseSnapshot(record)); }
+  // Trusted custody request: access, covered acts, late-case admissibility and merits belong to a future case layer.
+  openVouchBondCase(id, options) {
+    this.#requireVouching();
+    if (!options || typeof options !== 'object' || Array.isArray(options) || Object.keys(options).join() !== 'caseId') throw new TypeError('vouch bond case requires only caseId');
+    const { caseId } = options;
+    if (typeof caseId !== 'string' || !caseId.length) throw new TypeError('vouch bond case requires a case ID');
+    const record = this.#vouches.get(id), key = JSON.stringify([id, caseId]);
+    if (!record || record.bondStatus !== 'reserved') throw new ProtocolRejection('vouch bond is not reserved');
+    if (this.#vouchBondCases.has(key)) throw new ProtocolRejection('vouch bond case already recorded');
+    if (this.#pendingVouchBondCases.has(id)) throw new ProtocolRejection('overlapping vouch bond cases require an explicit ordering contract');
+    const value = { vouch: id, caseId, status: 'pending', openedAt: this.now, availableAtOpen: record.bondRemaining,
+      resolvedAt: null, upheld: null, amount: 0, burned: 0, transfers: [] };
+    this.#vouchBondCases.set(key, value);
+    this.#pendingVouchBondCases.set(id, key);
+    this.#event('vouch-bond-case-opened', { vouch: id, caseId, available: record.bondRemaining });
+    return this.#vouchCaseSnapshot(value);
+  }
+  resolveVouchBondCase(id, decision) {
+    this.#requireVouching();
+    if (!decision || typeof decision !== 'object' || Array.isArray(decision) || Object.keys(decision).sort().join() !== 'burn,caseId,transfers,upheld') throw new TypeError('vouch bond verdict requires caseId, upheld, burn and transfers');
+    const { caseId, upheld, burn, transfers } = decision;
+    if (typeof caseId !== 'string' || !caseId.length || typeof upheld !== 'boolean' || !Array.isArray(transfers)) throw new TypeError('vouch bond requires a supplied verdict/allocation, not truth');
+    natural(burn, 'vouch bond burn');
+    const key = JSON.stringify([id, caseId]), verdict = this.#vouchBondCases.get(key), record = this.#vouches.get(id);
+    if (!verdict || verdict.status !== 'pending' || this.#pendingVouchBondCases.get(id) !== key || record?.bondStatus !== 'reserved') throw new ProtocolRejection('vouch bond case is not pending');
+    let amount = burn;
+    const recipients = new Set(), payouts = [];
+    for (const transfer of [...transfers]) {
+      if (!transfer || typeof transfer !== 'object' || Array.isArray(transfer) || Object.keys(transfer).sort().join() !== 'amount,recipient') throw new TypeError('vouch bond transfer requires recipient and amount');
+      const { recipient, amount: value } = transfer;
+      if (typeof recipient !== 'string' || !recipient.length || recipients.has(recipient)) throw new ProtocolRejection('vouch bond recipients must be distinct known subjects');
+      natural(value, 'vouch bond transfer', 1);
+      const receiver = this.#subject(recipient);
+      natural(receiver.liquidFacy + value, 'vouch bond recipient balance');
+      natural(amount + value, 'vouch bond allocation');
+      amount += value;
+      recipients.add(recipient);
+      payouts.push({ recipient, amount: value });
+    }
+    if (!upheld && amount !== 0) throw new ProtocolRejection('rejected vouch bond verdict cannot debit funds');
+    if (amount > record.bondRemaining) throw new ProtocolRejection('vouch bond debit exceeds remaining backing');
+    natural(this.#burned + burn, 'burned FACY');
+    natural(this.#vouchVault - amount, 'vouch vault');
+    payouts.sort((a, b) => idOrder(a.recipient, b.recipient));
+    // All value/recipient/coverage bounds precede the first mutation. No debt, XP or identity consequence is implied.
+    this.#vouchVault -= amount;
+    this.#burned += burn;
+    record.bondRemaining -= amount;
+    record.slashed += amount;
+    for (const payout of payouts) {
+      this.#subject(payout.recipient).liquidFacy += payout.amount;
+      this.#event('facy-transferred', { from: record.voucher, to: payout.recipient, amount: payout.amount, memo: 'vouch-bond-settlement' });
+    }
+    Object.assign(verdict, { status: 'resolved', resolvedAt: this.now, upheld, amount, burned: burn, transfers: payouts });
+    this.#pendingVouchBondCases.delete(id);
+    this.#event('vouch-bond-case-resolved', { vouch: id, caseId, upheld, amount, burned: burn });
+    return this.#vouchCaseSnapshot(verdict);
   }
   advanceTo(hour) {
     natural(hour, 'hour');
@@ -837,7 +904,7 @@ export class FacetyModel {
     const ledger = this.ledger();
     const outstanding = [...this.#acts.values()].filter(act => act.status === 'unspent').length;
     const reserved = [...this.#disputeStakes.values()].filter(stake => stake.status === 'reserved').reduce((sum, stake) => sum + stake.amount, 0);
-    const vouchReserved = [...this.#vouches.values()].filter(record => record.bondStatus === 'reserved').reduce((sum, record) => sum + record.bond, 0);
+    const vouchReserved = [...this.#vouches.values()].filter(record => record.bondStatus === 'reserved').reduce((sum, record) => sum + record.bondRemaining, 0);
     if (vouchReserved !== this.#vouchVault || reserved !== ledger.stakeVault || outstanding !== ledger.emitterVault
       || ledger.supply !== ledger.emitterVault + ledger.collector + ledger.feeVault + ledger.stakeVault + this.#vouchVault) throw new Error('FACY conservation invariant failed');
     for (const value of Object.values(ledger)) natural(value, 'ledger value');
@@ -880,9 +947,11 @@ export class FacetyModel {
           || (previous !== undefined && record.committedAt - previous < this.vouching.T * DAY)
           || (pairs.has(pair) && record.committedAt < pairs.get(pair))
           || (record.exitedAt !== null && (!Number.isSafeInteger(record.exitedAt) || record.exitedAt < record.committedAt || (!this.#vouchRelations.has(record.id) && record.exitedAt >= record.expiresAt) || record.exitedAt > this.now))) throw new Error('vouch commitment invariant failed');
+        for (const value of [record.bondRemaining, record.slashed, record.refunded]) natural(value, 'vouch principal');
+        if (record.bondRemaining + record.slashed + record.refunded !== record.bond) throw new Error('vouch principal invariant failed');
         if (record.bondStatus === 'reserved') {
-          if (record.releasedAt !== null || record.clearanceId !== null) throw new Error('vouch custody invariant failed');
-        } else if (record.bondStatus !== 'released' || !Number.isSafeInteger(record.releasedAt) || record.releasedAt < record.expiresAt || record.releasedAt > this.now
+          if (record.refunded !== 0 || record.releasedAt !== null || record.clearanceId !== null) throw new Error('vouch custody invariant failed');
+        } else if (record.bondStatus !== 'released' || record.bondRemaining !== 0 || !Number.isSafeInteger(record.releasedAt) || record.releasedAt < record.expiresAt || record.releasedAt > this.now
           || typeof record.clearanceId !== 'string' || !record.clearanceId.length) throw new Error('vouch custody invariant failed');
         last.set(record.voucher, record.committedAt);
         pairs.set(pair, record.expiresAt);
@@ -890,6 +959,35 @@ export class FacetyModel {
       if (last.size !== this.#lastVouchAt.size || [...last].some(([id, at]) => this.#lastVouchAt.get(id) !== at)) throw new Error('vouch cooldown index invariant failed');
       for (const id of last.keys()) if (this.vouchCapacity(id).used > this.vouching.K) throw new Error('vouch capacity invariant failed');
     }
+    const pending = new Map(), slashed = new Map();
+    for (const [key, verdict] of this.#vouchBondCases) {
+      const record = this.#vouches.get(verdict.vouch), prior = slashed.get(verdict.vouch) ?? 0;
+      if (!record || key !== JSON.stringify([verdict.vouch, verdict.caseId]) || typeof verdict.caseId !== 'string' || !verdict.caseId.length
+        || !Number.isSafeInteger(verdict.openedAt) || verdict.openedAt < record.committedAt || verdict.openedAt > this.now
+        || verdict.availableAtOpen !== record.bond - prior) throw new Error('vouch case coverage invariant failed');
+      if (verdict.status === 'pending') {
+        if (pending.has(verdict.vouch) || record.bondStatus !== 'reserved' || verdict.resolvedAt !== null || verdict.upheld !== null
+          || verdict.amount !== 0 || verdict.burned !== 0 || verdict.transfers.length !== 0) throw new Error('vouch pending case invariant failed');
+        pending.set(verdict.vouch, key);
+      } else {
+        if (verdict.status !== 'resolved' || typeof verdict.upheld !== 'boolean' || !Number.isSafeInteger(verdict.resolvedAt)
+          || verdict.resolvedAt < verdict.openedAt || verdict.resolvedAt > this.now
+          || (record.releasedAt !== null && verdict.resolvedAt > record.releasedAt)) throw new Error('vouch case resolution invariant failed');
+        natural(verdict.amount, 'vouch case debit'); natural(verdict.burned, 'vouch case burn');
+        const payees = new Set();
+        let total = verdict.burned;
+        for (const payout of verdict.transfers) {
+          if (!this.#subjects.has(payout.recipient) || payees.has(payout.recipient)) throw new Error('vouch case payee invariant failed');
+          natural(payout.amount, 'vouch case payout', 1); natural(total + payout.amount, 'vouch case allocation');
+          total += payout.amount;
+          payees.add(payout.recipient);
+        }
+        if (total !== verdict.amount || verdict.amount > verdict.availableAtOpen || (!verdict.upheld && verdict.amount !== 0)) throw new Error('vouch case allocation invariant failed');
+        slashed.set(verdict.vouch, prior + verdict.amount);
+      }
+    }
+    if (pending.size !== this.#pendingVouchBondCases.size || [...pending].some(([id, key]) => this.#pendingVouchBondCases.get(id) !== key)) throw new Error('vouch pending case index invariant failed');
+    for (const record of this.#vouches.values()) if (record.slashed !== (slashed.get(record.id) ?? 0)) throw new Error('vouch debit history invariant failed');
     const backed = new Map();
     for (const admission of this.#vouchAdmissions.values()) {
       if (this.vouchAdmission === null || !this.#subjects.has(admission.subject) || this.#subject(admission.subject).genesis

@@ -1,0 +1,65 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "label": "diagnostic pending/bounded bond custody only; not G1 or a court result",
+  "baseCommit": "f4202f60a55059cc335797574dd75f1eccf11d7d",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "9aa1ddd5c5dc072be431f795b7b05306c56715374e31351cb4d4cf4ed76c1a9a",
+      "files": 32
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/model.mjs",
+      "gitBlob": "b8062939d0685adceaa38cee1f825a15ab31966c"
+    },
+    {
+      "path": "test/vouch-bond-cases.test.mjs",
+      "gitBlob": "f5f44ab6eff56223d92e05c87c563a84de11b148"
+    }
+  ],
+  "focused": {
+    "command": "node --test test/vouch-bond-cases.test.mjs test/vouch-admission.test.mjs test/vouch-commitments.test.mjs",
+    "passed": 21,
+    "newFamilies": 7,
+    "independentTwoCasePartitions": 256,
+    "oracleScope": "integer principal/burn/transfer/refund recurrence, not full independent dynamics"
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 417,
+      "failed": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "isCurrentSourceValidation": false
+    }
+  },
+  "architecture": {
+    "sourceFiles": 32,
+    "localEdges": 77,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 27,
+    "warningsUnchanged": true
+  },
+  "research": {
+    "runs": 0,
+    "searchEvaluations": 0,
+    "confirmationSeeds": [],
+    "G1Verdict": null,
+    "LLMAgentRuns": 0,
+    "pilot": false
+  }
+}
