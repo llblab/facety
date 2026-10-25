@@ -91,6 +91,15 @@ function vouchingFrom(value) {
   return Object.freeze({ K, T, V, B, reference: Object.freeze(binding) });
 }
 
+function vouchAdmissionFrom(value) {
+  if (value === null) return null;
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).sort().join() !== 'c,reference') throw new TypeError('vouchAdmission requires c and an explicit reference');
+  const { c, reference } = value;
+  natural(c, 'vouch admission c', 1); natural(c + 1, 'admission graph revisions', 1);
+  if (reference !== 'native-guarantees-commitment-reference') throw new TypeError('unsupported vouch admission reference');
+  return Object.freeze({ c, reference });
+}
+
 export class ProtocolRejection extends Error {
   constructor(message) {
     super(message);
@@ -109,6 +118,8 @@ export class FacetyModel {
   #vouches = new Map();
   #lastVouchAt = new Map();
   #vouchVault = 0;
+  #vouchAdmissions = new Map();
+  #vouchRelations = new Map();
   #claims = new Map();
   #xpByRecipient = new Map();
   #xpMaturities = new Set();
@@ -127,10 +138,13 @@ export class FacetyModel {
   #vault = 0;
   #fees = 0;
   #stakeVault = 0;
-  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null } = {}) {
+  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null, vouchAdmission = null } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
+    const vouchPolicy = vouchingFrom(vouching), admissionPolicy = vouchAdmissionFrom(vouchAdmission);
+    if (admissionPolicy !== null && (vouchPolicy === null || invitationLimit !== null)) throw new TypeError('vouch admission requires funded vouching and no invitation-limit arm');
     Object.defineProperty(this, 'invitationLimit', { value: invitationLimitFrom(invitationLimit), enumerable: invitationLimit !== null });
-    Object.defineProperty(this, 'vouching', { value: vouchingFrom(vouching), enumerable: vouching !== null });
+    Object.defineProperty(this, 'vouching', { value: vouchPolicy, enumerable: vouching !== null });
+    Object.defineProperty(this, 'vouchAdmission', { value: admissionPolicy, enumerable: vouchAdmission !== null });
     Object.defineProperty(this, 'policy', { value: policyFrom(policy), enumerable: true });
     Object.defineProperty(this, 'ablations', { value: ablationsFrom(ablations), enumerable: true });
     this.lineage = new DirectedGraph('invitation-lineage');
@@ -226,13 +240,55 @@ export class FacetyModel {
     this.#event('vouch-committed', { vouch: id, voucher, target, bond: B, expiresAt });
     return id;
   }
-  exitVouch(voucher, id) {
+  vouchAdmissions() { return [...this.#vouchAdmissions.values()].map(value => Object.freeze({ ...value,
+    vouches: Object.freeze([...value.vouches]), guarantors: Object.freeze([...value.guarantors]), relations: Object.freeze([...value.relations]) })); }
+  // The target's trusted acceptance call supplies consent; cryptographic identity and merits are outside this reference.
+  admitVouched(target, vouchIds) {
+    if (this.vouchAdmission === null) throw new ProtocolRejection('experimental vouch admission is disabled');
+    const { c, reference } = this.vouchAdmission;
+    if (typeof target !== 'string' || !target.length || this.#subjects.has(target)
+      || this.lineage.hasNode(target) || this.guarantees.hasNode(target)) throw new ProtocolRejection('vouch admission requires a new canonical subject');
+    if (!Array.isArray(vouchIds) || vouchIds.length !== c) throw new ProtocolRejection('vouch admission requires exactly c distinct commitments');
+    const ids = [...vouchIds];
+    if (ids.some(id => typeof id !== 'string' || !id.length) || new Set(ids).size !== c) throw new ProtocolRejection('vouch admission requires exactly c distinct commitments');
+    const records = ids.map(id => this.#vouches.get(id));
+    if (records.some(record => !record || record.target !== target || record.exitedAt !== null || this.now >= record.expiresAt
+      || record.bondStatus !== 'reserved' || this.#vouchRelations.has(record.id))) throw new ProtocolRejection('vouch admission requires live funded target commitments');
+    if (new Set(records.map(record => record.voucher)).size !== c) throw new ProtocolRejection('vouch admission requires distinct voucher subjects');
+    for (const record of records) this.#subject(record.voucher, true);
+    records.sort((a, b) => idOrder(a.voucher, b.voucher));
+    this.lineage.assertCapacity({ revisions: 1, edgeIds: 0 });
+    this.guarantees.assertCapacity({ revisions: c + 1, edgeIds: c });
+    // All parties, backing and graph capacity are validated before any ID/node/edge/event mutation.
+    this.#addSubject(target);
+    const id = this.#id('vouch-admission'), relations = [];
+    for (const record of records) {
+      const relationId = this.#id('guarantee');
+      this.guarantees.addEdge(record.voucher, target);
+      this.#guaranteeRecords.set(relationId, { id: relationId, guarantor: record.voucher, guaranteed: target,
+        proposedAt: record.committedAt, activatedAt: this.now, endedAt: null, status: 'active', vouch: record.id });
+      this.#vouchRelations.set(record.id, relationId);
+      relations.push(relationId);
+      this.#event('guarantee-activated', { relation: relationId, vouch: record.id });
+    }
+    this.#vouchAdmissions.set(target, { id, subject: target, acceptedAt: this.now,
+      vouches: records.map(record => record.id), guarantors: records.map(record => record.voucher), relations, reference });
+    this.#event('vouch-admitted', { admission: id, subject: target, vouches: Object.freeze(records.map(record => record.id)) });
+    return id;
+  }
+  exitVouch(actor, id) {
     this.#requireVouching();
-    this.#subject(voucher);
-    const record = this.#vouches.get(id);
-    if (!record || record.voucher !== voucher || record.exitedAt !== null || this.now >= record.expiresAt) throw new ProtocolRejection('no live own vouch commitment');
+    this.#subject(actor);
+    const record = this.#vouches.get(id), relation = this.#guaranteeRecords.get(this.#vouchRelations.get(id));
+    if (!record || (actor !== record.voucher && !(relation && actor === record.target)) || record.exitedAt !== null
+      || (this.now >= record.expiresAt && relation?.status !== 'active')) throw new ProtocolRejection('no live own vouch commitment');
+    if (relation) {
+      if (relation.status !== 'active') throw new ProtocolRejection('vouch relation is not active');
+      this.guarantees.assertCapacity();
+    }
     record.exitedAt = this.now;
-    this.#event('vouch-exited', { vouch: id, voucher });
+    if (relation) this.#deactivateGuarantee(relation, actor);
+    this.#event('vouch-exited', { vouch: id, voucher: record.voucher, ...(relation ? { actor } : {}) });
   }
   // Trusted external clearance, not case access/adjudication or automatic expiry of pending liability.
   releaseVouchBond(id, clearance) {
@@ -330,11 +386,15 @@ export class FacetyModel {
   endGuarantee(actor, relationId) {
     const relation = this.#guaranteeRecords.get(relationId);
     if (!relation || relation.status !== 'active' || ![relation.guarantor, relation.guaranteed].includes(actor)) throw new ProtocolRejection('no authority to end guarantee');
+    if (relation.vouch !== undefined) return this.exitVouch(actor, relation.vouch);
     const payer = this.#subject(actor, true);
     if (payer.liquidFacy < 1) throw new ProtocolRejection('insufficient link-break fee');
     this.guarantees.assertCapacity();
     payer.liquidFacy--;
     this.#fees++;
+    this.#deactivateGuarantee(relation, actor);
+  }
+  #deactivateGuarantee(relation, actor) {
     this.guarantees.removeEdge(relation.guarantor, relation.guaranteed);
     relation.status = 'ended';
     relation.endedAt = this.now;
@@ -347,7 +407,7 @@ export class FacetyModel {
       }
       this.#replayXp(guarantor);
     }
-    this.#event('guarantee-ended', { relation: relationId, actor });
+    this.#event('guarantee-ended', { relation: relation.id, actor });
   }
   isActive(id) {
     if (this.#subject(id).identityStatus !== 'accepted') return false;
@@ -482,6 +542,7 @@ export class FacetyModel {
       act.status === 'unspent' && act.disputeLock === null && !act.debtReserved && this.now - act.recordedAt >= minimumAge).map(act => act.id);
   }
   createInvitation(creatorId, selfIdId, target) {
+    if (this.vouchAdmission !== null) throw new ProtocolRejection('vouch admission reference disables invitation admission');
     if (this.invitationLimit !== null) return this.#createLimitedInvitation(creatorId, selfIdId, target);
     const creator = this.#subject(creatorId, true);
     const act = this.#act(selfIdId);
@@ -521,6 +582,7 @@ export class FacetyModel {
     return id;
   }
   acceptInvitation(invitationId, subjectId) {
+    if (this.vouchAdmission !== null) throw new ProtocolRejection('vouch admission reference disables invitation admission');
     const invitation = this.#invitations.get(invitationId);
     if (!invitation || invitation.status !== 'open' || invitation.target !== subjectId) throw new ProtocolRejection('invalid invitation acceptance');
     if (this.now - invitation.createdAt < this.policy.invitationFreezeHours) throw new ProtocolRejection('invitation is frozen');
@@ -817,7 +879,7 @@ export class FacetyModel {
           || record.expiresAt !== record.committedAt + this.vouching.V * DAY || !Number.isSafeInteger(record.expiresAt)
           || (previous !== undefined && record.committedAt - previous < this.vouching.T * DAY)
           || (pairs.has(pair) && record.committedAt < pairs.get(pair))
-          || (record.exitedAt !== null && (!Number.isSafeInteger(record.exitedAt) || record.exitedAt < record.committedAt || record.exitedAt >= record.expiresAt || record.exitedAt > this.now))) throw new Error('vouch commitment invariant failed');
+          || (record.exitedAt !== null && (!Number.isSafeInteger(record.exitedAt) || record.exitedAt < record.committedAt || (!this.#vouchRelations.has(record.id) && record.exitedAt >= record.expiresAt) || record.exitedAt > this.now))) throw new Error('vouch commitment invariant failed');
         if (record.bondStatus === 'reserved') {
           if (record.releasedAt !== null || record.clearanceId !== null) throw new Error('vouch custody invariant failed');
         } else if (record.bondStatus !== 'released' || !Number.isSafeInteger(record.releasedAt) || record.releasedAt < record.expiresAt || record.releasedAt > this.now
@@ -828,6 +890,27 @@ export class FacetyModel {
       if (last.size !== this.#lastVouchAt.size || [...last].some(([id, at]) => this.#lastVouchAt.get(id) !== at)) throw new Error('vouch cooldown index invariant failed');
       for (const id of last.keys()) if (this.vouchCapacity(id).used > this.vouching.K) throw new Error('vouch capacity invariant failed');
     }
+    const backed = new Map();
+    for (const admission of this.#vouchAdmissions.values()) {
+      if (this.vouchAdmission === null || !this.#subjects.has(admission.subject) || this.#subject(admission.subject).genesis
+        || !this.lineage.hasNode(admission.subject) || !this.guarantees.hasNode(admission.subject)
+        || !Number.isSafeInteger(admission.acceptedAt) || admission.acceptedAt < 0 || admission.acceptedAt > this.now
+        || admission.reference !== this.vouchAdmission.reference || admission.vouches.length !== this.vouchAdmission.c
+        || admission.guarantors.length !== admission.vouches.length || admission.relations.length !== admission.vouches.length
+        || new Set(admission.guarantors).size !== admission.vouches.length) throw new Error('vouch admission invariant failed');
+      for (const [index, id] of admission.vouches.entries()) {
+        const record = this.#vouches.get(id), relationId = admission.relations[index], relation = this.#guaranteeRecords.get(relationId);
+        if (!record || backed.has(id) || record.target !== admission.subject || record.voucher !== admission.guarantors[index]
+          || record.committedAt > admission.acceptedAt || admission.acceptedAt >= record.expiresAt
+          || (record.exitedAt !== null && record.exitedAt < admission.acceptedAt)
+          || !relation || relation.vouch !== id || relation.guarantor !== record.voucher || relation.guaranteed !== admission.subject
+          || relation.proposedAt !== record.committedAt || relation.activatedAt !== admission.acceptedAt || !['active', 'ended'].includes(relation.status)
+          || (relation.status === 'active' && (!this.guarantees.edge(record.voucher, admission.subject) || record.exitedAt !== null || relation.endedAt !== null))
+          || (relation.status === 'ended' && (record.exitedAt === null || relation.endedAt !== record.exitedAt))) throw new Error('vouch admission backing invariant failed');
+        backed.set(id, relationId);
+      }
+    }
+    if (backed.size !== this.#vouchRelations.size || [...backed].some(([id, relation]) => this.#vouchRelations.get(id) !== relation)) throw new Error('vouch relation index invariant failed');
     return ledger;
   }
 }

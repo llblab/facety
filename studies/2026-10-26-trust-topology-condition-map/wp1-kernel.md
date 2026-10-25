@@ -2,6 +2,8 @@
 
 **DIAGNOSTIC engineering checkpoint, not G1, prior confirmation or a research run.** This is the first bounded code slice after G0. It adds opt-in reservation/custody primitives to `FacetyModel`, not a complete CORE or membership engine. No selected D-rule or legacy default is changed.
 
+[The subsequent admission component](wp1-admission.md) adds funded membership and both-party backed-link exit under a separate opt-in reference; this page owns the initial reservation contract, not a complete CORE engine.
+
 ## Explicit constructor contract
 
 `new FacetyModel({vouching: {K,T,V,B,reference}})` requires all fields; null/omission disables it. K is a nonnegative integer concurrent slot count; T/V are positive integer days; B is nonnegative integer FACY. Safe hour/end/balance bounds are checked. The immutable nested reference record must explicitly supply:
@@ -32,7 +34,7 @@ The retained-slot mode satisfies the declared prior1 assumption that each bookin
 
 [Seven software families](../../test/vouch-commitments.test.mjs) cover immutable/missing/invalid bindings; actual funding and exclusive backing; SubjectId/no-banking clocks; both exit candidates; exact4h/V boundaries and trusted-clearance replay; failure/future-ID/inert-inspection atomicity; and **4096 deterministic software partitions** against an independent event-replay accounting/slot oracle. The oracle does not call Model transitions/capacity logic. This is component property coverage, not a sampled attack experiment, calibrated probability or the required independent full topology reference.
 
-Focused7/7 and full403/403 current tests pass;21/21 historical compatibility tests pass separately on pinned aab881f source, not as current-source validation. Native DAG remains32 files/77 edges, acyclic. [The validation record](wp1-kernel-validation.json) binds actual implementation/test identity and separates software evidence from research counts. The source fingerprint changes even with the option off; historical confirmations/guards remain unchanged and are not recaptured or overridden.
+At the initial reservation checkpoint, focused7/7 and full403/403 current tests passed;21/21 historical compatibility tests pass separately on pinned aab881f source, not as current-source validation. Native DAG remains32 files/77 edges, acyclic. [The validation record](wp1-kernel-validation.json) binds actual implementation/test identity and separates software evidence from research counts. The source fingerprint changes even with the option off; historical confirmations/guards remain unchanged and are not recaptured or overridden.
 
 Software-only reproduction (not a study run):
 
@@ -41,4 +43,4 @@ node --test test/vouch-commitments.test.mjs
 npm test
 ```
 
-**G1 remains open.** Funded c-vouch admission/consent and graph placement, bounded slashing and pending-case handling, full veto/detector composition, an independent complete minimal reference, native-v2 experiment/metric integration and committed prior/kill/range/precision contracts remain. No R1/R2 frontier, adaptive attack, phase/market/LLM testbed or pilot was run. Only BACKLOG owns the next WP1 cohort. Q02/Q04/Q10/Q13 retain the corresponding OPEN choices and trade-offs.
+**G1 remains open.** The later c-vouch admission/consent/graph component is now delivered separately; bounded slashing and pending-case handling, full veto/detector composition, an independent complete minimal reference, native-v2 experiment/metric integration and committed prior/kill/range/precision contracts remain. No R1/R2 frontier, adaptive attack, phase/market/LLM testbed or pilot was run. Only BACKLOG owns the next WP1 cohort. Q02/Q04/Q10/Q13 retain the corresponding OPEN choices and trade-offs.
