@@ -159,6 +159,13 @@
         "N_min": null,
         "implementationStatus": "not-implemented; candidates are in this decision-packet.md and the inherited ../2026-10-25-invite-cost-vs-core/audit.md"
       }
+    },
+    "purchase": {
+      "id": "ARM_PURCHASE",
+      "status": "proposal extension; unimplemented; not an alias of the twelve inherited isolated arms",
+      "paymentAssetSourceEligibilityAndRefundContract": null,
+      "governanceContract": "purchaseGovernance; governance.md",
+      "preserveInheritedArms": true
     }
   },
   "primary": {
@@ -289,7 +296,10 @@
     "B",
     "V",
     "J",
-    "small-N rule/N_min"
+    "small-N rule/N_min",
+    "s_treasury/s_treasury_max",
+    "governance electorate and safeguards",
+    "vote-bounded measured-lambda purchase-price control"
   ],
   "environment": {
     "rangesStatus": "unbound; each bound needs a source or no-basis label",
@@ -340,7 +350,8 @@
     "purchased vouches/identities and labor-arbitrage farms",
     "slot/bond/account rental or resale",
     "jury capture",
-    "non-monetary saboteur"
+    "non-monetary saboteur",
+    "governance capture"
   ],
   "attackSearch": {
     "adaptiveRequired": true,
@@ -370,21 +381,127 @@
       "real/synthetic topology",
       "4h/24h grid",
       "attacker implementation",
-      "response channel"
+      "response channel",
+      "governance electorate and measurement model"
     ],
     "crossCheck": "independent core-equation reference versus full-simulator boundary; investigate mismatches before interpretation",
     "ablationLadder": "one mechanism at a time from an explicit minimal CORE; equal resources and equivalence/power before a no-effect kill nomination"
   },
   "outputs": {
     "M1": "Probability viability maps in reduced groups,2D slices, compact conditions",
-    "M2": "Arm dominance/Pareto map including honest-growth cost; tie/scalarization rule must be registered",
-    "M3": "Price/reservation-wage window where honest participation holds and farming fails; empty windows explicit",
-    "M4": "Bootstrap N*/time-below/collapse map versus genesis size/P and small-N variants",
-    "M5": "Sensitivity/VOI measurement ranking with the decision each pilot measure could change",
-    "M6": "Mechanism kill candidates based on marginal map effect, not automatic deletion of selected rules",
-    "M7": "Boundary unsafe attack traces with information, resources, decisions and outcomes",
+    "M2": "Arm dominance/Pareto map including honest-growth cost, treasury net benefit and safeguard flexibility; tie/scalarization rule must be registered",
+    "M3": "Price/reservation-wage window including actual treasury purchasing power/paired-asset conditions; empty windows explicit",
+    "M4": "Bootstrap N*/time-below/collapse map including governance shortage and small-N variants",
+    "M5": "Sensitivity/VOI ranking including governance/signal/vendor/backing uncertainty and the pilot decision it changes",
+    "M6": "Mechanism/safeguard/controller kill candidates from marginal map effect, not automatic selected-rule deletion",
+    "M7": "Boundary unsafe attack traces including governance capture and measured-signal manipulation, with resources and outcomes",
     "realityContract": "Measurable SAFE-region preconditions/thresholds; unmeasurable terms are assumptions",
     "decisionPacket": "at most2 pages; no winning-rule or sensitivity recommendation before data"
+  },
+  "purchaseGovernance": {
+    "status": "proposal assumptions only; no policy engine, research data or new D-decision",
+    "specification": "governance.md",
+    "treasury": {
+      "variable": "s_treasury",
+      "ownerCapSymbol": "s_max",
+      "schemaCap": "s_treasury_max",
+      "domain": "0 <= s_treasury <= s_treasury_max <= 1",
+      "scope": "ARM_PURCHASE candidate only; no runtime/default protocol migration",
+      "defaultShare": 0,
+      "comparisonShares": [
+        0,
+        0.2
+      ],
+      "cap": null,
+      "capMustCoverRequestedComparison": true,
+      "V2CaptureShareThresholdIsDifferent": true,
+      "contrastBinding": null,
+      "contrastCandidates": [
+        "fixed s policies",
+        "initial s with identical adaptive-governance action space"
+      ],
+      "settlementIdentity": "treasury=s*q; burn=(1-s)*q; total=q for actual settled purchase q",
+      "actualPaymentNotNewIssuance": true,
+      "granularityRoundingRefundAndAtomicity": null
+    },
+    "adversary": {
+      "letter": "h",
+      "name": "governance capture",
+      "electorates": [
+        "Standing-weighted",
+        "random jury",
+        "voucher-weighted"
+      ],
+      "electorateContracts": null,
+      "proposalAmendmentAndPayoutAuthority": null,
+      "captureSuccessDefinition": null,
+      "costVsValue": [
+        "best-found successful cost and failed-attempt spend",
+        "actually redirected stock/flow",
+        "conditional future-flow value with explicit valuation/horizon",
+        "net recoverable value, capture time/probability and honest harm"
+      ],
+      "coalitionInternalTransfersCancel": true,
+      "mereCoalitionOrVotingIsNotViolation": true,
+      "noTruthOracle": true
+    },
+    "safeguards": {
+      "variants": [
+        "hard cap",
+        "timelock",
+        "two-key approval",
+        "sunset-to-default"
+      ],
+      "parameterAndAmendmentContracts": null,
+      "matchedComparator": "otherwise equal no-safeguard candidate; preregister combinations without implicit full factorial",
+      "effects": [
+        "capture cost/delay/probability",
+        "redirected value",
+        "honest adjustment/payment success and latency",
+        "lost/delayed useful work",
+        "paid governance/lock/opportunity cost"
+      ],
+      "twoKeysDoNotProveIndependence": true,
+      "sunsetDoesNotEraseStockOrObligations": true
+    },
+    "controlLaw": {
+      "expression": "b(t)=f(measured_lambda(t))",
+      "boundsAuthority": "vote; amendment/enforcement contract unbound",
+      "appliesTo": "bound PURCHASE b contract; no silent replacement of native own-source burn",
+      "grossPurchaseVersusActuallyBurnedBMapping": null,
+      "functionalFormSignGainAndBounds": null,
+      "observationWindowDelayUpdateRoundingAndFallback": null,
+      "pendingPurchaseQuoteAndExecutionSemantics": null,
+      "channelDenominatorProvenanceAndCensoring": null,
+      "attack": "manipulate received signal up/down under real budget, distinct from genuine suppression change",
+      "evaluationTruthIsNotControllerInput": true,
+      "metrics": [
+        "b/s/lambda trajectories",
+        "oscillation amplitude/period with noise/grid controls",
+        "overshoot/settling/saturation/censoring",
+        "signal bias and policy/harm/boundary shift per manipulation cost"
+      ],
+      "controls": [
+        "fixed-b",
+        "truthful received measurement",
+        "noisy received measurement",
+        "budgeted signal manipulation"
+      ]
+    },
+    "benefit": {
+      "useVendorOutputAndValuationContract": null,
+      "requiredDemonstration": "named purchased work/output improves effective response or honest outcomes after full opportunity/governance/capture cost",
+      "causalControls": [
+        "all-burn",
+        "treasury idle",
+        "treasury buys named service",
+        "explicitly funded matched-resource control/ablation where needed"
+      ],
+      "treasuryIncomeIsNotWelfare": true,
+      "pairedAssetRequirement": "use-dependent; external payouts/cross-asset liquidity/buyback require actual funded counterpart asset, custody/execution and risk; no free backing or price floor",
+      "pairedAssetFundingAndMarketContract": null
+    },
+    "registration": "Freeze added assumptions, contrasts, costs/value, model forms, family/precision and reserved-data rules in a real committed native v2 method before research."
   },
   "registration": {
     "requiredSchema": "facety-hypothesis/v2",

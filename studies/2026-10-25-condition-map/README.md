@@ -30,7 +30,11 @@ Part1 varies invitation cost/limit while keeping the same native legacy guarante
 
 Environment axes are ranges with a source or 'no basis': price paths including actually funded demand/buyback feedback; regional wages; kappa1/3/10; vigilance/latency/false suspicion; separate local/global response; vouch sale prices/type mixtures; additive/crowding-out norms; alpha1/1.5/2; real/synthetic topology; enthusiast/ordinary cohort selection. Graph contacts, personhood and ownership truth remain outside defense state. No protected price, free capital, verified independence or automatic acquaintance consent is assumed.
 
-Adaptive classes are self-funded Sybils, exact-D attack-edge attachment, genuine violators, purchased vouches/identities, slot/bond/account rental, jury capture and non-monetary saboteurs. Generated policies receive fixed search effort per theta/class; assess the boundary again at2x search effort with unchanged in-world beta. No-found-attack is not safety. Keep search space, failures, resources, observations and best-found traces.
+Adaptive classes are self-funded Sybils, exact-D attack-edge attachment, genuine violators, purchased vouches/identities, slot/bond/account rental, jury capture, non-monetary saboteurs and governance capture. Generated policies receive fixed search effort per theta/class; assess the boundary again at2x search effort with unchanged in-world beta. No-found-attack is not safety. Keep search space, failures, resources, observations and best-found traces.
+
+## ARM_PURCHASE governance extension
+
+[The governance addendum](governance.md) adds a distinct, unimplemented PURCHASE proposal, not an alias of the existing twelve arms. Treasury share defaults to0 in this candidate; compare0/0.2 under an explicit cap and fixed-versus-adaptive policy contract. Eighth class(h) tests Standing-weighted/random-jury/voucher-weighted governance capture, cost versus redirected value, hard cap/timelock/two-key/sunset safeguards and honest flexibility. A vote-bounded b=f(measured lambda) variant needs signal-manipulation/oscillation controls. Treasury benefit requires purchased outputs, full costs and use-dependent funded paired-asset conditions, not revenue-as-welfare. No selected rule, runtime default, price floor or beneficial effect is inferred. Bind PURCHASE payment/granularity and governance contracts before registration/data.
 
 ## Required outputs, currently unexecuted
 
