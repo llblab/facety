@@ -2,6 +2,15 @@
 
 Scope: a reproducible Node.js / ESM research simulator for [the proposed protocol](docs/facety.protocol.en.md), not a production runtime or proof of personhood.
 
+## Invitation limiting family: P, b, H6
+
+**Latest scoped owner question, 2026-10-25 (D60):** compare A=(1,1), B=(P,0), H=(P,b) with b in {1,P,2P} at P in {3,7}, plus an unrestricted0 control. P is per-SubjectId cooldown after use; calendar-claim/accumulate/claim_requires/lapse belong only to a separate secondary sweep. This research scope supersedes D59 continuation priority, not protocol defaults or the deferred sponsor capture.
+
+The [pre-implementation design and six deterministic software controls](studies/2026-10-25-invitation-limits/README.md) retain the requested ten arms and H6 wording; there are no research labels/captures or confirmation registration. The native banking witness establishes that current funded invitations have no independent P=1 cooldown. A capacity bound does not by itself predict fraud premium or population doubling.
+
+- [ ] **Primary contract and native family implementation:** bind first-use eligibility/stock, the primary b=0 claim requirement and meanings of secondary flags before capture. Implement experimental P/b mechanics through `FacetyModel` without replacing defaults; preserve own-emission funding, SubjectId keying, custody and chronological XP, test threshold/equality, startup/banking and finite-horizon bounds before performance or outcomes. Reconcile the A current-spec label with retained-right bursts; do not silently impose a new baseline cooldown.
+- [ ] **H6 method and evidence, gated before fresh sampling:** distinguish capacity, nominal burn/cash and private fraud premium; the supplied falsifier currently supports its no-farm-benefit subclaim. Define honest-cost outputs, equivalence margins, detection/doubling censoring, horizon/strategies/resources and cost/price units; commit implementation/method and any required presence/ablation/named-alternative confirmation registration before reserved labels. Record all deviations with their encoded-rule/startup/other-gate/software explanations, not automatic emergence. No data capture until these gates are bound.
+
 ## D59 active implementation: initiator-dependent Self-ID resolution
 
 **Owner implementation mandate, 2026-10-25:** implement the discussed Self-ID correction/cut behavior, not more documentation-only deferral. A supplied upheld author challenge corrects its one act; an upheld challenge by anyone else (including a guarantor) cuts the affected suffix from that act. Preserve historical records, source XP chronology, actual collection versus debt, and no double burn/replay. The existing §21.1 suffix interpretation preserves a correct earlier prefix. This scope does not authorize experimental captures, an infallible court or unrelated topology/economic migration.

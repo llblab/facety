@@ -713,6 +713,8 @@ own Self-ID -> Emitter emission
 
 The creator cannot sell the right on the market and later buy it back. Under the D42 clarification, keeping the matured own emission preserves its eligible invitation use; separately withdrawing it supplies ordinary Collector FACY instead. Maturity alone does not make that choice. The asset implementation must preserve provenance and prevent double use.
 
+**D60 — [RESEARCH direction, not a selected protocol change], documented 2026-10-25.** The owner requests a separate comparison of creator invitation cooldown P and own-matured-emission burn b, including zero-burn/no-limit counterfactuals. Current retained own rights constrain long-run funding but do not themselves impose a minimum interval between invitations: several banked rights can fund a burst. A research arm called (P1,b1) must therefore distinguish an explicit cooldown from this existing resource limit. The comparison does not replace the selected guarantee/path gate, custody or invitation freeze, and selects no new Standing, bond or jury system. Its capacity prior and H6 are research claims, not verified safety or automatic authority to change defaults.
+
 **[HYPOTHESIS]** This creates a tradeoff between personal liquidity and expansion of a responsibility-bearing social network.
 
 ### 18.4 Invitations are accountable, not anonymous coupons
@@ -2472,6 +2474,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Initiator-dependent correction/cut and implementation authorized 2026-10-25
 
 **D59 — [SELECTED remedy distinction / implementation mandate], §20.5.** Source: the owner's voice instruction to implement the discussed behavior: an upheld author self-dispute corrects its own act, while an upheld dispute by another participant discards the affected chain. §21.1's suffix starts at the challenged act and preserves the earlier valid prefix; guarantors are non-author initiators for this distinction. The author-side correction removes the act's source effects and permits later eligible issuance, without erasing historical records or claiming that uncollected debt is burned value. This authorizes bounded implementation, not hidden truth, an automatic self-win, a general XP-gate bypass, resolved punitive per-party N/fault contracts, or new research captures.
+
+### Invitation-limit research family recorded 2026-10-25
+
+**D60 — [OWNER research direction / HYPOTHESIS], §18.3.** Source: the owner's P/b question and H6: A=(1,1), B=(P,0), H=(P,b in {1,P,2P}) for P in {3,7}, plus no-cost/no-limit0; secondary-only calendar-claim/accumulate/claim_requires/lapse flags. P is a creator cooldown keyed by SubjectId. The proposed `min(1/P,E/b)` is an invitation-capacity prior under explicit funding/demand, not a complete growth/deterrence law. Equality b=P*E co-binds; nominal burn may affect private returns without further throttling. The supplied no-farm-benefit/honest-cost falsifier describes support for that H6 subclaim and must not be silently inverted in registration. Current retained-right bursts are not an independent P1 cooldown. The bounded draft/software controls change no protocol default, allocate no research labels, execute no capture and establish no mechanism confirmation; primary/cost/metric/inference contracts and committed registration remain gates.
 
 ### Earlier supersessions
 

@@ -1,0 +1,38 @@
+{
+  "schema": "facety-invitation-limits-design/v1",
+  "status": "pre-implementation-design-not-a-confirmation-registration",
+  "date": "2026-10-25",
+  "hypothesis": "invitation-limits/H6",
+  "ownerQuestion": {
+    "parameters": { "P": "minimum days between creator invitations, cooldown after use keyed by SubjectId", "b": "own matured FACY burned per invitation" },
+    "arms": { "A": { "P": 1, "b": 1 }, "B": { "P": [3, 7], "b": 0 }, "H": { "P": [3, 7], "b": ["1", "P", "2P"] }, "0": { "P": null, "b": 0 } },
+    "prior": "max undetected growth per node ~ min(1/P, E/b)",
+    "H6": "The burn adds protection only where b >= P*E, or where fake nodes earn less net than honest ones (fresh-media cost c_f, falling price). At b = 1 it is a tax on honest users without effect on farms.",
+    "providedFalsifier": "at b = 1, hybrid and B are indistinguishable on fraud premium, Td/Tdbl and cluster growth, while honest growth is slower under H. Report the honest-cost increase explicitly.",
+    "secondaryOnly": ["cooldown-after-use vs calendar claim", "accumulate", "claim_requires", "lapse"]
+  },
+  "interpretation": {
+    "primaryLimiter": "cooldown-after-use",
+    "key": "SubjectId, not mutable signing key",
+    "EUnit": "own eligible matured FACY/day, not token price or uncalibrated private utility",
+    "capacityNotGrowth": "The min bound is an asymptotic invitation service-capacity prior under stated funding and demand, not a theorem for accepted-node growth or population doubling.",
+    "zeroBurn": "b=0 removes the monetary bound; it does not imply a claim qualification policy.",
+    "unrestrictedArm": "0 has no P/b capacity bound; software limits are censors, not demonstrated economic protection.",
+    "threshold": "b=P*E is co-binding. Strict monetary reduction below cooldown capacity requires b>P*E; equality can affect startup and phase.",
+    "capacityVersusReturn": "A nonbinding burn still consumes FACY and may affect private return. Equal invitation capacity does not prove equal fraud premium; nominal remaining emission E-b*r is not itself calibrated private utility.",
+    "providedFalsifierLogic": "The supplied b=1 pattern supports the no-farm-benefit/honest-tax subclaim. Retained verbatim, not registered as its falsifier.",
+    "actualBaseline": "Native invitation creation burns one retained own matured right, but has no independent per-SubjectId invitation cooldown. A=(1,1) is not an exact description of current execution for banked rights."
+  },
+  "unboundBeforeCapture": [
+    "Primary first-use eligibility and initial funded own-emission stock, with matching bootstrap/resources.",
+    "Primary b=0 claim requirement and exact meanings/defaults of accumulate, claim_requires and lapse; separate invitation permits from retained own FACY.",
+    "Calendar epoch, first permit, claiming and carry/lapse semantics for secondary arms.",
+    "Fraud-premium definition and units, honest-growth/cost endpoints and individual versus coalition accounting; distinguish growth protection from cash/utility effects.",
+    "Horizon, attention/work/evidence/merits, strategies, actor costs and any private-price model; no hidden evaluator labels in defenses.",
+    "Equivalence margins for indistinguishability, detection/doubling censoring, seed sampling and confirmation claims/ablations/named alternatives.",
+    "Implementation and method commit before fresh sampling; registered mechanism confirmation before reserved labels."
+  ],
+  "researchLabelsAllocated": [],
+  "researchCaptures": 0,
+  "confirmedMechanismClaims": 0
+}
