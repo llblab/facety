@@ -80,6 +80,7 @@ export class FacetyModel {
   #xpByRecipient = new Map();
   #xpMaturities = new Set();
   #actPenalties = new Map();
+  #selfIdResolutions = new Map();
   #debtReservations = new Set();
   #disputeStakes = new Map();
   #contentHashes = new Set();
@@ -484,6 +485,11 @@ export class FacetyModel {
     this.#event('dispute-stake-settled', { caseId, subject: owner, amount: stake.amount, disposition, recipient });
     return stake.amount;
   }
+  #collectFacy(subject, collected, debtAdded) {
+    subject.liquidFacy -= collected;
+    subject.debt += debtAdded;
+    this.#burned += collected;
+  }
   penalize(id, { fine = 0, halveXp = true } = {}) {
     natural(fine, 'fine');
     if (typeof halveXp !== 'boolean') throw new TypeError('halveXp must be boolean');
@@ -492,9 +498,7 @@ export class FacetyModel {
     const debtAdded = fine - collected;
     natural(this.ledger().debt + debtAdded, 'aggregate debt');
     if (halveXp) natural(subject.xpHalvings + 1, 'XP halvings');
-    subject.liquidFacy -= collected;
-    subject.debt += debtAdded;
-    this.#burned += collected;
+    this.#collectFacy(subject, collected, debtAdded);
     if (halveXp) {
       subject.xpHalvings++;
       subject.xp = Math.floor(subject.xp / 2);
@@ -531,6 +535,69 @@ export class FacetyModel {
     this.#actPenalties.set(caseId, record);
     this.#event('act-penalty-applied', { caseId, kind, act });
     return this.#penaltySnapshot(record);
+  }
+  #resolutionSnapshot(value) {
+    return Object.freeze({ ...value, recovery: Object.freeze({ ...value.recovery }),
+      acts: Object.freeze(value.acts.map(act => Object.freeze({ ...act, recipients: Object.freeze([...act.recipients]) }))),
+      xpChanges: Object.freeze(value.xpChanges.map(change => Object.freeze({ ...change }))) });
+  }
+  selfIdResolutions() { return [...this.#selfIdResolutions.values()].map(value => this.#resolutionSnapshot(value)); }
+  // Trusted supplied verdict only: case access, merits, stakes and punitive fines belong to the caller.
+  previewSelfIdResolution(selfId, options = {}) {
+    if (!options || typeof options !== 'object' || Array.isArray(options)
+      || Object.keys(options).some(key => !['caseId', 'initiator', 'upheld'].includes(key))) throw new TypeError('Self-ID resolution requires only caseId, initiator and upheld');
+    const { caseId, initiator, upheld } = options;
+    if (typeof upheld !== 'boolean') throw new TypeError('Self-ID resolution requires a supplied reference verdict, not truth');
+    if (typeof caseId !== 'string' || !caseId.length) throw new ProtocolRejection('Self-ID resolution requires a case ID');
+    if (this.#selfIdResolutions.has(caseId)) throw new ProtocolRejection('Self-ID resolution case already applied');
+    const source = this.#act(selfId);
+    this.#subject(initiator);
+    const voided = act => act.status === 'cancelled' || act.disposition?.endsWith('+voided');
+    if (voided(source)) throw new ProtocolRejection('Self-ID source is already corrected or voided');
+    if (source.disputeLock !== null) throw new ProtocolRejection('locked Self-ID resolution requires an explicit case contract');
+    const chain = this.#subjectActs.get(source.subject);
+    const kind = initiator === source.subject ? 'self-correction' : 'external-chain-cut';
+    const affected = !upheld ? [] : kind === 'self-correction' ? [source]
+      : chain.slice(source.chainIndex - 1).map(id => this.#acts.get(id)).filter(act => !voided(act));
+    for (const act of affected) {
+      if (act.disputeLock !== null) throw new ProtocolRejection('locked Self-ID resolution requires an explicit case contract');
+      if (act.debtReserved || act.disposition === 'debt-repayment') throw new ProtocolRejection('debt-used Self-ID correction requires an explicit restoration contract');
+    }
+    const acts = affected.map(act => ({ selfId: act.id, previousStatus: act.status, previousDisposition: act.disposition,
+      recovery: act.status === 'unspent' ? 'emitter-right' : act.status === 'converted' ? 'liquid-or-debt' : 'already-burned',
+      recipients: (act.xpCredit?.recipients ?? []).map(receipt => receipt.subject) }));
+    const requestedFromAuthor = acts.filter(act => act.recovery === 'liquid-or-debt').length;
+    const collected = Math.min(this.#subject(source.subject).liquidFacy, requestedFromAuthor);
+    const debtAdded = requestedFromAuthor - collected;
+    if (BigInt(this.ledger().debt) + BigInt(debtAdded) > BigInt(Number.MAX_SAFE_INTEGER)) throw new RangeError('Self-ID resolution would overflow aggregate debt');
+    return this.#resolutionSnapshot({ caseId, selfId, subject: source.subject, initiator, upheld, kind, at: this.now,
+      head: chain.at(-1), acts, recovery: { emitterBurn: acts.filter(act => act.recovery === 'emitter-right').length,
+        alreadyBurned: acts.filter(act => act.recovery === 'already-burned').length, requestedFromAuthor, collected, debtAdded },
+      accountingPolicy: 'self-id-source-recovery/v1', punitivePenaltiesApplied: false, xpChanges: [] });
+  }
+  resolveSelfId(selfId, options) {
+    const plan = this.previewSelfIdResolution(selfId, options);
+    const recipients = new Set(plan.acts.flatMap(act => act.recipients));
+    const before = new Map([...recipients].map(id => [id, this.#subject(id).xp]));
+    if (plan.recovery.requestedFromAuthor > 0) {
+      this.#collectFacy(this.#subject(plan.subject), plan.recovery.collected, plan.recovery.debtAdded);
+      this.#event('self-id-source-recovered', { caseId: plan.caseId, subject: plan.subject,
+        requested: plan.recovery.requestedFromAuthor, collected: plan.recovery.collected, debtAdded: plan.recovery.debtAdded });
+    }
+    for (const row of plan.acts) {
+      const act = this.#act(row.selfId);
+      if (row.recovery === 'emitter-right') { this.#vault--; this.#burned++; }
+      act.status = 'cancelled';
+      act.disposition = plan.kind === 'self-correction' ? 'self-corrected' : 'adjudicated-void';
+      this.#xpMaturities.delete(act);
+      this.#revokeXp(act, act.disposition);
+    }
+    for (const id of recipients) this.#replayXp(this.#subject(id));
+    if (plan.acts.length) this.#activityVersion++;
+    const record = { ...plan, xpChanges: [...recipients].map(id => ({ subject: id, before: before.get(id), after: this.#subject(id).xp })) };
+    this.#selfIdResolutions.set(plan.caseId, record);
+    this.#event('self-id-resolved', { caseId: plan.caseId, selfId, initiator: plan.initiator, upheld: plan.upheld, kind: plan.kind });
+    return this.#resolutionSnapshot(record);
   }
   invalidateIdentity(id) {
     this.#subject(id).identityStatus = 'false';

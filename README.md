@@ -47,6 +47,8 @@ Simulator defaults combine selected rules with explicitly labeled legacy and dir
 - **Selected principle:** debt recovery preserves the veto; seizure priority remains an explicit reference;
 - **Direction/reference:** chain-proportional sanctions and liability when the optional dispute abstraction is enabled.
 
+The [D59 native source-resolution kernel](docs/simulator.en.md#initiator-dependent-self-id-source-resolution-d59) now executes an explicit supplied verdict: author correction affects one Self-ID; another initiator affects its suffix. It preserves source history and distinguishes actual recovery from debt. This is not full case admission/adjudication, punitive N allocation or a lifted act-relay guard.
+
 ## How the project connects to the protocol
 
 The [protocol](docs/facety.protocol.en.md#self-contained-living-protocol-d40) stands on its own as specification and manifestation of the design; it is not this repository's API manual, task list or navigation hub. This README and the [documentation index](docs/README.md) provide those entrypoints.

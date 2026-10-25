@@ -2,6 +2,14 @@
 
 Scope: a reproducible Node.js / ESM research simulator for [the proposed protocol](docs/facety.protocol.en.md), not a production runtime or proof of personhood.
 
+## D59 active implementation: initiator-dependent Self-ID resolution
+
+**Owner implementation mandate, 2026-10-25:** implement the discussed Self-ID correction/cut behavior, not more documentation-only deferral. A supplied upheld author challenge corrects its one act; an upheld challenge by anyone else (including a guarantor) cuts the affected suffix from that act. Preserve historical records, source XP chronology, actual collection versus debt, and no double burn/replay. The existing §21.1 suffix interpretation preserves a correct earlier prefix. This scope does not authorize experimental captures, an infallible court or unrelated topology/economic migration.
+
+The [native execution kernel](docs/simulator.en.md#initiator-dependent-self-id-source-resolution-d59) is delivered; remaining work is the dependent case layer below. Source-recovery row count is not a selected punitive N.
+
+- [ ] **Reference case integration — next cohort:** connect scoped author access and existing ordinary external access to supplied merits and the native kernel, retaining valid-act defense, funding/work/stake separation and no hidden truth. Bind punitive per-party inputs/coverage and D57 historical attestations explicitly before lifting the act-defect guard; do not replace missing `N`/fault/dedup contracts with an equal fine on today's graph. Preserve legacy paths and sealed studies; no research capture. Stop at a remaining owner-dependent contract after useful preparation.
+
 ## D54–D55 remaining act integration
 
 This integration scope now also includes D56 personal-history metadata and D57's selected historical-chain guarantee; the stable heading preserves links from retained evidence.
