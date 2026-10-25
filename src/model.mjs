@@ -73,6 +73,24 @@ function invitationLimitFrom(value) {
   return Object.freeze({ P, b });
 }
 
+// Constructor-only diagnostic reference; none of these bindings is a selected CORE contract.
+function vouchingFrom(value) {
+  if (value === null) return null;
+  const keys = ['K', 'T', 'V', 'B', 'reference'];
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).length !== keys.length
+    || keys.some(key => !Object.hasOwn(value, key))) throw new TypeError('vouching requires K, T, V, B and explicit reference bindings');
+  const { K, T, V, B, reference } = value;
+  natural(K, 'K'); natural(T, 'T', 1); natural(V, 'V', 1); natural(B, 'B');
+  natural(T * DAY, 'vouch cooldown hours', 1); natural(V * DAY, 'probation hours', 1);
+  const fields = ['eligibility', 'clockOrigin', 'funding', 'exitSlot', 'bondRelease'];
+  if (!reference || typeof reference !== 'object' || Array.isArray(reference) || Object.keys(reference).length !== fields.length
+    || fields.some(key => !Object.hasOwn(reference, key))) throw new TypeError('vouching requires explicit reference semantics');
+  const binding = Object.fromEntries(fields.map(key => [key, reference[key]]));
+  if (binding.eligibility !== 'accepted-reference' || binding.clockOrigin !== 'commitment' || binding.funding !== 'collector-liquid'
+    || !['retain-until-V', 'release-on-exit'].includes(binding.exitSlot) || binding.bondRelease !== 'supplied-clearance') throw new TypeError('unsupported vouching reference binding');
+  return Object.freeze({ K, T, V, B, reference: Object.freeze(binding) });
+}
+
 export class ProtocolRejection extends Error {
   constructor(message) {
     super(message);
@@ -88,6 +106,9 @@ export class FacetyModel {
   #guaranteeRecords = new Map();
   #invitations = new Map();
   #lastInvitationAt = new Map();
+  #vouches = new Map();
+  #lastVouchAt = new Map();
+  #vouchVault = 0;
   #claims = new Map();
   #xpByRecipient = new Map();
   #xpMaturities = new Set();
@@ -106,9 +127,10 @@ export class FacetyModel {
   #vault = 0;
   #fees = 0;
   #stakeVault = 0;
-  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null } = {}) {
+  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
     Object.defineProperty(this, 'invitationLimit', { value: invitationLimitFrom(invitationLimit), enumerable: invitationLimit !== null });
+    Object.defineProperty(this, 'vouching', { value: vouchingFrom(vouching), enumerable: vouching !== null });
     Object.defineProperty(this, 'policy', { value: policyFrom(policy), enumerable: true });
     Object.defineProperty(this, 'ablations', { value: ablationsFrom(ablations), enumerable: true });
     this.lineage = new DirectedGraph('invitation-lineage');
@@ -166,6 +188,71 @@ export class FacetyModel {
   guaranteeRelations() { return [...this.#guaranteeRecords.values()].map(value => Object.freeze({ ...value })); }
   events() { return [...this.#events]; }
   disputeStakes() { return [...this.#disputeStakes.values()].map(value => Object.freeze({ ...value })); }
+  #requireVouching() {
+    if (this.vouching === null) throw new ProtocolRejection('experimental vouching is disabled');
+    return this.vouching;
+  }
+  vouchCommitments() { return [...this.#vouches.values()].map(value => Object.freeze({ ...value })); }
+  #vouchOccupies(record) {
+    return this.now < record.expiresAt && (this.vouching.reference.exitSlot === 'retain-until-V' || record.exitedAt === null);
+  }
+  vouchCapacity(voucher) {
+    const { K, T } = this.#requireVouching();
+    this.#subject(voucher);
+    const used = [...this.#vouches.values()].filter(record => record.voucher === voucher && this.#vouchOccupies(record)).length;
+    const last = this.#lastVouchAt.get(voucher);
+    return Object.freeze({ limit: K, used, free: K - used,
+      cooldownRemainingHours: last === undefined ? 0 : Math.max(0, T * DAY - (this.now - last)) });
+  }
+  // A funded reservation only: no membership, graph edge, Standing or XP is granted here.
+  commitVouch(voucher, target) {
+    const { B, V } = this.#requireVouching();
+    const payer = this.#subject(voucher, true);
+    if (typeof target !== 'string' || !target.length || target === voucher) throw new ProtocolRejection('vouch requires a distinct target reference');
+    if (this.#subjects.has(target)) this.#subject(target, true);
+    const capacity = this.vouchCapacity(voucher);
+    if (capacity.cooldownRemainingHours > 0) throw new ProtocolRejection('vouch cooldown after use');
+    if (capacity.free < 1) throw new ProtocolRejection('no probation slot');
+    if ([...this.#vouches.values()].some(record => record.voucher === voucher && record.target === target && this.now < record.expiresAt)) throw new ProtocolRejection('overlapping vouch commitment');
+    if (payer.liquidFacy < B) throw new ProtocolRejection('insufficient liquid vouch bond');
+    const expiresAt = this.now + V * DAY;
+    natural(expiresAt, 'probation endpoint'); natural(this.#vouchVault + B, 'vouch vault');
+    const id = this.#id('vouch');
+    payer.liquidFacy -= B;
+    this.#vouchVault += B;
+    this.#vouches.set(id, { id, voucher, target, committedAt: this.now, expiresAt, exitedAt: null,
+      bond: B, bondStatus: 'reserved', releasedAt: null, clearanceId: null });
+    this.#lastVouchAt.set(voucher, this.now);
+    this.#event('vouch-committed', { vouch: id, voucher, target, bond: B, expiresAt });
+    return id;
+  }
+  exitVouch(voucher, id) {
+    this.#requireVouching();
+    this.#subject(voucher);
+    const record = this.#vouches.get(id);
+    if (!record || record.voucher !== voucher || record.exitedAt !== null || this.now >= record.expiresAt) throw new ProtocolRejection('no live own vouch commitment');
+    record.exitedAt = this.now;
+    this.#event('vouch-exited', { vouch: id, voucher });
+  }
+  // Trusted external clearance, not case access/adjudication or automatic expiry of pending liability.
+  releaseVouchBond(id, clearance) {
+    this.#requireVouching();
+    if (!clearance || typeof clearance !== 'object' || Array.isArray(clearance) || Object.keys(clearance).sort().join() !== 'clear,clearanceId') throw new TypeError('vouch release requires clearanceId and supplied clear=true');
+    const { clearanceId, clear } = clearance;
+    if (clear !== true || typeof clearanceId !== 'string' || !clearanceId.length) throw new TypeError('vouch release requires clearanceId and supplied clear=true');
+    const record = this.#vouches.get(id);
+    if (!record || record.bondStatus !== 'reserved') throw new ProtocolRejection('vouch bond is not reserved');
+    if (this.now < record.expiresAt) throw new ProtocolRejection('vouch bond remains locked until V');
+    const owner = this.#subject(record.voucher);
+    natural(owner.liquidFacy + record.bond, 'vouch refund balance');
+    this.#vouchVault -= record.bond;
+    owner.liquidFacy += record.bond;
+    record.bondStatus = 'released';
+    record.releasedAt = this.now;
+    record.clearanceId = clearanceId;
+    this.#event('vouch-bond-released', { vouch: id, voucher: record.voucher, amount: record.bond, clearanceId: record.clearanceId });
+    return record.bond;
+  }
   advanceTo(hour) {
     natural(hour, 'hour');
     if (hour < this.now) throw new ProtocolRejection('simulation time cannot move backwards');
@@ -681,13 +768,16 @@ export class FacetyModel {
   }
   ledger() {
     const subjects = [...this.#subjects.values()];
-    return { minted: this.#minted, burned: this.#burned, supply: this.#minted - this.#burned, emitterVault: this.#vault, collector: subjects.reduce((sum, subject) => sum + subject.liquidFacy, 0), feeVault: this.#fees, stakeVault: this.#stakeVault, debt: subjects.reduce((sum, subject) => sum + subject.debt, 0) };
+    return { minted: this.#minted, burned: this.#burned, supply: this.#minted - this.#burned, emitterVault: this.#vault, collector: subjects.reduce((sum, subject) => sum + subject.liquidFacy, 0), feeVault: this.#fees, stakeVault: this.#stakeVault, debt: subjects.reduce((sum, subject) => sum + subject.debt, 0),
+      ...(this.vouching === null ? {} : { vouchVault: this.#vouchVault }) };
   }
   audit() {
     const ledger = this.ledger();
     const outstanding = [...this.#acts.values()].filter(act => act.status === 'unspent').length;
     const reserved = [...this.#disputeStakes.values()].filter(stake => stake.status === 'reserved').reduce((sum, stake) => sum + stake.amount, 0);
-    if (reserved !== ledger.stakeVault || outstanding !== ledger.emitterVault || ledger.supply !== ledger.emitterVault + ledger.collector + ledger.feeVault + ledger.stakeVault) throw new Error('FACY conservation invariant failed');
+    const vouchReserved = [...this.#vouches.values()].filter(record => record.bondStatus === 'reserved').reduce((sum, record) => sum + record.bond, 0);
+    if (vouchReserved !== this.#vouchVault || reserved !== ledger.stakeVault || outstanding !== ledger.emitterVault
+      || ledger.supply !== ledger.emitterVault + ledger.collector + ledger.feeVault + ledger.stakeVault + this.#vouchVault) throw new Error('FACY conservation invariant failed');
     for (const value of Object.values(ledger)) natural(value, 'ledger value');
     for (const subject of this.#subjects.values()) {
       natural(subject.xp, 'XP');
@@ -717,6 +807,26 @@ export class FacetyModel {
         last.set(invitation.creator, invitation.createdAt);
       }
       if (last.size !== this.#lastInvitationAt.size || [...last].some(([id, at]) => this.#lastInvitationAt.get(id) !== at)) throw new Error('invitation cooldown index invariant failed');
+    }
+    if (this.vouching !== null) {
+      const last = new Map(), pairs = new Map();
+      for (const record of this.#vouches.values()) {
+        const previous = last.get(record.voucher), pair = JSON.stringify([record.voucher, record.target]);
+        if (!this.#subjects.has(record.voucher) || typeof record.target !== 'string' || !record.target.length || record.target === record.voucher
+          || record.bond !== this.vouching.B || !Number.isSafeInteger(record.committedAt) || record.committedAt < 0 || record.committedAt > this.now
+          || record.expiresAt !== record.committedAt + this.vouching.V * DAY || !Number.isSafeInteger(record.expiresAt)
+          || (previous !== undefined && record.committedAt - previous < this.vouching.T * DAY)
+          || (pairs.has(pair) && record.committedAt < pairs.get(pair))
+          || (record.exitedAt !== null && (!Number.isSafeInteger(record.exitedAt) || record.exitedAt < record.committedAt || record.exitedAt >= record.expiresAt || record.exitedAt > this.now))) throw new Error('vouch commitment invariant failed');
+        if (record.bondStatus === 'reserved') {
+          if (record.releasedAt !== null || record.clearanceId !== null) throw new Error('vouch custody invariant failed');
+        } else if (record.bondStatus !== 'released' || !Number.isSafeInteger(record.releasedAt) || record.releasedAt < record.expiresAt || record.releasedAt > this.now
+          || typeof record.clearanceId !== 'string' || !record.clearanceId.length) throw new Error('vouch custody invariant failed');
+        last.set(record.voucher, record.committedAt);
+        pairs.set(pair, record.expiresAt);
+      }
+      if (last.size !== this.#lastVouchAt.size || [...last].some(([id, at]) => this.#lastVouchAt.get(id) !== at)) throw new Error('vouch cooldown index invariant failed');
+      for (const id of last.keys()) if (this.vouchCapacity(id).used > this.vouching.K) throw new Error('vouch capacity invariant failed');
     }
     return ledger;
   }

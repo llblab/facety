@@ -6,7 +6,9 @@
 
 ## Current evidence
 
-[WP0 inventory](orientation.md), [source manifest](source-manifest.json), [machine-readable programme](programme.json), [one-page G0 checkpoint](checkpoint-g0.md) and [pre-data2-page packet](decision-packet.md) describe current preparation. G0 is complete at diagnostic source/ledger level; it does not select all model contracts or pass G1. No master-programme simulation/search/confirmation seed, result map, LLM agent run or human pilot exists. No real v2 registration exists. No runtime/test/protocol change is made at WP0.
+[WP0 inventory](orientation.md), [source manifest](source-manifest.json), [machine-readable programme](programme.json), [one-page G0 checkpoint](checkpoint-g0.md) and [pre-data2-page packet](decision-packet.md) describe current preparation. G0 is complete at diagnostic source/ledger level; it does not select all model contracts or pass G1. No master-programme simulation/search/confirmation seed, result map, LLM agent run or human pilot exists. No real v2 registration exists. No runtime/test/protocol change was made at WP0.
+
+**WP1 first component now implemented:** [funded vouch reservations](wp1-kernel.md) add constructor-only K/T/V/B/reference bindings, exclusive actual liquid bonds, SubjectId cooldown/slot accounting, two explicit exit-slot interpretations and supplied-clearance refunds. Seven software families include4096 deterministic partitions against an independent event-replay component oracle; [validation](wp1-kernel-validation.json) separates403 current passes from21 archived-source passes. This is not funded c-vouch admission, a complete topology reference, G1 prior verification or a study run. Legacy defaults remain unchanged; the source implementation fingerprint changes.
 
 ## Rules under test and resolved meanings
 
