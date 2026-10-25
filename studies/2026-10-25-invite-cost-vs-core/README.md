@@ -1,5 +1,7 @@
 # Invitation cost versus CORE v2 — one scoped study
 
+**Objective/deliverables superseded:** the owner's [condition-map study](../2026-10-25-condition-map/README.md) now owns the single active scope. CORE rules/arms/primary and this source/audit history are retained; the former10x headline, mandatory single-alpha headline gate and one-page final deliverables below are historical preparation, not a second study. No outcomes or registration have been upgraded or replayed.
+
 **Preparation only; proposal under test, not selected protocol.** The owner supplied CORE v2 after the earlier P/b engineering checkpoint. Protocol meaning stays with [the living specification](../../docs/facety.protocol.en.md); this study's scope/arms follow the new direction. No D-decision or OPEN contract is filled. [BACKLOG](../../BACKLOG.md#core-v2-study-invitation-cost-versus-core) is the only task owner. The spreadsheet is optional background, not authority to change rules.
 
 ## Status and artifacts

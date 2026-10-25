@@ -1,0 +1,408 @@
+{
+  "schema": "facety-condition-map-design-draft/v1",
+  "status": "pre-registration; no condition-map data or region labels",
+  "authority": "One owner condition-map study. Retains CORE v2 rules/arms/primary; replaces its headline and deliverables. No selected D-rule edits or OPEN-contract choices.",
+  "canonicalTaskOwner": "BACKLOG.md",
+  "inheritedScope": {
+    "source": "../2026-10-25-invite-cost-vs-core/design.json",
+    "atCommit": "47d9c075b37f17fdcac54dead279db8ef7bfa218",
+    "rulesAndArmsOnly": true,
+    "oldHeadlineSuperseded": true,
+    "oldDeliverablesSuperseded": true,
+    "priorEngineeringIsNotMapData": true
+  },
+  "parts": {
+    "isolated": {
+      "gate": "Keep the same current native eligibleGuarantors/requiredGuarantors algorithm and policy in every arm; its output may change with each arm's population. Do not freeze D numerically or label raw active-count/support as D33/D35/D36 verified independence.",
+      "arms": [
+        {
+          "id": "A",
+          "P": 1,
+          "b": 1,
+          "bond": null
+        },
+        {
+          "id": "B-3",
+          "P": 3,
+          "b": 0,
+          "bond": null
+        },
+        {
+          "id": "B-7",
+          "P": 7,
+          "b": 0,
+          "bond": null
+        },
+        {
+          "id": "H-3-1",
+          "P": 3,
+          "b": 1,
+          "bond": null
+        },
+        {
+          "id": "H-3-3",
+          "P": 3,
+          "b": 3,
+          "bond": null
+        },
+        {
+          "id": "H-3-6",
+          "P": 3,
+          "b": 6,
+          "bond": null
+        },
+        {
+          "id": "H-7-1",
+          "P": 7,
+          "b": 1,
+          "bond": null
+        },
+        {
+          "id": "H-7-7",
+          "P": 7,
+          "b": 7,
+          "bond": null
+        },
+        {
+          "id": "H-7-14",
+          "P": 7,
+          "b": 14,
+          "bond": null
+        },
+        {
+          "id": "BOND-3",
+          "P": 3,
+          "b": 0,
+          "bond": {
+            "B": 100,
+            "Vdays": 90,
+            "status": "placeholder-not-implemented"
+          }
+        },
+        {
+          "id": "BOND-7",
+          "P": 7,
+          "b": 0,
+          "bond": {
+            "B": 100,
+            "Vdays": 90,
+            "status": "placeholder-not-implemented"
+          }
+        },
+        {
+          "id": "0",
+          "P": null,
+          "b": 0,
+          "bond": null
+        }
+      ]
+    },
+    "bundle": {
+      "arms": [
+        "CORE",
+        "LEGACY-reference"
+      ],
+      "pairedInputs": [
+        "adversary class and search effort",
+        "world seeds",
+        "real resources/bootstrap",
+        "outside opportunities",
+        "observation environment",
+        "horizon and computational censor policy"
+      ],
+      "CORE": {
+        "c": 3,
+        "K": 5,
+        "Tdays": 14,
+        "B": 100,
+        "Vdays": 90,
+        "J": 101,
+        "activeWindowDays": 28,
+        "parameterStatus": "owner-supplied placeholders, not findings or selected rules",
+        "claim": {
+          "facyPerReward": 1,
+          "rollingHours": 24,
+          "vetoHours": 24
+        },
+        "vouchClockKey": "SubjectId",
+        "standingAuthority": "vouch eligibility only, not dispute or jury rank",
+        "juryExcludedDistance": 2,
+        "appealScale": {
+          "jury": 2,
+          "stake": 2
+        },
+        "mainEvidence": "seen in person this month; attestation freshness/evidence contract still needs binding",
+        "features": [
+          "one presence reward per24h and voucher veto",
+          "own uncontested-day Standing only for vouching",
+          "c-voucher admission",
+          "K/T/B/V vouches and free exit with historical escrow",
+          "staked challenge and outside-neighbourhood random jury",
+          "bounded slashing and finder share",
+          "explicit pre-vouched genesis",
+          "in-person attestation main evidence"
+        ],
+        "excluded": [
+          "vouchee XP",
+          "Council",
+          "FaceRef/detector",
+          "Bucket D",
+          "debt",
+          "XP halving",
+          "decimal difficulty",
+          "internally vertex-disjoint admission paths"
+        ],
+        "smallNVariants": [
+          "all non-adjacent active members decide",
+          "genesis-group vote"
+        ],
+        "N_min": null,
+        "implementationStatus": "not-implemented; candidates are in this decision-packet.md and the inherited ../2026-10-25-invite-cost-vs-core/audit.md"
+      }
+    }
+  },
+  "primary": {
+    "limiter": "cooldown-after-use keyed by SubjectId",
+    "decisionStepHours": 4,
+    "protocolWindowHours": 24,
+    "accumulate": false,
+    "claimRequires": "uncancelled Self-ID in window",
+    "gateEvaluation": "use",
+    "claimWindowHours": null,
+    "claimMaturityInterpretation": null,
+    "pendingInvitationLapsePolicy": null,
+    "note": "Supersedes the old P/b engineering assumption that b0 requires no claim; old results are not new-primary evidence."
+  },
+  "secondaryOnly": {
+    "limiterVariants": [
+      "cooldown-after-use",
+      "calendar-claim"
+    ],
+    "accumulate": [
+      "capped at m",
+      "use-it-or-lose-it"
+    ],
+    "claim_requires": [
+      "time gate only",
+      "uncancelled Self-ID in window",
+      "full gate at claim",
+      "full gate at use"
+    ],
+    "lapse": "explicit candidate required, never silently inherited",
+    "calendarEpoch": null,
+    "m": null
+  },
+  "BONDClarification": "Inherited P3/7 arms remain. The condition-map direction adds T/K design levers; creator/voucher roles and P/T mapping need an explicit candidate binding, not an automatic T14/K5 substitution.",
+  "objective": "Conditional SAFE/MARGINAL/UNSAFE probability/boundary maps with uncertainty, boundary attack traces and measurement priorities, not proof Facety works.",
+  "viability": {
+    "status": "predicate and estimands must be fixed in a real v2 registration before research",
+    "V1": {
+      "name": "incentive-asymmetry",
+      "rhoLevels": [
+        1,
+        3,
+        10
+      ],
+      "tenIsTargetNotFinding": true,
+      "payoffAndDenominator": null,
+      "resourceUnit": null,
+      "nonpositiveFraudDomainRule": null
+    },
+    "V2": {
+      "name": "capture",
+      "metrics": [
+        "attacker emission share",
+        "attacker authority share"
+      ],
+      "horizon": null,
+      "sMaxLevels": null,
+      "authorityDefinitionByArm": null
+    },
+    "V3": {
+      "name": "honest-harm",
+      "components": [
+        "dilution",
+        "policing cost",
+        "wrongful-exclusion rate"
+      ],
+      "hMaxLevels": null,
+      "saboteursIncluded": true
+    },
+    "V4": {
+      "name": "honest-participation",
+      "medianNetIncome": "p*E - attention_cost >= 0; consistent units and type weights required",
+      "genesisPersons": 10,
+      "targetPersons": 100,
+      "additionalScale": 1000,
+      "tMaxLevels": null,
+      "frozenNetworkFails": true
+    },
+    "V5": {
+      "name": "no-collapse",
+      "badStates": [
+        "attacker majority in jury pool",
+        "unrecoverable cluster"
+      ],
+      "epsLevels": null,
+      "horizon": null,
+      "absorptionAndRecoveryDefinitions": null
+    }
+  },
+  "mapDecision": {
+    "labels": [
+      "SAFE",
+      "MARGINAL",
+      "UNSAFE"
+    ],
+    "dataStatus": "unexecuted",
+    "probabilityMapRequired": true,
+    "definitionAndConfidenceRule": null,
+    "caveats": [
+      "SAFE is conditional on model, searched attack language, beta, effort and thresholds, never real-world safety or unrestricted attacker optimality.",
+      "Do not conflate seed-level joint pass probability, V5 bad-event probability, finite-data confidence and surrogate uncertainty.",
+      "V5 is an across-seed probability criterion, not a per-replica Boolean.",
+      "Do not multiply marginal V1-V5 probabilities or average away a vulnerable attacker class."
+    ]
+  },
+  "reductions": {
+    "R1": "c*B*P_catch/(E*V+X)",
+    "R2": "Td/Tdbl",
+    "R3": "g_a/lambda",
+    "phi": "b/(P*E)",
+    "priceWindow": "p*E/w_threshold with all quantities normalized to the same daily units",
+    "jury": "f relative to1/3",
+    "growthApproximation": "g_a ~ ln(2)/P is a proposed heuristic, not invitation service rate or a proven population law",
+    "servicePrior": "min(1/P,E/b) under declared source/demand/phase conditions; record and investigate every deviation",
+    "requirements": [
+      "preserve raw theta",
+      "explicit undefined/unbounded/censored cases",
+      "actual coalition-borne enforceable losses",
+      "separate response channels",
+      "no invented wage/time conversion"
+    ]
+  },
+  "designLevers": [
+    "mechanism arm",
+    "c",
+    "K",
+    "T",
+    "B",
+    "V",
+    "J",
+    "small-N rule/N_min"
+  ],
+  "environment": {
+    "rangesStatus": "unbound; each bound needs a source or no-basis label",
+    "pricePaths": [
+      "constant",
+      "declining",
+      "shock",
+      "demand-driven with funded buyback feedback"
+    ],
+    "reservationWages": "regional distribution w with time units and supplied labor/attention needs",
+    "fakeMediaMultipliers": [
+      1,
+      3,
+      10
+    ],
+    "vigilanceLatencyFalseSuspicion": "ranges and joint law, not calibrated points",
+    "responseChannels": [
+      "local voucher veto",
+      "global challenge/graph analytics/canary audit"
+    ],
+    "vouchSale": "reservation prices and observed/acquired opportunities; no free consent",
+    "participantTypes": [
+      "attentive",
+      "lazy",
+      "sellable",
+      "vindictive"
+    ],
+    "moneyNormModels": [
+      "additive",
+      "crowding-out"
+    ],
+    "networkEffectAlpha": [
+      1,
+      1.5,
+      2
+    ],
+    "alphaInterpretation": "assumed model-form sensitivity, not significance alpha or measured exponent; old single-headline robustness gate no longer defines the map",
+    "topology": "licensed real social data where suitable; otherwise explicitly synthetic",
+    "earlySelection": [
+      "enthusiast cohort",
+      "ordinary population"
+    ]
+  },
+  "adversaryClasses": [
+    "self-funded Sybil cluster",
+    "exact-D-attack-edge cluster",
+    "genuine-person violation coalition",
+    "purchased vouches/identities and labor-arbitrage farms",
+    "slot/bond/account rental or resale",
+    "jury capture",
+    "non-monetary saboteur"
+  ],
+  "attackSearch": {
+    "adaptiveRequired": true,
+    "scriptMenusInsufficient": true,
+    "effort": null,
+    "beta": null,
+    "boundaryAtEffortMultipliers": [
+      1,
+      2
+    ],
+    "bestFoundOnly": true,
+    "policyLanguageAndInformation": null
+  },
+  "method": {
+    "spaceFilling": [
+      "Sobol sequence or Latin hypercube"
+    ],
+    "activeRefinement": "preregister uncertainty-driven point selection, stopping and budgets",
+    "seedPrecision": null,
+    "scenarioDiscovery": "PRIM/CART or equivalent; held-out theta coverage/density/accuracy",
+    "confirmation": "reserved seeds AND held-out parameter points on both sides of the proposed boundary",
+    "sensitivity": "Sobol or Morris on continuous outcomes; dependence assumptions explicit",
+    "voi": "boundary displacement per justified uncertainty; formal VOI additionally needs priors, loss and decision",
+    "phase": "channel-conditioned N*, duration below from genesis, collapse and failed-recovery distributions",
+    "modelForms": [
+      "network alpha",
+      "real/synthetic topology",
+      "4h/24h grid",
+      "attacker implementation",
+      "response channel"
+    ],
+    "crossCheck": "independent core-equation reference versus full-simulator boundary; investigate mismatches before interpretation",
+    "ablationLadder": "one mechanism at a time from an explicit minimal CORE; equal resources and equivalence/power before a no-effect kill nomination"
+  },
+  "outputs": {
+    "M1": "Probability viability maps in reduced groups,2D slices, compact conditions",
+    "M2": "Arm dominance/Pareto map including honest-growth cost; tie/scalarization rule must be registered",
+    "M3": "Price/reservation-wage window where honest participation holds and farming fails; empty windows explicit",
+    "M4": "Bootstrap N*/time-below/collapse map versus genesis size/P and small-N variants",
+    "M5": "Sensitivity/VOI measurement ranking with the decision each pilot measure could change",
+    "M6": "Mechanism kill candidates based on marginal map effect, not automatic deletion of selected rules",
+    "M7": "Boundary unsafe attack traces with information, resources, decisions and outcomes",
+    "realityContract": "Measurable SAFE-region preconditions/thresholds; unmeasurable terms are assumptions",
+    "decisionPacket": "at most2 pages; no winning-rule or sensitivity recommendation before data"
+  },
+  "registration": {
+    "requiredSchema": "facety-hypothesis/v2",
+    "analysisPolicy": "family-contradiction/v1",
+    "status": "not-created; this draft is not a registration",
+    "sourceAndRngBinding": null,
+    "predicateThresholdGrid": null,
+    "thetaRanges": null,
+    "samplingAndRefinementBudget": null,
+    "boundaryExtractor": null,
+    "statisticalAlpha": null,
+    "powerOrPrecision": null,
+    "fullErrorFamily": null,
+    "explorationSeeds": [],
+    "confirmationSeeds": [],
+    "heldOutPoints": [],
+    "researchRuns": 0,
+    "searchEvaluations": 0
+  },
+  "stop": "Stop when preregistered boundary rules are confirmed/rejected on reserved data or safe preparation is exhausted; no unrelated sweeps, new D-decisions, historical replay or threshold tuning after outcomes."
+}

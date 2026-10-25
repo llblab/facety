@@ -1,0 +1,125 @@
+{
+  "schema": "facety-condition-map-source-inventory/v1",
+  "status": "source inspection and algebra tests only; not registration or simulation evidence",
+  "baseCommit": "47d9c075b37f17fdcac54dead279db8ef7bfa218",
+  "sources": [
+    {
+      "path": "docs/facety.protocol.en.md",
+      "gitBlob": "59e896243cc82ac306251198c797fc712145fba0"
+    },
+    {
+      "path": "docs/simulator.en.md",
+      "gitBlob": "cdbafb1b30073ab6e4fc4feaa4c8ffd3888e2872"
+    },
+    {
+      "path": "docs/evidence.en.md",
+      "gitBlob": "66fa3ea82e6e6875ce6bd52ba6974496e93e232b"
+    },
+    {
+      "path": "docs/insights.en.md",
+      "gitBlob": "d109c26b6a2f61093446c855af7d69daab5faa49"
+    },
+    {
+      "path": "docs/research.en.md",
+      "gitBlob": "dcc649982ce4544f628e05cf68c664dfd744cae7"
+    },
+    {
+      "path": "BACKLOG.md",
+      "gitBlob": "33971bb76976bfcdb60c53163f17d1f7b5e652ef"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/README.md",
+      "gitBlob": "56feadce3bf3b1cde52227ef057abc6d762447dd"
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/game.json",
+      "gitBlob": "516d5089c195a4b19ba3b8cbbe412c86afe251c1"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/README.md",
+      "gitBlob": "4fbb557e8a053987b5a6476a2d22866e1528b06f"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/game-fast.json",
+      "gitBlob": "c9d34512b1c94b29233a0e0bfc4bd05a3e75d20e"
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/assumption-audit.json",
+      "gitBlob": "5b8ae52b4e97221a3bbf97b8264f0f66e73ebbcf"
+    },
+    {
+      "path": "studies/2026-10-23-topology-contract/README.md",
+      "gitBlob": "6aa2d88177367955c2e2e8260b8b2c21995a482d"
+    },
+    {
+      "path": "studies/2026-10-23-topology-contract/witness.mjs",
+      "gitBlob": "0a6d2c12f31403e198a2cfaa689cac89d380571f"
+    },
+    {
+      "path": "studies/2026-10-25-invitation-limits/README.md",
+      "gitBlob": "0e04a53294e275d03f0cf25b79449b25c060314c"
+    },
+    {
+      "path": "studies/2026-10-25-invitation-limits/design.json",
+      "gitBlob": "75a4d9733be9fb1dc54e77a2f8ebf5c3a615729e"
+    },
+    {
+      "path": "studies/2026-10-25-invitation-limits/capacity-controls.mjs",
+      "gitBlob": "0ae091cd8f8f864b22967d2a17a0ba63ca5dcd30"
+    },
+    {
+      "path": "src/model.mjs",
+      "gitBlob": "2b5756bc8f5d8b7bf275d8c26fa9a06119b6a68a"
+    },
+    {
+      "path": "src/evidence.mjs",
+      "gitBlob": "e13b60402771147e138a9f8425e6565673c689fe"
+    },
+    {
+      "path": "src/experiment-config.mjs",
+      "gitBlob": "4083053886863560ff886f79a3e7035b3968af5f"
+    },
+    {
+      "path": "src/games.mjs",
+      "gitBlob": "39b440b6ec1c08f5e2f8a353aff9ab260c65af37"
+    },
+    {
+      "path": "src/proofs.mjs",
+      "gitBlob": "6200246a7ee098345bf81f79adf42ea9b46c6a1c"
+    },
+    {
+      "path": "src/effort.mjs",
+      "gitBlob": "95c27af7093c532d70dd972aecbab46fefe2c21d"
+    },
+    {
+      "path": "src/activity-schedule.mjs",
+      "gitBlob": "f3fb33634c973109b30f05a9351dcfa73aaf119b"
+    },
+    {
+      "path": "studies/2026-10-25-invite-cost-vs-core/design.json",
+      "gitBlob": "e9e8ae036a919d66149103b9af8d402ae1473229"
+    },
+    {
+      "path": "studies/2026-10-25-invite-cost-vs-core/metrics.md",
+      "gitBlob": "c91b20af5cd7ab2ab070c2132dc06cef1daab7e8"
+    },
+    {
+      "path": "studies/2026-10-25-invite-cost-vs-core/audit.md",
+      "gitBlob": "1e6ef3484f72c68ab0365e4bfb5b5ddb0d7c1718"
+    }
+  ],
+  "reuse": "Protocol/evidence and requested historical studies matched previously read exact blobs; current changed scope/coverage surfaces were inspected.",
+  "priorExposure": {
+    "softwareCapacityControls": 27,
+    "source": "6c3976e engineering checkpoint",
+    "notNewPrimaryOrMapEvidence": true
+  },
+  "newStudy": {
+    "researchRuns": 0,
+    "searchEvaluations": 0,
+    "sampledTheta": [],
+    "confirmationSeeds": [],
+    "regionLabels": [],
+    "registrationCreated": false
+  }
+}

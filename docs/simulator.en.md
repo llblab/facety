@@ -34,6 +34,8 @@ This document owns the implemented simulation semantics. The self-contained [pro
 
 ## Invitation-limit research preparation (D60)
 
+**Current condition-map coverage:** [the new map objective](../studies/2026-10-25-condition-map/README.md) inherits CORE v2 arms, not its former headline. Its pure reduction helper has no model/search or SAFE classifier. No map data, bond/CORE/adaptive implementation, new claim gate or native v2 map integration is inferred from prior service controls; daily defaults remain unchanged.
+
 **Coverage warning for the later CORE v2 study:** the engine below is the earlier no-claim P/b reference, not a complete implementation of [the new primary/BOND/CORE scope](../studies/2026-10-25-invite-cost-vs-core/README.md). Its prior27 daily controls are not new-primary validation. Uncancelled-claim window/lapse bindings,4h study orchestration, vouch bonds/Standing/in-person jury, adaptive search and native v2 headline metrics remain gated; this warning changes no runtime or selected rule.
 
 [The P/b primary reference](../studies/2026-10-25-invitation-limits/README.md) implements ten experimental A/B/H/0 arms via constructor-only `invitationLimit: {P,b}`. Null retains the unmodified default (one matured own right, no independent invitation cooldown); explicit experimental A adds P1 spacing. The setting is immutable per model, outside `DEFAULT_POLICY` and not an adopted protocol change. The general experiment/CLI configuration is not yet wired to it; the standalone engineering driver calls the native model directly.
