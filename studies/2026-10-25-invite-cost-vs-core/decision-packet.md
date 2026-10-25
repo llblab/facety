@@ -9,6 +9,10 @@
 3. **Merits and remedies (C4/C5).** Bind neighbourhood projection, N_min and jury quorum/shortage/tie/finality for BOTH requested small-N flags. Define enforceable slashing/return/finder share, overlap, spent-value shortfall and wrongful recovery. A borrowed truth oracle would change the claim, not complete CORE.
 4. **Headline and method (C6/C7).** Bind beta and its resource unit, X/R/Y, net-utility versus incremental-premium denominator, ranges and power/search limits. A positive-domain payoff ratio is undefined at zero/negative fraud payoff; report nonpositive fraud returns separately, never as an infinite10x pass. Fixed X/R reduces selection latitude; preregistered discovery plus independent confirmation can discover a region but needs a frozen selector and correction family. Fix what rejects A/B/BOND and drops10x before outcomes.
 
+## Added headline requirements
+
+Report g_a versus effective lambda for local veto/global challenge, N* crossings and time below from10 founders; bind commensurate units, density and uncertainty. Keep net attacker profit apart from dilution/policing/wrongful-exclusion harm; include budgeted non-monetary sabotage. Test network-effect alpha1/1.5/2:1.5 is mandatory for robustness. The response law remains unselected; this alpha is not statistical significance.
+
 ## Provisional implementation recommendation, not a winning rule
 
 Reuse the native funded P/b kernel and4h scheduler; do not rewrite selected protocol rules or substitute old scripted games for adaptive adversaries. Bind the choices above before CORE/BOND or new-primary claims. Existing service-capacity tests do not justify preferring A, B, BOND or CORE.

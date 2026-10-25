@@ -69,7 +69,33 @@
     "X": null, "beta": null, "commonResourceUnit": null, "R": null, "Y": null,
     "payoffDefinition": null, "ratioDenominator": null, "growthHorizonDays": null,
     "additionalGrowthEndpoint": 1000,
-    "thresholdStatus": "10x is a research target; population sizes and tolerances are study assumptions, not empirical facts"
+    "thresholdStatus": "10x is a research target; population sizes and tolerances are study assumptions, not empirical facts",
+    "requiredMetricsContract": "metrics.md",
+    "race": {
+      "attackerGrowth": "g_a(P), conditional on b, budget and scenario; not individual invitation service capacity",
+      "response": "lambda(N_h, density, channel) on a commensurate effective-suppression basis",
+      "channels": ["local veto", "global challenge"],
+      "threshold": "N* solves lambda(N*)=g_a; report uncertainty, brackets, multiple/no crossings or unidentified thresholds",
+      "genesisPersons": 10,
+      "exposure": "duration below N* from genesis, with uncertain-threshold bounds and censored/unresolved time",
+      "growthSeriesAndEstimator": null,
+      "responseNormalizationAndEstimator": null,
+      "honestActivityAndDensityDefinition": null,
+      "crossingRule": null
+    },
+    "attackerNetProfit": "Costs and actual net slashed bonds included; separate absolute payoff from lawful-reference fraud premium; preserve pending/unknown values",
+    "honestHarm": ["dilution/share and separately valued purchasing-power harm", "policing cost", "wrongful exclusion and duration"],
+    "separateProfitAndHarm": true
+  },
+  "networkEffect": {
+    "exponents": [1, 1.5, 2],
+    "mandatoryRobustnessExponent": 1.5,
+    "status": "owner-required scenario assumptions, not fitted empirical exponents",
+    "distinctFrom": "registration.alpha (statistical error threshold)",
+    "modifies": null,
+    "responseLawAndNormalization": null,
+    "contextAndStressAssignment": null,
+    "robustnessRule": "Headline must hold at1.5; report1/2, preserve every registered confirmation context and do not hide failures or narrow the family after data"
   },
   "hypotheses": [
     { "id": "invite-cost-vs-core:H1", "question": "A price sensitivity versus B/BOND under constant, declining and shock paths", "falsifier": "A fraud premium is price-insensitive", "verdict": "not-run" },
@@ -81,7 +107,9 @@
     { "id": "invite-cost-vs-core:H7", "question": "Refundable bond versus burn at equal rate cap", "boundary": "Low enforceable P_catch within V may permit profitable fraud; measure threshold and capital costs", "verdict": "not-run" }
   ],
   "adversaryClasses": ["self-funded Sybil", "exact-D-attack-edge attachment", "genuine-person violation coalition", "purchased genuine vouches", "slot/bond rental or resale", "jury capture"],
-  "adversaryRequirement": "Adaptive bounded search or generated-policy best response, not fixed menus; disclose action/observation/learning space and search effort per arm. No found attack is not safety.",
+  "adversaryObjectives": ["profit-seeking", "non-monetary sabotage"],
+  "sabotageContract": "Within the existing six structural classes, budgeted harm maximization may accept negative money return; retain objective/weights, component harm, best attack and search effort separately. A degenerate growth race or poor financial ROI does not imply deterrence.",
+  "adversaryRequirement": "Adaptive bounded search or generated-policy best response, not fixed menus; disclose action/observation/learning space and search effort per arm/objective. No found attack is not safety.",
   "viabilityChecksUnderTest": ["c*B*P_catch > E*V + X", "Td < Tdbl", "jury-pool fake fraction f < 1/3"],
   "registration": {
     "requiredSchema": "facety-hypothesis/v2",

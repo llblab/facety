@@ -5,6 +5,7 @@
 ## Status and artifacts
 
 - [Design draft](design.json):12 Part1 arms, CORE/legacy bundle, new primary, hypothesis ledger and unbound registration fields. It is explicitly NOT `facety-hypothesis/v2` and cannot be represented as a successful preregistration.
+- [Headline metric contract](metrics.md): Growth/response race and N* exposure, separate attacker profit/honest harm, sabotage objectives and mandatory network-effect alpha1.5 gate; estimators and response-law bindings remain explicit before registration.
 - [Reuse/assumption audit](audit.md): the three requested source studies, their actual configs/assumption audit, native capabilities, failure modes and candidate contract trade-offs.
 - [One-page pre-data decision packet](decision-packet.md): no inferred winning rule or fabricated sensitivity ranking.
 - [Source manifest](source-manifest.json):23 source blobs at `6c3976e`, prior deterministic exposure, zero new study simulations/search evaluations and no allocated confirmation labels.
@@ -51,6 +52,8 @@ Owner headline, to bind before research: **against an adaptive attacker with bud
 | H6 | NEW falsifier: H/B differ at b1 on premium or growth. | Not run |
 | H7 | Refunded vs burned: catch-within-V and capital cost. | Not run |
 
+**Owner headline addendum:** compare g_a(P) with lambda(N_h,density,channel) for local veto/global challenge, locate N* where identifiable and report time below it from10-person genesis. Report attacker profit net of costs/slashed bonds and honest dilution/policing/wrongful-exclusion harm separately, including non-monetary saboteurs within the existing adversary classes. Network-effect alpha is1/1.5/2; the headline must hold at1.5 for the requested robustness gate. [The metric contract](metrics.md) prevents substituting raw inspection counts for suppression, hiding missing/multiple crossings or encoding an assumed scaling law as a discovered network effect. It is not the statistical significance alpha.
+
 Preregister explicit kill criteria for A, B, BOND and the10x target; no thresholds may be chosen after looking. The three proposed viability inequalities are tests/heuristics with the ownership, units, timing, tail and jury qualifications in the audit, not sufficient safety conditions.
 
 ## Method and registration gates
@@ -58,8 +61,8 @@ Preregister explicit kill criteria for A, B, BOND and the10x target; no threshol
 1. Bind C1–C7 candidates and headline fields. Separate protocol-OPEN questions from declared research assumptions; obtain the needed choices rather than migrate defaults.
 2. Implement opt-in funded arms and generated adaptive policies for all six adversary classes: self-funded Sybils, exact-D attack-edge attachment, genuine violators, purchased vouches, slot/bond rental/resale and jury capture. Report best attack found, search effort, training/validation scope and online information. Scripted-menu maxima are not substitutes or safety evidence.
 3. Complete4h property/ledger/prefix/inert tests, independent small financial/graph reference checks, daily/alternate-grid/RNG stability contracts and generic experiment/evidence integration. Identity truth stays evaluator-only. Legacy terminal-XP/disposition mediation and unsupported disputed-maturity states must be controlled/labeled, not silently repaired.
-4. Create real native `facety-hypothesis/v2` registrations binding arms/metrics/seeds/power/kill criteria and `family-contradiction/v1`; commit them BEFORE research. Fix whether X/R is predetermined or selected by a preregistered discovery algorithm with independent confirmation. Freeze the full correction family and selection rule.
-5. Execute only that method: declared-range/joint-law LHS sensitivity at at least two population scales, adaptive search, absorbing-collapse/failed-recovery probabilities and times, censored outcomes and scenario-discovery conditions. Preserve exact inputs/raw results/attempts/failures, source/RNG manifests and search costs. Confirm only on reserved labels; no retries/seed hunting/post-outcome extension or unsupported continuum guarantees.
+4. Create real native `facety-hypothesis/v2` registrations binding arms/metrics/seeds/power/kill criteria, race/crossing estimators and network-effect/context assignments and `family-contradiction/v1`; commit them BEFORE research. Fix whether X/R is predetermined or selected by a preregistered discovery algorithm with independent confirmation. Freeze the full correction family and selection rule.
+5. Execute only that method: declared-range/joint-law LHS sensitivity at at least two population scales, adaptive search for profit and sabotage, the channel-specific race/N* exposure, separate profit/harm panels, alpha1/1.5/2, absorbing-collapse/failed-recovery probabilities and times, censored outcomes and scenario-discovery conditions. Preserve exact inputs/raw results/attempts/failures, source/RNG manifests and search costs. Confirm only on reserved labels; no retries/seed hunting/post-outcome extension or unsupported continuum guarantees.
 6. Report hypothesis verdicts and limitations, empirical sensitivity ranking and2–3 pilot measurements; stop on confirmed/killed headline or exhausted safe preparation. No broad restart or unrelated sweeps.
 
 ## Reproduction
