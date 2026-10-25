@@ -1,0 +1,41 @@
+# WP1 closed native composition contract
+
+**DIAGNOSTIC preparation, not G1 or a complete CORE/population engine.** This scopes `native-funded-composition-reference/v1` for the next genuinely independent reference. [The executable fixture](wp1-composition-fixture.json) binds one concrete instance; [integration tests](../../test/vouch-composition.test.mjs) exercise all four existing components together. Neither artifact is a hypothesis registration or research run. The test-local role/action guard is not authentication, an agent sandbox or a production permission port.
+
+## Action and authority closure
+
+The profile includes only these native mutations, each as its own call with its existing success/failure semantics:
+
+- Subject-call reference: `registerArtifact`, `createSelfId`, `convertToCollector`, `commitVouch`, `admitVouched`, `exitVouch`. Caller identity/target consent is trusted as in the existing components; no co-signature/human verification is inferred. Artifacts here are fresh explicit synthetic IDs with faceCount1/contentHash null, not collected media. Artifact registration and Self-ID issuance are separate successful actions, not an invented atomic multi-call operation.
+- Trusted administration: monotone `advanceTo`, `openVouchBondCase`, `resolveVouchBondCase`, `releaseVouchBond`. Case/clearance admissibility and per-party allocations remain supplied inputs, never detector authority or evaluator truth. Actor-controlled court access, stake/finder/recovery procedure and phase eligibility are not implemented.
+- Custody work: one explicit finite `VouchActReview` pool allocation after its declared subjects exist; review only the declared actor/act/hour/opportunity tuple. The adapter alone calls Native `cancelSelfId`; direct uninspected/vindictive veto calls are outside this diagnostic witness, not forbidden by the actual protocol or absent from the future attacker menu. No later grants, automatic work on birth, refill, generated encounters or source independence is implied. A different research resource law requires an explicit separately bound context, not a silent extension of this fixture.
+- Read-only normalized state: subjects/XP/wallets, Self-ID source receipts/dispositions, admissions, active/historical relations, bond/case/refund histories, ledger and review work/receipts. Raw Native IDs may be mapped to semantic call handles for independent comparison; no reference may derive expected transitions from actual Native outputs/events.
+
+All other mutation paths are outside the profile: invitations, arbitrary existing-peer guarantees, transfers/separate penalties/debt, identity invalidation, D59 correction, disputed Self-ID freezing, keys, Council/Chekharda and graph writes. This is a closed diagnostic subset, not permission to remove those legacy APIs, or to treat missing attacks/remedies as impossible. The full native-v2 engine must enforce actual caller permissions, not trust a role string from an actor.
+
+## Exact reference assumptions and resource sources
+
+The fixture supplies the complete Native policy object, all ablations off, invitationLimit null and explicit K/T/V/B/c/reference bindings. Accepted-reference membership/qualification is not mature own Standing or verified independence. Native claim/vouch use has no CORE Claim/Standing guard, and losing support does not automatically invalidate membership: the witness's second x claim is issued with only b still linked. This documents the available Native reference, not a decision about CORE's continuing support/eligibility rule. Native incoming directed guarantees are not reciprocal edges or selected verified paths. Legacy Council/difficulty fields are inert here because their decision APIs are outside the closure; councilSize101 is not a jury design choice. Ordinary native Self-ID maturity/snapshot XP and existing link-end revocation apply, not CORE's own-Standing-only accounting.
+
+Every founder starts accepted but with **zero money and XP**: seed membership is an explicit diagnostic initial condition, not a verified bootstrap. Every bond is funded only by actual own matured emission converted to Collector. Admission creates no cash, XP or work; a child earns its own collateral before guaranteeing the next generation. Non-review labor is unmodeled, not a measured zero cost/private utility. Work is an explicit external integer allowance—not purchased human usefulness or a FACY subsidy—and the chosen review policy is scripted conditional behavior, not endogenous cooperation.
+
+Slots use retain-until-V; V/T start at commitment, not admission. Exit preserves liability and pending source XP. At maturity the original Self-ID snapshot receives credit even after an earlier exit; ending a link revokes already issued eligible pair receipts under the bound Native policy, not future pending receipts. Pending bond custody can outlive V without extending slot occupancy. Clearance after V returns only unspent remainder. A supplied verdict debits only original remaining B, with explicit burn/payout and no debt/automatic identity or XP sanction. Burn changes supply; payouts may be internal coalition transfers and are not automatically net attack loss.
+
+Private facts go only to the existing snapshot observation environment with explicit rates; public act metadata/received suspicion reach review. Act validity, genuine personhood, protocol acceptance, positive evidence, attempted response, executed act veto and separately supplied bond liability stay distinct. The fixture's binary rate endpoints are software boundary inputs, not calibrated detection or perfect evidence assumptions for a study. Its two opportunity keys and one work allocation are explicit; no additional trials occur on reads/replays.
+
+## Executed witness and reference acceptance
+
+The fixed timeline earns four founder FACY before admission at48h, exits one original guarantee at49h, preserves its pending XP, and earns four more FACY before a child-backed second admission at96h. A paid native act veto at97h burns one pending emission without removing the member or slashing bonds. A separate explicitly supplied case holds exited collateral through120h while slots expire. Four supplied rejected/partial-burn/partial-payout/full-split outcomes at121h exercise actual residual refunds; all remaining bonds clear at168h.
+
+A separately written endpoint recurrence checks minted9, final supply/Collector `8-caseBurn`, zero vault/debt, actual owner/recipient balances and XP `{a:3,b:6,x:2,y:0}`. Work consumed is exactly3 declared units. These are **four fixed software witnesses**, not sampled theta, attacks, probability estimates, prior confirmation or a full independent transition model.
+
+The independent full reference must compute accepted/rejected actions and normalized state after **each** action across the entire declared closure: source/XP maturity, money, slot/cooldown/coverage, funded membership/edges, exits, pending cases/settlement/refunds, work/signal/authority and replay. It must not import/call Model/review/graph transition owners, copy their private implementation or consume their resulting events as expected state. Shared exogenous requests/signals can be a declared input tape; oracle acquisition/role/authority requests must also be compared. It must generalize valid inputs/boundaries beyond this one witness before any G1 claim.
+
+## Validation and remaining gates
+
+```sh
+node --test test/vouch-composition.test.mjs
+npm test
+```
+
+[Validation](wp1-composition-validation.json) distinguishes the composed endpoint check from the still-missing independent full engine. Source behavior/digest is unchanged; fixture/test identities are additionally bound because the src-only digest does not cover them. Existing component checks remain applicable. Full reference, actual native-v2 engine/config/observables, registered claims/ranges/precision/kill method and written priors1–3/7 remain before G1; all master research/search/confirmation/LLM/pilot counts remain zero. No new selected rule, OPEN contract or plausible human range is silently supplied.

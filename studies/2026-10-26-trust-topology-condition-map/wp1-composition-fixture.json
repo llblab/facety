@@ -1,0 +1,80 @@
+{
+  "schema": "facety-wp1-composition-fixture/v1",
+  "reference": "native-funded-composition-reference/v1",
+  "purpose": "Fixed diagnostic software witness; not a hypothesis registration, sampled theta, attack search or G1 result",
+  "parameterBasis": "All c/K/T/V/B, actor budgets, work costs, times and binary rate endpoints here are software boundary witnesses with no human calibration; no plausible research range or kill threshold is supplied",
+  "genesis": ["a", "b"],
+  "policy": {
+    "xpFinality": "maturity",
+    "cancellationAuthority": "snapshot",
+    "guarantorEligibility": "accepted",
+    "guaranteeFee": 0,
+    "councilSize": 101,
+    "debtRecovery": "reserve-until-mature",
+    "councilEligibility": "active",
+    "invitationFreezeHours": 24,
+    "linkBreakXp": "revoke",
+    "spendMaturityHours": 24,
+    "conversionMaturityHours": 24,
+    "artifactReuse": "registration-only"
+  },
+  "ablations": { "withholdGuarantorXp": false, "disableInvitationVeto": false, "fixedInvitationThreshold": null },
+  "invitationLimit": null,
+  "vouching": {
+    "K": 2,
+    "T": 1,
+    "V": 3,
+    "B": 2,
+    "reference": {
+      "eligibility": "accepted-reference",
+      "clockOrigin": "commitment",
+      "funding": "collector-liquid",
+      "exitSlot": "retain-until-V",
+      "bondRelease": "supplied-clearance"
+    }
+  },
+  "vouchAdmission": { "c": 2, "reference": "native-guarantees-commitment-reference" },
+  "artifactBinding": { "faceCount": 1, "contentHash": null, "reuse": "fresh explicit synthetic artifact ID per act" },
+  "nativeCalls": {
+    "subject": ["registerArtifact", "createSelfId", "convertToCollector", "commitVouch", "admitVouched", "exitVouch"],
+    "administration": ["advanceTo", "openVouchBondCase", "resolveVouchBondCase", "releaseVouchBond"]
+  },
+  "reviewInternalCalls": ["cancelSelfId"],
+  "blockedExamples": ["cancelSelfId", "createInvitation", "acceptInvitation", "proposeGuarantee", "confirmGuarantee", "penalize", "invalidateIdentity", "applySelfIdPenalty", "resolveSelfId", "reserveDisputeStake", "transferFacy", "rotateKey", "freezeSelfId"],
+  "reviewAllocation": {
+    "atHour": 48,
+    "source": "One explicit external finite work allowance after x exists; not a token purchase, birth reward or inferred human capacity",
+    "options": {
+      "reference": "paid-single-suspicion-veto-reference",
+      "actors": [
+        { "id": "review-a", "subject": "a", "budget": 1 },
+        { "id": "review-x", "subject": "x", "budget": 2 }
+      ],
+      "costs": { "inspect": 1, "respond": 1 }
+    },
+    "laterGrants": false,
+    "automaticNewMemberWork": false,
+    "nonReviewActionLabor": "Unmodeled, not a measured zero cost; this is a funded capacity/accounting witness, not total private utility"
+  },
+  "opportunities": [
+    { "actor": "review-a", "subject": "x", "actLabel": "x:48", "atHour": 49, "opportunity": "composed-x-fixed" },
+    { "actor": "review-x", "subject": "y", "actLabel": "y:96", "atHour": 97, "opportunity": "composed-y-fixed" }
+  ],
+  "observationEnvironment": {
+    "seed": "wp1-composition-software-fixture-only",
+    "rates": {
+      "self-id": { "ordinary": { "valid": 0, "invalid": 1 }, "guarantor": { "valid": 0, "invalid": 1 } },
+      "invitation": { "ordinary": { "valid": 0, "invalid": 1 }, "guarantor": { "valid": 0, "invalid": 1 } },
+      "guarantee": { "ordinary": { "valid": 0, "invalid": 1 }, "guarantor": { "valid": 0, "invalid": 1 } }
+    },
+    "validityFacts": { "x:48": true, "y:96": false },
+    "truthBoundary": "Facts go only to actObservationEnvironment; public act references and received suspicion go to review. Genuineness/ownership do not enter Model or defense. Bond verdicts are separately supplied, never derived from suspicion."
+  },
+  "settlementWitnesses": [
+    { "name": "rejected", "upheld": false, "burn": 0, "transfers": [] },
+    { "name": "partial-burn", "upheld": true, "burn": 1, "transfers": [] },
+    { "name": "partial-payout", "upheld": true, "burn": 0, "transfers": [{ "recipient": "x", "amount": 1 }] },
+    { "name": "full-split", "upheld": true, "burn": 1, "transfers": [{ "recipient": "x", "amount": 1 }] }
+  ],
+  "research": { "registered": false, "runs": 0, "search": 0, "confirmationSeeds": [], "G1Verdict": null, "LLMAgentRuns": 0, "pilot": false }
+}

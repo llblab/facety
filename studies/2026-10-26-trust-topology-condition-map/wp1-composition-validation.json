@@ -1,0 +1,75 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "label": "diagnostic closed native composition contract and fixed witnesses; not independent full dynamics or G1",
+  "baseCommit": "41c8e58454620d8eeb69784aa58dce110c1e169c",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "0cec3b4cbfac94e82a5e8da70102737b4e74127a0dc5a270ed304d10a40b8495",
+      "files": 33
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "implementationChanged": false,
+  "files": [
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/wp1-composition-fixture.json",
+      "gitBlob": "c5660b9cac96e2101de4fe0cf072d2726c54e55b"
+    },
+    {
+      "path": "test/vouch-composition.test.mjs",
+      "gitBlob": "281076c5dd579e02a22325b864bdf049abe5e556"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/wp1-composition.md",
+      "gitBlob": "277585bd776f5e72553a0bde631855c6650cbf05"
+    }
+  ],
+  "focused": {
+    "command": "node --test test/vouch-composition.test.mjs",
+    "passed": 3,
+    "failed": 0,
+    "fixedCompositionWitnesses": 4,
+    "oracleScope": "independent endpoint money/XP recurrence only; no full independent transitions"
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 428,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "isCurrentSourceValidation": false
+    }
+  },
+  "architecture": {
+    "sourceFiles": 33,
+    "localEdges": 79,
+    "errors": 0,
+    "warnings": 0,
+    "cycles": 0,
+    "reusedEvidence": "wp1-review-validation.json",
+    "equivalence": {
+      "sameImplementationDigest": true,
+      "gitSourceTree": "5b85d11c7d934ea2b6955fd809d70670f0408479",
+      "domainConfigBlob": "dc295bf9cd6fc7c9870ffbbbd532cbd11fb44c3f",
+      "workingSourceAndConfigDiff": "empty; checked against baseCommit"
+    }
+  },
+  "context": { "errors": 0, "warnings": 27, "warningsUnchanged": true },
+  "research": {
+    "registered": false,
+    "runs": 0,
+    "searchEvaluations": 0,
+    "confirmationSeeds": [],
+    "G1Verdict": null,
+    "LLMAgentRuns": 0,
+    "pilot": false
+  }
+}
