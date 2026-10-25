@@ -1,0 +1,97 @@
+{
+  "schema": "facety-invite-cost-vs-core-design-draft/v1",
+  "status": "blocked-before-registration-and-research-runs",
+  "authority": "Owner CORE v2 direction for one study; proposal under test, not a selected protocol rule. Protocol meaning follows the repository; this design follows the new study scope.",
+  "canonicalTaskOwner": "BACKLOG.md",
+  "baseCommit": "6c3976e63b7212ff7972badd7c0c0cb44d648c9e",
+  "protocolEditsAuthorized": false,
+  "newDDecisionsAuthorized": false,
+  "parts": {
+    "isolated": {
+      "gate": "Keep the same current native eligibleGuarantors/requiredGuarantors algorithm and policy in every arm; its output may change with each arm's population. Do not freeze D numerically or label raw active-count/support as D33/D35/D36 verified independence.",
+      "arms": [
+        { "id": "A", "P": 1, "b": 1, "bond": null },
+        { "id": "B-3", "P": 3, "b": 0, "bond": null },
+        { "id": "B-7", "P": 7, "b": 0, "bond": null },
+        { "id": "H-3-1", "P": 3, "b": 1, "bond": null },
+        { "id": "H-3-3", "P": 3, "b": 3, "bond": null },
+        { "id": "H-3-6", "P": 3, "b": 6, "bond": null },
+        { "id": "H-7-1", "P": 7, "b": 1, "bond": null },
+        { "id": "H-7-7", "P": 7, "b": 7, "bond": null },
+        { "id": "H-7-14", "P": 7, "b": 14, "bond": null },
+        { "id": "BOND-3", "P": 3, "b": 0, "bond": { "B": 100, "Vdays": 90, "status": "placeholder-not-implemented" } },
+        { "id": "BOND-7", "P": 7, "b": 0, "bond": { "B": 100, "Vdays": 90, "status": "placeholder-not-implemented" } },
+        { "id": "0", "P": null, "b": 0, "bond": null }
+      ]
+    },
+    "bundle": {
+      "arms": ["CORE", "LEGACY-reference"],
+      "pairedInputs": ["adversary class and search effort", "world seeds", "real resources/bootstrap", "outside opportunities", "observation environment", "horizon and computational censor policy"],
+      "CORE": {
+        "c": 3, "K": 5, "Tdays": 14, "B": 100, "Vdays": 90, "J": 101, "activeWindowDays": 28,
+        "parameterStatus": "owner-supplied placeholders, not findings or selected rules",
+        "claim": { "facyPerReward": 1, "rollingHours": 24, "vetoHours": 24 },
+        "vouchClockKey": "SubjectId",
+        "standingAuthority": "vouch eligibility only, not dispute or jury rank",
+        "juryExcludedDistance": 2,
+        "appealScale": { "jury": 2, "stake": 2 },
+        "mainEvidence": "seen in person this month; attestation freshness/evidence contract still needs binding",
+        "features": ["one presence reward per24h and voucher veto", "own uncontested-day Standing only for vouching", "c-voucher admission", "K/T/B/V vouches and free exit with historical escrow", "staked challenge and outside-neighbourhood random jury", "bounded slashing and finder share", "explicit pre-vouched genesis", "in-person attestation main evidence"],
+        "excluded": ["vouchee XP", "Council", "FaceRef/detector", "Bucket D", "debt", "XP halving", "decimal difficulty", "internally vertex-disjoint admission paths"],
+        "smallNVariants": ["all non-adjacent active members decide", "genesis-group vote"],
+        "N_min": null,
+        "implementationStatus": "not-implemented; contracts are candidates in decision-packet.md and audit.md"
+      }
+    }
+  },
+  "newPrimary": {
+    "limiter": "cooldown-after-use keyed by SubjectId",
+    "decisionStepHours": 4,
+    "protocolWindowHours": 24,
+    "accumulate": false,
+    "claimRequires": "uncancelled Self-ID in window",
+    "gateEvaluation": "use",
+    "claimWindowHours": null,
+    "claimMaturityInterpretation": null,
+    "pendingInvitationLapsePolicy": null,
+    "note": "Supersedes the old P/b engineering assumption that b0 requires no claim; old results are not new-primary evidence."
+  },
+  "secondaryOnly": {
+    "limiterVariants": ["cooldown-after-use", "calendar-claim"],
+    "accumulate": ["capped at m", "use-it-or-lose-it"],
+    "claim_requires": ["time gate only", "uncancelled Self-ID in window", "full gate at claim", "full gate at use"],
+    "lapse": "explicit candidate required, never silently inherited",
+    "calendarEpoch": null,
+    "m": null
+  },
+  "headline": {
+    "ownerText": "Against an adaptive attacker with budget beta, arm X yields honest-to-fraud payoff ratio >= 10x (D50) over parameter region R, while honest growth from a 10-person genesis to N=100 is not slower than Y times the arm-A baseline.",
+    "X": null, "beta": null, "commonResourceUnit": null, "R": null, "Y": null,
+    "payoffDefinition": null, "ratioDenominator": null, "growthHorizonDays": null,
+    "additionalGrowthEndpoint": 1000,
+    "thresholdStatus": "10x is a research target; population sizes and tolerances are study assumptions, not empirical facts"
+  },
+  "hypotheses": [
+    { "id": "invite-cost-vs-core:H1", "question": "A price sensitivity versus B/BOND under constant, declining and shock paths", "falsifier": "A fraud premium is price-insensitive", "verdict": "not-run" },
+    { "id": "invite-cost-vs-core:H2", "question": "P and undetected growth/doubling versus detection", "falsifier": "Td/Tdbl does not improve under B", "verdict": "not-run" },
+    { "id": "invite-cost-vs-core:H3", "question": "B/BOND slow early honest growth by up to factor P; measure time to100/1000 and invitation throughput", "verdict": "not-run; rejection margins need preregistration" },
+    { "id": "invite-cost-vs-core:H4", "question": "Banked permit bursts versus irregular honest participation", "verdict": "not-run; secondary-only" },
+    { "id": "invite-cost-vs-core:H5", "question": "Dormant-farm maintenance under fake-media work multipliers1/3/10 including1x", "verdict": "not-run; cost mapping to in-person CORE and pause/resume must be explicit" },
+    { "id": "invite-cost-vs-core:H6", "question": "Burn protection at b>=P*E or unequal net earnings; b1 honest tax without farm effect", "falsifier": "At b1 H and B differ on fraud premium or cluster growth", "verdict": "not-run; new corrected falsifier supersedes the old study wording" },
+    { "id": "invite-cost-vs-core:H7", "question": "Refundable bond versus burn at equal rate cap", "boundary": "Low enforceable P_catch within V may permit profitable fraud; measure threshold and capital costs", "verdict": "not-run" }
+  ],
+  "adversaryClasses": ["self-funded Sybil", "exact-D-attack-edge attachment", "genuine-person violation coalition", "purchased genuine vouches", "slot/bond rental or resale", "jury capture"],
+  "adversaryRequirement": "Adaptive bounded search or generated-policy best response, not fixed menus; disclose action/observation/learning space and search effort per arm. No found attack is not safety.",
+  "viabilityChecksUnderTest": ["c*B*P_catch > E*V + X", "Td < Tdbl", "jury-pool fake fraction f < 1/3"],
+  "registration": {
+    "requiredSchema": "facety-hypothesis/v2",
+    "analysisPolicy": "family-contradiction/v1",
+    "status": "not-created; this file is deliberately NOT a v2 registration",
+    "replicas": null, "power": null, "alpha": null, "effectMargins": null,
+    "selectionRuleForXAndR": null,
+    "killCriteria": { "A": null, "B": null, "BOND": null, "drop10x": null },
+    "ranges": null, "latinHypercubeDesign": null,
+    "explorationSeeds": [], "confirmationSeeds": [], "researchRuns": 0
+  },
+  "stop": "Confirm or kill the preregistered claim, or stop when safe preparation is exhausted. No unrelated sweeps, historical replay, new D-decisions or implicit OPEN-contract choices."
+}
