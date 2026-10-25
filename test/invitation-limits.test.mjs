@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { FacetyModel, DAY } from '../src/model.mjs';
 import { invitationLimitArms, invitationCapacityPrior } from '../studies/2026-10-25-invitation-limits/contract.mjs';
+import { capacityControl } from '../studies/2026-10-25-invitation-limits/capacity-controls.mjs';
 
 function bank(days) {
   const model = new FacetyModel({ genesis: ['creator', 'support'], policy: { xpFinality: 'maturity', guarantorEligibility: 'accepted' } });
@@ -48,6 +49,27 @@ test('prior refuses implicit defaults, malformed periods and unmodeled fields', 
     { P: 1, b: 0.5, E: 1 }, { P: 1, b: 1, E: Infinity }, { P: 1, b: 1, E: -1 }, { P: 1, b: 1, E: 1, price: 0.5 }]) {
     assert.throws(() => invitationCapacityPrior(value));
   }
+});
+
+test('native bounded arms reproduce independent finite-prefix counts and asymptotic prior at three realized emission rates', t => {
+  const days = 504;
+  for (const q of [1, 2, 3]) for (const arm of invitationLimitArms().filter(value => value.id !== '0')) {
+    const row = capacityControl(arm, { days, emissionEveryDays: q });
+    const first = arm.b === 0 ? 0 : (arm.b - 1) * q + 1;
+    const interval = Math.max(arm.P, arm.b * q);
+    const expected = days < first ? 0 : 1 + Math.floor((days - first) / interval);
+    assert.equal(row.invitations, expected, arm.id + ' at E=' + 1 / q);
+    assert.equal(row.firstUseDay, first);
+    assert.equal(row.burnedFacy, arm.b * expected);
+    assert.equal(row.mintedFacy, days / q);
+    assert.equal(row.retainedOwnFacy, row.mintedFacy - row.burnedFacy);
+    assert.ok(Math.abs(row.invitations - days * row.prior.invitationsPerDay) <= 1 + 1e-10);
+    assert.equal(row.rejections.cooldown + row.rejections.funding + expected, days + 1);
+    for (let i = 1; i < row.usedAtDays.length; i++) assert.ok(row.usedAtDays[i] - row.usedAtDays[i - 1] >= arm.P);
+    if (q === 1) t.diagnostic(JSON.stringify({ arm: row.arm, invitations: row.invitations, firstUseDay: row.firstUseDay,
+      burnedFacy: row.burnedFacy, prior: row.prior.invitationsPerDay, finiteRate: row.invitationsPerDay }));
+  }
+  assert.throws(() => capacityControl({ P: null, b: 0 }, { days, emissionEveryDays: 1 }), /no finite capacity/);
 });
 
 test('native retained rights permit a same-hour invitation burst, not an independent P=1 cooldown', () => {

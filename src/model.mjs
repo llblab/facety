@@ -62,6 +62,17 @@ export function ablationsFrom(overrides = {}) {
   return Object.freeze(ablations);
 }
 
+// Experimental constructor-only arm: callers cannot switch limits between invitations.
+function invitationLimitFrom(value) {
+  if (value === null) return null;
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).length !== 2
+    || !Object.hasOwn(value, 'P') || !Object.hasOwn(value, 'b')) throw new TypeError('invitationLimit requires only P and b');
+  const { P, b } = value;
+  if (P !== null) { natural(P, 'P', 1); natural(P * DAY, 'cooldown hours', 1); }
+  natural(b, 'b');
+  return Object.freeze({ P, b });
+}
+
 export class ProtocolRejection extends Error {
   constructor(message) {
     super(message);
@@ -76,6 +87,7 @@ export class FacetyModel {
   #subjectActs = new Map();
   #guaranteeRecords = new Map();
   #invitations = new Map();
+  #lastInvitationAt = new Map();
   #claims = new Map();
   #xpByRecipient = new Map();
   #xpMaturities = new Set();
@@ -94,8 +106,9 @@ export class FacetyModel {
   #vault = 0;
   #fees = 0;
   #stakeVault = 0;
-  constructor({ genesis = ['root'], policy = {}, ablations = {} } = {}) {
+  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
+    Object.defineProperty(this, 'invitationLimit', { value: invitationLimitFrom(invitationLimit), enumerable: invitationLimit !== null });
     Object.defineProperty(this, 'policy', { value: policyFrom(policy), enumerable: true });
     Object.defineProperty(this, 'ablations', { value: ablationsFrom(ablations), enumerable: true });
     this.lineage = new DirectedGraph('invitation-lineage');
@@ -145,7 +158,8 @@ export class FacetyModel {
     return Object.freeze({ ...act, guarantors: Object.freeze([...act.guarantors]), xpRecipients: Object.freeze([...act.xpRecipients]), xpCredit });
   }
   selfIds() { return [...this.#acts.keys()].map(id => this.selfId(id)); }
-  invitations() { return [...this.#invitations.values()].map(value => Object.freeze({ ...value, guarantors: Object.freeze([...value.guarantors]) })); }
+  invitations() { return [...this.#invitations.values()].map(value => Object.freeze({ ...value, guarantors: Object.freeze([...value.guarantors]),
+    ...(value.sourceSelfIds ? { sourceSelfIds: Object.freeze([...value.sourceSelfIds]) } : {}) })); }
   #penaltySnapshot(value) { return Object.freeze({ ...value,
     parties: Object.freeze([...value.parties]), penalties: Object.freeze(value.penalties.map(penalty => Object.freeze({ ...penalty }))) }); }
   actPenalties() { return [...this.#actPenalties.values()].map(value => this.#penaltySnapshot(value)); }
@@ -381,6 +395,7 @@ export class FacetyModel {
       act.status === 'unspent' && act.disputeLock === null && !act.debtReserved && this.now - act.recordedAt >= minimumAge).map(act => act.id);
   }
   createInvitation(creatorId, selfIdId, target) {
+    if (this.invitationLimit !== null) return this.#createLimitedInvitation(creatorId, selfIdId, target);
     const creator = this.#subject(creatorId, true);
     const act = this.#act(selfIdId);
     this.#requireUnspent(act);
@@ -392,6 +407,30 @@ export class FacetyModel {
     this.#dispose(act, 'consumed', 'invitation');
     this.#invitations.set(id, { id, creator: creatorId, sourceSelfId: selfIdId, target, guarantors: [...this.eligibleGuarantors(creatorId)], createdAt: this.now, acceptedAt: null, status: 'open' });
     this.#event('invitation-created', { invitation: id, creator: creatorId, target });
+    return id;
+  }
+  #createLimitedInvitation(creatorId, sourceIds, target) {
+    this.#subject(creatorId, true);
+    const { P, b } = this.invitationLimit;
+    const last = this.#lastInvitationAt.get(creatorId);
+    if (P !== null && last !== undefined && this.now - last < P * DAY) throw new ProtocolRejection('invitation cooldown after use');
+    const ids = Array.isArray(sourceIds) ? Array.from(sourceIds) : sourceIds === null ? [] : [sourceIds];
+    if (ids.length !== b || new Set(ids).size !== ids.length) throw new ProtocolRejection('invitation requires exactly b distinct own mature sources');
+    const acts = ids.map(id => this.#act(id));
+    for (const act of acts) {
+      this.#requireUnspent(act);
+      if (act.subject !== creatorId || this.now - act.recordedAt < Math.max(DAY, this.policy.spendMaturityHours)) throw new ProtocolRejection('invitation requires own mature Emitter right');
+      if (act.debtReserved) throw new ProtocolRejection('emission is reserved for debt recovery');
+    }
+    const guarantors = this.eligibleGuarantors(creatorId);
+    if (guarantors.length < this.requiredGuarantors()) throw new ProtocolRejection('insufficient eligible guarantors');
+    if (typeof target !== 'string' || !target.length || this.#subjects.has(target)) throw new ProtocolRejection('invitation must target a new subject');
+    const id = this.#id('invitation');
+    for (const act of acts) this.#dispose(act, 'consumed', 'invitation');
+    this.#invitations.set(id, { id, creator: creatorId, sourceSelfId: ids[0] ?? null, sourceSelfIds: ids,
+      invitationLimit: this.invitationLimit, target, guarantors, createdAt: this.now, acceptedAt: null, status: 'open' });
+    this.#lastInvitationAt.set(creatorId, this.now);
+    this.#event('invitation-created', { invitation: id, creator: creatorId, target, experimental: true, burnedFacy: b, cooldownDays: P });
     return id;
   }
   acceptInvitation(invitationId, subjectId) {
@@ -413,9 +452,11 @@ export class FacetyModel {
     if (!this.guarantees.edge(guarantor, invitation.creator)) throw new ProtocolRejection('no authority to cancel invitation');
     if (this.ablations.disableInvitationVeto) throw new ProtocolRejection('invitation veto disabled by counterfactual ablation');
     invitation.status = 'cancelled';
-    const act = this.#act(invitation.sourceSelfId);
-    act.disposition = 'invitation-cancelled';
-    if (this.policy.xpFinality !== 'maturity' && this.#revokeXp(act, 'invitation-cancelled')) for (const receipt of act.xpCredit.recipients) this.#replayXp(this.#subject(receipt.subject));
+    for (const id of invitation.sourceSelfIds ?? [invitation.sourceSelfId]) {
+      const act = this.#act(id);
+      act.disposition = 'invitation-cancelled';
+      if (this.policy.xpFinality !== 'maturity' && this.#revokeXp(act, 'invitation-cancelled')) for (const receipt of act.xpCredit.recipients) this.#replayXp(this.#subject(receipt.subject));
+    }
     this.#event('invitation-cancelled', { invitation: invitationId, guarantor });
   }
   convertToCollector(owner, selfIdId) {
@@ -659,6 +700,23 @@ export class FacetyModel {
         const act = this.#acts.get(id);
         if (act.subject !== subject.id || act.chainIndex !== index + 1 || act.previousSelfId !== (chain[index - 1] ?? null)) throw new Error('Self-ID personal-chain invariant failed');
       }
+    }
+    if (this.invitationLimit !== null) {
+      const last = new Map(), sources = new Set();
+      const { P, b } = this.invitationLimit;
+      for (const invitation of this.#invitations.values()) {
+        const previous = last.get(invitation.creator);
+        if (invitation.invitationLimit !== this.invitationLimit || invitation.sourceSelfIds.length !== b
+          || invitation.sourceSelfId !== (invitation.sourceSelfIds[0] ?? null)
+          || (P !== null && previous !== undefined && invitation.createdAt - previous < P * DAY)) throw new Error('invitation limit invariant failed');
+        for (const id of invitation.sourceSelfIds) {
+          const act = this.#acts.get(id);
+          if (!act || act.subject !== invitation.creator || act.status === 'unspent' || sources.has(id)) throw new Error('invitation funding invariant failed');
+          sources.add(id);
+        }
+        last.set(invitation.creator, invitation.createdAt);
+      }
+      if (last.size !== this.#lastInvitationAt.size || [...last].some(([id, at]) => this.#lastInvitationAt.get(id) !== at)) throw new Error('invitation cooldown index invariant failed');
     }
     return ledger;
   }

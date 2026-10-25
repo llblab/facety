@@ -1,6 +1,18 @@
 {
   "schema": "facety-invitation-limits-design/v1",
-  "status": "pre-implementation-design-not-a-confirmation-registration",
+  "status": "native-primary-engineering-controls-not-H6-confirmation",
+  "primaryAssumptions": {
+    "status": "declared simulator assumptions, not owner-selected protocol replacements",
+    "constructorOption": "invitationLimit: { P, b }; null retains the unmodified default",
+    "firstUse": "No initial P wait; first use when the unchanged identity/support gates and exact b matured sources permit.",
+    "zeroBurnRequiresOwnClaim": false,
+    "ownEmissionBanking": "Retained own rights, no expiry; distinct from future calendar-permit accumulation.",
+    "maturityHours": "max(24, policy.spendMaturityHours)",
+    "softwareControlStock": 0,
+    "softwareControlHorizonDays": 504,
+    "softwareControlEmissionEveryDays": [1, 2, 3],
+    "softwareControlDemand": "One opportunity/day, enough for bounded requested arms; recipients not admitted;0 has no finite capacity measurement."
+  },
   "date": "2026-10-25",
   "hypothesis": "invitation-limits/H6",
   "ownerQuestion": {
@@ -16,16 +28,16 @@
     "key": "SubjectId, not mutable signing key",
     "EUnit": "own eligible matured FACY/day, not token price or uncalibrated private utility",
     "capacityNotGrowth": "The min bound is an asymptotic invitation service-capacity prior under stated funding and demand, not a theorem for accepted-node growth or population doubling.",
-    "zeroBurn": "b=0 removes the monetary bound; it does not imply a claim qualification policy.",
+    "zeroBurn": "Primary b=0 requires no own Self-ID/right and consumes no source; existing identity/support and invitation freeze remain. claim_requires belongs to a separately specified secondary sweep.",
     "unrestrictedArm": "0 has no P/b capacity bound; software limits are censors, not demonstrated economic protection.",
     "threshold": "b=P*E is co-binding. Strict monetary reduction below cooldown capacity requires b>P*E; equality can affect startup and phase.",
     "capacityVersusReturn": "A nonbinding burn still consumes FACY and may affect private return. Equal invitation capacity does not prove equal fraud premium; nominal remaining emission E-b*r is not itself calibrated private utility.",
     "providedFalsifierLogic": "The supplied b=1 pattern supports the no-farm-benefit/honest-tax subclaim. Retained verbatim, not registered as its falsifier.",
-    "actualBaseline": "Native invitation creation burns one retained own matured right, but has no independent per-SubjectId invitation cooldown. A=(1,1) is not an exact description of current execution for banked rights."
+    "actualBaseline": "The unchanged default burns one retained matured right without an independent invitation cooldown. Experimental invitationLimit={P:1,b:1} now implements the requested A explicitly, not as a silent default migration."
   },
   "unboundBeforeCapture": [
-    "Primary first-use eligibility and initial funded own-emission stock, with matching bootstrap/resources.",
-    "Primary b=0 claim requirement and exact meanings/defaults of accumulate, claim_requires and lapse; separate invitation permits from retained own FACY.",
+    "Population-study bootstrap/initial-stock and finite opportunity/work conditions, distinct from the specified single-creator software controls.",
+    "Secondary meanings and parameterizations of accumulate, claim_requires and lapse; separate invitation permits from retained own FACY.",
     "Calendar epoch, first permit, claiming and carry/lapse semantics for secondary arms.",
     "Fraud-premium definition and units, honest-growth/cost endpoints and individual versus coalition accounting; distinguish growth protection from cash/utility effects.",
     "Horizon, attention/work/evidence/merits, strategies, actor costs and any private-price model; no hidden evaluator labels in defenses.",
