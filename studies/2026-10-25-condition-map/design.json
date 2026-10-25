@@ -230,7 +230,8 @@
       "components": [
         "dilution",
         "policing cost",
-        "wrongful-exclusion rate"
+        "wrongful-exclusion rate",
+        "honest access loss including unable-to-meet people"
       ],
       "hMaxLevels": null,
       "saboteursIncluded": true
@@ -299,7 +300,9 @@
     "small-N rule/N_min",
     "s_treasury/s_treasury_max",
     "governance electorate and safeguards",
-    "vote-bounded measured-lambda purchase-price control"
+    "vote-bounded measured-lambda purchase-price control",
+    "trust-evidence R0/R1(m)/R2 and B(e)",
+    "voucher effort and burn-visibility/independent-evidence contract"
   ],
   "environment": {
     "rangesStatus": "unbound; each bound needs a source or no-basis label",
@@ -382,7 +385,8 @@
       "4h/24h grid",
       "attacker implementation",
       "response channel",
-      "governance electorate and measurement model"
+      "governance electorate and measurement model",
+      "verification-error dependence and meeting accessibility"
     ],
     "crossCheck": "independent core-equation reference versus full-simulator boundary; investigate mismatches before interpretation",
     "ablationLadder": "one mechanism at a time from an explicit minimal CORE; equal resources and equivalence/power before a no-effect kill nomination"
@@ -502,6 +506,168 @@
       "pairedAssetFundingAndMarketContract": null
     },
     "registration": "Freeze added assumptions, contrasts, costs/value, model forms, family/precision and reserved-data rules in a real committed native v2 method before research."
+  },
+  "trustEvidenceTopology": {
+    "status": "proposal assumptions only; regime/profile meanings require owner definitions before implementation/registration",
+    "specification": "trust-evidence.md",
+    "scope": "topology/evidence axis of this condition map; historical topology packet unchanged",
+    "armAndClaimPlacement": null,
+    "regimes": [
+      {
+        "id": "R0",
+        "definition": null
+      },
+      {
+        "id": "R1",
+        "definition": null,
+        "mValues": [
+          0,
+          1,
+          2
+        ],
+        "mMeaning": null
+      },
+      {
+        "id": "R2",
+        "definition": null
+      }
+    ],
+    "comparisonCells": [
+      "R0",
+      "R1-m0",
+      "R1-m1",
+      "R1-m2",
+      "R2"
+    ],
+    "profiles": {
+      "groupA": [
+        "M2",
+        "D1",
+        "D4"
+      ],
+      "groupB": [
+        "H2",
+        "H4"
+      ],
+      "definitionsAndCanonicalSource": null,
+      "notMapOrProtocolDecisionIds": true
+    },
+    "namespaces": "trustRegime.R1 != reductions.R1; trustRegime.m != secondary permit cap; profile.M2 != output.M2; no inherited confirmation labels",
+    "effortChoice": {
+      "values": [
+        "none",
+        "chat",
+        "video",
+        "meeting",
+        "joint_act"
+      ],
+      "chosenBy": "voucher using declared observations, utility and budget; no evaluator persona labels",
+      "costByEffort": {
+        "none": null,
+        "chat": null,
+        "video": null,
+        "meeting": null,
+        "joint_act": null
+      },
+      "detectionPowerByPersona": {
+        "honest": {
+          "none": null,
+          "chat": null,
+          "video": null,
+          "meeting": null,
+          "joint_act": null
+        },
+        "farm": {
+          "none": null,
+          "chat": null,
+          "video": null,
+          "meeting": null,
+          "joint_act": null
+        },
+        "mule-backed persona": {
+          "none": null,
+          "chat": null,
+          "video": null,
+          "meeting": null,
+          "joint_act": null
+        }
+      },
+      "claimFalsePositiveAbstentionAndCorrelationContract": null,
+      "declaredPerformedAndReceivedEvidenceAreSeparate": true,
+      "receiptFreshnessIdentityBindingAndSourceContract": null,
+      "noPerfectOrMonotoneDetectorAssumption": true
+    },
+    "bond": {
+      "BbyEffort": {
+        "none": null,
+        "chat": null,
+        "video": null,
+        "meeting": null,
+        "joint_act": null
+      },
+      "payerAssetDutiesCollectionExpiryReturnAndChangeContract": null,
+      "notAutomaticallyLegacyBONDOrCORE": true
+    },
+    "accessibility": {
+      "honestUnableToMeetFraction": null,
+      "costAvailabilityPersistenceAndAlternatives": null,
+      "includeAllTargetHonestPeople": true,
+      "accessDenialIsNotAutomaticallyErroneousVerdict": true
+    },
+    "muleMarket": {
+      "discoverySupplyConsentPriceCapacityReuseAndRiskContract": null,
+      "requiredBehaviorQuestions": [
+        "do farm policies actually find/retain mules",
+        "do lazy vouchers actually skip/substitute/misreport meetings"
+      ],
+      "generatedBudgetedSearchRequired": true,
+      "recruitedGenuinePersonNotAutomaticallyFake": true
+    },
+    "metrics": {
+      "externalAttestedShare": {
+        "perNodeAndClusterNumeratorDenominatorWindow": null,
+        "publicExternalPredicateVersusEvaluatorOwnership": null,
+        "sourceReuseDependenceAndZeroDenominator": null
+      },
+      "fakesPerAttackEdge": {
+        "admissionEventVersusLiveStockAndUniqueEdgeDenominator": null,
+        "DattackNotDgate": true,
+        "retainRawAndZeroEdgeCases": true
+      },
+      "honestAdmission": {
+        "allTargetAndAttemptConditionalRates": true,
+        "meetCapableAndUnableSubgroups": true,
+        "delayCostsAndCensoring": true
+      },
+      "mulePriceBoundary": {
+        "R1BindingDefinitionEquivalenceMarginAndSupplyBudgetHorizon": null,
+        "uncertaintyMultipleNoCrossingsAndCensoring": true,
+        "noMonotonicOrNonsignificanceProof": true
+      }
+    },
+    "cascade": {
+      "requestedComparison": [
+        "inviter burn observed",
+        "independent evidence required"
+      ],
+      "burnVisibilityAndIndependentSourceContract": null,
+      "minimalOrthogonalControls": {
+        "burnVisible": [
+          true,
+          false
+        ],
+        "independentEvidenceRequired": [
+          true,
+          false
+        ]
+      },
+      "assignmentAndPrimaryControlRoles": null,
+      "diagonalOnlySupportsPackageEffect": true,
+      "publicBurnNotIndependentEvidence": true,
+      "withholdingPublicDataIsDiagnosticCounterfactual": true,
+      "mechanismRegistration": "presence, necessity/ablation and named alternatives, committed before confirmation"
+    },
+    "registration": "Bind meanings, costs/power/errors/accessibility/bonds/supply, metrics, price-boundary criteria and controls before native v2 registration or study data."
   },
   "registration": {
     "requiredSchema": "facety-hypothesis/v2",

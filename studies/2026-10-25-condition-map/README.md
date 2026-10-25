@@ -36,6 +36,10 @@ Adaptive classes are self-funded Sybils, exact-D attack-edge attachment, genuine
 
 [The governance addendum](governance.md) adds a distinct, unimplemented PURCHASE proposal, not an alias of the existing twelve arms. Treasury share defaults to0 in this candidate; compare0/0.2 under an explicit cap and fixed-versus-adaptive policy contract. Eighth class(h) tests Standing-weighted/random-jury/voucher-weighted governance capture, cost versus redirected value, hard cap/timelock/two-key/sunset safeguards and honest flexibility. A vote-bounded b=f(measured lambda) variant needs signal-manipulation/oscillation controls. Treasury benefit requires purchased outputs, full costs and use-dependent funded paired-asset conditions, not revenue-as-welfare. No selected rule, runtime default, price floor or beneficial effect is inferred. Bind PURCHASE payment/granularity and governance contracts before registration/data.
 
+## Topology trust-evidence extension
+
+[The trust-evidence addendum](trust-evidence.md) adds voucher-chosen none/chat/video/meeting/joint_act effort, uncalibrated c_e/d_e for honest/farm/mule-backed personas and candidate B(e). Requested regimes R0/R1(m0/1/2)/R2 and profiles M2/D1/D4 versus H2/H4 are preserved as names **awaiting owner definitions**, not guessed policies. Metrics cover external-attestation share, false admissions per funded attack edge, all-target/subgroup honest access including inability to meet, and conditional mule-price boundaries. The burn-versus-independent-evidence comparison needs separate visibility/obligation controls; the diagonal alone measures a package effect, not a cascade mechanism. Historical topology evidence and selected independence contracts are unchanged; no meeting/personhood/independence guarantee or new result exists.
+
 ## Required outputs, currently unexecuted
 
 - **M1:** probability maps in reduced groups,2D slices, compact conditional rules and uncertainty.
