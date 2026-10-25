@@ -1,0 +1,15 @@
+# G0 checkpoint — orientation only
+
+**2026-10-26 · Evidence label: DIAGNOSTIC (source/contract inventory).** Not a hypothesis confirmation, attack result or human-rate measurement.
+
+**Claim.** WP0's source inventory and assumption/decision ledger are complete for the master's declared scope. This means every current arm/parameter/gate/ambiguity has an explicit owner/source/default-or-unbound home—not that OPEN protocol or all experiment contracts are resolved.
+
+**Evidence.** [Manifest](source-manifest.json) binds the six required documents and three historical study READMEs at499b069. Exact blob equivalence reuses previous complete reads; changed context/deltas and required study/source entrypoints were inspected. [Orientation](orientation.md) maps native financial/time/graph/observation/statistical capabilities and missing lifecycle/attack/evidence/market/testbed components. [Root register](../../DECISIONS_NEEDED.md) records all parameter families,14 decision areas, trade-offs and supplied defaults. Validation checks the dependency graph, default/definition preservation, source identities, no model/test/protocol/old-evidence change and context links.
+
+**What changed in beliefs/priority.** The master resolves R0/R1/R2, m and joint-act/PURCHASE direction, so old 'undefined regime' claims no longer govern. It supersedes the immediate Claim-guard task with WP1 first, and restores alpha1.5 as mandatory robustness. Named profile/logging detail is still absent but is not a general early-WP blocker. The literal joint-act artifact does not by itself establish the physical-operator bound; phase1 majority/value-cap and freshness/unique-identity contracts remain recorded alternatives. No new numerical security belief is warranted.
+
+**Negative/surprising evidence.** There is no concurrent-slot/vouch-bond/registered-joint-act/mule/phase/treasury engine or independent full reference to reuse as complete. A public-seed SybilRank-style primitive exists; a complete conductance/PPR/k-core/AUC camouflage suite does not. Old fixed-menu results and27 no-claim daily controls do not answer the master priors/frontier. Numeric kill/plausibility/precision contracts remain unbound. None of these absences is a measured protocol failure.
+
+**Next eligible step.** Only BACKLOG owns the next WP1 slice: prepare minimal explicit funded vouch/slot/cooldown/bond/veto/detector contracts and independent reference/native-v2 integration before empirical prior checks. Engineering may use declared diagnostic property fixtures, not undisclosed study sampling. Commit actual registration/claims/ranges/precision/kill bindings before registered executions. No WP2/WP3/WP5 run before G1; no WP4/G6/testbed/pilot bypass. Owner questions/defaults remain in the register; no selected D-rule changes.
+
+**Stop proof for this checkpoint.** Notes/schema/source validation only; no executable source/test edits, new experiment/search/confirmation namespace, historical replay, LLM agent or pilot. G0 closes orientation; G1–G6 have not passed and WP7/WP8 have not started. Future kill gates stop dependent work rather than authorize extra sweeps.

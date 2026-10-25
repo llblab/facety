@@ -1,5 +1,7 @@
 {
   "schema": "facety-condition-map-design-draft/v1",
+  "programmeOwner": "../2026-10-26-trust-topology-condition-map/README.md",
+  "usage": "retained module; master ordering/scope/defaults supersede earlier priority and null definitions; no research run",
   "status": "pre-registration; no condition-map data or region labels",
   "authority": "One owner condition-map study. Retains CORE v2 rules/arms/primary; replaces its headline and deliverables. No selected D-rule edits or OPEN-contract choices.",
   "canonicalTaskOwner": "BACKLOG.md",
@@ -508,28 +510,29 @@
     "registration": "Freeze added assumptions, contrasts, costs/value, model forms, family/precision and reserved-data rules in a real committed native v2 method before research."
   },
   "trustEvidenceTopology": {
-    "status": "proposal assumptions only; regime/profile meanings require owner definitions before implementation/registration",
+    "status": "master defines regimes and joint-act record; detailed profile/evidence/collection contracts still unbound",
     "specification": "trust-evidence.md",
     "scope": "topology/evidence axis of this condition map; historical topology packet unchanged",
     "armAndClaimPlacement": null,
     "regimes": [
       {
         "id": "R0",
-        "definition": null
+        "definition": "all vouches equal; master proposal"
       },
       {
         "id": "R1",
-        "definition": null,
+        "definition": "at least m of c vouches joint-act-backed; master proposal",
         "mValues": [
           0,
           1,
-          2
+          2,
+          "c"
         ],
-        "mMeaning": null
+        "mMeaning": "minimum joint-act-backed vouches"
       },
       {
         "id": "R2",
-        "definition": null
+        "definition": "joint-act-backed vouches have lower B(e) and/or higher weight; isolate variants; coefficients unbound"
       }
     ],
     "comparisonCells": [
@@ -537,6 +540,7 @@
       "R1-m0",
       "R1-m1",
       "R1-m2",
+      "R1-mc",
       "R2"
     ],
     "profiles": {
@@ -667,7 +671,7 @@
       "withholdingPublicDataIsDiagnosticCounterfactual": true,
       "mechanismRegistration": "presence, necessity/ablation and named alternatives, committed before confirmation"
     },
-    "registration": "Bind meanings, costs/power/errors/accessibility/bonds/supply, metrics, price-boundary criteria and controls before native v2 registration or study data."
+    "registration": "Master resolves R meanings; bind remaining profile/evidence/bond/supply/metric contracts at eligible WPs before native v2 registration/data."
   },
   "registration": {
     "requiredSchema": "facety-hypothesis/v2",

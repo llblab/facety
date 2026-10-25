@@ -1,5 +1,7 @@
 # ARM_PURCHASE: treasury and governance lever — proposal addendum
 
+**Master update2026-10-26:** [the governing programme](../2026-10-26-trust-topology-condition-map/README.md) now specifies PURCHASE as one/24h for b1 own matured emission within F1/3/7 days, all-burn versus80/20. It resolves the broad payment-source direction below, not freshness origin/fractional settlement/refund/authority details. Economics waits for G1/WP5; this document is a retained module, not an alternate work order.
+
 **Owner-requested condition-map extension, not a selected D-rule or implementation.** No ARM_PURCHASE exists in the native simulator yet. Preserve the twelve isolated A/B/H/BOND/0 arms and CORE/legacy comparison; do not alias PURCHASE to their existing Self-ID burn. Purchase payer, asset/source, eligibility, price b, refund/cancellation, settlement and admission-gate bindings remain explicit prerequisites. All protocol-economic execution must eventually go through FacetyModel.
 
 ## Treasury policy and accounting

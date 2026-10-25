@@ -1,0 +1,82 @@
+# Research decisions and assumption ledger
+
+**Authority:** owner's master research direction,2026-10-26; proposal under test, not selected protocol. This register owns questions, candidate trade-offs, placeholder provenance and defaults taken—not tasks. [BACKLOG](BACKLOG.md#trust-topology-condition-map-master-programme) alone owns work; [WP0 inventory](studies/2026-10-26-trust-topology-condition-map/orientation.md) owns implementation evidence. No selected D-rule changes are authorized.
+
+## Study definitions supplied by the master
+
+- R0: all vouches equal. R1: at least m of c vouches joint-act-backed, m in{0,1,2,c}. R2: lower B(e) and/or higher weight for joint-act vouches; distinguish bond-only, weight-only and combined candidates, without inventing coefficients. The former missing-regime-meaning blocker is resolved, not an outstanding owner question.
+- Joint act: group Self-ID on one registered artifact, registered within24h, co-signed by both parties, public/checkable/fresh. Remote variants are lower-class and flagged. This defines a record, not an infallible human-identity assay.
+- PURCHASE: at most one per24h, b1 of own matured emission within last F days, F in{1,3,7}; split defaults all burn,80/20 comparison. This resolves the former missing payment-source direction; fractional settlement, freshness and lifecycle still need contracts.
+- Master precedence restores the mandatory network-effect alpha1.5 robustness condition, alongside1/1.5/2 and all other registered-context requirements. It does not select a response law or hide failures in other contexts.
+- Profile category names and the WP7 logging outline are supplied. The detailed M2/D1/D4/H2/H4 library/utility/action definitions and a standalone logging specification were not located. Their absence gates only dependent profile/testbed work, not WP1.
+
+## Placeholder and range ledger
+
+Unless explicitly distinguished below, every level is an owner-requested placeholder/scenario—not empirical calibration. Each eventual numeric range/joint law needs a citation or **no basis** in preregistration.
+
+- **Core:** c,K,T,B,V,J,Standing eligibility/active window, finder fraction, stake amount and appeal doubling. The earlier module's c3/K5/T14/B100/V90/J101/active28 are retained placeholders, not master-selected defaults or evidence. E1 and ordinary24h mechanics have protocol sources, but CORE is not implemented. Shared group-claim rewards/dedup are not selected.
+- **Phase:** N_min{30,60,100,300}, P1a/P1b/P1c, value-cap amount/withdrawability, account age and independent-path activation thresholds, jury quorum/shortage, transition dates and retroactivity. No calibrated active/unique-person count exists.
+- **Invitations:** A(1,1), B P3/7 b0, H P3/7 b1/P/2P, BOND, PURCHASE F1/3/7 b1/24h and0. The explicit A cooldown is not the unchanged native default, which permits banked-source bursts. BOND funding/coverage remains unspecified. Burn equality b=P*E co-binds; strict additional stationary throughput reduction needs b>P*E.
+- **Governance:** s0 versus0.2, cap s_treasury_max (not V2 capture-share s_max), electorate variants, safeguard durations/authority, lambda-feedback f/gain/bounds and funded treasury uses. No reserve/paired asset or price floor is supplied.
+- **Evidence:** effort{none,chat,video,meeting,joint_act}, c_e,d_e,false positives/abstentions/correlation, B(e), m0/1/2/c, identity binding/reuse and inability-to-meet fraction. No monotone/perfect detector or known mule supply/price is given. m>c cells are infeasible, not clamped or silently omitted.
+- **Environment:** prices and funded buyback, regional wages/time units, fake-media kappa1/3/10 inherited by reference, willingness/bribery/rental/resale, type mixtures, norm crowding-out, cohort selection, topology/license and observation delay/error. Historical social-study stranger2%, verification90%/false alarm1%, bribe5%, civic value2/20 and cost5x/10x remain old assumptions, not new ranges or calibration.
+- **Race/statistics:** alpha1/1.5/2, local/global hazard normalization, density, N*, Td/Tdbl/lifetimes, scales10→100/1000, horizons, beta/search effort and2x-search check, rho1/3/10, s/h/t/eps profiles, jury f<1/3, X1/X2/Y2, precision/power/equivalence and multiplicity. Numerical kill values and plausible ranges are unbound; do not execute or claim a universal kill/pass before binding them.
+- **Testbed/pilot:** two-week WP7 timebox and8→32 agent staging are owner limits, not evidence of human behavior. Model/provider/token/expense limits, exact category profiles and logging schema are unspecified. Public non-face topology only by default; no human recruitment, face collection or pilot execution.
+
+## Decision candidates and defaults taken
+
+### Q01 — Claim, clocks and disposition
+
+Default taken for the proposal: cooldown after successful use keyed by SubjectId, no permit accumulation, uncancelled Self-ID in a window, gates at use. Window length/endpoints, pending versus mature/void/disputed states and pending-invitation lapse remain unbound. Pending claims improve prompt access but expose preventive risk; mature-only narrows access and can create boundary deadlocks. Continue independent WPs, do not invent an executable window or alter legacy defaults. Deferred Claim-guard engineering is subordinate to WP1/WP5, not the next programme step.
+
+### Q02 — Slots, clocks, funding and lifetime prior
+
+Master K means concurrent probation slots for V days; lifetime K is an explicitly different analytic counterfactual, not a protocol option. Bind slot acquisition/release, pending admission, exit/default/pending-case expiry and bond reuse. Early release helps liquidity but weakens coverage; keeping full V exposure costs capital. Ten mutual founders can exceed K5 if every historical link occupies a new slot; seed capital/paid prehistory versus explicit grandfathering have different resource/privilege costs. No free money/Standing or hidden genuine-person exemption. Prior2 must distinguish newly admitted n from total s+n; G1 must independently check the boundary/count convention, not silently reinterpret it.
+
+### Q03 — Joint-act artifact and physical/unique identity
+
+Bind artifact registration origin,24h reference clock/endpoints, signer/subject binding, freshness at admission versus maintenance, repeated artifacts/persona use, source dependence and authenticity. A common artifact could link each participant's one daily claim or be one separately rewarded group claim: neither reward/XP/dedup choice is authorized. Public co-signatures alone allow one operator's multiple keys; the prior 'at most1+mules' needs explicit identity/liveness/exclusivity assumptions. Stronger checks may reduce substitution but impose privacy/access costs. Default remote acts remain lower evidence, not face-to-face equivalents; no default perfect detector.
+
+### Q04 — Independence, R2 and policy placement
+
+Apply the named R rules only to explicitly bound proposal/reference arms; do not replace selected D33/D35/D36 with raw support or silently weaken CORE. R2 bond-only preserves count semantics; weight-only changes effective admission support; combined mixes price and gate effects. Bind weights, distinct-witness count, threshold, shared artifacts and B(e) collection. When m=c equals another requested level, preregister resolved-context dedup/alias reporting rather than silently doubling nominal evidence. Public source/graph predicates are observable but imperfect; true outside-coalition ownership is evaluator-only. Different keys/signatures/paths are not verified independence. Graph projection/anchors/genesis/epochs remain OPEN; synthetic references must declare them rather than use truth as a defense input.
+
+### Q05 — Active counter, N_min and phase variants
+
+Default taken: sweep30/60/100/300; counter combines account age and independent-path condition. Exact ages, eligible paths/anchors, activity, epochs/refresh and bootstrap remain candidate bindings, not omniscient person counts. Stronger conditions resist count inflation but can block genesis/honest access. Master says jury/Chekharda off below N_min yet P1b adds a non-adjacent majority; distinguish a preventive collective veto from adjudication, or explicitly approve an exception. Clarify whether value cap is common to all phase1 variants or distinguishes P1c. No jury/final sanctions are silently enabled. A threshold is not a feasible J pool; shortage/quorum/tie handling needs a contract.
+
+### Q06 — Value cap, phase transition and recovery
+
+Limited withdrawable versus non-withdrawable FACY bound extraction differently and change honest utility/custody. Bind amount/time, existing rights, enforcement, valuation, expiry and phase-flip rollback. Retroactive disputes/limitation/clean slate are requested candidates with accountability versus reliance/innocent-loss trade-offs, not automatic amnesty or D34 migration. Collapse, absorption, recovery actions/horizon and costs need predicates; unrecovered-by-horizon is not proof of irreversibility. Default selected rules remain unchanged.
+
+### Q07 — PURCHASE, split precision and BOND
+
+Default taken: own matured emission, rolling24h maximum, F1/3/7, all-burn s0; s0.2 is a variant. Bind whether F measures issuance age or time since maturity and inclusive endpoints (F1 with24h maturity can collapse to an exact-boundary cell), sources/quote/settlement/refund/replay, token atom/rounding/carry. Splitting paid tokens and redirecting unissued rights differ in issuance/custody; no implementation is selected. BOND may use creator liquid funds, own rights or explicit sponsor backing, with different provenance/rental/coverage costs; record the payer and funded per-act exposure before use.
+
+### Q08 — Governance, controller and treasury benefit
+
+Default taken: sweep Standing/random-jury/voucher electorate assumptions; s0 baseline. Bind weight/quorum/amendment/payout powers, hard-cap authority, timelock, actual independence/common ownership of two keys, sunset renewal and old obligations. Fixed s versus adaptive initial s contrasts differ; initial0 is not safe if captured governance can raise it. Bind measured local/global lambda, provenance/denominator/delay, b gross cost versus burned component, gain/bounds/fallback and funded manipulation. Demonstrate named purchased service/output and net cost/harm against idle/all-burn/matched-funded controls. Vendors may accept FACY conditionally without a pair; external payouts/liquidity/buyback require actual counterpart assets/markets and risks. No free ATMO support or price guarantee.
+
+### Q09 — Evidence choice, access and mule supply
+
+Bind c_e in work/time/money, d_e by claim/persona and errors/correlation, B(e) liquidity/duties, honest unable-to-meet distribution and alternatives. Voucher choice uses observed information/utility, not true type or a scripted 'lazy skips' rule. Public data defaults to non-face only; joint-act privacy is a G2 output. Mule search needs real supply/consent/capacity/reservation cost/retention and actual funded recruitment; a distinct paid real participant is not automatically fake. Price-boundary criteria need equivalence margins and uncertainty, not nonsignificance or assumed monotonicity. Burn visibility and evidence obligations need separate controls for a cascade mechanism claim.
+
+### Q10 — Merits, execution and monitoring versus cover-up
+
+Bind fallible received evidence, actual court access/stakes/shortage/finality and fake versus genuine-act violations. Native D59 trusted source recovery is not a CORE court; it uses author liquidity/debt where CORE excludes debt. Define collectible seizure/bond/finder/overlap/wrongful-remedy contracts without third-party fictitious burn, guilt by association or equal fines on today's graph. Monitoring and concealment are competing hypotheses; do not force either through prescribed behavior. Nothing authorizes lifting the act-defect relay guard.
+
+### Q11 — Priors, rates and response
+
+Per-node vouch service min(1/T,K/V), member birth approximation /c and doubling time require distinct finite-prefix/first-use, immediate-eligibility and resource assumptions. Lifetime-cap conservation is not concurrent slot renewal. b/E payback omits fixed fiat costs; L_f=1/lambda needs a stationary survival model, and outside X must share units. Equality at b=P*E co-binds, not strict extra throttling. Local prevention and global removal need compatible at-risk denominators before g-lambda; no raw-look count becomes successful suppression. Alpha1.5 is a required robustness context, not free superlinear attention. Median Td<Tdbl, nominal cB catch loss and jury f<1/3 are conditional priors, not guarantees.
+
+### Q12 — Predicate, thresholds and kill scope
+
+Retain the earlier V1–V5 candidate dimensions/rho profiles only where consistent with the master. Bind payoff versus premium/common unit/nonpositive denominators, authority/harm/access/type/growth metrics and bad-event probability. Across-seed P(bad), trajectory pass probability, statistical confidence and surrogate uncertainty differ. Define plausible ranges, X1/X2/Y2/eps and the meaning of unbounded/above-threshold for every tested rule before results. A sampled failure is not proof over an untested continuum. Kill stops all dependent later WPs; failed search is never evidence of safety.
+
+### Q13 — Native v2, search and reference
+
+No new run defaults taken: prepare/commit actual v2 claims/arms/metrics/ranges/precision/selection/reserved namespaces before empirical execution. Current evidence's32-arm/16-context/32-claim per-hypothesis limits do not encode arbitrary new engines/adaptive maps. Register selection/refinement and the full error family; D37's within-hypothesis contradiction and cross-hypothesis support correction are not universal map inference. Independent minimal reference must not call the tested transition path; it is an independent mathematical/accounting oracle, not an alternate authoritative admission path or graph-only funding bypass. Distinguish bugs/units/assumption mismatches/encoded effects before residual mechanism claims. Fix generated attack language/observations/training/effort/in-world beta and2x-search stability; script-menu maxima are not optimal attacks.
+
+### Q14 — Data, testbed and pilot
+
+Default taken: suitable public licensed non-face graphs only; otherwise labeled synthetic. Do not download identifiable faces or claim social edges verify identities. WP7 waits for G2-fixed rules; numeric profiles, provider/cost cap and detailed logging are dependent choices, not WP1 blockers. Same action API, private knowledge and separate truth layer;8-agent leak/harness check precedes32-agent mixtures/top arms. Bind the master's 'scripted best-response' comparator to the declared non-LLM baseline without weakening WP3's no-fixed-script requirement; old strategy menus are not a sufficient baseline. Timebox two weeks from WP7 start; record exploit/ambiguity absent from the declared baseline attacker or stop. LLM behavior is diagnostic/exploratory, never human-rate calibration. WP8 starts from G6 measurement ranking; consent/privacy/stopping/pilot execution remain separate and execution is not authorized.

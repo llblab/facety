@@ -1,0 +1,66 @@
+{
+  "schema": "facety-trust-topology-orientation-sources/v1",
+  "status": "WP0 diagnostic source inspection only; no registration or empirical result",
+  "baseCommit": "499b06954634451bb6b22c02be5e2d95139002d7",
+  "sources": [
+    {
+      "path": "docs/facety.protocol.en.md",
+      "gitBlob": "59e896243cc82ac306251198c797fc712145fba0",
+      "sameAsPriorFullRead": true
+    },
+    {
+      "path": "docs/simulator.en.md",
+      "gitBlob": "15e54430a241aa2f09693140a04b7d6ad64f6878",
+      "sameAsPriorFullRead": false
+    },
+    {
+      "path": "docs/evidence.en.md",
+      "gitBlob": "66fa3ea82e6e6875ce6bd52ba6974496e93e232b",
+      "sameAsPriorFullRead": true
+    },
+    {
+      "path": "docs/insights.en.md",
+      "gitBlob": "b7a5cc2f6cbb1721d2c3cc38fe43e26caa1d01cb",
+      "sameAsPriorFullRead": false
+    },
+    {
+      "path": "docs/research.en.md",
+      "gitBlob": "91388bd90f43cde4d3689714c707523060deaf4e",
+      "sameAsPriorFullRead": false
+    },
+    {
+      "path": "BACKLOG.md",
+      "gitBlob": "72a9ad1b17f573e6a690cf39a62fe8cb13634e27",
+      "sameAsPriorFullRead": false
+    },
+    {
+      "path": "studies/2026-10-22-social-trust-threshold/README.md",
+      "gitBlob": "56feadce3bf3b1cde52227ef057abc6d762447dd",
+      "sameAsPriorFullRead": true
+    },
+    {
+      "path": "studies/2026-10-22-timed-chekharda/README.md",
+      "gitBlob": "4fbb557e8a053987b5a6476a2d22866e1528b06f",
+      "sameAsPriorFullRead": true
+    },
+    {
+      "path": "studies/2026-10-23-topology-contract/README.md",
+      "gitBlob": "6aa2d88177367955c2e2e8260b8b2c21995a482d",
+      "sameAsPriorFullRead": true
+    }
+  ],
+  "reuse": "Exact blob equality reuses prior complete reads; current changed context surfaces/deltas and required historical READMEs inspected. Native inventory uses maintained source and previous source-bound audits.",
+  "modules": [
+    "../2026-10-25-invite-cost-vs-core/",
+    "../2026-10-25-condition-map/",
+    "../2026-10-25-invitation-limits/"
+  ],
+  "notLocated": [
+    "detailed agent profile library",
+    "standalone testbed logging specification",
+    "selected licensed non-face topology dataset"
+  ],
+  "studyRuns": 0,
+  "searchEvaluations": 0,
+  "historicalReplays": 0
+}

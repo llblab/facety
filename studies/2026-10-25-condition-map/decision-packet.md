@@ -1,5 +1,7 @@
 # Condition map — pre-data decision packet
 
+**Historical preparation/module:** use the [master packet](../2026-10-26-trust-topology-condition-map/decision-packet.md) for current ordering/defaults and the newly supplied R/joint-act/PURCHASE meanings. No result is replayed or upgraded.
+
 **At most2 pages; candidates only. No winning rule set, SAFE region, empirical ranking or pilot thresholds exist.** The new owner objective is conditional V1–V5/M1–M7 maps, not proving10x or that Facety works. [BACKLOG](../../BACKLOG.md#condition-map-study-viability-boundaries) owns tasks; [design](design.json) and [method](method.md) own this draft. No rule selection or protocol migration is made.
 
 ## What can already be recommended

@@ -1,5 +1,7 @@
 # Facety condition-map study
 
+**Retained module, not the programme task owner:** the [2026-10-26 master](../2026-10-26-trust-topology-condition-map/README.md) now governs WP0–WP8 order, phase/PURCHASE/joint-act/R definitions and mandatory alpha1.5 robustness. Its [decision register](../../DECISIONS_NEEDED.md) replaces stale missing-definition questions and the old immediate Claim-guard priority. The material below is prior preparation/details by reference; no result is promoted or replayed.
+
 **One conditional research study; preparation, not a selected protocol or evidence Facety works.** The owner's condition-map injection replaces the former CORE v2 headline and deliverables, retaining its rules, two-part arms and conservative primary. [BACKLOG](../../BACKLOG.md#condition-map-study-viability-boundaries) alone owns tasks. No D-decision/OPEN contract or default is changed. Earlier [CORE preparation](../2026-10-25-invite-cost-vs-core/README.md), [reuse audit](../2026-10-25-invite-cost-vs-core/audit.md) and [metric definitions](../2026-10-25-invite-cost-vs-core/metrics.md) are input history, not a second study or current work owner.
 
 ## Status and evidence
@@ -38,7 +40,7 @@ Adaptive classes are self-funded Sybils, exact-D attack-edge attachment, genuine
 
 ## Topology trust-evidence extension
 
-[The trust-evidence addendum](trust-evidence.md) adds voucher-chosen none/chat/video/meeting/joint_act effort, uncalibrated c_e/d_e for honest/farm/mule-backed personas and candidate B(e). Requested regimes R0/R1(m0/1/2)/R2 and profiles M2/D1/D4 versus H2/H4 are preserved as names **awaiting owner definitions**, not guessed policies. Metrics cover external-attestation share, false admissions per funded attack edge, all-target/subgroup honest access including inability to meet, and conditional mule-price boundaries. The burn-versus-independent-evidence comparison needs separate visibility/obligation controls; the diagonal alone measures a package effect, not a cascade mechanism. Historical topology evidence and selected independence contracts are unchanged; no meeting/personhood/independence guarantee or new result exists.
+[The trust-evidence addendum](trust-evidence.md) adds voucher-chosen none/chat/video/meeting/joint_act effort, uncalibrated c_e/d_e for honest/farm/mule-backed personas and candidate B(e). The master now defines R0 equal vouches, R1 minimum joint-backed m0/1/2/c and R2 bond/weight variants; detailed M2/D1/D4 versus H2/H4 profiles still require source definitions only for dependent tests. Metrics cover external-attestation share, false admissions per funded attack edge, all-target/subgroup honest access including inability to meet, and conditional mule-price boundaries. The burn-versus-independent-evidence comparison needs separate visibility/obligation controls; the diagonal alone measures a package effect, not a cascade mechanism. Historical topology evidence and selected independence contracts are unchanged; no meeting/personhood/independence guarantee or new result exists.
 
 ## Required outputs, currently unexecuted
 
