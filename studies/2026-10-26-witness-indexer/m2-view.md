@@ -1,6 +1,6 @@
 # M2-A immutable graph/status view
 
-**D61 engineering contract before code, bounded local-actionable slice of M2.** [M1](m1-verifier.md) needs an actual supplied graph view before global search can be checked. This slice captures read-only DirectedGraph/Native public state; it is not the global hop oracle, event-replay engine, live epoch/ranking process, authenticated chain state or Model admission gate. BACKLOG alone owns remaining tasks.
+**D61 engineering contract before code, bounded local-actionable slice of M2.** [M1](m1-verifier.md) needs an actual supplied graph view before global search can be checked. This slice captures read-only DirectedGraph/Native public state; it is not the global hop oracle, event-replay engine, live epoch/ranking process, authenticated chain state or Model admission gate. BACKLOG alone owns remaining tasks. This historical M2-A checkpoint at9dd705b predates [M2-B](m2-oracle.md), which adds global search and the factory-local isPathWitnessView brand without changing capture data/liveness rules; absent-oracle statements below describe that earlier checkpoint.
 
 ## Owners and explicit reference modes
 

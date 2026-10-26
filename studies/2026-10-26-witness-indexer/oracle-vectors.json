@@ -1,0 +1,465 @@
+{
+  "schema": "facety-path-oracle-vectors/v1",
+  "classification": "synthetic finite software cases, not research registration/data",
+  "context": {
+    "domain": "facety:software-fixture",
+    "subject": "u",
+    "policy": {
+      "direction": "directed-from-anchor",
+      "graceEpochs": 1,
+      "maxDifficulty": 8,
+      "maxHops": 5,
+      "maxIdBytes": 64,
+      "maxSlack": 1,
+      "maxWitnessBytes": 8192,
+      "minStanding": null,
+      "undirectedProjection": "any-live-orientation"
+    }
+  },
+  "query": {
+    "epoch": 3,
+    "maxExpansions": 10000,
+    "maxPaths": 128,
+    "maxPackingSteps": 10000
+  },
+  "cases": [
+    {
+      "id": "two-short",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 1
+      },
+      "expected": "found"
+    },
+    {
+      "id": "unbounded-but-too-long",
+      "graph": {
+        "nodes": [
+          "u",
+          "x",
+          "a",
+          "y",
+          "z",
+          "b"
+        ],
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "z",
+            "y"
+          ],
+          [
+            "b",
+            "z"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 2
+      },
+      "expected": "infeasible"
+    },
+    {
+      "id": "long-enough",
+      "graph": {
+        "nodes": [
+          "u",
+          "x",
+          "a",
+          "y",
+          "z",
+          "b"
+        ],
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "z",
+            "y"
+          ],
+          [
+            "b",
+            "z"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 3
+      },
+      "expected": "found"
+    },
+    {
+      "id": "layer-duplicated-person-trap",
+      "graph": {
+        "nodes": [
+          "u",
+          "x",
+          "y",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "b",
+            "x"
+          ],
+          [
+            "x",
+            "y"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 3
+      },
+      "expected": "infeasible"
+    },
+    {
+      "id": "exact-positive-cap",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 1
+      },
+      "budget": {
+        "maxExpansions": 2,
+        "maxPaths": 2,
+        "maxPackingSteps": 2
+      },
+      "expected": "found"
+    },
+    {
+      "id": "one-expansion-short",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 1
+      },
+      "budget": {
+        "maxExpansions": 1,
+        "maxPaths": 2,
+        "maxPackingSteps": 2
+      },
+      "expected": "censored",
+      "reason": "expansion-limit"
+    },
+    {
+      "id": "one-path-short",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 1
+      },
+      "budget": {
+        "maxExpansions": 2,
+        "maxPaths": 1,
+        "maxPackingSteps": 2
+      },
+      "expected": "censored",
+      "reason": "path-limit"
+    },
+    {
+      "id": "one-packing-step-short",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 1
+      },
+      "budget": {
+        "maxExpansions": 2,
+        "maxPaths": 2,
+        "maxPackingSteps": 1
+      },
+      "expected": "censored",
+      "reason": "packing-limit"
+    },
+    {
+      "id": "partial-enumeration-positive",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b",
+          "c"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "u"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      "policy": {
+        "maxHops": 1
+      },
+      "budget": {
+        "maxExpansions": 2,
+        "maxPaths": 3,
+        "maxPackingSteps": 2
+      },
+      "expected": "found",
+      "enumerationComplete": false
+    },
+    {
+      "id": "wire-cap-is-not-no-path",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "policy": {
+        "maxHops": 1,
+        "maxWitnessBytes": 1
+      },
+      "expected": "censored",
+      "reason": "witness-byte-bound"
+    },
+    {
+      "id": "removed-anchor-transit",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "a"
+          ]
+        ],
+        "difficulty": 1,
+        "anchors": [
+          "a",
+          "b"
+        ],
+        "removed": [
+          "a"
+        ],
+        "standing": [
+          [
+            "a",
+            1
+          ]
+        ]
+      },
+      "policy": {
+        "maxHops": 2,
+        "minStanding": 1
+      },
+      "expected": "found"
+    },
+    {
+      "id": "known-shortage-needs-no-search",
+      "graph": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "u"
+          ]
+        ],
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "budget": {
+        "maxExpansions": 0,
+        "maxPaths": 0,
+        "maxPackingSteps": 0
+      },
+      "expected": "infeasible",
+      "reason": "degree-infeasible"
+    }
+  ]
+}

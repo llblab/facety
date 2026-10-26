@@ -8,6 +8,8 @@ export const PATH_VIEW_LIMITS = Object.freeze({ nodes: 4096, edges: 65536, snaps
 const cmp = (a, b) => Buffer.compare(Buffer.from(a), Buffer.from(b));
 const pair = (a, b) => JSON.stringify([a, b]);
 const natural = value => Number.isSafeInteger(value) && !Object.is(value, -0) && value >= 0;
+const constructedViews = new WeakSet();
+export function isPathWitnessView(value) { return constructedViews.has(value); }
 function fields(v, keys) {
   if (!v || ![Object.prototype, null].includes(Object.getPrototypeOf(v)) || Object.keys(v).length !== keys.length || Reflect.ownKeys(v).length !== keys.length
     || keys.some(k => !Object.hasOwn(v, k)) || Object.values(Object.getOwnPropertyDescriptors(v)).some(d => !Object.hasOwn(d, 'value'))) throw new TypeError('invalid path view fields');
@@ -97,12 +99,14 @@ function build(storage, options, source, liveNodes = storage.nodes) {
     const map = direction === 'directed-from-anchor' ? directed : projection === 'reciprocal-only' ? reciprocal : any;
     return map.get(subject) ?? empty;
   }
-  return Object.freeze({ capture, view: () => current, snapshot: epoch => snapshots.get(epoch)?.meta ?? null,
+  const view = Object.freeze({ capture, view: () => current, snapshot: epoch => snapshots.get(epoch)?.meta ?? null,
     anchor: (epoch, subject) => snapshots.get(epoch)?.anchors.has(subject) ?? false, removed: subject => removed.has(subject),
     edge: (from, to) => out.get(from)?.has(to) ?? false, standing: subject => scores.get(subject) ?? null,
     degree: (subject, direction, projection) => neighbors(subject, direction, projection).length,
     anchorCount: (epoch, subject) => { const values = snapshots.get(epoch)?.available; return values ? values.size - Number(values.has(subject)) : 0; },
     nodeIds: () => exported.live.nodes, neighbors, toJSON: () => exported });
+  constructedViews.add(view);
+  return view;
 }
 export function pathWitnessGraphView(graph, input) {
   const options = optionsFrom(input);
