@@ -1,10 +1,12 @@
-// Owns: Bounded anchor BFS and tree/one-hop branch candidate assembly; excludes global completeness, live ranking, dynamic repair and authority.
+// Owns: Bounded anchor BFS and tree/branch/prefix candidate assembly; excludes global completeness, live ranking, dynamic repair and authority.
+import { createHash } from 'node:crypto';
 import { pathWitnessContext, pathWitnessPolicyId, encodePathWitness, decodePathWitness, verifyPathWitness } from './path-witness.mjs';
 import { verifyPathWitnessRef2 } from './path-witness-ref2.mjs';
 import { isPathWitnessView } from './path-witness-view.mjs';
-import { routePathWitnessPool } from './path-witness-pool.mjs';
+import { createPathWitnessPool, routePathWitnessPool, PATH_POOL_RANDOMNESS } from './path-witness-pool.mjs';
 
-export const PATH_TREE_LIMITS = Object.freeze({ maxExpansions: 1000000, maxTreeNodes: 65536, maxCandidates: 256, maxPackingSteps: 1000000, maxBranches: 64, maxTreeLookups: 65536 });
+export const PATH_TREE_LIMITS = Object.freeze({ maxExpansions: 1000000, maxTreeNodes: 65536, maxCandidates: 256, maxPackingSteps: 1000000, maxBranches: 64, maxTreeLookups: 65536, maxPrefixHops: 64, maxPrefixes: 4096 });
+export const PATH_PREFIX_RANDOMNESS = Object.freeze({ policy: 'path-prefix-routing/v1', generator: PATH_POOL_RANDOMNESS.generator, childPolicy: PATH_POOL_RANDOMNESS.policy });
 const forests = new WeakSet(), cmp = (a, b) => Buffer.compare(Buffer.from(a), Buffer.from(b));
 const natural = n => Number.isSafeInteger(n) && !Object.is(n, -0) && n >= 0;
 function fields(input, keys) {
@@ -69,26 +71,37 @@ export function proposePathWitnessFromBranches(forest, view, suppliedContext, in
   fields(advice, ['pool', 'routing']); fields(advice.routing, ['seed', 'queryId', 'step', 'mode', 'loads']);
   return propose(forest, view, suppliedContext, input, advice);
 }
-function propose(forest, view, suppliedContext, input, advice) {
+export function proposePathWitnessFromPrefixes(forest, view, suppliedContext, input, advice) {
+  fields(advice, ['pools', 'routing']); fields(advice.routing, ['seed', 'queryId', 'step', 'mode']);
+  return propose(forest, view, suppliedContext, input, advice, true);
+}
+function propose(forest, view, suppliedContext, input, advice, prefixMode = false) {
   if (!forests.has(forest) || !isPathWitnessView(view)) throw new TypeError('proposal requires local forest and immutable current capture');
   const context = pathWitnessContext(suppliedContext), p = context.policy, policyId = pathWitnessPolicyId(p);
   if (view.toJSON().policyId !== policyId || forest.meta.policyId !== policyId) throw new TypeError('tree proposal policy differs from capture');
-  const query = config(input, advice ? ['epoch', 'maxCandidates', 'maxPackingSteps', 'maxBranches', 'maxTreeLookups'] : ['epoch', 'maxCandidates', 'maxPackingSteps']);
+  const query = config(input, prefixMode ? ['epoch', 'maxPrefixHops', 'maxPrefixes', 'maxExpansions', 'maxBranches', 'maxTreeLookups', 'maxCandidates', 'maxPackingSteps']
+    : advice ? ['epoch', 'maxCandidates', 'maxPackingSteps', 'maxBranches', 'maxTreeLookups'] : ['epoch', 'maxCandidates', 'maxPackingSteps']);
+  if (prefixMode && query.maxPrefixHops > p.maxHops) throw new RangeError('prefix depth exceeds policy hop bound');
   const stats = { treeLookups: 0, candidatesExamined: 0, liveCandidates: 0, edgeChecks: 0, scoreChecks: 0, packingSteps: 0,
     validationComplete: false, packingComplete: false };
-  const branch = advice ? { reference: 'one-hop-branch-tree/v1', eligiblePeers: null, branchesExpanded: 0, duplicatePaths: 0,
+  const prefix = prefixMode ? { reference: 'bounded-prefix-tree/v1', randomness: PATH_PREFIX_RANDOMNESS, advice: normalizePrefixAdvice(advice, context, view, query),
+    prefixes: [], routes: [], stats: { queued: 0, expanded: 0, maxPending: 0, neighborTrials: 0, scoreReads: 0, endpointChecks: 0, routeCalls: 0,
+      generators: 0, draws: 0, routedPeers: 0, missingPools: 0, omittedNeighbors: 0, duplicatePaths: 0 }, coverage: null } : null;
+  const branch = advice && !prefixMode ? { reference: 'one-hop-branch-tree/v1', eligiblePeers: null, branchesExpanded: 0, duplicatePaths: 0,
     route: routePathWitnessPool(advice.pool, { ...advice.routing, domain: context.domain, viewId: view.view().id, epoch: query.epoch, subject: context.subject,
       start: 0, count: 0, excluded: [] }) } : null;
   let required = null, witness = null, wire = null, verification = null;
   const result = (status, reason) => freeze({ schema: 'facety-path-proposal/v1', status, feasible: status === 'found' ? true : null, reason,
     viewRoot: view.view().id, canonicalReference: view.capture.reference, forestRoot: forest.meta.originRoot, forest: forest.meta,
-    context, query, required, witness, wire, verification, ...(branch ? { branch } : {}), stats: { ...stats } });
+    context, query, required, witness, wire, verification, ...(branch ? { branch } : {}), ...(prefix ? { prefix } : {}), stats: { ...stats } });
   if (forest.meta.epoch !== query.epoch) return result('unavailable', 'forest-epoch-mismatch');
   const current = view.view().epoch;
   if (query.epoch > current || current - query.epoch > p.graceEpochs) return result('unavailable', 'epoch-outside-grace');
   const snapshot = view.snapshot(query.epoch);
   if (snapshot === null || forest.meta.status === 'unavailable') return result('unavailable', 'snapshot-unavailable');
+  if (prefix && !view.nodeIds().includes(context.subject)) return result('unavailable', 'subject-unavailable');
   required = snapshot.difficulty;
+  if (prefix) growPrefixes(prefix, view, context, query);
   const candidates = [], seeds = [context.subject], seen = new Set(); let candidateStop = false, lookupStop = false, branchStop = false;
   if (branch) {
     const neighbors = new Set(view.neighbors(context.subject, p.direction, p.undirectedProjection));
@@ -99,6 +112,20 @@ function propose(forest, view, suppliedContext, input, advice) {
   }
   function edge(a, b) { stats.edgeChecks++; return view.edge(a, b); }
   function* paths() {
+    if (prefix) {
+      for (const path of prefix.prefixes) {
+        if (path.length > 1) {
+          prefix.stats.endpointChecks++;
+          if (view.anchor(query.epoch, path.at(-1)) && !view.removed(path.at(-1))) yield path;
+        }
+        for (const anchor of forest.anchors()) {
+          if (stats.treeLookups === query.maxTreeLookups) { prefix.coverage.treeLookupLimit = true; break; }
+          stats.treeLookups++; const tail = forest.path(path.at(-1), anchor);
+          if (tail) yield [...path.slice(0, -1), ...tail];
+        }
+      }
+      return;
+    }
     for (const seed of seeds) {
       let started = false;
       for (const anchor of forest.anchors()) {
@@ -126,10 +153,10 @@ function propose(forest, view, suppliedContext, input, advice) {
     }
     if (valid) {
       const key = JSON.stringify(path);
-      if (!seen.has(key)) { seen.add(key); candidates.push(path); } else if (branch) branch.duplicatePaths++;
+      if (!seen.has(key)) { seen.add(key); candidates.push(path); } else if (branch) branch.duplicatePaths++; else if (prefix) prefix.stats.duplicatePaths++;
     }
   }
-  stats.liveCandidates = candidates.length; stats.validationComplete = !candidateStop && !lookupStop && !branchStop;
+  stats.liveCandidates = candidates.length; stats.validationComplete = !candidateStop && !lookupStop && !branchStop && (!prefix || !Object.values(prefix.coverage).some(Boolean));
   let packingStop = false;
   function pack(start, chosen, used) {
     if (chosen.length === required) return [...chosen];
@@ -148,6 +175,12 @@ function propose(forest, view, suppliedContext, input, advice) {
   if (!family) {
     if (packingStop) return result('censored', 'packing-limit');
     if (candidateStop) return result('censored', 'candidate-limit');
+    if (prefix) {
+      for (const [flag, reason] of [['prefixLimit', 'prefix-limit'], ['expansionLimit', 'expansion-limit'], ['branchLimit', 'branch-limit'],
+        ['prefixDepthLimit', 'prefix-depth-limit'], ['poolUnavailable', 'pool-unavailable'], ['treeLookupLimit', 'tree-lookup-limit']]) {
+        if (prefix.coverage[flag]) return result('censored', reason);
+      }
+    }
     if (lookupStop) return result('censored', 'tree-lookup-limit');
     if (branchStop) return result('censored', 'branch-limit');
     if (!forest.meta.complete) return result('censored', 'tree-build-incomplete');
@@ -160,4 +193,62 @@ function propose(forest, view, suppliedContext, input, advice) {
   if (!primary.accepted || !ref2.accepted || primary.required !== required || ref2.required !== required) throw new Error('tree proposal verifier disagreement');
   witness = decodePathWitness(bytes, context); wire = bytes.toString('utf8'); verification = Object.freeze({ primary, ref2 });
   return result('found', 'ok');
+}
+function prefixArray(value, maximum) {
+  if (!Array.isArray(value) || ![Array.prototype, null].includes(Object.getPrototypeOf(value))) throw new TypeError('prefix requires plain dense data arrays');
+  if (value.length > maximum) throw new RangeError('prefix raw array bound');
+  if (Object.keys(value).length !== value.length || Reflect.ownKeys(value).length !== value.length + 1) throw new TypeError('prefix requires dense data arrays');
+  for (let i = 0; i < value.length; i++) if (!Object.hasOwn(value, i) || !Object.hasOwn(Object.getOwnPropertyDescriptor(value, i), 'value')) throw new TypeError('prefix array holes/accessors');
+  return value;
+}
+function normalizePrefixAdvice(advice, context, view, query) {
+  const rows = prefixArray(advice.pools, 64), empty = createPathWitnessPool({ metric: 'supplied-synthetic/v1', maxPoolSize: 0, candidates: [] });
+  // The empty pool validates routing text/mode even without supplied rows; it supplies no search advice.
+  const normalized = routePathWitnessPool(empty, { ...advice.routing, domain: context.domain, viewId: view.view().id, epoch: query.epoch, subject: context.subject,
+    start: 0, count: 0, excluded: [], loads: advice.routing.mode === 'best-of-two' ? [] : null }).query;
+  const pools = [], seen = new Set();
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i]; fields(row, ['subject', 'pool', 'loads']);
+    const subject = pathWitnessContext({ domain: context.domain, subject: row.subject, policy: context.policy }).subject;
+    if (seen.has(subject)) throw new TypeError('duplicate prefix pool subject');
+    seen.add(subject);
+    const loads = row.loads === null ? null : Array.prototype.slice.call(prefixArray(row.loads, 64));
+    const checked = routePathWitnessPool(row.pool, { ...normalized, subject, loads });
+    pools.push({ subject, pool: checked.pool, loads: checked.query.loads });
+  }
+  return freeze({ pools, routing: { seed: normalized.seed, queryId: normalized.queryId, step: normalized.step, mode: normalized.mode } });
+}
+function growPrefixes(prefix, view, context, query) {
+  const p = context.policy, stats = prefix.stats, queue = prefix.prefixes, rows = new Map(prefix.advice.pools.map(row => [row.subject, row]));
+  const flags = prefix.coverage = { prefixLimit: false, expansionLimit: false, branchLimit: false, prefixDepthLimit: false, poolUnavailable: false, treeLookupLimit: false };
+  if (query.maxPrefixes === 0) { flags.prefixLimit = true; return; }
+  queue.push([context.subject]); stats.queued++; stats.maxPending = 1;
+  frontier: for (let head = 0; head < queue.length; head++) {
+    const path = queue[head], node = path.at(-1), depth = path.length - 1; stats.expanded++;
+    if (depth === p.maxHops) continue;
+    if (node !== context.subject && p.minStanding !== null) {
+      stats.scoreReads++; const score = view.standing(node); if (score === null || score < p.minStanding) continue;
+    }
+    const visited = new Set(path), available = new Set();
+    for (const next of view.neighbors(node, p.direction, p.undirectedProjection)) {
+      if (stats.neighborTrials === query.maxExpansions) { flags.expansionLimit = true; break frontier; }
+      stats.neighborTrials++; if (!visited.has(next)) available.add(next);
+    }
+    if (!available.size) continue;
+    if (depth === query.maxPrefixHops) { flags.prefixDepthLimit = true; continue; }
+    const row = rows.get(node);
+    if (!row) { flags.poolUnavailable = true; stats.missingPools++; continue; }
+    const excluded = row.pool.ranked.filter(({ id }) => !available.has(id)).map(({ id }) => id), eligible = row.pool.ranked.length - excluded.length;
+    stats.omittedNeighbors += available.size - eligible;
+    const queryId = createHash('sha256').update(JSON.stringify([PATH_PREFIX_RANDOMNESS.policy, prefix.advice.routing.queryId, path])).digest('hex');
+    const route = routePathWitnessPool(row.pool, { ...prefix.advice.routing, queryId, domain: context.domain, viewId: view.view().id, epoch: query.epoch, subject: node,
+      start: 0, count: query.maxBranches, excluded, loads: row.loads });
+    stats.routeCalls++; stats.generators += route.stats.generators; stats.draws += route.stats.draws; stats.routedPeers += route.selected.length;
+    prefix.routes.push({ prefix: path, poolId: row.pool.id, queryId, selected: route.selected, stats: route.stats });
+    if (route.selected.length < eligible) flags.branchLimit = true;
+    for (const next of route.selected) {
+      if (queue.length === query.maxPrefixes) { flags.prefixLimit = true; break frontier; }
+      queue.push([...path, next]); stats.queued++; stats.maxPending = Math.max(stats.maxPending, queue.length - head - 1);
+    }
+  }
 }
