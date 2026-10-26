@@ -1,6 +1,6 @@
 # M1-B supplied-state verifier, ref2 and structural vectors
 
-**D61 diagnostic engineering contract before this slice's code.** Builds on [M1-A wire](m1-wire.md), not a new selected protocol rule, live-anchor process or funded admission gate. BACKLOG alone owns tasks. No Standing definition, epoch adoption/finality, Merkle authentication, indexer or capacity choice is made.
+**D61 diagnostic engineering contract before this slice's code.** Builds on [M1-A wire](m1-wire.md), not a new selected protocol rule, live-anchor process or funded admission gate. BACKLOG alone owns tasks. No Standing definition, epoch adoption/finality, Merkle authentication, indexer or capacity choice is made. This is the historical M1-B checkpoint at9ef37a5: [M2-A](m2-view.md) later adds immutable supplied/Native public-state captures without changing M1 acceptance; absent-adapter statements below describe M1's checkpoint.
 
 ## API and trusted StateAccessor
 

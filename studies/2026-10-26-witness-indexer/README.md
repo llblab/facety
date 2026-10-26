@@ -12,13 +12,15 @@ Implement an opt-in bounded path witness and deterministic verifier before advis
 
 **M1-B supplied-view structural verification:** [contract/API/complexity](m1-verifier.md), [31 portable vectors](verifier-vectors.json) and [validation](m1-verifier-validation.json) add primary/ref2 parsers/family checks with no shared acceptance implementation.18 focused/485 current+21 pinned historical passes include6976 raw-graph/submitted-family packing comparisons, byte mutations, score-off/cache invariance, view/fault/epoch/current status controls and degree/anchor diagnostics. I1–I7 are tested only under the declared trusted coherent-view/resource envelope, not independent authorship, live-state authentication, global search completeness or personhood/security evidence. M0/M1-A source identities remain historical; master G1/E1–E8 remain unrun/gated.
 
+**M2-A immutable graph/status capture:** [contract/API/reference predicates](m2-view.md) and [validation](m2-view-validation.json) supply real DirectedGraph or Native public active/accepted-record views for M1; exact projected metadata, frozen exports, full storage/history content roots and read-consistency/injection guards.9 new families/27 focused/494 current+21 pinned historical passes include64 directed tiny graphs in3 projections,31 structural vectors through computed metadata and actual funded/consented Model lifecycle fixtures. Captures do not refresh on source mutation; they are not authenticated state, fresh admission authority, event replay, a final live-duty rule or the global hop-bounded oracle. The next global-oracle/event-replay work stays in BACKLOG.
+
 ## Material unresolved contracts
 
 - Own-days Standing is not repo XP: its proposed default needs a definition and D35 compatibility decision before live anchor ranking. Verification/activity cannot come from evaluator truth, degree or XP alone.
 - Directed-from-anchor paths are bounded by U's live in-degree. If a mode holds it to c<D incoming vouchers the gate is infeasible; additional vouchers versus a different reference requires explicit choice.
 - M1 now implements exact compatible D-subfamily for explicit slack0/1, not first-fit; broader slack/resources need a separately validated version. Canonical bytes/trusted limits and total CPU versus O(k*r) state accesses were fixed before implementation. Ordinary flow does not automatically impose r-hop disjointness; tree-only fallback is not full-graph complete.
 - Literal unit anchor capacities limit total source flow to A; unit target capacity cannot carry D>1 demand. Capacity source/terminal demands, accepted-set fairness, epoch reuse and authenticated fraud-proof semantics are owner-gated, not a selected quota or a measured kill.
-- Grace/current difficulty coherence, in-flight transactions, emergency authorization and real-data license/ethics remain gated. Supplied synthetic snapshot fixtures allow safe structural verifier work without pretending those live contracts are resolved.
+- Grace/current difficulty coherence, in-flight transactions, emergency authorization and real-data license/ethics remain gated. Supplied immutable graph/Native diagnostic snapshot captures allow safe structural verifier/global-oracle work without pretending those live contracts are resolved.
 
 ## Evidence and delivery boundary
 
