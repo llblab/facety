@@ -1,0 +1,294 @@
+{
+  "schema": "facety-engineering-contract-validation/v1",
+  "classification": "D61 M3-D2 pre-code cached-segment candidate contract, not integration implementation, independent authorship, authenticated state, performance or research data",
+  "baseCommit": "3c844ac996f68bc524555c4e4ad413150dac4f86",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "39e7b412b611c1327c278a56ff7e423dd45855da26beab7677a28dc994e3f7e3",
+      "files": 46
+    },
+    "node": "v26.8.1",
+    "sourceTree": "808f161665655b392707b8d9a78d672284407cf8",
+    "testTree": "382b0b6e0e6e649ffc7867ef0e7262ed3d4754de"
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-segment-joins.md",
+      "gitBlob": "c72b28b737a3c526a141aabdac7c441677dda1ee"
+    },
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "827fb392bafd62f29123cdd65db1e004ca80480e"
+    },
+    {
+      "path": "src/path-witness-segments.mjs",
+      "gitBlob": "bac1263c30fa9e5b6119f53c6d38f5ad6cb5fbd9"
+    },
+    {
+      "path": "test/path-witness-prefix.test.mjs",
+      "gitBlob": "4bfc3d0808148bd3345a18b445b433c4800fde3b"
+    }
+  ],
+  "contract": {
+    "newAPI": "proposePathWitnessFromSegments(forest,view,context,query,advice,cache)",
+    "newLimits": "PATH_SEGMENT_PROPOSAL_LIMITS",
+    "module": "src/path-witness-trees.mjs",
+    "query": "old eight prefix fields plus tick/maxSegmentLookups/maxSegmentChecks/maxSegmentResults",
+    "caps": {
+      "maxSegmentLookups": 65536,
+      "maxSegmentChecks": 1024,
+      "maxSegmentResults": 256
+    },
+    "lookupUnit": "examined prefix×forest-target slots, including ineligible/empty pairs; actual calls counted separately",
+    "phase1": "unchanged C3 FIFO/full-prefix keys, no cache input",
+    "phase2": "per FIFO prefix: direct, forest tails, FIFO cached tails; full current candidate and dual-verifier D-family boundary",
+    "cacheSideEffects": "lookup-only clock/expiry/current-failure eviction/use; no put/learning/repair",
+    "unavailable": "all data/private brand/tick preflight, zero lookups/mutations",
+    "counterUnits": "D1 sums checked/returned separate from consumed joins; inventory sweep visit bound is not measured CPU",
+    "newRNGLayout": false,
+    "defaultMigration": false
+  },
+  "existingAPIProbe": {
+    "classification": "existing-API manual splice checks, not a segment-join implementation",
+    "controls": [
+      {
+        "case": "manual-five-node-repair",
+        "oldPrefix": {
+          "status": "censored",
+          "reason": "prefix-depth-limit"
+        },
+        "storedTail": [
+          "x",
+          "y",
+          "b"
+        ],
+        "manualFamily": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "y",
+            "b"
+          ]
+        ],
+        "wireBuilt": true,
+        "primary": true,
+        "ref2": true,
+        "fullOracle": "found",
+        "oldPrefixUnchangedAfterCacheUse": true
+      },
+      {
+        "case": "segment-source-becomes-low-score-intermediary",
+        "localTail": "hit",
+        "wireBuilt": true,
+        "primary": false,
+        "ref2": false
+      },
+      {
+        "case": "valid-local-tail-repeats-prefix-vertex",
+        "localTail": "hit",
+        "wireBuilt": true,
+        "primary": false,
+        "ref2": false
+      },
+      {
+        "case": "combined-hops-exceed-policy",
+        "localTail": "hit",
+        "combinedHops": 3,
+        "policyMaxHops": 2,
+        "wireBuilt": false,
+        "error": "path count/hop bound"
+      },
+      {
+        "case": "removed-terminal-not-a-witness",
+        "localTail": "hit",
+        "wireBuilt": true,
+        "primary": false,
+        "ref2": false
+      },
+      {
+        "case": "removed-anchor-transit-still-permitted",
+        "localTail": "hit",
+        "wireBuilt": true,
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "old-reference-cache-miss-does-not-gate-current-tree-positive",
+        "cacheStatus": "miss",
+        "currentPrefix": "found",
+        "wireBuilt": true,
+        "primary": true,
+        "ref2": true
+      }
+    ],
+    "count": 7,
+    "newAPIAbsent": true,
+    "newLimitsAbsent": true,
+    "inertPrivateBrandCheck": true,
+    "c3FixtureBaseline": {
+      "method": "sha256-json-prefix-proposal/v1",
+      "query": {
+        "epoch": 3,
+        "maxPrefixHops": 1,
+        "maxPrefixes": 4096,
+        "maxExpansions": 10000,
+        "maxBranches": 64,
+        "maxTreeLookups": 1000,
+        "maxCandidates": 256,
+        "maxPackingSteps": 10000
+      },
+      "build": {
+        "epoch": 3,
+        "maxExpansions": 10000,
+        "maxTreeNodes": 1000
+      },
+      "digest": "8609fe257cf7e647020c71d68dfb99638e1a5d51359c4565f2e96727f61bb483"
+    },
+    "c3StreamBaseline": {
+      "method": "sha256-streaming-json-forest-proposal-array-NUL/v1",
+      "pairs": 1152,
+      "positives": 336,
+      "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+      "graphName": "segment-joins-preservation",
+      "nodes": [
+        "u",
+        "a",
+        "b"
+      ],
+      "arcs": [
+        [
+          "u",
+          "a"
+        ],
+        [
+          "u",
+          "b"
+        ],
+        [
+          "a",
+          "u"
+        ],
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "u"
+        ],
+        [
+          "b",
+          "a"
+        ]
+      ],
+      "build": {
+        "epoch": 3,
+        "maxExpansions": 10000,
+        "maxTreeNodes": 1000
+      },
+      "query": {
+        "epoch": 3,
+        "maxPrefixHops": 1,
+        "maxPrefixes": 4096,
+        "maxExpansions": 10000,
+        "maxBranches": 64,
+        "maxTreeLookups": 1000,
+        "maxCandidates": 256,
+        "maxPackingSteps": 10000
+      },
+      "baseContext": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "routing": {
+        "seed": "prefix-software-control",
+        "queryId": "query-1",
+        "step": 0,
+        "mode": "uniform"
+      },
+      "pool": {
+        "metric": "supplied-synthetic/v1",
+        "maxPoolSize": 64,
+        "scores": 0
+      },
+      "currentEpoch": 3,
+      "snapshot": {
+        "epoch": 3,
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      "standing": [
+        [
+          "a",
+          0
+        ],
+        [
+          "b",
+          1
+        ]
+      ],
+      "removed": [],
+      "iterationOrder": "bits0..63, directed/any/reciprocal, scored false/true, depth0..2; maxHops2, maxPrefixHops=depth; p.minStanding=scored?1:null"
+    }
+  },
+  "priorValidation": {
+    "source": "m3-segments-validation.json at3c844ac",
+    "npmTestRerun": false,
+    "currentPassedAtPriorCheckpoint": 569,
+    "historicalPassedAtPriorCheckpoint": 21,
+    "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+    "basis": "unchanged src/test trees and implementation digest; previous source evidence reused, not a fresh whole-suite pass across docs",
+    "architectureAtSameSource": {
+      "files": 46,
+      "localEdges": 119,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "oldCompatibility": {
+    "originalTreePairs": 12288,
+    "originalTreeDigest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+    "oneHopPairs": 12288,
+    "oneHopDigest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+    "status": "retained unchanged; C3 stream baseline is additional, not replacement of old guards"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort"
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "implement frozen D2 with raw-splice/M2/full-verifier and exact-budget/cache-side-effect controls; dynamic repair later"
+  },
+  "research": {
+    "registrations": 0,
+    "segmentJoinImplementationRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false,
+    "pilot": false
+  }
+}
