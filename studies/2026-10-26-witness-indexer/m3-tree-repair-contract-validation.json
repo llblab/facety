@@ -1,0 +1,315 @@
+{
+  "schema": "facety-engineering-contract-validation/v1",
+  "classification": "D61 M3-E2 pre-code within-root path-label repair, not an implemented invalidation/queue/abort algorithm, ES amortized proof, independent authorship, scaling or research result",
+  "baseCommit": "7fcc8c9e243258ba1e2a6f0455e3e5b747a11433",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "78cc79b7fc3eadec2d5343eea190dff7f7a766451fd92ed032676f51214aad0b",
+      "files": 46
+    },
+    "node": "v26.8.1",
+    "sourceTree": "87f50210a15367eef0ba98f5e0deaa7a559e3566",
+    "testTree": "450d775153853d1fd3ed3d735d808c8f01d6c943"
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-tree-repair.md",
+      "gitBlob": "bcbd651ec8c5503e3240e926bdcf190664f5364e"
+    },
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "cfa518d32fe73421748e4991f3f4de1c5bdcba3a"
+    },
+    {
+      "path": "test/path-witness-tree-refresh.test.mjs",
+      "gitBlob": "1e02963374c994994dd9241067f5585a65060bce"
+    }
+  ],
+  "contract": {
+    "futureAPI": "repairPathWitnessTrees(forest,origin,current,query)",
+    "futureLimits": "PATH_TREE_REPAIR_LIMITS",
+    "module": "src/path-witness-trees.mjs",
+    "query": "epoch/maxTreeNodes/maxQueuePops/maxPredecessorTrials/maxScheduleTrials/maxLabelUpdates",
+    "newCaps": 1000000,
+    "retainedAndWorkingLabelCap": 65536,
+    "algorithm": "complete supplied delta/E1 affected roots, old broken-subtree invalidation, retained valid path upper bounds and FIFO strict full-shortlex improvement",
+    "canonicalTie": "root-first full unsigned-UTF8 vertex sequence, not parent ID, reverse path or JSON string",
+    "seeds": "invalidated live vertices plus added/gained-eligibility activation targets; cold roots seed current successors",
+    "publication": "only settled prefix-consistent roots; started root failure discards entire workspace and omits later roots, no fallback/refund",
+    "budgets": "distinct global pop/predecessor/schedule/update counters; node capacity includes retained plus active finite labels; initialization/preparation/copy costs separate",
+    "noESOrTotalCPUClaim": true,
+    "newRNGDefaultOrModelMutation": false
+  },
+  "existingAPIProbe": {
+    "classification": "existing BFS/E1/certificate controls and raw canonical-label checks, not within-root repair",
+    "controls": [
+      {
+        "case": "minimum-parent-ID-is-not-canonical-full-root-path",
+        "canonicalSubjectFirst": [
+          "u",
+          "z",
+          "x",
+          "a"
+        ],
+        "smallerAlternativeParent": "b",
+        "chosenParent": "z",
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "unchanged-distance-and-parent-needs-descendant-label-propagation",
+        "unchangedLocalRow": {
+          "subject": "t",
+          "distance": 3,
+          "parent": "z"
+        },
+        "oldT": [
+          "t",
+          "z",
+          "y",
+          "a"
+        ],
+        "newT": [
+          "t",
+          "z",
+          "c",
+          "a"
+        ],
+        "oldU": [
+          "u",
+          "b",
+          "n",
+          "m",
+          "a"
+        ],
+        "newU": [
+          "u",
+          "t",
+          "z",
+          "c",
+          "a"
+        ],
+        "e1MatchesFull": true,
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "disconnected-cycle-must-not-retain-stale-upper-bounds",
+        "oldPath": [
+          "u",
+          "y",
+          "x",
+          "a"
+        ],
+        "currentPath": null,
+        "currentRows": [
+          {
+            "subject": "a",
+            "distance": 0,
+            "parent": null
+          }
+        ],
+        "e1MatchesFull": true
+      },
+      {
+        "case": "unchanged-boundary-ingress-and-requeue-after-earlier-pop",
+        "oldPath": [
+          "u",
+          "v",
+          "x",
+          "a"
+        ],
+        "currentPath": [
+          "u",
+          "v",
+          "y",
+          "a"
+        ],
+        "unchangedIngress": [
+          "y",
+          "v"
+        ],
+        "plannedSortedInvalidationSeeds": [
+          "u",
+          "v"
+        ],
+        "notARepairQueueRun": true,
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "eligibility-loss-keeps-endpoint-but-not-descendants",
+        "oldPath": [
+          "u",
+          "x",
+          "a"
+        ],
+        "retainedEndpoint": [
+          "x",
+          "a"
+        ],
+        "lostDescendant": null
+      },
+      {
+        "case": "UTF8-ID-order-not-JSON-string-order",
+        "canonicalSubjectFirst": [
+          "u",
+          "\u0000",
+          "a"
+        ],
+        "jsonOrderWouldDiffer": true,
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "warm-complete-reuse-is-not-zero-cost-fresh-repair",
+        "e1WarmStatus": "built",
+        "e1FreshExpansions": 0,
+        "e1ReusedTreeNodes": 3,
+        "coldStatus": "censored",
+        "notARepairBudgetRun": true
+      }
+    ],
+    "count": 7,
+    "canonicalLabelChecks": {
+      "cases": 2304,
+      "method": "raw simple forward paths, shortest then full unsigned-UTF8 vertex sequence, vs current FIFO BFS",
+      "observedMismatch": 0
+    },
+    "e1Baseline": {
+      "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+      "pairs": 24576,
+      "reused": 9408,
+      "rebuilt": 39744,
+      "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+      "graphName": "tree-repair-preservation",
+      "nodes": [
+        "u",
+        "a",
+        "b"
+      ],
+      "arcs": [
+        [
+          "u",
+          "a"
+        ],
+        [
+          "u",
+          "b"
+        ],
+        [
+          "a",
+          "u"
+        ],
+        [
+          "a",
+          "b"
+        ],
+        [
+          "b",
+          "u"
+        ],
+        [
+          "b",
+          "a"
+        ]
+      ],
+      "baseContext": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "build": {
+        "epoch": 3,
+        "maxExpansions": 10000,
+        "maxTreeNodes": 1000
+      },
+      "currentEpoch": 3,
+      "snapshot": {
+        "epoch": 3,
+        "anchors": [
+          "a",
+          "b"
+        ],
+        "difficulty": 2
+      },
+      "removed": [],
+      "oldStanding": [
+        [
+          "a",
+          0
+        ],
+        [
+          "b",
+          1
+        ]
+      ],
+      "currentStanding": [
+        [
+          "a",
+          1
+        ],
+        [
+          "b",
+          0
+        ]
+      ],
+      "iterationOrder": "directed/any/reciprocal, scored false/true, oldBits0..63, newBits0..63; maxHops2; minStanding=scored?1:null"
+    },
+    "newAPIAbsent": true,
+    "newLimitsAbsent": true,
+    "notEvidenceOfLocalInvalidationQueueBudgetAbortOrSettlementImplementation": true
+  },
+  "priorValidation": {
+    "source": "m3-tree-refresh-validation.json at7fcc8c9",
+    "npmTestRerun": false,
+    "currentPassedAtPriorCheckpoint": 590,
+    "historicalPassedAtPriorCheckpoint": 21,
+    "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+    "basis": "src/test trees and implementation digest unchanged; prior123 focused/590 current+21 historical evidence reused, not a new whole-suite pass across docs",
+    "architectureAtSameSource": {
+      "files": 46,
+      "localEdges": 120,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "oldCompatibility": {
+    "C3": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+    "originalTree": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+    "oneHop": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+    "status": "old current-source outputs and all frozen records retained unchanged; new E1 baseline is additional"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort"
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "implement frozen E2 sibling with independent raw/full-rebuild/E1 graph pairs, queue/abort/resource/tie controls and all old stream preservation",
+    "otherGates": "workload/benchmark methodology, classical amortized claims, live authority/capacity/funded/default integration remain separate"
+  },
+  "research": {
+    "registrations": 0,
+    "localRepairImplementationRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false,
+    "pilot": false
+  }
+}
