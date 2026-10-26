@@ -1,0 +1,131 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-C1 supplied-score pools and keyed advisory route helper; not witness assembly, live ranking, measured balancing, independent authorship or E1",
+  "baseCommit": "fbe29baadca788bce639800736c95c216903c262",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "161f65e6b160a2800a2b43e85a4ca277da7e751de3ea62bed66e11a542b68bbc",
+      "files": 45
+    },
+    "runtime": { "node": "v26.8.1" }
+  },
+  "files": [
+    { "path": "src/path-witness-pool.mjs", "gitBlob": "54169c6486273805358033a400be89cd85f7bce6" },
+    { "path": "test/path-witness-pool.test.mjs", "gitBlob": "37be33766153aaacb2b6e4d2a7b5c89774393148" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-pool.md", "gitBlob": "3ae805097ee2c771f4e19faf8ff8538bcb5c5bab" },
+    { "path": "docs/simulator.en.md", "gitBlob": "df4ddeb28e2945016ca56d290401e86161c73595" },
+    { "path": "src/random.mjs", "gitBlob": "a08b78d7adbb729cfcc79cdb0a76263dd51005f4" }
+  ],
+  "implementation": {
+    "module": "src/path-witness-pool.mjs",
+    "public": ["createPathWitnessPool", "routePathWitnessPool", "PATH_POOL_LIMITS", "PATH_POOL_RANDOMNESS"],
+    "metricLabels": ["supplied-synthetic/v1", "supplied-xp/v1", "supplied-standing/v1"],
+    "ranking": "known nonnegative safe scores descending, unsigned UTF-8 ID tie, unknown null omitted, zero valid, explicit M",
+    "poolId": "SHA256 JSON of schema/metric/M/retained rows; not omitted-input or canonical-state authentication",
+    "modes": ["uniform", "best-of-two"],
+    "sampling": "without replacement of winners; second sampled peer distinct, loser retained; lower load then UTF-8 tie",
+    "load": "complete supplied safe-integer snapshot for best-of-two; null for uniform; no implicit updates or work reservations",
+    "loadTelemetry": "exact BigInt decimal total, maximum, approximate squared-share concentration; zero total null, uniform null",
+    "exhaustion": "partial/pool-exhausted advice, not no-path",
+    "witnessOrFeasibilityFields": false,
+    "canonicalStateOrEligibilityAuthority": false,
+    "ModelMutation": false,
+    "localImports": ["src/random.mjs"]
+  },
+  "randomness": {
+    "policy": "path-pool-keyed/v1",
+    "generator": "sha256-xoshiro128starstar-v2",
+    "keyEncoding": "JSON array",
+    "keyFields": ["policy", "seed", "domain", "viewId", "epoch", "subject", "queryId", "step", "ordinal", "mode", "pool.id"],
+    "ordinal": "start plus local selection index",
+    "freshGeneratorPerSelectedOrdinal": true,
+    "existingGeneratorSourceAndDecisionObservationLayoutsChanged": false,
+    "experimentManifestIntegration": false,
+    "cryptographicRandomnessClaim": false,
+    "uniformity": "existing finite-precision Random.int mapping; not exact real-valued or cryptographic sampling"
+  },
+  "limits": {
+    "maxCandidatesAndRawExclusions": 4096,
+    "maxPoolSizeAndRoutes": 64,
+    "maxIdOrLabelBytes": 256,
+    "maxSeedBytes": 1024,
+    "integerMaximum": 9007199254740991,
+    "notProtocolQuotasOrCalibration": true,
+    "sortingHashTemporaryStateAndResultCostSeparate": true
+  },
+  "focused": {
+    "unitCommand": "node --test test/path-witness-pool.test.mjs",
+    "newFamilies": 10,
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 73,
+    "referenceReconstruction": {
+      "queries": 2016,
+      "retainedSizes": "0..6",
+      "modes": 2,
+      "ordinarySoftwareSeedLabels": 16,
+      "requestedCounts": "0..8",
+      "observedMismatch": 0,
+      "shared": "documented PRNG only; literal key/list sampling separately reconstructed",
+      "independentAuthorship": false,
+      "notHumanSamplesOrResearchRuns": true
+    },
+    "graphComposition": {
+      "graphs": 64,
+      "projections": 3,
+      "queries": 192,
+      "positiveCertificatesCheckedBy": ["primary", "ref2", "full M2 oracle"],
+      "graphMutationObserved": false,
+      "notCompleteCandidateSearchOrNegativeProof": true
+    },
+    "controls": [
+      "known/unknown/zero score and unsigned UTF-8 ties",
+      "pool input permutation and omitted-row digest stability",
+      "best-of-two lower load/tie and loser retention",
+      "count prefixes, correctly advanced split ordinals and deterministic replay",
+      "inspection/unrelated/future-query prefix invariance",
+      "no automatic workload increments or reservations",
+      "strict exact data fields and dense arrays, no coercion/accessor execution",
+      "raw bounds before filtering/deduplication and exact numeric/UTF-8 endpoints",
+      "safe large load aggregation and zero-total undefined concentration",
+      "deep immutable copies, copied-pool rejection and provenance is not authentication",
+      "empty/short/self-excluded pools remain advice",
+      "poisoned/stale pool advice rejected by fresh verifiers while full M2 finds alternatives"
+    ]
+  },
+  "full": {
+    "command": "npm test",
+    "current": { "passed": 540, "failed": 0, "skipped": 0 },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "fixed trajectories only; existing source modules, defaults, graph/Model/old proofs and historical evidence unchanged"
+  },
+  "architecture": { "files": 45, "localEdges": 116, "cycles": 0, "errors": 0, "warnings": 0 },
+  "context": { "errors": 0, "warnings": 29, "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort" },
+  "remaining": {
+    "M3": "open",
+    "next": "bounded diversified branch/tree candidate assembly with explicit budgets/current checks and dual-verifier/full-M2 controls",
+    "bidirectionalSegmentsAndDynamicMaintenance": true,
+    "liveAnchorEpochAuthorityAndFundedGate": true
+  },
+  "research": {
+    "registrations": 0,
+    "experimentRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false,
+    "pilot": false
+  }
+}
