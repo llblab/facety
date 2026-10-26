@@ -1,0 +1,78 @@
+{
+  "schema": "facety-single-tree-counterexample/v1",
+  "classification": "finite synthetic algorithm counterexample, not research data or global safety result",
+  "context": {
+    "domain": "facety:software-fixture",
+    "subject": "u",
+    "policy": {
+      "direction": "directed-from-anchor",
+      "graceEpochs": 1,
+      "maxDifficulty": 8,
+      "maxHops": 3,
+      "maxIdBytes": 64,
+      "maxSlack": 1,
+      "maxWitnessBytes": 8192,
+      "minStanding": null,
+      "undirectedProjection": "any-live-orientation"
+    }
+  },
+  "nodes": [
+    "u",
+    "a",
+    "b",
+    "x"
+  ],
+  "edges": [
+    [
+      "a",
+      "u"
+    ],
+    [
+      "b",
+      "a"
+    ],
+    [
+      "b",
+      "x"
+    ],
+    [
+      "x",
+      "u"
+    ]
+  ],
+  "snapshot": {
+    "epoch": 3,
+    "difficulty": 2,
+    "anchors": [
+      "a",
+      "b"
+    ]
+  },
+  "expected": {
+    "treePaths": [
+      [
+        "u",
+        "a"
+      ],
+      [
+        "u",
+        "a",
+        "b"
+      ]
+    ],
+    "treeProposal": "miss",
+    "globalOracle": "found",
+    "oneValidGlobalFamily": [
+      [
+        "u",
+        "a"
+      ],
+      [
+        "u",
+        "x",
+        "b"
+      ]
+    ]
+  },
+  "explanation": "Single BFS parent for b reaches u through a before equal-length x alternative. Endpoint/transit reuse invalidates the two tree paths; full graph retains a compatible alternate."
+}

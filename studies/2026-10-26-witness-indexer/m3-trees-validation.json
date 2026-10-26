@@ -1,0 +1,181 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-B bounded single-parent advice/completeness controls; not complete indexer, global negative oracle, human rates, independent authorship or E1",
+  "baseCommit": "d9e70511adfae49e6ec83e448b0c2fa5fb0d71bd",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "9a01f84edf8e672366cd0f389271c5d0a65f2c58dff50b163fb2f779e6f79709",
+      "files": 44
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "2ee00d9f85a5c6f59e49fc6f972689e9ee1d017b"
+    },
+    {
+      "path": "test/path-witness-trees.test.mjs",
+      "gitBlob": "c550e740880795315611582bf2b6d2b7553f6f65"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-trees.md",
+      "gitBlob": "70405177ed7074e5f89013b0c1ee03427a82230e"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/single-tree-miss.json",
+      "gitBlob": "59155cfc3d49aad351aff1efaf825126a215da7a"
+    },
+    {
+      "path": "docs/simulator.en.md",
+      "gitBlob": "af8923e8945ad2646cf1b9225f2858571596d7e0"
+    },
+    {
+      "path": "src/path-witness-cache.mjs",
+      "gitBlob": "f0bde67abecf45d7d9c65531d7bf5dc1e465a59b"
+    },
+    {
+      "path": "src/path-witness-oracle.mjs",
+      "gitBlob": "60a85bf4ff5d932f115acee9dcc2a6fa35f90919"
+    }
+  ],
+  "implementation": {
+    "module": "src/path-witness-trees.mjs",
+    "reference": "single-parent-bounded-bfs/v1",
+    "build": "per-eligible-anchor FIFO BFS over anchor-forward projected adjacency with depth/record/trial limits",
+    "query": "one stored path per anchor, current membership/removal/edge/score check, exact bounded D-packing and primary/ref2 positive verification",
+    "nonpositiveFeasible": null,
+    "forestDataIsCanonicalState": false,
+    "forestOriginRootIsAuthority": false,
+    "score": "terminal/root/subject exempt; expand non-root node only with qualifying declared score when enabled",
+    "rootDirection": "directed anchor-successors, not subject-predecessors; explicit symmetric any-live/reciprocal projections",
+    "RNG": "none",
+    "ModelMutation": false,
+    "completeness": "single-parent misses explicitly retained; separately budgeted full M2 fallback, not parent/tree/subgraph maximum"
+  },
+  "limits": {
+    "maxExpansions": 1000000,
+    "maxTreeNodes": 65536,
+    "maxCandidates": 256,
+    "maxPackingSteps": 1000000,
+    "notProtocolQuotasOrCalibration": true,
+    "preparationAndVerificationCostSeparate": true
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 63,
+    "newTreeFamilies": 9,
+    "shortestPathControl": {
+      "graphs": 64,
+      "projections": 3,
+      "subjects": 3,
+      "anchors": 2,
+      "pairs": 1152,
+      "observedMismatch": 0
+    },
+    "globalOracleComparison": {
+      "nodes": [
+        "u",
+        "x",
+        "a",
+        "b"
+      ],
+      "anchors": [
+        "a",
+        "b"
+      ],
+      "difficulty": 2,
+      "maxHops": 3,
+      "minStanding": null,
+      "graphEnumeration": "all12 non-self directed arcs in nested listed-node order, bitsets0..4095",
+      "tie": "unsigned UTF-8 neighbor/anchor order",
+      "queries": 12288,
+      "perProjection": {
+        "directed": {
+          "queries": 4096,
+          "oracleFound": 1536,
+          "treeFound": 1280,
+          "treeMisses": 256
+        },
+        "any": {
+          "queries": 4096,
+          "oracleFound": 3168,
+          "treeFound": 2520,
+          "treeMisses": 648
+        },
+        "reciprocal": {
+          "queries": 4096,
+          "oracleFound": 352,
+          "treeFound": 328,
+          "treeMisses": 24
+        }
+      },
+      "totalOracleFound": 5056,
+      "totalTreeFound": 4128,
+      "totalMisses": 928,
+      "observedFalsePositive": 0,
+      "notHumanOrAttackProbabilities": true,
+      "notAllPossibleContexts": true
+    },
+    "counterexample": "single-tree-miss.json: same-length b parent through endpoint a hides disjoint x alternative; encoded one-parent/control explanation, not emergence",
+    "controls": [
+      "exact/one-less build/candidate/packing cap semantics",
+      "partial build prefix can prove a positive",
+      "silent edge/removal/score/current-root changes rechecked",
+      "minStanding intermediary-only, removed anchor transit, self0hop ignored",
+      "stale-tree miss vs full M2 positive and cache/full fallback recovery",
+      "budgetless fallback censored, not no-path",
+      "unsupported/copied/policy/epoch/snapshot/wire-bound cases explicit",
+      "immutable/inert forest/metadata and local noncanonical DTO",
+      "Native Model read-only composition as reverified cache hint",
+      "D64/r64, exact Unicode/delimiter IDs"
+    ]
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 530,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "fixed trajectories, not universal equivalence; existing model/graph/proofs/witness/cache/oracle/RNG source unchanged"
+  },
+  "architecture": {
+    "files": 44,
+    "localEdges": 115,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "supplied pool/metric/load/random-key contract before diversified routing/bidirectional candidates",
+    "segmentsAndDynamicMaintenance": true,
+    "liveAnchorEpochAuthorityAndFundedGate": true
+  },
+  "context": { "errors": 0, "warnings": 29, "disposition": "Existing structural/AGENTS density/wide-table warnings reviewed; large-protocol scan skip unchanged and protocol not edited" },
+  "research": {
+    "registrations": 0,
+    "experimentRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentRuns": 0,
+    "masterG1Verdict": null,
+    "pilot": false
+  }
+}
