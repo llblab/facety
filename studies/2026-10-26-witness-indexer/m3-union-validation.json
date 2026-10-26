@@ -1,0 +1,168 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-C4 supplied-state retained-union reference; finite diagnostic engineering, not benchmark/production solver/scientific or economic evidence",
+  "baseCommit": "2271cde5497cbbbbcd1be677b52e2b830cb33d4d",
+  "baseSourceTree": "9d0ad0fe6ec21a283fee381eeae32009e149f78c",
+  "baseTestTree": "c925e6f1fc4db0bcc1ee3072ede05e37612acd21",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "cb70857aec1972b3be816b9bdfcb2f87b95cfd4ea118b15289bc1ee0ff4bf5d6",
+      "files": 47
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "97e2af146cd4cf94b189d1c865aac8cdb8b9bb30"
+    },
+    {
+      "path": "test/path-witness-union.test.mjs",
+      "gitBlob": "d28822aee092ab09221d632532b1b2bd42a43d99"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-union.md",
+      "gitBlob": "7123c5cc035a6e42fc4da5542979cff29d92a86a"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-union-contract-validation.json",
+      "gitBlob": "b4a460ed7d178f83ca91e1437a50a4b60c141bf4"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-union-implementation.md",
+      "gitBlob": "5a7f950ae161468771a7e229614957ce14cf920c"
+    }
+  ],
+  "implementation": {
+    "owner": "src/path-witness-trees.mjs",
+    "exports": [
+      "proposePathWitnessFromUnion",
+      "PATH_UNION_LIMITS"
+    ],
+    "method": "bounded-two-sided-union-m2/v1",
+    "sourceChanged": true,
+    "oldExecutableBodiesUnchanged": true,
+    "existingTestBodiesUnchanged": true,
+    "frozenContractAndPreCodeHistoryUnchanged": true,
+    "boundary": "local immutable brands, exact normalized fields/policy, epoch/grace/snapshot/subject availability before enumerated work",
+    "extraction": "U/current roots, independent subject incoming + multi-source anchor forward balls, all attempted projected arcs/visited destinations, independently current-valid old parent edges; physical IDs and atomic vertex-before-arc pair slots",
+    "search": "one public M2 call on private R-view at separate caps; scope/decoded-wire/D agreement then full-current primary/ref2; no full fallback; all top nonpositives feasible:null, nested local false stays R-only",
+    "report": "deep frozen current/old/private roots plus retained physical IDs/arcs, separate work namespaces and all flags, uncalled search:null; no memory/CPU scalar",
+    "notImplemented": "F1/F2/query-cache integration, production unit-split/extra slack/scalable solver, live/funded/default/capacity/Standing/epoch authority or graph experiment backend"
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 160,
+    "newFamilies": 8,
+    "unitCommand": "node --test test/path-witness-union.test.mjs",
+    "rawCensus": {
+      "cases": 6912,
+      "found": 1904,
+      "retainedMiss": 112,
+      "observedMismatch": 0
+    },
+    "domain": "64 three-node arcsets ×3 projections ×score off/on ×full/zero-node forests ×3 subject radii ×3 anchor radii; raw matrix projection/layer waves and physical simple-path D-combinations, no production queue/neighbor/preparation",
+    "denominators": "112 full-positive logical graph/score contexts repeat18 advice/radius configurations;1904 returned positives +112 retained misses =2016 positive-context query configurations, not IID trials, human rejection or scientific estimate",
+    "controls": [
+      "independent raw retained sets/all16 extraction counts/coverage, raw physical path families/full M2/current primary+ref2; full subject radius positive completeness only in tiny declared grid",
+      "known five-node nonparent y→x recombination at anchor depth2; depth1 misses and no induced closure; per-side visited, repeated read/immutability invariance",
+      "zero..exact+one finite vertex/arc/tree-row/ball-trial caps; direct retained-view M2 for each local search cap position, no conflated units",
+      "node-before-arc/atomic directed-undirected admission/no half-pair/orphan; current qualifying pair facts",
+      "exact-last trials, tree-row salvage after ball stop, local path/expansion truncated positives, byte-bound censorship",
+      "stale/nonlive/broken/retired parent edges and new current roots; endpoint/root/mid-score/removal roles and role-before-radius",
+      "too-long unit connectivity, physical shared x at differing anchor layers, endpoint/transit family/self/zero-hop conflicts; retained/full negative unknown semantics",
+      "strict copied brands/policy/keys/accessors/symbol/prototype/caps before unavailable; uncomputed availability/no hidden graph-only recovery",
+      "r64/D64/70 roots/UTF8/NUL delimiter-pair ambiguity/reincarnated relation/current namespace advice/Native read-only"
+    ]
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 627,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "compatibility": {
+    "C3": {
+      "pairs": 1152,
+      "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+      "matched": true
+    },
+    "originalTree": {
+      "pairs": 12288,
+      "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+      "matched": true
+    },
+    "oneHop": {
+      "pairs": 12288,
+      "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+      "matched": true
+    },
+    "E1": {
+      "pairs": 24576,
+      "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+      "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+      "matched": true
+    },
+    "disposition": "four permanent old streams freshly pass focused/full on new source; old executable/test/frozen bodies and defaults/RNG unchanged, source fingerprint intentionally changes",
+    "existingTestBodiesFrozenCorpusAndContractsUnchanged": true
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "disposition": "fresh current-source two fixed software trajectory comparisons, not study replay/recapture or universal equivalence"
+  },
+  "architecture": {
+    "files": 47,
+    "localEdges": 127,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0,
+    "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+    "disposition": "tree owner uses local private forest brand and public graph/view/oracle contracts only; no lower import back"
+  },
+  "review": {
+    "mode": "coordinator source/contract/test/ownership focused self-review",
+    "concreteSUTDefectsFound": 0,
+    "notIndependentAuthorshipOrCleanRoom": true,
+    "disagreementGuards": "scope/schema/required/decoded-witness/verifier throw branches source-inspected; no injected alternative backend or new callback port"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; unchanged large-protocol link/list scans skipped as before. Current API/implementation boundary updated separately from frozen pre-code history."
+  },
+  "randomness": {
+    "newGeneratorOrPolicyOrKeyLayout": false,
+    "newUnionUsesRNG": false,
+    "oldStreamsPreserved": true
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "freeze explicit bounded whole-witness cache/advice/full-fallback composition and invocation-order/resource/side-effect accounting before integration",
+    "gates": "production unit-split/D+1/larger/live/anchor/epoch/Standing/degree/capacity/funded/default plus supported graph-v2/method/master before E2 data"
+  },
+  "research": {
+    "newV2Registrations": 0,
+    "scientificExperimentRuns": 0,
+    "softwareTrajectoryChecks": 2,
+    "newGraphBackend": false,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  }
+}

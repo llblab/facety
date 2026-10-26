@@ -1,11 +1,14 @@
-// Owns: Bounded anchor BFS/refresh/path-label repair and tree/branch/prefix/segment assembly; excludes global completeness, live ranking, amortized repair bounds and authority.
+// Owns: Bounded anchor BFS/refresh/path-label repair and tree/branch/prefix/segment/retained-union assembly; excludes global completeness, live ranking, amortized repair bounds and authority.
 import { createHash } from 'node:crypto';
 import { pathWitnessContext, pathWitnessPolicyId, encodePathWitness, decodePathWitness, verifyPathWitness } from './path-witness.mjs';
 import { verifyPathWitnessRef2 } from './path-witness-ref2.mjs';
-import { isPathWitnessView } from './path-witness-view.mjs';
+import { isPathWitnessView, pathWitnessGraphView } from './path-witness-view.mjs';
+import { DirectedGraph } from './graph.mjs';
+import { findPathWitness, PATH_ORACLE_LIMITS } from './path-witness-oracle.mjs';
 import { createPathWitnessPool, routePathWitnessPool, PATH_POOL_RANDOMNESS } from './path-witness-pool.mjs';
 import { PathWitnessSegmentCache, PATH_SEGMENT_LIMITS } from './path-witness-segments.mjs';
 
+export const PATH_UNION_LIMITS = Object.freeze({ maxSubjectHops: 64, maxAnchorHops: 64, maxVertices: 4096, maxArcs: 65536, maxTreeRows: 65536, maxBallTrials: 1000000 });
 export const PATH_SEGMENT_PROPOSAL_LIMITS = Object.freeze({ maxSegmentLookups: 65536, maxSegmentChecks: 1024, maxSegmentResults: 256 });
 export const PATH_TREE_REPAIR_LIMITS = Object.freeze({ maxQueuePops: 1000000, maxPredecessorTrials: 1000000, maxScheduleTrials: 1000000, maxLabelUpdates: 1000000 });
 
@@ -285,6 +288,111 @@ export function repairPathWitnessTrees(forest, origin, current, input) {
   const stats = { preparedNodes: prepared.preparedNodes, preparedEdges: prepared.preparedEdges, projectedArcs: prepared.projectedArcs, treeNodes: work.retainedTreeNodes,
     queuePops: work.queuePops, predecessorTrials: work.predecessorTrials, scheduleTrials: work.scheduleTrials, labelUpdates: work.labelUpdates };
   return freeze({ forest: makeForest(current, query, graph, anchors, trees, stats, stop, true, 'bounded-path-label-repair/v1'), report });
+}
+export function proposePathWitnessFromUnion(forest, view, suppliedContext, input) {
+  if (!forests.has(forest) || !isPathWitnessView(view)) throw new TypeError('union proposal requires local forest and immutable current capture');
+  const context = pathWitnessContext(suppliedContext), p = context.policy, data = view.toJSON(), policyId = pathWitnessPolicyId(p);
+  if (data.policyId !== policyId || forest.meta.policyId !== policyId) throw new TypeError('union proposal policy differs from capture');
+  const query = config(input, ['epoch', ...Object.keys(PATH_UNION_LIMITS), ...Object.keys(PATH_ORACLE_LIMITS)], { ...PATH_UNION_LIMITS, ...PATH_ORACLE_LIMITS });
+  if (query.maxSubjectHops > p.maxHops || query.maxAnchorHops > p.maxHops) throw new RangeError('union radius exceeds policy hop bound');
+  const extraction = Object.fromEntries(['preparedNodes', 'preparedStorageEdges', 'projectedArcs', 'anchorSeedsExamined', 'anchorSeedsRetained',
+    'subjectQueuePops', 'anchorQueuePops', 'ballTrials', 'treeRowsInspected', 'treeEdgesExamined', 'staleTreeEdges', 'arcAdmissionAttempts',
+    'retainedVertices', 'retainedArcs', 'virtualNodes', 'virtualStorageEdges'].map(k => [k, 0]));
+  const retained = { reference: 'projected-union-subgraph/v1', viewRoot: null, vertices: [], arcs: [] };
+  let required = null, coverage = null, search = null, witness = null, wire = null, verification = null;
+  const result = (status, reason) => freeze({ schema: 'facety-path-union-proposal/v1', reference: 'bounded-two-sided-union-m2/v1', status, reason,
+    feasible: status === 'found' ? true : null, viewRoot: view.view().id, canonicalReference: view.capture.reference, forestRoot: forest.meta.originRoot,
+    forest: forest.meta, context, query, required, witness, wire, verification, retained, coverage, work: { extraction, search } });
+  if (forest.meta.epoch !== query.epoch) return result('unavailable', 'forest-epoch-mismatch');
+  const epoch = view.view().epoch;
+  if (query.epoch > epoch || epoch - query.epoch > p.graceEpochs) return result('unavailable', 'epoch-outside-grace');
+  const snapshot = data.options.snapshots.find(s => s.epoch === query.epoch);
+  if (!snapshot || forest.meta.status === 'unavailable') return result('unavailable', 'snapshot-unavailable');
+  if (!view.nodeIds().includes(context.subject)) return result('unavailable', 'subject-unavailable');
+  required = snapshot.difficulty;
+  coverage = { vertexLimit: false, arcLimit: false, ballTrialLimit: false, treeRowLimit: false, subjectDepthCut: false, anchorDepthCut: false,
+    forestIncomplete: !forest.meta.complete };
+  const graph = prepareTreeGraph(view), reverse = new Map(view.nodeIds().map(v => [v, []]));
+  extraction.preparedNodes = graph.live.size; extraction.preparedStorageEdges = data.live.edges.length;
+  for (const [a, children] of graph.next) for (const b of children) { reverse.get(b).push(a); extraction.projectedArcs++; }
+  for (const neighbors of reverse.values()) neighbors.sort(cmp);
+  if (query.maxVertices === 0) { coverage.vertexLimit = true; return result('censored', 'retained-vertex-limit'); }
+  const vertices = new Set([context.subject]), arcs = new Map(), roots = [];
+  for (const a of snapshot.anchors) if (a !== context.subject && graph.live.has(a) && !view.removed(a)) {
+    extraction.anchorSeedsExamined++;
+    if (!vertices.has(a) && vertices.size === query.maxVertices) { coverage.vertexLimit = true; continue; }
+    vertices.add(a); roots.push(a); extraction.anchorSeedsRetained++;
+  }
+  function admit(a, b) {
+    extraction.arcAdmissionAttempts++;
+    const missing = [a, b].filter(v => !vertices.has(v));
+    if (vertices.size + missing.length > query.maxVertices) { coverage.vertexLimit = true; return false; }
+    const additions = (p.direction === 'directed-from-anchor' ? [[a, b]] : [[a, b], [b, a]]).filter(pair => !arcs.has(JSON.stringify(pair)));
+    if (arcs.size + additions.length > query.maxArcs) { coverage.arcLimit = true; return false; }
+    for (const v of missing) vertices.add(v);
+    for (const pair of additions) arcs.set(JSON.stringify(pair), pair);
+    return true;
+  }
+  function ball(anchorSide) {
+    const queue = (anchorSide ? roots : [context.subject]).map(v => [v, 0]), visited = new Set(queue.map(([v]) => v)), seeds = new Set(roots);
+    const depth = anchorSide ? query.maxAnchorHops : query.maxSubjectHops, neighbors = anchorSide ? graph.next : reverse;
+    for (let head = 0; head < queue.length; head++) {
+      const [node, distance] = queue[head]; extraction[anchorSide ? 'anchorQueuePops' : 'subjectQueuePops']++;
+      if (anchorSide && node === context.subject) continue;
+      if (!(anchorSide ? seeds.has(node) : node === context.subject) && p.minStanding !== null) {
+        const score = view.standing(node); if (score === null || score < p.minStanding) continue;
+      }
+      if (distance === depth) { if (neighbors.get(node).length) coverage[anchorSide ? 'anchorDepthCut' : 'subjectDepthCut'] = true; continue; }
+      for (const next of neighbors.get(node)) {
+        if (extraction.ballTrials === query.maxBallTrials) { coverage.ballTrialLimit = true; return false; }
+        extraction.ballTrials++;
+        if (!admit(anchorSide ? node : next, anchorSide ? next : node)) continue;
+        if (!visited.has(next)) { visited.add(next); queue.push([next, distance + 1]); }
+      }
+    }
+    return true;
+  }
+  if (ball(false)) ball(true);
+  rows: for (const tree of forest.toJSON().parents) for (const row of tree.nodes) {
+    if (extraction.treeRowsInspected === query.maxTreeRows) { coverage.treeRowLimit = true; break rows; }
+    extraction.treeRowsInspected++;
+    if (row.parent === null) continue;
+    extraction.treeEdgesExamined++;
+    if (!graph.forward.get(row.parent)?.has(row.subject)) { extraction.staleTreeEdges++; continue; }
+    admit(row.parent, row.subject);
+  }
+  retained.vertices = [...vertices].sort(cmp); retained.arcs = [...arcs.values()].sort((a, b) => cmp(a[0], b[0]) || cmp(a[1], b[1]));
+  extraction.retainedVertices = vertices.size; extraction.retainedArcs = arcs.size;
+  const restricted = new DirectedGraph('retained-union');
+  for (const v of retained.vertices) restricted.addNode(v);
+  for (const [a, b] of retained.arcs) restricted.addEdge(a, b);
+  extraction.virtualNodes = restricted.size; extraction.virtualStorageEdges = restricted.edgeCount;
+  const localView = pathWitnessGraphView(restricted, { policy: p, currentEpoch: epoch, snapshots: [snapshot], removed: data.options.removed, standing: data.options.standing });
+  retained.viewRoot = localView.view().id;
+  const local = findPathWitness(localView, context, { epoch: query.epoch, ...Object.fromEntries(Object.keys(PATH_ORACLE_LIMITS).map(k => [k, query[k]])) });
+  if (local.schema !== 'facety-path-search/v1' || local.viewRoot !== retained.viewRoot || local.reference !== localView.capture.reference || local.required !== required
+    || JSON.stringify(local.context) !== JSON.stringify(context) || !['found', 'infeasible', 'censored'].includes(local.status)
+    || local.feasible !== (local.status === 'found' ? true : local.status === 'infeasible' ? false : null)) throw new Error('union search scope disagreement');
+  search = { status: local.status, reason: local.reason, feasible: local.feasible, stats: local.stats };
+  if (local.status === 'found') {
+    if (typeof local.wire !== 'string' || JSON.stringify(local.witness) !== JSON.stringify(decodePathWitness(Buffer.from(local.wire), context))) throw new Error('union search proof disagreement');
+    const primary = verifyPathWitness(Buffer.from(local.wire), context, view), ref2 = verifyPathWitnessRef2(Buffer.from(local.wire), context, view);
+    if (!local.verification?.primary.accepted || !local.verification?.ref2.accepted || local.verification.primary.required !== required || local.verification.ref2.required !== required
+      || !primary.accepted || !ref2.accepted || primary.required !== required || ref2.required !== required) throw new Error('union proposal verifier disagreement');
+    wire = local.wire; witness = local.witness; verification = { retained: local.verification, current: { primary, ref2 } };
+    return result('found', 'ok');
+  }
+  if (local.wire !== null || local.witness !== null || local.verification !== null) throw new Error('union search proof disagreement');
+  if (local.status === 'censored') {
+    if (local.reason === 'witness-byte-bound') return result('censored', local.reason);
+    if (!['packing-limit', 'path-limit', 'expansion-limit'].includes(local.reason)) throw new Error('union search status disagreement');
+    return result('censored', 'retained-search-' + local.reason);
+  }
+  for (const [flag, reason] of [['vertexLimit', 'retained-vertex-limit'], ['arcLimit', 'retained-arc-limit'], ['ballTrialLimit', 'ball-trial-limit'],
+    ['treeRowLimit', 'tree-row-limit'], ['subjectDepthCut', 'subject-depth-limit'], ['anchorDepthCut', 'anchor-depth-limit'], ['forestIncomplete', 'tree-build-incomplete']]) {
+    if (coverage[flag]) return result('censored', reason);
+  }
+  return result('miss', 'retained-search-miss');
 }
 export function proposePathWitnessFromTrees(forest, view, suppliedContext, input) { return propose(forest, view, suppliedContext, input, null); }
 export function proposePathWitnessFromBranches(forest, view, suppliedContext, input, advice) {
