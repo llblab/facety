@@ -1,0 +1,282 @@
+{
+  "schema": "facety-engineering-contract-validation/v1",
+  "classification": "D61 M3-E1 affected-root refresh pre-code contract, not an implemented classifier/maintenance algorithm, authenticated state, independent authorship, scaling or research result",
+  "baseCommit": "d0e13c9d83257d7220cb06ed8d016766ed1eb8ad",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "8b5976492313d805b47458235325dcc936ed74c8e03bd36a5bfcbe87d5dcc26b",
+      "files": 46
+    },
+    "node": "v26.8.1",
+    "sourceTree": "716b448f3de6f97fc739a389e447c64d6e3b133b",
+    "testTree": "51a46ae179e62fa067d2f745acbf5456a412dcf8"
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-tree-refresh.md",
+      "gitBlob": "a958570e74cb98eb2ecce29a879c785f5ab00d08"
+    },
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "3ab18407b9717558a1597a1d028b24589567ad22"
+    },
+    {
+      "path": "src/path-witness-view.mjs",
+      "gitBlob": "059358eaef526b9207a075d9f5cc2f359113f76a"
+    },
+    {
+      "path": "test/path-witness-segment-joins.test.mjs",
+      "gitBlob": "571aa5b5dfd8fb7ee77de6fd08a292e29179166e"
+    }
+  ],
+  "contract": {
+    "futureAPI": "refreshPathWitnessTrees(forest,origin,current,query)",
+    "module": "src/path-witness-trees.mjs",
+    "query": "existing exact epoch/maxExpansions/maxTreeNodes, unchanged PATH_TREE_LIMITS",
+    "scope": "whole affected-root BFS refresh, not within-root insertion relaxation or Even–Shiloach",
+    "inputs": "full coherent immutable captures, origin/namespace checks; caller lineage assumption, no untrusted notice completeness",
+    "classifier": "changed projected-arc sources or changed enabled eligibility within old complete root distance<r, root score exemption; new roots affected",
+    "reset": "incomplete input, epoch or policy change; explicit deltaComplete false, not false zero-change inference",
+    "retention": "reused rows consume total retained-node cap; fresh BFS trials consume expansion cap; parent-closed partial fresh root then omit later roots",
+    "metadata": "current-equivalent forest reference distinct from freshly built original, actual reuse/fresh work separate; no all-rows-recomputed claim",
+    "noNewConstantsRNGCacheOrModelMutation": true,
+    "selectedProtocolChange": false
+  },
+  "existingAPIProbe": {
+    "classification": "existing rebuild/proposal/verifier dependency controls, not an affected-root updater",
+    "groups": 9,
+    "controls": [
+      {
+        "case": "insertion-can-affect-root-without-killing-parent",
+        "rows": [
+          {
+            "kind": "shorter-path",
+            "oldPath": [
+              "u",
+              "x",
+              "a"
+            ],
+            "newPath": [
+              "u",
+              "a"
+            ],
+            "allOldParentEdgesLive": true,
+            "oldCurrent": {
+              "status": "found",
+              "reason": "ok"
+            },
+            "freshCurrent": {
+              "status": "found",
+              "reason": "ok"
+            }
+          },
+          {
+            "kind": "equal-distance-tie-parent",
+            "oldPath": [
+              "u",
+              "y",
+              "a"
+            ],
+            "newPath": [
+              "u",
+              "x",
+              "a"
+            ],
+            "allOldParentEdgesLive": true,
+            "oldCurrent": {
+              "status": "found",
+              "reason": "ok"
+            },
+            "freshCurrent": {
+              "status": "found",
+              "reason": "ok"
+            }
+          }
+        ]
+      },
+      {
+        "case": "chosen-parent-deletion-with-alternate",
+        "oldPath": [
+          "u",
+          "a"
+        ],
+        "newPath": [
+          "u",
+          "x",
+          "a"
+        ],
+        "oldCurrent": {
+          "status": "miss",
+          "reason": "tree-path-shortage"
+        },
+        "freshCurrent": {
+          "status": "found",
+          "reason": "ok"
+        }
+      },
+      {
+        "case": "one-orientation-loss-is-projection-specific",
+        "rows": [
+          {
+            "mode": "directed",
+            "newPath": null,
+            "status": "miss",
+            "reason": "tree-path-shortage"
+          },
+          {
+            "mode": "any",
+            "newPath": [
+              "u",
+              "a"
+            ],
+            "status": "found",
+            "reason": "ok"
+          },
+          {
+            "mode": "reciprocal",
+            "newPath": null,
+            "status": "miss",
+            "reason": "tree-path-shortage"
+          }
+        ]
+      },
+      {
+        "case": "retire-removed-root-not-transit-vertex",
+        "oldRoots": [
+          "a",
+          "b"
+        ],
+        "currentRoots": [
+          "b"
+        ],
+        "permittedTransit": [
+          "u",
+          "a",
+          "b"
+        ],
+        "status": "found",
+        "reason": "ok"
+      },
+      {
+        "case": "score-eligibility-on-versus-off",
+        "rows": [
+          {
+            "enabled": false,
+            "rootChanged": true,
+            "parentsEqual": true,
+            "newPath": [
+              "u",
+              "x",
+              "a"
+            ],
+            "status": "found",
+            "reason": "ok"
+          },
+          {
+            "enabled": true,
+            "rootChanged": true,
+            "parentsEqual": false,
+            "newPath": null,
+            "status": "miss",
+            "reason": "tree-path-shortage"
+          }
+        ]
+      },
+      {
+        "case": "incomplete-reset-and-warm-budget-distinction",
+        "sameCaptureRoot": "86c5b6c854c887fbfcdaa3d178bf2162107e1a214d5b13c7ba689227c48f4497",
+        "partialStatus": "censored",
+        "partialPath": null,
+        "completeStatus": "built",
+        "completePath": [
+          "u",
+          "x",
+          "a"
+        ],
+        "freshZeroExpansionStatus": "censored",
+        "notARefreshRun": true
+      },
+      {
+        "case": "explicit-epoch-not-activation-authority",
+        "oldRoots": [
+          "a"
+        ],
+        "newRoots": [
+          "b"
+        ],
+        "newEpoch": {
+          "status": "found",
+          "reason": "ok"
+        },
+        "oldEpochWithinGrace": {
+          "status": "found",
+          "reason": "ok"
+        },
+        "outOfGrace": {
+          "status": "unavailable",
+          "reason": "epoch-outside-grace"
+        },
+        "missingSnapshotStatus": "unavailable",
+        "diagnosticBuildIsNotAuthorization": true
+      },
+      {
+        "case": "identical-capture-rebuild-equivalence",
+        "sameRoot": true,
+        "parentsAndMetadataEqual": true,
+        "notAReuseAlgorithm": true
+      },
+      {
+        "case": "relation-reincarnation-is-not-projected-bfs-change",
+        "rootChanged": true,
+        "parentsEqual": true,
+        "cacheStatus": "miss",
+        "primary": true,
+        "ref2": true
+      }
+    ],
+    "newAPIAbsent": true,
+    "notEvidenceOfRefreshClassifierReuseBudgetsOrPartialRootActions": true
+  },
+  "priorValidation": {
+    "source": "m3-segment-joins-validation.json atd0e13c9",
+    "npmTestRerun": false,
+    "currentPassedAtPriorCheckpoint": 580,
+    "historicalPassedAtPriorCheckpoint": 21,
+    "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+    "basis": "src/test trees and implementation digest unchanged; previous113 focused/580 current+21 pinned historical evidence reused, not a fresh whole-suite pass across docs",
+    "architectureAtSameSource": {
+      "files": 46,
+      "localEdges": 120,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "compatibility": {
+    "C3": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+    "originalTree": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+    "oneHop": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+    "status": "unchanged source and frozen records, no recapture or method switch"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort"
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "implement frozen affected-root updater with independent raw/full-rebuild old→new graph-pair and resource/partial-root controls",
+    "later": "within-root insertion/decremental repair, workload/performance/evidence and live authority remain separate"
+  },
+  "research": {
+    "registrations": 0,
+    "refreshImplementationRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false,
+    "pilot": false
+  }
+}
