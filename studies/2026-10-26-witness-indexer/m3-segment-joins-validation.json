@@ -1,0 +1,92 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-D2 bounded cached-tail assembly, not authenticated canonical state, general completeness, independent authorship, scaling or E1/economic evidence",
+  "baseCommit": "f405b92d4e0e5c47a90807348585f42b1743ae4e",
+  "provenance": {
+    "implementation": { "method": "sha256-src-mjs-v1", "digest": "8b5976492313d805b47458235325dcc936ed74c8e03bd36a5bfcbe87d5dcc26b", "files": 46 },
+    "runtime": { "node": "v26.8.1" }
+  },
+  "files": [
+    { "path": "src/path-witness-trees.mjs", "gitBlob": "3ab18407b9717558a1597a1d028b24589567ad22" },
+    { "path": "test/path-witness-segment-joins.test.mjs", "gitBlob": "571aa5b5dfd8fb7ee77de6fd08a292e29179166e" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-segment-joins-implementation.md", "gitBlob": "0f87ba64748599e8590ed4486d0141fd5b870252" },
+    { "path": "docs/simulator.en.md", "gitBlob": "df689857fec95bb28607d7a3e9641c02224f318b" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-segment-joins.md", "gitBlob": "c72b28b737a3c526a141aabdac7c441677dda1ee" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-segment-joins-contract-validation.json", "gitBlob": "3727da82292e6484c1e0df5a951f10b60a150803" },
+    { "path": "src/path-witness-segments.mjs", "gitBlob": "bac1263c30fa9e5b6119f53c6d38f5ad6cb5fbd9" }
+  ],
+  "implementation": {
+    "module": "src/path-witness-trees.mjs",
+    "public": ["proposePathWitnessFromSegments", "PATH_SEGMENT_PROPOSAL_LIMITS"],
+    "call": "(forest,view,context,query,advice,cache)",
+    "newQueryFields": ["tick", "maxSegmentLookups", "maxSegmentChecks", "maxSegmentResults"],
+    "caps": { "maxSegmentLookups": 65536, "maxSegmentChecks": 1024, "maxSegmentResults": 256 },
+    "lookupUnit": "examined prefix×retained-target pairs including ineligible/empty targets; actual calls separately counted",
+    "preflight": "exact local cache/private-field brand and copied/subclass/null rejection, monotonic tick and unchanged strict prefix inputs before unavailable/mutation",
+    "phase1": "unchanged C3 bounded FIFO/full-prefix routing keys; no cache input",
+    "phase2": "each admitted prefix: direct, retained forest tails, FIFO cache tails; shared full current path/raw budget/dedup/exact family/both-verifier boundary",
+    "cacheEffects": "lookup-only clock/expiry/current rejection/use/verification metadata; no put/refresh/learning/fallback/Model mutation",
+    "accounting": "all returned batch entries consume return/use even if raw candidate budget prevents consumption; no per-pair refill beyond child64 cap",
+    "telemetry": "bounded consumed-join descriptors, separate pair/target/call counters and D1 work sums; initialEntries×calls is inventory-sweep visit upper bound, not measured CPU",
+    "unavailable": "zero frontier/draw/lookup/cache mutation, coverage null",
+    "nonpositive": "feasible null/no witness; no global no-path conclusion",
+    "unexpectedProvider": "exceptions/unavailable/counter disagreement propagate as contract errors, not graph negatives",
+    "newRNGLayoutDefaultOrModelMigration": false
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 113,
+    "newFamilies": 11,
+    "rawReference": {
+      "nodes": ["u", "a", "b"],
+      "graphs": "all64 directed non-self arc subsets",
+      "projections": ["directed-from-anchor", "any-live-orientation", "reciprocal-only"],
+      "scoreProfiles": ["off", "minStanding1, a0/b1"],
+      "prefixDepths": [0, 1],
+      "cases": 768,
+      "found": 224,
+      "observedMismatch": 0,
+      "reference": "independent raw-arc DFS prefix/tail sets, raw splice-set intersection with full raw paths, direct recursive subfamily search and full M2",
+      "currentDualVerification": true,
+      "scope": "tiny encoded-rule engineering controls, not independent authorship, human samples or general completeness"
+    },
+    "controls": [
+      "depth1 five-node detour succeeds in both modes while old C3 stays censored, identical prefix metadata/keys",
+      "zero/exact/one-less pair/check/return/candidate/packing budgets; empty buckets at zero checks/results are not automatically truncated",
+      "65 alternatives hit child64 partial cap without refill despite remaining global return budget",
+      "all returned use counted when only one/zero raw join is consumed; distinct simultaneous result/check flags persist",
+      "full score/hop/cycle/terminal/family conflicts rejected; removed transit allowed",
+      "stale score/edge/reference and TTL eviction, but relation-ID miss cannot gate current valid tree/vertex proof",
+      "ineligible pair slots and more than64 targets counted; retained-root omission can miss a full-M2 positive",
+      "strict cache/query/advice brand, bad clocks/data and unavailable preflight never mutate cache",
+      "safe-integer terminal sweep, immutable output/inert inspection, no implicit retention/renewal and full-witness byte-bound censor after valid cache returns",
+      "unexpected provider exceptions/unavailable/over-budget counts propagate; test-local prototype restored",
+      "alternate arrivals, future-prefix/unrelated-query routing invariance",
+      "D64, r64 Unicode and read-only Native Model operation"
+    ]
+  },
+  "full": {
+    "command": "npm test",
+    "current": { "passed": 580, "failed": 0, "skipped": 0 },
+    "historical": { "passed": 21, "failed": 0, "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7", "currentSourceEvidence": false }
+  },
+  "compatibility": {
+    "C3": { "pairs": 1152, "method": "sha256-streaming-json-forest-proposal-array-NUL/v1", "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160", "matched": true },
+    "originalTree": { "pairs": 12288, "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691", "matched": true },
+    "oneHop": { "pairs": 12288, "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686", "matched": true },
+    "oldLimitsAndResultShapesUnchanged": true,
+    "frozenPreCodeAndHistoricalRecordsUnchanged": true,
+    "randomness": "path-prefix-routing/v1 + path-pool-keyed/v1 + sha256-xoshiro128starstar-v2 unchanged; no new experiment manifest"
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "fixed trajectories, not universal equivalence or replay of historical studies"
+  },
+  "architecture": { "files": 46, "localEdges": 120, "cycles": 0, "errors": 0, "warnings": 0 },
+  "context": { "errors": 0, "warnings": 29, "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort" },
+  "remaining": { "M3": "open", "next": "supplied-snapshot-only bounded update/repair contract with full rebuild/reference controls before implementation/cost", "liveAuthorityCapacityAndFundedGate": "owner-gated, not implicitly selected" },
+  "research": { "registrations": 0, "experimentRuns": 0, "benchmarkCurves": 0, "confirmationSeedLabels": [], "LLMAgentRuns": 0, "masterG1Verdict": null, "D62EconomicGuarantee": false, "pilot": false }
+}

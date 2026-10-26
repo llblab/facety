@@ -1,9 +1,12 @@
-// Owns: Bounded anchor BFS and tree/branch/prefix candidate assembly; excludes global completeness, live ranking, dynamic repair and authority.
+// Owns: Bounded anchor BFS and tree/branch/prefix/segment candidate assembly; excludes global completeness, live ranking, dynamic repair and authority.
 import { createHash } from 'node:crypto';
 import { pathWitnessContext, pathWitnessPolicyId, encodePathWitness, decodePathWitness, verifyPathWitness } from './path-witness.mjs';
 import { verifyPathWitnessRef2 } from './path-witness-ref2.mjs';
 import { isPathWitnessView } from './path-witness-view.mjs';
 import { createPathWitnessPool, routePathWitnessPool, PATH_POOL_RANDOMNESS } from './path-witness-pool.mjs';
+import { PathWitnessSegmentCache, PATH_SEGMENT_LIMITS } from './path-witness-segments.mjs';
+
+export const PATH_SEGMENT_PROPOSAL_LIMITS = Object.freeze({ maxSegmentLookups: 65536, maxSegmentChecks: 1024, maxSegmentResults: 256 });
 
 export const PATH_TREE_LIMITS = Object.freeze({ maxExpansions: 1000000, maxTreeNodes: 65536, maxCandidates: 256, maxPackingSteps: 1000000, maxBranches: 64, maxTreeLookups: 65536, maxPrefixHops: 64, maxPrefixes: 4096 });
 export const PATH_PREFIX_RANDOMNESS = Object.freeze({ policy: 'path-prefix-routing/v1', generator: PATH_POOL_RANDOMNESS.generator, childPolicy: PATH_POOL_RANDOMNESS.policy });
@@ -13,9 +16,9 @@ function fields(input, keys) {
   if (!input || ![Object.prototype, null].includes(Object.getPrototypeOf(input)) || Reflect.ownKeys(input).length !== keys.length || Object.keys(input).length !== keys.length
     || keys.some(k => !Object.hasOwn(input, k)) || Object.values(Object.getOwnPropertyDescriptors(input)).some(d => !Object.hasOwn(d, 'value'))) throw new TypeError('trees require exact data fields');
 }
-function config(input, keys) {
+function config(input, keys, limits = PATH_TREE_LIMITS) {
   fields(input, keys);
-  for (const key of keys) if (!natural(input[key]) || (key !== 'epoch' && input[key] > PATH_TREE_LIMITS[key])) throw new RangeError('unsupported tree budget/epoch ' + key);
+  for (const key of keys) if (!natural(input[key]) || (key !== 'epoch' && key !== 'tick' && input[key] > limits[key])) throw new RangeError('unsupported tree budget/epoch ' + key);
   return Object.freeze(Object.fromEntries(keys.map(k => [k, input[k]])));
 }
 function freeze(v) { if (v && typeof v === 'object') { for (const x of Object.values(v)) freeze(x); Object.freeze(v); } return v; }
@@ -75,12 +78,18 @@ export function proposePathWitnessFromPrefixes(forest, view, suppliedContext, in
   fields(advice, ['pools', 'routing']); fields(advice.routing, ['seed', 'queryId', 'step', 'mode']);
   return propose(forest, view, suppliedContext, input, advice, true);
 }
-function propose(forest, view, suppliedContext, input, advice, prefixMode = false) {
+export function proposePathWitnessFromSegments(forest, view, suppliedContext, input, advice, cache) {
+  fields(advice, ['pools', 'routing']); fields(advice.routing, ['seed', 'queryId', 'step', 'mode']);
+  return propose(forest, view, suppliedContext, input, advice, true, { cache });
+}
+function propose(forest, view, suppliedContext, input, advice, prefixMode = false, segmentPort = null) {
   if (!forests.has(forest) || !isPathWitnessView(view)) throw new TypeError('proposal requires local forest and immutable current capture');
   const context = pathWitnessContext(suppliedContext), p = context.policy, policyId = pathWitnessPolicyId(p);
   if (view.toJSON().policyId !== policyId || forest.meta.policyId !== policyId) throw new TypeError('tree proposal policy differs from capture');
-  const query = config(input, prefixMode ? ['epoch', 'maxPrefixHops', 'maxPrefixes', 'maxExpansions', 'maxBranches', 'maxTreeLookups', 'maxCandidates', 'maxPackingSteps']
-    : advice ? ['epoch', 'maxCandidates', 'maxPackingSteps', 'maxBranches', 'maxTreeLookups'] : ['epoch', 'maxCandidates', 'maxPackingSteps']);
+  const prefixKeys = ['epoch', 'maxPrefixHops', 'maxPrefixes', 'maxExpansions', 'maxBranches', 'maxTreeLookups', 'maxCandidates', 'maxPackingSteps'];
+  const query = config(input, segmentPort ? [...prefixKeys, 'tick', 'maxSegmentLookups', 'maxSegmentChecks', 'maxSegmentResults'] : prefixMode ? prefixKeys
+    : advice ? ['epoch', 'maxCandidates', 'maxPackingSteps', 'maxBranches', 'maxTreeLookups'] : ['epoch', 'maxCandidates', 'maxPackingSteps'],
+  segmentPort ? { ...PATH_TREE_LIMITS, ...PATH_SEGMENT_PROPOSAL_LIMITS } : PATH_TREE_LIMITS);
   if (prefixMode && query.maxPrefixHops > p.maxHops) throw new RangeError('prefix depth exceeds policy hop bound');
   const stats = { treeLookups: 0, candidatesExamined: 0, liveCandidates: 0, edgeChecks: 0, scoreChecks: 0, packingSteps: 0,
     validationComplete: false, packingComplete: false };
@@ -90,10 +99,11 @@ function propose(forest, view, suppliedContext, input, advice, prefixMode = fals
   const branch = advice && !prefixMode ? { reference: 'one-hop-branch-tree/v1', eligiblePeers: null, branchesExpanded: 0, duplicatePaths: 0,
     route: routePathWitnessPool(advice.pool, { ...advice.routing, domain: context.domain, viewId: view.view().id, epoch: query.epoch, subject: context.subject,
       start: 0, count: 0, excluded: [] }) } : null;
+  const segments = segmentPort ? prepareSegments(segmentPort, query) : null;
   let required = null, witness = null, wire = null, verification = null;
   const result = (status, reason) => freeze({ schema: 'facety-path-proposal/v1', status, feasible: status === 'found' ? true : null, reason,
     viewRoot: view.view().id, canonicalReference: view.capture.reference, forestRoot: forest.meta.originRoot, forest: forest.meta,
-    context, query, required, witness, wire, verification, ...(branch ? { branch } : {}), ...(prefix ? { prefix } : {}), stats: { ...stats } });
+    context, query, required, witness, wire, verification, ...(branch ? { branch } : {}), ...(prefix ? { prefix } : {}), ...(segments ? { segments } : {}), stats: { ...stats } });
   if (forest.meta.epoch !== query.epoch) return result('unavailable', 'forest-epoch-mismatch');
   const current = view.view().epoch;
   if (query.epoch > current || current - query.epoch > p.graceEpochs) return result('unavailable', 'epoch-outside-grace');
@@ -102,6 +112,7 @@ function propose(forest, view, suppliedContext, input, advice, prefixMode = fals
   if (prefix && !view.nodeIds().includes(context.subject)) return result('unavailable', 'subject-unavailable');
   required = snapshot.difficulty;
   if (prefix) growPrefixes(prefix, view, context, query);
+  if (segments) segments.coverage = { segmentLookupLimit: false, segmentCheckLimit: false, segmentResultLimit: false };
   const candidates = [], seeds = [context.subject], seen = new Set(); let candidateStop = false, lookupStop = false, branchStop = false;
   if (branch) {
     const neighbors = new Set(view.neighbors(context.subject, p.direction, p.undirectedProjection));
@@ -113,16 +124,18 @@ function propose(forest, view, suppliedContext, input, advice, prefixMode = fals
   function edge(a, b) { stats.edgeChecks++; return view.edge(a, b); }
   function* paths() {
     if (prefix) {
-      for (const path of prefix.prefixes) {
+      for (let ordinal = 0; ordinal < prefix.prefixes.length; ordinal++) {
+        const path = prefix.prefixes[ordinal];
         if (path.length > 1) {
           prefix.stats.endpointChecks++;
-          if (view.anchor(query.epoch, path.at(-1)) && !view.removed(path.at(-1))) yield path;
+          if (view.anchor(query.epoch, path.at(-1)) && !view.removed(path.at(-1))) yield { path };
         }
         for (const anchor of forest.anchors()) {
           if (stats.treeLookups === query.maxTreeLookups) { prefix.coverage.treeLookupLimit = true; break; }
           stats.treeLookups++; const tail = forest.path(path.at(-1), anchor);
-          if (tail) yield [...path.slice(0, -1), ...tail];
+          if (tail) yield { path: [...path.slice(0, -1), ...tail] };
         }
+        if (segments) yield* segmentPaths(segmentPort.cache, segments, forest, view, context, query, path, ordinal, segmentPort.initialEntries);
       }
       return;
     }
@@ -132,14 +145,15 @@ function propose(forest, view, suppliedContext, input, advice, prefixMode = fals
         if (branch && stats.treeLookups === query.maxTreeLookups) { lookupStop = true; return; }
         if (!started) { if (branch && seed !== context.subject) branch.branchesExpanded++; started = true; }
         stats.treeLookups++; const tail = forest.path(seed, anchor);
-        if (tail) yield seed === context.subject ? tail : [context.subject, ...tail];
+        if (tail) yield { path: seed === context.subject ? tail : [context.subject, ...tail] };
       }
     }
   }
-  for (const path of paths()) {
+  for (const { path, join } of paths()) {
     if (path.length < 2) continue;
     const anchor = path.at(-1);
     if (stats.candidatesExamined === query.maxCandidates) { candidateStop = true; break; }
+    if (join) { segments.joins.push({ candidateOrdinal: stats.candidatesExamined, ...join }); segments.stats.consumedJoins++; }
     stats.candidatesExamined++;
     if (path.length > p.maxHops + 1 || new Set(path).size !== path.length || !view.anchor(query.epoch, anchor) || view.removed(anchor)) continue;
     let valid = true;
@@ -156,7 +170,8 @@ function propose(forest, view, suppliedContext, input, advice, prefixMode = fals
       if (!seen.has(key)) { seen.add(key); candidates.push(path); } else if (branch) branch.duplicatePaths++; else if (prefix) prefix.stats.duplicatePaths++;
     }
   }
-  stats.liveCandidates = candidates.length; stats.validationComplete = !candidateStop && !lookupStop && !branchStop && (!prefix || !Object.values(prefix.coverage).some(Boolean));
+  stats.liveCandidates = candidates.length; stats.validationComplete = !candidateStop && !lookupStop && !branchStop && (!prefix || !Object.values(prefix.coverage).some(Boolean))
+    && (!segments || !Object.values(segments.coverage).some(Boolean));
   let packingStop = false;
   function pack(start, chosen, used) {
     if (chosen.length === required) return [...chosen];
@@ -181,6 +196,9 @@ function propose(forest, view, suppliedContext, input, advice, prefixMode = fals
         if (prefix.coverage[flag]) return result('censored', reason);
       }
     }
+    if (segments) for (const [flag, reason] of [['segmentLookupLimit', 'segment-lookup-limit'], ['segmentCheckLimit', 'segment-check-limit'], ['segmentResultLimit', 'segment-result-limit']]) {
+      if (segments.coverage[flag]) return result('censored', reason);
+    }
     if (lookupStop) return result('censored', 'tree-lookup-limit');
     if (branchStop) return result('censored', 'branch-limit');
     if (!forest.meta.complete) return result('censored', 'tree-build-incomplete');
@@ -193,6 +211,44 @@ function propose(forest, view, suppliedContext, input, advice, prefixMode = fals
   if (!primary.accepted || !ref2.accepted || primary.required !== required || ref2.required !== required) throw new Error('tree proposal verifier disagreement');
   witness = decodePathWitness(bytes, context); wire = bytes.toString('utf8'); verification = Object.freeze({ primary, ref2 });
   return result('found', 'ok');
+}
+function prepareSegments(port, query) {
+  const cache = port.cache;
+  if (!cache || Object.getPrototypeOf(cache) !== PathWitnessSegmentCache.prototype) throw new TypeError('proposal requires exact local segment cache');
+  const inventory = PathWitnessSegmentCache.prototype.stats.call(cache); port.initialEntries = inventory.entries;
+  if (inventory.lastTick !== null && query.tick < inventory.lastTick) throw new RangeError('segment proposal clock rollback');
+  return { reference: 'bounded-prefix-tree-segments/v1', cache: { config: inventory.config, initialTick: inventory.lastTick },
+    stats: { pairsExamined: 0, targetAnchorReads: 0, targetRemovalReads: 0, lookupCalls: 0, consumedJoins: 0, inventorySweepEntryUpperBound: 0 },
+    work: Object.fromEntries(['expired', 'evicted', 'refreshed', 'checked', 'returned', 'preparedStorageEdges', 'preparedNodes', 'vertexChecks', 'scoreChecks', 'edgeChecks', 'referenceReads', 'idChecks'].map(k => [k, 0])),
+    joins: [], coverage: null };
+}
+function* segmentPaths(cache, segments, forest, view, context, query, prefix, ordinal, initialEntries) {
+  const s = segments.stats, flags = segments.coverage, child = pathWitnessContext({ ...context, subject: prefix.at(-1) });
+  for (const anchor of forest.anchors()) {
+    if (s.pairsExamined === query.maxSegmentLookups) { flags.segmentLookupLimit = true; break; }
+    s.pairsExamined++; s.targetAnchorReads++;
+    if (!view.anchor(query.epoch, anchor)) continue;
+    s.targetRemovalReads++; if (view.removed(anchor)) continue;
+    const maxChecks = Math.min(PATH_SEGMENT_LIMITS.maxChecks, query.maxSegmentChecks - segments.work.checked),
+      maxResults = Math.min(PATH_SEGMENT_LIMITS.maxResults, query.maxSegmentResults - segments.work.returned);
+    const found = PathWitnessSegmentCache.prototype.lookup.call(cache, view, child, { epoch: query.epoch, to: anchor, tick: query.tick, maxChecks, maxResults });
+    s.lookupCalls++;
+    // The initial inventory only decreases in this lookup-only synchronous consumer. This is a bound, not measured CPU.
+    s.inventorySweepEntryUpperBound = s.lookupCalls * initialEntries;
+    if (!['hit', 'partial', 'miss', 'censored'].includes(found.status)) throw new Error('segment proposal unexpected lookup status');
+    fields(found.work, Object.keys(segments.work));
+    if (found.work.checked > maxChecks || found.segments.length > maxResults || found.work.returned !== found.segments.length) throw new Error('segment proposal lookup budget disagreement');
+    for (const key of Object.keys(segments.work)) {
+      if (!natural(found.work[key]) || !Number.isSafeInteger(segments.work[key] + found.work[key])) throw new Error('segment proposal invalid work counter');
+      segments.work[key] += found.work[key];
+    }
+    if (found.status === 'partial' || found.status === 'censored') {
+      if (found.reason === 'check-limit') flags.segmentCheckLimit = true;
+      else if (found.reason === 'result-limit') flags.segmentResultLimit = true;
+      else throw new Error('segment proposal unexpected lookup limit');
+    }
+    for (const segment of found.segments) yield { path: [...prefix.slice(0, -1), ...segment.path], join: { prefixOrdinal: ordinal, target: anchor, segmentId: segment.id } };
+  }
 }
 function prefixArray(value, maximum) {
   if (!Array.isArray(value) || ![Array.prototype, null].includes(Object.getPrototypeOf(value))) throw new TypeError('prefix requires plain dense data arrays');
