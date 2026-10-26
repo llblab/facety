@@ -1,0 +1,283 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "Committed-plan finite paired joint larger/churn native conformance; test-only, no runtime/source change, benchmark/scientific/economic/global-completeness or independent-authorship assurance",
+  "baseCommit": "cfd5cc7bd8c7562912adc8dfcdf24d8c8ddbc905",
+  "sourceTree": "e0831652035dd9d17975d7862ce26a49fb14ae8b",
+  "testTree": "8ecc221fbbcbf51e55377b72bb1c3c65e57311e5",
+  "baseTestTree": "bd9e1ccecb3d86b06d86c83a48af5a813be7f7d7",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "299ae9738d73962c2c8e381fc5a24320f577c98fbda32ea97391b5a4a9a77300",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "test/path-witness-joint-churn-pairs.test.mjs",
+      "gitBlob": "d3ab02763ae1b73e709785c1e890a8a08ca4918c"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-joint-churn-plan.json",
+      "gitBlob": "4e669b271741bb348c2b9bb5772a8323a253b183"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-acceptance-validation.json",
+      "gitBlob": "536954ba92943a280d6dd273d0681d09c8e3ee73"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-composite-workload-validation.json",
+      "gitBlob": "245eebce261e28e89d31f8b4f392cff8d72eb32e"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-joint-churn-results.md",
+      "gitBlob": "b73ef30e338deb9662e17947816f522cbb3a41fb"
+    }
+  ],
+  "plan": {
+    "id": "m3-joint-churn-pairs/v1",
+    "schema": "facety-engineering-conformance-plan/v1",
+    "committedBeforeTests": "cfd5cc7",
+    "digest": "ca3d88b6bc6a4043167c6bb0183e930ff38dbb4ea2d2b1f88605d28905731518",
+    "status": "executed as fixed",
+    "changedCapsLabelsDomain": false,
+    "interpretation": "engineering conformance plan, not actual hypothesis registration/backend/statistic/method/scientific seed contract"
+  },
+  "runtimeSourceChanged": false,
+  "newRuntimeModulesOrExports": 0,
+  "oldTestBodiesFrozenCorpusAndHistoricalArtifactsUnchanged": true,
+  "native": {
+    "families": 1,
+    "testCommand": "node --test test/path-witness-joint-churn-pairs.test.mjs",
+    "initialPassLog": "/tmp/facety-wp-g-joint-churn-pairs-unit-before.txt",
+    "finalBodyExecutedFreshIn": [
+      "node --test test/path-witness-*.test.mjs",
+      "npm test"
+    ],
+    "cells": 72,
+    "operationsPerCell": 21,
+    "actualRows": 1512,
+    "queryRows": 864,
+    "shadowQueryCalls": 864,
+    "referenceOracleCalls": 36,
+    "referenceContexts": 36,
+    "completeEnumerations": 32,
+    "necessaryCountNegatives": 4,
+    "positives": 360,
+    "warmFoundHits": 180,
+    "identityEvictions": 36,
+    "disabledIdentityRetentions": 36,
+    "sources": {
+      "cache": 210,
+      "prefix": 84,
+      "union": 0,
+      "oracle": 570
+    },
+    "observedMismatch": 0,
+    "referenceCensorship": 0,
+    "referenceUnavailable": 0,
+    "scope": "2 literal11/12-node physical fixtures ×3 projections ×3 complete maintenance arms ×2 query profiles ×2 routing modes,6 current phases/7 independently conditioned captures; scripted software cells not traffic/IID rates/human/economic calibration",
+    "rawReference": "raw current storage rows ->simple physical subject-first paths<=r4, continue through anchors; current removal only counted endpoints, s_min off; exact D3 compatible family with all non-subject physical vertices/endpoints exclusive. No production projection/neighbors/trees/oracle/packing/verifier helpers supply expected truth; raw BFS/root-first UTF8 canonical parents independently checked",
+    "fullReference": "one full-current M2 per36 fixture/projection/phase contexts, independent captures from target/shadow. EnumerationComplete explicitly required unless necessary degree/anchor count negative independently checked; enumerated negatives require packingComplete. Positive found alone does not certify complete enumeration. Every native positive primary/ref2 and raw path/hop/physical-family checked",
+    "replay": "independent public K/I/native-maintenance/put caller matches every L compact row/full current K-I digest/actual native inventories/ledger/origin/work and final state on equivalent fresh captures/same alias groups. Full Source/provenance/memo/work preserved; shadow/ref calls are real work, no CPU scalar",
+    "identity": "cut queries maxSegmentLookups0; at readd whole-only notices force whole miss and leave segments. Composed actual D2 lookup evicts original seed IDs, fallback-only no-lookup retains old IDs; explicit current put new payload ID, no rebinding. TTL50/100>12 excludes expiry; no assumption about earlier selected whole route",
+    "paired": "common current query/source/wire/stage/native query work/cache/load effects and final state agree across complete rebuild/E1/E2 within profile/mode. Full queryDigest/queryBytesHashed and construction/forest metadata remain retained method-specific, not forced equal/stripped",
+    "keys": "graph/query IDs omit arm/profile/mode indices; real policy/view/mode inputs remain unchanged native random-key contract. Seed capture is distinct equal-root, no hidden recapture/priming/native owner sharing",
+    "fullCurrentStream": {
+      "method": "sha256-streaming-json-joint-churn-current-rows-NUL/v1",
+      "digest": "60f14240eeb681d93c1bd84a2ee9e9c138f65452efd6d6a6591f3706c1a07844",
+      "iteration": "fixtures,projections,maintenanceArms,queryProfiles,routing.modes in frozen plan order",
+      "payload": "JSON.stringify({cell,rows:full L compact rows,totals,finalWhole,finalSegments})+NUL per cell; includes full current K-I digest provenance/native work/state through rows; cell label not a routing salt",
+      "scientificOrOldPreservationMethod": false
+    },
+    "development": "first native pass green. Inline review strengthened explicit positive-reference enumerationComplete and independently checked necessary-negative completeness before final focused/full reruns; frozen caps/labels/plan/source unchanged",
+    "retainedKnownSUTDefects": 0
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 232,
+    "failed": 0
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 699,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "compatibility": {
+    "streams": [
+      {
+        "name": "originalTree",
+        "cases": 12288,
+        "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+        "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+        "test": "test/path-witness-branches.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "oneHop",
+        "cases": 12288,
+        "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+        "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+        "test": "test/path-witness-prefix.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "C3",
+        "cases": 1152,
+        "method": "sha256-streaming-json-forest-proposal-array-NUL/v1",
+        "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+        "test": "test/path-witness-segment-joins.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "E1",
+        "cases": 24576,
+        "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+        "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+        "test": "test/path-witness-tree-repair.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "lookup",
+        "cases": 192,
+        "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+        "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+        "test": "test/path-witness-pipeline.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "Gpayload",
+        "cases": 192,
+        "observations": 576,
+        "method": "sha256-streaming-json-pipeline-payload-NUL/v1",
+        "digest": "7039f9974cc343bfefeda5cac069e20cf5a9e4248d0a076ac89939489c60dc3e",
+        "test": "test/path-witness-lifecycle.test.mjs",
+        "scope": "only top-level provenance excluded after original full provenance() equality; separate named stream, not H query pipelineDigest",
+        "matched": true
+      },
+      {
+        "name": "nativeNotices",
+        "cases": 243,
+        "method": "sha256-streaming-json-dual-cache-notice-rows-NUL/v1",
+        "digest": "dc6793b59d4f3d33a5169d6edd2b43a924641acbd93c35d49849c30b81bd191d",
+        "test": "test/path-witness-invalidation.test.mjs",
+        "scope": "complete frozen native/input projection, no wrapper/provenance in that pre-code native-only stream and no fields removed; full wrapper provenance/config/work separately compared",
+        "matched": true
+      },
+      {
+        "name": "F1payload",
+        "cases": 384,
+        "requestedQueryRows": 768,
+        "requestedRows": 1152,
+        "method": "sha256-streaming-json-prefix-workload-payload-NUL/v1",
+        "digest": "7ef013e0207bbfd6cd7ed20f8febfa7cf46c30c01749623e58e177bb8af8f5bf",
+        "test": "test/path-witness-segment-workload.test.mjs",
+        "scope": "only top-level F1 provenance excluded after original current provenance() equality, not permission to strip J preparation/state/H full G hashes or alter scientific methods",
+        "matched": true
+      },
+      {
+        "name": "Knative",
+        "method": "sha256-streaming-json-native-composite-rows-NUL/v1",
+        "digest": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+        "test": "test/path-witness-composite.test.mjs",
+        "blueprint": "immutable m3-composite-contract-validation.json existingNativeStreamBaseline",
+        "matched": true,
+        "projection": "complete {input,advice,result,stages,cacheStats,work}; JSON.stringify(ordered3rows)+NUL per case; native projection contains no wrapper/schema/provenance fields, none removed; full wrapper metadata separately checked",
+        "cases": 1152,
+        "observations": 3456
+      },
+      {
+        "name": "Lnative",
+        "method": "sha256-streaming-json-joint-native-lifetime-rows-NUL/v1",
+        "digest": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+        "cases": 384,
+        "rows": 6528,
+        "requestedQueries": 3072,
+        "calledQueries": 2304,
+        "test": "test/path-witness-composite-workload.test.mjs",
+        "blueprint": "immutable m3-composite-workload-contract-validation.json existingNativeStreamBaseline",
+        "matched": true,
+        "scope": "full native trace projection except K/I top-level provenance after complete current equality; all native work/preparation/state retained, separate named method not H/J full-provenance/scientific retagging; actual L queryDigest/receiptDigest includes full current K/I JSON"
+      }
+    ],
+    "disposition": "all ten prior scoped streams freshly pass within focused/full current tests; no old Source/test/default/Model/RNG/schema/corpus/plan changes or archived evidence replay"
+  },
+  "reusedUnchangedSourceEvidence": {
+    "record": "m3-composite-workload-validation.json",
+    "binding": "exact e0831652 src tree/53-file299ae973 Source/Nodev26.8.1, source imports/experiment behavior unchanged; DAG/two trajectories not rerun",
+    "architecture": {
+      "files": 53,
+      "localEdges": 168,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+      "disposition": "reused unchanged53-file168-edge imports, acyclic0errors/0warnings"
+    },
+    "conformance": {
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "299ae9738d73962c2c8e381fc5a24320f577c98fbda32ea97391b5a4a9a77300",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "excludedOnly": "provenance.implementation",
+      "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "matched": true,
+      "classification": "two fixed current software trajectories, not sealed study replay/scientific observations",
+      "disposition": "two fixed software trajectories reused, not rerun/recaptured; unchanged Source/runtime"
+    }
+  },
+  "review": {
+    "kind": "inline committed plan/raw family+parent/native replay/complete reference/paired scope/identity and stop-boundary review",
+    "notIndependentAuthorshipOrCleanRoom": true,
+    "untested": "arbitrary/population-scale topology/churn/query distributions, larger slack/s_min-enabled paired cells, authenticated/live ranking/epochs/emergency authority, malicious-networked-indexer service/privacy/availability, capacity/demand/funded attacks/default integration, CPU-RSS/latency/fees/human effort/usefulness/scaling/economic/G1 properties"
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "warningSetMatchesLExceptLineOffsets": true,
+    "disposition": "Reviewed existing AGENTS structure/density/index-bloat/wide-table warnings; unchanged large-protocol scans remain skipped. Current results/stop/reopen boundaries distinct from preserved pre-test NOT RUN history; no new protocol decision. Final documentation wording rechecked before commit."
+  },
+  "stop": {
+    "scope": "WP-G bounded supplied-state engineering checkpoint through L plus fixed paired joint churn",
+    "closed": "selected finite larger-churn correctness gap; no new runtime or failure exposed",
+    "M3": "open for larger/scalable/production and cost/evidence acceptance",
+    "nextAdmittedLocalTask": null,
+    "scheduleNext": false,
+    "restart": "concrete missing invariant/counterexample or scoped algorithm/target workload contract. Empirical E2 requires actual supported graph-v2/backend/statistic plus committed numerical scale/ranges/precision/error/search/kills/source-RNG-seed method and master prerequisites before data. M4-M6 require explicit Standing/c-D/live epoch/capacity/funded authority contracts",
+    "noFallback": "no automatic new adapter/grid, no silent OPEN/default/capacity choice or lifetime-K fallback; canonical BACKLOG retains explicit reopeners"
+  },
+  "research": {
+    "newRegistrations": 0,
+    "scientificExperimentRuns": 0,
+    "newGraphBackend": false,
+    "softwareTrajectoryChecks": 0,
+    "reusedFixedTrajectories": 2,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  }
+}
