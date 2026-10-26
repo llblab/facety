@@ -2,7 +2,7 @@
 import { DAY } from './model.mjs';
 import { experimentConfig, withExperimentParameters, runExperiment } from './experiment.mjs';
 import { experimentRandomness, combineExperimentRandomness } from './experiment-config.mjs';
-import { OBSERVABLES, metricSeries } from './discovery.mjs';
+import { OBSERVABLES, metricSeries, observableForExperiment } from './discovery.mjs';
 import { replicaSeed, describeValues } from './trials.mjs';
 import { binomialUpperTail, binomialLowerTail, clopperPearson, holm, bootstrapMeanInterval } from './statistics.mjs';
 import { canonicalJson, digestOf, implementationDigest } from './provenance.mjs';
@@ -38,7 +38,14 @@ function parameterMap(value, label) {
   return structuredClone(value);
 }
 
-function normalizeStatistic(statistic, days) {
+function statisticEngine(statistic, config = {}) {
+  if (statistic.metric === OUTCOME_METRIC) {
+    if (config.engine !== undefined) fail('Native vouch outcome.success has an unbound criterion; register a measured scalar');
+  } else if (!observableForExperiment(statistic.metric, config)) fail('statistic metric does not belong to experiment engine: ' + statistic.metric);
+  if (statistic.subtract != null && !observableForExperiment(statistic.subtract, config)) fail('subtract metric does not belong to experiment engine');
+}
+
+function normalizeStatistic(statistic, days, config) {
   record(statistic, ['metric', 'summary', 'window', 'subtract'], 'statistic');
   const { metric, summary = 'endpoint', window = null, subtract = null } = statistic;
   const known = metric => metric === OUTCOME_METRIC || Object.hasOwn(OBSERVABLES, metric);
@@ -51,6 +58,7 @@ function normalizeStatistic(statistic, days) {
     if (!Number.isSafeInteger(window.startDay) || !Number.isSafeInteger(window.endDay) || window.startDay < 0 || window.endDay <= window.startDay) fail('invalid statistic window');
   }
   if (days < 1 && metric !== OUTCOME_METRIC) fail('trajectory statistics require a positive horizon');
+  statisticEngine({ metric, subtract }, config);
   return { metric, summary, window: window && { ...window }, subtract };
 }
 
@@ -79,12 +87,13 @@ function summarize(series, summary) {
 
 // Per-run scalar. A missing day, undefined observable or censored run yields null, never an imputed value.
 export function runStatistic(run, statistic) {
+  statisticEngine(statistic, run.config);
   if (statistic.metric === OUTCOME_METRIC) return run.outcome.success === null ? null : Number(run.outcome.success);
   if (run.outcome.censored) return null;
   const days = run.outcome.horizonDays;
   const { startDay = 0, endDay = days } = statistic.window ?? {};
   if (endDay > days) throw new RangeError('statistic window exceeds the run horizon');
-  const value = metric => summarize(metricSeries(run.history, metric, { days, offsetHours: run.outcome.dailySampleOffsetHours ?? 0 }).slice(startDay, endDay), statistic.summary);
+  const value = metric => summarize(metricSeries(run.history, metric, { days, offsetHours: run.outcome.dailySampleOffsetHours ?? 0, engine: run.config?.engine }).slice(startDay, endDay), statistic.summary);
   const primary = value(statistic.metric);
   if (statistic.subtract === null || primary === null) return primary;
   const secondary = value(statistic.subtract);
@@ -98,7 +107,7 @@ function normalizeSpec(spec) {
   if (!['association', 'mechanism'].includes(spec.kind)) fail('kind must be association or mechanism');
   const base = experimentConfig(spec.base ?? {});
   if (base.includeState) fail('confirmation retains scalar statistics, not protocol snapshots');
-  const statistic = normalizeStatistic(spec.statistic ?? {}, base.days);
+  const statistic = normalizeStatistic(spec.statistic ?? {}, base.days, base);
   if (statistic.window && statistic.window.endDay > base.days) fail('statistic window exceeds the horizon');
   record(spec.arms, Object.keys(spec.arms ?? {}), 'arms');
   const armIds = Object.keys(spec.arms);
@@ -207,6 +216,7 @@ export function verifyRegistration(registration, { allowImplementationChange = f
   const analysisPolicy = legacy ? LEGACY_ANALYSIS_POLICY : registration.analysisPolicy;
   if (!legacy && analysisPolicy !== ANALYSIS_POLICY) fail('unsupported registered analysis policy');
   const spec = normalizeSpec(registration.spec);
+  if (legacy && Object.hasOwn(spec.base, 'engine')) fail('explicit Native vouch engine requires v2 registration');
   if (canonicalJson(spec) !== canonicalJson(registration.spec)) fail('registered specification is not in normalized form');
   if (registrationDigest(spec, registration.implementation, registration.randomness, registration.schema, analysisPolicy) !== registration.hash || registration.confirmationSeed !== 'confirm:' + registration.hash) fail('registration digest does not match its content');
   if (canonicalJson(registration.randomness) !== canonicalJson(specRandomness(spec))) fail('registered randomness policy differs from the current implementation');
@@ -233,12 +243,14 @@ function plannedTasks(registration) {
 
 // Evaluates one registered statistic per run. Replica labels are shared across arms and contexts.
 export function runStatisticTask(task) {
+  statisticEngine(task.statistic, task.config);
   const run = runExperiment(task.config);
   return { value: runStatistic(run, task.statistic), censored: run.outcome.censored, seed: run.config.seed };
 }
 
 // Several named statistics from one run, for exploratory screens that must not rerun the model per metric.
 export function runStatisticsTask(task) {
+  for (const statistic of Object.values(task.statistics)) statisticEngine(statistic, task.config);
   const run = runExperiment(task.config);
   return { values: Object.fromEntries(Object.entries(task.statistics).map(([name, statistic]) => [name, runStatistic(run, statistic)])), censored: run.outcome.censored, seed: run.config.seed };
 }

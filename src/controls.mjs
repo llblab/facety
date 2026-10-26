@@ -1,6 +1,7 @@
 // Owns: Paired counterfactual measurements and finite-window return criteria, not causal proof or network health.
 import { DAY } from './model.mjs';
 import { experimentConfig, runExperiment, withExperimentParameters } from './experiment.mjs';
+import { requireLegacyExperiment } from './experiment-config.mjs';
 import { DEFAULT_OBSERVABLES, OBSERVABLES, metricSeries } from './discovery.mjs';
 import { replicaSeed, describeValues, summarizeOutcomes } from './trials.mjs';
 import { provenance, canonicalJson } from './provenance.mjs';
@@ -189,6 +190,7 @@ export function compareExperiments(overrides = {}, options = {}) {
   integer(trials, 'trials', 1, 10000);
   integer(maxRecordedSamples, 'maxRecordedSamples', 1);
   const baseline = experimentConfig(overrides);
+  requireLegacyExperiment(baseline, 'paired controls');
   const treatment = withExperimentParameters(baseline, parameters);
   if (Object.hasOwn(parameters, 'seed') || Object.hasOwn(parameters, 'includeState')) throw new Error('paired seed and state metadata cannot be treatment parameters');
   if (baseline.includeState || treatment.includeState) throw new Error('paired controls retain histories, not full snapshots; use a single witness run');

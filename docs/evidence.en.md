@@ -29,6 +29,14 @@ node bin/facety.mjs study h1.confirmation.json h2.confirmation.json --out study.
 
 The equivalent native APIs are `registerHypothesis`, `confirmHypothesis` (async), `analyzeConfirmation(registration, values, { allowImplementationChange = false } = {})` (offline reanalysis) and `adjustStudy`. [The worked study](../studies/2026-10-22-coalition-council/README.md) runs this full cycle.
 
+## Native vouch backend admission (WP1)
+
+The explicit complete `native-vouch-tape/v1` config is now admitted through the **same** v2 registration/verification/worker path, not a second schema-shaped analyzer. See [backend semantics](../studies/2026-10-26-trust-topology-condition-map/wp1-backend.md) and [integration/limits](../studies/2026-10-26-trust-topology-condition-map/wp1-v2.md). Use `includeState:false` and a measured `vouch.*` statistic; its primary/subtract fields must belong to that engine. Native `outcome.success` is rejected because the criterion remains unbound. Legacy observables cannot be relabeled as Native or vice versa, including on censored runs.
+
+Native series explicitly use `metricSeries(history,metric,{days,offsetHours:24,engine:'native-vouch-tape/v1'})`; scalar tasks supply the engine automatically. Expected rows follow the declared horizon; empty/truncated/censored suffixes remain unknown. A fabricated legacy-v1 envelope cannot acquire the new Native engine, even with implementation-drift permission. Snapshot configs, unknown parameters, private-fact/resource/method/manifest tampering and implementation drift retain the existing refusal rules. Exogenous Native decision/schedule descriptors bind the manifest; ACT generator/key layout is unchanged. Mixed-engine manifests use a separate identifier without changing legacy-only mixed-subday manifests.
+
+This is a closed diagnostic Native reference, not CORE/Standing/personhood or adaptive/map inference. Legacy cohort trials/sweeps, landscape planning, paired controls, game payoff wrappers and daily activity helpers explicitly refuse this mode until their own resource/payoff/sampling contracts exist; common `run`, registration and scalar worker tasks use actual Native execution. Source/family safeguards and32-arm/16-context/32-claim limits are unchanged. Master-method range/precision/kill/search obligations still precede data; no actual programme registration or Native confirmation was run during integration, only ephemeral software API/ordinary-seed task fixtures.
+
 ## Hypothesis file
 
 ```json
@@ -51,7 +59,7 @@ The equivalent native APIs are `registerHypothesis`, `confirmHypothesis` (async)
 }
 ```
 
-- **Statistic.** Any scalar path from `OBSERVABLES`, or `outcome.success`. `endpoint` takes the last daily sample in the window and `change` takes last minus first. `mean`, `min`, `max` and `trend` (least-squares slope per day) need every day of the window. `subtract` takes the same summary of a second observable from the same run. A censored run, a missing day or an undefined observable gives `null`, never an imputed value.
+- **Statistic.** A scalar path from the configured engine's `OBSERVABLES` namespace, or legacy `outcome.success` with its defined criterion (Native unbound success is rejected). `endpoint` takes the last daily sample in the window and `change` takes last minus first. `mean`, `min`, `max` and `trend` (least-squares slope per day) need every day of the window. `subtract` takes the same summary of a second observable from the same run. A censored run, a missing day or an undefined observable gives `null`, never an imputed value.
 - **Arms.** Named dotted-parameter overrides of `base`, as in `withExperimentParameters`. `seed` and `includeState` are not allowed. Arms and contexts may not set the same parameter, and all must share the horizon and success criterion.
 - **Claims.** A `contrast` is a weighted sum of arm statistics for the same replica. `{ "a": 1 }` tests a level, `{ "a": 1, "b": -1 }` a paired difference, and four arms with ±1 weights a difference in differences, such as a necessity claim or `sharpeningDesign`. For each replica, `greater` holds when contrast > margin, `less` when contrast < −margin, and `within` when |contrast| ≤ margin (equivalence).
 - **Mechanism kind.** It requires at least one necessity claim and at least one named alternative. Every alternative must reference an `alternative`-role claim, and every alternative claim must be named by an alternative.

@@ -1,43 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { runVouchExperiment } from '../src/vouch-experiment.mjs';
-import { vouchExperimentConfig, VOUCH_ENGINE, VOUCH_RANDOMNESS, VOUCH_OBSERVABLES, vouchAuthority } from '../src/vouch-experiment-config.mjs';
+import { vouchExperimentConfig, VOUCH_RANDOMNESS, VOUCH_OBSERVABLES } from '../src/vouch-experiment-config.mjs';
 import { actObservationEnvironment } from '../src/act-observations.mjs';
 import { registerHypothesis } from '../src/evidence.mjs';
 import { CompositionReference, ReferenceRejection } from '../studies/2026-10-26-trust-topology-condition-map/reference.mjs';
+import { profile, config } from './support/vouch-experiment-fixture.mjs';
 
-const profile = JSON.parse(readFileSync(new URL('../studies/2026-10-26-trust-topology-condition-map/wp1-composition-fixture.json', import.meta.url)));
-function config(plan = profile.settlementWitnesses[1]) {
-  let atHour = 0;
-  const events = [], validity = {};
-  const at = hour => { atHour = hour; };
-  const add = (op, fields = {}) => events.push({ atHour, authority: vouchAuthority(op), op, ...fields });
-  const issue = (owner, id) => {
-    add('artifact', { owner, id: 'media:' + id }); add('issue', { owner, id, artifact: 'media:' + id }); validity[id] = true;
-  };
-  for (const hour of [0, 24]) { at(hour); for (const owner of ['a', 'b']) issue(owner, owner + ':' + hour); }
-  at(48);
-  for (const owner of ['a', 'b']) for (const hour of [0, 24]) add('withdraw', { owner, id: owner + ':' + hour });
-  add('commit', { owner: 'a', target: 'x', id: 'ax' }); add('commit', { owner: 'b', target: 'x', id: 'bx' });
-  add('admit', { target: 'x', bonds: ['ax', 'bx'] }); add('pool'); issue('x', 'x:48'); issue('b', 'b:48');
-  at(49); add('exit', { owner: 'a', id: 'ax' }); add('review', { actor: 'review-a', id: 'x:48', opportunity: 'composed-x-fixed' });
-  at(72); issue('x', 'x:72'); issue('b', 'b:72'); at(96);
-  for (const owner of ['x', 'b']) for (const hour of [48, 72]) add('withdraw', { owner, id: owner + ':' + hour });
-  add('commit', { owner: 'x', target: 'y', id: 'xy' }); add('commit', { owner: 'b', target: 'y', id: 'by' });
-  add('admit', { target: 'y', bonds: ['xy', 'by'] }); issue('y', 'y:96'); validity['y:96'] = false;
-  at(97); add('review', { actor: 'review-x', id: 'y:96', opportunity: 'composed-y-fixed' }); add('hold', { id: 'ax', caseId: 'case' });
-  at(120); add('refund', { id: 'ax', clear: true, clearanceId: 'a' }); add('refund', { id: 'bx', clear: true, clearanceId: 'b' });
-  at(121); add('settle', { id: 'ax', caseId: 'case', upheld: plan.upheld, burn: plan.burn, transfers: structuredClone(plan.transfers) });
-  add('refund', { id: 'ax', clear: true, clearanceId: 'a' });
-  at(168); for (const id of ['xy', 'by']) add('refund', { id, clear: true, clearanceId: id });
-  return { engine: VOUCH_ENGINE, reference: profile.reference, days: 8, seed: 'wp1-native-backend-software-only', includeState: true,
-    maxActions: 100, maxSubjects: 10, successCriterion: 'unbound',
-    model: structuredClone({ genesis: profile.genesis, policy: profile.policy, ablations: profile.ablations, invitationLimit: null,
-      vouching: profile.vouching, vouchAdmission: profile.vouchAdmission }), work: structuredClone(profile.reviewAllocation.options),
-    environment: { subjects: ['a', 'b', 'x', 'y'].map(id => ({ id, genuine: true, behaviorProfile: 'software-fact-only' })),
-      validity, rates: structuredClone(profile.observationEnvironment.rates) }, events };
-}
 function oracleHistory(cfg) {
   const r = new CompositionReference({ ...profile, ...cfg.model }), snapshots = [], accepted = [];
   let endpoint = 24;
@@ -186,8 +155,8 @@ test('unavailable work allocation and explicit refused clearance are rejected in
   assert.equal(refused.history.at(-1).vouch.rejections, baseline.history.at(-1).vouch.rejections + 1);
 });
 
-test('backend is deliberately not yet admitted by the real v2 registry; no schema-shaped registration is manufactured', () => {
+test('v2 admission still refuses full-state backend snapshots rather than silently dropping private/protocol metadata', () => {
   assert.throws(() => registerHypothesis({ id: 'wp1-backend-software-only', statement: 'not an actual research method', kind: 'association',
     base: config(), statistic: { metric: 'vouch.admissions' }, arms: { one: {} },
-    claims: [{ id: 'presence', role: 'presence', contrast: { one: 1 }, direction: 'greater' }], replicas: 20, exploration: { seeds: [] } }), /unknown experiment key: engine/);
+    claims: [{ id: 'presence', role: 'presence', contrast: { one: 1 }, direction: 'greater' }], replicas: 20, exploration: { seeds: [] } }), /scalar statistics, not protocol snapshots/);
 });

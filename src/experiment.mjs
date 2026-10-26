@@ -14,6 +14,7 @@ import { experimentConfig, dayActivity, experimentRandomness, EXPERIMENT_ASSUMPT
 import { clockAgenda } from './clock-agenda.mjs';
 import { createActivitySchedule, SUBDAY_RANDOMNESS } from './activity-schedule.mjs';
 import { observationEnvironment } from './identity-observations.mjs';
+import { runVouchExperiment } from './vouch-experiment.mjs';
 
 export {
   SCENARIOS, EXPERIMENT_ABLATIONS, RANDOMNESS_POLICY, DEFAULT_ACTIVITY, DEFAULT_DISPUTES,
@@ -41,6 +42,7 @@ function respondToObservation(model, observer, act, observation) {
 }
 
 export function runExperiment(overrides = {}) {
+  if (overrides && Object.hasOwn(overrides, 'engine')) return runVouchExperiment(overrides);
   const config = experimentConfig(overrides);
   const assumptions = config.invitationEvidence === 'shared-target' ? EXPERIMENT_ASSUMPTIONS.map(text => text.startsWith('These are fixed reference strategies')
     ? 'These are fixed reference strategies, not optimized worst-case attackers. Counterfactual shared-target invitation evidence is one persistent first-stage signal per public target across reviewers/times at the supplied marginal sensitivity/FPR. Other observations and verification retain their keyed references. Repeated paid looks do not independently validate this signal. This is an extremal common-mode stress assumption, not calibrated evidence, notification or a protocol/default choice.' : text) : EXPERIMENT_ASSUMPTIONS;

@@ -13,6 +13,12 @@ Existing callers still import configuration functions and constants from `src/ex
 
 See [the root example](../README.md#cohort-and-attack-experiments). Both native ESM APIs and CLI `run`, `trials`, `sweep`, `landscape` and `compare` require no installation.
 
+## Explicit Native vouch backend (WP1)
+
+`experimentConfig`, `withExperimentParameters` and common `runExperiment`/CLI `run` now accept the strict complete `engine:'native-vouch-tape/v1'` reference described in [the backend contract](../studies/2026-10-26-trust-topology-condition-map/wp1-backend.md). It has its own diagnostic run shape, explicit host-declared action/work/environment inputs, namespaced measurements and unbound/null success—not the legacy population/payoff/cohort shape described below. Unknown engines do not fall back to legacy, and the existing experiment facade's exports/defaults remain stable.
+
+[Actual v2 integration](../studies/2026-10-26-trust-topology-condition-map/wp1-v2.md) uses normal registration/verification/scalar worker APIs with engine-specific metrics and declared24…H sampling; direct Native metricSeries requires its engine tag. Legacy trials/sweep/landscape/paired/game/daily-activity wrappers explicitly reject the mode before execution until a matching resource/payoff/sampling contract exists. No world-growth/adoption, attack optimality, CORE/Standing, human calibration or programme evidence is implied. Ephemeral software API/task tests are not the master's still-uncommitted research method or a G1 pass.
+
 ## Separate pre-case pipeline diagnostic
 
 **D49 priority change:** this capture is deferred with zero planned-label observations/attempts; its fixed method remains unchanged. The [resilience–growth comparison](research.en.md#resilience-growth-frontier-d49), not this pre-case funnel, now defines the next major research question.

@@ -1,5 +1,6 @@
 // Owns: Seeded trial aggregation, uncertainty and parameter sweeps; excludes real-world calibration.
 import { experimentConfig, runExperiment, withExperimentParameters } from './experiment.mjs';
+import { requireLegacyExperiment } from './experiment-config.mjs';
 import { provenance } from './provenance.mjs';
 
 export function wilsonInterval(successes, trials) {
@@ -57,6 +58,7 @@ export function runTrials(overrides = {}, { trials = 100, seed = 'batch', includ
   if (typeof includeRuns !== 'boolean') throw new TypeError('includeRuns must be boolean');
   if (!['string', 'number'].includes(typeof seed) || (typeof seed === 'number' && !Number.isFinite(seed))) throw new TypeError('batch seed must be a string or finite number');
   const config = experimentConfig(overrides);
+  requireLegacyExperiment(config, 'trials');
   const masterSeed = String(seed);
   const runs = [];
   for (let index = 0; index < trials; index++) runs.push(runExperiment({ ...config, seed: replicaSeed(masterSeed, config.seed, index), includeState: includeRuns && config.includeState }));
@@ -83,6 +85,7 @@ export function runTrials(overrides = {}, { trials = 100, seed = 'batch', includ
 export function sweepParameter(overrides, { parameter, values, trials = 100, seed = 'sweep' } = {}) {
   if (typeof parameter !== 'string' || !Array.isArray(values) || !values.length || values.length > 1000) throw new Error('sweep requires a parameter and 1..1000 values');
   const config = experimentConfig(overrides);
+  requireLegacyExperiment(config, 'sweeps');
   const checked = values.map(value => withExperimentParameters(config, { [parameter]: value }));
   return {
     schema: 'facety-sweep/v1', parameter, seed: String(seed), provenance: provenance(),

@@ -1,6 +1,6 @@
 # WP1 Native tape backend foundation
 
-**DIAGNOSTIC implementation; G1 and research remain unrun.** The [closed composition contract](wp1-composition.md) now has an executable source-owned backend, not only a test bridge. This bounded slice does **not yet wire it into `runExperiment`, global observable/discovery normalization or the actual v2 registry**. The existing registry rejects this mode; no schema-shaped registration or confirmation output is manufactured. That integration is the next BACKLOG cohort.
+**Foundation checkpoint at0d2cf1e; DIAGNOSTIC implementation, G1/research unrun.** The later [actual v2 admission](wp1-v2.md) supersedes this checkpoint's not-yet-wired status; its source/validation binding remains historical. The [closed composition contract](wp1-composition.md) now has an executable source-owned backend, not only a test bridge. This bounded slice does **not yet wire it into `runExperiment`, global observable/discovery normalization or the actual v2 registry**. The existing registry rejects this mode; no schema-shaped registration or confirmation output is manufactured. That integration is the next BACKLOG cohort.
 
 ## Actual config and execution owners
 

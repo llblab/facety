@@ -1,6 +1,7 @@
 // Owns: Empirical strategy games over simulated payoff facts — profiles, unilateral deviations and
 // equilibrium analysis under explicit valuations. Excludes behavioral calibration and real-world preferences.
 import { experimentConfig, runExperiment } from './experiment.mjs';
+import { requireLegacyExperiment } from './experiment-config.mjs';
 import { COHORTS } from './effort.mjs';
 import { replicaSeed, describeValues } from './trials.mjs';
 import { binomialUpperTail, bootstrapMeanInterval } from './statistics.mjs';
@@ -37,6 +38,7 @@ export function normalizeGame(spec) {
   record(spec, ['id', 'description', 'base', 'roles', 'replicas', 'seed', 'deviation', 'maxRuns', 'valuation', 'reference'], 'specification');
   identifier(spec.id, 'id');
   const base = experimentConfig(spec.base ?? {});
+  requireLegacyExperiment(base, 'strategy games');
   if (base.includeState) fail('games retain payoff facts, not protocol snapshots');
   if (base.perturbations.length || base.deviants.share !== 0) fail('base may not contain perturbations or deviants; strategies own all scheduling');
   record(spec.roles, COHORTS, 'roles');
