@@ -19,6 +19,8 @@ See [the root example](../README.md#cohort-and-attack-experiments). Both native 
 
 [Actual v2 integration](../studies/2026-10-26-trust-topology-condition-map/wp1-v2.md) uses normal registration/verification/scalar worker APIs with engine-specific metrics and declared24…H sampling; direct Native metricSeries requires its engine tag. Legacy trials/sweep/landscape/paired/game/daily-activity wrappers explicitly reject the mode before execution until a matching resource/payoff/sampling contract exists. No world-growth/adoption, attack optimality, CORE/Standing, human calibration or programme evidence is implied. Ephemeral software API/task tests are not the master's still-uncommitted research method or a G1 pass.
 
+The separate [prior3 P/b capacity-only reference](../studies/2026-10-26-trust-topology-condition-map/wp1-pb.md) now exposes direct `pbExperimentConfig`/`runPbExperiment` from their source owners, with actual own-source funding and an import-free inventory differential. It has **not yet** been admitted by common `experimentConfig`/`runExperiment`/global metrics/v2; those still reject its mode. Its deterministic daily workload, unbound success, no accepted recipients and censored endpoints do not supply P/b payback/market/growth/H6 evidence or permission to recapture historical controls. No programme registration/confirmation exists.
+
 ## Separate pre-case pipeline diagnostic
 
 **D49 priority change:** this capture is deferred with zero planned-label observations/attempts; its fixed method remains unchanged. The [resilience–growth comparison](research.en.md#resilience-growth-frontier-d49), not this pre-case funnel, now defines the next major research question.

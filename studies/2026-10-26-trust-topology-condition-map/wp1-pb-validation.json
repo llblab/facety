@@ -1,0 +1,117 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "diagnostic standalone prior3 Native P/b creation-capacity backend/reference; not G1/research or recipient payback",
+  "baseCommit": "82fe4acdcd16585089912df4928c4829e9830bb8",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "ca497ced62ed340441a89367e742f84c1071c88b80f2bbde326ad6c890e7981d",
+      "files": 37
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "none",
+    "decisions": "pb-deterministic-daily-v1",
+    "schedule": "pb-capacity-boundary-v1"
+  },
+  "implementationChanged": true,
+  "nativeModelTransitionsChanged": false,
+  "legacyDefaultsChanged": false,
+  "files": [
+    {
+      "path": "src/pb-experiment-config.mjs",
+      "gitBlob": "c9d4c3cf55d31be1301ddee947ddba71a929304f"
+    },
+    {
+      "path": "src/pb-experiment.mjs",
+      "gitBlob": "6a6969123292e22640e65155f0ddba93c122bf70"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/pb-reference.mjs",
+      "gitBlob": "53b0c22b43da0b407a37c3f797203caf048c3a09"
+    },
+    {
+      "path": "test/pb-experiment.test.mjs",
+      "gitBlob": "002b7911d1414023e43356b7c2325e888ed129df"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/wp1-pb.md",
+      "gitBlob": "f183696aae91887356cf2f398ab539c46ae38378"
+    }
+  ],
+  "scope": {
+    "engine": "native-pb-capacity/v1",
+    "reference": "native-own-source-daily-capacity-reference/v1",
+    "actualModelExecution": true,
+    "oracleImports": [],
+    "independentAuthorshipOrAcceptance": false,
+    "globalV2Admitted": false,
+    "actualRegistryRefusal": "vouch experiment requires exactly:",
+    "success": "unbound/null",
+    "recipientAcceptance": false,
+    "incrementalPayback": false,
+    "randomDraws": 0
+  },
+  "focused": {
+    "command": "node --test test/pb-experiment.test.mjs",
+    "passed": 8,
+    "failed": 0,
+    "softwarePartitions": {
+      "dailyInventory": 180,
+      "safeLargePolicy": 1,
+      "capPrefixes": 30
+    },
+    "comparisons": [
+      "Call timing/acceptance/normalized refusals",
+      "Every retained daily history field",
+      "Final source dispositions/XP/maturity and actual invitation source provenance",
+      "Censored stopped clock/partial bootstrap/artifact/unknown suffix",
+      "Exact terminal exclusion and empty horizon",
+      "Closed immutable config and actual current v2 refusal",
+      "Unused-seed invariance/inert result reads"
+    ],
+    "researchSampling": false
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 460,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "isCurrentSourceValidation": false
+    }
+  },
+  "legacyConformance": {
+    "matched": true,
+    "onlyExcludedField": "provenance.implementation",
+    "semanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "scope": "same fixed software baseline as wp1-v2-validation.json, not all legacy runs"
+  },
+  "architecture": {
+    "sourceFiles": 37,
+    "localEdges": 96,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "context": { "errors": 0, "warnings": 27, "warningsUnchanged": true },
+  "research": {
+    "programmeRegistered": false,
+    "runs": 0,
+    "searchEvaluations": 0,
+    "nativeConfirmationRuns": 0,
+    "confirmationSeedsExecuted": [],
+    "G1Verdict": null,
+    "historicalPacketsRecaptured": 0,
+    "LLMAgentRuns": 0,
+    "pilot": false
+  }
+}
