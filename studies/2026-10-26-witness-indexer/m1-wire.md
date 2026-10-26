@@ -1,6 +1,6 @@
 # M1-A: canonical witness wire and trusted software envelope
 
-**D61 opt-in reference, engineering contract frozen before this slice's code; not a graph-gate acceptance result.** [M0](README.md) and [the design](../../docs/indexer.en.md) precede this implementation. BACKLOG alone owns tasks. This checkpoint implements the codec/policy boundary only; primary live-state verification, ref2 and I1–I7 graph properties remain unimplemented. No economic/default/Standing/anchor/capacity choice is made.
+**D61 opt-in reference, engineering contract frozen before this slice's code; not a graph-gate acceptance result.** [M0](README.md) and [the design](../../docs/indexer.en.md) precede this implementation. BACKLOG alone owns tasks. This historical checkpoint at7ed6172 implemented the codec/policy boundary only; the later [M1-B](m1-verifier.md) adds supplied-view primary/ref2 verification without changing these wire/policy rules. Absent-verifier statements below describe M1-A, not current M1-B. No economic/default/Standing/anchor/capacity choice is made.
 
 ## Version and API contract
 

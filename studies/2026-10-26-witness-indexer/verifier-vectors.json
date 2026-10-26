@@ -1,0 +1,2582 @@
+{
+  "schema": "facety-path-verifier-vectors/v1",
+  "classification": "synthetic supplied-state structural checks; not authenticated chain state or independent authorship",
+  "wireConstruction": "literal canonical ASCII JSON, external sha256sum; no production encoder/verifier used",
+  "cases": [
+    {
+      "id": "two-independent",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "known-anchor-shortage",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "anchor-infeasible",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null,
+        "anchorCount": 1
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "zero-hop-slack",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u"
+          ],
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"],[\"u\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "dead-slack",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "absent",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"absent\",\"a\"],[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "greedy-trap",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "a",
+            "b",
+            "z"
+          ],
+          [
+            "u",
+            "a",
+            "y"
+          ],
+          [
+            "u",
+            "b",
+            "x"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "x",
+              "y",
+              "z"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "a"
+          ],
+          [
+            "z",
+            "b"
+          ],
+          [
+            "y",
+            "a"
+          ],
+          [
+            "b",
+            "u"
+          ],
+          [
+            "x",
+            "b"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"a\",\"b\",\"z\"],[\"u\",\"a\",\"y\"],[\"u\",\"b\",\"x\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "shared-trunk",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "b",
+            "x"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "family-conflict",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"x\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "known-degree-insufficient",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "b",
+            "x"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": 1
+      },
+      "expected": "degree-infeasible",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"x\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "triple-owner",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "b"
+          ],
+          [
+            "u",
+            "x",
+            "c"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "b",
+            "x"
+          ],
+          [
+            "c",
+            "x"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "family-conflict",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"x\",\"b\"],[\"u\",\"x\",\"c\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "endpoint-as-transit-conflict",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "a",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "a",
+            "u"
+          ],
+          [
+            "b",
+            "a"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "family-conflict",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"a\",\"b\"],[\"u\",\"a\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "unshared-anchor-transit-allowed",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "c",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "c",
+            "u"
+          ],
+          [
+            "a",
+            "c"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"c\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "same-anchor",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "a"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "a",
+            "y"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "family-conflict",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"a\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "grace-boundary",
+      "witness": {
+        "subject": "u",
+        "epoch": 2,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":2,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "too-old",
+      "witness": {
+        "subject": "u",
+        "epoch": 1,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "epoch-outside-grace",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":1,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "future",
+      "witness": {
+        "subject": "u",
+        "epoch": 4,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "epoch-outside-grace",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":4,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "missing-snapshot",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {},
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "snapshot-unavailable",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "removed-terminal",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [
+          "b"
+        ],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "snapshot-anchor-absent",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "current-edge-removed",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "reverse-directed",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "u",
+            "x"
+          ],
+          [
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y"
+          ],
+          [
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "c"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "reverse-undirected-any",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "u",
+            "x"
+          ],
+          [
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y"
+          ],
+          [
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "c"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "undirected",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"993a84c52dc83348920d5761cecfd82c67e3896031ce626b3de9f3f7a2cf3c1c\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "one-way-not-reciprocal",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "undirected",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "reciprocal-only"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"cf6d6c833505e3f1c1fa3bab5d91829528754b4afb18926b98903292445bef9a\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "reciprocal",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ],
+          [
+            "u",
+            "x"
+          ],
+          [
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y"
+          ],
+          [
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "c"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "undirected",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "reciprocal-only"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"cf6d6c833505e3f1c1fa3bab5d91829528754b4afb18926b98903292445bef9a\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "score-off-unknown",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "score-on-unknown",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": 1,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"5d04ec48fda8394ec98886713df6b5f40eeac6acc203511f5035ff4013be25e7\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "score-on-intermediates-only",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {
+          "x": 1,
+          "y": 1,
+          "u": 0,
+          "a": 0,
+          "b": 0
+        },
+        "degree": null
+      },
+      "expected": "ok",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": 1,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"5d04ec48fda8394ec98886713df6b5f40eeac6acc203511f5035ff4013be25e7\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": true
+    },
+    {
+      "id": "cycle-is-not-support",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"u\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "wrong-start",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "z",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"y\",\"b\"],[\"z\",\"x\",\"a\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "duplicates-count-once",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "a"
+          ]
+        ]
+      },
+      "expected": "insufficient-valid-paths",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "per-snapshot-count",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "b"
+          ],
+          [
+            "u",
+            "c"
+          ],
+          [
+            "u",
+            "x",
+            "a"
+          ]
+        ]
+      },
+      "expected": "witness-path-count",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"a\"],[\"u\",\"b\"],[\"u\",\"c\"],[\"u\",\"x\",\"a\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "slack-off-excess",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "c"
+          ]
+        ]
+      },
+      "expected": "witness-path-count",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 0,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"467cb81ad33c2e2cc32435426991e7fbb209b691c1bfd6e83e00c4440621a2eb\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"c\"],[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    },
+    {
+      "id": "malformed-whitespace",
+      "witness": {
+        "subject": "u",
+        "epoch": 3,
+        "paths": [
+          [
+            "u",
+            "x",
+            "a"
+          ],
+          [
+            "u",
+            "y",
+            "b"
+          ]
+        ]
+      },
+      "expected": "invalid-wire",
+      "context": {
+        "domain": "facety:software-fixture",
+        "subject": "u",
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 5,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        }
+      },
+      "state": {
+        "currentEpoch": 3,
+        "viewId": "synthetic-v1",
+        "snapshots": {
+          "2": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          },
+          "3": {
+            "difficulty": 2,
+            "anchors": [
+              "a",
+              "b",
+              "c"
+            ]
+          }
+        },
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "a",
+            "x"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "c",
+            "u"
+          ]
+        ],
+        "removed": [],
+        "standings": {},
+        "degree": null
+      },
+      "wire": " {\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"x\",\"a\"],[\"u\",\"y\",\"b\"]],\"subject\":\"u\"}}",
+      "accepted": false
+    }
+  ]
+}

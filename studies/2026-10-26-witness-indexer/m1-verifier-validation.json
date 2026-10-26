@@ -1,0 +1,137 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M1 bounded supplied-state verification; not authenticated state, independent authorship, global feasibility/search or scientific E1",
+  "baseCommit": "7ed61725eaf03385302247324d240996e52e3517",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "58aeb0d7123e534a17923c6ded5486c4c09ed80958dea3298dfca629b78b35bf",
+      "files": 39
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/path-witness.mjs",
+      "gitBlob": "c0e276c42175eaa93e210e47a63e9a984c6f6055"
+    },
+    {
+      "path": "src/path-witness-ref2.mjs",
+      "gitBlob": "0f3444d104b24d0602875e74209d9d8520d06b38"
+    },
+    {
+      "path": "test/path-witness-verifier.test.mjs",
+      "gitBlob": "8977104574dff4ee34a00900f04c9e43c97b0b9f"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m1-verifier.md",
+      "gitBlob": "d004ba9e0a11193be749f51c6b66d69667d53e33"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/verifier-vectors.json",
+      "gitBlob": "2aac9394d72811c6ef7a2c9df473f8c7843c51a1"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/wire-vectors.json",
+      "gitBlob": "74de0eb9748ebb1c4ae708fb840bf88b657eb9fa"
+    }
+  ],
+  "implementation": {
+    "primary": "canonical production codec + non-subject vertex-ownership conflict cover for <=one omission",
+    "ref2": "no local imports; independent generic canonical serializer/strict order parse + omission enumeration",
+    "oracle": "test-side raw directed observations, candidate validity and recursive subset packing; no production/ref2 acceptance helper",
+    "shared": "public context/policy/wire/StateAccessor contract, standard Node UTF-8/JSON/SHA-256 primitives and synthetic input vectors",
+    "notIndependentAuthorship": true
+  },
+  "scope": {
+    "maxSlack": [
+      0,
+      1
+    ],
+    "maxDifficulty": 64,
+    "maxHops": 64,
+    "softwareLimitsAreProtocolDefaults": false,
+    "currentStateSource": "trusted synchronous supplied capability; no authentication/Merkle/real-person claim",
+    "viewContract": "never-reused bounded ID changes on relevant mutation; compared before/after",
+    "degreeAndEligibleAnchorCounts": "explicit null if unknown, not zero; known<D reports infeasibility",
+    "sourceFingerprintChanged": true,
+    "ModelAndLegacyCertificateBehaviorChanged": false
+  },
+  "focused": {
+    "command": "node --test test/path-witness-codec.test.mjs test/path-witness-verifier.test.mjs",
+    "passed": 18,
+    "codecFamilies": 8,
+    "verifierFamilies": 10,
+    "portableStructuralVectors": 31,
+    "literalWireVectors": 6,
+    "propertyCases": {
+      "threeVertexAllDirectedGraphs": 64,
+      "submittedFamiliesPerGraph": 15,
+      "projections": 3,
+      "threeVertexPairs": 2880,
+      "fourVertexAllDirectedGraphs": 4096,
+      "fourVertexFamiliesPerGraph": 1,
+      "fourVertexFamilySelection": "deterministic graph-index modulo120 triples; NOT all graph×witness combinations",
+      "totalPackingOraclePairs": 6976
+    },
+    "malformedMutationPackets": 668,
+    "malformedMutationConstruction": "all proper prefixes, every one-byte XOR1/XOR128, five structural/resource mutations of positive ASCII vector",
+    "observedDifferentialMismatch": 0,
+    "observedUnexpectedCrash": 0,
+    "observedAcceptedPacketFailingRawFamilyOracle": 0,
+    "controls": [
+      "greedy trap earliest conflict vs later compatible family",
+      "triple owners/disjoint conflicts/cross-endpoint/same-anchor",
+      "zero-hop/duplicate/cycle/dead slack",
+      "both directions and explicit any-live/reciprocal projections",
+      "view mutation and unexpected accessor errors",
+      "degree/eligible-anchor shortage and unknown counts",
+      "in-grace adopted D, current emergency/liveness and remove-re-add semantics",
+      "s_min off invariant/inert; intermediate-only enabled observation",
+      "indexer/cache/hints fields not consulted",
+      "D1/3/64, k65, r64 and finite byte/ID/resource caps",
+      "memoized O(k*r) state reads, primary linear conflict work and bounded ref2 work",
+      "Unicode scalar IDs/tuple delimiters/context/all-policy binding"
+    ]
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 485,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "fixed software trajectories, not universal equivalence"
+  },
+  "architecture": {
+    "files": 39,
+    "localEdges": 100,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "context": { "errors": 0, "warnings": 29, "disposition": "Existing AGENTS density/structure and wide-table warnings reviewed; protocol over-size scan skip unchanged and protocol not edited in this cohort" },
+  "research": {
+    "registrations": 0,
+    "experimentRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentRuns": 0,
+    "masterG1Verdict": null,
+    "pilot": false
+  }
+}

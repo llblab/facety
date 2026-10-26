@@ -1,4 +1,4 @@
-// Owns: Bounded canonical path-witness policy/transport; excludes live graph acceptance, search, identity and economic authorization.
+// Owns: Bounded path-witness transport and supplied-state structural verification; excludes state authentication, search, identity and economic authorization.
 import { createHash } from 'node:crypto';
 import { TextDecoder } from 'node:util';
 
@@ -91,4 +91,89 @@ export function decodePathWitness(input, suppliedContext) {
   const witness = normalizedWitness(parsed.witness, context);
   if (!wire(witness, context).equals(bytes)) throw new TypeError('noncanonical witness wire');
   return Object.freeze({ epoch: witness.epoch, paths: Object.freeze(witness.paths.map(path => Object.freeze(path))), subject: witness.subject });
+}
+
+export function verifyPathWitness(input, suppliedContext, state) {
+  const context = contextFrom(suppliedContext), p = context.policy;
+  const lookups = { view: 0, snapshot: 0, degree: 0, anchorCount: 0, anchor: 0, removed: 0, edge: 0, standing: 0 };
+  let required = null, degreeBound = null, anchorBound = null, vertices = 0, conflictsChecked = 0;
+  const result = (reason, selected = []) => Object.freeze({ accepted: reason === 'ok', reason, required, degreeBound, anchorBound,
+    selected: Object.freeze(selected), stats: Object.freeze({ lookups: Object.freeze({ ...lookups }), vertices, conflictsChecked }) });
+  let data;
+  try { data = decodePathWitness(input, context); }
+  catch (error) { if (error instanceof TypeError || error instanceof RangeError) return result('invalid-wire'); throw error; }
+  function read(method, ...args) {
+    if (typeof state?.[method] !== 'function') throw new TypeError('missing StateAccessor ' + method);
+    lookups[method]++; return state[method](...args);
+  }
+  function view() {
+    const value = read('view');
+    if (!value || !Number.isSafeInteger(value.epoch) || Object.is(value.epoch, -0) || value.epoch < 0) throw new TypeError('invalid canonical view');
+    return { id: id(value.id, p.maxIdBytes), epoch: value.epoch };
+  }
+  const first = view();
+  function finish(reason, selected = []) {
+    const last = view();
+    return first.id === last.id && first.epoch === last.epoch ? result(reason, selected) : result('state-view-changed');
+  }
+  if (data.epoch > first.epoch || first.epoch - data.epoch > p.graceEpochs) return finish('epoch-outside-grace');
+  const snapshot = read('snapshot', data.epoch);
+  if (snapshot === null) return finish('snapshot-unavailable');
+  if (!snapshot || !Number.isSafeInteger(snapshot.difficulty) || snapshot.difficulty < 1 || snapshot.difficulty > p.maxDifficulty) throw new TypeError('invalid canonical difficulty');
+  required = snapshot.difficulty;
+  if (data.paths.length > required + p.maxSlack) return finish('witness-path-count');
+  degreeBound = read('degree', data.subject, p.direction, p.undirectedProjection);
+  const natural = value => Number.isSafeInteger(value) && !Object.is(value, -0) && value >= 0;
+  if (degreeBound !== null && !natural(degreeBound)) throw new TypeError('invalid canonical degree');
+  if (degreeBound !== null && degreeBound < required) return finish('degree-infeasible');
+  anchorBound = read('anchorCount', data.epoch, data.subject);
+  if (anchorBound !== null && !natural(anchorBound)) throw new TypeError('invalid canonical anchor count');
+  if (anchorBound !== null && anchorBound < required) return finish('anchor-infeasible');
+  const caches = Object.fromEntries(['anchor', 'removed', 'edge', 'standing'].map(key => [key, new Map()]));
+  function cached(method, ...args) {
+    const key = JSON.stringify(args), cache = caches[method];
+    if (!cache.has(key)) {
+      const value = read(method, ...args);
+      if (method === 'standing' ? value !== null && !natural(value) : typeof value !== 'boolean') throw new TypeError('invalid canonical ' + method);
+      cache.set(key, value);
+    }
+    return cache.get(key);
+  }
+  const valid = [];
+  for (const [index, path] of data.paths.entries()) {
+    const seen = new Set(); let simple = true;
+    for (const v of path) { vertices++; if (seen.has(v)) simple = false; seen.add(v); }
+    const anchor = path.at(-1);
+    if (!simple || path.length < 2 || path[0] !== data.subject || anchor === data.subject
+      || !cached('anchor', data.epoch, anchor) || cached('removed', anchor)) continue;
+    let good = true;
+    for (let i = 1; i < path.length; i++) {
+      const a = path[i - 1], b = path[i];
+      const live = p.direction === 'directed-from-anchor' ? cached('edge', b, a)
+        : p.undirectedProjection === 'reciprocal-only' ? cached('edge', a, b) && cached('edge', b, a)
+          : cached('edge', a, b) || cached('edge', b, a);
+      if (!live) { good = false; break; }
+      if (p.minStanding !== null && i < path.length - 1) {
+        const standing = cached('standing', b);
+        if (standing === null || standing < p.minStanding) { good = false; break; }
+      }
+    }
+    if (good) valid.push({ index, path });
+  }
+  if (valid.length < required) return finish('insufficient-valid-paths');
+  const owners = new Map(), conflicts = [];
+  for (const [i, candidate] of valid.entries()) for (const vertex of candidate.path.slice(1)) {
+    const previous = owners.get(vertex) ?? [];
+    if (previous.length > 0 && valid.length === required) return finish('family-conflict');
+    if (previous.length === 2) return finish('family-conflict');
+    if (previous.length === 1) { conflicts.push([previous[0], i]); conflictsChecked++; }
+    previous.push(i); owners.set(vertex, previous);
+  }
+  let omit = -1;
+  if (valid.length > required) {
+    const drops = conflicts.length ? conflicts[0].filter(i => conflicts.every(pair => { conflictsChecked++; return pair.includes(i); })) : [valid.length - 1];
+    if (!drops.length) return finish('family-conflict');
+    omit = Math.max(...drops);
+  }
+  return finish('ok', valid.filter((_, i) => i !== omit).map(c => c.index));
 }
