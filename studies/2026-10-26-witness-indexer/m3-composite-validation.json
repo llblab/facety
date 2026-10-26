@@ -1,0 +1,241 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-K fixed whole-cache/prefix-segment/retained-union/full query coordination and native conformance; not benchmark, canonical/live/funded/default authority, independent authorship or scientific data",
+  "baseCommit": "13b62a53980b98cccc7b87eaf8ca6b627b97f35e",
+  "sourceTree": "28760f07edf32a2bfc5d71f60f3d7deccf552ff0",
+  "testTree": "e60d75d50bdc73ef6fb80d5624c5858934b60f2b",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "a4572bf4c2342c7b6c0c0105268787adb6517a0475c214dc32d166ef82a9a824",
+      "files": 52
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/path-witness-composite.mjs",
+      "gitBlob": "47ee407b49f4b7257c6ac108f6fa8396f1a84f74"
+    },
+    {
+      "path": "test/path-witness-composite.test.mjs",
+      "gitBlob": "7ddc881a0031a432c9192fed138f3ec4c8abe6c4"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-composite.md",
+      "gitBlob": "fe8bc8dbf4f5ce3868bd90e772a9c3d20e16b404"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-composite-contract-validation.json",
+      "gitBlob": "97153eb94c3945070eda2a3217e51e4698e90f10"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-composite-implementation.md",
+      "gitBlob": "288cd6a30185045145fb2dac94e5ee52a1ea535a"
+    }
+  ],
+  "implementation": {
+    "exports": [
+      "queryPathWitnessComposite"
+    ],
+    "method": "verified-cache-prefix-union-fallback/v1",
+    "schema": "facety-path-composite/v1",
+    "owner": "stateless exact whole/segment/forest capability bundle over current view/context/complete prefix-union-full query/advice; eight public downward source imports, no constructors/normalizer exports/old schema changes/lower back import",
+    "preflight": "exact copied plain/null records and dense indexed arrays, nested descriptor checks before values, policy-aware pool subjects, complete unused advice routing/rows/ranked safe loads via native count0 checks; both native private brands/config/stats/records/clocks before first mutation",
+    "clock": "whole tick+TTL safe, prefix tick equal and >=segment native clock even on whole hit; no segment put-TTL guard; actual whole clock always advances, segment only D2 actual lookup, no shared/renewed/primed clock",
+    "flow": "one probe; hit skips producers/finish; miss one D2; nonpositive D2 one C4; one same-tick native hint/full lookup. First verified producer wins, prefix need not be cached-tail hit, only full-view M2 canonical false",
+    "guards": "exact raw native stage envelopes/current-old roots/reference/context/query/epoch/witness/D/native dual receipts (C4 retained+current), whole source/hint/retention/counter/clock and segment lookup/sweep/expired/evicted/record-use/FIFO/routes; actual effects remain on errors, no retry/rollback",
+    "loads": "caller-owned complete immutable supplied snapshots; no fold/reserve/refund/decay. Real D2 offers/partly unconsumed returned-use effects remain before later union/oracle; warm hits have no D2 offers",
+    "preparation": "J's exact two assumptions; inherited per-view WeakMap cold/warm work preserved, no cloning/priming/reset inside API. Exact replay uses separately conditioned equivalent owner/capture instances",
+    "report": "deeply frozen full normalized input/advice/provenance/assumptions/raw stages/current proof/native dual snapshots and scoped work; counts for wrapper count0 preflight only, native D2 repeats own normalization. Not compact/RSS bounded or unlike-unit CPU/fee/human/XP/capacity scalar",
+    "outOfScope": "G/H/F1/I/J source/APIs/tests, lifecycle/load ledger/put/notices/canonical mapping/Model/default/RNG changes, scalable completeness/live Standing/epochs/c-D/capacity/funded/scientific/backend/method/master decisions"
+  },
+  "native": {
+    "families": 13,
+    "unitCommand": "node --test test/path-witness-composite.test.mjs",
+    "manual": {
+      "cases": 1152,
+      "observations": 3456,
+      "positives": 1008,
+      "sources": {
+        "cache": 168,
+        "prefix": 280,
+        "union": 280,
+        "oracle": 2728
+      },
+      "observedMismatch": 0,
+      "scope": "64 raw arcsets ×3 projections ×3 bounded advice profiles ×2 retention settings,3 ticks per case; separate public native sequence/fresh equivalent captures and seed-view conditioning, raw physical three-node family/full M2/current dual positives. Repeated scripted configurations, not traffic/IID people/attack probabilities"
+    },
+    "stream": {
+      "method": "sha256-streaming-json-native-composite-rows-NUL/v1",
+      "digest": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "test": "test/path-witness-composite.test.mjs",
+      "blueprint": "immutable m3-composite-contract-validation.json existingNativeStreamBaseline",
+      "matched": true,
+      "projection": "complete {input,advice,result,stages,cacheStats,work}; JSON.stringify(ordered3rows)+NUL per case; native projection contains no wrapper/schema/provenance fields, none removed; full wrapper metadata separately checked"
+    },
+    "boundaries": "prefix-positive/C4-skip including tree-only zero returns; miss→union/full/known-negative versus null; unused-on-hit fields/getters/brands/policy-aware subjects/advice/ranked loads/both clocks before mutation; warm whole hit leaves old segment timestamps/inventory untouched;0/exact/one-more caps/partial-return uses and offers/disabled stores/no-put-TTL guard;64×64/4096 loads/1024 records, empty/null arrays, unavailable/old-origin/epoch/silent current-edge-removal changes, r64/D64/UTF8-NUL/Native read-only and conditioned inert/future output",
+    "conditioning": "5nodes/6storage-rows cold versus0/0 warm with equal wire/frontier; exact manual native stream replay uses independent equivalent current/seed captures rather than common warmed object or stripped work",
+    "faults": "public native cache schema/source/work/packet/D/retention and stats counter misreports, segment returned-use metadata contradiction and provider exceptions after real lookup; actual earlier effects survive, no favorable partial report/retry/rollback/private-state injection or adversarial-host sandbox claim",
+    "development": {
+      "testFixtureCorrection": "first red helper used advice.pools.reduce on accepted null-prototype array; helper now uses Array.prototype.reduce.call, SUT and frozen contract unchanged",
+      "initialLog": "/tmp/facety-wp-g-composite-unit-before.txt",
+      "oneOffValidationCommandCorrection": "legacy saved artifact is full report: first runExperiment(report) rejected unknown schema key; corrected runExperiment(report.config), expected digests unchanged"
+    },
+    "retainedKnownSUTDefects": 0
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 217,
+    "failed": 0
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 684,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "compatibility": {
+    "streams": [
+      {
+        "name": "originalTree",
+        "cases": 12288,
+        "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+        "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+        "test": "test/path-witness-branches.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "oneHop",
+        "cases": 12288,
+        "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+        "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+        "test": "test/path-witness-prefix.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "C3",
+        "cases": 1152,
+        "method": "sha256-streaming-json-forest-proposal-array-NUL/v1",
+        "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+        "test": "test/path-witness-segment-joins.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "E1",
+        "cases": 24576,
+        "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+        "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+        "test": "test/path-witness-tree-repair.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "lookup",
+        "cases": 192,
+        "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+        "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+        "test": "test/path-witness-pipeline.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "Gpayload",
+        "cases": 192,
+        "observations": 576,
+        "method": "sha256-streaming-json-pipeline-payload-NUL/v1",
+        "digest": "7039f9974cc343bfefeda5cac069e20cf5a9e4248d0a076ac89939489c60dc3e",
+        "test": "test/path-witness-lifecycle.test.mjs",
+        "scope": "only top-level provenance excluded after original full provenance() equality; separate named stream, not H query pipelineDigest",
+        "matched": true
+      },
+      {
+        "name": "nativeNotices",
+        "cases": 243,
+        "method": "sha256-streaming-json-dual-cache-notice-rows-NUL/v1",
+        "digest": "dc6793b59d4f3d33a5169d6edd2b43a924641acbd93c35d49849c30b81bd191d",
+        "test": "test/path-witness-invalidation.test.mjs",
+        "scope": "complete frozen native/input projection, no wrapper/provenance in that pre-code native-only stream and no fields removed; full wrapper provenance/config/work separately compared",
+        "matched": true
+      },
+      {
+        "name": "F1payload",
+        "cases": 384,
+        "requestedQueryRows": 768,
+        "requestedRows": 1152,
+        "method": "sha256-streaming-json-prefix-workload-payload-NUL/v1",
+        "digest": "7ef013e0207bbfd6cd7ed20f8febfa7cf46c30c01749623e58e177bb8af8f5bf",
+        "test": "test/path-witness-segment-workload.test.mjs",
+        "scope": "only top-level F1 provenance excluded after original current provenance() equality, not permission to strip J preparation/state/H full G hashes or alter scientific methods",
+        "matched": true
+      }
+    ],
+    "disposition": "eight prior scoped streams freshly pass on current52-file Source; old source/test bodies/frozen corpus/pre-code contracts/default/RNG/APIs unchanged except expected implementation fingerprint; current nativeK stream separately matched",
+    "existingSourceTestBodiesFrozenCorpusAndContractsUnchanged": true
+  },
+  "conformance": {
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "a4572bf4c2342c7b6c0c0105268787adb6517a0475c214dc32d166ef82a9a824",
+        "files": 52
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "classification": "two fixed current software trajectories, not sealed study replay/scientific observations"
+  },
+  "architecture": {
+    "files": 52,
+    "localEdges": 158,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0,
+    "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+    "disposition": "one separate fixed coordinator, eight public downward source imports, no private reach-through/shared bucket/back import"
+  },
+  "review": {
+    "kind": "inline frozen contract/source/manual native/packet/state/conditioning and architecture review",
+    "notIndependentAuthorshipOrCleanRoom": true,
+    "coverageBoundary": "astronomical native saturation/counter overflow source-inspected, not induced with private fields or enormous calls. Native owners perform real current verifications; coordinator guards inspect their receipt flags/decoded packet/counters rather than count fictional new verifier calls. Public fault wrappers are guard evidence, not a JS sandbox"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed, unchanged large-protocol link/list scans skipped as before;0 orphans/phantoms. Frozen pre-code/history remain intact; current K packet/source/load/clock/preparation/no-rollback boundaries and sole next joint-lifetime contract reconciled without scientific/live/funded/default authority."
+  },
+  "randomness": {
+    "newPolicyGeneratorOrLogicalKeys": false,
+    "newCoordinatorDraws": false,
+    "existingD2KeysAndOldOutputStreamsPreserved": true
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "freeze joint whole/segment/forest/load lifetime contract M3-L around K and explicit I notices before code, true origin/index-loss/hit skips/actual clocks/lagged offers/conditioning/no hidden learning/fallback/priming/canonical mapping, preserve older APIs",
+    "gated": "larger/production/current authentication/Standing/epochs/c-D/capacity/funded/default, supported graph-v2/backend/statistic/committed-method/master before scientific E1-E8"
+  },
+  "research": {
+    "newRegistrations": 0,
+    "scientificExperimentRuns": 0,
+    "softwareTrajectoryChecks": 2,
+    "benchmarkCurves": 0,
+    "newGraphBackend": false,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  }
+}
