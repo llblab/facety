@@ -1,0 +1,78 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-C3 documentation/manual-join/pre-code compatibility checkpoint only; prefix algorithm NOT IMPLEMENTED or tested",
+  "baseCommit": "32591cd7fd21478ae2100a6390811e85d16dec93",
+  "provenance": {
+    "implementation": { "method": "sha256-src-mjs-v1", "digest": "82ce211a997608ac259d0b43dfeea4f0fb58ed4f4376b6fd6e2c90e8ab73c645", "files": 45 },
+    "runtime": { "node": "v26.8.1" },
+    "unchangedSrcTree": "28e6b2cf9cd8ac258fd0cddd9a86226a3adc8834",
+    "unchangedTestTree": "df70270e4af4fc4c0b2527ba5d852ff6490c2f21"
+  },
+  "files": [
+    { "path": "studies/2026-10-26-witness-indexer/m3-prefix.md", "gitBlob": "e7a6c54c68daddbf3dd3d49d465559d1b2a17248" },
+    { "path": "studies/2026-10-26-witness-indexer/branch-tree-miss.json", "gitBlob": "66f175f4c34f140054d7fec7a8af24e3c226690e" },
+    { "path": "src/path-witness-trees.mjs", "gitBlob": "a3b71922441782094acb377680f52af2e5d283a2" },
+    { "path": "src/path-witness-pool.mjs", "gitBlob": "54169c6486273805358033a400be89cd85f7bce6" },
+    { "path": "test/path-witness-branches.test.mjs", "gitBlob": "ed330dacc8c073096bfb89009d774c55b6d2aa7f" }
+  ],
+  "contract": {
+    "proposedAPI": "proposePathWitnessFromPrefixes",
+    "implemented": false,
+    "ownership": "existing tree owner retains forest branding and shared candidate/current/packing/verifier boundary",
+    "frontier": "FIFO lifetime-enqueued simple prefixes, no global vertex visited set; queued positive prefixes survive expansion truncation",
+    "pools": "up to64 explicit per-vertex supplied pool/load rows, no missing-row defaults or automatic load accounting",
+    "budgets": "prefix hops/queue admissions/raw neighbor trials/per-prefix branch choices/tail retrievals/raw candidates/exact packing all explicit",
+    "coverage": "all negative results unknown; missing advice/unfinished trials/budget truncation differ from intentional top-M omission",
+    "futureRandomness": {
+      "policy": "path-prefix-routing/v1",
+      "generator": "sha256-xoshiro128starstar-v2",
+      "childPolicy": "path-pool-keyed/v1",
+      "prefixQueryId": "lowercase hex SHA256 UTF8 JSON([policy,callerQueryId,prefix])",
+      "queueOrConsumedOffsetKeysForbidden": true,
+      "currentRuntimeOrExperimentManifestChanged": false
+    }
+  },
+  "manualTarget": {
+    "classification": "existing forest accessor and verifiers check a hand-decomposed candidate, not a new search implementation",
+    "fixture": "branch-tree-miss.json",
+    "graphName": "prefix-manual-target",
+    "context": "wire-vectors.json context, directed-from-anchor, maxHops3, snapshot epoch3/D2/anchors a,b, no removed/standing rows",
+    "prefix": ["u", "x", "y"],
+    "retainedTail": ["y", "b"],
+    "family": [["u", "a"], ["u", "x", "y", "b"]],
+    "primaryAccepted": true,
+    "ref2Accepted": true,
+    "existingOneHopStatus": "miss",
+    "fullM2Status": "found",
+    "newPrefixAlgorithmExecuted": false,
+    "provesPrefixImplementationOrGeneralCompleteness": false
+  },
+  "preCodeOneHopCompatibility": {
+    "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+    "graphName": "branch-preservation",
+    "nodes": ["u", "x", "a", "b"],
+    "arcOrder": "nested listed nodes, all12 non-self directed arcs, bitsets0..4095; directed/any/reciprocal per bitset",
+    "context": "wire-vectors.json context with maxHops3 and explicit projection; epoch3/D2/anchors a,b, no removed/standing rows",
+    "build": { "epoch": 3, "maxExpansions": 10000, "maxTreeNodes": 1000 },
+    "query": { "epoch": 3, "maxCandidates": 128, "maxPackingSteps": 10000, "maxBranches": 64, "maxTreeLookups": 1000 },
+    "pool": "all listed nodes, supplied-synthetic/v1, score0, M64",
+    "routing": { "seed": "branches-software-control", "queryId": "query-1", "step": 0, "mode": "uniform", "loads": null },
+    "queries": 12288,
+    "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+    "futureRequirement": "compare after implementation, alongside the existing permanent original-tree digest ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+    "futureComparisonAlreadyRun": false,
+    "notEmpiricalSamplesOrReservedSeeds": true
+  },
+  "priorValidation": {
+    "source": "m3-branches-validation.json at32591cd",
+    "npmTestRerun": false,
+    "currentPassedAtPriorCheckpoint": 549,
+    "historicalPassedAtPriorCheckpoint": 21,
+    "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+    "basis": "source/test trees and implementation digest unchanged; previous runtime evidence reused, not a fresh whole-suite pass across changed documentation",
+    "architectureAtSameSource": { "files": 45, "localEdges": 117, "cycles": 0, "errors": 0, "warnings": 0 }
+  },
+  "context": { "errors": 0, "warnings": 29, "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort" },
+  "remaining": { "M3": "open", "next": "implement the frozen prefix contract and validate with independent tiny-prefix enumeration, old API digests, primary/ref2/full M2 and missingness/budget controls" },
+  "research": { "registrations": 0, "newSearchImplementationRuns": 0, "benchmarkCurves": 0, "confirmationSeedLabels": [], "LLMAgentRuns": 0, "masterG1Verdict": null, "D62EconomicGuarantee": false, "pilot": false }
+}
