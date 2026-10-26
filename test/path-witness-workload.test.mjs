@@ -132,6 +132,23 @@ test('whole-input preflight rejects invalid unused/future data and known policy 
   const edge = q('é'.repeat(128)); edge.routing.seed = 's'.repeat(1024); edge.routing.step = Number.MAX_SAFE_INTEGER; assert.equal(runPathWitnessWorkload({ ...good, steps: [edge] }).rows.length, 1);
 });
 
+test('pool-subject preflight uses each frame witness-ID byte envelope, including unused/future rows before draws', () => {
+  const f = fixture(), v = f.view(), p = pool(['x', 'y']), old = frame('old', v), input = { domain: base.domain, frames: [old], steps: [operation('build'), q('valid')] };
+  for (const subject of ['s'.repeat(65), 'é'.repeat(33)]) {
+    const future = frame('future', v, [{ subject, pool: p }]);
+    assert.throws(() => runPathWitnessWorkload({ ...input, frames: [old, future], steps: [] }));
+    const prior = Random.prototype.int; let draws = 0;
+    Random.prototype.int = function() { draws++; throw new Error('invalid future subject reached query execution'); };
+    try { assert.throws(() => runPathWitnessWorkload({ ...input, frames: [old, future] }), /ID|bound|byte/); assert.equal(draws, 0); } finally { Random.prototype.int = prior; }
+  }
+  for (const subject of ['s'.repeat(64), 'é'.repeat(32)]) assert.equal(runPathWitnessWorkload({ ...input, frames: [frame('old', v, [{ subject, pool: p }])], steps: [] }).preflight.poolRows, 1);
+  const wide = fixture(undefined, undefined, undefined, { maxIdBytes: 256 }).view();
+  assert.equal(runPathWitnessWorkload({ ...input, frames: [frame('old', wide, [{ subject: 'é'.repeat(128), pool: p }])], steps: [] }).preflight.poolRows, 1);
+  assert.throws(() => runPathWitnessWorkload({ ...input, frames: [frame('old', wide, [{ subject: 's'.repeat(257), pool: p }])], steps: [] }));
+  // Retained peer labels use the pool envelope; unmatched oversized peers are valid untrusted advice, not prefix subjects.
+  const poison = pool(['s'.repeat(65)]); assert.equal(runPathWitnessWorkload({ ...input, frames: [frame('old', v, [{ subject: 'u', pool: poison }])], steps: [] }).preflight.distinctLoadIds, 1);
+});
+
 test('zero/exact/one-more outer bounds include unused frame pools and full raw load-ID union', () => {
   const f = fixture(), view = f.view(), simple = frame('old', view), empty = runPathWitnessWorkload({ domain: base.domain, frames: [], steps: [] }); assert.equal(empty.namespace, null); assert.equal(empty.totals.loads.herfindahl, null); assert.equal(empty.totals.loads.max, 0); assert.equal(empty.finalForest, null);
   const frames = Array.from({ length: 16 }, (_, i) => frame('f' + i, view, [])); assert.equal(runPathWitnessWorkload({ domain: base.domain, frames, steps: [] }).preflight.frames, 16); assert.throws(() => runPathWitnessWorkload({ domain: base.domain, frames: [...frames, frame('overflow', view, [])], steps: [] }));

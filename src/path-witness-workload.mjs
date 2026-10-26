@@ -50,7 +50,7 @@ function normalize(input) {
     if (namespace && (scope.reference !== namespace.reference || scope.storageName !== namespace.storageName)) throw new TypeError('workload frame namespace differs');
     namespace = scope; const subjects = new Set(), pools = [];
     for (const entry of array(row.pools, PATH_WORKLOAD_LIMITS.maxPoolsPerFrame)) {
-      fields(entry, ['subject', 'pool']); const subject = text(entry.subject);
+      fields(entry, ['subject', 'pool']); const subject = pathWitnessContext({ domain, subject: entry.subject, policy }).subject;
       if (subjects.has(subject)) throw new TypeError('duplicate workload pool subject'); subjects.add(subject);
       routePathWitnessPool(entry.pool, { seed: 'workload-preflight', domain, viewId: row.view.view().id, epoch: data.options.currentEpoch, subject, queryId: 'workload-preflight', step: 0, start: 0, count: 0, mode: 'uniform', excluded: [], loads: null });
       preflight.poolChecks++; preflight.poolRows++; preflight.retainedPoolEntries += entry.pool.ranked.length;

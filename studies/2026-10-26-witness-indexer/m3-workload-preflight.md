@@ -1,0 +1,17 @@
+# M3-F1 prefix-subject preflight correction
+
+**2026-10-26 · bounded correctness follow-up to [F1 atdaf671e](m3-workload-implementation.md).** [Validation](m3-workload-preflight-validation.json) binds this correction separately; the original [contract](m3-workload.md), [pre-code record](m3-workload-contract-validation.json) and [implementation evidence](m3-workload-validation.json) remain unchanged historical checkpoints. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work. The planned paired-method preparation was deferred for this higher-priority correctness regression; no F2 method or workload data is delivered here.
+
+## Defect and narrow correction
+
+F1 initially validated each frame pool row's subject through its general256-byte text guard. But C3's normalizePrefixAdvice validates that same subject through pathWitnessContext under the **frame's own policy.maxIdBytes**. With the ordinary64-byte policy, a65-byte subject or33 two-byte é characters could survive batch preflight, even in an unused/future frame. If queried, C3 would reject only after earlier operations had run; an unused invalid frame was accepted outright. This violated whole-input preflight, not witness soundness: the source query still rejected before using the invalid prefix advice.
+
+The smallest shared-owner fix is one line in src/path-witness-workload.mjs: normalize the pool subject with the same public pathWitnessContext({domain,subject,policy}) as C3, rather than duplicate a second byte-limit rule. No private helper reach-through, new policy, resource cap, generator, ID reinterpretation or old source API change occurs. Other frame/query identifiers retain their own routing envelopes. Retained **peer labels** remain governed by the pool envelope and current-neighbor filtering; a long unmatched peer is valid untrusted advice, not a prefix subject or admission exemption.
+
+## Regression evidence
+
+The added native regression first failed atdaf671e with `Missing expected exception` for an unused oversized subject. After the correction, it rejects65-byte ASCII/66-byte UTF8 subjects before query draws, accepts exact64-byte ASCII/UTF8, accepts a256-byte subject under an explicitly256-byte frame policy, rejects257 bytes, and preserves long unmatched peer labels. A test-local restored Random.int trap proves invalid future subjects cannot reach the earlier query; it is not a runtime injection port.
+
+10 workload families/145 focused/612 current tests pass, plus21 separately pinned historical tests on their compatible source. The384 direct-API caller/accounting tapes/1152 query rows still pass. All four old streams and fixed legacy/vouch conformance remain unchanged except source fingerprint; DAG47 source files/125 local edges stays acyclic. The original9-family/144-focused/611-current F1 checkpoint is not relabeled as having this regression.
+
+This correction enforces the already-frozen contract. It does not authorize timed/scaling evidence, actual graph-backend v2 studies, live epoch/anchor/capacity/funded/default integration, canonical authentication, personhood or an economic guarantee. Paired synthetic comparison preparation remains next; any E1–E8 benchmark still needs actual supported v2/method/master gates, not a fake graph registration.
