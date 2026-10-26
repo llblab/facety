@@ -1,4 +1,4 @@
-// Owns: Bounded anchor BFS and tree/branch/prefix/segment candidate assembly; excludes global completeness, live ranking, dynamic repair and authority.
+// Owns: Bounded anchor BFS/affected-root refresh and tree/branch/prefix/segment assembly; excludes global completeness, live ranking, within-root repair and authority.
 import { createHash } from 'node:crypto';
 import { pathWitnessContext, pathWitnessPolicyId, encodePathWitness, decodePathWitness, verifyPathWitness } from './path-witness.mjs';
 import { verifyPathWitnessRef2 } from './path-witness-ref2.mjs';
@@ -22,43 +22,42 @@ function config(input, keys, limits = PATH_TREE_LIMITS) {
   return Object.freeze(Object.fromEntries(keys.map(k => [k, input[k]])));
 }
 function freeze(v) { if (v && typeof v === 'object') { for (const x of Object.values(v)) freeze(x); Object.freeze(v); } return v; }
-export function buildPathWitnessTrees(view, input) {
-  if (!isPathWitnessView(view)) throw new TypeError('tree build requires immutable capture');
-  const budget = config(input, ['epoch', 'maxExpansions', 'maxTreeNodes']), data = view.toJSON(), p = data.options.policy;
-  const snapshot = data.options.snapshots.find(s => s.epoch === budget.epoch), live = new Set(view.nodeIds());
-  const anchors = Object.freeze((snapshot?.anchors ?? []).filter(a => live.has(a) && !view.removed(a)));
-  const forward = new Map(view.nodeIds().map(v => [v, new Set()]));
+function prepareTreeGraph(view) {
+  const data = view.toJSON(), p = data.options.policy, live = new Set(view.nodeIds()), forward = new Map(view.nodeIds().map(v => [v, new Set()]));
   for (const [a, b] of data.live.edges) {
     if (p.direction === 'directed-from-anchor') forward.get(a).add(b);
     else if (p.undirectedProjection === 'any-live-orientation' || view.edge(b, a)) { forward.get(a).add(b); forward.get(b).add(a); }
   }
   const next = new Map([...forward].map(([v, neighbors]) => [v, [...neighbors].sort(cmp)]));
-  const stats = { preparedNodes: live.size, preparedEdges: data.live.edges.length, projectedArcs: [...next.values()].reduce((n, a) => n + a.length, 0),
+  return { data, p, live, forward, next };
+}
+function treeStats(graph) {
+  return { preparedNodes: graph.live.size, preparedEdges: graph.data.live.edges.length, projectedArcs: [...graph.next.values()].reduce((n, a) => n + a.length, 0),
     rootsStarted: 0, rootsCompleted: 0, expansions: 0, treeNodes: 0 };
-  const trees = new Map(); let stop = null;
-  for (const anchor of anchors) {
-    if (stats.treeNodes === budget.maxTreeNodes) { stop = 'tree-node-limit'; break; }
-    const tree = new Map([[anchor, { distance: 0, parent: null }]]), queue = [anchor]; trees.set(anchor, tree);
-    stats.rootsStarted++; stats.treeNodes++;
-    for (let head = 0; head < queue.length; head++) {
-      const node = queue[head], distance = tree.get(node).distance;
-      if (distance === p.maxHops) continue;
-      if (node !== anchor && p.minStanding !== null) { const standing = view.standing(node); if (standing === null || standing < p.minStanding) continue; }
-      for (const child of next.get(node)) {
-        if (stats.expansions === budget.maxExpansions) { stop = 'build-expansion-limit'; break; }
-        stats.expansions++;
-        if (tree.has(child)) continue;
-        if (stats.treeNodes === budget.maxTreeNodes) { stop = 'tree-node-limit'; break; }
-        tree.set(child, { distance: distance + 1, parent: node }); stats.treeNodes++; queue.push(child);
-      }
-      if (stop) break;
+}
+function growTree(anchor, view, graph, budget, stats) {
+  const tree = new Map([[anchor, { distance: 0, parent: null }]]), queue = [anchor], p = graph.p; let stop = null;
+  stats.rootsStarted++; stats.treeNodes++;
+  for (let head = 0; head < queue.length; head++) {
+    const node = queue[head], distance = tree.get(node).distance;
+    if (distance === p.maxHops) continue;
+    if (node !== anchor && p.minStanding !== null) { const standing = view.standing(node); if (standing === null || standing < p.minStanding) continue; }
+    for (const child of graph.next.get(node)) {
+      if (stats.expansions === budget.maxExpansions) { stop = 'build-expansion-limit'; break; }
+      stats.expansions++;
+      if (tree.has(child)) continue;
+      if (stats.treeNodes === budget.maxTreeNodes) { stop = 'tree-node-limit'; break; }
+      tree.set(child, { distance: distance + 1, parent: node }); stats.treeNodes++; queue.push(child);
     }
     if (stop) break;
-    stats.rootsCompleted++;
   }
-  const meta = freeze({ reference: 'single-parent-bounded-bfs/v1', status: !snapshot ? 'unavailable' : stop ? 'censored' : 'built',
-    reason: !snapshot ? 'snapshot-unavailable' : stop ?? 'ok', complete: snapshot !== undefined && stop === null,
-    originRoot: view.view().id, policyId: data.policyId, epoch: budget.epoch, maxHops: p.maxHops, config: budget, stats });
+  if (!stop) stats.rootsCompleted++;
+  return { tree, stop };
+}
+function makeForest(view, budget, graph, anchors, trees, stats, stop, available, reference) {
+  const meta = freeze({ reference, status: !available ? 'unavailable' : stop ? 'censored' : 'built',
+    reason: !available ? 'snapshot-unavailable' : stop ?? 'ok', complete: available && stop === null,
+    originRoot: view.view().id, policyId: graph.data.policyId, epoch: budget.epoch, maxHops: graph.p.maxHops, config: budget, stats });
   const exported = freeze({ schema: 'facety-path-forest/v1', meta, anchors: [...anchors], parents: [...trees].map(([anchor, tree]) => ({ anchor,
     nodes: [...tree].sort(([a], [b]) => cmp(a, b)).map(([subject, record]) => ({ subject, distance: record.distance, parent: record.parent })) })) });
   const forest = Object.freeze({ meta, anchors: () => exported.anchors, toJSON: () => exported, path: (subject, anchor) => {
@@ -68,6 +67,73 @@ export function buildPathWitnessTrees(view, input) {
     return Object.freeze(path);
   } });
   forests.add(forest); return forest;
+}
+export function buildPathWitnessTrees(view, input) {
+  if (!isPathWitnessView(view)) throw new TypeError('tree build requires immutable capture');
+  const budget = config(input, ['epoch', 'maxExpansions', 'maxTreeNodes']), graph = prepareTreeGraph(view);
+  const snapshot = graph.data.options.snapshots.find(s => s.epoch === budget.epoch);
+  const anchors = (snapshot?.anchors ?? []).filter(a => graph.live.has(a) && !view.removed(a)), stats = treeStats(graph), trees = new Map(); let stop = null;
+  for (const anchor of anchors) {
+    if (stats.treeNodes === budget.maxTreeNodes) { stop = 'tree-node-limit'; break; }
+    const grown = growTree(anchor, view, graph, budget, stats); trees.set(anchor, grown.tree); stop = grown.stop;
+    if (stop) break;
+  }
+  return makeForest(view, budget, graph, anchors, trees, stats, stop, snapshot !== undefined, 'single-parent-bounded-bfs/v1');
+}
+export function refreshPathWitnessTrees(forest, origin, current, input) {
+  if (!forests.has(forest) || !isPathWitnessView(origin) || !isPathWitnessView(current)) throw new TypeError('refresh requires local forest and immutable captures');
+  const query = config(input, ['epoch', 'maxExpansions', 'maxTreeNodes']), before = origin.toJSON(), after = current.toJSON(), p = after.options.policy;
+  if (origin.view().id !== forest.meta.originRoot || before.policyId !== forest.meta.policyId) throw new TypeError('refresh origin differs from forest');
+  if (origin.capture.reference !== current.capture.reference || before.source.storage.name !== after.source.storage.name) throw new TypeError('refresh capture namespace differs');
+  const report = { schema: 'facety-tree-refresh/v1', originRoot: origin.view().id, currentRoot: current.view().id, query,
+    status: 'unavailable', reason: null, reset: null, deltaComplete: null, retired: [], roots: [], work: Object.fromEntries([
+      'preparedOldNodes', 'preparedCurrentNodes', 'preparedOldEdges', 'preparedCurrentEdges', 'oldProjectedArcs', 'currentProjectedArcs', 'changedArcs',
+      'scoreEligibilityComparisons', 'classificationNodeChecks', 'reusedRoots', 'rebuiltRoots', 'retainedTreeNodes', 'reusedTreeNodes', 'freshTreeNodes', 'freshExpansions'].map(k => [k, 0])) };
+  const unavailable = reason => { report.reason = reason; return freeze({ forest: null, report }); };
+  const epoch = current.view().epoch;
+  if (query.epoch > epoch || epoch - query.epoch > p.graceEpochs) return unavailable('epoch-outside-grace');
+  const snapshot = after.options.snapshots.find(s => s.epoch === query.epoch);
+  if (!snapshot) return unavailable('snapshot-unavailable');
+  report.reset = !forest.meta.complete ? 'input-incomplete' : forest.meta.epoch !== query.epoch ? 'epoch-changed' : before.policyId !== after.policyId ? 'policy-changed' : null;
+  report.deltaComplete = report.reset === null;
+  const graph = prepareTreeGraph(current), stats = treeStats(graph), work = report.work, changedSources = new Set(), changedEligibility = new Set();
+  work.preparedCurrentNodes = stats.preparedNodes; work.preparedCurrentEdges = stats.preparedEdges; work.currentProjectedArcs = stats.projectedArcs;
+  const anchors = snapshot.anchors.filter(a => graph.live.has(a) && !current.removed(a)), targets = new Set(anchors);
+  report.retired = forest.anchors().filter(a => !targets.has(a));
+  const oldTrees = report.reset ? new Map() : new Map(forest.toJSON().parents.map(row => [row.anchor, row.nodes]));
+  if (!report.reset) {
+    const old = prepareTreeGraph(origin), oldStats = treeStats(old);
+    work.preparedOldNodes = oldStats.preparedNodes; work.preparedOldEdges = oldStats.preparedEdges; work.oldProjectedArcs = oldStats.projectedArcs;
+    for (const [a, b] of [[old, graph], [graph, old]]) for (const [source, children] of a.forward) for (const child of children) {
+      if (!b.forward.get(source)?.has(child)) { changedSources.add(source); work.changedArcs++; }
+    }
+    if (p.minStanding !== null) for (const vertex of new Set([...old.live, ...graph.live])) {
+      work.scoreEligibilityComparisons++;
+      const x = old.live.has(vertex) ? origin.standing(vertex) : null, y = graph.live.has(vertex) ? current.standing(vertex) : null;
+      if ((x !== null && x >= p.minStanding) !== (y !== null && y >= p.minStanding)) changedEligibility.add(vertex);
+    }
+  }
+  const trees = new Map(); let stop = null;
+  for (const anchor of anchors) {
+    if (stop) { report.roots.push({ anchor, action: 'omitted' }); continue; }
+    const rows = oldTrees.get(anchor); let affected = !rows;
+    if (!affected) for (const row of rows) {
+      work.classificationNodeChecks++;
+      if (row.distance < p.maxHops && (changedSources.has(row.subject) || (row.subject !== anchor && changedEligibility.has(row.subject)))) { affected = true; break; }
+    }
+    if (!affected) {
+      if (stats.treeNodes + rows.length > query.maxTreeNodes) { stop = 'tree-node-limit'; report.roots.push({ anchor, action: 'omitted' }); continue; }
+      trees.set(anchor, new Map(rows.map(row => [row.subject, { distance: row.distance, parent: row.parent }])));
+      stats.treeNodes += rows.length; work.reusedRoots++; work.reusedTreeNodes += rows.length; report.roots.push({ anchor, action: 'reused' });
+    } else {
+      if (stats.treeNodes === query.maxTreeNodes) { stop = 'tree-node-limit'; report.roots.push({ anchor, action: 'omitted' }); continue; }
+      const oldCount = stats.treeNodes, grown = growTree(anchor, current, graph, query, stats); trees.set(anchor, grown.tree); stop = grown.stop;
+      work.rebuiltRoots++; work.freshTreeNodes += stats.treeNodes - oldCount; report.roots.push({ anchor, action: stop ? 'partial' : 'rebuilt' });
+    }
+  }
+  work.retainedTreeNodes = stats.treeNodes; work.freshExpansions = stats.expansions; report.status = 'refreshed'; report.reason = stop ?? 'ok';
+  const refreshed = makeForest(current, query, graph, anchors, trees, stats, stop, true, 'affected-root-bounded-bfs/v1');
+  return freeze({ forest: refreshed, report });
 }
 export function proposePathWitnessFromTrees(forest, view, suppliedContext, input) { return propose(forest, view, suppliedContext, input, null); }
 export function proposePathWitnessFromBranches(forest, view, suppliedContext, input, advice) {

@@ -1,0 +1,89 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-E1 bounded affected-root refresh, not within-root Even–Shiloach/insertion repair, authenticated state, general proof, independent authorship, performance or scientific E1/economic evidence",
+  "baseCommit": "63a588d23f70acf8714fdcfef63133db5f071574",
+  "provenance": {
+    "implementation": { "method": "sha256-src-mjs-v1", "digest": "78cc79b7fc3eadec2d5343eea190dff7f7a766451fd92ed032676f51214aad0b", "files": 46 },
+    "runtime": { "node": "v26.8.1" }
+  },
+  "files": [
+    { "path": "src/path-witness-trees.mjs", "gitBlob": "cfa518d32fe73421748e4991f3f4de1c5bdcba3a" },
+    { "path": "test/path-witness-tree-refresh.test.mjs", "gitBlob": "1e02963374c994994dd9241067f5585a65060bce" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-tree-refresh-implementation.md", "gitBlob": "bb374e708eb283e238b582cbfb1baebb45e085f6" },
+    { "path": "docs/simulator.en.md", "gitBlob": "78e1712a24c58432e0fec914f0a5f4f6c1011acd" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-tree-refresh.md", "gitBlob": "a958570e74cb98eb2ecce29a879c785f5ab00d08" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-tree-refresh-contract-validation.json", "gitBlob": "bce1158c8e4cff389cfca37b5c61b49d4d0ca1fa" }
+  ],
+  "implementation": {
+    "module": "src/path-witness-trees.mjs",
+    "public": "refreshPathWitnessTrees(forest,origin,current,query)",
+    "query": "unchanged exact epoch/maxExpansions/maxTreeNodes and PATH_TREE_LIMITS",
+    "preflight": "local brands, exact origin root/policy, reference/storage-name namespace and strict data before availability",
+    "projection": "complete old/current supplied forward live arcs, current reciprocal/any/direct semantics; IDs do not become graph changes",
+    "classifier": "old complete distance<r at changed-arc sources or changed enabled qualifying Boolean, excluding root's own score; new roots rebuilt",
+    "reset": "input-incomplete then epoch-changed then policy-changed; deltaComplete false and skipped-old counters not an unchanged graph claim",
+    "construction": "canonical current root order; complete unaffected rows cloned, affected BFS uses original deterministic shared seam; no implicit origin capture retained",
+    "budgets": "all retained rows consume node capacity, fresh neighbor trials consume expansion budget; partial parent-closed root then later omissions, whole reused-tree omission",
+    "metadata": "current-equivalent affected-root-bounded-bfs/v1, not all-rows-fresh construction; report separate reuse/fresh/capture/delta/classification costs",
+    "unavailable": "forest null, zero work, null reset/delta, empty actions/retirement; no activation authority",
+    "cacheModelRNGPoolOrDefaultMutation": false,
+    "withinRootRepair": false,
+    "noTotalCPUPhysicalMemoryOrSpeedClaim": true
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 123,
+    "newFamilies": 10,
+    "rawReference": {
+      "nodes": ["u", "a", "b"],
+      "transitions": "all64 old×64 new directed nonself arc subsets in a declared synthetic namespace",
+      "projections": ["directed-from-anchor", "any-live-orientation", "reciprocal-only"],
+      "scoreProfiles": ["off with a0/b1→a1/b0 metadata changes", "minStanding1 with a0/b1→a1/b0 eligibility swaps"],
+      "maxHops": 2,
+      "pairs": 24576,
+      "found": 7168,
+      "reusedRootActions": 9408,
+      "rebuiltRootActions": 39744,
+      "observedMismatch": 0,
+      "reference": "separate raw Boolean projection/FIFO BFS and raw changed-source/qualification affected set, sufficient-budget full rebuild and full-M2/current dual-verifier proposals",
+      "notAuthenticatedRealHistoryHumanSamplesOrIndependentAuthorship": true
+    },
+    "controls": [
+      "shorter and equal-distance insertion change canonical parents while remote roots reuse and old parent edges remain live",
+      "total retained-node zero/exact/one-less capacities include reused rows; reused whole-tree omission not arbitrary row truncation",
+      "fresh-expansion zero/exact/one-less limits retain parent-closed partial fresh root and omit later roots",
+      "36 reset-all budget combinations match direct bounded full rebuild parents/stats/status/reason",
+      "reset priority, current grace/future/missing epochs and null/false delta missingness",
+      "root exemption, qualification class/unknown/zero threshold and score-off source-root changes",
+      "live-node/new/retired-root/difficulty changes preserve current roles and support requirements",
+      "any-live and reciprocal orientation loss; cache ID reincarnation miss with unchanged projected BFS and reusable vertex paths",
+      "strict copied/namespace/origin/query/accessor brands and unavailable no-work; immutable outputs/chaining",
+      "r64 Unicode, more than64 roots/D64/empty targets, read-only Native accepted-state refresh and cached-tail/full-verifier consumption"
+    ]
+  },
+  "full": {
+    "command": "npm test",
+    "current": { "passed": 590, "failed": 0, "skipped": 0 },
+    "historical": { "passed": 21, "failed": 0, "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7", "currentSourceEvidence": false }
+  },
+  "compatibility": {
+    "C3": { "pairs": 1152, "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160", "matched": true },
+    "originalTree": { "pairs": 12288, "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691", "matched": true },
+    "oneHop": { "pairs": 12288, "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686", "matched": true },
+    "oldConstructorLimitsAndResultShapesUnchanged": true,
+    "cachedTailCurrentTests": "retained unchanged and pass",
+    "frozenPreCodeAndHistoricalRecordsUnchanged": true,
+    "randomness": "none added by refresh; existing prefix/pool/experiment generator/key layout unchanged"
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "fixed trajectories, not universal equivalence or replay of historical studies"
+  },
+  "architecture": { "files": 46, "localEdges": 120, "cycles": 0, "errors": 0, "warnings": 0 },
+  "context": { "errors": 0, "warnings": 29, "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort" },
+  "remaining": { "M3": "open", "next": "within-root insertion/decremental repair design/acceptance with raw/full-rebuild/affected-root controls before cost", "otherGates": "query-load accounting, larger indexer, live authority/capacity/funded gate and scientific methods remain separate" },
+  "research": { "registrations": 0, "experimentRuns": 0, "benchmarkCurves": 0, "confirmationSeedLabels": [], "LLMAgentRuns": 0, "masterG1Verdict": null, "D62EconomicGuarantee": false, "pilot": false }
+}
