@@ -1,0 +1,897 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-I pre-code explicit whole/segment cache notice fan-out, public native dependency controls and separately scoped native stream, not wrapper implementation/tests/performance/scientific data",
+  "baseCommit": "9416a79e902d983bc92069a7a2f51867aa2d6c15",
+  "unchangedTrees": {
+    "src": "112a6e8baca279d103db04f5ea1e7041617252d6",
+    "test": "16eb4b8b6ac4ad605ba99a43557fa3e8cefe817e"
+  },
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "11a715bdde6f9b8bb5e6d629673f0fd9e88f4d2c73f2558c8cbff95939cfa51e",
+      "files": 49
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-invalidation.md",
+      "gitBlob": "5838a6522f72974526934e224e6e485a8c8344e2"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-lifecycle-validation.json",
+      "gitBlob": "15cdb90a0b203ce6872e58748f7cf7a258d1ab0a"
+    },
+    {
+      "path": "src/path-witness-cache.mjs",
+      "gitBlob": "3e6d19c69d2ae76e93d26026417c9a02ec41aab0"
+    },
+    {
+      "path": "src/path-witness-segments.mjs",
+      "gitBlob": "bac1263c30fa9e5b6119f53c6d38f5ad6cb5fbd9"
+    }
+  ],
+  "sourceChanged": false,
+  "testChanged": false,
+  "newFilesAbsent": [
+    "src/path-witness-invalidation.mjs",
+    "test/path-witness-invalidation.test.mjs"
+  ],
+  "newAPIsAbsent": [
+    "invalidatePathWitnessCaches"
+  ],
+  "newWrapperExecutionOrTests": false,
+  "contract": {
+    "method": "explicit-dual-cache-notices/v1",
+    "owner": "new src/path-witness-invalidation.mjs; existing exact native whole+segment cache instances, no constructors/persistent state, only public native classes/limits/global ID bound/provenance, no lower back import",
+    "input": "separate exact whole edges/anchors and segments edges/vertices, dense indexed copied raw arrays, each4096 notices/global256 UTF8 IDs, no filtering/mapping/dedup; self/reverse/duplicates/unknown/retired allowed",
+    "scope": "whole terminal anchors are not segment all-role vertices; no shared canonical delta language or ledger/domain equality inferred; each owner notices span matching retained scopes only",
+    "preflight": "both complete envelopes/brands/safe stats before either mutation; exact immediate prototypes/native private-brand stats, no probe/lookup/put/zero-budget validation side effects; whole max possible invalidation-counter headroom conservatively reserved even empty notices",
+    "order": "one whole invalidate then after guard, one segment invalidate then after guard; both called even empty, first guard failure stops second, actual earlier effects remain on later failure/no rollback/retry/partial favorable report",
+    "state": "actual independent native lastTicks/TTL/use/FIFO retained metadata unchanged, no automatic expiry/query/canonical change; whole invalidations+1 and invalidated+evicted, segment has no cumulative invalidation counter",
+    "report": "frozen configs/normalized input/ordered original native before-receipt-after stages and per-owner named work counters; no aggregate eviction/people/path/CPU scalar, paths/proofs/handles or new report digest",
+    "guard": "native receipt field/count consistency, entries/byte/key deltas and exact whole counter effects; retained segment record FIFO subsequence/unchanged metadata/removed-byte equality; host/prototype integrity assumed, astronomical headroom not private injected",
+    "outOfScope": "H/F1/G changes, canonical mapping/authentication/current facts/common clock/cross-store atomicity/event deduplication, prefix/segment/load/larger/production integration, graph-v2/backend/method/scientific/live/funded/default/capacity choices"
+  },
+  "existingAPIProbe": {
+    "command": "node /tmp/facety-wp-g-invalidation-contract-check.mjs",
+    "scriptGitBlob": "ae84fbd5e6a4a804696b7651e3c5f7dfeba76cab",
+    "disposition": "temporary local script, not a maintained fan-out runner or authenticated evidence; complete native-only baseline blueprint/manual groups retained here; no new wrapper exercised",
+    "schema": "facety-invalidation-dependency-probes/v1",
+    "classification": "existing public-cache/manual notice controls and separately scoped native stream, not fan-out implementation/tests/performance/scientific data",
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "11a715bdde6f9b8bb5e6d629673f0fd9e88f4d2c73f2558c8cbff95939cfa51e",
+        "files": 49
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "groups": [
+      {
+        "id": "native-dual-cache-notice-preservation",
+        "method": "sha256-streaming-json-dual-cache-notice-rows-NUL/v1",
+        "cases": 243,
+        "digest": "dc6793b59d4f3d33a5169d6edd2b43a924641acbd93c35d49849c30b81bd191d",
+        "wholeEvictions": 270,
+        "segmentEvictions": 297,
+        "observedMismatch": 0,
+        "iteration": "directed/any/reciprocal then wholeMenus0..8 then segmentMenus0..8, fresh stores per case",
+        "nodes": [
+          "u",
+          "x",
+          "a",
+          "b"
+        ],
+        "graphName": "notice-fanout-preservation",
+        "forwardEdges": [
+          [
+            "a",
+            "x"
+          ],
+          [
+            "x",
+            "u"
+          ],
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "undirectedModes": "append reverse of each forward edge in forward order",
+        "baseContext": {
+          "domain": "facety:software-fixture",
+          "subject": "u",
+          "policy": {
+            "direction": "directed-from-anchor",
+            "graceEpochs": 1,
+            "maxDifficulty": 8,
+            "maxHops": 5,
+            "maxIdBytes": 64,
+            "maxSlack": 1,
+            "maxWitnessBytes": 8192,
+            "minStanding": null,
+            "undirectedProjection": "any-live-orientation"
+          }
+        },
+        "policyPatch": {
+          "maxHops": 3
+        },
+        "wholeConfig": {
+          "maxEntries": 8,
+          "maxBytes": 100000,
+          "ttlTicks": 10
+        },
+        "segmentConfig": {
+          "ledgerId": "fanout-software-ledger",
+          "maxEntries": 8,
+          "maxBytes": 100000,
+          "ttlTicks": 10
+        },
+        "wholeSeed": {
+          "epochs": [
+            2,
+            3
+          ],
+          "tick": 3,
+          "paths": [
+            [
+              "u",
+              "x",
+              "a"
+            ],
+            [
+              "u",
+              "b"
+            ]
+          ],
+          "fallback": {
+            "maxExpansions": 0,
+            "maxPaths": 0,
+            "maxPackingSteps": 0
+          }
+        },
+        "segmentSeed": {
+          "epoch": 3,
+          "tick": 7,
+          "paths": [
+            [
+              "u",
+              "x",
+              "a"
+            ],
+            [
+              "x",
+              "a"
+            ],
+            [
+              "u",
+              "b"
+            ]
+          ]
+        },
+        "options": {
+          "currentEpoch": 3,
+          "snapshots": [
+            {
+              "epoch": 2,
+              "difficulty": 2,
+              "anchors": [
+                "a",
+                "b"
+              ]
+            },
+            {
+              "epoch": 3,
+              "difficulty": 2,
+              "anchors": [
+                "a",
+                "b"
+              ]
+            }
+          ],
+          "removed": [],
+          "standing": []
+        },
+        "wholeMenus": [
+          {
+            "edges": [],
+            "anchors": []
+          },
+          {
+            "edges": [
+              [
+                "x",
+                "u"
+              ]
+            ],
+            "anchors": []
+          },
+          {
+            "edges": [
+              [
+                "u",
+                "x"
+              ]
+            ],
+            "anchors": []
+          },
+          {
+            "edges": [],
+            "anchors": [
+              "a"
+            ]
+          },
+          {
+            "edges": [],
+            "anchors": [
+              "x"
+            ]
+          },
+          {
+            "edges": [],
+            "anchors": [
+              "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+            ]
+          },
+          {
+            "edges": [
+              [
+                "x",
+                "u"
+              ],
+              [
+                "x",
+                "u"
+              ]
+            ],
+            "anchors": [
+              "a",
+              "a"
+            ]
+          },
+          {
+            "edges": [
+              [
+                "u",
+                "u"
+              ]
+            ],
+            "anchors": []
+          },
+          {
+            "edges": [
+              [
+                "b",
+                "u"
+              ]
+            ],
+            "anchors": [
+              "b"
+            ]
+          }
+        ],
+        "segmentMenus": [
+          {
+            "edges": [],
+            "vertices": []
+          },
+          {
+            "edges": [
+              [
+                "x",
+                "u"
+              ]
+            ],
+            "vertices": []
+          },
+          {
+            "edges": [
+              [
+                "u",
+                "x"
+              ]
+            ],
+            "vertices": []
+          },
+          {
+            "edges": [],
+            "vertices": [
+              "a"
+            ]
+          },
+          {
+            "edges": [],
+            "vertices": [
+              "x"
+            ]
+          },
+          {
+            "edges": [],
+            "vertices": [
+              "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+            ]
+          },
+          {
+            "edges": [
+              [
+                "x",
+                "u"
+              ],
+              [
+                "x",
+                "u"
+              ]
+            ],
+            "vertices": [
+              "a",
+              "a"
+            ]
+          },
+          {
+            "edges": [
+              [
+                "u",
+                "u"
+              ]
+            ],
+            "vertices": []
+          },
+          {
+            "edges": [
+              [
+                "b",
+                "u"
+              ]
+            ],
+            "vertices": [
+              "x"
+            ]
+          }
+        ],
+        "rowShape": "{projection,wholeNotices,segmentNotices,whole:{before,receipt,after},segments:{before,receipt,after}}",
+        "provenance": "no wrapper/provenance fields in native-only stream, no fields removed; implementation/runtime separately bound"
+      },
+      {
+        "id": "terminal-anchor-versus-all-path-vertex",
+        "wholeTransitAnchorEvictions": 0,
+        "segmentVertexEvictions": 2,
+        "currentWholeStillAcceptedByBoth": true,
+        "notAnAutomaticSemanticMapping": true
+      },
+      {
+        "id": "edge-notices-explicit-per-owner-and-both-orientations-conservative",
+        "wholeEvicted": 2,
+        "segmentNotImplicitlyCalled": true,
+        "explicitSegmentEvicted": 1,
+        "evictionSymmetryNotReciprocalConsent": true
+      },
+      {
+        "id": "independent-clocks-uses-TTL-FIFO-and-repeat-no-op-counts",
+        "beforeClocks": {
+          "whole": 3,
+          "segments": 8
+        },
+        "afterClocks": {
+          "whole": 3,
+          "segments": 8
+        },
+        "emptySegmentStatsEqual": true,
+        "emptyWholeInvalidationAdmission": 1,
+        "duplicateReceipt": {
+          "evicted": 2,
+          "edgeNotices": 2,
+          "anchorNotices": 2
+        },
+        "repeatReceipt": {
+          "evicted": 0,
+          "edgeNotices": 1,
+          "anchorNotices": 0
+        },
+        "segmentMetadataUnchanged": true
+      },
+      {
+        "id": "relation-reincarnation-miss-versus-current-whole-vertex-proof",
+        "wholeSource": "cache",
+        "wholeStatus": "found",
+        "segmentStatus": "miss",
+        "oldSegmentEvictions": 1,
+        "noAutomaticRebindingOrSharedIdentityRule": true
+      },
+      {
+        "id": "spurious-and-absent-notices-do-not-create-canonical-truth",
+        "spuriousEvicted": 2,
+        "oldGraphProofStillAccepted": true,
+        "silentCutWholeStatus": "infeasible",
+        "silentCutWholeRejects": 1,
+        "silentCutSegment": "miss"
+      },
+      {
+        "id": "native-malformed-later-envelope-has-real-first-side-effects",
+        "wholeAlreadyEvicted": 2,
+        "segmentMalformedBeforeOwnMutation": true,
+        "noNativeCrossStoreRollback": true,
+        "malformedFirstOwnerInert": true,
+        "futureWrapperPreflightNotExecuted": true
+      },
+      {
+        "id": "native-private-brands-global-ID-envelope-and-self-pairs",
+        "fakeAndProxyNativeStatsReject": true,
+        "unknown256UTF8Accepted": true,
+        "selfPairsAccepted": true,
+        "oneMoreUTF8Rejected": true,
+        "clocksUnchanged": true,
+        "plannedExactPrototypeAndJointPreflightNotExecuted": true
+      },
+      {
+        "id": "wrapper-tests-and-supported-scientific-backend-absent",
+        "wrapperAbsent": true,
+        "testsAbsent": true,
+        "graphBackendRejected": true
+      }
+    ],
+    "passed": 9,
+    "failed": 0
+  },
+  "existingNativeStreamBaseline": {
+    "id": "native-dual-cache-notice-preservation",
+    "method": "sha256-streaming-json-dual-cache-notice-rows-NUL/v1",
+    "cases": 243,
+    "digest": "dc6793b59d4f3d33a5169d6edd2b43a924641acbd93c35d49849c30b81bd191d",
+    "wholeEvictions": 270,
+    "segmentEvictions": 297,
+    "observedMismatch": 0,
+    "iteration": "directed/any/reciprocal then wholeMenus0..8 then segmentMenus0..8, fresh stores per case",
+    "nodes": [
+      "u",
+      "x",
+      "a",
+      "b"
+    ],
+    "graphName": "notice-fanout-preservation",
+    "forwardEdges": [
+      [
+        "a",
+        "x"
+      ],
+      [
+        "x",
+        "u"
+      ],
+      [
+        "b",
+        "u"
+      ]
+    ],
+    "undirectedModes": "append reverse of each forward edge in forward order",
+    "baseContext": {
+      "domain": "facety:software-fixture",
+      "subject": "u",
+      "policy": {
+        "direction": "directed-from-anchor",
+        "graceEpochs": 1,
+        "maxDifficulty": 8,
+        "maxHops": 5,
+        "maxIdBytes": 64,
+        "maxSlack": 1,
+        "maxWitnessBytes": 8192,
+        "minStanding": null,
+        "undirectedProjection": "any-live-orientation"
+      }
+    },
+    "policyPatch": {
+      "maxHops": 3
+    },
+    "wholeConfig": {
+      "maxEntries": 8,
+      "maxBytes": 100000,
+      "ttlTicks": 10
+    },
+    "segmentConfig": {
+      "ledgerId": "fanout-software-ledger",
+      "maxEntries": 8,
+      "maxBytes": 100000,
+      "ttlTicks": 10
+    },
+    "wholeSeed": {
+      "epochs": [
+        2,
+        3
+      ],
+      "tick": 3,
+      "paths": [
+        [
+          "u",
+          "x",
+          "a"
+        ],
+        [
+          "u",
+          "b"
+        ]
+      ],
+      "fallback": {
+        "maxExpansions": 0,
+        "maxPaths": 0,
+        "maxPackingSteps": 0
+      }
+    },
+    "segmentSeed": {
+      "epoch": 3,
+      "tick": 7,
+      "paths": [
+        [
+          "u",
+          "x",
+          "a"
+        ],
+        [
+          "x",
+          "a"
+        ],
+        [
+          "u",
+          "b"
+        ]
+      ]
+    },
+    "options": {
+      "currentEpoch": 3,
+      "snapshots": [
+        {
+          "epoch": 2,
+          "difficulty": 2,
+          "anchors": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "epoch": 3,
+          "difficulty": 2,
+          "anchors": [
+            "a",
+            "b"
+          ]
+        }
+      ],
+      "removed": [],
+      "standing": []
+    },
+    "wholeMenus": [
+      {
+        "edges": [],
+        "anchors": []
+      },
+      {
+        "edges": [
+          [
+            "x",
+            "u"
+          ]
+        ],
+        "anchors": []
+      },
+      {
+        "edges": [
+          [
+            "u",
+            "x"
+          ]
+        ],
+        "anchors": []
+      },
+      {
+        "edges": [],
+        "anchors": [
+          "a"
+        ]
+      },
+      {
+        "edges": [],
+        "anchors": [
+          "x"
+        ]
+      },
+      {
+        "edges": [],
+        "anchors": [
+          "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+        ]
+      },
+      {
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "x",
+            "u"
+          ]
+        ],
+        "anchors": [
+          "a",
+          "a"
+        ]
+      },
+      {
+        "edges": [
+          [
+            "u",
+            "u"
+          ]
+        ],
+        "anchors": []
+      },
+      {
+        "edges": [
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "anchors": [
+          "b"
+        ]
+      }
+    ],
+    "segmentMenus": [
+      {
+        "edges": [],
+        "vertices": []
+      },
+      {
+        "edges": [
+          [
+            "x",
+            "u"
+          ]
+        ],
+        "vertices": []
+      },
+      {
+        "edges": [
+          [
+            "u",
+            "x"
+          ]
+        ],
+        "vertices": []
+      },
+      {
+        "edges": [],
+        "vertices": [
+          "a"
+        ]
+      },
+      {
+        "edges": [],
+        "vertices": [
+          "x"
+        ]
+      },
+      {
+        "edges": [],
+        "vertices": [
+          "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+        ]
+      },
+      {
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "x",
+            "u"
+          ]
+        ],
+        "vertices": [
+          "a",
+          "a"
+        ]
+      },
+      {
+        "edges": [
+          [
+            "u",
+            "u"
+          ]
+        ],
+        "vertices": []
+      },
+      {
+        "edges": [
+          [
+            "b",
+            "u"
+          ]
+        ],
+        "vertices": [
+          "x"
+        ]
+      }
+    ],
+    "rowShape": "{projection,wholeNotices,segmentNotices,whole:{before,receipt,after},segments:{before,receipt,after}}",
+    "provenance": "no wrapper/provenance fields in native-only stream, no fields removed; implementation/runtime separately bound",
+    "matchedPreCode": true
+  },
+  "reusedValidation": {
+    "record": "m3-lifecycle-validation.json",
+    "binding": "exact unchanged112a6e8b src/16eb4b8b test trees,49-file11a715bd Source,Nodev26.8.1; no focused/full/historical/DAG/fixed-trajectory rerun",
+    "nativeFamilies": 11,
+    "focused": {
+      "passed": 180,
+      "disposition": "reused current-source evidence, not rerun"
+    },
+    "full": {
+      "command": "npm test",
+      "current": {
+        "passed": 647,
+        "failed": 0,
+        "skipped": 0
+      },
+      "historical": {
+        "passed": 21,
+        "failed": 0,
+        "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+        "currentSourceEvidence": false
+      }
+    },
+    "compatibility": {
+      "C3": {
+        "pairs": 1152,
+        "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+        "matched": true
+      },
+      "originalTree": {
+        "pairs": 12288,
+        "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+        "matched": true
+      },
+      "oneHop": {
+        "pairs": 12288,
+        "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+        "matched": true
+      },
+      "E1": {
+        "pairs": 24576,
+        "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+        "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+        "matched": true
+      },
+      "disposition": "six scoped prior streams/old APIs/frozen corpus/default/RNG/history reused by exact Source/test/runtime binding, not rerun; new243-case native-only notice stream computed this cohort",
+      "existingTestBodiesFrozenCorpusAndContractsUnchanged": true,
+      "lookup": {
+        "pairs": 192,
+        "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+        "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+        "matched": true
+      },
+      "Gpayload": {
+        "id": "existing-G-payload-preservation",
+        "cases": 192,
+        "observations": 576,
+        "method": "sha256-streaming-json-pipeline-payload-NUL/v1",
+        "excluded": "top-level provenance, separately deep-equal checked against current provenance()",
+        "digest": "7039f9974cc343bfefeda5cac069e20cf5a9e4248d0a076ac89939489c60dc3e",
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "graphName": "lifecycle-pipeline-preservation",
+        "arcOrder": "nodes.flatMap(a => nodes.filter(b => b !== a).map(b => [a,b]))",
+        "iteration": "masks0..63 then directed/any/reciprocal",
+        "policyPatch": "maxHops2/projection, other fields from baseContext",
+        "ticks": [
+          0,
+          1,
+          5
+        ],
+        "cacheConfig": {
+          "maxEntries": 4,
+          "maxBytes": 10000,
+          "ttlTicks": 5
+        },
+        "build": {
+          "epoch": 3,
+          "maxExpansions": 10000,
+          "maxTreeNodes": 1000
+        },
+        "union": {
+          "epoch": 3,
+          "maxSubjectHops": 2,
+          "maxAnchorHops": 2,
+          "maxVertices": 4096,
+          "maxArcs": 65536,
+          "maxTreeRows": 65536,
+          "maxBallTrials": 10000,
+          "maxExpansions": 10000,
+          "maxPaths": 4096,
+          "maxPackingSteps": 10000
+        },
+        "fallback": {
+          "epoch": 3,
+          "maxExpansions": 1000,
+          "maxPaths": 128,
+          "maxPackingSteps": 1000
+        },
+        "optionsDefaults": {
+          "currentEpoch": 3,
+          "snapshots": [
+            {
+              "epoch": 3,
+              "difficulty": 2,
+              "anchors": [
+                "a",
+                "b"
+              ]
+            }
+          ],
+          "removed": [],
+          "standing": []
+        },
+        "matchedPreCode": true,
+        "matched": true,
+        "currentTest": "test/path-witness-lifecycle.test.mjs, frozen pre-code semantic G stream; original full provenance separately deep-equal checked against current provenance()"
+      }
+    },
+    "conformance": {
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "11a715bdde6f9b8bb5e6d629673f0fd9e88f4d2c73f2558c8cbff95939cfa51e",
+          "files": 49
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "excludedOnly": "provenance.implementation",
+      "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "matched": true,
+      "classification": "two fixed software trajectories, not historical study replay/scientific observations",
+      "disposition": "two fixed current software trajectory comparisons reused on exact Source/runtime, not rerun/recaptured"
+    },
+    "architecture": {
+      "files": 49,
+      "localEdges": 140,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+      "disposition": "unchanged49-file/140-edge source import graph reuses acyclic0errors/0warnings"
+    }
+  },
+  "review": {
+    "kind": "inline design/owner/source/manual-native-control review",
+    "notIndependentAuthorshipOrCleanRoom": true,
+    "coverageBoundary": "native controls do not exercise new joint normalization/exact-prototype/headroom/state-guard/report/error behavior; that remains implementation/native-test work, no private counter injection or JS sandbox assurance"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; unchanged large-protocol link/list scans skipped as before. Pre-code fan-out scopes/side effects remain separate from implemented H/F1 and scientific/live/funded/default authority."
+  },
+  "research": {
+    "newRegistrations": 0,
+    "newWrapperCalls": 0,
+    "newWrapperNativeTests": 0,
+    "scientificExperimentRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  },
+  "remaining": "Sole BACKLOG: implement exact explicit dual-cache fan-out/native replay/strict before-both mutation and post-first effects guards; H/F1 and broader/scientific/live/funded/default/capacity gates remain separate"
+}
