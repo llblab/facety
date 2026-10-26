@@ -1,0 +1,232 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-J supplied-frame prefix/segment/load lifecycle native conformance with explicit operational preparation conditioning, not benchmark, canonical/live/funded/default authority or scientific data",
+  "baseCommit": "d6342152be49f32487f4d4488fc35ab1f0ab5d85",
+  "sourceTree": "caa6f8260ee793b7b5210f39e390d40714b529a7",
+  "testTree": "8619cb54dd40951b363a2398471de84cc05b066f",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "8eb9dbf4af997aa4a8b43e1a9ea580d681e1cb4684277f06a7aa6f1def07e4f2",
+      "files": 51
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/path-witness-segment-workload.mjs",
+      "gitBlob": "bd4e1f3c90ebb44d6318fefaf34a5518e5744220"
+    },
+    {
+      "path": "test/path-witness-segment-workload.test.mjs",
+      "gitBlob": "48696c601f58472c4063fa9398ffa80ad727feba"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-segment-workload.md",
+      "gitBlob": "c91278b06367239e37e4aa46d83fd77b70733dc8"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-segment-workload-contract-validation.json",
+      "gitBlob": "bce0b76919486daec4ac376cd1cfc0c9947021e6"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-segment-workload-implementation.md",
+      "gitBlob": "f2e0f0c306b63b42e8e312c8f38f7e2989ee6667"
+    }
+  ],
+  "implementation": {
+    "exports": [
+      "runPathWitnessSegmentWorkload",
+      "PATH_SEGMENT_WORKLOAD_LIMITS"
+    ],
+    "method": "bounded-prefix-segment-route-load/v1",
+    "schema": "facety-path-segment-workload/v1",
+    "owner": "fresh native segment cache, tracked active forest/true origin, cumulative offer ledger; six public downward imports/no lower back import, no source/API changes to F1/H/I/G/default/Model",
+    "preflight": "complete future/unused exact copied data/views/namespace/pool brands (count0 native validation)/policy-aware subject+domain/paths/method caps/notices and declared clock order before constructor/SUT; symbolic active availability and query-policy guards",
+    "clock": "all requested put/query ticks monotone including missing-active/unavailable/lookup0; put-only safe expiry addition, terminal lookup MAX_SAFE_INTEGER allowed; actual clock advances only put or D2 native lookup calls, notices/maintenance inert",
+    "state": "explicit partial/available maintenance adopts origin, unavailable clears active, skipped cannot restore; query/put/notices do not replace true origin, cache/load ledger survive policy/epoch/reset/index loss; no learning/put/implicit fallback or invalidation",
+    "preparation": "existing D1 view-object WeakMap is inherited; emitted exact assumptions/first-frame alias ordinals, real cold/warm counters and full D2 hashes, no clone/recapture/priming/fabrication inside runner. Exact replay conditioned on equivalent alias/prior history or fresh equivalent captures",
+    "loads": "F1 run-cumulative-route-selections/v1, uniform accrues, best-of-two complete pre-query loads, actual repeated/nonpositive/unqueued offers fold after valid result; returned batch uses versus consumed joins stay separate, BigInt/null-zero concentration",
+    "guards": "source schema/current-old roots/context/query/epoch/D/dual flags/native config+initialTick, query calls/pairs/checks/returns/sweep/entry-use-immutable storage, put status/state/header and invalidation preserved metadata, symbolic state/status/call/load totals fail explicitly after real effects",
+    "report": "deep frozen complete ordered compact rows/native metadata snapshots/work/hash/load/scoped call totals, no delivered producer proof/routes/prefixes/joins/cached payloads/handles; complete normalized caller put requests intentionally retain input paths",
+    "outOfScope": "whole-cache/C4/full fallback coordination, old schemas, preparation reset, timers/heaps/CPU-RSS/fees-human-XP-capacity scalar, backend/statistic/method/scientific/master/live/funded/default choices"
+  },
+  "native": {
+    "families": 13,
+    "unitCommand": "node --test test/path-witness-segment-workload.test.mjs",
+    "manual": {
+      "cases": 384,
+      "requestedQueryRows": 1152,
+      "firstQueryPositives": 112,
+      "operationPermutations": 720,
+      "observedMismatch": 0,
+      "scope": "64 raw directed arcsets ×3 projections ×2 routing modes; separate public native tape/cache/origin/load replay on independent equivalent captures with same alias groups matches every compact row/digest/native work/state/load/totals; raw physical D2 support and M2/current dual positives. Repeated scripted configurations, not traffic/IID people/attack probabilities"
+    },
+    "conditioning": "cold/fresh equivalent runs exact; same view objects warm preparation after earlier run, work/full D2 hashes differ while wire/load facts agree, explicit frame groups distinguish equal-root objects. Future-prefix comparisons use equivalent initial conditioning, unrelated uniform controls scope to phase1",
+    "boundaries": "six-operation permutations, active loss/recovery/no-active puts, policy/epoch/grace resets, zero-lookup/unavailable query versus unavailable/rejected/not-stored puts, terminal sweep, partial return batches, full future strict data/policy/namespace/path/cap/getter/native pool guards, zero-exact-one-more method/outer/pool/load4096/notices4096/global IDs, null arrays, r64/D64/UTF8/read-only Native",
+    "faults": "public native put/invalidation receipt mismatch and lookup exceptions propagate after actual work without partial favorable report; callbacks restored, no private counter/index injection",
+    "developmentCorrection": {
+      "surface": "new module only, nested tick validation",
+      "red": "getter reads1 instead of0 in first native test; put/query nested fields checked after early tick read",
+      "fix": "validate exact nested data record before tick read for both branches",
+      "green": "both getters reject with reads0, no contract/old source/test guard weakened",
+      "evidenceLog": "/tmp/facety-wp-g-segment-workload-unit-before.txt",
+      "testFixtureCorrection": "unsupported raw-IDs/extra pool metric labels replaced by native supplied-synthetic/v1; pool validator unchanged"
+    },
+    "retainedKnownSUTDefects": 0
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 204,
+    "failed": 0
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 671,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "compatibility": {
+    "streams": [
+      {
+        "name": "originalTree",
+        "cases": 12288,
+        "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+        "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+        "test": "test/path-witness-branches.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "oneHop",
+        "cases": 12288,
+        "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+        "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+        "test": "test/path-witness-prefix.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "C3",
+        "cases": 1152,
+        "method": "sha256-streaming-json-forest-proposal-array-NUL/v1",
+        "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+        "test": "test/path-witness-segment-joins.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "E1",
+        "cases": 24576,
+        "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+        "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+        "test": "test/path-witness-tree-repair.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "lookup",
+        "cases": 192,
+        "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+        "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+        "test": "test/path-witness-pipeline.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "Gpayload",
+        "cases": 192,
+        "observations": 576,
+        "method": "sha256-streaming-json-pipeline-payload-NUL/v1",
+        "digest": "7039f9974cc343bfefeda5cac069e20cf5a9e4248d0a076ac89939489c60dc3e",
+        "test": "test/path-witness-lifecycle.test.mjs",
+        "scope": "only top-level provenance excluded after original full provenance() equality; separate named stream, not H query pipelineDigest",
+        "matched": true
+      },
+      {
+        "name": "nativeNotices",
+        "cases": 243,
+        "method": "sha256-streaming-json-dual-cache-notice-rows-NUL/v1",
+        "digest": "dc6793b59d4f3d33a5169d6edd2b43a924641acbd93c35d49849c30b81bd191d",
+        "test": "test/path-witness-invalidation.test.mjs",
+        "scope": "complete frozen native/input projection, no wrapper/provenance in that pre-code native-only stream and no fields removed; full wrapper provenance/config/work separately compared",
+        "matched": true
+      },
+      {
+        "name": "F1payload",
+        "cases": 384,
+        "requestedQueryRows": 768,
+        "requestedRows": 1152,
+        "method": "sha256-streaming-json-prefix-workload-payload-NUL/v1",
+        "digest": "7ef013e0207bbfd6cd7ed20f8febfa7cf46c30c01749623e58e177bb8af8f5bf",
+        "test": "test/path-witness-segment-workload.test.mjs",
+        "scope": "only top-level F1 provenance excluded after original current provenance() equality, not permission to strip J preparation/state/H full G hashes or alter scientific methods",
+        "matched": true
+      }
+    ],
+    "disposition": "eight scoped streams freshly pass on current51-file Source; old source/test bodies/frozen corpus/history/default/RNG/APIs unchanged except expected Source fingerprint, no historical method/data replay",
+    "existingSourceTestBodiesFrozenCorpusAndContractsUnchanged": true
+  },
+  "conformance": {
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "8eb9dbf4af997aa4a8b43e1a9ea580d681e1cb4684277f06a7aa6f1def07e4f2",
+        "files": 51
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "classification": "two fixed current software trajectories, not sealed study replay/scientific observations"
+  },
+  "architecture": {
+    "files": 51,
+    "localEdges": 150,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0,
+    "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+    "disposition": "separate bounded segment lifetime composes public owners only, no generic shared bucket/private reach-through/lower back import"
+  },
+  "review": {
+    "kind": "inline coordinator contract/source/manual native/preparation and side-effect review",
+    "notIndependentAuthorshipOrCleanRoom": true,
+    "coverageBoundary": "actual fresh bounded cache cannot reach astronomical use saturation/counter limits; source reasoning rather than private-state injection. Public fault wrappers test guards, not adversarial host/prototype sandbox. Native weak preparation remains observable operational state, not an authenticated warm-state manifest"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; unchanged large-protocol link/list scans skipped as before. Frozen pre-code/history remain intact, implemented conditioning/clock/load semantics and next contract-first cross-producer coordination reconciled without scientific/live/funded/default authority."
+  },
+  "randomness": {
+    "newPolicyGeneratorOrLogicalKeys": false,
+    "newWorkloadDraws": false,
+    "oldOutputStreamsPreserved": true
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "freeze bounded whole-cache→D2 prefix/segment advice→C4 union→full-M2 query coordination (M3-K) before code, explicit unused-on-hit preflight/order/cache clocks/admissions/scoped receipts; preserve existing G/H/F1/I/J",
+    "gated": "larger/production/current-authentication/Standing/epochs/c-D/capacity/funded/default and actual supported graph-v2/backend/statistic/committed-method/master before scientific E1-E8"
+  },
+  "research": {
+    "newRegistrations": 0,
+    "scientificExperimentRuns": 0,
+    "softwareTrajectoryChecks": 2,
+    "benchmarkCurves": 0,
+    "newGraphBackend": false,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  }
+}
