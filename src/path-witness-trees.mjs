@@ -1,4 +1,4 @@
-// Owns: Bounded anchor BFS/affected-root refresh and tree/branch/prefix/segment assembly; excludes global completeness, live ranking, within-root repair and authority.
+// Owns: Bounded anchor BFS/refresh/path-label repair and tree/branch/prefix/segment assembly; excludes global completeness, live ranking, amortized repair bounds and authority.
 import { createHash } from 'node:crypto';
 import { pathWitnessContext, pathWitnessPolicyId, encodePathWitness, decodePathWitness, verifyPathWitness } from './path-witness.mjs';
 import { verifyPathWitnessRef2 } from './path-witness-ref2.mjs';
@@ -7,6 +7,7 @@ import { createPathWitnessPool, routePathWitnessPool, PATH_POOL_RANDOMNESS } fro
 import { PathWitnessSegmentCache, PATH_SEGMENT_LIMITS } from './path-witness-segments.mjs';
 
 export const PATH_SEGMENT_PROPOSAL_LIMITS = Object.freeze({ maxSegmentLookups: 65536, maxSegmentChecks: 1024, maxSegmentResults: 256 });
+export const PATH_TREE_REPAIR_LIMITS = Object.freeze({ maxQueuePops: 1000000, maxPredecessorTrials: 1000000, maxScheduleTrials: 1000000, maxLabelUpdates: 1000000 });
 
 export const PATH_TREE_LIMITS = Object.freeze({ maxExpansions: 1000000, maxTreeNodes: 65536, maxCandidates: 256, maxPackingSteps: 1000000, maxBranches: 64, maxTreeLookups: 65536, maxPrefixHops: 64, maxPrefixes: 4096 });
 export const PATH_PREFIX_RANDOMNESS = Object.freeze({ policy: 'path-prefix-routing/v1', generator: PATH_POOL_RANDOMNESS.generator, childPolicy: PATH_POOL_RANDOMNESS.policy });
@@ -134,6 +135,156 @@ export function refreshPathWitnessTrees(forest, origin, current, input) {
   work.retainedTreeNodes = stats.treeNodes; work.freshExpansions = stats.expansions; report.status = 'refreshed'; report.reason = stop ?? 'ok';
   const refreshed = makeForest(current, query, graph, anchors, trees, stats, stop, true, 'affected-root-bounded-bfs/v1');
   return freeze({ forest: refreshed, report });
+}
+function prepareRepairGraph(view) {
+  const graph = prepareTreeGraph(view), previous = new Map([...graph.live].map(v => [v, new Set()]));
+  for (const [source, children] of graph.next) for (const child of children) previous.get(child).add(source);
+  return { ...graph, previous };
+}
+function qualifies(view, graph, vertex) {
+  if (!graph.live.has(vertex)) return false;
+  if (graph.p.minStanding === null) return true;
+  const score = view.standing(vertex); return score !== null && score >= graph.p.minStanding;
+}
+function compareLabels(a, b) {
+  if (!b) return -1;
+  if (a.length !== b.length) return a.length - b.length;
+  for (let i = 0; i < a.length; i++) { const n = cmp(a[i], b[i]); if (n) return n; }
+  return 0;
+}
+function settledRepairTree(anchor, labels, state) {
+  const { graph, current } = state, trees = new Map();
+  for (const [vertex, path] of labels) {
+    if (path[0] !== anchor || path.at(-1) !== vertex || path.length > graph.p.maxHops + 1 || new Set(path).size !== path.length || path.some(v => !graph.live.has(v))) throw new Error('repair invalid settled path');
+    if (vertex === anchor) { if (path.length !== 1) throw new Error('repair changed root label'); }
+    else {
+      const parent = labels.get(path.at(-2));
+      if (!parent || compareLabels(path.slice(0, -1), parent) !== 0) throw new Error('repair unsettled parent prefix');
+    }
+    for (let i = 1; i < path.length; i++) if (!graph.forward.get(path[i - 1])?.has(path[i]) || (i < path.length - 1 && !qualifies(current, graph, path[i]))) throw new Error('repair invalid settled edge/role');
+    trees.set(vertex, { distance: path.length - 1, parent: path.length === 1 ? null : path.at(-2) });
+  }
+  return trees;
+}
+function repairRoot(anchor, rows, state) {
+  const { graph, old, current, query, work, activation } = state, invalid = new Set(), labels = new Map();
+  if (rows) {
+    const children = new Map(rows.map(row => [row.subject, []])), pending = [];
+    for (const row of rows) if (row.parent !== null) {
+      work.oldParentChecks++;
+      if (!old.previous.get(row.subject)?.has(row.parent)) throw new Error('repair origin parent disagrees with capture');
+      children.get(row.parent).push(row.subject);
+      if (!graph.forward.get(row.parent)?.has(row.subject) || (row.parent !== anchor && !qualifies(current, graph, row.parent))) pending.push(row.subject);
+    }
+    for (let head = 0; head < pending.length; head++) {
+      const vertex = pending[head]; if (invalid.has(vertex)) continue;
+      invalid.add(vertex); work.invalidatedNodes++;
+      for (const child of children.get(vertex)) { work.oldChildTrials++; pending.push(child); }
+    }
+    const retained = rows.filter(row => !invalid.has(row.subject)).sort((a, b) => a.distance - b.distance || cmp(a.subject, b.subject));
+    if (work.retainedTreeNodes + retained.length > query.maxTreeNodes) return { stop: 'tree-node-limit' };
+    for (const row of retained) {
+      const prefix = row.parent === null ? [] : labels.get(row.parent);
+      if (!prefix) throw new Error('repair invalid retained ancestry');
+      labels.set(row.subject, [...prefix, row.subject]); work.labelRowsInitialized++;
+    }
+  } else { labels.set(anchor, [anchor]); work.labelRowsInitialized++; }
+  work.peakWorkingLabels = Math.max(work.peakWorkingLabels, labels.size);
+  // Fixed ring capacity bounds resident queue storage, not just the pending set.
+  const ring = new Array(graph.live.size), pending = new Set(); let head = 0, tail = 0, size = 0;
+  function schedule(vertex) {
+    if (work.scheduleTrials === query.maxScheduleTrials) return false;
+    work.scheduleTrials++;
+    if (vertex === anchor || pending.has(vertex)) return true;
+    ring[tail] = vertex; tail = (tail + 1) % ring.length; size++; pending.add(vertex); work.peakPending = Math.max(work.peakPending, size); return true;
+  }
+  const seeds = rows ? [...new Set([...invalid].filter(v => graph.live.has(v)).concat([...activation]))].sort(cmp) : graph.next.get(anchor);
+  for (const seed of seeds) if (!schedule(seed)) return { stop: 'schedule-limit' };
+  while (size) {
+    if (work.queuePops === query.maxQueuePops) return { stop: 'queue-limit' };
+    const vertex = ring[head]; ring[head] = undefined; head = (head + 1) % ring.length; size--; pending.delete(vertex); work.queuePops++;
+    const prior = labels.get(vertex); let best = prior;
+    for (const parent of graph.previous.get(vertex)) {
+      if (work.predecessorTrials === query.maxPredecessorTrials) return { stop: 'predecessor-limit' };
+      work.predecessorTrials++;
+      const prefix = labels.get(parent);
+      if (!prefix || (parent !== anchor && !qualifies(current, graph, parent)) || prefix.length > graph.p.maxHops || prefix.includes(vertex)) continue;
+      const candidate = [...prefix, vertex]; if (compareLabels(candidate, best) < 0) best = candidate;
+    }
+    if (best && (!prior || compareLabels(best, prior) < 0)) {
+      if (!prior && work.retainedTreeNodes + labels.size === query.maxTreeNodes) return { stop: 'tree-node-limit' };
+      if (work.labelUpdates === query.maxLabelUpdates) return { stop: 'label-update-limit' };
+      labels.set(vertex, best); work.labelUpdates++; if (!prior) work.labelsAdmitted++;
+      work.peakWorkingLabels = Math.max(work.peakWorkingLabels, labels.size);
+      for (const child of graph.next.get(vertex)) if (!schedule(child)) return { stop: 'schedule-limit' };
+    }
+  }
+  return { tree: settledRepairTree(anchor, labels, state), stop: null };
+}
+export function repairPathWitnessTrees(forest, origin, current, input) {
+  if (!forests.has(forest) || !isPathWitnessView(origin) || !isPathWitnessView(current)) throw new TypeError('repair requires local forest and immutable captures');
+  const query = config(input, ['epoch', 'maxTreeNodes', 'maxQueuePops', 'maxPredecessorTrials', 'maxScheduleTrials', 'maxLabelUpdates'], { ...PATH_TREE_LIMITS, ...PATH_TREE_REPAIR_LIMITS });
+  const before = origin.toJSON(), after = current.toJSON(), p = after.options.policy;
+  if (origin.view().id !== forest.meta.originRoot || before.policyId !== forest.meta.policyId) throw new TypeError('repair origin differs from forest');
+  if (origin.capture.reference !== current.capture.reference || before.source.storage.name !== after.source.storage.name) throw new TypeError('repair capture namespace differs');
+  const report = { schema: 'facety-tree-repair/v1', originRoot: origin.view().id, currentRoot: current.view().id, query,
+    status: 'unavailable', reason: null, reset: null, deltaComplete: null, retired: [], roots: [], work: Object.fromEntries([
+      'preparedOldNodes', 'preparedCurrentNodes', 'preparedOldEdges', 'preparedCurrentEdges', 'oldProjectedArcs', 'currentProjectedArcs', 'changedArcs',
+      'scoreEligibilityComparisons', 'classificationNodeChecks', 'activationArcReads', 'oldParentChecks', 'oldChildTrials', 'invalidatedNodes', 'labelRowsInitialized', 'labelsAdmitted',
+      'queuePops', 'predecessorTrials', 'scheduleTrials', 'labelUpdates', 'peakPending', 'peakWorkingLabels', 'reusedRoots', 'repairedRoots', 'rebuiltRoots', 'abortedRoots', 'retainedTreeNodes'].map(k => [k, 0])) };
+  const unavailable = reason => { report.reason = reason; return freeze({ forest: null, report }); };
+  const epoch = current.view().epoch;
+  if (query.epoch > epoch || epoch - query.epoch > p.graceEpochs) return unavailable('epoch-outside-grace');
+  const snapshot = after.options.snapshots.find(s => s.epoch === query.epoch);
+  if (!snapshot) return unavailable('snapshot-unavailable');
+  report.reset = !forest.meta.complete ? 'input-incomplete' : forest.meta.epoch !== query.epoch ? 'epoch-changed' : before.policyId !== after.policyId ? 'policy-changed' : null;
+  report.deltaComplete = report.reset === null;
+  const graph = prepareRepairGraph(current), prepared = treeStats(graph), work = report.work, sources = new Set(), eligibility = new Set(), activation = new Set(); let old = null;
+  work.preparedCurrentNodes = prepared.preparedNodes; work.preparedCurrentEdges = prepared.preparedEdges; work.currentProjectedArcs = prepared.projectedArcs;
+  const anchors = snapshot.anchors.filter(a => graph.live.has(a) && !current.removed(a)), targets = new Set(anchors), trees = new Map();
+  report.retired = forest.anchors().filter(a => !targets.has(a));
+  const oldTrees = report.reset ? new Map() : new Map(forest.toJSON().parents.map(row => [row.anchor, row.nodes]));
+  if (!report.reset) {
+    old = prepareRepairGraph(origin); const oldStats = treeStats(old);
+    work.preparedOldNodes = oldStats.preparedNodes; work.preparedOldEdges = oldStats.preparedEdges; work.oldProjectedArcs = oldStats.projectedArcs;
+    for (const [a, b] of [[old, graph], [graph, old]]) for (const [source, children] of a.forward) for (const child of children) {
+      if (!b.forward.get(source)?.has(child)) { sources.add(source); work.changedArcs++; if (a === graph) activation.add(child); }
+    }
+    if (p.minStanding !== null) for (const vertex of new Set([...old.live, ...graph.live])) {
+      work.scoreEligibilityComparisons++;
+      const x = qualifies(origin, old, vertex), y = qualifies(current, graph, vertex);
+      if (x !== y) {
+        eligibility.add(vertex);
+        if (y) for (const child of graph.next.get(vertex)) { activation.add(child); work.activationArcReads++; }
+      }
+    }
+  }
+  const state = { graph, old, current, query, work, activation }; let stop = null;
+  for (const anchor of anchors) {
+    if (stop || work.retainedTreeNodes === query.maxTreeNodes) { stop ??= 'tree-node-limit'; report.roots.push({ anchor, action: 'omitted' }); continue; }
+    const rows = oldTrees.get(anchor); let affected = !rows;
+    if (!affected) for (const row of rows) {
+      work.classificationNodeChecks++;
+      if (row.distance < p.maxHops && (sources.has(row.subject) || (row.subject !== anchor && eligibility.has(row.subject)))) { affected = true; break; }
+    }
+    if (!affected) {
+      if (work.retainedTreeNodes + rows.length > query.maxTreeNodes) { stop = 'tree-node-limit'; report.roots.push({ anchor, action: 'omitted' }); continue; }
+      trees.set(anchor, new Map(rows.map(row => [row.subject, { distance: row.distance, parent: row.parent }])));
+      work.retainedTreeNodes += rows.length; work.reusedRoots++; report.roots.push({ anchor, action: 'reused' });
+    } else {
+      const repaired = repairRoot(anchor, rows, state); stop = repaired.stop;
+      if (stop) { work.abortedRoots++; report.roots.push({ anchor, action: 'aborted' }); }
+      else {
+        trees.set(anchor, repaired.tree); work.retainedTreeNodes += repaired.tree.size;
+        if (rows) work.repairedRoots++; else work.rebuiltRoots++;
+        report.roots.push({ anchor, action: rows ? 'repaired' : 'rebuilt' });
+      }
+    }
+  }
+  report.status = 'repaired'; report.reason = stop ?? 'ok';
+  const stats = { preparedNodes: prepared.preparedNodes, preparedEdges: prepared.preparedEdges, projectedArcs: prepared.projectedArcs, treeNodes: work.retainedTreeNodes,
+    queuePops: work.queuePops, predecessorTrials: work.predecessorTrials, scheduleTrials: work.scheduleTrials, labelUpdates: work.labelUpdates };
+  return freeze({ forest: makeForest(current, query, graph, anchors, trees, stats, stop, true, 'bounded-path-label-repair/v1'), report });
 }
 export function proposePathWitnessFromTrees(forest, view, suppliedContext, input) { return propose(forest, view, suppliedContext, input, null); }
 export function proposePathWitnessFromBranches(forest, view, suppliedContext, input, advice) {

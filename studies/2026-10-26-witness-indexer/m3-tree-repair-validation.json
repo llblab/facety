@@ -1,0 +1,253 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-E2 bounded within-root path-label repair under supplied immutable captures; not classical Even–Shiloach amortization, general proof, independent authorship, measured workload/scientific/economic evidence",
+  "baseCommit": "8559ffe4b928f756d7702bdfff9cc309d8d7128c",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "46feb0bd9b240cdb45f0a6c7e0111818ea08572e7b070ee16a72193044e7279e",
+      "files": 46
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "2017ceb08aae4da3f0b58c926f40f3a9efb2e9a4"
+    },
+    {
+      "path": "test/path-witness-tree-repair.test.mjs",
+      "gitBlob": "07fc7671fa1186434ec571b6b9a25ae054aef56b"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-tree-repair-implementation.md",
+      "gitBlob": "55f9bb4903a3e93a6476ed6a687cea3c365edbb2"
+    },
+    {
+      "path": "docs/simulator.en.md",
+      "gitBlob": "c6d25401da2e69bdc050f1c673801624c6aecdc4"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-tree-repair.md",
+      "gitBlob": "bcbd651ec8c5503e3240e926bdcf190664f5364e"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-tree-repair-contract-validation.json",
+      "gitBlob": "9b1ca5630a0bd77c7507e873d109951c7251e113"
+    }
+  ],
+  "implementation": {
+    "module": "src/path-witness-trees.mjs",
+    "public": "repairPathWitnessTrees(forest,origin,current,query)",
+    "query": [
+      "epoch",
+      "maxTreeNodes",
+      "maxQueuePops",
+      "maxPredecessorTrials",
+      "maxScheduleTrials",
+      "maxLabelUpdates"
+    ],
+    "newLimits": {
+      "maxQueuePops": 1000000,
+      "maxPredecessorTrials": 1000000,
+      "maxScheduleTrials": 1000000,
+      "maxLabelUpdates": 1000000
+    },
+    "maxTreeNodes": 65536,
+    "preflight": "local forest/view brands, exact data/naturals/no negative zero, matching origin root/policy and capture reference/storage-name namespace before availability/work",
+    "availability": "future/out-of-grace/missing snapshot returns forest null, zero work, empty roots/retirement, null reset/deltaComplete",
+    "graphs": "full old/current supplied projections and reverse predecessor sets; no notice-completeness or cache-liveness trust",
+    "classifier": "same complete-old distance<r changed-source/nonroot-qualifying-Boolean predicate as E1; complete unaffected rows cloned; retirement index-only; edge IDs not traversal continuity",
+    "reset": "input-incomplete then epoch-changed then policy-changed; no old delta/classification/invalidation, deltaComplete false; cold roots use label engine, not BFS/E1",
+    "invalidation": "inspect every old nonroot parent; absent current arc or ineligible nonroot parent clears child and every old descendant; endpoints/root remain exempt",
+    "labels": "current-valid simple root-first paths <=r, shortest then full unsigned UTF8 shortlex, not immediate parent/reverse/JSON order; full ancestor-prefix improvement propagates despite unchanged local row",
+    "activation": "live invalidated vertices plus added-arc destinations and gain successors; cold root current successors; conservative global activation work counted",
+    "queue": "fixed live-node-size ring plus pending set; popped IDs may requeue; all current incoming edges scanned including unchanged boundary ingress; no per-pop history",
+    "budgets": "separate global node/pop/predecessor/schedule/update capacities; skipped root/pending schedules count; node admission before update budget; exact-last censors only on next needed operation",
+    "publication": "quiescent current path/role/hop/simple/parent-prefix checks; started limit-hit root discarded entirely, later roots omitted, previous settled/reused roots retained; work/admissions never refunded, no implicit fallback",
+    "metadata": "bounded-path-label-repair/v1; facety-tree-repair/v1; current-equivalent originRoot, only settled/reused parent maps; eight exact forest stat fields; separate preparation/delta/invalidation/initialization/admission/peaks/root outcomes",
+    "noCachePoolLoadModelDefaultOrRNGMutation": true,
+    "noCanonicalAuthorityOrTotalCPURSSClaim": true,
+    "noClassicalESBound": true
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 135,
+    "newFamilies": 12,
+    "unitCommand": "node --test test/path-witness-tree-repair.test.mjs",
+    "rawReference": {
+      "nodes": [
+        "u",
+        "a",
+        "b"
+      ],
+      "transitions": "all64 old ×64 new directed nonself arc subsets in a declared synthetic namespace",
+      "projections": [
+        "directed-from-anchor",
+        "any-live-orientation",
+        "reciprocal-only"
+      ],
+      "scoreProfiles": [
+        "off with a0/b1→a1/b0 metadata changes",
+        "minStanding1 with a0/b1→a1/b0 eligibility swaps"
+      ],
+      "maxHops": 2,
+      "pairs": 24576,
+      "found": 7168,
+      "reusedRootActions": 9408,
+      "repairedRootActions": 39744,
+      "observedMismatch": 0,
+      "reference": "independent raw simple-path root-first shortlex enumeration; sufficient-budget direct full BFS/E1 parents and E1 reused-root classifier; full M2 and both verifiers for positive queries",
+      "notAuthenticatedEventHistoryHumanSamplingOrIndependentAuthorship": true
+    },
+    "controls": [
+      "full-root path vs smaller parent ID; full ancestor-prefix improvement with unchanged local distance/parent; NUL UTF8-vs-JSON ordering",
+      "depth-four mixed parent deletion/new edge/eligibility gain and loss matches raw enumeration/full rebuild/E1",
+      "broken disconnected cycles; unchanged boundary ingress restores invalidated parent and requeues earlier unsuccessful child",
+      "each zero through one-less global pop/predecessor/schedule/update cap in two declared warm/cold traces; exact completion; node-space sweep; every published root canonical",
+      "simultaneous node/update exhaustion checks node first; post-commit propagation schedule abort counts update without publication/refund",
+      "earlier-root retention and later abort/omission; warm zero-budget reuse, affected unused deletion without queue, cold reset unknown",
+      "root/endpoint/intermediary gates, null/zero/off/same-class/gain/loss; removed-root transit/new/retired/live roots/difficulty/IDs/projections",
+      "reset priority, epoch/grace/future/missing, strict exact/copy/namespace/origin/accessor/missing/non-natural query preflight and immutable chaining",
+      "r64 Unicode, D64/more-than64 roots/empty targets, Native read-only state and cached-tail/full-verifier consumers"
+    ],
+    "fixtureCorrection": "Post-review mixed fixture initially passed Node26 iterator-helper results as standing arrays; explicitly materialized arrays, retaining the strict path-view guard and all expectations; production code unchanged"
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 602,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "compatibility": {
+    "C3": {
+      "pairs": 1152,
+      "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+      "matched": true
+    },
+    "originalTree": {
+      "pairs": 12288,
+      "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+      "matched": true
+    },
+    "oneHop": {
+      "pairs": 12288,
+      "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+      "matched": true
+    },
+    "E1": {
+      "pairs": 24576,
+      "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+      "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+      "matched": true
+    },
+    "existingConstructorRefreshProposalBodiesAndLimitsUnchanged": true,
+    "existingTestsFrozenContractsHistoricalBodiesAndSourceGuardsUnchanged": true,
+    "randomness": "none added; pool/prefix/experiment generator/key policies unchanged"
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "two fixed current conformance trajectories, not historical study replay or universal equivalence"
+  },
+  "review": {
+    "recipe": "swarm/lens-review",
+    "run": "facety-e2-code-review",
+    "model": "openai/gpt-6.1-sol",
+    "thinking": "medium",
+    "reviewedSourceGitBlob": "2017ceb08aae4da3f0b58c926f40f3a9efb2e9a4",
+    "reviewedTestGitBlob": "e810e53f24636e252d663229fbea95a15de8b48f",
+    "status": "degraded",
+    "scope": "two clean-context read-only lenses plus verifier found no concrete defect; final judge/normalizer fidelity caveat retained, not a blanket approval/audit or independent-authorship assurance",
+    "pipelinePreflightSemanticRejections": 4,
+    "evidence": [
+      {
+        "id": "command-005",
+        "status": "done",
+        "semanticAcceptance": "accepted",
+        "nativeExitCode": 0,
+        "localRetainedSource": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-e2-code-review/captures/command-005/attempt-001/stdout.log"
+      },
+      {
+        "id": "command-006",
+        "status": "done",
+        "semanticAcceptance": "accepted",
+        "nativeExitCode": 0,
+        "localRetainedSource": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-e2-code-review/captures/command-006/attempt-001/stdout.log"
+      },
+      {
+        "id": "command-007",
+        "status": "done",
+        "semanticAcceptance": "accepted",
+        "nativeExitCode": 0,
+        "localRetainedSource": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-e2-code-review/captures/command-007/attempt-001/stdout.log"
+      },
+      {
+        "id": "command-008",
+        "status": "done",
+        "semanticAcceptance": "accepted",
+        "nativeExitCode": 0,
+        "localRetainedSource": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-e2-code-review/captures/command-008/attempt-001/stdout.log"
+      },
+      {
+        "id": "command-009",
+        "status": "done",
+        "semanticAcceptance": "accepted",
+        "nativeExitCode": 0,
+        "localRetainedSource": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-e2-code-review/captures/command-009/attempt-001/stdout.log"
+      }
+    ],
+    "coordinatorDisposition": "read raw005–009, preserve degraded aggregate; both nonblocking coverage suggestions implemented as stronger tests without source change, then fresh focused/full rerun; no review automation replay",
+    "suggestions": [
+      {
+        "finding": "deeper combined deletion/insertion/gate transition",
+        "disposition": "added depth-four raw/full/E1/M2 regression"
+      },
+      {
+        "finding": "node-before-update simultaneous-limit precedence",
+        "disposition": "added cold a→u/maxNodes1/update0 check"
+      }
+    ],
+    "limits": "same-model clean contexts, not independent authorship/clean-room or arbitrary-graph proof; raw actor sources are local mutable retained evidence, not authenticated portable artifacts"
+  },
+  "architecture": {
+    "files": 46,
+    "localEdges": 120,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; large-protocol link/list scans skipped as before, protocol unchanged. New changelog blank-list gap corrected before final passing run."
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "freeze bounded query/update workload/load/work-accounting composition and acceptance before cost comparisons",
+    "otherGates": "larger indexer/bidirectional-unit-split assembly, live anchors/epoch authority, capacity/funded/default integration, scientific methods/master G1 remain separate"
+  },
+  "research": {
+    "registrations": 0,
+    "scientificExperimentRuns": 0,
+    "conformanceTrajectories": 2,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false,
+    "pilot": false
+  }
+}
