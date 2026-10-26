@@ -1,0 +1,1127 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "Post-L M3 acceptance/navigation reconciliation and committed-before-tests finite paired larger/churn plan; static raw-graph checks only, not new K/L/M2 conformance/schema/API/benchmark/scientific data",
+  "baseCommit": "54fc50ceb1d6942b75bee6603e93e1558f91ac43",
+  "unchangedTrees": {
+    "src": "e0831652035dd9d17975d7862ce26a49fb14ae8b",
+    "test": "bd9e1ccecb3d86b06d86c83a48af5a813be7f7d7"
+  },
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "299ae9738d73962c2c8e381fc5a24320f577c98fbda32ea97391b5a4a9a77300",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-acceptance.md",
+      "gitBlob": "24566c0e11efbb3fe7fa320857a471269b670f45"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-joint-churn-plan.json",
+      "gitBlob": "4e669b271741bb348c2b9bb5772a8323a253b183"
+    },
+    {
+      "path": "docs/indexer.en.md",
+      "gitBlob": "70834d41bbebd163f27a715810f447ce45de228b"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-composite-workload-validation.json",
+      "gitBlob": "245eebce261e28e89d31f8b4f392cff8d72eb32e"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m0-validation.json",
+      "gitBlob": "a2e52eae660789e12e233a789054639ae5be22ce"
+    },
+    {
+      "path": "src/path-witness-composite-workload.mjs",
+      "gitBlob": "e6b5acb88048f390c8c9bad11ce43418e8f0cd84"
+    },
+    {
+      "path": "test/path-witness-composite-workload.test.mjs",
+      "gitBlob": "7264464e70f739f29ebf50d9e7968b65e21873d3"
+    }
+  ],
+  "sourceChanged": false,
+  "testChanged": false,
+  "newFilesAbsent": [
+    "test/path-witness-joint-churn-pairs.test.mjs"
+  ],
+  "newRuntimeModulesOrExports": 0,
+  "newNativeConformanceCalls": 0,
+  "newTestExecution": false,
+  "acceptance": {
+    "requirementOwner": "D61 protocol46.16/M0 and docs/indexer acceptance, sole tasks BACKLOG",
+    "covered": "bounded supplied-state M1/ref2/M2 exact fallback, explicit M3 caches/trees/pools/segments/maintenance/query/notices/whole+segment lifetime, current positive checks/unknown-versus-false/current-old roots/conditioning/RNG/history within declared domains",
+    "gap": "main L Cartesian grid3 nodes/D2 lacks matched joint multi-intermediary/D3/current-relation churn. Separate5-node/r64-chain/D64-star/128-put controls and standalone maintenance/completeness grids do not prove that interaction or production/scalability",
+    "decision": "freeze72-cell864-query test-only paired conformance on literal11/12-node fixtures, complete rebuild/E1/E2/projection/query profiles/routing modes,36 raw/full-M2 reference contexts; no new runtime adapter/API/CLI/backend/statistic",
+    "navigationCorrection": "current docs/indexer intro wrongly said diversified pools/segments/dynamic maintenance absent; remaining-owner summary included already delivered graph/status adapter. Correct live summaries to M1-M3/L, clarify no WP-G serving CLI/HTTP; frozen historical docs/source/results unchanged",
+    "nonClosure": "M3 remains open, no global/scalable completeness/cost/human/personhood/Council/independent-authorship/G1/E1-E8 assurance; live ranking/epochs/c-D/capacity/funded/default/real-data approvals remain gates"
+  },
+  "plan": {
+    "path": "m3-joint-churn-plan.json",
+    "schema": "facety-engineering-conformance-plan/v1",
+    "id": "m3-joint-churn-pairs/v1",
+    "status": "NOT RUN",
+    "digestMethod": "canonical-json sha256 via digestOf, content binding not authentication",
+    "digest": "ca3d88b6bc6a4043167c6bb0183e930ff38dbb4ea2d2b1f88605d28905731518",
+    "cells": 72,
+    "plannedQueryRows": 864,
+    "referenceContexts": 36,
+    "framesPerCell": 7,
+    "stepsPerCell": 21,
+    "queryRowsPerCell": 12,
+    "fixtureNodes": [
+      11,
+      12
+    ],
+    "claims": "fixed bypass/endpoint conflicts and degree/count-sufficient physical bottleneck, actual unilateral projection changes, removal of a counted anchor, old segment relation-ID versus current vertex-path continuity, no guessed selected prior proof or expiry explanation",
+    "pairedKeys": "graph/query IDs exclude arm/profile/mode/indices; fresh equivalent captures preserve per-arm/shadow alias conditioning; retain full method-specific digests/metadata/work",
+    "reference": "independent raw physical simple-path+D3 family oracle and raw BFS parents; production full-current M2 complete/equal separately, native positives primary/ref2+raw family; unsupported censorship/mismatch fails instead of certified false/retuning",
+    "scope": "only new native test file and own evidence/docs, no old source/test/body/corpus/default/RNG/method edits; after test cohort reconcile gaps/stop when gates only"
+  },
+  "staticValidation": {
+    "command": "node /tmp/facety-wp-g-joint-churn-plan-check.mjs",
+    "scriptGitBlob": "34977b07501e5be867b2633734fa3f04a052ea5c",
+    "disposition": "temporary standalone graph/public storage mutations and independent raw enumeration/packing plus supported limits/context checks; no K/L/M2/ref2 verifier calls or new native conformance executed",
+    "schema": "facety-static-conformance-plan-check/v1",
+    "classification": "literal-graph raw physical enumeration/family and supported-bound checks only; no K/L/M2/ref2/native new conformance run, benchmark or scientific data",
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "299ae9738d73962c2c8e381fc5a24320f577c98fbda32ea97391b5a4a9a77300",
+        "files": 53
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "planDigest": "ca3d88b6bc6a4043167c6bb0183e930ff38dbb4ea2d2b1f88605d28905731518",
+    "cells": 72,
+    "plannedQueryRows": 864,
+    "rawContexts": 36,
+    "rawPositives": 15,
+    "originalIdentityPairsReplaced": 2,
+    "maxObserved": {
+      "paths": 20,
+      "neighborTrials": 336,
+      "packingTrials": 120
+    },
+    "rows": [
+      {
+        "fixture": "bypass-terminal",
+        "phase": "base",
+        "projection": "directed",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 31,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "base",
+        "projection": "any",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 31,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "base",
+        "projection": "reciprocal",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 31,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "cut",
+        "projection": "directed",
+        "nodes": 11,
+        "storageEdges": 18,
+        "revision": 33,
+        "feasible": true,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 143,
+        "packingTrials": 6,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "cut",
+        "projection": "any",
+        "nodes": 11,
+        "storageEdges": 18,
+        "revision": 33,
+        "feasible": true,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 143,
+        "packingTrials": 6,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "cut",
+        "projection": "reciprocal",
+        "nodes": 11,
+        "storageEdges": 18,
+        "revision": 33,
+        "feasible": true,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 143,
+        "packingTrials": 6,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "readd",
+        "projection": "directed",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 35,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "readd",
+        "projection": "any",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 35,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "readd",
+        "projection": "reciprocal",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 35,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "fork",
+        "projection": "directed",
+        "nodes": 11,
+        "storageEdges": 19,
+        "revision": 36,
+        "feasible": false,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 121,
+        "packingTrials": 21,
+        "degree": 2,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "fork",
+        "projection": "any",
+        "nodes": 11,
+        "storageEdges": 19,
+        "revision": 36,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "fork",
+        "projection": "reciprocal",
+        "nodes": 11,
+        "storageEdges": 19,
+        "revision": 36,
+        "feasible": false,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 121,
+        "packingTrials": 21,
+        "degree": 2,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "emergency",
+        "projection": "directed",
+        "nodes": 11,
+        "storageEdges": 19,
+        "revision": 36,
+        "feasible": false,
+        "complete": true,
+        "paths": 4,
+        "neighborTrials": 121,
+        "packingTrials": 10,
+        "degree": 2,
+        "eligibleAnchors": 5,
+        "family": null
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "emergency",
+        "projection": "any",
+        "nodes": 11,
+        "storageEdges": 19,
+        "revision": 36,
+        "feasible": false,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 187,
+        "packingTrials": 21,
+        "degree": 3,
+        "eligibleAnchors": 5,
+        "family": null
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "emergency",
+        "projection": "reciprocal",
+        "nodes": 11,
+        "storageEdges": 19,
+        "revision": 36,
+        "feasible": false,
+        "complete": true,
+        "paths": 4,
+        "neighborTrials": 121,
+        "packingTrials": 10,
+        "degree": 2,
+        "eligibleAnchors": 5,
+        "family": null
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "restored",
+        "projection": "directed",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 37,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "restored",
+        "projection": "any",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 37,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "bypass-terminal",
+        "phase": "restored",
+        "projection": "reciprocal",
+        "nodes": 11,
+        "storageEdges": 20,
+        "revision": 37,
+        "feasible": true,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 187,
+        "packingTrials": 9,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "x",
+            "w",
+            "y",
+            "b"
+          ],
+          [
+            "u",
+            "z",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "base",
+        "projection": "directed",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 32,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "base",
+        "projection": "any",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 32,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "base",
+        "projection": "reciprocal",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 32,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "cut",
+        "projection": "directed",
+        "nodes": 12,
+        "storageEdges": 18,
+        "revision": 34,
+        "feasible": false,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 168,
+        "packingTrials": 21,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "cut",
+        "projection": "any",
+        "nodes": 12,
+        "storageEdges": 18,
+        "revision": 34,
+        "feasible": false,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 168,
+        "packingTrials": 21,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "cut",
+        "projection": "reciprocal",
+        "nodes": 12,
+        "storageEdges": 18,
+        "revision": 34,
+        "feasible": false,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 168,
+        "packingTrials": 21,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "readd",
+        "projection": "directed",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 36,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "readd",
+        "projection": "any",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 36,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "readd",
+        "projection": "reciprocal",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 36,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "fork",
+        "projection": "directed",
+        "nodes": 12,
+        "storageEdges": 23,
+        "revision": 39,
+        "feasible": true,
+        "complete": true,
+        "paths": 20,
+        "neighborTrials": 336,
+        "packingTrials": 15,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "p",
+            "a"
+          ],
+          [
+            "u",
+            "q",
+            "b"
+          ],
+          [
+            "u",
+            "r",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "fork",
+        "projection": "any",
+        "nodes": 12,
+        "storageEdges": 23,
+        "revision": 39,
+        "feasible": true,
+        "complete": true,
+        "paths": 20,
+        "neighborTrials": 336,
+        "packingTrials": 15,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": [
+          [
+            "u",
+            "p",
+            "a"
+          ],
+          [
+            "u",
+            "q",
+            "b"
+          ],
+          [
+            "u",
+            "r",
+            "c"
+          ]
+        ]
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "fork",
+        "projection": "reciprocal",
+        "nodes": 12,
+        "storageEdges": 23,
+        "revision": 39,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "emergency",
+        "projection": "directed",
+        "nodes": 12,
+        "storageEdges": 23,
+        "revision": 39,
+        "feasible": false,
+        "complete": true,
+        "paths": 13,
+        "neighborTrials": 336,
+        "packingTrials": 120,
+        "degree": 3,
+        "eligibleAnchors": 5,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "emergency",
+        "projection": "any",
+        "nodes": 12,
+        "storageEdges": 23,
+        "revision": 39,
+        "feasible": false,
+        "complete": true,
+        "paths": 13,
+        "neighborTrials": 336,
+        "packingTrials": 120,
+        "degree": 3,
+        "eligibleAnchors": 5,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "emergency",
+        "projection": "reciprocal",
+        "nodes": 12,
+        "storageEdges": 23,
+        "revision": 39,
+        "feasible": false,
+        "complete": true,
+        "paths": 6,
+        "neighborTrials": 264,
+        "packingTrials": 21,
+        "degree": 3,
+        "eligibleAnchors": 5,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "restored",
+        "projection": "directed",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 42,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "restored",
+        "projection": "any",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 42,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      },
+      {
+        "fixture": "shared-bottleneck",
+        "phase": "restored",
+        "projection": "reciprocal",
+        "nodes": 12,
+        "storageEdges": 20,
+        "revision": 42,
+        "feasible": false,
+        "complete": true,
+        "paths": 9,
+        "neighborTrials": 264,
+        "packingTrials": 45,
+        "degree": 3,
+        "eligibleAnchors": 6,
+        "family": null
+      }
+    ],
+    "passed": 36,
+    "failed": 0,
+    "newConformanceFileAbsent": true,
+    "newRuntimeModuleOrAPI": false,
+    "newNativeConformanceCalls": 0,
+    "scientificRuns": 0,
+    "development": "one-off checker initially used nonexistent Graph.hasEdge; corrected to public edge() before successful raw controls; production source/fixture expectations/caps unchanged"
+  },
+  "reusedValidation": {
+    "record": "m3-composite-workload-validation.json",
+    "binding": "exact unchanged53-file299ae973 Source/e0831652 src/bd9e1cce test trees/Nodev26.8.1; no focused/full/historical/DAG/streams/fixed-trajectory rerun",
+    "focused": {
+      "command": "node --test test/path-witness-*.test.mjs",
+      "passed": 231,
+      "failed": 0,
+      "disposition": "reused current-source evidence, not rerun"
+    },
+    "full": {
+      "command": "npm test",
+      "current": {
+        "passed": 698,
+        "failed": 0,
+        "skipped": 0
+      },
+      "historical": {
+        "passed": 21,
+        "failed": 0,
+        "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+        "currentSourceEvidence": false
+      }
+    },
+    "compatibility": {
+      "streams": [
+        {
+          "name": "originalTree",
+          "cases": 12288,
+          "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+          "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+          "test": "test/path-witness-branches.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "oneHop",
+          "cases": 12288,
+          "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+          "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+          "test": "test/path-witness-prefix.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "C3",
+          "cases": 1152,
+          "method": "sha256-streaming-json-forest-proposal-array-NUL/v1",
+          "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+          "test": "test/path-witness-segment-joins.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "E1",
+          "cases": 24576,
+          "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+          "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+          "test": "test/path-witness-tree-repair.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "lookup",
+          "cases": 192,
+          "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+          "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+          "test": "test/path-witness-pipeline.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "Gpayload",
+          "cases": 192,
+          "observations": 576,
+          "method": "sha256-streaming-json-pipeline-payload-NUL/v1",
+          "digest": "7039f9974cc343bfefeda5cac069e20cf5a9e4248d0a076ac89939489c60dc3e",
+          "test": "test/path-witness-lifecycle.test.mjs",
+          "scope": "only top-level provenance excluded after original full provenance() equality; separate named stream, not H query pipelineDigest",
+          "matched": true
+        },
+        {
+          "name": "nativeNotices",
+          "cases": 243,
+          "method": "sha256-streaming-json-dual-cache-notice-rows-NUL/v1",
+          "digest": "dc6793b59d4f3d33a5169d6edd2b43a924641acbd93c35d49849c30b81bd191d",
+          "test": "test/path-witness-invalidation.test.mjs",
+          "scope": "complete frozen native/input projection, no wrapper/provenance in that pre-code native-only stream and no fields removed; full wrapper provenance/config/work separately compared",
+          "matched": true
+        },
+        {
+          "name": "F1payload",
+          "cases": 384,
+          "requestedQueryRows": 768,
+          "requestedRows": 1152,
+          "method": "sha256-streaming-json-prefix-workload-payload-NUL/v1",
+          "digest": "7ef013e0207bbfd6cd7ed20f8febfa7cf46c30c01749623e58e177bb8af8f5bf",
+          "test": "test/path-witness-segment-workload.test.mjs",
+          "scope": "only top-level F1 provenance excluded after original current provenance() equality, not permission to strip J preparation/state/H full G hashes or alter scientific methods",
+          "matched": true
+        },
+        {
+          "name": "Knative",
+          "method": "sha256-streaming-json-native-composite-rows-NUL/v1",
+          "digest": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+          "test": "test/path-witness-composite.test.mjs",
+          "blueprint": "immutable m3-composite-contract-validation.json existingNativeStreamBaseline",
+          "matched": true,
+          "projection": "complete {input,advice,result,stages,cacheStats,work}; JSON.stringify(ordered3rows)+NUL per case; native projection contains no wrapper/schema/provenance fields, none removed; full wrapper metadata separately checked",
+          "cases": 1152,
+          "observations": 3456
+        },
+        {
+          "name": "Lnative",
+          "method": "sha256-streaming-json-joint-native-lifetime-rows-NUL/v1",
+          "digest": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+          "cases": 384,
+          "rows": 6528,
+          "requestedQueries": 3072,
+          "calledQueries": 2304,
+          "test": "test/path-witness-composite-workload.test.mjs",
+          "blueprint": "immutable m3-composite-workload-contract-validation.json existingNativeStreamBaseline",
+          "matched": true,
+          "scope": "full native trace projection except K/I top-level provenance after complete current equality; all native work/preparation/state retained, separate named method not H/J full-provenance/scientific retagging; actual L queryDigest/receiptDigest includes full current K/I JSON"
+        }
+      ],
+      "disposition": "ten scoped current-source streams reused by exact Source/test/runtime binding, not rerun/retagged or historical recapture"
+    },
+    "conformance": {
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "299ae9738d73962c2c8e381fc5a24320f577c98fbda32ea97391b5a4a9a77300",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "excludedOnly": "provenance.implementation",
+      "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "matched": true,
+      "classification": "two fixed current software trajectories, not sealed study replay/scientific observations",
+      "disposition": "two fixed software trajectories reused by exact Source/runtime, not rerun"
+    },
+    "architecture": {
+      "files": 53,
+      "localEdges": 168,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+      "disposition": "unchanged53-file168-edge source imports reuse acyclic0errors/0warnings"
+    }
+  },
+  "review": {
+    "kind": "inline requirement/evidence/current-source-coverage/navigation/raw-graph plan review",
+    "notIndependentAuthorshipOrCleanRoom": true,
+    "coverageBoundary": "static raw fixture feasibility/ID/budget controls are not future integrated conformance. No native M2 completion/paired query equality/large-network human growth or cost outcome has been observed under the new plan"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; unchanged large-protocol link/list scans skipped as before. Current indexer summaries now match delivered M1-M3/L, historical checkpoints remain untouched, new audit/plan indexed and sole next test-only work reconciled without scientific/live/funded/default authority."
+  },
+  "research": {
+    "newRegistrations": 0,
+    "newNativeConformanceTests": 0,
+    "newGraphBackend": false,
+    "scientificExperimentRuns": 0,
+    "softwareTrajectoryChecks": 0,
+    "reusedFixedTrajectories": 2,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  },
+  "remaining": "Sole BACKLOG: implement committed test-only plan with all72 cells/864 queries/36 independent references/full scoped replay and explicit failures; reconcile after finite gap, stop rather than new adapter-for-momentum if only owner/scientific gates remain. M3/live/funded/default/capacity/master gates stay open."
+}

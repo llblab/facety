@@ -1,0 +1,514 @@
+{
+  "schema": "facety-engineering-conformance-plan/v1",
+  "classification": "M3 post-L acceptance reconciliation and paired larger/churn TEST-ONLY plan; NOT RUN, not hypothesis registration/scientific study/benchmark/new runtime API",
+  "id": "m3-joint-churn-pairs/v1",
+  "baseCommit": "54fc50ceb1d6942b75bee6603e93e1558f91ac43",
+  "context": {
+    "domain": "facety-joint-churn",
+    "subject": "u",
+    "policy": {
+      "direction": "directed-from-anchor",
+      "graceEpochs": 1,
+      "maxDifficulty": 8,
+      "maxHops": 4,
+      "maxIdBytes": 64,
+      "maxSlack": 1,
+      "maxWitnessBytes": 8192,
+      "minStanding": null,
+      "undirectedProjection": "any-live-orientation"
+    }
+  },
+  "graphNamePrefix": "joint-pairs:",
+  "currentEpoch": 3,
+  "snapshot": {
+    "epoch": 3,
+    "difficulty": 3,
+    "anchors": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f"
+    ]
+  },
+  "standing": [],
+  "scope": {
+    "fixtures": 2,
+    "physicalNodes": [
+      11,
+      12
+    ],
+    "projections": 3,
+    "maintenanceArms": 3,
+    "queryProfiles": 2,
+    "routingModes": 2,
+    "cells": 72,
+    "framesPerCell": 7,
+    "stepsPerCell": 21,
+    "queryRowsPerCell": 12,
+    "totalQueryRows": 864,
+    "interpretation": "larger than the3-node joint grid, not population-scale or general completeness; hand-built conditional software fixtures, no seed sampling/traffic/human/economic claim"
+  },
+  "fixtures": [
+    {
+      "id": "bypass-terminal",
+      "nodes": [
+        "u",
+        "x",
+        "y",
+        "z",
+        "w",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f"
+      ],
+      "basePairs": [
+        [
+          "a",
+          "u"
+        ],
+        [
+          "b",
+          "a"
+        ],
+        [
+          "a",
+          "x"
+        ],
+        [
+          "x",
+          "u"
+        ],
+        [
+          "b",
+          "y"
+        ],
+        [
+          "y",
+          "x"
+        ],
+        [
+          "c",
+          "z"
+        ],
+        [
+          "z",
+          "u"
+        ],
+        [
+          "y",
+          "w"
+        ],
+        [
+          "w",
+          "x"
+        ]
+      ],
+      "seedPath": [
+        "u",
+        "x",
+        "y",
+        "b"
+      ],
+      "cutPair": [
+        "y",
+        "x"
+      ],
+      "fork": {
+        "remove": [
+          [
+            "a",
+            "u"
+          ]
+        ],
+        "add": []
+      },
+      "restore": {
+        "remove": [],
+        "add": [
+          [
+            "a",
+            "u"
+          ]
+        ]
+      },
+      "expected": {
+        "base": {
+          "directed": true,
+          "any": true,
+          "reciprocal": true
+        },
+        "cut": {
+          "directed": true,
+          "any": true,
+          "reciprocal": true
+        },
+        "readd": {
+          "directed": true,
+          "any": true,
+          "reciprocal": true
+        },
+        "fork": {
+          "directed": false,
+          "any": true,
+          "reciprocal": false
+        },
+        "emergency": {
+          "directed": false,
+          "any": false,
+          "reciprocal": false
+        },
+        "restored": {
+          "directed": true,
+          "any": true,
+          "reciprocal": true
+        }
+      },
+      "purpose": "alternative fourth-hop bypass after both original relation orientations disappear; counted endpoint/transit conflicts; unilateral fork separates actual projection semantics"
+    },
+    {
+      "id": "shared-bottleneck",
+      "nodes": [
+        "u",
+        "p",
+        "q",
+        "r",
+        "s",
+        "t",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f"
+      ],
+      "basePairs": [
+        [
+          "a",
+          "s"
+        ],
+        [
+          "b",
+          "s"
+        ],
+        [
+          "c",
+          "t"
+        ],
+        [
+          "t",
+          "s"
+        ],
+        [
+          "s",
+          "p"
+        ],
+        [
+          "s",
+          "q"
+        ],
+        [
+          "s",
+          "r"
+        ],
+        [
+          "p",
+          "u"
+        ],
+        [
+          "q",
+          "u"
+        ],
+        [
+          "r",
+          "u"
+        ]
+      ],
+      "seedPath": [
+        "u",
+        "p",
+        "s",
+        "a"
+      ],
+      "cutPair": [
+        "s",
+        "p"
+      ],
+      "fork": {
+        "remove": [],
+        "add": [
+          [
+            "a",
+            "p"
+          ],
+          [
+            "b",
+            "q"
+          ],
+          [
+            "c",
+            "r"
+          ]
+        ]
+      },
+      "restore": {
+        "remove": [
+          [
+            "a",
+            "p"
+          ],
+          [
+            "b",
+            "q"
+          ],
+          [
+            "c",
+            "r"
+          ]
+        ],
+        "add": []
+      },
+      "expected": {
+        "base": {
+          "directed": false,
+          "any": false,
+          "reciprocal": false
+        },
+        "cut": {
+          "directed": false,
+          "any": false,
+          "reciprocal": false
+        },
+        "readd": {
+          "directed": false,
+          "any": false,
+          "reciprocal": false
+        },
+        "fork": {
+          "directed": true,
+          "any": true,
+          "reciprocal": false
+        },
+        "emergency": {
+          "directed": false,
+          "any": false,
+          "reciprocal": false
+        },
+        "restored": {
+          "directed": false,
+          "any": false,
+          "reciprocal": false
+        }
+      },
+      "purpose": "in-degree>=D and eligible-anchor count>=D while all base paths share one physical bottleneck; unilateral bypasses lift it only in modes where actual orientations qualify"
+    }
+  ],
+  "storage": "For each basePair in listed order add its listed stored arc then its reverse if not already present; these are explicitly supplied synthetic relations, not inferred reciprocal consent. Clone original storage across successive edits preserving every untouched edge ID/revision/nextEdge; remove+readd creates new IDs. Isolated d/e/f remain physical snapshot anchors, not virtual copies.",
+  "phases": [
+    {
+      "id": "base",
+      "edit": "none",
+      "removed": [],
+      "firstTick": 1,
+      "warmTick": 2
+    },
+    {
+      "id": "cut",
+      "edit": "remove both orientations of fixture.cutPair",
+      "removed": [],
+      "firstTick": 3,
+      "warmTick": 4,
+      "prefixOverrides": {
+        "maxSegmentLookups": 0
+      },
+      "reason": "old segment stays physically present: no lookup to hide identity failure before reincarnation"
+    },
+    {
+      "id": "readd",
+      "edit": "add both orientations of fixture.cutPair in listed/reverse order",
+      "removed": [],
+      "firstTick": 5,
+      "warmTick": 6,
+      "wholeOnlyNoticeBeforeFirst": true,
+      "explicitCurrentPutAfterFirst": true,
+      "reason": "force whole miss without segment invalidation; actual D2 lookup must reject old IDs under composed profile, while skipped/zero-lookup does not pretend to evict"
+    },
+    {
+      "id": "fork",
+      "edit": "fixture.fork remove listed arcs then add listed arcs only; do not synthesize reverse consent",
+      "removed": [],
+      "firstTick": 7,
+      "warmTick": 8
+    },
+    {
+      "id": "emergency",
+      "edit": "storage unchanged; explicit supplied current removed anchors=['a']",
+      "removed": [
+        "a"
+      ],
+      "firstTick": 9,
+      "warmTick": 10,
+      "reason": "unreachable d/e/f keep anchor-count sufficient; removed a cannot count, no topology-derived guilt or live authority chosen"
+    },
+    {
+      "id": "restored",
+      "edit": "fixture.restore remove then add listed arcs only; removed=[]",
+      "removed": [],
+      "firstTick": 11,
+      "warmTick": 12
+    }
+  ],
+  "projections": [
+    {
+      "id": "directed",
+      "policy": {
+        "direction": "directed-from-anchor",
+        "undirectedProjection": "any-live-orientation"
+      }
+    },
+    {
+      "id": "any",
+      "policy": {
+        "direction": "undirected",
+        "undirectedProjection": "any-live-orientation"
+      }
+    },
+    {
+      "id": "reciprocal",
+      "policy": {
+        "direction": "undirected",
+        "undirectedProjection": "reciprocal-only"
+      }
+    }
+  ],
+  "maintenanceArms": [
+    "rebuild",
+    "refresh",
+    "repair"
+  ],
+  "whole": {
+    "maxEntries": 16,
+    "maxBytes": 1000000,
+    "ttlTicks": 50
+  },
+  "segments": {
+    "ledgerId": "joint-pairs-software-ledger",
+    "maxEntries": 16,
+    "maxBytes": 1000000,
+    "ttlTicks": 100
+  },
+  "build": {
+    "epoch": 3,
+    "maxExpansions": 1000000,
+    "maxTreeNodes": 65536
+  },
+  "repair": {
+    "epoch": 3,
+    "maxTreeNodes": 65536,
+    "maxQueuePops": 1000000,
+    "maxPredecessorTrials": 1000000,
+    "maxScheduleTrials": 1000000,
+    "maxLabelUpdates": 1000000
+  },
+  "query": {
+    "prefix": {
+      "epoch": 3,
+      "maxPrefixHops": 2,
+      "maxPrefixes": 4096,
+      "maxExpansions": 1000000,
+      "maxBranches": 64,
+      "maxTreeLookups": 65536,
+      "maxCandidates": 256,
+      "maxPackingSteps": 1000000,
+      "tick": 0,
+      "maxSegmentLookups": 65536,
+      "maxSegmentChecks": 1024,
+      "maxSegmentResults": 256
+    },
+    "union": {
+      "epoch": 3,
+      "maxSubjectHops": 4,
+      "maxAnchorHops": 4,
+      "maxVertices": 4096,
+      "maxArcs": 65536,
+      "maxTreeRows": 65536,
+      "maxBallTrials": 1000000,
+      "maxExpansions": 1000000,
+      "maxPaths": 4096,
+      "maxPackingSteps": 1000000
+    },
+    "fallback": {
+      "epoch": 3,
+      "maxExpansions": 1000000,
+      "maxPaths": 4096,
+      "maxPackingSteps": 1000000
+    }
+  },
+  "queryProfiles": [
+    {
+      "id": "composed",
+      "prefix": {},
+      "union": {}
+    },
+    {
+      "id": "fallback-only",
+      "prefix": {
+        "maxPrefixes": 0,
+        "maxTreeLookups": 0,
+        "maxCandidates": 0,
+        "maxSegmentLookups": 0
+      },
+      "union": {
+        "maxVertices": 0
+      }
+    }
+  ],
+  "routing": {
+    "modes": [
+      "uniform",
+      "best-of-two"
+    ],
+    "seed": "joint-churn-software-control",
+    "step": 0,
+    "queryId": "joint-pairs:<fixtureId>:<phaseId>:<first|warm>; excludes arm/profile/mode/indices",
+    "poolMetric": "supplied-synthetic/v1",
+    "poolSize": 16,
+    "poolScores": 0,
+    "poolSubjects": "all literal physical nodes, full UTF8 sort per frame; all retained IDs get prior-ledger loads"
+  },
+  "frames": "phase0..5 in declared order plus seed as distinct equal-root phase0 capture (object group6); reuse each frame object across its queries, clone no view inside runner. Each actual/independent-shadow/maintenance arm starts from equivalent fresh captures with exactly this alias pattern; no hidden D1 priming.",
+  "tape": "put seedPath on seed frame at tick0; build base; query base first/warm; for each later phase maintain current frame by selected arm (rebuild maps to build); readd only: call I with whole anchors all6 and empty segment notices; query first; readd only: put current seedPath on that frame at same first tick; query warm. All first/warm requests apply profile then phase overrides, set outer/prefix tick, use complete unchanged fallback. 21 steps/12 queries; no clocks expire within12.",
+  "independentReference": {
+    "raw": "Enumerate simple physical subject-first paths length1..4 on literal current live storage rows using explicit projection, continue through terminal anchors, apply current removed only to counted endpoints and minStanding:null, then exact recursive D=3 compatible-family packing (all non-subject vertices including endpoints exclusive); no production neighbors/preparation/trees/oracle/packing/verifier helper used for expected truth",
+    "bounds": {
+      "maxNeighborTrials": 1000000,
+      "maxPaths": 4096,
+      "maxPackingTrials": 1000000
+    },
+    "fallback": "Run complete full-current M2 once per distinct fixture/projection/phase (36 contexts); cache that immutable reference across maintenance/profile/mode arms with separate production captures, not a source-mutating cache",
+    "guard": "raw enumeration/packing and full M2 must both be complete and match expected fixture label; unexpected censorship/mismatch is failure, not inferred false or tuned caps. Revise/commit plan explicitly before any changed domain/caps; no favorable in-place retuning"
+  },
+  "checks": {
+    "everyQuery": "L compact rows/full current K-I digests/actual dual inventories/ledger/true origin/work compare against independently sequenced public K/I/native maintenance/puts on equivalent captures. Every positive native packet separately passes primary/ref2 and raw-compatible family/hop/endpoint criteria; full-current feasibility equals raw/M2. Unknown advisory/retained-local negatives never upgraded to canonical negative",
+    "maintenance": "Complete roots/parents independently raw-row BFS/full-root-first UTF8 path reference, not merely production rebuild agreement; preserve method-specific construction counters and report metadata",
+    "pairs": "Within fixture/projection/profile/mode compare rebuild/refresh/repair status/feasible/required/source/wireDigest/loadDelta/final ledger/current native cache state and actual query-stage scope/work where common; do not compare full queryDigest or method-specific forest metadata/construction work as if identical, retain them unstripped",
+    "identity": "After readd whole-only notice, composed first query actually looks up old seed and evicts its old relation-ID record despite current same vertex path; fallback-only performs no segment lookup and retains old record. Explicit current put has new payload ID, does not silently rebind old record. Validate by actual calls/record IDs/uses, not assumption of which earlier whole witness selected",
+    "controls": "Warm found hits no prefix/route fold/segment sweep, negative repeated calls not mislabeled hits; whole notices never evict segments; emergency removes anchor support without inventing missing alternatives or guilt; old source views remain old and current queries never substitute origin outside explicit maintenance; all prior streams/default/RNG/history survive"
+  },
+  "forbidden": [
+    "new src/ module or runtime export/CLI/engine/statistic",
+    "timing/RSS/heap/speedup/scaling or total-CPU scalar",
+    "confirmation seeds/fresh scientific data/new-method old-data analysis",
+    "live ranking/adopted epoch/funded/default/capacity or Council authority",
+    "global completeness/theorem or independence from XP/degree/evaluator truth",
+    "raising caps/relaxing labels after failures without separately committed plan revision"
+  ],
+  "futureFiles": [
+    "test/path-witness-joint-churn-pairs.test.mjs"
+  ],
+  "acceptance": "Plan is committed before new native conformance tests. Implement test-only cohort with full current focused/full+isolated historical/context and unchanged-source DAG/two trajectories/ten streams proven by exact bindings where applicable; preserve every old test body/artifact. Report all72 cells/864 queries/36 independent reference contexts, exact source/test/runtime and missing/untested contexts, no benchmark/M3/G1 closure."
+}
