@@ -1,0 +1,164 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "diagnostic actual P/b common v2 admission; not programme registration or empirical confirmation",
+  "baseCommit": "fe4a328e6580c01cb65c468bb7be8dfb888b619e",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "ae1cb12c7530604f67438bc3aa0fbae3158a260fc393067801c10a71a38bb74f",
+      "files": 37
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "none",
+    "decisions": "pb-deterministic-daily-v1",
+    "schedule": "pb-capacity-boundary-v1"
+  },
+  "implementationChanged": true,
+  "nativeModelTransitionsChanged": false,
+  "legacyDefaultsChanged": false,
+  "files": [
+    {
+      "path": "src/experiment-config.mjs",
+      "gitBlob": "2c4fd301838fa7b5e6f73ba8b1c4730134962f46"
+    },
+    {
+      "path": "src/experiment.mjs",
+      "gitBlob": "b7c80fb041bd39d6b9efe213d39432498ca1d375"
+    },
+    {
+      "path": "src/discovery.mjs",
+      "gitBlob": "00fa1f717fa2aa3a995c048d40fb917ae3102d3b"
+    },
+    {
+      "path": "src/evidence.mjs",
+      "gitBlob": "09e1c95050ea84397d50c8c09556ca24348c690b"
+    },
+    {
+      "path": "test/pb-v2.test.mjs",
+      "gitBlob": "a11626b86662d350bb8b03c1beef5f51ceaca02f"
+    },
+    {
+      "path": "test/pb-experiment.test.mjs",
+      "gitBlob": "67a7ef1edb6941e5a83fecbdac3da23055be3039"
+    },
+    {
+      "path": "test/support/pb-experiment-fixture.mjs",
+      "gitBlob": "b0ac39deb423ebf94370ed1b532b72fa49336600"
+    },
+    {
+      "path": "test/support/vouch-experiment-fixture.mjs",
+      "gitBlob": "285fd62ce63c8cae2ab1b9b456f53d85c717f201"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/pb-reference.mjs",
+      "gitBlob": "53b0c22b43da0b407a37c3f797203caf048c3a09"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/reference.mjs",
+      "gitBlob": "af6827fc8af471015f711c89cc187a5e1ab8886d"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/wp1-composition-fixture.json",
+      "gitBlob": "c5660b9cac96e2101de4fe0cf072d2726c54e55b"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/wp1-pb-v2.md",
+      "gitBlob": "ae597ade36c96855e0a340feb21f71bd27704474"
+    }
+  ],
+  "admission": {
+    "engine": "native-pb-capacity/v1",
+    "globalV2Admitted": true,
+    "registrationSchema": "facety-hypothesis/v2",
+    "analysisPolicy": "family-contradiction/v1",
+    "actualFactoryVerifierAndScalarWorkers": true,
+    "unboundSuccess": "rejected",
+    "crossEngineMetrics": "rejected at base and resolved arm/context boundaries",
+    "legacyV1ExplicitEngines": "rejected even with drift permission",
+    "fullStateRegistration": "rejected",
+    "legacyFacadeExportsChanged": false,
+    "unsupportedLegacyWrappers": [
+      "trials",
+      "sweeps",
+      "landscapes",
+      "paired controls",
+      "strategy games",
+      "daily activity"
+    ]
+  },
+  "mixedManifest": {
+    "decisions": "mixed-explicit-generator-engine-v1",
+    "generator": "per-policy/v1 or none if all constituents have none",
+    "allDistinctPoliciesRetained": true,
+    "oldKeyedDescriptorsChanged": false,
+    "childDrawsOrKeyLayoutChanged": false
+  },
+  "focused": {
+    "command": "node --test test/pb-v2.test.mjs test/pb-experiment.test.mjs test/vouch-v2.test.mjs test/experiment.test.mjs test/evidence.test.mjs test/evidence-policy.test.mjs",
+    "passed": 47,
+    "failed": 0,
+    "newFamilies": 7,
+    "workerThreads": 2,
+    "tasks": "Actual scalar mixed P/b/vouch plus multi-statistic P/b complete/censored exports; ordinary labels only",
+    "newTaskSeeds": [
+      "pb-v2-software-task-0",
+      "pb-v2-software-task-1",
+      "pb-v2-software-task-cap",
+      "pb-v2-software-vouch-control",
+      "pb-backend-software-only"
+    ],
+    "softwareRegistrations": "ephemeral actual API envelopes only; no retained programme method",
+    "backendConfirmHypothesisInvoked": false
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 467,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "isCurrentSourceValidation": false
+    }
+  },
+  "conformance": {
+    "onlyExcludedField": "provenance.implementation",
+    "legacy": {
+      "matched": true,
+      "semanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "scope": "fixed baseline used by wp1-v2-validation.json"
+    },
+    "vouch": {
+      "matched": true,
+      "semanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "scope": "pre/post integration full-state software composition fixture"
+    },
+    "notUniversalEquivalence": true
+  },
+  "architecture": {
+    "sourceFiles": 37,
+    "localEdges": 100,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "context": { "errors": 0, "warnings": 27, "warningsUnchanged": true },
+  "research": {
+    "programmeRegistered": false,
+    "runs": 0,
+    "searchEvaluations": 0,
+    "pbOrVouchConfirmationRuns": 0,
+    "confirmationSeedsExecuted": [],
+    "G1Verdict": null,
+    "historicalPacketsRecaptured": 0,
+    "LLMAgentRuns": 0,
+    "pilot": false
+  }
+}

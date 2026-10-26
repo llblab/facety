@@ -1,18 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { DEFAULT_POLICY, DEFAULT_ABLATIONS } from '../src/model.mjs';
-import { pbExperimentConfig, PB_ENGINE, PB_REFERENCE, PB_RANDOMNESS, PB_OBSERVABLES } from '../src/pb-experiment-config.mjs';
+import { pbExperimentConfig, PB_RANDOMNESS, PB_OBSERVABLES } from '../src/pb-experiment-config.mjs';
 import { runPbExperiment } from '../src/pb-experiment.mjs';
 import { registerHypothesis } from '../src/evidence.mjs';
 import { pbCapacityReference } from '../studies/2026-10-26-trust-topology-condition-map/pb-reference.mjs';
 
-function config(P = 3, b = 2, days = 8, q = 1, maxActions = 1000) {
-  return { engine: PB_ENGINE, reference: PB_REFERENCE, days, seed: 'pb-backend-software-only', includeState: true, maxActions,
-    successCriterion: 'unbound', emissionEveryDays: q,
-    model: { genesis: ['creator', 'support'], policy: { ...DEFAULT_POLICY, xpFinality: 'maturity', guarantorEligibility: 'accepted' },
-      ablations: { ...DEFAULT_ABLATIONS }, invitationLimit: { P, b }, vouching: null, vouchAdmission: null } };
-}
+import { config } from './support/pb-experiment-fixture.mjs';
 function reference(cfg) { return pbCapacityReference({ ...cfg.model.invitationLimit, days: cfg.days, emissionEveryDays: cfg.emissionEveryDays, maxActions: cfg.maxActions }); }
 function reason(row) {
   if (row.reason === null) return null;
@@ -116,10 +110,10 @@ test('deterministic manifest/seed invariance/inert result reads are explicit and
   assert.equal(Object.hasOwn(minimal, 'state'), false); assert.deepEqual(minimal.history, a.history);
 });
 
-test('current actual v2 registry refuses unsupported P/b mode; no lookalike registration or confirmation is made', () => {
-  const cfg = config(); cfg.includeState = false;
+test('actual v2 admission still refuses full-state P/b snapshots rather than silently dropping protocol metadata', () => {
+  const cfg = config();
   assert.throws(() => registerHypothesis({ id: 'pb-software-refusal-only', statement: 'not a programme method', kind: 'association',
     base: cfg, statistic: { metric: 'pb.created', summary: 'endpoint' }, arms: { one: {} },
     claims: [{ id: 'present', role: 'presence', contrast: { one: 1 }, direction: 'greater' }], replicas: 5, exploration: { seeds: [] } }),
-  /vouch experiment requires exactly:/);
+  /scalar statistics, not protocol snapshots/);
 });

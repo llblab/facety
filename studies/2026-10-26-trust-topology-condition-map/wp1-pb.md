@@ -1,6 +1,6 @@
 # WP1 prior3: closed Native P/b capacity backend and independent recurrence
 
-**DIAGNOSTIC software reference; not G1, H6, growth, fraud payback or WP5 economics.** This is the missing capacity-only execution slice identified by [the prior audit](wp1-priors.md). It reuses existing Native invitationLimit, not a new admission/reward rule. No historical controls/packets are recaptured and no programme experiment/confirmation is run. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) owns remaining work; [DECISIONS_NEEDED](../../DECISIONS_NEEDED.md) owns policy/range/kill choices.
+**Foundation checkpoint atfe4a328; DIAGNOSTIC software reference, not G1, H6, growth, fraud payback or WP5 economics.** The later [actual P/b v2 admission](wp1-pb-v2.md) supersedes this checkpoint's unwired/refused common-path status; its source/validation binding remains historical. This is the missing capacity-only execution slice identified by [the prior audit](wp1-priors.md). It reuses existing Native invitationLimit, not a new admission/reward rule. No historical controls/packets are recaptured and no programme experiment/confirmation is run. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) owns remaining work; [DECISIONS_NEEDED](../../DECISIONS_NEEDED.md) owns policy/range/kill choices.
 
 ## Closed execution contract
 

@@ -37,6 +37,14 @@ Native series explicitly use `metricSeries(history,metric,{days,offsetHours:24,e
 
 This is a closed diagnostic Native reference, not CORE/Standing/personhood or adaptive/map inference. Legacy cohort trials/sweeps, landscape planning, paired controls, game payoff wrappers and daily activity helpers explicitly refuse this mode until their own resource/payoff/sampling contracts exist; common `run`, registration and scalar worker tasks use actual Native execution. Source/family safeguards and32-arm/16-context/32-claim limits are unchanged. Master-method range/precision/kill/search obligations still precede data; no actual programme registration or Native confirmation was run during integration, only ephemeral software API/ordinary-seed task fixtures.
 
+### Actual P/b capacity admission
+
+The closed `native-pb-capacity/v1` profile is now admitted through the **same real** common config/dispatcher/v2/verification/scalar worker path; see [integration and limits](../studies/2026-10-26-trust-topology-condition-map/wp1-pb-v2.md). Use includeState:false and pb.* primary/subtract fields, never vouch/legacy namespaces or unbound outcome.success. Direct series need engine:'native-pb-capacity/v1', offsetHours24 and declared days; scalar tasks supply them, preserving null/censor/truncated-horizon behavior. Actual resolved contexts/arms are engine-checked. Neither explicit Native engine can use a legacy-v1 envelope even under drift permission.
+
+P/b's manifest binds generator:none; seed is explicit but unused. Mixed-generator composition uses mixed-explicit-generator-engine-v1 with per-policy/v1 attribution and all child manifests; legacy-only subday and existing keyed vouch+legacy descriptors stay unchanged. This is not a new child generator/layout. Deterministic repetitions are not empirical human variation, extra theta coverage or a substitute for a justified G1 estimand/reference/error/precision/range/kill method. Capacity creation is not accepted-recipient incremental payback/growth or an unrestricted-policy maximum. Legacy cohort/payoff/sampling wrappers remain incompatible and refuse the mode.
+
+[Software-only API/task tests](../test/pb-v2.test.mjs) create ephemeral real envelopes and execute ordinary labels via actual scalar/multi-statistic Node workers. No P/b/vouch-engine confirmHypothesis/reserved-label run or committed programme registration follows; the generic facility is not a G1 pass or WP5 authorization.
+
 ## Hypothesis file
 
 ```json

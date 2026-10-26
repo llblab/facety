@@ -40,7 +40,7 @@ function parameterMap(value, label) {
 
 function statisticEngine(statistic, config = {}) {
   if (statistic.metric === OUTCOME_METRIC) {
-    if (config.engine !== undefined) fail('Native vouch outcome.success has an unbound criterion; register a measured scalar');
+    if (config.engine !== undefined) fail('Native reference outcome.success has an unbound criterion; register a measured scalar');
   } else if (!observableForExperiment(statistic.metric, config)) fail('statistic metric does not belong to experiment engine: ' + statistic.metric);
   if (statistic.subtract != null && !observableForExperiment(statistic.subtract, config)) fail('subtract metric does not belong to experiment engine');
 }
@@ -127,6 +127,7 @@ function normalizeSpec(spec) {
       const overlap = Object.keys(parameters).filter(key => Object.hasOwn(context.parameters, key));
       if (overlap.length) fail(`context ${context.id} and arm ${arm} both set ${overlap.join(', ')}`);
       const config = withExperimentParameters(base, { ...context.parameters, ...parameters });
+      statisticEngine(statistic, config);
       if (config.days !== base.days || config.successCriterion !== base.successCriterion) fail('arms and contexts must share the horizon and success criterion');
     }
   }
@@ -216,7 +217,7 @@ export function verifyRegistration(registration, { allowImplementationChange = f
   const analysisPolicy = legacy ? LEGACY_ANALYSIS_POLICY : registration.analysisPolicy;
   if (!legacy && analysisPolicy !== ANALYSIS_POLICY) fail('unsupported registered analysis policy');
   const spec = normalizeSpec(registration.spec);
-  if (legacy && Object.hasOwn(spec.base, 'engine')) fail('explicit Native vouch engine requires v2 registration');
+  if (legacy && Object.hasOwn(spec.base, 'engine')) fail('explicit Native engine requires v2 registration');
   if (canonicalJson(spec) !== canonicalJson(registration.spec)) fail('registered specification is not in normalized form');
   if (registrationDigest(spec, registration.implementation, registration.randomness, registration.schema, analysisPolicy) !== registration.hash || registration.confirmationSeed !== 'confirm:' + registration.hash) fail('registration digest does not match its content');
   if (canonicalJson(registration.randomness) !== canonicalJson(specRandomness(spec))) fail('registered randomness policy differs from the current implementation');

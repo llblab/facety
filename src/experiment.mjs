@@ -1,4 +1,4 @@
-// Owns: Cohort scheduling, noisy observations and scenario evaluation; excludes configuration ownership and a truth court.
+// Owns: Explicit experiment dispatch, cohort scheduling/observations and scenario evaluation; excludes config ownership and a truth court.
 import { FacetyModel, DAY, DEFAULT_ABLATIONS, ProtocolRejection } from './model.mjs';
 import { Random, pickIndexExcluding } from './random.mjs';
 import { generateGraph } from './generators.mjs';
@@ -15,6 +15,8 @@ import { clockAgenda } from './clock-agenda.mjs';
 import { createActivitySchedule, SUBDAY_RANDOMNESS } from './activity-schedule.mjs';
 import { observationEnvironment } from './identity-observations.mjs';
 import { runVouchExperiment } from './vouch-experiment.mjs';
+import { runPbExperiment } from './pb-experiment.mjs';
+import { PB_ENGINE } from './pb-experiment-config.mjs';
 
 export {
   SCENARIOS, EXPERIMENT_ABLATIONS, RANDOMNESS_POLICY, DEFAULT_ACTIVITY, DEFAULT_DISPUTES,
@@ -42,8 +44,9 @@ function respondToObservation(model, observer, act, observation) {
 }
 
 export function runExperiment(overrides = {}) {
-  if (overrides && Object.hasOwn(overrides, 'engine')) return runVouchExperiment(overrides);
   const config = experimentConfig(overrides);
+  if (config.engine === PB_ENGINE) return runPbExperiment(config);
+  if (config.engine !== undefined) return runVouchExperiment(config);
   const assumptions = config.invitationEvidence === 'shared-target' ? EXPERIMENT_ASSUMPTIONS.map(text => text.startsWith('These are fixed reference strategies')
     ? 'These are fixed reference strategies, not optimized worst-case attackers. Counterfactual shared-target invitation evidence is one persistent first-stage signal per public target across reviewers/times at the supplied marginal sensitivity/FPR. Other observations and verification retain their keyed references. Repeated paid looks do not independently validate this signal. This is an extremal common-mode stress assumption, not calibrated evidence, notification or a protocol/default choice.' : text) : EXPERIMENT_ASSUMPTIONS;
   const randomness = experimentRandomness(config);

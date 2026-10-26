@@ -7,6 +7,7 @@ import { STAKE_BACKINGS } from './dispute-stakes.mjs';
 import { SUBDAY_RANDOMNESS } from './activity-schedule.mjs';
 import { canonicalJson } from './provenance.mjs';
 import { vouchExperimentConfig, VOUCH_ENGINE, VOUCH_RANDOMNESS } from './vouch-experiment-config.mjs';
+import { pbExperimentConfig, PB_ENGINE, PB_RANDOMNESS } from './pb-experiment-config.mjs';
 
 export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-cartel']);
 // Model ablations remove protocol mechanisms; behavior ablations remove scripted agent choices.
@@ -209,7 +210,10 @@ function perturbationsFrom(overrides, days) {
 }
 
 export function requireLegacyExperiment(config, consumer) {
-  if (config?.engine !== undefined) throw new Error(consumer + ' does not support the Native vouch engine; no legacy coercion');
+  if (config?.engine !== undefined) {
+    const label = config.engine === VOUCH_ENGINE ? 'Native vouch' : config.engine === PB_ENGINE ? 'Native P/b capacity' : 'explicit';
+    throw new Error(consumer + ' does not support the ' + label + ' engine; no legacy coercion');
+  }
 }
 
 export function dayActivity(config, day) {
@@ -231,8 +235,9 @@ export function activityAtDay(overrides, day) {
 
 export function experimentRandomness(config) {
   if (config.engine !== undefined) {
-    if (config.engine !== VOUCH_ENGINE) throw new Error('unsupported experiment randomness engine');
-    return VOUCH_RANDOMNESS;
+    if (config.engine === VOUCH_ENGINE) return VOUCH_RANDOMNESS;
+    if (config.engine === PB_ENGINE) return PB_RANDOMNESS;
+    throw new Error('unsupported experiment randomness engine');
   }
   const base = config.stepHours === 24 ? RANDOMNESS_POLICY : SUBDAY_RANDOMNESS;
   const variants = {};
@@ -245,6 +250,10 @@ export function experimentRandomness(config) {
 export function combineExperimentRandomness(policies) {
   const distinct = [...new Map([...policies].map(policy => [canonicalJson(policy), policy])).values()].sort((a, b) => canonicalJson(a) < canonicalJson(b) ? -1 : 1);
   if (distinct.length === 1) return distinct[0];
+  if (distinct.some(policy => policy.generator !== RANDOM_GENERATOR)) return {
+    generator: distinct.every(policy => policy.generator === 'none') ? 'none' : 'per-policy/v1',
+    decisions: 'mixed-explicit-generator-engine-v1', policies: distinct,
+  };
   const mixedEngine = distinct.some(policy => policy.decisions === VOUCH_RANDOMNESS.decisions);
   return { generator: RANDOM_GENERATOR, decisions: mixedEngine ? 'decision-keyed-mixed-engine-v1' : 'decision-keyed-mixed-subday-v1', policies: distinct };
 }
@@ -270,7 +279,11 @@ function actorProfilesFrom(profiles, config) {
 }
 
 export function experimentConfig(overrides = {}) {
-  if (overrides && Object.hasOwn(overrides, 'engine')) return vouchExperimentConfig(overrides);
+  if (overrides && Object.hasOwn(overrides, 'engine')) {
+    if (overrides.engine === VOUCH_ENGINE) return vouchExperimentConfig(overrides);
+    if (overrides.engine === PB_ENGINE) return pbExperimentConfig(overrides);
+    throw new Error('unsupported experiment engine');
+  }
   const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, ablations: {}, perturbations: [], disputes: {}, deviants: {}, social: {} };
   const config = mergeRecord({ ...DEFAULTS, ...nested }, overrides, 'experiment');
   if (!SCENARIOS.includes(config.scenario)) throw new Error('unknown scenario');
