@@ -1,0 +1,396 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-G frozen pre-code cache-first union query composition; existing-API/manual controls and old-lookup compatibility baseline, not new pipeline/probe/testing/scientific capture",
+  "baseCommit": "0e2d301095214da2b6dee4a0985db5b927b9c6b4",
+  "unchangedTrees": {
+    "src": "f6daeb65cfc1e73a76021d651420bb86ef67f493",
+    "test": "ce231778027e86cd5a5ab5ecc22c6bd77634a2f1"
+  },
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "8080e85c43146a9cdb9eb96d368e3f8499c96268dcb97e8b2d27f6d98cadb5fb",
+      "files": 47
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-pipeline.md",
+      "gitBlob": "cd699c59af41531e72b4c424420cc223194ab8bc"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-cache-epoch-validation.json",
+      "gitBlob": "da64e7b431da2afe33c8c76f3c174f6ee76fd437"
+    },
+    {
+      "path": "src/path-witness-cache.mjs",
+      "gitBlob": "6c6a7028ed8e0fd70bc7f54ab1b98f6b060b92c9"
+    },
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "97e2af146cd4cf94b189d1c865aac8cdb8b9bb30"
+    }
+  ],
+  "newAPIsAbsent": [
+    "PathWitnessCache.prototype.probe",
+    "isPathWitnessForest",
+    "queryPathWitness"
+  ],
+  "newFilesAbsent": [
+    "src/path-witness-pipeline.mjs",
+    "test/path-witness-pipeline.test.mjs"
+  ],
+  "sourceChanged": false,
+  "testChanged": false,
+  "newPipelineQueriesOrTestsExecuted": false,
+  "contract": {
+    "method": "verified-cache-union-fallback/v1",
+    "owner": "new path-witness-pipeline query orchestration; cache retains private checking/storage and tree owns only its Boolean local-brand export",
+    "scope": "union-only first slice; no F1/prefix/segment/pool/load/maintenance/reverse-invalidation/scientific or economic integration",
+    "input": "queryPathWitness(cache,forest,view,context,{tick,union,fallback}), exact full unused-on-hit normalization/brands/caps/epoch agreement/clock before mutation",
+    "probe": "one real cache admission/expiry scan/current dual+epoch check; miss unknown, no hint/oracle/retention; old stats shape unchanged with queries counting actual cache admissions",
+    "sequence": "probe found skips C4+finish; miss calls C4 once then existing lookup at same tick with positive wire or null, no private insert or callback",
+    "scopeChecks": "full-current context/root/epoch/D/wire+primary/ref2; local R false never canonical false; only full fallback known negatives; unexpected source/schema/counter/proof disagreement throws, no rollback/favorable report",
+    "accounting": "1/2 cache admissions and pre-call entry sweep bound, original local/full-search/verification/retention receipts; safe scoped count reporting, no CPU/RSS/speedup/fee/load scalar",
+    "compatibility": "old lookup outputs/stats/TTL/FIFO/invalidation/limits/epoch fix must match192-case new frozen stream and four prior streams; no old runtime/result rewrite"
+  },
+  "existingAPIProbe": {
+    "command": "node /tmp/facety-wp-g-pipeline-contract-check.mjs",
+    "scriptGitBlob": "4fa2677986bdcf9e6f6b1abe56c2bacd13f19976",
+    "disposition": "temporary local script, not a portable maintained pipeline runner or authenticated evidence; recorded input blueprint/golden stream and diagnostic group outcomes bind the narrow controls",
+    "schema": "facety-pipeline-dependency-probes/v1",
+    "classification": "existing APIs/manual sequencing and lookup-only compatibility baseline, not new probe/pipeline validation, timing or scientific capture",
+    "baseContext": {
+      "domain": "facety:software-fixture",
+      "subject": "u",
+      "policy": {
+        "direction": "directed-from-anchor",
+        "graceEpochs": 1,
+        "maxDifficulty": 8,
+        "maxHops": 5,
+        "maxIdBytes": 64,
+        "maxSlack": 1,
+        "maxWitnessBytes": 8192,
+        "minStanding": null,
+        "undirectedProjection": "any-live-orientation"
+      }
+    },
+    "unionQuery": {
+      "epoch": 3,
+      "maxSubjectHops": 1,
+      "maxAnchorHops": 2,
+      "maxVertices": 4096,
+      "maxArcs": 65536,
+      "maxTreeRows": 65536,
+      "maxBallTrials": 10000,
+      "maxExpansions": 10000,
+      "maxPaths": 4096,
+      "maxPackingSteps": 10000
+    },
+    "build": {
+      "epoch": 3,
+      "maxExpansions": 10000,
+      "maxTreeNodes": 1000
+    },
+    "groups": [
+      {
+        "id": "lookup-only-output-stats-preservation",
+        "cases": 192,
+        "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+        "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+        "graphName": "pipeline-cache-preservation",
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "arcOrder": "nodes.flatMap(a => nodes.filter(b => b !== a).map(b => [a,b]))",
+        "maskOrder": "0..63 outer then directed/any/reciprocal",
+        "policyPatch": "maxHops2 and declared projection; all remaining fields from baseContext",
+        "config": {
+          "maxEntries": 4,
+          "maxBytes": 10000,
+          "ttlTicks": 5
+        },
+        "full": {
+          "epoch": 3,
+          "maxExpansions": 1000,
+          "maxPaths": 128,
+          "maxPackingSteps": 1000
+        },
+        "zero": {
+          "epoch": 3,
+          "maxExpansions": 0,
+          "maxPaths": 0,
+          "maxPackingSteps": 0
+        },
+        "schedule": [
+          {
+            "lookup": "full",
+            "tick": 0,
+            "hint": null
+          },
+          {
+            "lookup": "zero",
+            "tick": 1,
+            "hint": null
+          },
+          {
+            "invalidate": {
+              "edges": [
+                [
+                  "a",
+                  "u"
+                ]
+              ],
+              "anchors": []
+            }
+          },
+          {
+            "lookup": "full",
+            "tick": 2,
+            "hint": null
+          },
+          {
+            "lookup": "zero",
+            "tick": 7,
+            "hint": null
+          },
+          {
+            "stats": true
+          }
+        ],
+        "rootEpoch": 3,
+        "difficulty": 2,
+        "anchors": [
+          "a",
+          "b"
+        ]
+      },
+      {
+        "id": "zero-budget-lookup-is-not-probe",
+        "limited": {
+          "status": "censored",
+          "oracleCalls": 1
+        },
+        "knownNegative": {
+          "status": "infeasible",
+          "feasible": false,
+          "oracleCalls": 1
+        }
+      },
+      {
+        "id": "eager-advice-on-hit-is-real-work",
+        "cacheSource": "cache",
+        "eagerPreparedNodes": 5,
+        "eagerLocalSearchCalled": true,
+        "newLazyPipelineExecuted": false
+      },
+      {
+        "id": "positive-union-hint-needs-no-full-oracle",
+        "advice": "found",
+        "hintSource": "hint",
+        "hintCurrentPrimary": true,
+        "hintCurrentRef2": true,
+        "fullOracleCalls": 0,
+        "sameTickHit": true,
+        "expiry": 5
+      },
+      {
+        "id": "advisory-miss-is-not-canonical-negative",
+        "advice": "censored",
+        "localFeasible": false,
+        "full": "found",
+        "zeroBudget": "censored",
+        "absentSnapshot": "unavailable"
+      },
+      {
+        "id": "epoch-agreement-before-pipeline-work-not-relabeling",
+        "manualProducerEpoch": 2,
+        "finishEpoch": 3,
+        "rejectedMismatchedHint": true,
+        "existingFallbackCalled": 1,
+        "newPipelinePreflightNotImplemented": true
+      },
+      {
+        "id": "native-private-brand-and-absent-new-surfaces",
+        "fakeStatsRejected": true,
+        "validSubclassStillDifferentImmediatePrototype": true,
+        "newProbeForestBrandPipelineTestsAbsent": true
+      }
+    ],
+    "passed": 7,
+    "failed": 0
+  },
+  "existingLookupBaseline": {
+    "id": "lookup-only-output-stats-preservation",
+    "cases": 192,
+    "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+    "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+    "graphName": "pipeline-cache-preservation",
+    "nodes": [
+      "u",
+      "a",
+      "b"
+    ],
+    "arcOrder": "nodes.flatMap(a => nodes.filter(b => b !== a).map(b => [a,b]))",
+    "maskOrder": "0..63 outer then directed/any/reciprocal",
+    "policyPatch": "maxHops2 and declared projection; all remaining fields from baseContext",
+    "config": {
+      "maxEntries": 4,
+      "maxBytes": 10000,
+      "ttlTicks": 5
+    },
+    "full": {
+      "epoch": 3,
+      "maxExpansions": 1000,
+      "maxPaths": 128,
+      "maxPackingSteps": 1000
+    },
+    "zero": {
+      "epoch": 3,
+      "maxExpansions": 0,
+      "maxPaths": 0,
+      "maxPackingSteps": 0
+    },
+    "schedule": [
+      {
+        "lookup": "full",
+        "tick": 0,
+        "hint": null
+      },
+      {
+        "lookup": "zero",
+        "tick": 1,
+        "hint": null
+      },
+      {
+        "invalidate": {
+          "edges": [
+            [
+              "a",
+              "u"
+            ]
+          ],
+          "anchors": []
+        }
+      },
+      {
+        "lookup": "full",
+        "tick": 2,
+        "hint": null
+      },
+      {
+        "lookup": "zero",
+        "tick": 7,
+        "hint": null
+      },
+      {
+        "stats": true
+      }
+    ],
+    "rootEpoch": 3,
+    "difficulty": 2,
+    "anchors": [
+      "a",
+      "b"
+    ],
+    "optionsDefaults": {
+      "currentEpoch": 3,
+      "snapshots": [
+        {
+          "epoch": 3,
+          "difficulty": 2,
+          "anchors": [
+            "a",
+            "b"
+          ]
+        }
+      ],
+      "removed": [],
+      "standing": []
+    }
+  },
+  "reusedValidation": {
+    "record": "m3-cache-epoch-validation.json",
+    "binding": "exact unchanged src/test trees, implementation8080e85c and Nodev26.8.1; no native focused/full/historical/DAG/conformance rerun",
+    "focused": {
+      "passed": 161,
+      "cacheFamilies": 10
+    },
+    "full": {
+      "command": "npm test",
+      "current": {
+        "passed": 628,
+        "failed": 0,
+        "skipped": 0
+      },
+      "historical": {
+        "passed": 21,
+        "failed": 0,
+        "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+        "currentSourceEvidence": false
+      }
+    },
+    "compatibility": {
+      "C3": {
+        "pairs": 1152,
+        "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+        "matched": true
+      },
+      "originalTree": {
+        "pairs": 12288,
+        "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+        "matched": true
+      },
+      "oneHop": {
+        "pairs": 12288,
+        "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+        "matched": true
+      },
+      "E1": {
+        "pairs": 24576,
+        "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+        "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+        "matched": true
+      },
+      "disposition": "four permanent streams and all F1/F2/C4 controls freshly pass; source fingerprint changes only due narrow cache scope guard; original bodies unchanged except shared #check and one added test family",
+      "existingTestBodiesFrozenCorpusAndContractsUnchanged": true
+    },
+    "conformance": {
+      "excludedOnly": "provenance.implementation",
+      "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "matched": true,
+      "disposition": "fresh two fixed Legacy/Native-vouch software trajectory checks excluding only implementation fingerprint; not historical recapture/replay or universal equivalence"
+    },
+    "architecture": {
+      "files": 47,
+      "localEdges": 127,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+      "disposition": "fresh validator47 files/127 local edges, acyclic0errors/0warnings; no new imports, callbacks or public ports"
+    }
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; unchanged large-protocol link/list scans skipped as before. Current prepared/absent runtime surfaces remain distinct from historical/current implementation evidence."
+  },
+  "research": {
+    "newRegistrations": 0,
+    "newPipelineOrProbeRuns": 0,
+    "scientificExperimentRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  },
+  "remaining": "Sole BACKLOG: additive probe/local-brand/query orchestrator +independent manual shadow/native scope/stale/budget controls; prefix/segments/load/maintenance/larger/live/funded/capacity/default plus actual supported-v2/master gates remain separate"
+}
