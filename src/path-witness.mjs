@@ -47,6 +47,7 @@ function contextFrom(context) {
   const policy = pathWitnessPolicy(context.policy);
   return { domain: id(context.domain, policy.maxIdBytes), subject: id(context.subject, policy.maxIdBytes), policy };
 }
+export function pathWitnessContext(input) { return Object.freeze(contextFrom(input)); }
 function normalizedWitness(input, context) {
   const p = context.policy;
   fields(input, ['subject', 'epoch', 'paths'], 'witness');
