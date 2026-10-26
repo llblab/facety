@@ -1,0 +1,108 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M1-A canonical policy/codec only; not graph gate/verifier/ref2 acceptance or E1 study",
+  "baseCommit": "b918c6e6afd9aea474994eb07901ac62c5ba3f5f",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "63f80c47c8b6f4e42b708d9739f60e0b1ea317227c72756cff7551a367d7127d",
+      "files": 38
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "implementationChanged": true,
+  "oldModelAndSchedulerChanged": false,
+  "files": [
+    {
+      "path": "src/path-witness.mjs",
+      "gitBlob": "cd6b7cedd18e7185db98d7b616e83bd5a8a00e53"
+    },
+    {
+      "path": "test/path-witness-codec.test.mjs",
+      "gitBlob": "146abce52e98829a0be5a47a8d66a71b0ece70b7"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m1-wire.md",
+      "gitBlob": "0e88853ac5948fc9e61592977495fb81eb37ab9d"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/wire-vectors.json",
+      "gitBlob": "74de0eb9748ebb1c4ae708fb840bf88b657eb9fa"
+    },
+    {
+      "path": "docs/indexer.en.md",
+      "gitBlob": "d88a1af797f3ae7b124be51ff2b9bacf5ec78018"
+    }
+  ],
+  "scope": {
+    "codec": "facety-path-witness/v1",
+    "policyHashPrefix": "facety-path-policy/v1 + NUL",
+    "policyId": "e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5",
+    "supportedSlack": [
+      0,
+      1
+    ],
+    "limitsAre": "hard software envelope, not selected protocol or empirical ranges",
+    "liveVerifier": false,
+    "ref2": false,
+    "stateAuthentication": false,
+    "signatureOrMerkleProof": false,
+    "decodingMeansEligibility": false
+  },
+  "focused": {
+    "command": "node --test test/path-witness-codec.test.mjs",
+    "passed": 8,
+    "failed": 0,
+    "literalWireCases": 6,
+    "systematicInputs": 639,
+    "systematicConstruction": "each strict prefix and each one-byte XOR1/XOR128 mutation of canonical ASCII vector",
+    "independentHashConstruction": "literal flat policy checked with sha256sum and separately written test serializer; no independent authorship/assurance claim",
+    "observedCrashOrNoncanonicalDecodedData": 0,
+    "notFalseGraphAcceptEvidence": true
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 475,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "isCurrentSourceValidation": false
+    }
+  },
+  "conformance": {
+    "onlyExcludedField": "provenance.implementation",
+    "legacy": {
+      "matched": true,
+      "semanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a"
+    },
+    "vouchFullState": {
+      "matched": true,
+      "semanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530"
+    },
+    "scope": "fixed software trajectories, not universal equivalence"
+  },
+  "architecture": {
+    "sourceFiles": 38,
+    "localEdges": 100,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "context": { "errors": 0, "warnings": 29, "warningDisposition": "Existing structure/AGENTS-density and wide-table warnings reviewed; no new broken links/lists or orphan/phantom docs" },
+  "research": {
+    "registrations": 0,
+    "experimentRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedsExecuted": [],
+    "masterG1Verdict": null,
+    "LLMAgentRuns": 0,
+    "pilot": false
+  }
+}

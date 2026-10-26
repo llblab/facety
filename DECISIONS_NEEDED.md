@@ -17,6 +17,8 @@
 
 Default candidates from the direction are preserved, not calibrated: both directions; A/D2 (compare3); Standing proposal versus XP; M12/uniform (compare4/8/16 and best-of-two); r5(compare4/6), grace1(candidate1–2), slack1, rho0.15, epoch7d; s_min off; anchor needs paths to other anchors; emergency removal on authorized proven violation; difficulty from snapshot. These resolve reference intent only where stated; the questions above gate the dependent live mechanism, not unrelated supplied-snapshot engineering. BACKLOG alone owns sequence/status and master gates still precede study execution.
 
+The later [M1-A wire contract](studies/2026-10-26-witness-indexer/m1-wire.md) now resolves the technical canonical policy/transport envelope for its first version: complete caller context, exact UTF-8/domain/subject/all-policy binding, explicit hard software ceilings and supported slack0/1. This is not a selected protocol parameter range or an answer to Standing/verification/epoch/capacity questions. Codec success is immutable data; graph freshness/live support/D, exact family selection, primary/ref2 acceptance and I1–I7 remain unimplemented. Zero-hop well-formed candidates stay data so future slack handling can ignore them without falsely rejecting an otherwise sufficient family. BACKLOG owns that remaining implementation, not this ledger.
+
 ## Study definitions supplied by the master
 
 - R0: all vouches equal. R1: at least m of c vouches joint-act-backed, m in{0,1,2,c}. R2: lower B(e) and/or higher weight for joint-act vouches; distinguish bond-only, weight-only and combined candidates, without inventing coefficients. The former missing-regime-meaning blocker is resolved, not an outstanding owner question.

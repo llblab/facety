@@ -1,6 +1,6 @@
 # Witness-certified path gate and advisory indexer (WP-G)
 
-**D61 · 2026-10-26 · [DIRECTION], reference implementation/experiment track; M0 documentation only.** [The protocol §46.16](facety.protocol.en.md#4616-witness-certified-path-reference-and-advisory-indexer-d61) owns design meaning. [BACKLOG](../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns tasks/status. The master condition-map programme still owns research order/evidence gates. No chain runtime/pallet, default migration, deployed component, new verified-person predicate or security result is implied.
+**D61 · 2026-10-26 · [DIRECTION], reference implementation/experiment track.** M0 documentation preceded code; [M1-A canonical wire/policy](../studies/2026-10-26-witness-indexer/m1-wire.md) is now implemented, not the graph verifier/ref2/indexer. [The protocol §46.16](facety.protocol.en.md#4616-witness-certified-path-reference-and-advisory-indexer-d61) owns design meaning. [BACKLOG](../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns tasks/status. The master condition-map programme still owns research order/evidence gates. No chain runtime/pallet, default migration, deployed component, new verified-person predicate or security result is implied.
 
 ## Owner-readable summary
 
@@ -13,6 +13,10 @@ The per-user gate certifies connectivity only. Different subjects can reuse the 
 A separate **opt-in research** capacity layer compares G/G+C/C. Its literal all-node unit-capacity formulation caps source injection through unit-capacity anchors at A; if every accepted target consumes D units, A/D bounds throughput and a unit-capacity target cannot receive D>1. This must be resolved, not hidden by silently exempting anchors/targets or relabeled a selected quota. D35's default no-cluster-quota rule remains unchanged.
 
 M0 records contracts/risks before code. M1 can verify supplied, explicitly qualified snapshot fixtures without choosing a live verification/Standing/epoch-transition process. Later dependent milestones remain gated by those choices. No E1–E8 research registration/result, benchmark curve or SAFE parameter range exists.
+
+## Implemented M1-A boundary
+
+`src/path-witness.mjs` now owns only complete trusted policy/codec APIs, no graph/state/search/Model/provenance import. [The frozen first wire contract](../studies/2026-10-26-witness-indexer/m1-wire.md) fixes exact context/semantic/wire schema, SHA-256 domain/all-policy binding, UTF-8/ordering, client normalization versus strict decode and hard engineering ceilings (including slack0/1). [Literal codec vectors](../studies/2026-10-26-witness-indexer/wire-vectors.json) and tests cover this transport boundary. Decoder returns frozen data with no accepted flag; cycles, wrong path start and missing/stale graph support remain future verifier decisions. No I1–I7 graph pass, Merkle authentication, primary/ref2 verification or admission migration is implied. M0's earlier absent-code statements below describe its design checkpoint; acceptance/OPEN constraints remain, and BACKLOG owns the next primary/ref2 slice.
 
 ## Existing owners and proposed boundaries
 
@@ -38,7 +42,7 @@ subject degree upper bound for the chosen projection (or explicit unknown)
 optional declared intermediate standing only when s_min is enabled
 ```
 
-Method names/wire encoding are M1 contracts, not shipped API. A view must be coherent/frozen for the whole verification; no network call, mutation, random draw, search service or cached indexer response belongs here. An accessor returning arbitrary booleans is **not** authenticated canonical state. Tests may use labeled supplied graphs; a chain/client adapter later needs accepted storage or independently checked edge/membership/state proofs, availability and root/policy binding. Merkle-root possession alone authenticates neither its publisher nor membership in real protocol state.
+StateAccessor method names remain an M1 contract, not an implemented port; the later M1-A wire/codec contract above is implemented but not a shipped chain API. A view must be coherent/frozen for the whole verification; no network call, mutation, random draw, search service or cached indexer response belongs here. An accessor returning arbitrary booleans is **not** authenticated canonical state. Tests may use labeled supplied graphs; a chain/client adapter later needs accepted storage or independently checked edge/membership/state proofs, availability and root/policy binding. Merkle-root possession alone authenticates neither its publisher nor membership in real protocol state.
 
 ### Acceptance interpretation and bounds
 

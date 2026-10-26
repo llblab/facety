@@ -1,0 +1,89 @@
+{
+  "schema": "facety-path-witness-wire-vectors/v1",
+  "classification": "codec data only; not a path-gate certificate verdict",
+  "context": {
+    "domain": "facety:software-fixture",
+    "subject": "u",
+    "policy": {
+      "direction": "directed-from-anchor",
+      "graceEpochs": 1,
+      "maxDifficulty": 8,
+      "maxHops": 5,
+      "maxIdBytes": 64,
+      "maxSlack": 1,
+      "maxWitnessBytes": 8192,
+      "minStanding": null,
+      "undirectedProjection": "any-live-orientation"
+    }
+  },
+  "policyId": "e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5",
+  "canonical": {
+    "input": {
+      "subject": "u",
+      "epoch": 3,
+      "paths": [
+        [
+          "u",
+          "b"
+        ],
+        [
+          "u",
+          "a"
+        ],
+        [
+          "u",
+          "a"
+        ]
+      ]
+    },
+    "normalized": {
+      "epoch": 3,
+      "paths": [
+        [
+          "u",
+          "a"
+        ],
+        [
+          "u",
+          "b"
+        ]
+      ],
+      "subject": "u"
+    },
+    "utf8": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"a\"],[\"u\",\"b\"]],\"subject\":\"u\"}}"
+  },
+  "wireCases": [
+    {
+      "id": "canonical",
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"a\"],[\"u\",\"b\"]],\"subject\":\"u\"}}",
+      "decodes": true
+    },
+    {
+      "id": "leading-space",
+      "wire": " {\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"a\"],[\"u\",\"b\"]],\"subject\":\"u\"}}",
+      "decodes": false
+    },
+    {
+      "id": "path-order",
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"b\"],[\"u\",\"a\"]],\"subject\":\"u\"}}",
+      "decodes": false
+    },
+    {
+      "id": "duplicate-key",
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"epoch\":3,\"paths\":[[\"u\",\"a\"],[\"u\",\"b\"]],\"subject\":\"u\"}}",
+      "decodes": false
+    },
+    {
+      "id": "alternate-epoch",
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3.0,\"paths\":[[\"u\",\"a\"],[\"u\",\"b\"]],\"subject\":\"u\"}}",
+      "decodes": false
+    },
+    {
+      "id": "cycle-is-data-not-gate",
+      "wire": "{\"domain\":\"facety:software-fixture\",\"policy\":\"e8233b689b3cad84ecf582aa94e350cd4980d09d4574f55524511d8fd5a0ecc5\",\"version\":\"facety-path-witness/v1\",\"witness\":{\"epoch\":3,\"paths\":[[\"u\",\"a\",\"u\",\"b\"]],\"subject\":\"u\"}}",
+      "decodes": true
+    }
+  ],
+  "hashConstruction": "sha256sum over literal domain-prefix/NUL/flat sorted policy; no production codec used to construct expected wire",
+  "researchRuns": 0
+}

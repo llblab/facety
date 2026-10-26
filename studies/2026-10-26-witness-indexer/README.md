@@ -1,12 +1,14 @@
 # Witness-certified path gate and indexer — WP-G
 
-**2026-10-26 · D61 [DIRECTION] · M0 documentation checkpoint, not a research result.** Source: the owner's full witness/indexer implementation-track instruction. This is an implementation track inside the master condition-map research/evidence envelope, not a second research programme. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns executable tasks; [DECISIONS_NEEDED](../../DECISIONS_NEEDED.md#wp-g-owner-questions-and-reference-contracts-d61) owns unresolved choices.
+**2026-10-26 · D61 [DIRECTION] · M0 charter with later engineering checkpoints, not a research result.** Source: the owner's full witness/indexer implementation-track instruction. This is an implementation track inside the master condition-map research/evidence envelope, not a second research programme. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns executable tasks; [DECISIONS_NEEDED](../../DECISIONS_NEEDED.md#wp-g-owner-questions-and-reference-contracts-d61) owns unresolved choices.
 
 ## Direction and present decision
 
 Implement an opt-in bounded path witness and deterministic verifier before advisory search. An epoch fixes adopted difficulty and a distinct-anchor target set; current canonical edge liveness and immediate authorized anchor removals still govern acceptance. Search/tree/cache/pool state is untrusted for safety. Anchors grant no Council/governance powers; D33 difficulty, D35 guarantee AND path meaning/no default quotas, D36 internal disjointness and D41 pre-burn guarantee authorization remain unchanged.
 
 [Protocol §46.16/Appendix A](../../docs/facety.protocol.en.md#4616-witness-certified-path-reference-and-advisory-indexer-d61) records D61 and supersession limits. [The owner-readable summary](../../docs/indexer.en.md#owner-readable-summary) and detailed StateAccessor/codec/family, indexer, capacity, threat/privacy/runbook and acceptance contracts are documented **before any WP-G code**. Numeric defaults remain placeholders; no Standing/verified-person process or live epoch adoption is invented.
+
+**M1-A codec/policy now implemented:** [wire contract](m1-wire.md), [literal vectors](wire-vectors.json) and [validation](m1-wire-validation.json) add strict bounded canonical transport/all-policy binding only.8 focused/475 current plus21 pinned historical tests pass, DAG38/100 acyclic. No primary graph verifier/ref2, live-state authentication, path eligibility or I1–I7 graph acceptance exists yet; decoder success is data. M0's source-unchanged/absent-code record below remains historical atb918c6e, not a claim about the new source identity.
 
 ## Material unresolved contracts
 
