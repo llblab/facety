@@ -64,8 +64,10 @@ export class PathWitnessCache {
     work.ref2Checks++; this.#counts.ref2Checks++; const ref2 = verifyPathWitnessRef2(bytes, context, view);
     if (primary.accepted !== ref2.accepted || (primary.accepted && primary.required !== ref2.required)) throw new Error('advisory verifier disagreement');
     if (!primary.accepted) return null;
+    const witness = decodePathWitness(bytes, context);
+    if (witness.epoch !== query.epoch) return null;
     return Object.freeze({ status: 'found', feasible: true, reason: 'ok', viewRoot: view.view().id, reference: view.capture.reference,
-      context, query, required: primary.required, witness: decodePathWitness(bytes, context), wire, stats: null, verification: Object.freeze({ primary, ref2 }) });
+      context, query, required: primary.required, witness, wire, stats: null, verification: Object.freeze({ primary, ref2 }) });
   }
   lookup(view, suppliedContext, suppliedQuery, request) {
     if (!isPathWitnessView(view)) throw new TypeError('cache lookup requires immutable path view');

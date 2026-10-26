@@ -54,6 +54,53 @@ test('malicious/wrong-context/noncanonical/oversized hints never bypass both ver
   assert.equal(cache.lookup(view, other, zero, { tick: 1, hint: wire }).status, 'censored');
 });
 
+test('valid in-grace packets bind to the requested epoch, not merely their own snapshot; mismatches fallback without cross-key retention', () => {
+  let scopeCases = 0;
+  for (const mode of ['directed', 'any', 'reciprocal']) {
+    const patch = { direction: mode === 'directed' ? 'directed-from-anchor' : 'undirected', undirectedProjection: mode === 'reciprocal' ? 'reciprocal-only' : 'any-live-orientation' };
+    const edges = [['a', 'u'], ['b', 'u'], ...(mode === 'reciprocal' ? [['u', 'a'], ['u', 'b']] : [])], f = fixture(['u', 'a', 'b'], edges, patch);
+    f.options.snapshots = [{ epoch: 2, difficulty: 1, anchors: ['a'] }, { epoch: 3, difficulty: 2, anchors: ['a', 'b'] }];
+    const view = f.view(), wires = new Map([2, 3].map(epoch => [epoch, findPathWitness(view, f.context, { ...full, epoch }).wire]));
+    for (const wire of wires.values()) for (const verify of [verifyPathWitness, verifyPathWitnessRef2]) assert.equal(verify(Buffer.from(wire), f.context, view).accepted, true);
+    for (const epoch of [2, 3]) for (const enabled of [false, true]) for (const budget of [zero, full]) {
+      const cache = makeCache(enabled ? {} : { maxEntries: 0 }), query = { ...budget, epoch }, hint = wires.get(epoch === 2 ? 3 : 2);
+      const r = checked(cache.lookup(view, f.context, query, { tick: 0, hint }), view, f.context), expected = findPathWitness(view, f.context, query);
+      assert.equal(r.source, 'oracle'); assert.equal(r.status, expected.status); assert.equal(r.feasible, expected.feasible); assert.equal(r.required, expected.required);
+      assert.equal(r.wire, expected.wire); assert.equal(r.work.hintChecks, 1); assert.equal(r.work.oracleCalls, 1); assert.equal(cache.stats().hintRejects, 1);
+      if (r.status === 'found') { assert.equal(r.witness.epoch, epoch); assert.equal(r.work.primaryChecks, 2); assert.equal(r.work.ref2Checks, 2); }
+      assert.equal(cache.stats().entries, Number(enabled && r.status === 'found')); scopeCases++;
+    }
+    const cache = makeCache(), old = checked(cache.lookup(view, f.context, { ...full, epoch: 2 }, { tick: 0, hint: wires.get(2) }), view, f.context);
+    assert.equal(old.source, 'hint'); assert.equal(old.required, 1);
+    const current = checked(cache.lookup(view, f.context, full, { tick: 1, hint: wires.get(2) }), view, f.context);
+    assert.equal(current.source, 'oracle'); assert.equal(current.required, 2); assert.equal(cache.stats().entries, 2);
+    for (const [epoch, tick] of [[2, 2], [3, 3]]) {
+      const hit = checked(cache.lookup(view, f.context, { ...zero, epoch }, { tick, hint: null }), view, f.context);
+      assert.equal(hit.source, 'cache'); assert.equal(hit.witness.epoch, epoch); assert.equal(hit.required, epoch === 2 ? 1 : 2); assert.equal(hit.work.oracleCalls, 0);
+      assert.equal(hit.cache.insertedAt, epoch === 2 ? 0 : 1);
+    }
+    const fewer = pathWitnessGraphView(f.graph, { ...f.options, snapshots: [f.options.snapshots[0], { epoch: 3, difficulty: 2, anchors: ['b'] }] }), negativeCache = makeCache();
+    for (const verify of [verifyPathWitness, verifyPathWitnessRef2]) assert.equal(verify(Buffer.from(wires.get(2)), f.context, fewer).accepted, true);
+    const negative = checked(negativeCache.lookup(fewer, f.context, full, { tick: 0, hint: wires.get(2) }), fewer, f.context);
+    assert.equal(negative.status, 'infeasible'); assert.equal(negative.reason, 'anchor-infeasible'); assert.equal(negative.feasible, false); assert.equal(negative.required, 2);
+    assert.equal(negative.source, 'oracle'); assert.equal(negativeCache.stats().entries, 0); assert.equal(negativeCache.stats().hintRejects, 1);
+    for (const [epoch, snapshots, hintEpoch, reason] of [
+      [2, [f.options.snapshots[1]], 3, 'snapshot-unavailable'],
+      [3, [f.options.snapshots[0]], 2, 'snapshot-unavailable'],
+      [1, f.options.snapshots, 2, 'epoch-outside-grace'],
+      [4, f.options.snapshots, 3, 'epoch-outside-grace'],
+    ]) {
+      const altered = pathWitnessGraphView(f.graph, { ...f.options, snapshots }), c = makeCache();
+      const r = checked(c.lookup(altered, f.context, { ...full, epoch }, { tick: 0, hint: wires.get(hintEpoch) }), altered, f.context);
+      assert.equal(r.status, 'unavailable'); assert.equal(r.reason, reason); assert.equal(r.required, null); assert.equal(r.source, 'oracle'); assert.equal(c.stats().entries, 0);
+    }
+    const sameD = pathWitnessGraphView(f.graph, { ...f.options, snapshots: f.options.snapshots.map(s => ({ ...s, difficulty: 2, anchors: ['a', 'b'] })) });
+    const sameWire = findPathWitness(sameD, f.context, { ...full, epoch: 2 }).wire;
+    assert.equal(makeCache().lookup(sameD, f.context, zero, { tick: 0, hint: sameWire }).status, 'censored');
+  }
+  assert.equal(scopeCases, 24);
+});
+
 test('silent edge/emergency changes without invalidation notices reject cached bytes and bounded repair uses the full exact current view', () => {
   const f = fixture(['u', 'a', 'b', 'c'], [['a', 'u'], ['b', 'u'], ['c', 'u']], {}, ['a', 'b', 'c']), cache = makeCache();
   cache.lookup(f.view(), f.context, full, { tick: 0, hint: null });

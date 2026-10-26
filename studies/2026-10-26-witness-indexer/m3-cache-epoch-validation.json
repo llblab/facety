@@ -1,0 +1,154 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 whole-witness cache consumer query-epoch correctness follow-up; no verifier/protocol/live-epoch/default/scientific migration",
+  "baseCommit": "671f2db15cd93170887c482214541693589297cd",
+  "baseSourceTree": "14dac485cc5d556d8b09a0e40f85609bf8d30b14",
+  "baseTestTree": "ec64435ffda7fb2523e7c2fe50b29bd7bf8c57ca",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "8080e85c43146a9cdb9eb96d368e3f8499c96268dcb97e8b2d27f6d98cadb5fb",
+      "files": 47
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/path-witness-cache.mjs",
+      "gitBlob": "6c6a7028ed8e0fd70bc7f54ab1b98f6b060b92c9"
+    },
+    {
+      "path": "test/path-witness-cache.test.mjs",
+      "gitBlob": "829385a833cb1ddb2c0a9e1c8fbec0d607a50395"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-cache-epoch.md",
+      "gitBlob": "608670fc35f998506f98f2be639d8b1d47d5cd7b"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-cache.md",
+      "gitBlob": "7b4e208876abf54877d1be8e1816d0d94f4676b1"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-cache-validation.json",
+      "gitBlob": "bc62886dbd8b829f53e70a0936d4167087b3f4e2"
+    }
+  ],
+  "retarget": {
+    "planned": "freeze explicit whole-witness cache/advisory/full-fallback composition",
+    "actual": "correct discovered existing requested-epoch/result/key mismatch first",
+    "contractWrittenBeforeSourceChange": "local correction document written before narrow source edit, not an earlier committed registration or retroactively changed M3-A record",
+    "next": "integration contract preparation stays local-actionable; scientific/live/funded/capacity/epoch-authority choices remain separate/gated"
+  },
+  "defect": {
+    "scope": "M1/ref2 accept the packet's own grace snapshot, but #check previously returned it under a different normalized query/key epoch; D/available snapshot can differ",
+    "notClaimed": "malformed/unsound M1 packet, verifier bug, Model-funded exploit, adopted-D or live transaction/grace policy selection",
+    "correction": "decode once after both accepted checks, require witness.epoch===query.epoch before positive return/retention; mismatches use ordinary reject counters and existing requested-epoch one-oracle fallback",
+    "sharedCachedBranch": "guard shared with cached entries, source-inspected; no private-entry injection/import/persisted upgrade is claimed",
+    "preserved": "same-epoch API/result/accounting shape, lookup order, key/limits/TTL/FIFO/counters/invalidation, M1/ref2/M2 and all F1/F2/C4/default/Model/RNG/history behavior"
+  },
+  "regression": {
+    "red": {
+      "command": "node --test --test-name-pattern='valid in-grace packets bind' test/path-witness-cache.test.mjs",
+      "sourceGitBlob": "f0bde67abecf45d7d9c65531d7bf5dc1e465a59b",
+      "sourceImplementation": "cb70857aec1972b3be816b9bdfcb2f87b95cfd4ea118b15289bc1ee0ff4bf5d6",
+      "localLog": "/tmp/facety-wp-g-cache-epoch-before.txt",
+      "failure": "'hint' !== 'oracle'",
+      "scope": "first new family mismatch failed on original source before correction; later known-negative assertions extend the same retained family, not a scientific sample"
+    },
+    "green": {
+      "command": "node --test test/path-witness-cache.test.mjs",
+      "families": 10,
+      "newFamilies": 1,
+      "scopeCases": 24,
+      "composition": "3 projections ×2 requested epochs ×2 retention settings ×2 fallback budgets; offered packets independently pass both current verifiers",
+      "additional": "per-projection correct two-key/TTL hits,12 absent/past/future request controls,3 equal-D/anchor different-epoch refusals and3 requested known-negative controls",
+      "expectations": "return/status/required/wire equal requested-epoch M2, rejection/fallback/verification counts actual, no wrong-key/nonpositive retention"
+    }
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 161,
+    "failed": 0,
+    "skipped": 0
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 628,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    }
+  },
+  "compatibility": {
+    "C3": {
+      "pairs": 1152,
+      "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+      "matched": true
+    },
+    "originalTree": {
+      "pairs": 12288,
+      "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+      "matched": true
+    },
+    "oneHop": {
+      "pairs": 12288,
+      "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+      "matched": true
+    },
+    "E1": {
+      "pairs": 24576,
+      "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+      "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+      "matched": true
+    },
+    "disposition": "four permanent streams and all F1/F2/C4 controls freshly pass; source fingerprint changes only due narrow cache scope guard; original bodies unchanged except shared #check and one added test family",
+    "existingTestBodiesFrozenCorpusAndContractsUnchanged": true
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "disposition": "fresh two fixed Legacy/Native-vouch software trajectory checks excluding only implementation fingerprint; not historical recapture/replay or universal equivalence"
+  },
+  "architecture": {
+    "files": 47,
+    "localEdges": 127,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0,
+    "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+    "disposition": "fresh validator47 files/127 local edges, acyclic0errors/0warnings; no new imports, callbacks or public ports"
+  },
+  "review": {
+    "scope": "inline focused shared-check/caller/contract/test review",
+    "notIndependentAuthorship": true,
+    "existingEntryCounterfactual": "source guard applies to any hypothetical wrongly keyed entry but current producer cannot retain one; no artificial private-state patch"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; unchanged large-protocol link/list scans skipped as before. New finding/correction stays separate from frozen M3-A/C4 history and live/adopted-epoch owner choices."
+  },
+  "research": {
+    "newScientificRegistrations": 0,
+    "scientificExperimentRuns": 0,
+    "softwareTrajectoryChecks": 2,
+    "newGraphBackend": false,
+    "benchmarkCurves": 0,
+    "newPipelineOrProbeAPIs": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  }
+}
