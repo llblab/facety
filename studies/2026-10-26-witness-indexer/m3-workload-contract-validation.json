@@ -1,0 +1,513 @@
+{
+  "schema": "facety-engineering-contract-validation/v1",
+  "classification": "D61 M3-F1 pre-code supplied-frame prefix-query/maintenance/load-accounting contract; existing API dependency evidence only, no new workload runner or performance/scientific/economic result",
+  "baseCommit": "bd7da678fd676ab55b2d5059bf10f3a9bc550d56",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "46feb0bd9b240cdb45f0a6c7e0111818ea08572e7b070ee16a72193044e7279e",
+      "files": 46
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    },
+    "sourceTree": "1f87bd9d1cf188358d08c963260cd8769a1a2038",
+    "testTree": "627071a956cb5dafc5c00f91b9d817f828311c4a"
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-workload.md",
+      "gitBlob": "744f3756964695bb6707c4a29dc76ab7b003237a"
+    },
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "2017ceb08aae4da3f0b58c926f40f3a9efb2e9a4"
+    },
+    {
+      "path": "src/path-witness-pool.mjs",
+      "gitBlob": "54169c6486273805358033a400be89cd85f7bce6"
+    },
+    {
+      "path": "src/path-witness-cache.mjs",
+      "gitBlob": "f0bde67abecf45d7d9c65531d7bf5dc1e465a59b"
+    },
+    {
+      "path": "test/path-witness-tree-repair.test.mjs",
+      "gitBlob": "07fc7671fa1186434ec571b6b9a25ae054aef56b"
+    }
+  ],
+  "contract": {
+    "owner": "src/path-witness-workload.mjs (future, absent)",
+    "public": "runPathWitnessWorkload(input); PATH_WORKLOAD_LIMITS (future, absent)",
+    "input": "exact domain/frames/steps; supplied branded immutable captures/local pools, explicit build/refresh/repair/prefix-query operations",
+    "limits": {
+      "maxFrames": 16,
+      "maxSteps": 128,
+      "maxPoolsPerFrame": 64,
+      "maxLoadIds": 4096
+    },
+    "scope": "fresh owned batch, one active forest/origin, lagged completed-query selection counts; caches/learning/automatic fallback/graph capture/Model/network/timing/benchmark excluded",
+    "preflight": "all data/scalar/array/brand/namespace/reference/query/routing/known active-policy-flow errors before SUT work; zero-count route checks no RNG; no future-universe load rows",
+    "state": "explicit named maintenance only; unavailable clears active; absent skips with null work/unknown; explicit build recovery; actual query uses active advice with its own current frame",
+    "loadUnit": "run-cumulative-route-selections/v1",
+    "loadTiming": "one prior-query snapshot across all prefix routes, commit all actual selected occurrences after valid source call, including nonpositive/never-queued/repeated alternate offers; uniform input null but counts still accrue",
+    "notQueuedConsumedAcceptedRemoteOrHumanWork": true,
+    "report": "compact frozen current-frame/active-origin bindings, ordered normalized requests, called/status/coverage/digest telemetry and separate owner/accounting counters; no raw paths/route logs/wires/live state handle",
+    "randomness": "unchanged prefix/pool/generator keys with explicit request ID/step/seed, no array-index/global stream; intentional best-of-two dependence on prior counted selections not blanket unrelated invariance",
+    "supportedMissingness": "unknown/uncalled work null, actual absent prior selection known0, zero concentration null, unavailable delta null",
+    "notImplemented": true
+  },
+  "existingAPIProbe": {
+    "classification": "existing API dependency controls only, not runner/owned load-commit tests or performance",
+    "count": 8,
+    "controls": [
+      {
+        "name": "selected-offers-are-not-enqueued-or-accepted-work",
+        "status": "censored",
+        "feasible": null,
+        "selected": [
+          {
+            "id": "x",
+            "selected": 1
+          },
+          {
+            "id": "y",
+            "selected": 1
+          }
+        ],
+        "routedPeers": 2,
+        "nonrootPrefixesQueued": 0,
+        "queryDigest": "e66cb8396e50aedfeba370bf1851a8090fe1816b71695d9fea7e054d034394d3"
+      },
+      {
+        "name": "alternate-prefix-occurrences-and-frozen-intra-query-snapshot",
+        "selected": [
+          {
+            "id": "x",
+            "selected": 1
+          },
+          {
+            "id": "y",
+            "selected": 1
+          },
+          {
+            "id": "z",
+            "selected": 2
+          }
+        ],
+        "prefixesQueued": 5,
+        "allInputLoads": 0,
+        "queryDigest": "f81d5742165676b7aba733c509bf29a4ed4a944145129afa99f080104cc845cd"
+      },
+      {
+        "name": "best-of-two-uses-complete-prior-query-load-not-success-refund",
+        "first": [
+          {
+            "id": "x",
+            "selected": 1
+          }
+        ],
+        "nextSnapshot": [
+          {
+            "id": "x",
+            "load": 1
+          },
+          {
+            "id": "y",
+            "load": 0
+          }
+        ],
+        "next": [
+          {
+            "id": "y",
+            "selected": 1
+          }
+        ],
+        "statuses": [
+          "censored",
+          "censored"
+        ]
+      },
+      {
+        "name": "uniform-null-input-still-accrues-and-inspection-unrelated-future-do-not-shift-source-keys",
+        "sourceDigest": "f54e2ebf0393510504e24d861c56f10ce2d585d799aed6ffe9d36259ee07ccf3",
+        "selected": [
+          {
+            "id": "x",
+            "selected": 1
+          },
+          {
+            "id": "y",
+            "selected": 1
+          }
+        ],
+        "unchanged": true
+      },
+      {
+        "name": "zero-offers-do-not-mean-zero-routing-or-capture-work-and-concentration-is-null",
+        "prefix": {
+          "queued": 1,
+          "expanded": 1,
+          "maxPending": 1,
+          "neighborTrials": 2,
+          "scoreReads": 0,
+          "endpointChecks": 0,
+          "routeCalls": 1,
+          "generators": 0,
+          "draws": 0,
+          "routedPeers": 0,
+          "missingPools": 0,
+          "omittedNeighbors": 0,
+          "duplicatePaths": 0
+        },
+        "selected": [],
+        "zeroLoadConcentration": null
+      },
+      {
+        "name": "stale-active-tree-remains-advice-but-current-positive-is-dual-verified-and-M2-checked",
+        "sourceStatus": "found",
+        "sourceRoot": "0145a8851509cee154449f69bc255015b2329e5b1e25d15dbe3105e2bc61bd10",
+        "currentRoot": "40f5fb724968afd8951a9eafecf3821ab900e4f118943b228d0fcf9f8eb7fc4e",
+        "selected": [
+          {
+            "id": "b",
+            "selected": 1
+          }
+        ],
+        "wireBytes": 203,
+        "wireDigest": "4b192194dd657b5df6453204ac7bd9f38f3a7d64df202204f0243fe1da57e109"
+      },
+      {
+        "name": "explicit-full-rebuild-E1-E2-parent-control-keeps-unlike-work-units-separate",
+        "fullStats": {
+          "preparedNodes": 3,
+          "preparedEdges": 1,
+          "projectedArcs": 1,
+          "rootsStarted": 2,
+          "rootsCompleted": 2,
+          "expansions": 1,
+          "treeNodes": 3
+        },
+        "E1Work": {
+          "preparedOldNodes": 3,
+          "preparedCurrentNodes": 3,
+          "preparedOldEdges": 1,
+          "preparedCurrentEdges": 1,
+          "oldProjectedArcs": 1,
+          "currentProjectedArcs": 1,
+          "changedArcs": 2,
+          "scoreEligibilityComparisons": 0,
+          "classificationNodeChecks": 2,
+          "reusedRoots": 0,
+          "rebuiltRoots": 2,
+          "retainedTreeNodes": 3,
+          "reusedTreeNodes": 0,
+          "freshTreeNodes": 3,
+          "freshExpansions": 1
+        },
+        "E2Work": {
+          "preparedOldNodes": 3,
+          "preparedCurrentNodes": 3,
+          "preparedOldEdges": 1,
+          "preparedCurrentEdges": 1,
+          "oldProjectedArcs": 1,
+          "currentProjectedArcs": 1,
+          "changedArcs": 2,
+          "scoreEligibilityComparisons": 0,
+          "classificationNodeChecks": 2,
+          "activationArcReads": 0,
+          "oldParentChecks": 1,
+          "oldChildTrials": 0,
+          "invalidatedNodes": 1,
+          "labelRowsInitialized": 2,
+          "labelsAdmitted": 1,
+          "queuePops": 2,
+          "predecessorTrials": 2,
+          "scheduleTrials": 2,
+          "labelUpdates": 1,
+          "peakPending": 1,
+          "peakWorkingLabels": 2,
+          "reusedRoots": 0,
+          "repairedRoots": 2,
+          "rebuiltRoots": 0,
+          "abortedRoots": 0,
+          "retainedTreeNodes": 3
+        }
+      },
+      {
+        "name": "unavailable-source-maintenance-is-not-active-state-and-null-query-needs-a-future-owner-guard",
+        "E1Reason": "snapshot-unavailable",
+        "E2Reason": "snapshot-unavailable",
+        "builderStatus": "unavailable",
+        "explicitRecovery": "built",
+        "inputsUnchanged": true,
+        "newWorkloadAPIAbsent": true
+      }
+    ],
+    "command": "node /tmp/facety-wp-g-workload-contract-check.mjs",
+    "exitCode": 0,
+    "reproduction": {
+      "description": "Existing API calls only; no general workload runner/preflight/state-machine implementation. Exact fixture policies start from wire-vectors.json.context with maxHops3; all pools supplied-synthetic/v1, maxPoolSize64, score0; seed workload-software-control/step0; all capture graph names workload-contract-control.",
+      "build": {
+        "epoch": 3,
+        "maxExpansions": 10000,
+        "maxTreeNodes": 1000
+      },
+      "repair": {
+        "epoch": 3,
+        "maxTreeNodes": 1000,
+        "maxQueuePops": 10000,
+        "maxPredecessorTrials": 10000,
+        "maxScheduleTrials": 10000,
+        "maxLabelUpdates": 10000
+      },
+      "query": {
+        "epoch": 3,
+        "maxPrefixHops": 1,
+        "maxPrefixes": 1,
+        "maxExpansions": 1000,
+        "maxBranches": 2,
+        "maxTreeLookups": 0,
+        "maxCandidates": 256,
+        "maxPackingSteps": 10000
+      },
+      "base": {
+        "nodes": [
+          "u",
+          "x",
+          "y",
+          "a",
+          "b"
+        ],
+        "edges": [
+          [
+            "a",
+            "x"
+          ],
+          [
+            "x",
+            "u"
+          ],
+          [
+            "b",
+            "y"
+          ],
+          [
+            "y",
+            "u"
+          ]
+        ],
+        "anchors": [
+          "a",
+          "b"
+        ],
+        "difficulty": 1,
+        "pools": [
+          {
+            "subject": "u",
+            "ids": [
+              "x",
+              "y"
+            ]
+          }
+        ]
+      },
+      "alternate": {
+        "nodes": [
+          "u",
+          "x",
+          "y",
+          "z",
+          "a"
+        ],
+        "edges": [
+          [
+            "x",
+            "u"
+          ],
+          [
+            "y",
+            "u"
+          ],
+          [
+            "z",
+            "x"
+          ],
+          [
+            "z",
+            "y"
+          ],
+          [
+            "a",
+            "z"
+          ]
+        ],
+        "anchors": [
+          "a"
+        ],
+        "difficulty": 1,
+        "pools": [
+          {
+            "subject": "u",
+            "ids": [
+              "x",
+              "y"
+            ]
+          },
+          {
+            "subject": "x",
+            "ids": [
+              "z"
+            ]
+          },
+          {
+            "subject": "y",
+            "ids": [
+              "z"
+            ]
+          }
+        ],
+        "queryChanges": {
+          "maxPrefixes": 16,
+          "maxPrefixHops": 2
+        },
+        "mode": "best-of-two"
+      },
+      "stale": {
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "oldEdges": [
+          [
+            "a",
+            "u"
+          ]
+        ],
+        "anchors": [
+          "a",
+          "b"
+        ],
+        "difficulty": 1,
+        "changes": [
+          {
+            "op": "removeEdge",
+            "from": "a",
+            "to": "u"
+          },
+          {
+            "op": "addEdge",
+            "from": "b",
+            "to": "u"
+          }
+        ],
+        "queryChanges": {
+          "maxPrefixes": 4,
+          "maxBranches": 1,
+          "maxTreeLookups": 16
+        },
+        "pools": [
+          {
+            "subject": "u",
+            "ids": [
+              "b"
+            ]
+          }
+        ]
+      },
+      "variations": [
+        "cut/uniform base; raw route selected2, only root queued",
+        "alternates/best-of-two all-zero snapshot reused through call; z selected twice",
+        "lag-1/lag-2 best-of-two/maxBranches1; empty then x1 map",
+        "uniform-stable before/after unrelated uniform and future best-of-two; raw JSON digest unchanged",
+        "zero/best-of-two/maxBranches0; source route call/neighbors nonzero; count0 standalone pool concentration null",
+        "stale-current query on old forest/current view checked full M2 and primary/ref2",
+        "same stale update through full rebuild/E1/E2; parents equal, work fields kept distinct",
+        "snapshots[] gives null E1/E2 and unavailable builder; null source query throws; restore snapshot and explicitly rebuild; no future runner exists"
+      ],
+      "sourceProposalDigestMethod": "sha256-json-path-proposal/v1"
+    }
+  },
+  "runtimeImplementation": {
+    "sourceChanged": false,
+    "testChanged": false,
+    "newRunnerModuleExists": false,
+    "newCallable": false,
+    "benchmark": false
+  },
+  "reusedValidation": {
+    "source": "m3-tree-repair-validation.json at unchanged bd7da67 source/test trees and implementation digest",
+    "focused": 135,
+    "current": 602,
+    "historical": {
+      "passed": 21,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    },
+    "fullSuitesRerun": false,
+    "architecture": {
+      "files": 46,
+      "localEdges": 120,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "reason": "documentation-only contract/dependency probes; exact unchanged source/test trees bind prior expensive validation"
+  },
+  "compatibility": {
+    "C3": {
+      "pairs": 1152,
+      "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+      "matched": true
+    },
+    "originalTree": {
+      "pairs": 12288,
+      "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+      "matched": true
+    },
+    "oneHop": {
+      "pairs": 12288,
+      "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+      "matched": true
+    },
+    "E1": {
+      "pairs": 24576,
+      "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+      "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+      "matched": true
+    },
+    "existingConstructorRefreshProposalBodiesAndLimitsUnchanged": true,
+    "existingTestsFrozenContractsHistoricalBodiesAndSourceGuardsUnchanged": true,
+    "randomness": "none added; pool/prefix/experiment generator/key policies unchanged",
+    "disposition": "unchanged-source evidence reused, not fresh replay/recapture"
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "two fixed current conformance trajectories, not historical study replay or universal equivalence",
+    "disposition": "unchanged-source fixed trajectory evidence reused, not rerun"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; large-protocol link/list scans skipped as before, protocol unchanged."
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "implement bounded F1 batch with independent manual tape/row/load replay and all strict/availability/state/resource/invariance/verification controls",
+    "otherGates": "caches/larger indexer/bidirectional-unit-split, workload performance methods, live anchors/epoch/capacity/funded/default and scientific master remain separate"
+  },
+  "research": {
+    "registrations": 0,
+    "scientificExperimentRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false,
+    "pilot": false
+  }
+}
