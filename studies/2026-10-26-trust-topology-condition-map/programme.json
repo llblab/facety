@@ -186,6 +186,7 @@
     "profileLibrary": "detailed numeric library not found; categories supplied, no guessed M2/D1/D4/H2/H4 definitions"
   },
   "priorVerification": {
+    "preDataContractAndCoverageAudit": "wp1-priors.md; diagnostic only, not G1 acceptance",
     "ids": [
       1,
       2,

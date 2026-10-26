@@ -1,0 +1,115 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "diagnostic prior contract/coverage audit and fixed software regressions; not empirical prior verification",
+  "baseCommit": "986feaff581ce9957bfb412bfdbbbd5788cb6373",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "1fd8ce49ce309c633885d2aeeccbed50d59ce2556456944226c14bd9075515ce",
+      "files": 35
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "observations": "act-observation-keyed-v1",
+    "trialUnit": "observer-act-hour-opportunity",
+    "dependence": "keyed-per-declared-opportunity",
+    "decisions": "exogenous-native-vouch-tape-v1",
+    "schedule": "native-vouch-tape-boundary-v1"
+  },
+  "implementationChanged": true,
+  "transitionSemanticsChanged": false,
+  "changes": [
+    "Cumulative successful vouch.commitments observable through actual Native/global v2 paths",
+    "Output caution explicitly separates per-subject cooldown from zero-age first use/population growth"
+  ],
+  "files": [
+    {
+      "path": "src/vouch-experiment-config.mjs",
+      "gitBlob": "b25d2ef666d7b4606f6213ccc5ca525ec9e8b72b"
+    },
+    {
+      "path": "src/vouch-experiment.mjs",
+      "gitBlob": "3e888d237501fdbf31e7ceeeef384482ea3ec6e8"
+    },
+    {
+      "path": "test/vouch-experiment.test.mjs",
+      "gitBlob": "1d7c6b73e412d9525429609dd41b1e1ce222c1d5"
+    },
+    {
+      "path": "test/vouch-v2.test.mjs",
+      "gitBlob": "a48cee2da5d02eace6a307cb22c2d5cc63be6d90"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/wp1-priors.md",
+      "gitBlob": "19a6666bd05a595023ec5e80d567fd7b7f1f2981"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/programme.json",
+      "gitBlob": "48bbc8352eafb9f9dee11535de5a988daed2d3bd"
+    },
+    {"path":"studies/2026-10-26-trust-topology-condition-map/reference.mjs","gitBlob":"af6827fc8af471015f711c89cc187a5e1ab8886d"},
+    {"path":"studies/2026-10-26-trust-topology-condition-map/wp1-composition-fixture.json","gitBlob":"c5660b9cac96e2101de4fe0cf072d2726c54e55b"},
+    {"path":"test/support/vouch-experiment-fixture.mjs","gitBlob":"285fd62ce63c8cae2ab1b9b456f53d85c717f201"}
+  ],
+  "focused": {
+    "command": "node --test test/vouch-experiment.test.mjs test/vouch-v2.test.mjs",
+    "passed": 17,
+    "failed": 0,
+    "newFamilies": 2,
+    "scope": [
+      "Counter compared to independent logical bonds across four fixed tapes",
+      "Denied offer excluded; count survives expiry/exit/refund independent of live slots/custody",
+      "Fixed c1/K1/B0/T2/V3 three-link accepted-reference permission witness at hour0 without Self-IDs; oracle agreement, not population sampling",
+      "Actual v2 scalar/multi-statistic measurement admission and ephemeral verification"
+    ]
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 452,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "isCurrentSourceValidation": false
+    }
+  },
+  "legacyConformance": {
+    "matched": true,
+    "onlyExcludedField": "provenance.implementation",
+    "semanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "scope": "same fixed baseline as wp1-v2-validation.json, not all possible legacy runs"
+  },
+  "architecture": {
+    "sourceFiles": 35,
+    "localEdges": 92,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "analyticEvidence": "Manual conditional deduction and source/contract inspection; not independently authored/accepted, exhaustive equivalence or empirical G1 confirmation",
+  "remainingCoverage": [
+    "Lifetime K is not the Native concurrent policy",
+    "P/b is not an admitted vouch or legacy cohort engine",
+    "Coalition ownership/cut and evaluator-false funded-edge metrics absent",
+    "CORE Claim/Standing still unbound/unimplemented"
+  ],
+  "context": { "errors": 0, "warnings": 27, "warningsUnchanged": true },
+  "research": {
+    "programmeRegistered": false,
+    "runs": 0,
+    "searchEvaluations": 0,
+    "nativeConfirmationRuns": 0,
+    "confirmationSeedsExecuted": [],
+    "G1Verdict": null,
+    "LLMAgentRuns": 0,
+    "pilot": false
+  }
+}

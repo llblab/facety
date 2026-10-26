@@ -6,7 +6,7 @@ export const VOUCH_ENGINE = 'native-vouch-tape/v1';
 export const VOUCH_RANDOMNESS = Object.freeze({ ...ACT_OBSERVATION_RANDOMNESS,
   decisions: 'exogenous-native-vouch-tape-v1', schedule: 'native-vouch-tape-boundary-v1' });
 export const VOUCH_OBSERVABLES = Object.freeze(Object.fromEntries([
-  'members', 'admissions', 'activeRelations', 'liveSlots', 'pendingCases', 'minted', 'burned', 'collector', 'emitterVault',
+  'members', 'admissions', 'commitments', 'activeRelations', 'liveSlots', 'pendingCases', 'minted', 'burned', 'collector', 'emitterVault',
   'bondVault', 'bondDebited', 'refunded', 'xpTotal', 'observations', 'suspicious', 'vetoes', 'reviewWork', 'rejections',
   'unobserved', 'inspectionDenied', 'responseDenied',
 ].map(key => ['vouch.' + key, 1])));

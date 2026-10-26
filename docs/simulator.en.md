@@ -292,6 +292,14 @@ The model never receives a hidden label saying that a subject is an attacker or 
 - Disconnection, invalidated identity and monetary liability are separate. `invalidateIdentity` marks only the adjudicated subject; it does not declare descendants false.
 - Penalties are explicit exogenous inputs, not a claim that the simulator has solved adjudication.
 
+### WP1 prior coverage and startup boundary
+
+[The pre-data prior audit](../studies/2026-10-26-trust-topology-condition-map/wp1-priors.md) distinguishes mathematical contracts from actual backend coverage. Native `vouch.commitments` now counts successful funded reservations cumulatively, including later exited/expired/refunded records; denied offers do not count. It is neither live slot occupancy nor money locked, false admission, personhood or net attack cost. Ordinary engine-specific series/v2 scalar tasks expose this counter and retain declared-horizon/censoring semantics.
+
+Accepted-reference explicitly has no own Claim/Standing gate: the fixed c1/K1/B0 software witness can admit a three-link first-use chain at hour0, with no Self-ID/emission and positive T/V, agreeing with the separate logical reference. This is permitted reference behavior, not CORE implementation, a new mechanism, an inferred growth rate or a universal attack result. Per-voucher asymptotic service does not bound aggregate startup/doubling without a population/resource/first-use law. No unbound CORE eligibility rule is silently chosen to suppress the witness.
+
+Lifetime-quota K remains an analytic counterfactual, not renewable Native slots. Sunk-burn P/b invitation execution is not admitted by this vouch mode or legacy cohort config; old capacity controls stay historical, not G1 recapture. Exact-D_attack lacks explicit coalition ownership/cut/fake-admission measurements; raw degree/profiles/activeRelations cannot substitute. [Software validation](../studies/2026-10-26-trust-topology-condition-map/wp1-priors-validation.json) does not pass G1 or bind human ranges/numeric kills. No research/confirmation execution occurred.
+
 ## Protocol coverage
 
 | Protocol rule | Section | Simulator |

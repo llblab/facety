@@ -44,7 +44,7 @@ test('real Native backend matches independent action acceptance/daily money/XP/w
       const e = expected.snapshots[i], m = point.vouch;
       assert.equal(point.atHour, e.now);
       for (const [actual, value] of Object.entries({ minted: e.ledger.minted, burned: e.ledger.burned, collector: e.ledger.collector,
-        emitterVault: e.ledger.emitterVault, bondVault: e.ledger.vouchVault, members: e.members.length, admissions: e.admissions.length,
+        emitterVault: e.ledger.emitterVault, bondVault: e.ledger.vouchVault, members: e.members.length, admissions: e.admissions.length, commitments: e.bonds.length,
         xpTotal: e.members.reduce((n, s) => n + s.xp, 0), liveSlots: e.capacities.reduce((n, c) => n + c.used, 0) })) assert.equal(m[actual], value);
       assert.equal(m.reviewWork, e.work?.actors.reduce((n, a) => n + a.spent, 0) ?? 0);
       assert.deepEqual(Object.keys(m).map(key => 'vouch.' + key).sort(), Object.keys(VOUCH_OBSERVABLES).sort());
@@ -56,6 +56,39 @@ test('real Native backend matches independent action acceptance/daily money/XP/w
     assert.equal(run.history.at(-1).vouch.vetoes, 1);
     assert.equal(run.history.at(-1).vouch.rejections, 1);
   }
+});
+
+test('cumulative commitments count actual successes, not offers, live slots or refundable custody', () => {
+  const cfg = config();
+  cfg.events.push({ atHour: 49, authority: 'subject-call', op: 'commit', owner: 'a', target: 'spare', id: 'denied-count-control' });
+  cfg.events.sort((a, b) => a.atHour - b.atHour);
+  const run = runVouchExperiment(cfg);
+  assert.deepEqual(run.history.map(p => p.vouch.commitments), [0, 0, 2, 2, 4, 4, 4, 4]);
+  assert.equal(run.actions.filter(a => a.op === 'commit' && a.ok).length, 4);
+  assert.equal(run.actions.filter(a => a.op === 'commit' && !a.ok).length, 1);
+  assert.equal(run.history.at(-1).vouch.liveSlots, 0);
+  assert.equal(run.history.at(-1).vouch.bondVault, 0);
+});
+
+test('accepted-reference permits a fixed zero-age first-use chain without Claim/Standing; it is not CORE growth evidence', () => {
+  const cfg = config(), ids = ['a', 'x', 'y', 'z'];
+  cfg.model.genesis = ['a']; cfg.model.vouchAdmission.c = 1;
+  Object.assign(cfg.model.vouching, { K: 1, T: 2, V: 3, B: 0 });
+  cfg.days = 1; cfg.maxSubjects = 4; cfg.maxActions = 6; cfg.work.actors = [];
+  cfg.environment = { ...cfg.environment, subjects: ids.map(id => ({ id, genuine: true, behaviorProfile: 'unverified-software-only' })), validity: {} };
+  cfg.events = ids.slice(1).flatMap((target, i) => [
+    { atHour: 0, authority: 'subject-call', op: 'commit', owner: ids[i], target, id: 'first:' + target },
+    { atHour: 0, authority: 'subject-call', op: 'admit', target, bonds: ['first:' + target] },
+  ]);
+  const run = runVouchExperiment(cfg), expected = oracleHistory(cfg);
+  assert.deepEqual(run.actions.map(a => a.ok), expected.accepted);
+  assert.ok(run.actions.every(a => a.ok && a.atHour === 0));
+  assert.equal(run.outcome.censored, false);
+  assert.equal(run.history[0].vouch.commitments, expected.final.bonds.length);
+  assert.equal(run.history[0].vouch.commitments, 3);
+  assert.equal(run.history[0].vouch.admissions, 3);
+  assert.equal(run.state.selfIds.length, 0); assert.equal(run.state.ledger.minted, 0);
+  assert.equal(run.state.subjects.length, 4);
 });
 
 test('daily endpoints precede same-hour commands, include automatic maturities and never execute horizon commands', () => {

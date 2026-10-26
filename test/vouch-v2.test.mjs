@@ -50,6 +50,7 @@ test('namespaced metrics require their engine, retain24h endpoint offset and pre
   const series = metricSeries(run.history, 'vouch.admissions', { days: cfg.days, offsetHours: 24, engine: VOUCH_ENGINE });
   assert.deepEqual(series.map(p => p.value), [0, 0, 1, 1, 2, 2, 2, 2]);
   assert.equal(runStatistic(run, scalar('vouch.admissions')), 2);
+  assert.equal(runStatistic(run, scalar('vouch.commitments')), 4);
   assert.equal(runStatistic(run, scalar('vouch.admissions', 'mean')), 1.25);
   assert.equal(runStatistic(run, scalar('vouch.minted', 'endpoint', 'vouch.burned')), 7);
   const truncated = { ...run, history: run.history.slice(0, 2) };
@@ -111,8 +112,10 @@ test('the real scalar task and worker export execute Native observations/metrics
   assert.equal(direct.some(r => r.seed.includes('confirm:')), false);
   const parallel = await mapTasks(tasks, { workers: 2, module: new URL('../src/evidence.mjs', import.meta.url).href, exportName: 'runStatisticTask' });
   assert.deepEqual(parallel, direct);
-  const multi = runStatisticsTask({ config: cfg, statistics: { admissions: scalar('vouch.admissions'), supply: scalar('vouch.minted', 'endpoint', 'vouch.burned') } });
-  assert.deepEqual(multi.values, { admissions: 2, supply: 7 });
+  const multi = runStatisticsTask({ config: cfg, statistics: { admissions: scalar('vouch.admissions'), supply: scalar('vouch.minted', 'endpoint', 'vouch.burned'), commitments: scalar('vouch.commitments') } });
+  assert.deepEqual(multi.values, { admissions: 2, supply: 7, commitments: 4 });
+  const countRegistration = registerHypothesis(softwareSpec({ statistic: scalar('vouch.commitments') }));
+  assert.equal(verifyRegistration(countRegistration).spec.statistic.metric, 'vouch.commitments');
   assert.throws(() => runStatisticTask({ config: cfg, statistic: scalar('xp.total') }), /experiment engine/);
   assert.throws(() => runStatisticsTask({ config: cfg, statistics: { bad: scalar('outcome.success') } }), /unbound criterion/);
 });

@@ -9,6 +9,7 @@ export const VOUCH_EXPERIMENT_ASSUMPTIONS = Object.freeze([
   'This is a closed exogenous Native action tape, not selected CORE, endogenous adoption/cooperation or an adaptive attacker.',
   'Accepted genesis membership is a diagnostic seed assumption, not verified personhood/bootstrap. Initial money/XP are zero and all protocol-economic mutations use FacetyModel.',
   'Accepted-reference admission/claim/vouch eligibility and Native guarantor XP do not implement CORE Claim/Standing or verified independence.',
+  'Cooldown and slots constrain repeated per-subject use, not a population exponent. With c=1/B=0 a newly admitted accepted-reference subject may immediately make its first commitment without a Self-ID.',
   'Authority classes are host declarations, not authentication or an actor-selectable court API. Verdict/clearance/coverage inputs are trusted and not inferred from suspicion.',
   'One explicit finite work allocation is not a birth reward/FACY subsidy or measured human capacity. Other action labor is unmodeled, not measured zero.',
   'Private personhood/profile/act-validity facts stay in the environment/evaluator config; defense consumes only public Native references and fallible received evidence.',
@@ -21,7 +22,7 @@ export const VOUCH_EXPERIMENT_ASSUMPTIONS = Object.freeze([
 function measured(model, work, rejections) {
   const members = model.subjects(), bonds = model.vouchCommitments(), ledger = model.audit(), receipts = work?.audit().receipts ?? [];
   const values = {
-    members: members.length, admissions: model.vouchAdmissions().length,
+    members: members.length, admissions: model.vouchAdmissions().length, commitments: bonds.length,
     activeRelations: model.guaranteeRelations().filter(r => r.status === 'active').length,
     liveSlots: members.reduce((n, m) => n + model.vouchCapacity(m.id).used, 0),
     pendingCases: model.vouchBondCases().filter(c => c.status === 'pending').length,
