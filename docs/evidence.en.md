@@ -45,6 +45,10 @@ P/b's manifest binds generator:none; seed is explicit but unused. Mixed-generato
 
 [Software-only API/task tests](../test/pb-v2.test.mjs) create ephemeral real envelopes and execute ordinary labels via actual scalar/multi-statistic Node workers. No P/b/vouch-engine confirmHypothesis/reserved-label run or committed programme registration follows; the generic facility is not a G1 pass or WP5 authorization.
 
+## WP-G witness/indexer evidence boundary (D61)
+
+[D61](facety.protocol.en.md#4616-witness-certified-path-reference-and-advisory-indexer-d61) authorizes opt-in graph-gate engineering, not an unsupported experiment adapter or new inference policy. [The contract](indexer.en.md#acceptance-and-evidence-boundary) distinguishes deterministic codec/verifier/oracle/property/fuzz acceptance from registered E1–E8 soundness/cost/security/community/dynamics/load/ossification/indexer-adversary studies. M0 is documentation only: no WP-G experiment/metric/runtime/v2 registration or test result exists. Actual supported dispatch/metrics/reference contracts, committed method/ranges/numeric kills/precision/search/error/seed rules and master prerequisites must precede claimed study data. A graph constructed directly for an algorithm check is not funded admission; ownership/fake labels remain evaluator-only and independent paths are not independent humans. Budget/exhaustion/missing traces do not become safety, maximum-flow completeness, zero honest rejection or a failed-search kill/pass. Historical packets are not replayed or re-registered merely for this new direction.
+
 ## Hypothesis file
 
 ```json
