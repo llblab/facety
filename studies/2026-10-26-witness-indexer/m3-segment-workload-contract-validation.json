@@ -1,0 +1,602 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-J pre-code supplied-frame prefix/segment/load lifecycle, existing public API/clock/load/preparation controls and separately named F1-only payload baseline, not new runner/tests/performance/scientific data",
+  "baseCommit": "b1dbe4cb38c836519a00be931132952f56e912ce",
+  "unchangedTrees": {
+    "src": "ab5971d42e57d8fbb09a1555ce0489fb0cea9801",
+    "test": "aeb2695123ebf302eec4fa90c9785ce2ff69b82a"
+  },
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "10283d5aa9e465fe8c041757c7ce880b436a2b099e00b7f3f58cc02273bc11ea",
+      "files": 50
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-segment-workload.md",
+      "gitBlob": "c91278b06367239e37e4aa46d83fd77b70733dc8"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-invalidation-validation.json",
+      "gitBlob": "d1fbf92dd3f3f73055794f24789dc5a4b8f4daf7"
+    },
+    {
+      "path": "src/path-witness-workload.mjs",
+      "gitBlob": "9d8a05b9447bcb3c515b75f43754f881f86acf2d"
+    },
+    {
+      "path": "src/path-witness-segments.mjs",
+      "gitBlob": "bac1263c30fa9e5b6119f53c6d38f5ad6cb5fbd9"
+    },
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "143f673e95f1d854f0a138eff7b58e59f50127a1"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/branch-tree-miss.json",
+      "gitBlob": "66f175f4c34f140054d7fec7a8af24e3c226690e"
+    }
+  ],
+  "sourceChanged": false,
+  "testChanged": false,
+  "newFilesAbsent": [
+    "src/path-witness-segment-workload.mjs",
+    "test/path-witness-segment-workload.test.mjs"
+  ],
+  "newAPIsAbsent": [
+    "runPathWitnessSegmentWorkload",
+    "PATH_SEGMENT_WORKLOAD_LIMITS"
+  ],
+  "newRunnerExecutionOrTests": false,
+  "contract": {
+    "method": "bounded-prefix-segment-route-load/v1",
+    "owner": "new segment-workload module owns fresh D1 cache/active forest true-origin pointer/occurrence ledger; public D2/maintenance/put/notices, no H/F1/I/G modification or generic port",
+    "input": "exact domain/segments config/frames(id,view,pools)/six-operation steps; maxFrames16/maxSteps128/maxPoolsPerFrame64/maxLoadIds4096, policy-aware domain/subject/path budgets/global256 notices",
+    "preflight": "whole future exact data/indexed copies/local views/shared declared namespace/pools/native count0 brand validation/full method caps/symbolic policy-availability/declared clocks before cache construction/SUT; no speculative producer/put/lookup preparation",
+    "clock": "nondecreasing every requested put/query including skips/unavailable/lookup0; native put advances even rejected/unavailable, D2 advances only actual lookups. Put reserves TTL addition headroom, lookup permits terminal MAX_SAFE_INTEGER; notices/maintenance inert",
+    "preparation": "existing D1 WeakMap keyed view object is inherited across caches/runs, not reset/primed/cloned. Named output assumptions/preparationGroup first-frame identity ordinal record operational scope, not actual warm-state oracle or RNG key; exact work/full D2 hashes require equivalent aliasing/prior conditioning or fresh equivalent captures",
+    "state": "maintenance explicitly clears/recovers active only, queries/put/notices never adopt current frame as forest origin; cache/load ledger survive resets. Query missing active uncalled; no learning/automatic invalidation/fallback",
+    "loads": "F1 run-cumulative-route-selections/v1, uniform still accrues; best-of-two prior-query complete snapshots folded after actual result, repeats/nonpositive offers count; zero concentration null",
+    "report": "compact frozen full requested rows/native segment snapshots/actual put/query/invalidation work/full raw D2 hashes/aliasing metadata/two explicit assumptions, no paths/joins/routes/wires/handles; record materialization is real work",
+    "totals": "separate operation/status/put/load counts and segment put/invalidation/lookup calls plus put-versus-lookup sweep entry bounds, no CPU/RSS/human/XP/fee scalar",
+    "outOfScope": "F1/H/I/G schema/default/RNG/Model/source-engine changes, automatic cold-counter normalization/priming, larger production/live/Standing/epoch/c-D/capacity/funded/default/scientific/master choices"
+  },
+  "existingAPIProbe": {
+    "command": "node /tmp/facety-wp-g-segment-workload-contract-check.mjs",
+    "scriptGitBlob": "f4619965c21b6985fa9218dbc1100ac89edf7825",
+    "disposition": "temporary local script, not maintained runner or authenticated evidence; only existing public methods/manual calls, future preflight/lifetime/report not exercised",
+    "manualParameters": {
+      "graphName": "segment-workload-contract",
+      "graph": "branch-tree-miss.json nodes/edges",
+      "baseContext": "wire-vectors.json context, patch maxHops3",
+      "build": {
+        "epoch": 3,
+        "maxExpansions": 10000,
+        "maxTreeNodes": 1000
+      },
+      "prefixQuery": {
+        "epoch": 3,
+        "maxPrefixHops": 1,
+        "maxPrefixes": 4096,
+        "maxExpansions": 10000,
+        "maxBranches": 64,
+        "maxTreeLookups": 1000,
+        "maxCandidates": 256,
+        "maxPackingSteps": 10000
+      },
+      "segmentQuery": {
+        "epoch": 3,
+        "maxPrefixHops": 1,
+        "maxPrefixes": 4096,
+        "maxExpansions": 10000,
+        "maxBranches": 64,
+        "maxTreeLookups": 1000,
+        "maxCandidates": 256,
+        "maxPackingSteps": 10000,
+        "tick": 0,
+        "maxSegmentLookups": 65536,
+        "maxSegmentChecks": 1024,
+        "maxSegmentResults": 256
+      },
+      "segments": {
+        "ledgerId": "segment-workload-software-ledger",
+        "maxEntries": 8,
+        "maxBytes": 100000,
+        "ttlTicks": 10
+      },
+      "pools": "all graph nodes supplied-synthetic/v1 score0/maxPoolSize64, all subjects",
+      "routing": {
+        "seed": "prefix-software-control",
+        "queryId": "query-1",
+        "step": 0,
+        "mode": "uniform"
+      },
+      "options": "currentEpoch3/snapshot(epoch3,difficulty2,anchors[a,b])/removed[]/standing[]"
+    },
+    "schema": "facety-segment-workload-dependency-probes/v1",
+    "classification": "existing public API/manual prefix-segment-load/preparation controls and F1-only semantic payload stream, not new workload implementation/tests/performance/scientific data",
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "10283d5aa9e465fe8c041757c7ce880b436a2b099e00b7f3f58cc02273bc11ea",
+        "files": 50
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "groups": [
+      {
+        "id": "existing-F1-payload-preservation",
+        "method": "sha256-streaming-json-prefix-workload-payload-NUL/v1",
+        "cases": 384,
+        "requestedQueryRows": 768,
+        "requestedRows": 1152,
+        "digest": "7ef013e0207bbfd6cd7ed20f8febfa7cf46c30c01749623e58e177bb8af8f5bf",
+        "excluded": "top-level provenance after deep equality with current provenance() only, separate named stream",
+        "nodes": [
+          "u",
+          "a",
+          "b"
+        ],
+        "arcs": [
+          [
+            "u",
+            "a"
+          ],
+          [
+            "u",
+            "b"
+          ],
+          [
+            "a",
+            "u"
+          ],
+          [
+            "a",
+            "b"
+          ],
+          [
+            "b",
+            "u"
+          ],
+          [
+            "b",
+            "a"
+          ]
+        ],
+        "graphName": "segment-workload-f1-preservation",
+        "baseContext": {
+          "domain": "facety:software-fixture",
+          "subject": "u",
+          "policy": {
+            "direction": "directed-from-anchor",
+            "graceEpochs": 1,
+            "maxDifficulty": 8,
+            "maxHops": 5,
+            "maxIdBytes": 64,
+            "maxSlack": 1,
+            "maxWitnessBytes": 8192,
+            "minStanding": null,
+            "undirectedProjection": "any-live-orientation"
+          }
+        },
+        "policyPatch": {
+          "maxHops": 2
+        },
+        "iteration": "masks0..63 then directed/any/reciprocal then uniform/best-of-two",
+        "build": {
+          "epoch": 3,
+          "maxExpansions": 10000,
+          "maxTreeNodes": 1000
+        },
+        "query": {
+          "epoch": 3,
+          "maxPrefixHops": 1,
+          "maxPrefixes": 4096,
+          "maxExpansions": 10000,
+          "maxBranches": 64,
+          "maxTreeLookups": 1000,
+          "maxCandidates": 256,
+          "maxPackingSteps": 10000
+        },
+        "routing": {
+          "seed": "prefix-software-control",
+          "step": 0
+        },
+        "queryIds": [
+          "query-1",
+          "query-2"
+        ],
+        "frameId": "old",
+        "pool": {
+          "metric": "supplied-synthetic/v1",
+          "maxPoolSize": 64,
+          "score": 0,
+          "subjects": "all nodes, sorted by F1 preflight"
+        },
+        "options": {
+          "currentEpoch": 3,
+          "snapshots": [
+            {
+              "epoch": 3,
+              "difficulty": 2,
+              "anchors": [
+                "a",
+                "b"
+              ]
+            }
+          ],
+          "removed": [],
+          "standing": []
+        }
+      },
+      {
+        "id": "explicit-put-five-node-repair-and-occurrence-load-fold",
+        "C3": "censored",
+        "D2": "found",
+        "offers": [
+          "x",
+          "a"
+        ],
+        "loadRows": [
+          [
+            "x",
+            1
+          ],
+          [
+            "a",
+            1
+          ]
+        ],
+        "returned": 1,
+        "consumed": 1,
+        "bothCurrentVerifiers": true,
+        "frontierByteEqual": true
+      },
+      {
+        "id": "lagged-best-of-two-native-route-occurrences",
+        "first": [
+          "a"
+        ],
+        "second": [
+          "x"
+        ],
+        "firstStatus": "censored",
+        "secondStatus": "censored",
+        "loads": [
+          [
+            "a",
+            1
+          ],
+          [
+            "x",
+            1
+          ]
+        ],
+        "noReservationOrSuccessRefund": true
+      },
+      {
+        "id": "declared-tick-versus-actual-lookup-put-clock",
+        "calledQueryAt50LookupCalls": 0,
+        "queryDidNotAdvance": true,
+        "nativePutAt1Accepted": true,
+        "plannedDeclaredTapeWouldReject50Then1": true,
+        "unavailableQueryNoAdvance": true,
+        "unavailablePutAt51": {
+          "status": "unavailable",
+          "expired": 1
+        },
+        "rejectedPutAt52": "zero-hop",
+        "noticesClockInert": true,
+        "newRunnerNotExecuted": true
+      },
+      {
+        "id": "terminal-lookup-safe-tick-not-put-expiry-rule",
+        "queryTick": 9007199254740991,
+        "lookupCalls": 6,
+        "expired": 1,
+        "actualLastTick": 9007199254740991,
+        "putSameTickRejectedBeforeMutation": true
+      },
+      {
+        "id": "maintenance-origin-segment-and-load-lifetimes-independent",
+        "query": "found",
+        "currentRootDiffers": true,
+        "trueOriginRetained": true,
+        "wrongOriginRejected": true,
+        "refreshAdoptsNewOrigin": true,
+        "unavailableRepairClearsForest": true,
+        "cacheAndLoadsSurvive": true,
+        "explicitPutWithoutForest": "stored",
+        "runnerMissingActiveSkipNotExecuted": true
+      },
+      {
+        "id": "explicit-vertices-notice-and-original-relations-not-witness-authority",
+        "spuriousEvicted": 1,
+        "currentWholeStillAccepted": true,
+        "relationReincarnation": "miss",
+        "global256UnknownNoticeAccepted": true,
+        "noticesNotCanonicalDelta": true
+      },
+      {
+        "id": "shared-view-object-preparation-is-not-viewRoot-or-fresh-cache-reproducibility",
+        "sameRoot": true,
+        "differentObjectFreshRestoresExactCold": true,
+        "statsAndToJSONDoNotPrime": true,
+        "beforeNativeInventoriesEqual": true,
+        "coldPreparation": {
+          "nodes": 5,
+          "storageEdges": 6
+        },
+        "warmPreparation": {
+          "nodes": 0,
+          "storageEdges": 0
+        },
+        "sameWireAndFrontier": true,
+        "fullProposalDigestDiffers": true,
+        "explicitDiagnosticProjection": "delete only segments.work.preparedNodes/preparedStorageEdges for this named equality control, not a scientific method/old-stream change",
+        "coldDigest": "c1973b8f0ad59237bcba8f9543e3b050e3ef631656b9a1de420cee70f40db037",
+        "warmDigest": "04b0cace168d781aee4fe4c0934d85739b420a67f761ea30d7d14d230ebd7899"
+      },
+      {
+        "id": "inert-count-zero-pool-validation-new-runner-tests-backend-absent",
+        "countZeroGenerators": 0,
+        "countZeroDraws": 0,
+        "runnerAbsent": true,
+        "testsAbsent": true,
+        "graphBackendRejected": true
+      }
+    ],
+    "passed": 9,
+    "failed": 0
+  },
+  "existingF1PayloadBaseline": {
+    "id": "existing-F1-payload-preservation",
+    "method": "sha256-streaming-json-prefix-workload-payload-NUL/v1",
+    "cases": 384,
+    "requestedQueryRows": 768,
+    "requestedRows": 1152,
+    "digest": "7ef013e0207bbfd6cd7ed20f8febfa7cf46c30c01749623e58e177bb8af8f5bf",
+    "excluded": "top-level provenance after deep equality with current provenance() only, separate named stream",
+    "nodes": [
+      "u",
+      "a",
+      "b"
+    ],
+    "arcs": [
+      [
+        "u",
+        "a"
+      ],
+      [
+        "u",
+        "b"
+      ],
+      [
+        "a",
+        "u"
+      ],
+      [
+        "a",
+        "b"
+      ],
+      [
+        "b",
+        "u"
+      ],
+      [
+        "b",
+        "a"
+      ]
+    ],
+    "graphName": "segment-workload-f1-preservation",
+    "baseContext": {
+      "domain": "facety:software-fixture",
+      "subject": "u",
+      "policy": {
+        "direction": "directed-from-anchor",
+        "graceEpochs": 1,
+        "maxDifficulty": 8,
+        "maxHops": 5,
+        "maxIdBytes": 64,
+        "maxSlack": 1,
+        "maxWitnessBytes": 8192,
+        "minStanding": null,
+        "undirectedProjection": "any-live-orientation"
+      }
+    },
+    "policyPatch": {
+      "maxHops": 2
+    },
+    "iteration": "masks0..63 then directed/any/reciprocal then uniform/best-of-two",
+    "build": {
+      "epoch": 3,
+      "maxExpansions": 10000,
+      "maxTreeNodes": 1000
+    },
+    "query": {
+      "epoch": 3,
+      "maxPrefixHops": 1,
+      "maxPrefixes": 4096,
+      "maxExpansions": 10000,
+      "maxBranches": 64,
+      "maxTreeLookups": 1000,
+      "maxCandidates": 256,
+      "maxPackingSteps": 10000
+    },
+    "routing": {
+      "seed": "prefix-software-control",
+      "step": 0
+    },
+    "queryIds": [
+      "query-1",
+      "query-2"
+    ],
+    "frameId": "old",
+    "pool": {
+      "metric": "supplied-synthetic/v1",
+      "maxPoolSize": 64,
+      "score": 0,
+      "subjects": "all nodes, sorted by F1 preflight"
+    },
+    "options": {
+      "currentEpoch": 3,
+      "snapshots": [
+        {
+          "epoch": 3,
+          "difficulty": 2,
+          "anchors": [
+            "a",
+            "b"
+          ]
+        }
+      ],
+      "removed": [],
+      "standing": []
+    },
+    "matchedPreCode": true
+  },
+  "reusedValidation": {
+    "record": "m3-invalidation-validation.json",
+    "binding": "exact unchanged ab5971d4 src/aeb26951 test trees,50-file10283d5a Source,Nodev26.8.1; no focused/full/historical/DAG/fixed-trajectory rerun",
+    "nativeFamilies": 11,
+    "focused": {
+      "passed": 191,
+      "disposition": "reused current-source evidence, not rerun"
+    },
+    "full": {
+      "command": "npm test",
+      "current": {
+        "passed": 658,
+        "failed": 0,
+        "skipped": 0
+      },
+      "historical": {
+        "passed": 21,
+        "failed": 0,
+        "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+        "currentSourceEvidence": false
+      }
+    },
+    "compatibility": {
+      "streams": [
+        {
+          "name": "originalTree",
+          "cases": 12288,
+          "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+          "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+          "test": "test/path-witness-branches.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "oneHop",
+          "cases": 12288,
+          "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+          "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+          "test": "test/path-witness-prefix.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "C3",
+          "cases": 1152,
+          "method": "sha256-streaming-json-forest-proposal-array-NUL/v1",
+          "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+          "test": "test/path-witness-segment-joins.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "E1",
+          "cases": 24576,
+          "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+          "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+          "test": "test/path-witness-tree-repair.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "lookup",
+          "cases": 192,
+          "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+          "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+          "test": "test/path-witness-pipeline.test.mjs",
+          "matched": true
+        },
+        {
+          "name": "Gpayload",
+          "cases": 192,
+          "observations": 576,
+          "method": "sha256-streaming-json-pipeline-payload-NUL/v1",
+          "digest": "7039f9974cc343bfefeda5cac069e20cf5a9e4248d0a076ac89939489c60dc3e",
+          "test": "test/path-witness-lifecycle.test.mjs",
+          "scope": "only top-level provenance excluded after original full provenance() equality; separate named stream, not H query pipelineDigest",
+          "matched": true
+        },
+        {
+          "name": "nativeNotices",
+          "cases": 243,
+          "method": "sha256-streaming-json-dual-cache-notice-rows-NUL/v1",
+          "digest": "dc6793b59d4f3d33a5169d6edd2b43a924641acbd93c35d49849c30b81bd191d",
+          "test": "test/path-witness-invalidation.test.mjs",
+          "scope": "complete frozen native/input projection, no wrapper/provenance in that pre-code native-only stream and no fields removed; full wrapper provenance/config/work separately compared",
+          "matched": true
+        }
+      ],
+      "disposition": "seven prior scoped streams/old APIs/frozen corpus/default/RNG/history reused by exact Source/test/runtime binding, not rerun; new384-case F1-only semantic payload baseline computed this cohort",
+      "existingSourceTestBodiesFrozenCorpusAndContractsUnchanged": true
+    },
+    "conformance": {
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "10283d5aa9e465fe8c041757c7ce880b436a2b099e00b7f3f58cc02273bc11ea",
+          "files": 50
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "excludedOnly": "provenance.implementation",
+      "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "matched": true,
+      "classification": "two fixed current software trajectories, not sealed study replay/scientific observations",
+      "disposition": "two fixed current software trajectories reused by exact Source/runtime, not rerun/recaptured"
+    },
+    "architecture": {
+      "files": 50,
+      "localEdges": 144,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0,
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+      "disposition": "unchanged50-file/144-edge source imports reuse acyclic0errors/0warnings"
+    }
+  },
+  "review": {
+    "kind": "inline design/source/native manual/conditioning review",
+    "notIndependentAuthorshipOrCleanRoom": true,
+    "coverageBoundary": "no new workload API, preflight, alias group/report/totals implementation or tests. Cold/warm control changes only named preparation work while equal wire/frontier; its explicit diagnostic two-field projection is not an old-method/scientific reanalysis or hidden counter suppression. Existing memo behavior is not classified as a new SUT defect"
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; unchanged large-protocol link/list scans skipped as before. Pre-code J clock/load/preparation-conditioning scope stays distinct from delivered H/F1/I/G and scientific/live/funded/default authority."
+  },
+  "research": {
+    "newRegistrations": 0,
+    "newRunnerCalls": 0,
+    "newRunnerNativeTests": 0,
+    "scientificExperimentRuns": 0,
+    "benchmarkCurves": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false
+  },
+  "remaining": "Sole BACKLOG: implement fresh segment workload/native manual replay on equivalent fresh-or-conditioned view objects and scoped clock/load/cache/symbolic state/future-data tests; preserve H/F1 and all seven prior+new F1 streams. Broader/scientific/live/funded/default/capacity gates remain separate"
+}
