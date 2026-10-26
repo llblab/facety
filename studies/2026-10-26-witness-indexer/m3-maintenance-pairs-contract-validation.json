@@ -1,0 +1,277 @@
+{
+  "schema": "facety-engineering-contract-validation/v1",
+  "classification": "M3-F2 frozen native-unit paired conformance/cost-admissibility design; existing API dependency controls only, not paired test/matrix, actual E2 method, timings or scientific/economic evidence",
+  "baseCommit": "d33644c6f61cd7826ea04ca4509ae9327ef5b4a7",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "337a0b3ab0b19adeb0df78c1bdb27ce149394936aa85975dac5524287a95e3ff",
+      "files": 47
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    },
+    "sourceTree": "9d0ad0fe6ec21a283fee381eeae32009e149f78c",
+    "testTree": "dbddfaf577c14431cba703d6979fadf353adfaa9"
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-maintenance-pairs.md",
+      "gitBlob": "d99cd4cb247199c73426066bcc2a3b2346fe5ce8"
+    },
+    {
+      "path": "studies/2026-10-26-witness-indexer/m3-maintenance-pairs-plan.json",
+      "gitBlob": "19909f265334b0c4f40e3986ad88151c97f357d1"
+    },
+    {
+      "path": "src/path-witness-workload.mjs",
+      "gitBlob": "9d8a05b9447bcb3c515b75f43754f881f86acf2d"
+    },
+    {
+      "path": "src/path-witness-trees.mjs",
+      "gitBlob": "2017ceb08aae4da3f0b58c926f40f3a9efb2e9a4"
+    },
+    {
+      "path": "src/experiment-config.mjs",
+      "gitBlob": "2c4fd301838fa7b5e6f73ba8b1c4730134962f46"
+    },
+    {
+      "path": "test/path-witness-workload.test.mjs",
+      "gitBlob": "c7b3d500b60deb65b9c1bd082370d85ed3fd0b32"
+    }
+  ],
+  "contract": {
+    "futureOwner": "test/path-witness-maintenance-pairs.test.mjs; private test/support helper only if needed",
+    "newRuntimeAPIOrExperimentEngine": false,
+    "arms": [
+      "rebuild",
+      "refresh",
+      "repair"
+    ],
+    "fixturePlan": "facety-maintenance-conformance-plan/v1",
+    "methodTag": "paired-maintenance-conformance/v1",
+    "fixtureCensus": {
+      "cells": 16,
+      "completeEquivalent": 12,
+      "boundedDiagnostic": 4,
+      "armsPerCell": 3,
+      "queriesPerArm": 2,
+      "requestedQueryRows": 96,
+      "requestedF1Rows": 192
+    },
+    "censusIsRequestedInputNotObservedResult": true,
+    "preconditions": "same explicit current contexts/pools/query IDs/seed/step/modes/limits; complete cells share retained caps but operation units are never equated",
+    "parentReference": "test-local raw sorted FIFO plus public full builder; own direct caller/shadow validates compact F1 receipt and current parent rows; reference execution is not an arm cost sample",
+    "crossArm": "whole proposalDigest/construction metadata/hash bytes intentionally differ; exact current semantic/query/load projection only under declared complete preconditions",
+    "frontier": "raw prefix paths/routes and 11 phase1 counters/five flags; excludes phase2 endpointChecks/duplicatePaths/treeLookupLimit",
+    "bounded": "partial/censored/unavailable/called differences retained, E2 published trees whole; no forced load reset/fallback or dropping rows",
+    "oracle": "full captured M2 statuses preserved, identical reference calls may reuse; known-positive advisory miss distinct from reference negative/unknown/unavailable, zero denominator null",
+    "stops": "zero mechanical contradictions/invalid publication/complete semantic or shadow drift/status coercion/counter-unit mixing; CI assertions, not scientific X1/X2/Y2/Z",
+    "counterCostBoundary": "per-owner vectors and separate validation/preflight/hash/capture/output overhead, no weighted work/CPU/speedup ratio, no timers or heap sampler",
+    "timedScalingGate": "unsupported graph workload engine refuses in experimentConfig; actual supported v2/backend/statistic/committed method/master required before E2 data, no fake registration"
+  },
+  "existingAPIProbe": {
+    "classification": "six existing-API dependency probes, not the sealed16-cell paired checker/matrix or benchmark results",
+    "count": 6,
+    "controls": [
+      {
+        "name": "same-canonical-parents-and-certified-wire-with-different-proposal-receipts",
+        "parentDigest": "4039a9d42eb8b94fa75d0f76b666dbfa73ed5144562b5d467a95d697e637ff08",
+        "wireDigest": "a71b274aeaa6b3d7da08b2510d4aa196def7eb04a68db2e998a52939d281276a",
+        "proposalDigests": [
+          "73ae26d82cad2cc5df41a01ad1488a2047d90a4649e5e57569539314fbf10a49",
+          "07ae57942a97a5c248b4bdf728dcbeb5f6b7c740a5e496cc87065d81b0012d0d",
+          "74d7e0cc045168f3f223b8d2b8a0b8cfe4b1ce9f8da3d30d4bcb9b67326fa052"
+        ],
+        "references": [
+          "single-parent-bounded-bfs/v1",
+          "affected-root-bounded-bfs/v1",
+          "bounded-path-label-repair/v1"
+        ],
+        "compactReceiptHasParentsOrWire": false
+      },
+      {
+        "name": "phase2-fields-are-not-routing-frontier-controls",
+        "frontierDigest": "17b5b9368266e3d0928f147468941739aefd34600de89a94d85da9a0481a5187",
+        "duplicates": [
+          2,
+          0
+        ],
+        "lookupFlags": [
+          false,
+          true
+        ],
+        "statuses": [
+          "found",
+          "found"
+        ],
+        "boundedStatuses": [
+          "found",
+          "found"
+        ]
+      },
+      {
+        "name": "preexisting-single-tree-family-miss-is-not-oracle-negative-or-a-kill",
+        "fixture": "single-tree-miss.json",
+        "source": {
+          "status": "censored",
+          "reason": "prefix-depth-limit",
+          "feasible": null
+        },
+        "reference": {
+          "status": "found",
+          "feasible": true
+        }
+      },
+      {
+        "name": "reference-censor-and-unavailable-keep-null-not-negative",
+        "censored": {
+          "status": "censored",
+          "reason": "expansion-limit",
+          "feasible": null
+        },
+        "unavailable": {
+          "status": "unavailable",
+          "reason": "epoch-outside-grace",
+          "feasible": null
+        },
+        "noKnownPositiveDenominator": null
+      },
+      {
+        "name": "builder-maintenance-grace-asymmetry-is-an-explicit-availability-diagnostic",
+        "builder": "built",
+        "refresh": "epoch-outside-grace",
+        "repair": "epoch-outside-grace"
+      },
+      {
+        "name": "unsupported-explicit-graph-engine-refuses-before-experiment",
+        "error": "unsupported experiment engine",
+        "newPairedCheckerTestAbsent": true,
+        "registrationAttempted": false
+      }
+    ],
+    "command": "node /tmp/facety-wp-g-maintenance-pairs-contract-check.mjs",
+    "exitCode": 0,
+    "fixtures": "small maintenance-precode-control two-node a→u/no-op and full-versus-zero retained tree, preexisting single-tree-miss.json; these are not the sealed16-cell matrix",
+    "routing": {
+      "seed": "maintenance-precode-software-control",
+      "queryId": "dependency-query",
+      "step": 0,
+      "mode": "uniform"
+    },
+    "build": {
+      "epoch": 3,
+      "maxExpansions": 10000,
+      "maxTreeNodes": 1000
+    },
+    "repair": {
+      "epoch": 3,
+      "maxTreeNodes": 1000,
+      "maxQueuePops": 10000,
+      "maxPredecessorTrials": 10000,
+      "maxScheduleTrials": 10000,
+      "maxLabelUpdates": 10000
+    },
+    "query": {
+      "epoch": 3,
+      "maxPrefixHops": 1,
+      "maxPrefixes": 4,
+      "maxExpansions": 1000,
+      "maxBranches": 1,
+      "maxTreeLookups": 16,
+      "maxCandidates": 256,
+      "maxPackingSteps": 10000
+    },
+    "variations": [
+      "raw current parents/wire equal, three construction references/whole proposal digests differ, compact F1 has no parent/wire body",
+      "zero-node versus full retained tree with identical phase1 frontier but different phase2 duplicate counts; candidates1/lookups1 changes treeLookupLimit without frontier change",
+      "original single-tree-miss vector, depth0/root-only/branches0 query: M2 positive, advisory feasible null",
+      "same reference with zero search budgets censored/null and future epoch99 unavailable/null",
+      "currentEpoch6 while retained snapshot epoch3: builder still built, E1/E2 unavailable outside grace",
+      "explicit unsupported bounded-prefix-route-load/v1 experiment engine rejects before execution; no registration attempted"
+    ],
+    "newPairedTestExists": false,
+    "sealedMatrixRun": false
+  },
+  "reusedValidation": {
+    "source": "m3-workload-preflight-validation.json at exact unchanged d33644c source/test trees and implementation digest",
+    "focused": 145,
+    "current": 612,
+    "historical": {
+      "passed": 21,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "currentSourceEvidence": false
+    },
+    "fullSuitesRerun": false,
+    "architecture": {
+      "files": 47,
+      "localEdges": 125,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "compatibility": {
+    "C3": {
+      "pairs": 1152,
+      "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+      "matched": true
+    },
+    "originalTree": {
+      "pairs": 12288,
+      "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+      "matched": true
+    },
+    "oneHop": {
+      "pairs": 12288,
+      "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+      "matched": true
+    },
+    "E1": {
+      "pairs": 24576,
+      "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+      "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+      "matched": true
+    },
+    "disposition": "exact unchanged source/test evidence reused, no historical replay/recapture"
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "two fixed current trajectories, not historical study replay or universal equivalence",
+    "disposition": "unchanged-source fixed trajectory evidence reused, not rerun"
+  },
+  "staticPlanChecks": {
+    "status": "passed",
+    "cells": 16,
+    "completeEquivalent": 12,
+    "boundedDiagnostic": 4,
+    "requestedQueryRows": 96,
+    "requestedF1Rows": 192,
+    "checks": "unique IDs/nodes, ordered legal edge edits, policy/context/snapshot/root/byte envelopes, explicit operation/query caps and census arithmetic",
+    "sealedMatrixExecuted": false
+  },
+  "context": {
+    "errors": 0,
+    "warnings": 29,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed; large-protocol link/list scans skipped as before, protocol unchanged."
+  },
+  "remaining": {
+    "M3": "open",
+    "next": "implement sealed16-cell paired native test compiler/raw/shadow/frontier/miss/resource assertions, not benchmark capture",
+    "otherGates": "supported graph v2 method/master before E2 data; caches/larger/bidirectional-unit-split/live/capacity/funded/default/scientific choices remain separate"
+  },
+  "research": {
+    "registrations": 0,
+    "scientificExperimentRuns": 0,
+    "benchmarkCurves": 0,
+    "pairedMatrixRuns": 0,
+    "confirmationSeedLabels": [],
+    "LLMAgentHumanCalibrationRuns": 0,
+    "masterG1Verdict": null,
+    "D62EconomicGuarantee": false,
+    "pilot": false
+  }
+}

@@ -1,0 +1,1785 @@
+{
+  "schema": "facety-maintenance-conformance-plan/v1",
+  "classification": "frozen deterministic native-unit fixture design, not supported v2 registration, dataset, sampled network or E2 benchmark permission",
+  "method": "paired-maintenance-conformance/v1",
+  "implementation": "test/path-witness-maintenance-pairs.test.mjs (future)",
+  "arms": [
+    "rebuild",
+    "refresh",
+    "repair"
+  ],
+  "domain": "facety:maintenance-pair-unit",
+  "graphNameRule": "maintenance-pair:<case.id>; build initial nodes/edges in listed order, capture before, apply edits in order to same standalone graph, capture after with afterOptions",
+  "frames": [
+    "before",
+    "after"
+  ],
+  "roundsPerCell": 1,
+  "querySubject": "u",
+  "queryIdRule": "<case.id>:<mode>",
+  "routing": {
+    "seed": "maintenance-pair-software-control/v1",
+    "step": 0,
+    "modes": [
+      "uniform",
+      "best-of-two"
+    ]
+  },
+  "pools": {
+    "metric": "supplied-synthetic/v1",
+    "maxPoolSize": 64,
+    "rows": "one per live supplied node, subjects UTF8 sorted",
+    "candidates": "all supplied live node IDs each score0; no rank/independence inference"
+  },
+  "query": {
+    "maxPrefixHops": 1,
+    "maxPrefixes": 64,
+    "maxExpansions": 10000,
+    "maxBranches": 64,
+    "maxTreeLookups": 65536,
+    "maxCandidates": 256,
+    "maxPackingSteps": 100000
+  },
+  "fullControl": {
+    "maxExpansions": 1000000,
+    "maxTreeNodes": 65536
+  },
+  "oracle": {
+    "maxExpansions": 100000,
+    "maxPaths": 4096,
+    "maxPackingSteps": 100000
+  },
+  "limits": {
+    "rounds": 15,
+    "queriesPerRound": 4
+  },
+  "expectedCensus": {
+    "cells": 16,
+    "completeEquivalent": 12,
+    "boundedDiagnostic": 4,
+    "armsPerCell": 3,
+    "queriesPerArm": 2,
+    "requestedQueryRows": 96,
+    "requestedF1Rows": 192
+  },
+  "timersHeapAndBenchmarkCapture": false,
+  "scientificV2OrMasterGatePass": false,
+  "cases": [
+    {
+      "id": "id-reincarnation",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a",
+        "b"
+      ],
+      "edges": [
+        [
+          "a",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a",
+              "b"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [
+        {
+          "op": "removeEdge",
+          "from": "a",
+          "to": "u"
+        },
+        {
+          "op": "addEdge",
+          "from": "a",
+          "to": "u"
+        }
+      ],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a",
+              "b"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "new stored edge ID with same projected canonical parents; metadata/raw proposal hashes not semantic keys"
+    },
+    {
+      "id": "shorter-insertion",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "x",
+        "a",
+        "b"
+      ],
+      "edges": [
+        [
+          "a",
+          "x"
+        ],
+        [
+          "x",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a",
+              "b"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [
+        {
+          "op": "addEdge",
+          "from": "a",
+          "to": "u"
+        }
+      ],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a",
+              "b"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "affected-root shorter path plus an independent index-only remote root"
+    },
+    {
+      "id": "ancestor-prefix-tie",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a",
+        "c",
+        "y",
+        "z",
+        "t",
+        "m",
+        "n",
+        "b"
+      ],
+      "edges": [
+        [
+          "a",
+          "c"
+        ],
+        [
+          "a",
+          "y"
+        ],
+        [
+          "y",
+          "z"
+        ],
+        [
+          "z",
+          "t"
+        ],
+        [
+          "t",
+          "u"
+        ],
+        [
+          "a",
+          "m"
+        ],
+        [
+          "m",
+          "n"
+        ],
+        [
+          "n",
+          "b"
+        ],
+        [
+          "b",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 4,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [
+        {
+          "op": "addEdge",
+          "from": "c",
+          "to": "z"
+        }
+      ],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 4,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "full root-first prefix changes through unchanged local distance/parent row"
+    },
+    {
+      "id": "boundary-requeue",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "v",
+        "x",
+        "y",
+        "a"
+      ],
+      "edges": [
+        [
+          "a",
+          "x"
+        ],
+        [
+          "x",
+          "v"
+        ],
+        [
+          "v",
+          "u"
+        ],
+        [
+          "a",
+          "y"
+        ],
+        [
+          "y",
+          "v"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [
+        {
+          "op": "removeEdge",
+          "from": "x",
+          "to": "v"
+        }
+      ],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "invalidated u can pop before v; unchanged y→v restores boundary ingress"
+    },
+    {
+      "id": "disconnected-cycle",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a",
+        "x",
+        "y"
+      ],
+      "edges": [
+        [
+          "a",
+          "x"
+        ],
+        [
+          "x",
+          "y"
+        ],
+        [
+          "y",
+          "x"
+        ],
+        [
+          "y",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [
+        {
+          "op": "removeEdge",
+          "from": "a",
+          "to": "x"
+        }
+      ],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "no stale finite labels after cut; oracle negative remains advisory unknown"
+    },
+    {
+      "id": "score-gain-loss",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a",
+        "x",
+        "y"
+      ],
+      "edges": [
+        [
+          "a",
+          "x"
+        ],
+        [
+          "x",
+          "u"
+        ],
+        [
+          "a",
+          "y"
+        ],
+        [
+          "y",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": 1,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": [
+          [
+            "a",
+            1
+          ],
+          [
+            "x",
+            1
+          ],
+          [
+            "y",
+            0
+          ]
+        ]
+      },
+      "edits": [],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": 1,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": [
+          [
+            "a",
+            null
+          ],
+          [
+            "x",
+            0
+          ],
+          [
+            "y",
+            1
+          ]
+        ]
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "root exemption and endpoint/intermediary gate loss/gain"
+    },
+    {
+      "id": "retired-root-transit",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a",
+        "b"
+      ],
+      "edges": [
+        [
+          "a",
+          "u"
+        ],
+        [
+          "b",
+          "a"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 2,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 2,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "b"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [
+          "a"
+        ],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "root retirement never deletes eligible transit; new root constructed"
+    },
+    {
+      "id": "policy-reset",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a",
+        "x"
+      ],
+      "edges": [
+        [
+          "a",
+          "x"
+        ],
+        [
+          "x",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 2,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "same snapshots under changed policy require explicit reset"
+    },
+    {
+      "id": "epoch-reset",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a",
+        "x"
+      ],
+      "edges": [
+        [
+          "a",
+          "x"
+        ],
+        [
+          "x",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 4,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          },
+          {
+            "epoch": 4,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 4,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "supplied epoch metadata/reset, not canonical epoch activation"
+    },
+    {
+      "id": "known-tree-family-miss",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "x",
+        "a",
+        "b"
+      ],
+      "edges": [
+        [
+          "a",
+          "u"
+        ],
+        [
+          "b",
+          "a"
+        ],
+        [
+          "b",
+          "x"
+        ],
+        [
+          "x",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 2,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a",
+              "b"
+            ],
+            "difficulty": 2
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 2,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a",
+              "b"
+            ],
+            "difficulty": 2
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {
+          "maxPrefixHops": 0,
+          "maxPrefixes": 1,
+          "maxBranches": 0
+        }
+      },
+      "intent": "all canonical trees can miss an M2-positive disjoint family; preserve this miss"
+    },
+    {
+      "id": "any-orientation-loss",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a"
+      ],
+      "edges": [
+        [
+          "a",
+          "u"
+        ],
+        [
+          "u",
+          "a"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "undirected",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [
+        {
+          "op": "removeEdge",
+          "from": "a",
+          "to": "u"
+        }
+      ],
+      "afterOptions": {
+        "policy": {
+          "direction": "undirected",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "explicit supplied projection, not silently duplicated consent/default direction"
+    },
+    {
+      "id": "reciprocal-orientation-loss",
+      "expectation": "complete-equivalent",
+      "nodes": [
+        "u",
+        "a"
+      ],
+      "edges": [
+        [
+          "a",
+          "u"
+        ],
+        [
+          "u",
+          "a"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "undirected",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "reciprocal-only"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [
+        {
+          "op": "removeEdge",
+          "from": "a",
+          "to": "u"
+        }
+      ],
+      "afterOptions": {
+        "policy": {
+          "direction": "undirected",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "reciprocal-only"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "explicit supplied projection, not silently duplicated consent/default direction"
+    },
+    {
+      "id": "zero-node-partial-positive",
+      "expectation": "bounded-diagnostic",
+      "nodes": [
+        "u",
+        "a"
+      ],
+      "edges": [
+        [
+          "a",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 0
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 0
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 0
+          },
+          "repair": {
+            "maxTreeNodes": 0,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "prefix direct positive remains possible without retained trees"
+    },
+    {
+      "id": "update-operation-exhaustion",
+      "expectation": "bounded-diagnostic",
+      "nodes": [
+        "u",
+        "x",
+        "a"
+      ],
+      "edges": [
+        [
+          "a",
+          "x"
+        ],
+        [
+          "x",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [
+        {
+          "op": "addEdge",
+          "from": "a",
+          "to": "u"
+        }
+      ],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 3,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 0,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 0,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 0,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {
+          "maxPrefixHops": 0,
+          "maxPrefixes": 1,
+          "maxBranches": 0
+        }
+      },
+      "intent": "no refunds/hidden full rebuild; BFS partial root differs from atomic E2 discard"
+    },
+    {
+      "id": "retained-node-truncation",
+      "expectation": "bounded-diagnostic",
+      "nodes": [
+        "u",
+        "a",
+        "b"
+      ],
+      "edges": [
+        [
+          "a",
+          "u"
+        ],
+        [
+          "b",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a",
+              "b"
+            ],
+            "difficulty": 2
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a",
+              "b"
+            ],
+            "difficulty": 2
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 3
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 3
+          },
+          "repair": {
+            "maxTreeNodes": 3,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "fresh partial root versus whole reused-root omission, without a common CPU interpretation"
+    },
+    {
+      "id": "builder-grace-asymmetry",
+      "expectation": "bounded-diagnostic",
+      "nodes": [
+        "u",
+        "a"
+      ],
+      "edges": [
+        [
+          "a",
+          "u"
+        ]
+      ],
+      "before": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 3,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "edits": [],
+      "afterOptions": {
+        "policy": {
+          "direction": "directed-from-anchor",
+          "graceEpochs": 1,
+          "maxDifficulty": 8,
+          "maxHops": 1,
+          "maxIdBytes": 64,
+          "maxSlack": 1,
+          "maxWitnessBytes": 8192,
+          "minStanding": null,
+          "undirectedProjection": "any-live-orientation"
+        },
+        "currentEpoch": 6,
+        "snapshots": [
+          {
+            "epoch": 3,
+            "anchors": [
+              "a"
+            ],
+            "difficulty": 1
+          }
+        ],
+        "removed": [],
+        "standing": []
+      },
+      "initial": {
+        "epoch": 3,
+        "maxExpansions": 1000000,
+        "maxTreeNodes": 65536
+      },
+      "round": {
+        "epoch": 3,
+        "budgets": {
+          "rebuild": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "refresh": {
+            "maxExpansions": 1000000,
+            "maxTreeNodes": 65536
+          },
+          "repair": {
+            "maxTreeNodes": 65536,
+            "maxQueuePops": 1000000,
+            "maxPredecessorTrials": 1000000,
+            "maxScheduleTrials": 1000000,
+            "maxLabelUpdates": 1000000
+          }
+        },
+        "queryOverrides": {}
+      },
+      "intent": "old builder checks snapshot only; E1/E2 clear active outside grace; record called vs skipped unknown"
+    }
+  ]
+}
