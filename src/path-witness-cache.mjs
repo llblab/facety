@@ -69,21 +69,23 @@ export class PathWitnessCache {
     return Object.freeze({ status: 'found', feasible: true, reason: 'ok', viewRoot: view.view().id, reference: view.capture.reference,
       context, query, required: primary.required, witness, wire, stats: null, verification: Object.freeze({ primary, ref2 }) });
   }
-  lookup(view, suppliedContext, suppliedQuery, request) {
+  lookup(view, suppliedContext, suppliedQuery, request) { return this.#query(view, suppliedContext, suppliedQuery, request, false); }
+  probe(view, suppliedContext, suppliedQuery, request) { return this.#query(view, suppliedContext, suppliedQuery, request, true); }
+  #query(view, suppliedContext, suppliedQuery, request, probeOnly) {
     if (!isPathWitnessView(view)) throw new TypeError('cache lookup requires immutable path view');
     const context = pathWitnessContext(suppliedContext), policyId = pathWitnessPolicyId(context.policy);
     if (policyId !== view.toJSON().policyId) throw new TypeError('cache context policy differs from capture');
     fields(suppliedQuery, ['epoch', ...Object.keys(PATH_ORACLE_LIMITS)]);
     if (!natural(suppliedQuery.epoch)) throw new RangeError('invalid cache query epoch');
     for (const [key, cap] of Object.entries(PATH_ORACLE_LIMITS)) if (!natural(suppliedQuery[key]) || suppliedQuery[key] > cap) throw new RangeError('unsupported cache fallback budget ' + key);
-    fields(request, ['tick', 'hint']);
+    fields(request, probeOnly ? ['tick'] : ['tick', 'hint']);
     if (!natural(request.tick) || (this.#lastTick !== null && request.tick < this.#lastTick) || request.tick > Number.MAX_SAFE_INTEGER - this.config.ttlTicks) throw new RangeError('invalid/nonmonotonic cache tick or expiry overflow');
     const query = Object.freeze({ epoch: suppliedQuery.epoch, maxExpansions: suppliedQuery.maxExpansions, maxPaths: suppliedQuery.maxPaths, maxPackingSteps: suppliedQuery.maxPackingSteps });
     const key = JSON.stringify([context.domain, context.subject, policyId, query.epoch]);
     const work = { cacheChecks: 0, hintChecks: 0, primaryChecks: 0, ref2Checks: 0, oracleCalls: 0, expired: 0 };
     this.#lastTick = request.tick; this.#counts.queries++;
     for (const [k, entry] of this.#entries) if (request.tick >= entry.expiresAt) { this.#drop(k); this.#counts.expired++; work.expired++; }
-    const finish = (outcome, source, entry) => Object.freeze({ ...outcome, schema: 'facety-path-advice/v1', source, work: Object.freeze({ ...work }),
+    const finish = (outcome, source, entry) => Object.freeze({ ...outcome, schema: probeOnly ? 'facety-path-cache-probe/v1' : 'facety-path-advice/v1', source, work: Object.freeze({ ...work }),
       cache: Object.freeze({ reference: 'verified-whole-witness-fifo/v1', config: this.config, retained: entry !== null, originRoot: entry?.root ?? null, insertedAt: entry?.tick ?? null, expiresAt: entry?.expiresAt ?? null }) });
     const cached = this.#entries.get(key);
     if (cached) {
@@ -91,6 +93,8 @@ export class PathWitnessCache {
       if (outcome) { this.#counts.cacheHits++; return finish(outcome, 'cache', cached); }
       this.#drop(key); this.#counts.cacheRejects++;
     }
+    if (probeOnly) return finish(Object.freeze({ status: 'miss', feasible: null, reason: 'cache-miss', viewRoot: view.view().id, reference: view.capture.reference,
+      context, query, required: null, witness: null, wire: null, stats: null, verification: null }), 'cache', null);
     if (request.hint !== null) {
       work.hintChecks++; const outcome = this.#check(request.hint, view, context, query, work);
       if (outcome) { this.#counts.hintHits++; return finish(outcome, 'hint', this.#retain(key, outcome, request.tick)); }

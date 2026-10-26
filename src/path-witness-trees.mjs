@@ -15,6 +15,7 @@ export const PATH_TREE_REPAIR_LIMITS = Object.freeze({ maxQueuePops: 1000000, ma
 export const PATH_TREE_LIMITS = Object.freeze({ maxExpansions: 1000000, maxTreeNodes: 65536, maxCandidates: 256, maxPackingSteps: 1000000, maxBranches: 64, maxTreeLookups: 65536, maxPrefixHops: 64, maxPrefixes: 4096 });
 export const PATH_PREFIX_RANDOMNESS = Object.freeze({ policy: 'path-prefix-routing/v1', generator: PATH_POOL_RANDOMNESS.generator, childPolicy: PATH_POOL_RANDOMNESS.policy });
 const forests = new WeakSet(), cmp = (a, b) => Buffer.compare(Buffer.from(a), Buffer.from(b));
+export function isPathWitnessForest(value) { return forests.has(value); }
 const natural = n => Number.isSafeInteger(n) && !Object.is(n, -0) && n >= 0;
 function fields(input, keys) {
   if (!input || ![Object.prototype, null].includes(Object.getPrototypeOf(input)) || Reflect.ownKeys(input).length !== keys.length || Object.keys(input).length !== keys.length
