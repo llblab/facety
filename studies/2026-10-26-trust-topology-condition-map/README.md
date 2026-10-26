@@ -6,6 +6,8 @@
 
 **D61 implementation routing,2026-10-26:** the owner's [WP-G witness/indexer direction](../../docs/indexer.en.md) selects the next bounded graph-gate engineering track and parks the prior lifetime-K worker. This remains one master research programme: its gates, pre-data/confirmation rules, unbound human assumptions and no-run status are unchanged. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns WP-G tasks; the [M0 charter](../2026-10-26-witness-indexer/README.md) adds documentation, not a G1 pass or authorized later-WP capture.
 
+**D62 economic acceptance framing,2026-10-26:** [the majority-resilience inquiry](majority-resilience.md) addresses the owner's 51% / two-thirds question with explicit fraction-only insufficiency, person/account/local-power/response denominators and a conditional loss/access/risk target. It adds no selected quorum/price guarantee, data, registration or gate pass. WP-G remains authorized engineering; the same master owns dependent economic testing and BACKLOG alone owns follow-up.
+
 ## Current evidence
 
 [WP0 inventory](orientation.md), [source manifest](source-manifest.json), [machine-readable programme](programme.json), [one-page G0 checkpoint](checkpoint-g0.md) and [pre-data2-page packet](decision-packet.md) describe current preparation. G0 is complete at diagnostic source/ledger level; it does not select all model contracts or pass G1. No master-programme simulation/search/confirmation seed, result map, LLM agent run or human pilot exists. No real v2 registration exists. No runtime/test/protocol change was made at WP0.

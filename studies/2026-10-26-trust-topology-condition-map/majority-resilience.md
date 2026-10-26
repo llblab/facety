@@ -1,0 +1,63 @@
+# Majority-conditioned economic resilience — D62 inquiry contract
+
+**2026-10-26 · OWNER research direction; DIAGNOSTIC analytic framing, not a registration, empirical finding or safety claim.** Source: the owner's question about more than half / two-thirds rule-following participants preventing catastrophic devaluation or keeping adversarial damage acceptable, followed by authorization to choose necessary next steps autonomously. [Protocol §29.2](../../docs/facety.protocol.en.md#292-majority-conditioned-economic-resilience-d62) owns the direction. This is a cross-cutting question inside the existing master programme, not another programme or an override of G1–G6. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns follow-up; [the ledger](../../DECISIONS_NEEDED.md#q15-majority-conditioned-economic-resilience-d62) owns remaining assumptions.
+
+## Answer available before simulation
+
+**Neither 51% nor two-thirds rule-following people alone implies bounded attack damage or a FACY price floor.** There is no established Facety-wide threshold theorem/result for either case. This is a limitation of a fraction-only implication, not an executable exploit against the complete selected protocol, proof of inevitable collapse or a finding that the two fractions perform equally under a specified model.
+
+1. **Price is not protocol integrity.** Even an entirely rule-following network can lose useful demand or liquidity. D53 already gives a toy fixed desired-holdings / growing-stock counterexample. A purchase-price or purchasing-power bound requires a declared demand/market/funding model; buying support from an assumed inexhaustible sponsor is not a defense mechanism.
+2. **People are not admitted accounts or effective authority.** A minority of real controllers may control many admitted aliases, valuable balances, eligibility weight, a local jury pool or sponsor governance. A global person majority need not be the majority at a particular decision or a majority of funded defense work. A missing mapping is an assumption, not an implicit one-person-one-vote guarantee.
+3. **Following rules need not supply enough defense.** Available evidence, independent error, paid inspection, qualified entry, timely verdict and actual collection all matter. Honest participants may be inactive, mistaken or resource-constrained without becoming violators. A genuine coalition can commit violations without using fake identities.
+4. **A familiar consensus fraction is not transferable.** A 51% hashpower statement and a less-than-one-third Byzantine voting statement concern particular powers/protocols/assumptions, not token purchasing power. Exactly two-thirds honest and strictly more than two-thirds are distinct finite-population boundaries. No new Facety quorum or authority is selected here.
+
+A simple conditional dilution illustration makes the denominator issue explicit. Suppose a fixed externally specified cohort of N actual people has rule-following fraction h; each rule-following person claims one unit per day, and each adversarial person controls m admitted, equally rewarded accounts, including its own, with disjoint account sets. With no removals/burns, the coalition's share of this daily issuance is `m*(1-h)/(h + m*(1-h))`. For either h=0.51 or h=2/3 it approaches one as m increases. This is only arithmetic under explicitly assumed admission/reward access: it proves neither that Facety permits arbitrary m nor that this issuance share equals fraud, profit, dilution loss or a price decline. At m=1 an adversary's otherwise valid personal reward is not illicit merely because of intent. Actual admissibility, funded costs and prevention must be supplied by the tested Model reference, never by graph-only minting.
+
+## Chosen question and denominator
+
+**Primary question:** at each declared human-compliance level, under what independently stated evidence, resource, authority, growth and market conditions can funded adversarial strategies be bounded while genuine participation remains usable? Produce a conditional boundary/frontier, including failures and unknown regions, rather than assert a universal percentage.
+
+Use **0.51 and 2/3 as owner-requested comparison anchors**, not estimated safe thresholds or selected quorum rules. Include the strict-majority boundary and registered points on both sides of candidate transitions; exact integer population realizations and rounding belong in the eventual registration. Do not silently round 2/3 to 67%, substitute 51% for every value above half, or infer a monotone improvement in all outcomes without checking resource/topology changes.
+
+For a reference cohort, define `h_people(t)` as the fraction of a separately declared genuine-person cohort following the scoped rules over the declared evaluation interval. Count each actual person once; separately map control of accounts/resources. Paid genuine participants remain people even when coordinated by one sponsor. State who is in the population, which rules and opportunities determine compliance, the interval and how switching is handled. This is an evaluator/scenario variable, **not a defense-visible personhood oracle**. Fix the reference cohort or report entries/exits explicitly so that expelling honest people, splitting aliases or changing the denominator cannot improve the measured fraction for free. A finite cohort does not model all humanity. Report time-varying mixtures separately from static ones.
+
+Alongside it retain, without collapsing into one score:
+
+- Genuine-person counts and account/resource control, admitted SubjectIds and controlled aliases; false identity versus genuine-person act violations and ordinary permitted coordination.
+- Actual issuance and coalition-controlled issuance, stock/custody, existing XP or other explicitly defined eligibility, local jury/electorate and sponsor control; no Standing=XP substitution.
+- Funded observer/work capacity, received evidence and shared errors, sponsor availability and case latency, successful prevention/removal and actual recovered amounts. Mere intent, looks, allegations and nominal debt are not successful defense.
+- Local attack concentration, bootstrap/anchor concentration and external capital/benefits. Global h does not certify local sampling, independent votes or uncorrelated observations.
+
+## Outcomes and attribution
+
+**Primary protocol outcomes:** illicit issuance/extraction with source-defined violation labels; active violating identities/acts and persistence; actual recovered principal versus unpaid debt; wrongful honest loss, access/rejection, workload and retained genuine growth. Preserve raw counts and denominators, including zero/null/censored endpoints. Report lawful coalition income separately from illicit gains.
+
+**Primary economic outcomes:** coalition realizable net gain after actual funded costs and external benefits; honest attack-attributable loss; and any market drawdown/recovery only under an explicit market model. Lock/refund/transfer/burn, gross slash/net coalition loss, principal recovery/punishment and nominal/real units remain separate. Internal coalition transfers cancel. A price change alone neither identifies a violator nor measures the whole welfare loss.
+
+Pair each attack context with a declared no-attack control having the same initial resources, honest opportunities, demand shocks and sponsor budget. State what interventions change and which keyed randomness remains shared; do not change a random-key policy silently. Report total loss, paired incremental loss and failure of genuine growth separately. The paired comparison is a model-defined counterfactual, not observational causal identification. Pre-existing stock or existing honest balances cannot be ignored when normalizing harm. No economic result is licensed by an indexer hit rate or a structural verifier pass.
+
+For every bounded claim, bind **horizon H, loss unit/budget L, bad-event criterion, probability/error tolerance, scenario range and attacker action/resource/search scope before data**. A single scalar 'acceptable damage' has no supplied economic calibration. The chosen output is therefore the loss/access/risk frontier parameterized by those tolerances, not an invented universal 10% loss or a guaranteed price band. A binary claim may be made only for an explicitly bound region/criterion; missing evidence is unknown, not pass. Unrecoverable-by-H is censored recovery, not proof of irreversible ruin. Finite-horizon safety is not 'safe forever'.
+
+## Candidate sufficient-condition shape, not an implemented defense
+
+One useful analytic subproblem is a continuous-time growth/response comparison envelope. If a separately justified model guarantees, at every time, nonnegative active abuse stock A, external new-abuse rate at most b, internal expansion at most g*A, and **effective successful** removal at least lambda*A, then `dA/dt <= b - (lambda-g)*A`. For constant b>=0, g>=0 and lambda>g, with delta=lambda-g:
+
+```text
+A(t) <= A(0)*exp(-delta*t) + (b/delta)*(1-exp(-delta*t))
+```
+
+This follows by an integrating factor; it assumes the rate inequality, coherent units and a common at-risk population. It does not derive lambda from h, raw observations, public attention or nominal penalties. Dependence, delays, capacity saturation, privileged local capture and nonlinear growth may invalidate the premise. Test the premise rather than encode it as a favorable result; actual successful removals need admissible evidence and authorized Model execution.
+
+Even if this stock bound holds, positive b can maintain nonzero abuse indefinitely. With positive extraction per active abuser, cumulative loss can continue growing; a stock bound is not a lifetime cumulative-loss or price bound. Translating it into an economic guarantee additionally requires bounded extraction/authority per abuse unit, realized recovery, usable honest growth and a demand/funding model. Conversely a growing stock of powerless aliases need not equal large economic harm. Both alternatives belong in the analysis.
+
+## Existing programme owners and falsification
+
+- **WP1/G1:** funded permissions, person/account/cut accounting and collectible incremental payback; lifetime versus renewable capacity distinctions survive. No percentage replaces missing coverage/method.
+- **WP2/G2 + WP3/G3:** evidence/correlation, honest access, adaptive aliases and genuine coalitions, concentrated/local authority capture and tested attack-search limits.
+- **WP5/G5:** realizable costs/returns, autonomous demand versus conditional finite ATMO support, liquidity/governance and purchased outside benefits; no protected price or free treasury.
+- **WP4/G4:** actual growth/response race, bootstrap/transition/concentration shocks, cascade and recovery horizons, including whether the analytic envelope's premises fail.
+- **WP6/G6:** joint conditional frontiers and reserved-seed plus untouched-parameter confirmation on both sides of any proposed threshold; original family/selection/kill rules apply.
+
+Retain counterexamples where h is high but response fails; where market demand collapses despite clean protocol behavior; where structural safety blocks genuine growth; and where local power concentration differs from global people counts. Also retain favorable cases without presenting them as universal. Mechanism claims still require preregistered presence/necessity/named-alternative tests; a bounded scripted menu or failed search is not an optimal adversary.
+
+**Checkpoint boundary:** this document closes question framing and identifies why a fraction-only guarantee is insufficient. It creates no simulation parameter, runtime metric, empirical sample, research registration, reserved label, G1 pass, selected quorum, threshold recommendation or general migration. WP-G remains the authorized engineering track after this inquiry checkpoint; remaining empirical work stays in the existing master gate order. Autonomy chooses safe scoped preparation without repeatedly asking for routine choices; it does not silently settle selected-protocol OPENs or supply missing human/market evidence.

@@ -8,6 +8,8 @@ Follow the master gates: funded Native composition, a separate logical reference
 
 The master resolves equal-vouch R0, joint-backed minimum R1(m0/1/2/c), and lower-bond/higher-weight R2 variants. It also specifies a public fresh group artifact, own-matured-source PURCHASE/F1/3/7, and preventive phase variants. These are proposal definitions, not implemented verification, capital or court procedures.
 
+**D62 acceptance clarification:** [the majority-resilience inquiry](majority-resilience.md) asks for conditional damage/access/risk boundaries at 51% and 2/3 rule-following genuine people. Neither fraction alone bounds aliases, local authority, effective defense or market devaluation. Compare attack-attributable harm with declared no-attack controls and keep autonomous/finite-sponsored demand separate. No fraction is selected as a quorum or safe region; no new data or gate pass follows.
+
 ## Order and gates
 
 G0→WP1/G1. After G1, evidence rules/privacy/access (WP2), adaptive topology/detection (WP3) and economics (WP5) may proceed independently. Their G2/G3/G5 checkpoints precede dynamics/phase/recovery (WP4), then condition-map/VOI/reserved confirmation (WP6). WP7 waits for G2-fixed rules and a defined usable non-LLM baseline; WP8 uses G6's measurement ranking. The earlier 'next Claim-guard' task is no longer an ordering override.
