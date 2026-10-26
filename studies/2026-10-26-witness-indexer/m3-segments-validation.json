@@ -1,0 +1,103 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-D1 bounded local segment-store engineering, not full witness/search integration, independent authorship, authenticated identity, scaling or E1 evidence",
+  "baseCommit": "49d7449feb838f5a8b77586346aa49dc8309fbac",
+  "provenance": {
+    "implementation": { "method": "sha256-src-mjs-v1", "digest": "39e7b412b611c1327c278a56ff7e423dd45855da26beab7677a28dc994e3f7e3", "files": 46 },
+    "runtime": { "node": "v26.8.1" }
+  },
+  "files": [
+    { "path": "src/path-witness-segments.mjs", "gitBlob": "bac1263c30fa9e5b6119f53c6d38f5ad6cb5fbd9" },
+    { "path": "test/path-witness-segments.test.mjs", "gitBlob": "9cdd1c58b4a50d7e45aaefea43b642f3223dfd0a" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-segments-implementation.md", "gitBlob": "be0ad50c1bbae80fa4df27cead6ed73b2e9656b6" },
+    { "path": "docs/simulator.en.md", "gitBlob": "e6b2af3c06b132f52dc9ecb44e12980f093ea0bf" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-segments.md", "gitBlob": "30a074e21e3c8e1f2ae782a92de3a7faf037f004" },
+    { "path": "studies/2026-10-26-witness-indexer/m3-segments-contract-validation.json", "gitBlob": "ec673ce7c106688833cd6ba111c3bb3b5048192b" }
+  ],
+  "implementation": {
+    "module": "src/path-witness-segments.mjs",
+    "public": ["PathWitnessSegmentCache", "PATH_SEGMENT_LIMITS"],
+    "methods": ["put", "lookup", "invalidate", "stats"],
+    "scope": "ledgerId/domain/capture-reference/storage-name/policyId/epoch/endpoints; operator lineage assumption, not authentication",
+    "local": "positive simple current vertices/edges and enabled internal-only scores, no terminal/D/family role",
+    "identity": "directed original reverse ID; reciprocal both originals; any-live one of all originally live orientations survives",
+    "storage": "exact immutable JSON payload bytes, fixed logical TTL, FIFO, explicit refresh and within-cycle use count",
+    "lookup": "bounded FIFO endpoint alternatives; current checks on every return, complete bucket is not no-path",
+    "invalidation": "conservative both-orientation edge and all-containing-vertex eviction; no canonical mutation",
+    "preparation": "WeakMap per immutable view, O(nodes+stored edges) on first local check; hop/reference checks still run on hits",
+    "noAcceptedFeasibleWitnessOrWireFields": true,
+    "implicitFallbackSearchRNGOrModelMutation": false,
+    "candidateIntegration": false,
+    "useSaturation": "safe-integer cap plus explicit saturation flag; source-inspected, astronomical public trace not executed"
+  },
+  "limits": {
+    "maxEntries": 1024,
+    "maxImmutablePayloadBytes": 1048576,
+    "ttlTicks": 1000000,
+    "maxChecks": 1024,
+    "maxResults": 64,
+    "maxRawNoticesPerArray": 4096,
+    "maxIdOrLedgerBytes": 256,
+    "maxEdgeIdBytes": 64,
+    "pathBounds": "current witness policy r<=64 and ID<=256 bytes",
+    "payloadBytesAreNotTotalMemory": true,
+    "notProtocolQuotasOrCalibration": true
+  },
+  "focused": {
+    "command": "node --test test/path-witness-*.test.mjs",
+    "passed": 102,
+    "newFamilies": 10,
+    "rawReference": {
+      "nodes": ["u", "a", "b"],
+      "graphs": "all64 subsets of6 directed non-self arcs",
+      "projections": ["directed-from-anchor", "any-live-orientation", "reciprocal-only"],
+      "scores": ["minStanding null", "minStanding1 with a0/b1 and endpoints exempt"],
+      "paths": [["u", "a"], ["u", "b"], ["u", "a", "b"], ["u", "b", "a"]],
+      "cases": 1536,
+      "stored": 552,
+      "observedMismatch": 0,
+      "identityPayloadsLiterallyReconstructed": true,
+      "reference": "separate raw-row/score-map checker, no production segment predicate or view edge calls",
+      "notHumanSamplesOrIndependentAuthorship": true
+    },
+    "controls": [
+      "new root with old IDs can reuse; reincarnation/new opposite IDs can miss a valid vertex witness",
+      "any-live original survivor vs reciprocal orientation loss",
+      "local endpoints vs full terminal/internal roles, removed-anchor transit, full M1/ref2/M2 stitching",
+      "no conditional skip of current per-hop checks even at matching roots",
+      "TTL exact boundary, explicit refresh resets use/TTL and moves FIFO tail, hits do neither",
+      "multiple alternatives and exact check/result/zero limits, stale-incarnation progress after budgeted eviction",
+      "all endpoint/edge/vertex index cleanup through expiry/refresh/FIFO/current rejection/notices",
+      "payload byte exact/one-less/disabled capacity, no total-memory claim",
+      "domain/graph/policy/epoch/ledger scopes and unavailable expiry sweeps",
+      "strict dense plain/null arrays, copies/accessors/subclasses/raw/Unicode/config/rollback/expiry overflow",
+      "unsupported captured identity length is unavailable, not vertex-witness invalidity",
+      "segment bytes independent of full-witness wire budget",
+      "immutable/inert snapshots/stats, r64 Unicode and Native read-only operation"
+    ],
+    "developmentDiagnosis": "The unsupported-ID fixture initially tried to mutate a frozen DirectedGraph JSON row; it now clones the fixture before the declared synthetic identity injection. Production view/acceptance guards were not weakened."
+  },
+  "full": {
+    "command": "npm test",
+    "current": { "passed": 569, "failed": 0, "skipped": 0 },
+    "historical": { "passed": 21, "failed": 0, "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7", "currentSourceEvidence": false }
+  },
+  "oldAPICompatibility": {
+    "queriesPerAPI": 12288,
+    "originalTreeDigest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+    "oneHopDigest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+    "matchedInCurrentSuite": true,
+    "oldSourceModulesAndFrozenContractRecordsUnchanged": true
+  },
+  "conformance": {
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "scope": "fixed Native/legacy trajectories, not universal equivalence; no existing generator/key/default/Model source change"
+  },
+  "architecture": { "files": 46, "localEdges": 119, "cycles": 0, "errors": 0, "warnings": 0 },
+  "context": { "errors": 0, "warnings": 29, "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort" },
+  "remaining": { "M3": "open", "next": "explicit segment-to-prefix/tree candidate integration contract and full family/miss controls; then bounded update repair", "liveAuthorityCapacityAndFundedGate": true },
+  "research": { "registrations": 0, "experimentRuns": 0, "benchmarkCurves": 0, "confirmationSeedLabels": [], "LLMAgentRuns": 0, "masterG1Verdict": null, "D62EconomicGuarantee": false, "pilot": false }
+}
