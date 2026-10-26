@@ -1,6 +1,6 @@
 # M2-B exact global bounded-hop reference on captured views
 
-**D61 engineering contract before code.** Builds on [M2-A immutable captures](m2-view.md) and [M1 verification](m1-verifier.md). This is a bounded exhaustive reference, not a polynomial flow algorithm, advisory indexer, authenticated/live state service, selected-default migration or empirical E1 result. BACKLOG alone owns tasks; Model event replay/version integration remains separate.
+**D61 engineering contract before code.** Builds on [M2-A immutable captures](m2-view.md) and [M1 verification](m1-verifier.md). This is a bounded exhaustive reference, not a polynomial flow algorithm, advisory indexer, authenticated/live state service, selected-default migration or empirical E1 result. BACKLOG alone owns tasks; This historical M2-B checkpoint atd124e40 predates [M2-C](m2-replay.md), which adds structural event replay/version auditing without changing search rules; absent-replay statements below describe M2-B. Atomic economic authorization remains separate.
 
 ## API, inputs and domain
 
