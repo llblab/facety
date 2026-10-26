@@ -1,14 +1,18 @@
-// Owns: Bounded single-parent anchor BFS advice and dual-verified candidate assembly; excludes global completeness, pool routing, dynamic repair and authority.
+// Owns: Bounded anchor BFS and tree/one-hop branch candidate assembly; excludes global completeness, live ranking, dynamic repair and authority.
 import { pathWitnessContext, pathWitnessPolicyId, encodePathWitness, decodePathWitness, verifyPathWitness } from './path-witness.mjs';
 import { verifyPathWitnessRef2 } from './path-witness-ref2.mjs';
 import { isPathWitnessView } from './path-witness-view.mjs';
+import { routePathWitnessPool } from './path-witness-pool.mjs';
 
-export const PATH_TREE_LIMITS = Object.freeze({ maxExpansions: 1000000, maxTreeNodes: 65536, maxCandidates: 256, maxPackingSteps: 1000000 });
+export const PATH_TREE_LIMITS = Object.freeze({ maxExpansions: 1000000, maxTreeNodes: 65536, maxCandidates: 256, maxPackingSteps: 1000000, maxBranches: 64, maxTreeLookups: 65536 });
 const forests = new WeakSet(), cmp = (a, b) => Buffer.compare(Buffer.from(a), Buffer.from(b));
 const natural = n => Number.isSafeInteger(n) && !Object.is(n, -0) && n >= 0;
-function config(input, keys) {
+function fields(input, keys) {
   if (!input || ![Object.prototype, null].includes(Object.getPrototypeOf(input)) || Reflect.ownKeys(input).length !== keys.length || Object.keys(input).length !== keys.length
     || keys.some(k => !Object.hasOwn(input, k)) || Object.values(Object.getOwnPropertyDescriptors(input)).some(d => !Object.hasOwn(d, 'value'))) throw new TypeError('trees require exact data fields');
+}
+function config(input, keys) {
+  fields(input, keys);
   for (const key of keys) if (!natural(input[key]) || (key !== 'epoch' && input[key] > PATH_TREE_LIMITS[key])) throw new RangeError('unsupported tree budget/epoch ' + key);
   return Object.freeze(Object.fromEntries(keys.map(k => [k, input[k]])));
 }
@@ -60,31 +64,57 @@ export function buildPathWitnessTrees(view, input) {
   } });
   forests.add(forest); return forest;
 }
-export function proposePathWitnessFromTrees(forest, view, suppliedContext, input) {
+export function proposePathWitnessFromTrees(forest, view, suppliedContext, input) { return propose(forest, view, suppliedContext, input, null); }
+export function proposePathWitnessFromBranches(forest, view, suppliedContext, input, advice) {
+  fields(advice, ['pool', 'routing']); fields(advice.routing, ['seed', 'queryId', 'step', 'mode', 'loads']);
+  return propose(forest, view, suppliedContext, input, advice);
+}
+function propose(forest, view, suppliedContext, input, advice) {
   if (!forests.has(forest) || !isPathWitnessView(view)) throw new TypeError('proposal requires local forest and immutable current capture');
   const context = pathWitnessContext(suppliedContext), p = context.policy, policyId = pathWitnessPolicyId(p);
   if (view.toJSON().policyId !== policyId || forest.meta.policyId !== policyId) throw new TypeError('tree proposal policy differs from capture');
-  const query = config(input, ['epoch', 'maxCandidates', 'maxPackingSteps']);
+  const query = config(input, advice ? ['epoch', 'maxCandidates', 'maxPackingSteps', 'maxBranches', 'maxTreeLookups'] : ['epoch', 'maxCandidates', 'maxPackingSteps']);
   const stats = { treeLookups: 0, candidatesExamined: 0, liveCandidates: 0, edgeChecks: 0, scoreChecks: 0, packingSteps: 0,
     validationComplete: false, packingComplete: false };
+  const branch = advice ? { reference: 'one-hop-branch-tree/v1', eligiblePeers: null, branchesExpanded: 0, duplicatePaths: 0,
+    route: routePathWitnessPool(advice.pool, { ...advice.routing, domain: context.domain, viewId: view.view().id, epoch: query.epoch, subject: context.subject,
+      start: 0, count: 0, excluded: [] }) } : null;
   let required = null, witness = null, wire = null, verification = null;
   const result = (status, reason) => freeze({ schema: 'facety-path-proposal/v1', status, feasible: status === 'found' ? true : null, reason,
     viewRoot: view.view().id, canonicalReference: view.capture.reference, forestRoot: forest.meta.originRoot, forest: forest.meta,
-    context, query, required, witness, wire, verification, stats: { ...stats } });
+    context, query, required, witness, wire, verification, ...(branch ? { branch } : {}), stats: { ...stats } });
   if (forest.meta.epoch !== query.epoch) return result('unavailable', 'forest-epoch-mismatch');
   const current = view.view().epoch;
   if (query.epoch > current || current - query.epoch > p.graceEpochs) return result('unavailable', 'epoch-outside-grace');
   const snapshot = view.snapshot(query.epoch);
   if (snapshot === null || forest.meta.status === 'unavailable') return result('unavailable', 'snapshot-unavailable');
   required = snapshot.difficulty;
-  const candidates = []; let candidateStop = false;
+  const candidates = [], seeds = [context.subject], seen = new Set(); let candidateStop = false, lookupStop = false, branchStop = false;
+  if (branch) {
+    const neighbors = new Set(view.neighbors(context.subject, p.direction, p.undirectedProjection));
+    const excluded = branch.route.pool.ranked.filter(({ id }) => !neighbors.has(id) || id === context.subject).map(({ id }) => id);
+    branch.eligiblePeers = branch.route.pool.ranked.length - excluded.length;
+    branch.route = routePathWitnessPool(advice.pool, { ...branch.route.query, count: query.maxBranches, excluded });
+    seeds.push(...branch.route.selected); branchStop = branch.route.selected.length < branch.eligiblePeers;
+  }
   function edge(a, b) { stats.edgeChecks++; return view.edge(a, b); }
-  for (const anchor of forest.anchors()) {
-    stats.treeLookups++; const path = forest.path(context.subject, anchor);
-    if (!path || path.length < 2) continue;
+  function* paths() {
+    for (const seed of seeds) {
+      let started = false;
+      for (const anchor of forest.anchors()) {
+        if (branch && stats.treeLookups === query.maxTreeLookups) { lookupStop = true; return; }
+        if (!started) { if (branch && seed !== context.subject) branch.branchesExpanded++; started = true; }
+        stats.treeLookups++; const tail = forest.path(seed, anchor);
+        if (tail) yield seed === context.subject ? tail : [context.subject, ...tail];
+      }
+    }
+  }
+  for (const path of paths()) {
+    if (path.length < 2) continue;
+    const anchor = path.at(-1);
     if (stats.candidatesExamined === query.maxCandidates) { candidateStop = true; break; }
     stats.candidatesExamined++;
-    if (!view.anchor(query.epoch, anchor) || view.removed(anchor)) continue;
+    if (path.length > p.maxHops + 1 || new Set(path).size !== path.length || !view.anchor(query.epoch, anchor) || view.removed(anchor)) continue;
     let valid = true;
     for (let i = 1; i < path.length; i++) {
       const a = path[i - 1], b = path[i];
@@ -94,9 +124,12 @@ export function proposePathWitnessFromTrees(forest, view, suppliedContext, input
         stats.scoreChecks++; const score = view.standing(b); if (score === null || score < p.minStanding) { valid = false; break; }
       }
     }
-    if (valid) candidates.push(path);
+    if (valid) {
+      const key = JSON.stringify(path);
+      if (!seen.has(key)) { seen.add(key); candidates.push(path); } else if (branch) branch.duplicatePaths++;
+    }
   }
-  stats.liveCandidates = candidates.length; stats.validationComplete = !candidateStop;
+  stats.liveCandidates = candidates.length; stats.validationComplete = !candidateStop && !lookupStop && !branchStop;
   let packingStop = false;
   function pack(start, chosen, used) {
     if (chosen.length === required) return [...chosen];
@@ -115,6 +148,8 @@ export function proposePathWitnessFromTrees(forest, view, suppliedContext, input
   if (!family) {
     if (packingStop) return result('censored', 'packing-limit');
     if (candidateStop) return result('censored', 'candidate-limit');
+    if (lookupStop) return result('censored', 'tree-lookup-limit');
+    if (branchStop) return result('censored', 'branch-limit');
     if (!forest.meta.complete) return result('censored', 'tree-build-incomplete');
     return result('miss', candidates.length < required ? 'tree-path-shortage' : 'tree-family-conflict');
   }

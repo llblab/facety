@@ -1,0 +1,16 @@
+{
+  "schema": "facety-branch-tree-counterexample/v1",
+  "classification": "finite synthetic one-hop/tree limitation, not research data or a funded economic attack",
+  "nodes": ["u", "x", "y", "a", "b"],
+  "edges": [["a", "u"], ["b", "a"], ["a", "x"], ["x", "u"], ["b", "y"], ["y", "x"]],
+  "snapshot": { "epoch": 3, "difficulty": 2, "anchors": ["a", "b"] },
+  "maxHops": 3,
+  "expected": {
+    "treeProposal": "miss",
+    "oneHopBranchProposal": "miss",
+    "globalOracle": "found",
+    "oneValidGlobalFamily": [["u", "a"], ["u", "x", "y", "b"]],
+    "retainedBPaths": [["u", "a", "b"], ["x", "a", "b"]]
+  },
+  "explanation": "BFS from b chooses a before y at equal distance. Both the base u tail and the one-hop x tail pass through counted endpoint a. The valid x-y-b detour requires a deeper prefix; y is not a current neighbor of u. Enumerating all retained one-hop peers therefore still misses."
+}
