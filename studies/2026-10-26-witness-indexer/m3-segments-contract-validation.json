@@ -1,0 +1,121 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D61 M3-D1 lifecycle/identity/role contract only; observations use existing captures/full-witness verifiers, not a segment cache implementation",
+  "baseCommit": "74e43a2cd44b1f2abc334ea95360d92b61c94996",
+  "provenance": {
+    "implementation": { "method": "sha256-src-mjs-v1", "digest": "d3ffb1f65a7babeea6b2949a8e9ceae0316750f7ee45145fd93d6b018cd36eb0", "files": 45 },
+    "runtime": { "node": "v26.8.1" },
+    "unchangedSrcTree": "49d51823b72a580e34204303143a9103f2b663c3",
+    "unchangedTestTree": "cbe61f8235eb491d10fee1a8081b203a7cd83d2c"
+  },
+  "files": [
+    { "path": "studies/2026-10-26-witness-indexer/m3-segments.md", "gitBlob": "30a074e21e3c8e1f2ae782a92de3a7faf037f004" },
+    { "path": "src/path-witness-trees.mjs", "gitBlob": "827fb392bafd62f29123cdd65db1e004ca80480e" },
+    { "path": "test/path-witness-prefix.test.mjs", "gitBlob": "4bfc3d0808148bd3345a18b445b433c4800fde3b" }
+  ],
+  "contract": {
+    "proposedModule": "src/path-witness-segments.mjs",
+    "proposedPublic": ["PathWitnessSegmentCache", "PATH_SEGMENT_LIMITS"],
+    "modulePresent": false,
+    "implemented": false,
+    "scope": "bounded partial-path retention and current local/reference checks, no full witness or canonical authority",
+    "identity": "caller ledger/domain/reference/graph/policy/epoch scope, original live stored orientation IDs; not authenticated global relation identity",
+    "projection": "directed original reverse hop; reciprocal both originals; any-live at least one originally recorded live orientation survives",
+    "roles": "segment endpoints score-exempt, internals obey enabled threshold; no terminal-anchor/D/family claim",
+    "lifecycle": "explicit fixed logical TTL, insertion refresh/FIFO, bounded endpoint lookup, inert stats, saturated advisory use counter and conservative reverse eviction",
+    "newRNGOrCanonicalStateMutation": false,
+    "newSegmentImplementationExecuted": false,
+    "futureRequiredValidation": "raw local/reference checker plus full M1/ref2/M2 stitching; TTL/FIFO/bytes/refresh/index/usage/clock/budget/poison/malformed controls before integration"
+  },
+  "controlContext": {
+    "classification": "existing full-witness outcomes and captured stored-ID observations only, not segment-store acceptance",
+    "base": "wire-vectors.json context",
+    "nodesInitially": ["u", "a", "b"],
+    "snapshot": { "epoch": 3, "difficulty": 1, "anchors": ["a", "b"] },
+    "default": "directed-from-anchor, no removals or standing rows; explicit per-case projection/score overrides",
+    "controls": [
+      {
+        "case": "unrelated-root-change",
+        "initialEdges": [["a", "u"]],
+        "mutation": "add node unrelated",
+        "rootChanged": true,
+        "originalIdSurvives": true,
+        "path": ["u", "a"],
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "directed-remove-readd",
+        "initialEdges": [["a", "u"]],
+        "mutation": "after unrelated-node append, remove a->u then add a->u",
+        "oldId": "edge:0",
+        "newId": "edge:1",
+        "originalIdSurvives": false,
+        "path": ["u", "a"],
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "any-live-new-opposite-only",
+        "initialEdges": [["a", "u"]],
+        "projection": "undirected/any-live-orientation",
+        "mutation": "remove a->u then add u->a",
+        "originalIdSurvives": false,
+        "newOppositeId": "edge:1",
+        "path": ["u", "a"],
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "any-live-original-opposite-survives",
+        "initialEdges": [["a", "u"], ["u", "a"]],
+        "projection": "undirected/any-live-orientation",
+        "mutation": "remove a->u",
+        "originalIdSurvives": true,
+        "path": ["u", "a"],
+        "primary": true,
+        "ref2": true
+      },
+      {
+        "case": "reciprocal-one-orientation-lost",
+        "initialEdges": [["a", "u"], ["u", "a"]],
+        "projection": "undirected/reciprocal-only",
+        "mutation": "remove a->u",
+        "path": ["u", "a"],
+        "primary": false,
+        "ref2": false
+      },
+      {
+        "case": "removed-anchor-endpoint-versus-transit",
+        "initialEdges": [["a", "u"], ["b", "a"]],
+        "removed": ["a"],
+        "asTerminal": { "path": ["u", "a"], "primary": false, "ref2": false },
+        "asTransit": { "path": ["u", "a", "b"], "primary": true, "ref2": true }
+      },
+      {
+        "case": "low-score-endpoint-versus-transit",
+        "initialEdges": [["a", "u"], ["b", "a"]],
+        "minStanding": 1,
+        "standing": [["a", 0], ["b", 0]],
+        "asTerminal": { "path": ["u", "a"], "primary": true, "ref2": true },
+        "asTransit": { "path": ["u", "a", "b"], "primary": false, "ref2": false },
+        "afterAQualifies": { "standing": [["a", 1], ["b", 0]], "path": ["u", "a", "b"], "primary": true, "ref2": true }
+      }
+    ],
+    "count": 7,
+    "allPrimaryRef2OutcomesAgreed": true,
+    "notEvidenceOfSegmentTTLUseIndexOrLookupCode": true
+  },
+  "priorValidation": {
+    "source": "m3-prefix-validation.json at74e43a2",
+    "npmTestRerun": false,
+    "currentPassedAtPriorCheckpoint": 559,
+    "historicalPassedAtPriorCheckpoint": 21,
+    "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+    "basis": "source/test trees and implementation digest unchanged; previous runtime evidence reused, not a fresh whole-suite pass across changed documentation",
+    "architectureAtSameSource": { "files": 45, "localEdges": 117, "cycles": 0, "errors": 0, "warnings": 0 }
+  },
+  "context": { "errors": 0, "warnings": 29, "disposition": "Existing structure/AGENTS density/wide-table warnings reviewed; large-protocol link/list scan skip retained, protocol unchanged in this cohort" },
+  "remaining": { "M3": "open", "next": "implement the bounded segment store, then explicit full-witness candidate integration/update repair; no automatic master-study fallback" },
+  "research": { "registrations": 0, "newSegmentImplementationRuns": 0, "benchmarkCurves": 0, "confirmationSeedLabels": [], "LLMAgentRuns": 0, "masterG1Verdict": null, "D62EconomicGuarantee": false, "pilot": false }
+}
