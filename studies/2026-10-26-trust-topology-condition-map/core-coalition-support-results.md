@@ -1,0 +1,25 @@
+# Cooperation can create eligible individual standing through real responsibility
+
+**2026-10-27 · base14128e5 · DIAGNOSTIC encoded-rule operability, not actual human cooperation/organized-attack efficacy/viability.** [Frozen pre-code contract](core-coalition-support-contract.md), [actual rows and bindings](core-coalition-support-results.json), [existing test owner](../../test/core-authority.test.mjs); BACKLOG alone owns work. This advances [the ordinary-entry prerequisite](core-coalition-entry-results.md), whose four rows remain identical.
+
+## Actual actions, not pooling
+
+Reuse ten supplied admitted genesis and the ten-day zero-wealth prefix: nine designated corrective actors2 XP/2 liquid each, accused5/5, total23 actual units. Their accurate received evidence/willingness/voluntary public agreement are scenario conditions, not observed human behavior or protocol guilt/verification. Eight peers transfer1 actual FACY each to p000 in **both** arms; money moves, XP stays2. Support only: p000 proposes/peers confirm8 active guarantees; p000 actually pays the native reference fee0 or1 per activation. Links alone still give no XP; old act rosters are not backdated. Support takes real D57 warranty/exposure, not a free authority bonus.
+
+At240 the eight peers each create one subsequent Self-ID in both arms; the accused also creates one own Self-ID in both (not frozen, but not a full adaptive attacker). The support acts snapshot exactly p000 as guarantor; control/accused acts have no guarantor. At263 there is still no new XP/income. At264 actual maturity credits the eight author receipts **plus eight p000 guarantor receipts** in support. Maturity leaves9 original rights in emitter custody until each author separately withdraws them.
+
+- **Support:** p000 earns2→10 XP, peers2→3, accused5→6. Exactly p000 clears actual ordinary challengeAccess and reserves1 real FACY. TotalXP40, minted32; feeVault8×nativeFee, collector31−8×nativeFee/stakeVault1, burned/debt0.
+- **Funding-only control:** p000 remains2 XP despite actual extra cash; peers3, accused6, no corrective individual passes. TotalXP32, minted32/collector32, no fees/stake/burn/debt.
+- **Eight executions:**2 arms×fee0/1×forward/reverse operations. Normalized subjects/money/access/credit roles agree under reversal. Same starting resources/transfers, authors/emission times and total new principal; actual fee spend, earned XP and guarantee exposure intentionally differ as outcomes. Each actor still has stake funds; this is not a missing-cash effect.
+
+Native liquid guaranteeFee0/1 is an explicitly named reference assumption, **not a selected protocol price, qualified-guarantee migration or funded-vouch implementation**. Eight distinct outgoing guarantees fit K100 arithmetically; no native cap/verification enforcement is claimed. No new people, external funds, hidden truth in defense, automatic withdrawal, XP reassignment or Council/quorum/entry exemption.
+
+## Meaning and ceiling
+
+The earlier distributed-XP barrier is **not a proof of group helplessness**. In this conditional native context coordinated participants can lawfully earn an individually usable credential through fresh source responsibilities instead of pooling old XP. This is an expected composition of encoded D54 credit and actual access/custody, not a newly confirmed emergent mechanism. It is not verified usefulness, profitable defense, an equilibrium, a guaranteed early-community advantage or sustained honest growth. The same available action menu is not intrinsically honest-only: coordinated violators may also use it. Historical responsibility and actual later collection need their own evidence.
+
+**Financial reservation is still not an admitted public complaint, merits or removal.** No winner/timeout/penalty/source cut/identity exclusion is executed, no host verdict manufactures success, and the selected below100 no-formal-Council condition is not replaced by legacy council(). The next required check is the actual path from evidence/ordinary opening through responses/escalation and authorized merits to appropriate execution, distinguishing identity violations from specific-act defects and retaining false-accusation defense. Map any exact unimplemented step before selecting rules or restarting parked C3. Do not replace this with another XP-only scenario or an entire verification questionnaire.
+
+## Validation
+
+5 unit families/23 focused/735 current plus21 separately isolated compatible-source historical pass. Original three C0 test bodies/fixture and all old packets unchanged; previous four entry rows identical across unit/focused/full. One new family and optional private-helper fee argument only; no Source/default/RNG/API/engine changes. Exact source91db8605/53 files/Node26.8.1 permits **reuse, not rerun**, of source-only DAG53/168/two fixed trajectories; current native preservation streams retained. No empirical registration/G1/seed/data/model-of-human calibration. Raw role snapshots/access counts/custody retained separately; no aggregate confidence inferred from test totals.

@@ -123,9 +123,9 @@ test('D71 analytic exclusion changes the relevant electorate without executing a
   assert.ok(spread.peer.bothRuleFollowing[0] < spread.peer.bothRuleFollowing[1]);
 });
 
-function smallCorrectiveCohort(receipts, reverse) {
+function smallCorrectiveCohort(receipts, reverse, guaranteeFee = 0) {
   const people = Array.from({ length: 10 }, (_, i) => `p${String(i).padStart(3, '0')}`);
-  const model = new FacetyModel({ genesis: people, policy: { xpFinality: 'maturity' } });
+  const model = new FacetyModel({ genesis: people, policy: { xpFinality: 'maturity', guaranteeFee } });
   assert.equal(model.audit().minted, 0);
   assert.ok(model.subjects().every(person => person.xp === 0 && person.liquidFacy === 0));
   const order = reverse ? [...people].reverse() : people;
@@ -185,4 +185,79 @@ test('coordinated corrective majority cannot pool XP through the ordinary entry 
   }
   t.diagnostic('core-coalition-entry ' + JSON.stringify({ rows, profiles: profiles.length,
     newPeopleAdmitted: 0, scientificWorlds: 0, scope: 'ordinary reference entry only, no coalition XP aggregation or selected act/Council route' }));
+});
+
+test('funded voluntary guarantee duties earn individual source XP and enable ordinary entry without pooling XP or deciding guilt', t => {
+  const rows = [];
+  for (const guaranteeFee of [0, 1]) for (const support of [false, true]) {
+    const normalized = [];
+    for (const reverse of [false, true]) {
+      const { model, people } = smallCorrectiveCohort([...Array(9).fill(2), 5], reverse, guaranteeFee);
+      const peers = people.slice(1, 9), order = reverse ? [...peers].reverse() : peers;
+      assert.ok(people.slice(0, 9).every(id => !challengeAccess(model, id, 'p009', 1).allowed));
+      for (const peer of order) model.transferFacy(peer, 'p000', 1, 'voluntary-corrective-resource');
+      assert.equal(model.subject('p000').liquidFacy, 10); assert.equal(model.subject('p000').xp, 2);
+      const relations = [];
+      if (support) for (const peer of order) {
+        const relation = model.proposeGuarantee('p000', peer);
+        model.confirmGuarantee(peer, relation); relations.push(relation);
+      }
+      assert.equal(model.subject('p000').xp, 2, 'neither funding nor links create XP');
+      assert.equal(model.subject('p000').liquidFacy, 10 - (support ? 8 * guaranteeFee : 0));
+      assert.equal(model.guaranteeRelations().filter(row => row.status === 'active').length, support ? 8 : 0);
+      const fresh = new Map();
+      for (const author of [...order, 'p009']) fresh.set(author, model.createSelfId(author, model.registerArtifact(author)));
+      for (const [author, id] of fresh) {
+        const act = model.selfId(id), guarantors = support && author !== 'p009' ? ['p000'] : [];
+        assert.deepEqual(act.guarantors, guarantors);
+        assert.deepEqual(act.xpRecipients, [author, ...guarantors]);
+        assert.equal(act.xpCredit, null);
+      }
+      model.advanceTo(263);
+      assert.equal(model.subject('p000').xp, 2); assert.equal(model.subject('p009').xp, 5);
+      assert.equal(model.audit().collector, 23 - (support ? 8 * guaranteeFee : 0));
+      assert.ok([...fresh.values()].every(id => model.selfId(id).xpCredit === null));
+      model.advanceTo(264);
+      assert.equal(model.subject('p000').xp, support ? 10 : 2); assert.equal(model.subject('p009').xp, 6);
+      assert.ok(peers.every(id => model.subject(id).xp === 3));
+      assert.equal(model.audit().emitterVault, 9, 'maturity does not automatically withdraw original rights');
+      const sources = [];
+      for (const author of [...peers, 'p009']) {
+        const id = fresh.get(author), act = model.selfId(id);
+        assert.equal(act.xpCredit.at, 264);
+        assert.deepEqual(act.xpCredit.recipients.map(({ subject, role }) => ({ subject, role })),
+          [{ subject: author, role: 'subject' }, ...(support && author !== 'p009' ? [{ subject: 'p000', role: 'guarantor' }] : [])]);
+        sources.push({ author, selfId: id, guarantors: act.guarantors, recipients: act.xpCredit.recipients.map(({ subject, role }) => ({ subject, role })) });
+        model.convertToCollector(author, id);
+      }
+      const before = state(model), access = people.slice(0, 9).map(id => ({ id, ...challengeAccess(model, id, 'p009', 1) }));
+      assert.deepEqual(state(model), before);
+      assert.deepEqual(access.filter(row => row.allowed).map(row => row.id), support ? ['p000'] : []);
+      assert.ok(access.every(row => row.preconditions.liquidFacy >= 1));
+      assert.ok(access.filter(row => !row.allowed).every(row => row.reason === 'challenge XP gate'));
+      const book = new DisputeStakes(model, 'reserved');
+      if (support) book.open('funded-responsibility-entry', 'p000', 1);
+      assert.equal(book.cases().length, support ? 1 : 0);
+      const money = model.audit(), totalXp = model.subjects().reduce((sum, person) => sum + person.xp, 0);
+      assert.equal(money.minted, 32); assert.equal(money.emitterVault, 0);
+      assert.equal(money.feeVault, support ? 8 * guaranteeFee : 0);
+      assert.equal(money.stakeVault, support ? 1 : 0);
+      assert.equal(money.collector, 32 - money.feeVault - money.stakeVault);
+      assert.equal(money.burned, 0); assert.equal(money.debt, 0);
+      assert.equal(totalXp, support ? 40 : 32);
+      assert.ok(model.subjects().every(person => person.identityStatus === 'accepted'));
+      normalized.push({ subjects: model.subjects(), money, access, sources: sources.map(({ selfId, ...source }) => source) });
+      rows.push({ guaranteeFee, support, reverse, hour: model.now, transferred: 8, sourceReceipts: sources,
+        leaderXp: model.subject('p000').xp, accusedXp: model.subject('p009').xp, totalXp,
+        eligible: access.filter(row => row.allowed).map(row => row.id), xpGateRefusals: access.filter(row => !row.allowed).length,
+        entrantLiquidBeforeStake: access[0].preconditions.liquidFacy, activeResponsibilities: relations.length,
+        financialCases: book.cases(), finalMoney: money, verdictExecuted: false, identityExcluded: false });
+    }
+    assert.deepEqual(normalized[0], normalized[1], 'order changes no normalized resource/access/credit-role result');
+  }
+  t.diagnostic('core-coalition-support ' + JSON.stringify({ rows, traces: 8, newPeopleAdmitted: 0, scientificWorlds: 0,
+    assumptions: ['supplied admitted distinct willing/informed participants and voluntary guarantee agreement, not calibrated humans',
+      'native liquid guaranteeFee0/1 reference, not selected price or qualified/funded-vouch migration',
+      'matched author emissions including one accused emission, not a full adaptive adversarial coalition'],
+    scope: 'encoded source-role operability only, not organized-attack efficacy, verified usefulness, pooled XP or selected act/Council merits' }));
 });
