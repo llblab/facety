@@ -50,16 +50,25 @@ export class EffortLedger {
   #weights;
   #budgets;
   #cohorts;
+  #allocation;
+  #hasReserve;
   #pending = new Map();
   #next = 0;
   #calls = 0;
   #maxActions;
-  constructor({ weights = {}, budgets = { honest: 100_000, attackers: 100_000 }, maxActions = 500_000 } = {}) {
+  constructor({ weights = {}, budgets = { honest: 100_000, attackers: 100_000 }, maxActions = 500_000, reviewReserve = {} } = {}) {
     this.#weights = effortWeights(weights);
     if (!budgets || Object.keys(budgets).some(key => !COHORTS.includes(key))) throw new Error('unknown budget cohort');
     for (const cohort of COHORTS) units(budgets[cohort], cohort + ' budget');
     if (!Number.isSafeInteger(maxActions) || maxActions < 1) throw new RangeError('maxActions must be positive');
     this.#budgets = Object.fromEntries(COHORTS.map(cohort => [cohort, units(budgets[cohort], cohort + ' budget')]));
+    if (!reviewReserve || typeof reviewReserve !== 'object' || Array.isArray(reviewReserve) || Reflect.ownKeys(reviewReserve).some(key => !COHORTS.includes(key))) throw new TypeError('unknown review reserve cohort or invalid record');
+    this.#allocation = Object.fromEntries(COHORTS.map(cohort => {
+      const reservedBudget = units(Object.hasOwn(reviewReserve, cohort) ? reviewReserve[cohort] : 0, cohort + ' review reserve');
+      if (reservedBudget > this.#budgets[cohort]) throw new RangeError('review reserve exceeds cohort budget');
+      return [cohort, { generalBudget: this.#budgets[cohort] - reservedBudget, reservedBudget, generalSpent: 0, reservedSpent: 0, eligibleEffort: 0 }];
+    }));
+    this.#hasReserve = COHORTS.some(cohort => this.#allocation[cohort].reservedBudget > 0);
     this.#maxActions = maxActions;
     this.#cohorts = Object.fromEntries(COHORTS.map(cohort => [cohort, {
       ...counters(),
@@ -74,10 +83,17 @@ export class EffortLedger {
     const state = this.#cohorts[cohort];
     const rows = [state, state.byAction[action], state.byPhase[phase]];
     const cost = units(this.#weights[action], action);
-    if (state.effort + cost > this.#budgets[cohort]) {
+    const allocation = this.#allocation[cohort];
+    const eligible = phase === 'maintenance' && (action === 'inspect' || action === 'respond');
+    const protectedCost = eligible ? Math.min(cost, allocation.reservedBudget - allocation.reservedSpent) : 0;
+    const generalCost = cost - protectedCost;
+    if (allocation.generalSpent + generalCost > allocation.generalBudget) {
       for (const row of rows) row.denied++;
       return null;
     }
+    allocation.reservedSpent += protectedCost;
+    allocation.generalSpent += generalCost;
+    if (eligible) allocation.eligibleEffort += cost;
     for (const row of rows) {
       row.attempts++;
       row.effort += cost;
@@ -93,7 +109,7 @@ export class EffortLedger {
     this.#pending.delete(ticket.id);
   }
   summary() {
-    return {
+    const result = {
       unit: 'uncalibrated weighted action-effort units',
       weights: { ...this.#weights },
       calls: this.#calls,
@@ -106,12 +122,26 @@ export class EffortLedger {
         remaining: (this.#budgets[cohort] - this.#cohorts[cohort].effort) / PRECISION,
       }])),
     };
+    if (this.#hasReserve) result.allocation = {
+      reference: 'maintenance-review-reserve/v1',
+      cohorts: Object.fromEntries(COHORTS.map(cohort => {
+        const a = this.#allocation[cohort];
+        return [cohort, {
+          generalBudget: a.generalBudget / PRECISION, reservedBudget: a.reservedBudget / PRECISION,
+          generalSpent: a.generalSpent / PRECISION, reservedSpent: a.reservedSpent / PRECISION,
+          generalRemaining: (a.generalBudget - a.generalSpent) / PRECISION, reservedRemaining: (a.reservedBudget - a.reservedSpent) / PRECISION,
+        }];
+      })),
+    };
+    return result;
   }
   audit() {
     if (this.#pending.size) throw new Error('unsettled effort tickets');
     for (const cohort of COHORTS) {
       const state = this.#cohorts[cohort];
       if (state.effort > this.#budgets[cohort] || state.attempts !== state.accepted + state.rejected) throw new Error('effort conservation failed');
+      const a = this.#allocation[cohort];
+      if (a.generalBudget + a.reservedBudget !== this.#budgets[cohort] || a.generalSpent < 0 || a.generalSpent > a.generalBudget || a.reservedSpent < 0 || a.reservedSpent > a.reservedBudget || a.generalSpent + a.reservedSpent !== state.effort || a.reservedSpent !== Math.min(a.reservedBudget, a.eligibleEffort) || a.eligibleEffort < 0 || a.eligibleEffort > state.byPhase.maintenance.effort || a.eligibleEffort > state.byAction.inspect.effort + state.byAction.respond.effort) throw new Error('review allocation conservation failed');
       for (const dimension of ['byAction', 'byPhase']) {
         for (const key of ['attempts', 'accepted', 'rejected', 'denied', 'effort']) {
           const sum = Object.values(state[dimension]).reduce((total, row) => total + row[key], 0);

@@ -284,7 +284,7 @@ export function experimentConfig(overrides = {}) {
     if (overrides.engine === PB_ENGINE) return pbExperimentConfig(overrides);
     throw new Error('unsupported experiment engine');
   }
-  const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, ablations: {}, perturbations: [], disputes: {}, deviants: {}, social: {} };
+  const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, ablations: {}, perturbations: [], disputes: {}, deviants: {}, social: {}, reviewReserve: {} };
   const config = mergeRecord({ ...DEFAULTS, ...nested }, overrides, 'experiment');
   if (!SCENARIOS.includes(config.scenario)) throw new Error('unknown scenario');
   if (!Object.hasOwn(overrides, 'attackerShare') && config.scenario === 'honest-growth') config.attackerShare = 0;
@@ -321,7 +321,9 @@ export function experimentConfig(overrides = {}) {
   const ablations = mergeRecord(EXPERIMENT_ABLATIONS, config.ablations, 'ablations');
   if (typeof ablations.randomGuaranteeTargets !== 'boolean') throw new TypeError('randomGuaranteeTargets must be boolean');
   config.ablations = Object.freeze({ ...ablationsFrom(Object.fromEntries(Object.keys(DEFAULT_ABLATIONS).map(key => [key, ablations[key]]))), randomGuaranteeTargets: ablations.randomGuaranteeTargets });
-  new EffortLedger({ weights: config.weights, budgets: config.budgets, maxActions: config.maxActions });
+  const allocation = new EffortLedger({ weights: config.weights, budgets: config.budgets, maxActions: config.maxActions, reviewReserve: config.reviewReserve }).summary().allocation;
+  if (allocation) config.reviewReserve = Object.freeze(Object.fromEntries(COHORTS.map(cohort => [cohort, allocation.cohorts[cohort].reservedBudget])));
+  else delete config.reviewReserve;
   return Object.freeze(config);
 }
 

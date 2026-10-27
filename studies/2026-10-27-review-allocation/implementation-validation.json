@@ -1,0 +1,305 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D63 C1 counterfactual review-work allocator/config/native API acceptance; no empirical network-security/welfare/human/G1/default selection",
+  "baseCommit": "dc976022a54b1328fd7a2281de7e98c4b55659b2",
+  "sourceTree": "47c69d37711b5249ad99823f16c23769c36b8504",
+  "testTree": "855c5c8ec1890a05add78564efd0436d529918ac",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "e44844b3644fd4139f420a43535b8ba7db7d6f2fde41699df0925a1666e2b899",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/effort.mjs",
+      "gitBlob": "1062ee919f07b58e304dcb9ea3a822aea929590f"
+    },
+    {
+      "path": "src/experiment-config.mjs",
+      "gitBlob": "492d8815ab8fe5f6c84047dae263c80c74f62f59"
+    },
+    {
+      "path": "src/experiment.mjs",
+      "gitBlob": "027e775d6b2bdf09d409663fafb3313ab88eca38"
+    },
+    {
+      "path": "test/review-reserve.test.mjs",
+      "gitBlob": "1c4b49170606915624dd74b163a5c83990be2512"
+    },
+    {
+      "path": "studies/2026-10-27-review-allocation/README.md",
+      "gitBlob": "35039ada5b8c675fc00617e2582d209ef81a41e0"
+    },
+    {
+      "path": "studies/2026-10-27-review-allocation/contract-validation.json",
+      "gitBlob": "36e5d25bba8163c9b7c4ede5b14a989edaf7b85b"
+    },
+    {
+      "path": "studies/2026-10-27-review-allocation/implementation.md",
+      "gitBlob": "4e07701b332b7c2c34d0ce8e953ab596a6e2f230"
+    }
+  ],
+  "implementation": {
+    "newSourceModules": 0,
+    "newExports": 0,
+    "existingOwnersOnly": true,
+    "option": "optional reviewReserve per cohort; only legacy config/run and EffortLedger; closed Native-vouch/P-b reject",
+    "debit": "same B partitioned before setup, general B-R/protected R; only maintenance inspect/respond protected-first/general-spill; no future/hidden target labels/authority; exact atomic affordable split, existing denied/call/hard-cap effects, paid rejection not refund; no refill/release/borrowing/free setup/reordering",
+    "report": "nonzero only allocation reference maintenance-review-reserve/v1 and general/reserved budget/spent/remaining; internal integer audit and inert snapshots. Actual output assumption names counterfactual work, no FACY/human/CPU/usefulness/welfare meaning",
+    "zero": "omitted/empty/all-zero normalize config field away, no allocation summary; exact tickets/reference summary JSON/config/full current report bytes plus RNG manifest and fixed old trajectories",
+    "normalization": "finite nonnegative safe existing six-decimal units<=B, exact permitted own cohort keys, copied/frozen normalized config. Missing optional sweep paths unchanged; explicit nonzero path override-to-zero supported",
+    "preserved": "Model/default/public source exports/old tests/old packet bytes/generator/key layout unchanged; no new source engine/registry/solver/protocol rule"
+  },
+  "native": {
+    "families": 7,
+    "referenceCases": 1080,
+    "referenceCalls": 19440,
+    "observedMismatch": 0,
+    "reference": "separate BigInt cumulative general cost = total paid cost - min(R,eligible paid cost); no production split helper/import; three scaled quanta/weights/phase/cohort/accept-reject/cap states, all snapshots/tickets after each call; pooled reference serialized bytes",
+    "accountingWitness": {
+      "B": 4,
+      "R": 2,
+      "calls": 6,
+      "pooledPaid": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "reservedPaid": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "pooledEffort": 4,
+      "reservedEffort": 4,
+      "ordinaryDisplaced": 2,
+      "reviewsEnabled": 2,
+      "notModelOrEmpiricalBenefit": true
+    },
+    "boundaries": "malformed/null/array/unknown/nonfinite/unsafe/precision/over-budget; input/snapshot mutation; all setup/actions versus maintenance inspect/respond; rejected/unsettled/invalid/double-finish/zero-cost hard caps; exact weighted protected-first split/one-micro denial/no partial debit/valid9e9 near scaled safe range; canonical zero bytes and actual native setup denial/stranded reserve/no funded graph; optional override/other engines; real legacy scalar and direct/sequential/two-worker API",
+    "ephemeralSoftwareV2Envelopes": 1,
+    "confirmationCalls": 0,
+    "retainedProgrammeMethods": 0,
+    "softwareLabelsOnly": true,
+    "redBeforeImplementation": {
+      "log": "/tmp/facety-review-reserve-red.txt",
+      "failure": "fixed B4 R2 old ledger still pays ordinary work; actual [1,1,1,1,0,0] != expected [1,1,0,0,1,1]",
+      "kind": "missing feature, not newly discovered violation of old contract"
+    },
+    "development": {
+      "log": "/tmp/facety-review-reserve-unit-before.txt",
+      "fixtureCorrections": [
+        "Independent expected weights/budgets canonicalize scaled 0.30000000000000004 to existing six-decimal contract, not a rounding-rule change",
+        "Closed Native engine rejects unsupported field with requires exactly, not unknown; actual rejection retained"
+      ],
+      "finalBodyValidation": "fresh focused/full after added explicit byte assertions; production source unchanged after first green"
+    },
+    "retainedKnownSUTDefects": 0
+  },
+  "focused": {
+    "command": "node --test test/review-reserve.test.mjs test/effort.test.mjs test/experiment.test.mjs test/path-witness-*.test.mjs",
+    "passed": 253,
+    "failed": 0,
+    "skipped": 0
+  },
+  "full": {
+    "command": "npm test",
+    "current": {
+      "passed": 706,
+      "failed": 0,
+      "skipped": 0
+    },
+    "historical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "notCurrentSourceAssurance": true
+    }
+  },
+  "compatibility": {
+    "streams": [
+      {
+        "name": "originalTree",
+        "cases": 12288,
+        "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+        "digest": "ef7b416995023b28dd170c6c497126164e622866642435e1d7ade9189d62a691",
+        "test": "test/path-witness-branches.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "oneHop",
+        "cases": 12288,
+        "method": "sha256-streaming-json-forest-proposal-NUL/v1",
+        "digest": "e2e4e30870b1f3a8cdb0408248020585f186e61cf18750a5cfe01d744af7b686",
+        "test": "test/path-witness-prefix.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "C3",
+        "cases": 1152,
+        "method": "sha256-streaming-json-forest-proposal-array-NUL/v1",
+        "digest": "0003fbe9f2fa569ebb144688224603cc78ee473aea8a39785cb9661b6cf18160",
+        "test": "test/path-witness-segment-joins.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "E1",
+        "cases": 24576,
+        "method": "sha256-streaming-json-refreshed-forest-report-NUL/v1",
+        "digest": "d88687766cd106495fb93760feb4facffaa9ab2890440189e516e716f4dea0ca",
+        "test": "test/path-witness-tree-repair.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "lookup",
+        "cases": 192,
+        "method": "sha256-streaming-json-cache-rows-stats-NUL/v1",
+        "digest": "e96ad756563afbe867d94eff3b437dbca11b45cdeaf903ff2bbebbf29c46d89a",
+        "test": "test/path-witness-pipeline.test.mjs",
+        "matched": true
+      },
+      {
+        "name": "Gpayload",
+        "cases": 192,
+        "observations": 576,
+        "method": "sha256-streaming-json-pipeline-payload-NUL/v1",
+        "digest": "7039f9974cc343bfefeda5cac069e20cf5a9e4248d0a076ac89939489c60dc3e",
+        "test": "test/path-witness-lifecycle.test.mjs",
+        "scope": "only top-level provenance excluded after original full provenance() equality; separate named stream, not H query pipelineDigest",
+        "matched": true
+      },
+      {
+        "name": "nativeNotices",
+        "cases": 243,
+        "method": "sha256-streaming-json-dual-cache-notice-rows-NUL/v1",
+        "digest": "dc6793b59d4f3d33a5169d6edd2b43a924641acbd93c35d49849c30b81bd191d",
+        "test": "test/path-witness-invalidation.test.mjs",
+        "scope": "complete frozen native/input projection, no wrapper/provenance in that pre-code native-only stream and no fields removed; full wrapper provenance/config/work separately compared",
+        "matched": true
+      },
+      {
+        "name": "F1payload",
+        "cases": 384,
+        "requestedQueryRows": 768,
+        "requestedRows": 1152,
+        "method": "sha256-streaming-json-prefix-workload-payload-NUL/v1",
+        "digest": "7ef013e0207bbfd6cd7ed20f8febfa7cf46c30c01749623e58e177bb8af8f5bf",
+        "test": "test/path-witness-segment-workload.test.mjs",
+        "scope": "only top-level F1 provenance excluded after original current provenance() equality, not permission to strip J preparation/state/H full G hashes or alter scientific methods",
+        "matched": true
+      },
+      {
+        "name": "Knative",
+        "method": "sha256-streaming-json-native-composite-rows-NUL/v1",
+        "digest": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+        "test": "test/path-witness-composite.test.mjs",
+        "blueprint": "immutable m3-composite-contract-validation.json existingNativeStreamBaseline",
+        "matched": true,
+        "projection": "complete {input,advice,result,stages,cacheStats,work}; JSON.stringify(ordered3rows)+NUL per case; native projection contains no wrapper/schema/provenance fields, none removed; full wrapper metadata separately checked",
+        "cases": 1152,
+        "observations": 3456
+      },
+      {
+        "name": "Lnative",
+        "method": "sha256-streaming-json-joint-native-lifetime-rows-NUL/v1",
+        "digest": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+        "cases": 384,
+        "rows": 6528,
+        "requestedQueries": 3072,
+        "calledQueries": 2304,
+        "test": "test/path-witness-composite-workload.test.mjs",
+        "blueprint": "immutable m3-composite-workload-contract-validation.json existingNativeStreamBaseline",
+        "matched": true,
+        "scope": "full native trace projection except K/I top-level provenance after complete current equality; all native work/preparation/state retained, separate named method not H/J full-provenance/scientific retagging; actual L queryDigest/receiptDigest includes full current K/I JSON"
+      }
+    ],
+    "disposition": "all ten existing scoped native preservation streams pass freshly; full raw preparation/work/state retained at each declared projection; old tests/defaults/historical files not rewritten",
+    "jointChurnCurrent": {
+      "method": "sha256-streaming-json-joint-churn-current-rows-NUL/v1",
+      "digest": "6adcada0708265105ee418ef82a8b9560f3fddb52eb11b57eadb0ffac7f54c0c",
+      "cases": 72,
+      "queries": 864,
+      "referenceContexts": 36,
+      "completeEnumerations": 32,
+      "necessaryCountNegatives": 4,
+      "positives": 360,
+      "observedMismatch": 0,
+      "prior299ae973Digest": "60f14240eeb681d93c1bd84a2ee9e9c138f65452efd6d6a6591f3706c1a07844",
+      "interpretation": "full-current query/receipt hashes include Source provenance and legitimately change. Old source-specific packet untouched, no relabel/new scientific method"
+    }
+  },
+  "conformance": {
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "e44844b3644fd4139f420a43535b8ba7db7d6f2fde41699df0925a1666e2b899",
+        "files": 53
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "excludedOnly": "provenance.implementation",
+    "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+    "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+    "matched": true,
+    "classification": "two fixed software trajectories, not sealed-study replay or new scientific data",
+    "command": "node /tmp/facety-review-reserve-conformance.mjs",
+    "fresh": true
+  },
+  "architecture": {
+    "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+    "files": 53,
+    "edges": 168,
+    "cycles": 0,
+    "errors": 0,
+    "warnings": 0,
+    "fresh": true,
+    "scope": "three existing owners/internal arithmetic/option wiring, no imports/back-edge/shared bucket or source module added"
+  },
+  "review": {
+    "kind": "inline frozen-contract/source/independent-integer-reference/zero-byte/authority/resource/failure/gate review",
+    "independentAuthorshipOrCleanRoom": false,
+    "scope": "no private-state fault injection or adversarial JS host guarantee; remaining human/evidence/error covariance/adaptive choice/capture/actual recovery/genuine growth/profit/G1 untested by accounting"
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "warningSetUnchangedExceptOffsets": true,
+    "disposition": "Existing structure/density/index-bloat/wide-table warnings reviewed; unchanged large-protocol scans remain skipped. C0 remains historical; current implementation/field/assumption/default and exact C2 readiness boundary indexed without task duplication or empirical claim."
+  },
+  "handoff": {
+    "canonical": "BACKLOG.md#d44-guarantor-prevention-boundaries",
+    "cohort": "C1 minimal opt-in implementation and native acceptance",
+    "closed": "allocator/config/ticket/default acceptance",
+    "next": "C2 actual native observation/scalar metric admission and empirical-placement readiness for paid prevention versus ordinary displacement/genuine harm/stranded reserve/pending lifetime; record only necessary missing contract, no generic allocator/engine/grid",
+    "actionability": "gated-but-preparable",
+    "gates": "master G1 still absent; actual supported statistic and committed method/contexts/ranges/no-attack/genuine growth/error-search-kill/source-RNG-seeds before post-G1 data; no old packet replay",
+    "continue": true
+  },
+  "research": {
+    "newEmpiricalCaptures": 0,
+    "newProgrammeRegistrations": 0,
+    "mechanismConfirmations": 0,
+    "researchSeedLabels": [],
+    "scientificBenchmarkCurves": 0,
+    "humanOrPersonalData": false,
+    "softwareModelExecution": "fresh default/native/scalar/worker/unit and two fixed trajectories only, not research cases",
+    "masterG1Pass": false,
+    "newSelectedProtocolPolicy": false
+  }
+}

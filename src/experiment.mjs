@@ -47,8 +47,9 @@ export function runExperiment(overrides = {}) {
   const config = experimentConfig(overrides);
   if (config.engine === PB_ENGINE) return runPbExperiment(config);
   if (config.engine !== undefined) return runVouchExperiment(config);
-  const assumptions = config.invitationEvidence === 'shared-target' ? EXPERIMENT_ASSUMPTIONS.map(text => text.startsWith('These are fixed reference strategies')
+  let assumptions = config.invitationEvidence === 'shared-target' ? EXPERIMENT_ASSUMPTIONS.map(text => text.startsWith('These are fixed reference strategies')
     ? 'These are fixed reference strategies, not optimized worst-case attackers. Counterfactual shared-target invitation evidence is one persistent first-stage signal per public target across reviewers/times at the supplied marginal sensitivity/FPR. Other observations and verification retain their keyed references. Repeated paid looks do not independently validate this signal. This is an extremal common-mode stress assumption, not calibrated evidence, notification or a protocol/default choice.' : text) : EXPERIMENT_ASSUMPTIONS;
+  if (config.reviewReserve) assumptions = [...assumptions, 'Counterfactual maintenance-review-reserve/v1 partitions the same declared cohort work budget before setup: maintenance inspect/respond spend protected first then general; setup/other work use general only. No refill/release/borrowing or extra resource; unused reserve may strand work and displace genuine activity. This is uncalibrated scenario work, not a protocol obligation, token reserve, human willingness or a safety/welfare result.'];
   const randomness = experimentRandomness(config);
   const schedule = config.stepHours === 24 ? null : createActivitySchedule(config);
   const attendedReviewRandom = config.invitationReviewTiming === 'first-attended' ? new Random(config.seed).fork(SUBDAY_RANDOMNESS.placement) : null;
@@ -118,7 +119,7 @@ export function runExperiment(overrides = {}) {
   const modelAblations = Object.fromEntries(Object.keys(DEFAULT_ABLATIONS).map(key => [key, config.ablations[key]]));
   const model = new FacetyModel({ genesis: ids, policy: config.policy, ablations: modelAblations });
   const stakeBook = new DisputeStakes(model, config.disputes.stakeBacking);
-  const effort = new EffortLedger({ weights: config.weights, budgets: config.budgets, maxActions: config.maxActions });
+  const effort = new EffortLedger({ weights: config.weights, budgets: config.budgets, maxActions: config.maxActions, reviewReserve: config.reviewReserve });
   const observe = observationEnvironment(truth, sensing, config);
   const pendingInvitations = [];
   const prepared = new Map();
