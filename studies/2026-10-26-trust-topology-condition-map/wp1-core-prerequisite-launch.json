@@ -1,0 +1,62 @@
+{
+  "schema": "facety-wp1-core-prerequisite-review-launch/v1",
+  "date": "2026-10-28",
+  "classification": "DIAGNOSTIC pre-data independent analytic/source review launch, NOT conclusions/data/G1",
+  "canonical": "BACKLOG.md",
+  "ownerRequest": "2026-10-28 02:42:12 Europe/Samara: do important backlog work with Grow Loop",
+  "contract": {
+    "path": "studies/2026-10-26-trust-topology-condition-map/wp1-core-prerequisite-review.md",
+    "committedBeforeLaunch": "93a6ac4"
+  },
+  "source": {
+    "baseline": "64189b2",
+    "digest": "57015a723ad84088950771278998f2b617f8b2fb68d220800a7bfb152745924c",
+    "srcTree": "c9781f4ee281ebf96a7802dd6548f8f40bcea2e9",
+    "testTree": "bf21783789742d914a21546098a1f215e06e3aa8",
+    "node": "v26.8.1",
+    "noSourceTestMutation": true,
+    "validationReuse": "Exact source/test/runtime equivalence to D79; 766current+21compatible-original-historical/86focused reused, not fresh rerun."
+  },
+  "run": {
+    "target": "run:facety-wp1-core-prerequisite-20261028",
+    "instance": "485e098c-2bbd-40f6-9b03-5c64461ffe32",
+    "recipe": "swarm/lens-review",
+    "launchKind": "spawn",
+    "launchState": "running",
+    "model": "inherited:openai/gpt-6.1-sol",
+    "thinking": "explicit:medium",
+    "tools": "read",
+    "reviewers": 2,
+    "minSuccessful": 2,
+    "preflight": "Maintained Recipe performs model/tool preflight before fanout; launch is not completed preflight or proof of reviewer success.",
+    "result": "pending, no substantive conclusion yet",
+    "locations": {
+      "metadata": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-core-prerequisite-20261028/run.json",
+      "trace": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-core-prerequisite-20261028/trace.jsonl"
+    },
+    "terminalProof": "Consume automatic root completion's exact recorded primary/artifact references; no guessed result files/paths or routine polling/relaunch."
+  },
+  "boundaries": {
+    "nativeCalls": 0,
+    "scientificWorlds": 0,
+    "registrations": 0,
+    "sourceDefaultProtocolChanges": 0,
+    "lifetimeCutSelection": false,
+    "claim": "Neither actor review count nor a correct algebraic bound proves actual growth, payback, G1 or calibrated human economics."
+  },
+  "validation": {
+    "contextLog": "/tmp/facety-wp1-core-review-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "diffCheck": true
+  },
+  "handoff": {
+    "scope": "Existing BACKLOG WP1/G1 prior1 and prior3 core prerequisite before gated D76 comparison",
+    "cohort": "Select/freeze exact read-only independent growth/payback lenses, commit contract before launch, retain real root identity",
+    "state": "VERIFIED launch/preparation only; review conclusions pending",
+    "planTransition": "existing WP1 item narrowed to active independent prerequisite, D76 and later master gates retained",
+    "next": "Integrate actual terminal derivations/source citations/dissent; if still running wait with evidence-sized delay, no duplicate review/Model data. Handle runtime failure under actors diagnosis. Select one smallest supported pre-data prerequisite only from actual report.",
+    "checkpoint": "WP1P1P3readOnlyContract93a6ac4/root485e098c-running/Source57015a72-unchanged/context0x29/noDataNoG1/noLifetimeC3Fallback",
+    "continuationWarranted": true
+  }
+}
