@@ -10,7 +10,7 @@ import { PB_ENGINE, PB_OBSERVABLES } from './pb-experiment-config.mjs';
 
 export const OBSERVABLES = Object.freeze({
   ...VOUCH_OBSERVABLES, ...PB_OBSERVABLES,
-  subjects: 1, activeSubjects: 1, requiredGuarantors: 1, humanOperators: 1,
+  subjects: 1, falseSubjects: 1, activeSubjects: 1, requiredGuarantors: 1, humanOperators: 1,
   attackerShare: 0.05, falseShare: 0.05,
   'xp.total': 1, 'xp.gini': 0.05, 'xp.topDecileShare': 0.05, 'xp.attackerShare': 0.05,
   'xp.attackerExcessShare': 0.05, 'xp.outDegreeSpearman': 0.1,
@@ -25,6 +25,9 @@ export const OBSERVABLES = Object.freeze({
   'connectivity.rootedFraction': 0.05, 'connectivity.honestFraction': 0.05, 'connectivity.honestNonRootFraction': 0.05,
   'admission.guaranteeQualifiedFraction': 0.05, 'admission.inviteReadyFraction': 0.05,
   falseConversions: 1, attackerEffort: 1, defenderEffort: 1,
+  'invitationReview.inspections': 1, 'invitationReview.inspectionDenied': 1,
+  'invitationReview.positiveSignals': 1, 'invitationReview.cancelled': 1,
+  'cohorts.honest.byAction.selfId.effort': 1, 'cohorts.honest.byAction.convert.effort': 1,
   'cohorts.honest.sincePrevious.effort': 1,
   'cohorts.honest.byAction.inspect.accepted': 1,
   'cohorts.honest.byAction.respond.accepted': 1,

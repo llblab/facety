@@ -43,6 +43,9 @@ function statisticEngine(statistic, config = {}) {
     if (config.engine !== undefined) fail('Native reference outcome.success has an unbound criterion; register a measured scalar');
   } else if (!observableForExperiment(statistic.metric, config)) fail('statistic metric does not belong to experiment engine: ' + statistic.metric);
   if (statistic.subtract != null && !observableForExperiment(statistic.subtract, config)) fail('subtract metric does not belong to experiment engine');
+  for (const metric of [statistic.metric, statistic.subtract]) {
+    if (typeof metric === 'string' && metric.startsWith('invitationReview.') && ![4, 6].includes(config.stepHours)) fail('invitation review statistic requires stepHours 4 or 6');
+  }
 }
 
 function normalizeStatistic(statistic, days, config) {
