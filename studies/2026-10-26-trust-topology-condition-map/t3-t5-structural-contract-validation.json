@@ -1,0 +1,347 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "T3/T5 frozen pre-code structural acceptance and current API capability, NOT full matrix implementation/study",
+  "baseCommit": "71317d8fb085be20a6b4d4f989f79de873e06455",
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "75598f79cd6ee033e5d77bd4f674edced19247dd",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t3-t5-structural-contract.md",
+      "gitBlob": "0c35586eac6cfd0e20dbd1ed91bfd6150952969b"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t3-t5-structural-plan.json",
+      "gitBlob": "9d599a4855f63640175f78f965c3b85d9d91b775"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t2-support-validation.json",
+      "gitBlob": "2b87c846728352ab9cfc42218ed28b7c9a60c117"
+    }
+  ],
+  "acceptance": {
+    "status": "NOT IMPLEMENTED; no full192-cell run",
+    "owner": "extend only test/core-bridge-reuse.test.mjs; existing T1 builder/raw/capture plus M2/primary/ref2",
+    "plannedCells": 192,
+    "diagnosticArmFacts": 768,
+    "templateCount": 8,
+    "projections": 3,
+    "difficulty": [
+      2,
+      3
+    ],
+    "anchorRatios": [
+      2,
+      3
+    ],
+    "maxHops": [
+      2,
+      3
+    ],
+    "arms": [
+      "none",
+      "guarantee-only",
+      "path-only",
+      "both"
+    ],
+    "G_raw": "actual stored live incoming neighbors >=D, not projected undirected degree or qualified d_eff",
+    "P": "existing M2 feasible true/false/null with actual dual/raw-positive and complete/necessary-negative proofs",
+    "dependency": "directed/reciprocal P=>G_raw; any-orientation need not, no fake directed Gfalse/Ptrue input",
+    "controls": "identical graph/observations/budget across arms; outside genuine/fake roles not supplied; repeat/order inert; actual reverse relations explicit; five capped/unavailable/necessary-negative boundaries",
+    "missingness": "false AND unknown=false but P stays unknown; known degree false may precede zero-budget search",
+    "measurement": "all192 software target x configuration cells, not actual honest-population distribution; time/cost/prevalence/effect/error/precision unmeasured/unbound",
+    "capacityC": "UNCONTRACTED, NOT EXECUTED; no quota/flow/demand/reset/fairness policy or Council relabeling"
+  },
+  "freshSourceProbe": {
+    "script": "/tmp/facety-t3-t5-source-check.mjs",
+    "gitBlob": "1e7803e1fb700b36fe6c39a145f79787df5073bd",
+    "command": "node /tmp/facety-t3-t5-source-check.mjs",
+    "log": "/tmp/facety-t3-t5-source-check.json",
+    "evidence": {
+      "classification": "Pre-code existing-API capability probe at D2/A4/r2 only, not complete192-cell acceptance or a scientific T3/T5 study",
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "plannedCells": 192,
+      "fullAcceptanceExecuted": false,
+      "oracleCalls": 11,
+      "modelCalls": 0,
+      "scientificRuns": 0,
+      "results": [
+        {
+          "kind": "supported",
+          "projection": "directed-from-anchor",
+          "queryPatch": {},
+          "snapshotAvailable": true,
+          "G_raw": true,
+          "P": true,
+          "status": "found",
+          "reason": "ok",
+          "both": true,
+          "enumerationComplete": true,
+          "packingComplete": false
+        },
+        {
+          "kind": "supported",
+          "projection": "any-live-orientation",
+          "queryPatch": {},
+          "snapshotAvailable": true,
+          "G_raw": true,
+          "P": true,
+          "status": "found",
+          "reason": "ok",
+          "both": true,
+          "enumerationComplete": true,
+          "packingComplete": false
+        },
+        {
+          "kind": "supported",
+          "projection": "reciprocal-only",
+          "queryPatch": {},
+          "snapshotAvailable": true,
+          "G_raw": true,
+          "P": false,
+          "status": "infeasible",
+          "reason": "degree-infeasible",
+          "both": false,
+          "enumerationComplete": false,
+          "packingComplete": false
+        },
+        {
+          "kind": "outgoing-only",
+          "projection": "directed-from-anchor",
+          "queryPatch": {},
+          "snapshotAvailable": true,
+          "G_raw": false,
+          "P": false,
+          "status": "infeasible",
+          "reason": "degree-infeasible",
+          "both": false,
+          "enumerationComplete": false,
+          "packingComplete": false
+        },
+        {
+          "kind": "outgoing-only",
+          "projection": "any-live-orientation",
+          "queryPatch": {},
+          "snapshotAvailable": true,
+          "G_raw": false,
+          "P": true,
+          "status": "found",
+          "reason": "ok",
+          "both": false,
+          "enumerationComplete": true,
+          "packingComplete": false
+        },
+        {
+          "kind": "outgoing-only",
+          "projection": "reciprocal-only",
+          "queryPatch": {},
+          "snapshotAvailable": true,
+          "G_raw": false,
+          "P": false,
+          "status": "infeasible",
+          "reason": "degree-infeasible",
+          "both": false,
+          "enumerationComplete": false,
+          "packingComplete": false
+        },
+        {
+          "kind": "supported",
+          "projection": "directed-from-anchor",
+          "queryPatch": {
+            "maxExpansions": 0
+          },
+          "snapshotAvailable": true,
+          "G_raw": true,
+          "P": null,
+          "status": "censored",
+          "reason": "expansion-limit",
+          "both": null,
+          "enumerationComplete": false,
+          "packingComplete": true
+        },
+        {
+          "kind": "outgoing-only",
+          "projection": "any-live-orientation",
+          "queryPatch": {
+            "maxExpansions": 0
+          },
+          "snapshotAvailable": true,
+          "G_raw": false,
+          "P": null,
+          "status": "censored",
+          "reason": "expansion-limit",
+          "both": false,
+          "enumerationComplete": false,
+          "packingComplete": true
+        },
+        {
+          "kind": "outgoing-only",
+          "projection": "directed-from-anchor",
+          "queryPatch": {
+            "maxExpansions": 0
+          },
+          "snapshotAvailable": true,
+          "G_raw": false,
+          "P": false,
+          "status": "infeasible",
+          "reason": "degree-infeasible",
+          "both": false,
+          "enumerationComplete": false,
+          "packingComplete": false
+        },
+        {
+          "kind": "supported",
+          "projection": "directed-from-anchor",
+          "queryPatch": {
+            "epoch": 4
+          },
+          "snapshotAvailable": true,
+          "G_raw": true,
+          "P": null,
+          "status": "unavailable",
+          "reason": "epoch-outside-grace",
+          "both": null,
+          "enumerationComplete": false,
+          "packingComplete": false
+        },
+        {
+          "kind": "supported",
+          "projection": "directed-from-anchor",
+          "queryPatch": {},
+          "snapshotAvailable": false,
+          "G_raw": true,
+          "P": null,
+          "status": "unavailable",
+          "reason": "snapshot-unavailable",
+          "both": null,
+          "enumerationComplete": false,
+          "packingComplete": false
+        }
+      ]
+    },
+    "scope": "D2/A4/r2 supported/outgoing-only11 calls only, not all eight templates/D3/r3/full192 acceptance",
+    "oracleCalls": 11,
+    "explicitAdditionalPositiveVerifierCalls": 6,
+    "newModelCalls": 0,
+    "scientificRuns": 0,
+    "finding": "any-projection outgoing-only paths pass while stored incoming guarantees fail; structural dependency and censored/unavailable versus necessary negatives remain explicit"
+  },
+  "reused": {
+    "basis": "exact same src/test/runtime as current T2 finite acceptance; focused/full/historical/DAG/two trajectories NOT rerun for documentation contract",
+    "record": "studies/2026-10-26-trust-topology-condition-map/t2-support-validation.json",
+    "focused": {
+      "command": "node --test test/core-support.test.mjs test/core-bridge-reuse.test.mjs test/path-witness-replay.test.mjs test/path-witness-view.test.mjs",
+      "passed": 26,
+      "failed": 0,
+      "log": "/tmp/facety-t2-support-focused.txt"
+    },
+    "full": {
+      "command": "npm test",
+      "currentPassed": 729,
+      "currentFailed": 0,
+      "historicalPassed": 21,
+      "historicalFailed": 0,
+      "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "historicalAssurance": "separate unchanged compatible-source bodies only, not current-source proof",
+      "log": "/tmp/facety-t2-support-full.txt"
+    },
+    "sourceDagAndTrajectories": {
+      "basis": "exact same runtime/src tree as prior checkpoint; no DAG/two-trajectory rerun",
+      "record": "t1-reuse-validation.json through t2-support-contract-validation.json",
+      "evidence": {
+        "basis": "same runtime/src tree/implementation as C1, no Source mutation; source DAG/two trajectories not rerun",
+        "record": "studies/2026-10-26-trust-topology-condition-map/core-council-rejection-validation.json",
+        "dag": {
+          "sourceFiles": 53,
+          "localEdges": 168,
+          "acyclic": true,
+          "errors": 0,
+          "warnings": 0
+        },
+        "fixedTrajectories": {
+          "provenance": {
+            "implementation": {
+              "method": "sha256-src-mjs-v1",
+              "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+              "files": 53
+            },
+            "runtime": {
+              "node": "v26.8.1"
+            }
+          },
+          "excludedOnly": "provenance.implementation",
+          "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+          "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+          "matched": true,
+          "classification": "two fixed software trajectories, not sealed-study replay or new scientific data"
+        }
+      }
+    },
+    "nativePreservation": {
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+      "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+    }
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-t3-t5-contract-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "review": "Existing structure/meta-principle/sparsity/index-bloat/wide-table warnings reviewed. New contract/plan/validation reachable; no new wide tables. Unchanged large protocol scans skipped and existing D73/D74 anchors preserved. BACKLOG owns next finite extension; old pre-code/results counts remain historical. Current729+21/DAG/trajectories reused under exact source/test/runtime, not freshly rerun. Complete-negative/unknown and projection versus incoming guarantee boundaries recorded without selecting actual d_eff/direction/capacity."
+  },
+  "review": {
+    "method": "inline existing-owner/template/projection/entailment/negative-proof/unknown/matched-denominator/scope review; not independent authorship",
+    "notAssumed": [
+      "direction selected for general protocol",
+      "verified anchors/d_eff/K",
+      "four independently attainable binary predicate regions under every projection",
+      "fake witness failure establishes global negative",
+      "software counters are time/human cost",
+      "balanced192 cells are honest population rate",
+      "global capacity semantics or G1"
+    ],
+    "sourceGuard": "new adapters must reuse existing T1 helper without rewriting prior test bodies/packet bytes; no production module/export"
+  },
+  "preservation": {
+    "sourceTestRuntimeChanged": false,
+    "oldT1T2C0C1C2ReviewStudyPacketsChanged": false,
+    "fullAcceptanceExecuted": false,
+    "newModelOrScientificWorldsOrSeeds": 0,
+    "masterG1Pass": false,
+    "KOrDEffOrCapacitySelected": false,
+    "externalDataOrAtmoActions": 0,
+    "protocolDecisionChanged": false
+  },
+  "handoff": {
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "scope": "D73 T3/T5 matched structural/access preparation",
+    "closed": "pre-code plan/literal regions/owner/measurement/unknown/source-capability scope",
+    "next": "finite192-cell existing-T1-test extension with four raw diagnostic arms and five boundary controls, positive dual/raw and complete/necessary negative evidence, role/repeat/order/padding invariance; no new engine/default/data study",
+    "unclosed": "actual T3/T5 population/economic/independence method, K/source validity/C allocation/G1; C3 remains parked",
+    "continuationWarranted": true,
+    "signature": "d73-t3-t5/frozen8templates-192planned-4arms/11D2oracle-0Model/fullMatrixNotRun/source91db-75598f79-reuse729-21/next-existing-test-extension"
+  }
+}

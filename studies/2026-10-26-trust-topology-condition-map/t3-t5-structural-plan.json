@@ -1,0 +1,122 @@
+{
+  "schema": "facety-engineering-acceptance-plan/v1",
+  "id": "t3-t5-raw-structural-factorial/v1",
+  "status": "pre-code finite acceptance only, not scientific registration or executed matrix",
+  "captureEnabled": false,
+  "target": "u0",
+  "base": "existing test/core-bridge-reuse.test.mjs build({D,M:1}); add only named fresh-graph mutations",
+  "dimensions": {
+    "difficulty": [2, 3],
+    "anchorRatio": [2, 3],
+    "maxHops": [2, 3],
+    "projection": ["directed-from-anchor", "any-live-orientation", "reciprocal-only"]
+  },
+  "softwareCells": 192,
+  "diagnosticArmFacts": 768,
+  "policy": {
+    "epoch": 3,
+    "maxSlack": 0,
+    "graceEpochs": 0,
+    "minStanding": null,
+    "maxDifficulty": 64,
+    "maxIdBytes": 256,
+    "maxWitnessBytes": 65536,
+    "anchorMeaning": "supplied eligible targets, not real verified XP ranking or Council"
+  },
+  "query": { "epoch": 3, "maxExpansions": 1000000, "maxPaths": 4096, "maxPackingSteps": 1000000 },
+  "guaranteePredicate": "actual stored incoming live guarantee neighbors of target>=D, independent of path projection; raw counterfactual not d_eff",
+  "pathPredicate": "existing findPathWitness feasible: true with dual-verified wire, false with complete/necessary proof, null if censored/unavailable",
+  "arms": {
+    "none": "true (only these diagnostic predicates removed, not real admission)",
+    "guarantee-only": "G_raw",
+    "path-only": "P",
+    "both": "false if either false, true if both true, otherwise null"
+  },
+  "templates": [
+    {
+      "id": "supported",
+      "mutation": "none; exact T1 D boundary relations, bridge clique, D incoming target relations",
+      "G_raw": true,
+      "P": { "directed-from-anchor": true, "any-live-orientation": true, "reciprocal-only": false },
+      "negativeBasis": "reciprocal target neighbors=0"
+    },
+    {
+      "id": "boundary-cut",
+      "mutation": "remove only a0->b0 from base, no inverse exists",
+      "G_raw": true,
+      "P": { "directed-from-anchor": false, "any-live-orientation": false, "reciprocal-only": false },
+      "negativeBasis": "D-1 reachable nonpadding anchors/crossing heads; reciprocal target degree0"
+    },
+    {
+      "id": "shared-bottleneck",
+      "mutation": "remove all a_i->b_i; add x, every a_i->x and x->b_i",
+      "G_raw": true,
+      "P": { "directed-from-anchor": false, "any-live-orientation": false, "reciprocal-only": false },
+      "negativeBasis": "all anchor routes traverse single physical x; no edge-disjoint or layer alias credit"
+    },
+    {
+      "id": "long-branches",
+      "mutation": "replace every a_i->b_i with a_i->c_i->b_i using explicit distinct c_i",
+      "G_raw": true,
+      "P_at_hops_2": { "directed-from-anchor": false, "any-live-orientation": false, "reciprocal-only": false },
+      "P_at_hops_3": { "directed-from-anchor": true, "any-live-orientation": true, "reciprocal-only": false },
+      "negativeBasis": "minimum actual route3 hops, or reciprocal target degree0"
+    },
+    {
+      "id": "outgoing-only",
+      "mutation": "replace every b_i->u0 with u0->b_i, keep other base edges",
+      "G_raw": false,
+      "P": { "directed-from-anchor": false, "any-live-orientation": true, "reciprocal-only": false },
+      "negativeBasis": "no stored incoming target guarantees; no reciprocal target pair",
+      "interpretation": "valid any-projection paths do not imply incoming guarantee qualification"
+    },
+    {
+      "id": "explicit-reciprocal",
+      "mutation": "for every base stored edge add missing reverse edge explicitly; padding stays isolated",
+      "G_raw": true,
+      "P": { "directed-from-anchor": true, "any-live-orientation": true, "reciprocal-only": true },
+      "negativeBasis": null
+    },
+    {
+      "id": "one-direction-cut",
+      "mutation": "create explicit-reciprocal then remove only a0->b0, retaining b0->a0",
+      "G_raw": true,
+      "P": { "directed-from-anchor": false, "any-live-orientation": true, "reciprocal-only": false },
+      "negativeBasis": "one source direction lost; explicit inverse can serve only the any-projection arm"
+    },
+    {
+      "id": "isolated-target",
+      "mutation": "remove every b_i->u0 from base, add nothing incident to u0",
+      "G_raw": false,
+      "P": { "directed-from-anchor": false, "any-live-orientation": false, "reciprocal-only": false },
+      "negativeBasis": "target degree0"
+    }
+  ],
+  "boundaryControls": [
+    { "template": "supported", "projection": "directed-from-anchor", "queryPatch": { "maxExpansions": 0 }, "P": null, "both": null, "expected": "censored, not no-path" },
+    { "template": "outgoing-only", "projection": "any-live-orientation", "queryPatch": { "maxExpansions": 0 }, "P": null, "both": false, "expected": "known G false AND unknown P false, P remains null" },
+    { "template": "outgoing-only", "projection": "directed-from-anchor", "queryPatch": { "maxExpansions": 0 }, "P": false, "both": false, "expected": "degree infeasible before enumeration, not forced unknown" },
+    { "template": "supported", "projection": "directed-from-anchor", "queryPatch": { "epoch": 4 }, "P": null, "both": null, "expected": "unavailable epoch, not false" },
+    { "template": "supported", "projection": "directed-from-anchor", "capturePatch": { "snapshots": [] }, "P": null, "both": null, "expected": "snapshot unavailable, not false" }
+  ],
+  "controls": [
+    "same graph/capture/budget/observations across four arms",
+    "outside genuine/fake roles never enter graph/view/predicates, fresh equivalent roots/wires",
+    "directed and reciprocal P=>G_raw but not any-projection, not an independence d_eff theorem",
+    "complete negative or literal necessary proof, not invalid witness/advisory miss",
+    "repeat/order no state reservation or implicit reverse consent",
+    "padding ratio does not create support",
+    "old T1/T2/source/default/packet preservation"
+  ],
+  "measurements": {
+    "unit": "target x template x D x A/D x r x projection software cell",
+    "denominator": "all192 planned cells, including false/null; not only successful routes",
+    "populationWeights": null,
+    "elapsedTimeToSuccess": null,
+    "humanEffortAndEconomicCost": null,
+    "falsePersonOrMisconductJudgment": null,
+    "realGenuineAccessRate": null,
+    "capacityC": "UNCONTRACTED/NOT EXECUTED",
+    "scientificEffectPrecisionErrorHorizon": "UNBOUND/master gated"
+  }
+}
