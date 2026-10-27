@@ -1,0 +1,268 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D73 finite T1 supplied-graph certificate/property diagnostic, not empirical T1 study or economics",
+  "baseCommit": "f27672263d3b35ba597737dc7653c76baa71c698",
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "b16ad63547d0de21ceab97797530ca8c8684f15a",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "test/core-bridge-reuse.test.mjs",
+      "gitBlob": "73379f5776ecaf633fbcf40608b1dd8dc26fbce0"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t1-reuse-contract.md",
+      "gitBlob": "0b0fafecc51a0431b8124ee7d3f6279f3feb129c"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t1-reuse-results.md",
+      "gitBlob": "928eb7e6b84fdab7e679bd77a09ec3a723d42f8c"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/core-bridge-review-validation.json",
+      "gitBlob": "f311fb528a814d5446c436601c8a114878fcb2ed"
+    }
+  ],
+  "acceptance": {
+    "beforeTestCode": true,
+    "publication": "pre-code document and separate result published in same bounded cohort, not a preregistration or independent authenticated timestamp",
+    "partitions": "D2/3 crossed with M1/4/12",
+    "scope": "exact stored directions, reversed live paths, supplied anchors epoch3, slack0, standing-off, r2 multi-target/r3 common-center",
+    "truth": "all assumed-fake/all-genuine assignments outside graph/view/policy/wire/verifier; observational-equivalence, not personhood",
+    "funding": "direct synthetic graph operations are algorithm fixtures, not actual paid guarantees/admission",
+    "K": "meaning still OPEN, raw out-degree M+D-1 recorded only; no default enforcement"
+  },
+  "diagnostics": {
+    "t1-reuse": {
+      "cells": 6,
+      "issuerFamilies": 49,
+      "nativeVerifierCalls": 294,
+      "modelCalls": 0,
+      "studies": 0,
+      "classification": "finite supplied-live graph/raw-support only; not funded or selected d_eff/K",
+      "rows": [
+        {
+          "D": 2,
+          "M": 1,
+          "B": 2,
+          "assumedF": 3,
+          "lambda": {
+            "numerator": 3,
+            "denominator": 2
+          },
+          "bridgeOutgoing": 2,
+          "acceptedIssuerFamilies": 3
+        },
+        {
+          "D": 2,
+          "M": 4,
+          "B": 2,
+          "assumedF": 6,
+          "lambda": {
+            "numerator": 6,
+            "denominator": 2
+          },
+          "bridgeOutgoing": 5,
+          "acceptedIssuerFamilies": 6
+        },
+        {
+          "D": 2,
+          "M": 12,
+          "B": 2,
+          "assumedF": 14,
+          "lambda": {
+            "numerator": 14,
+            "denominator": 2
+          },
+          "bridgeOutgoing": 13,
+          "acceptedIssuerFamilies": 14
+        },
+        {
+          "D": 3,
+          "M": 1,
+          "B": 3,
+          "assumedF": 4,
+          "lambda": {
+            "numerator": 4,
+            "denominator": 3
+          },
+          "bridgeOutgoing": 3,
+          "acceptedIssuerFamilies": 4
+        },
+        {
+          "D": 3,
+          "M": 4,
+          "B": 3,
+          "assumedF": 7,
+          "lambda": {
+            "numerator": 7,
+            "denominator": 3
+          },
+          "bridgeOutgoing": 6,
+          "acceptedIssuerFamilies": 7
+        },
+        {
+          "D": 3,
+          "M": 12,
+          "B": 3,
+          "assumedF": 15,
+          "lambda": {
+            "numerator": 15,
+            "denominator": 3
+          },
+          "bridgeOutgoing": 14,
+          "acceptedIssuerFamilies": 15
+        }
+      ]
+    },
+    "t1-cut": {
+      "rejected": 49,
+      "oldCaptureAccepted": 49,
+      "nativeVerifierCalls": 196,
+      "negativeBasis": "literal only-crossing heads D-1; rejection not stale revision or a global search claim"
+    },
+    "t1-center": {
+      "commonAccepted": 49,
+      "commonCutRejected": 49,
+      "distinctTerminalRejected": 49,
+      "nativeMultiAnchorCalls": 98,
+      "commonEndpointCalls": 98,
+      "flowOrSearchCalls": 0,
+      "policyBoundary": "shared final center allowed by generic D36, not by named D61 distinct-terminal reference"
+    }
+  },
+  "interpretation": {
+    "issuerPartitionCases": 49,
+    "innerCases": 34,
+    "bridgeCases": 15,
+    "multiAnchorCallsPerSuite": 588,
+    "commonEndpointCallsPerSuite": 98,
+    "independentStatisticalSamples": 0,
+    "scopeOfCounts": "case=issuer x partition, not unique wire payload; repeated/cut/genuine/parser checks not independent worlds",
+    "reusedBoundary": "all issuer families accepted on fresh supplied facts without cross-user support reservation/depletion",
+    "currentCut": "D-1 literal only-crossing heads, inner raw indegree stillD, all49 current families reject; old49 captured families accept, not merely revision refusal",
+    "commonCenter": "native existing common-endpoint verifier/raw hops49 pass/49 actual-edge cut reject with revision-only rejection disabled; D61 parsers reject shared terminal as family-conflict despite enough anchors",
+    "notEstablished": [
+      "selected non-oracular d_eff/verified anchors",
+      "actual K100 count/adoption or universal finite-K bound",
+      "funded admission/growth or bridge price/liability/recovery",
+      "useful net incremental economic benefit/human time/price/real attack rate",
+      "G1 or registered mechanism presence/necessity/alternatives"
+    ]
+  },
+  "validation": {
+    "initialFixtureErrors": {
+      "logs": [
+        "/tmp/facety-t1-reuse-fixture-error.txt",
+        "/tmp/facety-t1-reuse-iterator-error.txt"
+      ],
+      "cause": "test assumed graph.nodeCount/array lengths; existing DirectedGraph exposes size/edgeCount and iterators",
+      "correction": "test only uses existing size/edgeCount and explicit array materialization; source/topology/partition/bounds/expected region unchanged",
+      "sutBug": false
+    },
+    "unit": {
+      "command": "node --test test/core-bridge-reuse.test.mjs",
+      "passed": 3,
+      "failed": 0,
+      "log": "/tmp/facety-t1-reuse-unit.txt"
+    },
+    "focused": {
+      "command": "node --test test/core-bridge-reuse.test.mjs test/path-witness-verifier.test.mjs test/path-witness-view.test.mjs test/disjoint-paths.test.mjs",
+      "passed": 27,
+      "failed": 0,
+      "log": "/tmp/facety-t1-reuse-focused.txt"
+    },
+    "full": {
+      "command": "npm test",
+      "currentPassed": 724,
+      "currentFailed": 0,
+      "historicalPassed": 21,
+      "historicalFailed": 0,
+      "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "historicalAssurance": "isolated compatible-source bodies only, not current-source proof",
+      "log": "/tmp/facety-t1-reuse-full.txt"
+    },
+    "modelCallScope": "new T1 tests instantiate zero Model; existing focused/full-suite native Model tests do run, not counted as new T1 population data",
+    "reusedSourceOnly": {
+      "basis": "same runtime/src tree/implementation as C1, no Source mutation; source DAG/two trajectories not rerun",
+      "record": "studies/2026-10-26-trust-topology-condition-map/core-council-rejection-validation.json",
+      "dag": {
+        "sourceFiles": 53,
+        "localEdges": 168,
+        "acyclic": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "fixedTrajectories": {
+        "provenance": {
+          "implementation": {
+            "method": "sha256-src-mjs-v1",
+            "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+            "files": 53
+          },
+          "runtime": {
+            "node": "v26.8.1"
+          }
+        },
+        "excludedOnly": "provenance.implementation",
+        "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+        "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+        "matched": true,
+        "classification": "two fixed software trajectories, not sealed-study replay or new scientific data"
+      }
+    },
+    "freshNativePreservation": {
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+      "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+    },
+    "context": {
+      "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+      "log": "/tmp/facety-t1-reuse-context.txt",
+      "errors": 0,
+      "warnings": 29,
+      "orphans": 0,
+      "phantoms": 0,
+      "review": "Existing structure/meta-principle/sparsity/index-bloat/wide-table warnings reviewed; new contract/results/validation reachable. Unchanged large protocol scans skipped, original D73/D74 anchors/bindings reused. BACKLOG closes only finite T1 prerequisite/narrows to T2, K/default/empirical gates remain; C3 parked. Existing review/pre-code packets keep historical counts and current summaries distinguish fresh724 test tree from reused unchanged-source DAG/two trajectories."
+    }
+  },
+  "review": {
+    "method": "inline contract/native accessor/raw physical disjointness/cut/counts/role-input/legacy-versus-reference/Source preservation review; not independent authorship",
+    "necessaryNegative": "cut scope asserted from all actual graph edges; no global solver, policy downgrade, stale-only reason or degree misreported as path evidence",
+    "sourceBoundary": "single-center generic D36 is not D61 multi-anchor, raw incoming is not d_eff; no API modified to force acceptance"
+  },
+  "preservation": {
+    "sourceRuntimeDefaultApiRngChanged": false,
+    "testOnlyExecutableChange": "test/core-bridge-reuse.test.mjs",
+    "oldSourcePinnedBodiesPacketsAndD73ReviewUnchanged": true,
+    "newT1ModelCalls": 0,
+    "flowOrSearchCalls": 0,
+    "empiricalGraphSweeps": 0,
+    "newScientificRegistrations": 0,
+    "seedsAllocated": 0,
+    "masterG1Pass": false,
+    "protocolDecisionChanged": false,
+    "externalPersonalDataOrAtmoActions": 0
+  },
+  "handoff": {
+    "scope": "D73 core structural support/access evidence, not C3 or indexer optimization",
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "closed": "finite T1 native reuse/cut/genuine/common-center acceptance",
+    "notClosed": "T1 scientific screen/full protocol economics/K semantics/d_eff/qualified anchors",
+    "next": "T2 finite observable-support/control acceptance contract: I0/I1/I2/I3 actual observations/source/lineage/age/provenance/missingness and identical-public honest/assumed-fake controls; no new engine/default/registration or empirical sweep",
+    "humanGate": "K counted resource/renewal/default enforcement remains unanswered, not blocking declared raw-support preparation",
+    "continuationWarranted": true,
+    "signature": "d73-t1/6partitions-49issuerCases/588multi-98common-0ModelPopulation/27focused-724current-21historical/source91db-testb16ad635/next-t2-observation-contract"
+  }
+}
