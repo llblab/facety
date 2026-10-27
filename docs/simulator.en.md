@@ -412,6 +412,8 @@ Commands are[0,H), endpoints24…H precede same-hour commands after automatic ma
 
 [Seven integration families/validation](../studies/2026-10-26-trust-topology-condition-map/wp1-pb-v2-validation.json) separate47 focused/467 current and21 historical passes, actual ephemeral API envelopes/ordinary-seed workers from unrun programme methods/reserved confirmations. Deterministic repeated labels are not human calibration or extra parameter coverage. Lifetime/cut/incremental-payback and real range/precision/kill contracts remain before G1; no historical recapture, selected-rule migration, research/confirmation or later-WP run follows.
 
+**D76 live-history conditional capability,2026-10-27:** [The new existing-owner test](../studies/2026-10-26-trust-topology-condition-map/longitudinal-live-case-results.md) adds no runtime API. An older converted-act financial reference coexists with three paid guarantees, actual later funded admission, ordinary24h receipts/withdrawals and a fresh immature head; a readonly D59 execution preview grows with current history. No complaint is admitted or verdict/cut executed. Unlocked future rights in this witness do NOT select real-case lock policy: §17.4 targeted emission and §26.5 unspent rights need exact future-right/converted-value attachment binding. DECISIONS_NEEDED records the one owner question; current frozen/post-maturity XP refusals/default act-adjudication guard stay. Do not treat financial pendingness as selected dispute chronology, static-head exclusion as necessary for every Model source preview, or a target-only research assumption as selected behavior.
+
 ## Protocol coverage
 
 | Protocol rule | Section | Simulator |

@@ -261,3 +261,70 @@ test('funded voluntary guarantee duties earn individual source XP and enable ord
       'matched author emissions including one accused emission, not a full adaptive adversarial coalition'],
     scope: 'encoded source-role operability only, not organized-attack efficacy, verified usefulness, pooled XP or selected act/Council merits' }));
 });
+
+test('a financial reference about an older converted act can coexist with paid birth and ordinary D42 receipts while the later D59 preview suffix grows', t => {
+  const rows = [], normalized = [];
+  for (const reverse of [false, true]) {
+    const { model, people } = smallCorrectiveCohort([10, ...Array(8).fill(1), 5], reverse, 1);
+    const author = 'p009', claimant = 'p000', creator = 'p001', child = 'newcomer';
+    const original = model.selfIds().filter(act => act.subject === author), targeted = original[2], prefix = original.slice(0, 2);
+    assert.equal(targeted.chainIndex, 3); assert.equal(targeted.recordedAt, 48); assert.equal(targeted.status, 'converted');
+    const guarantors = reverse ? ['p003', 'p002', 'p000'] : ['p000', 'p002', 'p003'];
+    for (const guarantor of guarantors) model.confirmGuarantee(creator, model.proposeGuarantee(guarantor, creator));
+    assert.equal(model.audit().feeVault, 3);
+    assert.equal(challengeAccess(model, claimant, author, 1).allowed, true);
+    const book = new DisputeStakes(model, 'reserved'), caseId = 'financial-only-live-history';
+    book.open(caseId, claimant, 1);
+    const opening = model.previewSelfIdResolution(targeted.id, { caseId, initiator: claimant, upheld: true });
+    assert.equal(opening.acts.length, 3);
+    let invitation;
+    const later = [], births = [];
+    for (let day = 0; day < 7; day++) {
+      if (day === 2) { model.acceptInvitation(invitation, child); births.push({ subject: child, at: model.now }); }
+      const participants = day < 2 ? people : [...people, child], order = reverse ? [...participants].reverse() : participants;
+      const fresh = order.map(id => [id, model.createSelfId(id, model.registerArtifact(id))]);
+      model.advanceTo(240 + (day + 1) * DAY);
+      assert.equal(book.get(caseId).status, 'open', 'a financial position is not an admitted complaint or an automatic clock verdict');
+      for (const [id, actId] of fresh) {
+        const act = model.selfId(actId);
+        assert.equal(act.xpCredit.at, act.recordedAt + DAY); assert.equal(act.disputeLock, null);
+        assert.equal(act.status, 'unspent', 'maturity credits XP but keeps the original right until a chosen use');
+        if (id === creator && day === 0) invitation = model.createInvitation(creator, actId, child);
+        else model.convertToCollector(id, actId);
+        if (id === author) later.push({ selfId: actId, chainIndex: act.chainIndex, at: act.recordedAt, creditedAt: act.xpCredit.at });
+      }
+    }
+    const freshHead = new Map();
+    for (const id of reverse ? [...people, child].reverse() : [...people, child]) freshHead.set(id, model.createSelfId(id, model.registerArtifact(id)));
+    later.push({ selfId: freshHead.get(author), chainIndex: model.selfId(freshHead.get(author)).chainIndex, at: model.now, creditedAt: null });
+    model.advanceTo(409);
+    assert.equal(model.now - model.selfId(freshHead.get(author)).recordedAt, 1);
+    assert.ok([...freshHead.values()].every(id => model.selfId(id).xpCredit === null && model.selfId(id).status === 'unspent' && model.selfId(id).disputeLock === null));
+    const before = state(model), plan = model.previewSelfIdResolution(targeted.id, { caseId, initiator: claimant, upheld: true });
+    assert.deepEqual(state(model), before, 'trusted supplied verdict preview neither authenticates merits nor executes any cut');
+    assert.equal(plan.kind, 'external-chain-cut'); assert.equal(plan.head, later.at(-1).selfId);
+    assert.equal(plan.acts.length, 11); assert.equal(plan.punitivePenaltiesApplied, false);
+    assert.deepEqual(plan.recovery, { emitterBurn: 1, alreadyBurned: 0, requestedFromAuthor: 10, collected: 10, debtAdded: 0 });
+    assert.deepEqual(plan.acts.map(row => row.selfId), [...original.slice(2).map(act => act.id), ...later.map(act => act.selfId)]);
+    assert.deepEqual(prefix.map(act => model.selfId(act.id)), prefix);
+    assert.equal(model.subjects().length, 11); assert.equal(model.activeCount(), 11);
+    assert.ok(model.subjects().every(person => person.identityStatus === 'accepted'));
+    assert.deepEqual(model.selfIdResolutions(), []); assert.equal(book.get(caseId).winner, null);
+    const money = model.audit(), subjects = model.subjects().map(({ id, xp, liquidFacy, identityStatus }) => ({ id, xp, liquidFacy, identityStatus }));
+    assert.equal(money.minted, 109); assert.equal(money.burned, 1); assert.equal(money.supply, 108);
+    assert.equal(money.collector, 93); assert.equal(money.feeVault, 3); assert.equal(money.stakeVault, 1);
+    assert.equal(money.emitterVault, 11); assert.equal(money.debt, 0);
+    assert.equal(subjects.reduce((sum, person) => sum + person.xp, 0), 119);
+    const facts = { hour: model.now, subjects, money, sourceCount: model.selfIds().length, birth: births,
+      later: later.map(({ selfId, ...row }) => row), originalPrefix: prefix.length, openingSuffix: opening.acts.length,
+      finalSuffix: plan.acts.length, recovery: plan.recovery, immatureHeadRights: freshHead.size, financialSummary: book.summary() };
+    normalized.push(facts); rows.push({ reverse, ...facts, targeted: targeted.id, latest: plan.head, invitation,
+      financialCase: book.get(caseId), admittedActCase: false, verdictExecuted: false, identityExcluded: false });
+  }
+  assert.deepEqual(normalized[0], normalized[1], 'operation ordering changes no declared normalized role/funding/chronology fact');
+  t.diagnostic('longitudinal-live-case ' + JSON.stringify({ rows, traces: 2, scientificWorlds: 0,
+    assumptions: ['supplied admitted participants; native guaranteeFee1/qualification and reserved financial reference',
+      'older converted target, no new original right freeze, no converted-value attachment or whole-author pause chosen',
+      'upheld:true is a trusted readonly execution preview, not a human verdict or an adjudicated case'],
+    scope: 'ongoing funded life/ordinary maturity/growing-suffix capability, not actual act-case admission/defense/merits or disputed-XP migration' }));
+});

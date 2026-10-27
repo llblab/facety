@@ -1,0 +1,907 @@
+{
+  "schema": "facety-live-history-source-capability/v1",
+  "classification": "D76 diagnostic source/funding/chronology, no actual act-case/court or scientific world",
+  "baseCommit": "73a419aafeab79ca07eccc77843fe42dc96e07cf",
+  "sourceTree": "8d84f0d5b1cb76477afd3da8802d6423629e2780",
+  "testTree": "d0a941d3a1376060a12c807300ecf826ba8f30a9",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "65aae8a189e5c98822d80b27445339c4450a594314393b7859093f48f5d94352",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "test/core-authority.test.mjs",
+      "gitBlob": "536baa3a521e8774889a444bec96a065862eb335"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/longitudinal-live-case-contract.md",
+      "gitBlob": "acd3b8b99c3290205382fd4b81b441b4a1535a19"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/longitudinal-live-case-results.md",
+      "gitBlob": "29bb15b738b921625e7b32621211ed4e3f34c63e"
+    },
+    {
+      "path": "/tmp/facety-live-case-unit.txt",
+      "gitBlob": "0dfa19e447ea275537ff8c869d92c263299d2080"
+    },
+    {
+      "path": "/tmp/facety-live-case-unit-v1.txt",
+      "gitBlob": "d9b32eca72d5e44827cb3e48323f559e4705f114"
+    },
+    {
+      "path": "/tmp/facety-live-case-focused.txt",
+      "gitBlob": "971000b00ea48f396f850570b34cf8531dfeac0c"
+    },
+    {
+      "path": "/tmp/facety-live-case-full.txt",
+      "gitBlob": "1ed81828b9ad2a968bf7428b4805f0e5e128c059"
+    }
+  ],
+  "preCode": "literal initial prediction before new test; Source/API/default/RNG untouched, private existing funded helper; 1 new family/2 order traces, no new framework or registration",
+  "refinement": "initial98mint/10convertedSuffix witness passed but missed408 ordinary next issuance; pre-code refinement binds11fresh rights/109mint/11suffix with emitter-right, before new family strengthened. Retain both intermediates; not favorable research retuning.",
+  "actualInitial": {
+    "rows": [
+      {
+        "reverse": false,
+        "hour": 409,
+        "subjects": [
+          {
+            "id": "p000",
+            "xp": 24,
+            "liquidFacy": 15,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p001",
+            "xp": 8,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p002",
+            "xp": 15,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p003",
+            "xp": 15,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p004",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p005",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p006",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p007",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p008",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p009",
+            "xp": 12,
+            "liquidFacy": 12,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "newcomer",
+            "xp": 5,
+            "liquidFacy": 5,
+            "identityStatus": "accepted"
+          }
+        ],
+        "money": {
+          "minted": 98,
+          "burned": 1,
+          "supply": 97,
+          "emitterVault": 0,
+          "collector": 93,
+          "feeVault": 3,
+          "stakeVault": 1,
+          "debt": 0
+        },
+        "sourceCount": 98,
+        "birth": [
+          {
+            "subject": "newcomer",
+            "at": 288
+          }
+        ],
+        "later": [
+          {
+            "chainIndex": 6,
+            "at": 240,
+            "creditedAt": 264
+          },
+          {
+            "chainIndex": 7,
+            "at": 264,
+            "creditedAt": 288
+          },
+          {
+            "chainIndex": 8,
+            "at": 288,
+            "creditedAt": 312
+          },
+          {
+            "chainIndex": 9,
+            "at": 312,
+            "creditedAt": 336
+          },
+          {
+            "chainIndex": 10,
+            "at": 336,
+            "creditedAt": 360
+          },
+          {
+            "chainIndex": 11,
+            "at": 360,
+            "creditedAt": 384
+          },
+          {
+            "chainIndex": 12,
+            "at": 384,
+            "creditedAt": 408
+          }
+        ],
+        "originalPrefix": 2,
+        "openingSuffix": 3,
+        "finalSuffix": 10,
+        "recovery": {
+          "emitterBurn": 0,
+          "alreadyBurned": 0,
+          "requestedFromAuthor": 10,
+          "collected": 10,
+          "debtAdded": 0
+        },
+        "financialSummary": {
+          "backing": "reserved",
+          "cases": 1,
+          "openCases": 1,
+          "nominalCommitted": 1,
+          "pendingNominal": 1,
+          "nominalLosing": 0,
+          "transferred": 0,
+          "burned": 0,
+          "released": 0,
+          "unpaid": 0
+        },
+        "targeted": "self-id:27",
+        "latest": "self-id:197",
+        "invitation": "invitation:69",
+        "financialCase": {
+          "id": "financial-only-live-history",
+          "openedAt": 240,
+          "closedAt": null,
+          "status": "open",
+          "winner": null,
+          "positions": [
+            {
+              "owner": "p000",
+              "amount": 1,
+              "side": "fraud",
+              "atHour": 240
+            }
+          ],
+          "accounting": null
+        },
+        "admittedActCase": false,
+        "verdictExecuted": false,
+        "identityExcluded": false
+      },
+      {
+        "reverse": true,
+        "hour": 409,
+        "subjects": [
+          {
+            "id": "p000",
+            "xp": 24,
+            "liquidFacy": 15,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p001",
+            "xp": 8,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p002",
+            "xp": 15,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p003",
+            "xp": 15,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p004",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p005",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p006",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p007",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p008",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p009",
+            "xp": 12,
+            "liquidFacy": 12,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "newcomer",
+            "xp": 5,
+            "liquidFacy": 5,
+            "identityStatus": "accepted"
+          }
+        ],
+        "money": {
+          "minted": 98,
+          "burned": 1,
+          "supply": 97,
+          "emitterVault": 0,
+          "collector": 93,
+          "feeVault": 3,
+          "stakeVault": 1,
+          "debt": 0
+        },
+        "sourceCount": 98,
+        "birth": [
+          {
+            "subject": "newcomer",
+            "at": 288
+          }
+        ],
+        "later": [
+          {
+            "chainIndex": 6,
+            "at": 240,
+            "creditedAt": 264
+          },
+          {
+            "chainIndex": 7,
+            "at": 264,
+            "creditedAt": 288
+          },
+          {
+            "chainIndex": 8,
+            "at": 288,
+            "creditedAt": 312
+          },
+          {
+            "chainIndex": 9,
+            "at": 312,
+            "creditedAt": 336
+          },
+          {
+            "chainIndex": 10,
+            "at": 336,
+            "creditedAt": 360
+          },
+          {
+            "chainIndex": 11,
+            "at": 360,
+            "creditedAt": 384
+          },
+          {
+            "chainIndex": 12,
+            "at": 384,
+            "creditedAt": 408
+          }
+        ],
+        "originalPrefix": 2,
+        "openingSuffix": 3,
+        "finalSuffix": 10,
+        "recovery": {
+          "emitterBurn": 0,
+          "alreadyBurned": 0,
+          "requestedFromAuthor": 10,
+          "collected": 10,
+          "debtAdded": 0
+        },
+        "financialSummary": {
+          "backing": "reserved",
+          "cases": 1,
+          "openCases": 1,
+          "nominalCommitted": 1,
+          "pendingNominal": 1,
+          "nominalLosing": 0,
+          "transferred": 0,
+          "burned": 0,
+          "released": 0,
+          "unpaid": 0
+        },
+        "targeted": "self-id:25",
+        "latest": "self-id:181",
+        "invitation": "invitation:69",
+        "financialCase": {
+          "id": "financial-only-live-history",
+          "openedAt": 240,
+          "closedAt": null,
+          "status": "open",
+          "winner": null,
+          "positions": [
+            {
+              "owner": "p000",
+              "amount": 1,
+              "side": "fraud",
+              "atHour": 240
+            }
+          ],
+          "accounting": null
+        },
+        "admittedActCase": false,
+        "verdictExecuted": false,
+        "identityExcluded": false
+      }
+    ],
+    "traces": 2,
+    "scientificWorlds": 0,
+    "assumptions": [
+      "supplied admitted participants; native guaranteeFee1/qualification and reserved financial reference",
+      "older converted target, no new original right freeze, no converted-value attachment or whole-author pause chosen",
+      "upheld:true is a trusted readonly execution preview, not a human verdict or an adjudicated case"
+    ],
+    "scope": "ongoing funded life/ordinary maturity/growing-suffix capability, not actual act-case admission/defense/merits or disputed-XP migration"
+  },
+  "actualFinal": {
+    "rows": [
+      {
+        "reverse": false,
+        "hour": 409,
+        "subjects": [
+          {
+            "id": "p000",
+            "xp": 24,
+            "liquidFacy": 15,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p001",
+            "xp": 8,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p002",
+            "xp": 15,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p003",
+            "xp": 15,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p004",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p005",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p006",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p007",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p008",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p009",
+            "xp": 12,
+            "liquidFacy": 12,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "newcomer",
+            "xp": 5,
+            "liquidFacy": 5,
+            "identityStatus": "accepted"
+          }
+        ],
+        "money": {
+          "minted": 109,
+          "burned": 1,
+          "supply": 108,
+          "emitterVault": 11,
+          "collector": 93,
+          "feeVault": 3,
+          "stakeVault": 1,
+          "debt": 0
+        },
+        "sourceCount": 109,
+        "birth": [
+          {
+            "subject": "newcomer",
+            "at": 288
+          }
+        ],
+        "later": [
+          {
+            "chainIndex": 6,
+            "at": 240,
+            "creditedAt": 264
+          },
+          {
+            "chainIndex": 7,
+            "at": 264,
+            "creditedAt": 288
+          },
+          {
+            "chainIndex": 8,
+            "at": 288,
+            "creditedAt": 312
+          },
+          {
+            "chainIndex": 9,
+            "at": 312,
+            "creditedAt": 336
+          },
+          {
+            "chainIndex": 10,
+            "at": 336,
+            "creditedAt": 360
+          },
+          {
+            "chainIndex": 11,
+            "at": 360,
+            "creditedAt": 384
+          },
+          {
+            "chainIndex": 12,
+            "at": 384,
+            "creditedAt": 408
+          },
+          {
+            "chainIndex": 13,
+            "at": 408,
+            "creditedAt": null
+          }
+        ],
+        "originalPrefix": 2,
+        "openingSuffix": 3,
+        "finalSuffix": 11,
+        "recovery": {
+          "emitterBurn": 1,
+          "alreadyBurned": 0,
+          "requestedFromAuthor": 10,
+          "collected": 10,
+          "debtAdded": 0
+        },
+        "immatureHeadRights": 11,
+        "financialSummary": {
+          "backing": "reserved",
+          "cases": 1,
+          "openCases": 1,
+          "nominalCommitted": 1,
+          "pendingNominal": 1,
+          "nominalLosing": 0,
+          "transferred": 0,
+          "burned": 0,
+          "released": 0,
+          "unpaid": 0
+        },
+        "targeted": "self-id:27",
+        "latest": "self-id:219",
+        "invitation": "invitation:69",
+        "financialCase": {
+          "id": "financial-only-live-history",
+          "openedAt": 240,
+          "closedAt": null,
+          "status": "open",
+          "winner": null,
+          "positions": [
+            {
+              "owner": "p000",
+              "amount": 1,
+              "side": "fraud",
+              "atHour": 240
+            }
+          ],
+          "accounting": null
+        },
+        "admittedActCase": false,
+        "verdictExecuted": false,
+        "identityExcluded": false
+      },
+      {
+        "reverse": true,
+        "hour": 409,
+        "subjects": [
+          {
+            "id": "p000",
+            "xp": 24,
+            "liquidFacy": 15,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p001",
+            "xp": 8,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p002",
+            "xp": 15,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p003",
+            "xp": 15,
+            "liquidFacy": 7,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p004",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p005",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p006",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p007",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p008",
+            "xp": 8,
+            "liquidFacy": 8,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "p009",
+            "xp": 12,
+            "liquidFacy": 12,
+            "identityStatus": "accepted"
+          },
+          {
+            "id": "newcomer",
+            "xp": 5,
+            "liquidFacy": 5,
+            "identityStatus": "accepted"
+          }
+        ],
+        "money": {
+          "minted": 109,
+          "burned": 1,
+          "supply": 108,
+          "emitterVault": 11,
+          "collector": 93,
+          "feeVault": 3,
+          "stakeVault": 1,
+          "debt": 0
+        },
+        "sourceCount": 109,
+        "birth": [
+          {
+            "subject": "newcomer",
+            "at": 288
+          }
+        ],
+        "later": [
+          {
+            "chainIndex": 6,
+            "at": 240,
+            "creditedAt": 264
+          },
+          {
+            "chainIndex": 7,
+            "at": 264,
+            "creditedAt": 288
+          },
+          {
+            "chainIndex": 8,
+            "at": 288,
+            "creditedAt": 312
+          },
+          {
+            "chainIndex": 9,
+            "at": 312,
+            "creditedAt": 336
+          },
+          {
+            "chainIndex": 10,
+            "at": 336,
+            "creditedAt": 360
+          },
+          {
+            "chainIndex": 11,
+            "at": 360,
+            "creditedAt": 384
+          },
+          {
+            "chainIndex": 12,
+            "at": 384,
+            "creditedAt": 408
+          },
+          {
+            "chainIndex": 13,
+            "at": 408,
+            "creditedAt": null
+          }
+        ],
+        "originalPrefix": 2,
+        "openingSuffix": 3,
+        "finalSuffix": 11,
+        "recovery": {
+          "emitterBurn": 1,
+          "alreadyBurned": 0,
+          "requestedFromAuthor": 10,
+          "collected": 10,
+          "debtAdded": 0
+        },
+        "immatureHeadRights": 11,
+        "financialSummary": {
+          "backing": "reserved",
+          "cases": 1,
+          "openCases": 1,
+          "nominalCommitted": 1,
+          "pendingNominal": 1,
+          "nominalLosing": 0,
+          "transferred": 0,
+          "burned": 0,
+          "released": 0,
+          "unpaid": 0
+        },
+        "targeted": "self-id:25",
+        "latest": "self-id:203",
+        "invitation": "invitation:69",
+        "financialCase": {
+          "id": "financial-only-live-history",
+          "openedAt": 240,
+          "closedAt": null,
+          "status": "open",
+          "winner": null,
+          "positions": [
+            {
+              "owner": "p000",
+              "amount": 1,
+              "side": "fraud",
+              "atHour": 240
+            }
+          ],
+          "accounting": null
+        },
+        "admittedActCase": false,
+        "verdictExecuted": false,
+        "identityExcluded": false
+      }
+    ],
+    "traces": 2,
+    "scientificWorlds": 0,
+    "assumptions": [
+      "supplied admitted participants; native guaranteeFee1/qualification and reserved financial reference",
+      "older converted target, no new original right freeze, no converted-value attachment or whole-author pause chosen",
+      "upheld:true is a trusted readonly execution preview, not a human verdict or an adjudicated case"
+    ],
+    "scope": "ongoing funded life/ordinary maturity/growing-suffix capability, not actual act-case admission/defense/merits or disputed-XP migration"
+  },
+  "facts": {
+    "openingHour": 240,
+    "finalHour": 409,
+    "initialSubjects": 10,
+    "finalSubjects": 11,
+    "suppliedGenesisMoneyXp": 0,
+    "initialFundedUnits": 23,
+    "financialStakeReserved": 1,
+    "guaranteeFeesPaid": 3,
+    "paidInvitationSource": 1,
+    "newBirthHour": 288,
+    "sourceCount": 109,
+    "newImmatureRights": 11,
+    "xp": 119,
+    "targetOriginalChainIndex": 3,
+    "targetOriginalRecordedHour": 48,
+    "earlierPrefixRetained": 2,
+    "additionalTargetActs": 8,
+    "newHeadAgeHours": 1,
+    "originalPreviewSuffix": 3,
+    "currentPreviewSuffix": 11,
+    "previewRecovery": {
+      "requestedFromAuthor": 10,
+      "collected": 10,
+      "emitterBurn": 1,
+      "alreadyBurned": 0,
+      "debtAdded": 0
+    },
+    "actualPreviewRecovery": 0,
+    "modelMoney": {
+      "minted": 109,
+      "burned": 1,
+      "supply": 108,
+      "emitterVault": 11,
+      "collector": 93,
+      "feeVault": 3,
+      "stakeVault": 1,
+      "debt": 0
+    },
+    "actualAdmittedActCases": 0,
+    "actualVerdicts": 0,
+    "sourceCuts": 0,
+    "identitiesExcluded": 0,
+    "financialCasesOpen": 1
+  },
+  "fresh": {
+    "unit": {
+      "command": "node --test test/core-authority.test.mjs",
+      "log": "/tmp/facety-live-case-unit-v1.txt",
+      "families": 6,
+      "passed": 6,
+      "failed": 0,
+      "newFamilies": 1
+    },
+    "focused": {
+      "command": "node --test test/core-authority.test.mjs test/self-id-resolution.test.mjs test/act-relay.test.mjs test/dispute-stakes.test.mjs test/xp-provenance.test.mjs",
+      "log": "/tmp/facety-live-case-focused.txt",
+      "passed": 41,
+      "failed": 0
+    },
+    "full": {
+      "command": "npm test",
+      "log": "/tmp/facety-live-case-full.txt",
+      "currentPassed": 737,
+      "currentFailed": 0,
+      "historicalPassed": 21,
+      "historicalFailed": 0,
+      "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "meaning": "unchanged historical bodies on original compatible source are not current-source assurance"
+    },
+    "old4EntryRows": "exact decoded equality to immutable core-coalition-entry-results.json actual",
+    "old8SupportRows": "exact decoded equality to immutable core-coalition-support-results.json actual"
+  },
+  "reusedSourceOnly": {
+    "fromCommit": "73a419aafeab79ca07eccc77843fe42dc96e07cf",
+    "basis": "exact Source tree/provenance/runtime equality; not test-tree equality",
+    "dag": {
+      "modules": 53,
+      "edges": 168,
+      "errors": 0,
+      "warnings": 0,
+      "rerun": false
+    },
+    "fixedTrajectories": {
+      "legacy": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouch": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "rerun": false
+    },
+    "annual": {
+      "packet": "studies/2026-10-26-trust-topology-condition-map/longitudinal-fastpath-results.json",
+      "rerun": false,
+      "classification": "quiet supplied100genesis365day capacity only"
+    }
+  },
+  "preservation": {
+    "old5TestBodiesBytePrefix": true,
+    "onlyTestChanged": "test/core-authority.test.mjs",
+    "runtimeSourceChanges": 0,
+    "oldPacketsRewritten": 0,
+    "newAssumedPersonhoodOracle": false,
+    "defaultPolicyRngIdentifierChanged": false,
+    "noActualActCaseBinding": true,
+    "noRecoveryOrWinnerFromReadonlyPreview": true,
+    "oldStaticActPacket": "retained deferred; not implemented",
+    "protocolChange": "OPEN17.4 execution mapping made self-contained, not an owner decision/new selected rule;17.4 and26.5 original selected lock text retained"
+  },
+  "ownerQuestion": {
+    "status": "OPEN",
+    "exact": "When an older Self-ID is disputed, are emission rights of new Self-IDs recorded after opening also frozen, or only the originally targeted Self-ID right?",
+    "transition": "financial-only/source capability → actual selected act-case lock at admission/ongoing lifetime",
+    "why": "17.4 targeted emission/26.5 unspent rights do not specify later-right/converted-value attachment mapping; a financial book cannot decide it",
+    "notReopened": [
+      "ordinary24h XP/free veto expiry/no automatic withdrawal",
+      "D59 suffix scope",
+      "ordinary strict-XP/alternation/seven-day finality",
+      "responsible admitted-participant presumption"
+    ],
+    "branches": {
+      "allLaterFreeze": "bind frozen/precredited XP/custody/eligibility chronology before selected migration",
+      "originalOnly": "ordinary later-credit capability available conditionally; real admission/converted-principal/authority still needs binding"
+    },
+    "alternative": "target-only/no-attachment labeled research alternative must not silently become selected to make a long run pass"
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-live-case-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "review": "Existing structure/meta/index/wide-table warnings reviewed, no new tables/orphans. Large protocol scanner skips links/lists;17.4/26.5 original lock paragraphs directly inspected, original SELECTED words retained and new OPEN execution mapping self-contained, no fabricated owner decision/Appendix label or changed default. Actual-case admission false, winner null, supplied preview inert, theoretical collection/burn never mislabeled actual. Seven-day initial witness was strengthened with fresh408 slot before revision, not hidden favorable retry. Existing5 bodies/4entry/8support rows identical, Source-only53x168/two trajectories/year reused under exact65aa tree/runtime, fresh6unit/41focused/737current+21original compatible historical distinguished. No code/API/framework/role truth oracle/automatic history pause/RNG change. BACKLOG alone owns real selected-profile transition; exact future-right freeze question in decision/model/protocol surfaces, no static controller fallback or speculative continuation."
+  },
+  "handoff": {
+    "scope": "D76 longitudinal organized protection versus patient organized attack, Facety",
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "cohort": "one coupled capability+scenario boundary; new test only, no runtime framework/feature",
+    "closed": "source kernel/ordinary maturity can cover continuing paid life/new immature head/growing suffix under a FINANCIAL-only position; previous funded access/support packets preserved",
+    "planTransition": "narrowed broad chronology blocker to exact future-right case-freeze mapping; literal prepared scenario/owner question, not auto-resume static controller",
+    "next": "one precise owner freeze-scope binding at actual selected complaint; then correct minimal live-case integration/chronology, preserve Council/D34/act merits/method/master boundaries",
+    "classification": "human-gated selected-profile transition; do not perform unrelated work or choose favorable reference for momentum",
+    "stop": "bounded witness verified, selected real-case integration blocked at exact scope question. No continuation scheduled while awaiting that answer; no universal declaration all project work is impossible.",
+    "signature": "d76-live-history/10day23units-3fees-1financialstake/11people109sources119XP11immature/preview3to11-currentHead-emitter1-author10-notExecuted/old5bodies4entry8support-kept/6unit41focused737current21historical/src65aa-unchanged/open-afterOpening-freezeScope",
+    "continuationWarranted": false
+  }
+}

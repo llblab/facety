@@ -634,6 +634,8 @@ The independence in D42 concerns **later disposition**, not independence of canc
 
 A freeze MUST preserve the original emission disposition and history. It is a procedural lock, not a second economic right. If a guarantor cancellation is also attempted while the act is disputed, the runtime needs a defined precedence and termination rule **[OPEN]**.
 
+**[OPEN — living-history/custody execution mapping, documented 2026-10-27.]** For a dispute about an older Self-ID, bind how a procedural lock attaches if the original emission has already been converted, and whether rights from Self-IDs recorded **after opening** also enter that existing case's freeze. §26.5's unspent-right freeze must not be implemented by silently choosing either an all-future-rights lock or a target-only exception. This is not a selected ban on recording later chain positions, a second economic right, automatic third-party seizure, a change to ordinary D42 maturation/withdrawal, or an answer to frozen/precredited XP chronology. A financial reservation or trusted source-reversal preview does not establish an admitted case or settle this scope. Keep required actual case locks and unsupported chronology explicit until that mapping is bound.
+
 ### 17.5 Reward and rate limit
 
 **[SELECTED]** A subject can receive at most one normal rewarded Self-ID per rolling 24 hours, regardless of key rotation. A valid act provides:

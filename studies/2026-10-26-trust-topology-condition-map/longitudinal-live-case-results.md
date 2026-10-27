@@ -1,0 +1,29 @@
+# Live-history capability and the exact remaining freeze question
+
+**2026-10-27 · D68/D76 · DIAGNOSTIC accounting/chronology witness, NOT an executed act-court or organized-defense study.** [Pre-code/refinement/scope contract](longitudinal-live-case-contract.md) · [raw rows/bindings/checks](longitudinal-live-case-results.json) · [annual ordinary-growth capacity](longitudinal-fastpath-results.md). No Source/API/default/RNG change, no G1/registration/new scientific world, no relabel of earlier packets. This small mechanical check is a necessary chronology boundary for the living-network scenario, not its replacement.
+
+## What actually ran
+
+One family appended to existing core-authority tests, reusing the existing ten-day funded prefix:10 supplied admitted participants, actual23 Self-ID units, leader10XP versus target5XP, no injected funds/XP. Targeted older index3 Self-ID at48h is already converted before opening240h. Three new guarantees to an actual creator cost3 reference fees. Ordinary challengeAccess passes and one actual1-unit financial position is reserved. **No act complaint is admitted; the financial record is not bound/authenticated by a real act court.**
+
+Life continues without a global/target-history pause: seven daily rounds, real24h source credits with separately chosen withdrawals, an own-source invitation at264 and accepted newcomer at288, plus all11 actors' next regular408h emissions. The409h state has11 accepted/active subjects,109 actual sources/119XP, minted109/burned1/supply108=Collector93+fees3+stake1+Emitter11; debt0. All11 newest rights are unspent/one hour old/uncredited, not silently withdrawn or prematurely credited. Target has8 later acts, including that immature head. Operations were repeated forward/reverse; declared role/funding/chronology facts agree.
+
+A trusted readonly D59 preview now includes11 affected acts versus3 at opening:10 converted author units that could be collected from actual12 liquid funds, plus1 emitter-right prospective burn, no debt, and the earlier2-act prefix preserved. **Actual collected/burned by this preview is0.** Source history, money, identities and financial position remain unchanged; no merits, source cut, punitive action, identity exclusion or court finality is asserted. Its supplied upheld:true is explicitly an executor input, not an environment-derived/human verdict.
+
+The first seven-round version correctly produced98 minted/10-suffix/fully converted head. Inline review then exposed its omission of the408 issuance slot. Acceptance was refined BEFORE modifying the new test to require the fresh immature head and109/11-right ledger above. Both intermediate/final rows are retained; this is stricter chronology coverage, not a favorable parameter retry or an empirical study. Existing4 entry and8 support rows and previous5 test bodies are unchanged.
+
+## What this narrows — and does not settle
+
+The Model/source kernel does not intrinsically require stopping history to preview an older converted-source cut. A financial position also does not freeze every future right by itself. That is useful capability, **not permission for a real eligible act-case to omit its required locks**. The default act-adjudication guard and frozen/post-maturity XP refusals remain unchanged. The earlier static-head proposal is still historical/deferred; no automatic controller implementation follows merely from this test.
+
+Main-text review finds the exact semantic transition: §17.4 names the targeted Self-ID's emission, while §26.5 also says the accused's unspent rights stay frozen. The treatment of converted principal and subsequently created rights is not established by a financial book or a trusted preview. One owner binding is needed before the selected live-case freeze operation:
+
+> **When an older Self-ID is disputed, are emission rights of new Self-IDs recorded AFTER opening also frozen, or only the originally targeted Self-ID right?**
+
+This asks lock scope, not a new ordinary XP trigger, a ban on recording history, a perfect personhood contract or a new Council quorum. If later rights freeze, pending/precredited disputed XP/custody/eligibility still needs a declared chronology. If not, the demonstrated ordinary later-credit capability is useful subject to actual complaint/converted-value funding/authority binding. A target-only/no-attachment alternative can be studied only with explicit research-assumption labeling, not silently installed as selected behavior for longer runs. BACKLOG owns the transition; DECISIONS_NEEDED owns this exact question.
+
+## Validation and ceiling
+
+Fresh:6 unit families,41 focused,737 current +21 unchanged isolated compatible historical tests pass. Source tree/provenance/runtime are EXACTLY the73a419a baseline:8d84f0d5…/65aae8a1…/Nodev26.8.1; source-only DAG53/168/two default trajectories and completed annual run are reused, NOT rerun. New test tree and artifact bindings in JSON. No old study/guard/body/source fingerprint is rewritten; no seed is allocated.
+
+No established behavior-changing strategy, funded collective correction, truthful merits, selected Council/D34/qualified topology/D75 enforcement, incentive equilibrium, capture resilience or long-horizon recovery result follows. The actual larger scenario remains earned community/head-start→patient organized opposition→correction/false-accusation defense→recovery, under matched funded opportunities and method/master gates. This cohort narrows its required freeze contract instead of choosing that law by convenience or building another framework. Stop at that concrete owner transition rather than auto-scheduling the previously deferred static controller or more unrelated checks.
