@@ -20,7 +20,7 @@ const ONE_DAY_POLICY = Object.freeze({
 });
 const NO_RANDOMNESS = 'none: deterministic action scripts replay the same prefix';
 
-function runBranch(strategy, policy, schedule = SCHEDULE) {
+function runBranch(strategy, policy, schedule = SCHEDULE, receiptMode = false, remittance = 0) {
   const oneDay = schedule === ONE_DAY_SCHEDULE;
   const model = new FacetyModel({ genesis: ['sponsor', 'peer'], policy });
   const ledgers = new Map();
@@ -64,6 +64,7 @@ function runBranch(strategy, policy, schedule = SCHEDULE) {
   let newcomerAct;
   if (oneDay) {
     model.advanceTo(schedule.decisionHour);
+    if (receiptMode) sample('maturity');
     perform('peer', 'convert', () => model.convertToCollector('peer', peerAct));
     let invitation;
     if (strategy === 'wait-collector') perform('sponsor', 'convert', () => model.convertToCollector('sponsor', sponsorAct));
@@ -101,15 +102,22 @@ function runBranch(strategy, policy, schedule = SCHEDULE) {
     model.advanceTo(SCHEDULE.horizonDay * DAY);
   }
   if (newcomerAct !== null) perform('newcomer', 'convert', () => model.convertToCollector('newcomer', newcomerAct));
+  if (receiptMode) sample('pre-remittance');
+  if (remittance) {
+    model.transferFacy('newcomer', 'sponsor', remittance, 'voluntary-first-receipt');
+    actions.push({ atHour: model.now, actor: 'newcomer', action: 'transferFacy', phase: 'maintenance', effort: null });
+  }
   sample('horizon');
   const summaries = [...ledgers].map(([actor, ledger]) => [actor, ledger.audit()]);
-  return {
-    strategy, timeline, actions, events: model.events(),
-    work: {
-      unit: summaries[0][1].unit, weights: summaries[0][1].weights,
-      bySubject: Object.fromEntries(summaries.map(([actor, summary]) => [actor, summary.cohorts.honest])),
-    },
+  const work = {
+    unit: summaries[0][1].unit, weights: summaries[0][1].weights,
+    bySubject: Object.fromEntries(summaries.map(([actor, summary]) => [actor, summary.cohorts.honest])),
   };
+  if (receiptMode) Object.assign(work, {
+    coverage: 'priced-actions-only', complete: remittance === 0, totalEffort: remittance ? null : summaries.reduce((sum, [, row]) => sum + row.cohorts.honest.effort, 0),
+    unpricedActions: actions.filter(action => action.effort === null), humanEffort: null,
+  });
+  return { strategy, timeline, actions, events: model.events(), work };
 }
 
 function compareBranch(baseline, treatment) {
@@ -416,4 +424,113 @@ export function runOneDayIncentiveForks(options = {}) {
     ],
     branches, comparisons: branches.slice(1).map(branch => compareBranch(branches[0], branch)),
   };
+}
+const MATURITY_RECEIPT_CASES = Object.freeze([
+  { id: 'wait-collector', strategy: 'wait-collector', remittance: 0 },
+  ...INCENTIVE_STRATEGIES.slice(1).flatMap(strategy => [
+    { id: strategy + '/retain', strategy, remittance: 0 },
+    { id: strategy + '/remit1', strategy, remittance: 1 },
+  ]),
+].map(Object.freeze));
+const MATURITY_STAGES = Object.freeze(['common-prefix', 'maturity', 'decision', 'admission', 'newcomer-work', 'pre-remittance', 'horizon']);
+
+export function runMaturityIncentiveForks() {
+  if (arguments.length) throw new Error('maturity receipt fixture accepts no options');
+  const policy = policyFrom({ ...ONE_DAY_POLICY, xpFinality: 'maturity' });
+  const artifact = {
+    schema: 'facety-incentive-forks/v3', fixture: 'marginal-admission-maturity-receipts-v1',
+    policy, schedule: { ...ONE_DAY_SCHEDULE }, provenance: provenance(), randomness: NO_RANDOMNESS,
+    assumptions: [
+      'Five fixed funded alternatives are engineering evidence, not independent worlds, G1, endogenous growth or a scientific registration.',
+      'Accepted genesis/newcomer presence, zero guarantee fee and available target consent are reference assumptions, not verified independence or free measured human acquisition.',
+      'Ordinary unencumbered snapshot XP credits at24h before disposition; existing rights remain Emitter-held until explicit conversion/invitation. No full maturity/case/default migration.',
+      'A distinct newcomer retains its first converted unit or voluntarily transfers it to the sponsor; this is a supplied action, not an automatic reward, operator overlay or cooperation finding.',
+      'Sponsor cash difference counts foregone baseline conversion once. Joint cash is not inviter income or pooled procedural XP; private utility and expected liability remain unknown.',
+      'Recorded weighted work covers existing priced actions only. Transfers have known actor/count but unknown weighted/human effort; incomplete totals are null, not free.',
+      'Only one source per original subject and one newborn source are scripted;72h endpoints/ordered checkpoints are not longitudinal participation or lasting recovery.',
+    ],
+    branches: MATURITY_RECEIPT_CASES.map(binding => ({
+      id: binding.id, ...runBranch(binding.strategy, policy, ONE_DAY_SCHEDULE, true, binding.remittance), remittance: binding.remittance,
+    })),
+  };
+  artifact.comparisons = readMaturityReceiptComparisons(artifact);
+  return artifact;
+}
+
+export function readMaturityReceiptComparisons(artifact) {
+  if (artifact?.schema !== 'facety-incentive-forks/v3' || artifact.fixture !== 'marginal-admission-maturity-receipts-v1')
+    throw new Error('unsupported maturity receipt artifact');
+  if (!isDeepStrictEqual(artifact.policy, policyFrom({ ...ONE_DAY_POLICY, xpFinality: 'maturity' }))
+    || !isDeepStrictEqual(artifact.schedule, ONE_DAY_SCHEDULE)) throw new Error('unsupported maturity receipt policy or schedule');
+  checkedOneDayIdentity(artifact);
+  if (!Array.isArray(artifact.branches) || artifact.branches.length !== MATURITY_RECEIPT_CASES.length
+    || new Set(artifact.branches.map(branch => branch.id)).size !== MATURITY_RECEIPT_CASES.length) throw new Error('maturity receipt alternatives must be complete and distinct');
+  const ordered = MATURITY_RECEIPT_CASES.map(binding => {
+    const branch = artifact.branches.find(row => row.id === binding.id);
+    if (!branch || branch.strategy !== binding.strategy || branch.remittance !== binding.remittance) throw new Error('maturity receipt alternative binding mismatch');
+    if (!Array.isArray(branch.timeline) || branch.timeline.length !== MATURITY_STAGES.length
+      || branch.timeline.some((point, i) => point.stage !== MATURITY_STAGES[i] || point.atHour !== [0, 24, 24, 48, 48, 72, 72][i]))
+      throw new Error('maturity receipt checkpoints must reach the declared ordered horizon');
+    branch.timeline.forEach(checkedSnapshot);
+    for (const point of branch.timeline) {
+      if (point.selfIds.some(act => !Object.hasOwn(act, 'xpCredit') || !Object.hasOwn(act, 'chainIndex') || !Object.hasOwn(act, 'previousSelfId')))
+        throw new Error('maturity receipt source provenance is required');
+      const council = point.subjects.filter(subject => point.selfIds.some(act => act.subject === subject.id))
+        .map(subject => ({ id: subject.id, xp: subject.xp })).sort((a, b) => b.xp - a.xp || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+      if (!isDeepStrictEqual(point.council, council) || point.ledger.stakeVault !== 0) throw new Error('maturity receipt authority/custody mismatch');
+    }
+    const pre = branch.timeline[5], transfer = branch.remittance;
+    if (!Array.isArray(branch.actions) || !Array.isArray(branch.events)) throw new Error('maturity receipt actions/events required');
+    const knownActions = branch.actions.filter(action => action.effort !== null);
+    const unpriced = transfer ? [{ atHour: 72, actor: 'newcomer', action: 'transferFacy', phase: 'maintenance', effort: null }] : [];
+    const prefixEvents = branch.events.slice(0, pre.eventCursor);
+    // These five already-disposed checkpoints coincide under terminal and maturity timing; keep the actual policy.
+    const projected = { ...branch, timeline: [0, 2, 3, 4, 5].map(i => branch.timeline[i]), actions: knownActions, events: prefixEvents };
+    checkedOneDayTimeline(projected, artifact.policy);
+    checkedWork(projected, [0, 24, 48, 72]);
+    const knownEffort = Object.values(branch.work.bySubject).reduce((sum, row) => sum + row.effort, 0);
+    if (!isDeepStrictEqual(branch.actions, [...knownActions, ...unpriced]) || !isDeepStrictEqual(branch.work.weights, DEFAULT_WEIGHTS)
+      || branch.work.coverage !== 'priced-actions-only' || !isDeepStrictEqual(branch.work.unpricedActions, unpriced) || branch.work.complete !== !transfer
+      || branch.work.totalEffort !== (transfer ? null : knownEffort) || branch.work.humanEffort !== null)
+      throw new Error('maturity receipt work missingness/attribution mismatch');
+    const matured = structuredClone(branch.timeline[0]), decision = branch.timeline[2];
+    matured.stage = 'maturity'; matured.atHour = 24; matured.council = structuredClone(decision.council);
+    for (const subject of matured.subjects) subject.xp = decision.subjects.find(row => row.id === subject.id).xp;
+    for (const act of matured.selfIds) {
+      act.xpCredited = true; act.xpCredit = structuredClone(decision.selfIds.find(row => row.id === act.id).xpCredit);
+    }
+    if (!isDeepStrictEqual(branch.timeline[1], matured)) throw new Error('maturity receipt must credit unused sources before disposition');
+    const final = structuredClone(pre);
+    final.stage = 'horizon'; final.eventCursor += transfer;
+    if (transfer) {
+      final.subjects.find(row => row.id === 'newcomer').liquidFacy -= transfer;
+      final.subjects.find(row => row.id === 'sponsor').liquidFacy += transfer;
+    }
+    const events = transfer ? [...prefixEvents, { at: 72, type: 'facy-transferred', from: 'newcomer', to: 'sponsor', amount: 1, memo: 'voluntary-first-receipt' }] : prefixEvents;
+    if (!isDeepStrictEqual(branch.timeline[6], final) || !isDeepStrictEqual(branch.events, events)) throw new Error('maturity receipt funded transfer/horizon mismatch');
+    return branch;
+  });
+  for (const branch of ordered) {
+    if (!isDeepStrictEqual(branch.timeline[0], ordered[0].timeline[0])) throw new Error('maturity receipt common funded prefix mismatch');
+    if (branch.remittance) {
+      const retained = ordered.find(row => row.strategy === branch.strategy && row.remittance === 0);
+      if (!isDeepStrictEqual(branch.timeline.slice(0, 6), retained.timeline.slice(0, 6))
+        || !isDeepStrictEqual(branch.actions.slice(0, -1), retained.actions)) throw new Error('maturity receipt future remittance changed its prefix');
+    }
+  }
+  const baseline = ordered[0], sponsor = point => point.subjects.find(row => row.id === 'sponsor');
+  return ordered.slice(1).map(branch => {
+    const comparison = compareBranch(baseline, branch), final = branch.timeline[6], newcomer = final.subjects.find(row => row.id === 'newcomer');
+    const work = branch.work.bySubject.newcomer;
+    return {
+      ...comparison, baseline: baseline.id, treatment: branch.id, sourceProvenance: structuredClone(artifact.provenance),
+      remittance: { amount: branch.remittance, calls: branch.remittance, voluntary: true },
+      newcomer: { present: true, baselinePresent: false, baselineLiquidFacy: null, liquidFacy: newcomer.liquidFacy, xp: newcomer.xp,
+        knownWeightedEffort: work.effort, totalWeightedEffort: branch.work.complete ? work.effort : null },
+      joint: { scope: ['sponsor', 'newcomer'], liquidFacy: sponsor(final).liquidFacy + newcomer.liquidFacy - sponsor(baseline.timeline[6]).liquidFacy,
+        knownWeightedEffort: comparison.sponsor.effort + work.effort,
+        totalWeightedEffort: branch.work.complete ? comparison.sponsor.effort + work.effort : null },
+      workComplete: branch.work.complete, humanEffort: null,
+    };
+  });
 }
