@@ -1,0 +1,190 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D64-D67 owner protocol clarification and D65 finite native threat fixtures; no research result or implemented Council queue",
+  "baseCommit": "2e1ecca33989aaf705fdc5596079e41f07992952",
+  "sourceTree": "f1b5729b65a5bb9dca07740e72a28a08d0582ce5",
+  "testTree": "71b9c85d2d8f296e97a7db348b8f953072ad2210",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "384090bc310226d4ece57f04e504c5234b87888eca54778c3cc175a641158f78",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-27-council-attention/README.md",
+      "gitBlob": "4f444266f7dfd05360ecd567ea5c60b3cb7ed962"
+    },
+    {
+      "path": "studies/2026-10-27-council-attention/fixtures.json",
+      "gitBlob": "886ca14d402b2a049aab87358466909bff14537c"
+    },
+    {
+      "path": "test/council-attention-fixtures.test.mjs",
+      "gitBlob": "69f0b80caf6cd35f6ada8b85628ddc1349320357"
+    },
+    {
+      "path": "docs/facety.protocol.en.md",
+      "gitBlob": "2c1271bd3f0e672cfe7a2489e93442d36c3cadbf"
+    }
+  ],
+  "ownerDecisions": {
+    "D64": "Full public/senior/Council correction-loop hypothesis; selected extra seven-day Council response interval, exact activation/composition and collectible Council-share allocation OPEN; not unanimity, calibrated attention or guaranteed profit.",
+    "D65": "Finite attention-DDoS/threat fixtures and bounded vocabulary; no anti-Ponzi/immunity theorem, universal funded DEOS1/6, graph/flow/low-activity automatic slash/decay or selected lifetime capacity formula.",
+    "D66": "Council may vote anytime while a dispute remains open, no final-three-days/T-minus3/second-half gate; no default migration/merits/quorum selected.",
+    "D67": "Current component inquiry assumes near-immediate common Discord/Telegram dispute-channel notice to declared present members; no separate diffusion investigation, real channel access, numeric all-member presence or automatic review/vote."
+  },
+  "fixtureCoverage": {
+    "fixtures": 8,
+    "publicObservationPairs": 4,
+    "stakeBackings": [
+      "unsecured",
+      "reserved"
+    ],
+    "nativeReplaysPerSuiteInvocation": 16,
+    "funding": {
+      "method": "15 actual native matured Self-ID conversions, no direct balance mutation",
+      "amount": 15,
+      "guaranteeFee": 0,
+      "unpriced": "supplied genesis/authentic humans/media/real effort/independent Council not verified"
+    },
+    "families": [
+      "recycled-stakes",
+      "early-burst",
+      "guarantee-ring",
+      "capital-shift"
+    ],
+    "literalFlood": {
+      "offers": 17,
+      "bulkOffers": 16,
+      "bulkStake": 4,
+      "independentlyFundedSmall": 2,
+      "unsecured": {
+        "acceptedCommitments": 17,
+        "pendingNominal": 66,
+        "vault": 0
+      },
+      "reserved": {
+        "acceptedCommitments": 4,
+        "pendingNominal": 14,
+        "vault": 14,
+        "deniedWithoutEffects": 13
+      },
+      "actualMintedSupply": 15,
+      "burned": 0,
+      "debt": 0,
+      "truthVerdicts": 0,
+      "CouncilCasesAdmitted": null
+    },
+    "horizon": {
+      "hours": 168,
+      "lateOfferHour": 144,
+      "ordinaryResponseWindowHours": 168,
+      "lateOrdinaryDeadlineWouldBe": 312,
+      "settledAtH": false,
+      "CouncilExtraIntervalImplemented": false
+    },
+    "ring": "3 actual accepted directed guarantees; no ordinary transfers; no XP from creating edges, accepted subjects/no invented penalties",
+    "capital": "10 FACY shifts, reference XP/ranking unchanged, not proof of verified identity or selected age/quality capacity",
+    "interpretation": "Identical public observations with different evaluator intent are replayed without passing evaluator metadata to any protocol API. Fixture service slots/notice/timing are declared inputs, not an implemented Council queue, propagation model, turnout or statistical attack success."
+  },
+  "sourceAudit": {
+    "flowTracing": "experiment.mjs flaggedByFlows: memo=transfer recipient/distinct-sender hub screening, not cycle/stake-origin/case-priority proof",
+    "Council": "automatic councilDepth/current member scripted-belief vote reference, no D64 additional Council-response state or reward share",
+    "custody": "DisputeStakes native reserved/unsecured commitments, not Council intake or merits",
+    "indexer": "supplied structural witness validity and separate local cache owners, not attacker ownership/human truth/economic usefulness/penalty power"
+  },
+  "fresh": {
+    "focused": {
+      "command": "node --test test/council-attention-fixtures.test.mjs test/dispute-stakes.test.mjs test/disputes.test.mjs test/controls.test.mjs",
+      "passed": 29,
+      "failed": 0,
+      "log": "/tmp/facety-council-attention-focused.txt"
+    },
+    "full": {
+      "command": "npm test",
+      "current": {
+        "passed": 717,
+        "failed": 0
+      },
+      "isolatedHistorical": {
+        "passed": 21,
+        "failed": 0,
+        "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+        "assurance": "historical compatibility only, not current source"
+      },
+      "log": "/tmp/facety-council-attention-full.txt"
+    },
+    "nativeFullSuite": {
+      "compositeDigest": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetimeDigest": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnCurrentDigest": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "mismatches": 0
+    }
+  },
+  "reusedUnchangedSource": {
+    "record": "../2026-10-27-review-allocation/measurement-implementation-validation.json",
+    "basis": "exact current f1b5729b source tree/384090bc digest/53files/Nodev26.8.1; new test body separately bound",
+    "architecture": {
+      "files": 53,
+      "localEdges": 168,
+      "errors": 0,
+      "warnings": 0,
+      "cycles": 0
+    },
+    "fixedTrajectories": {
+      "legacy": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "nativeVouch": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "exclusion": "only provenance.implementation",
+      "rerun": false
+    },
+    "priorTenScopedStreamDigests": "unchanged source/rules; original records preserved, no replay or relabeling"
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-council-attention-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "review": "Existing structure/meta-principle/sparsity/index-bloat/wide-table classes reviewed. AGENTS now34 lines/17 lines per heading, existing one bloat signal; no unrelated refactor. Large protocol link/list scans skipped by validator; changed main headings/Appendix decisions and cross-surface anchors checked directly. No diffusion prerequisite/late-only gate or unsupported empirical assertion adopted."
+  },
+  "review": {
+    "method": "inline source/contract/evidence/scope review",
+    "independentAuthorshipOrAuthentication": false,
+    "initialFixtureUnitResult": "4 green families, no runtime change/retuning",
+    "followup": "D66/D67 owner amendments updated declarative contract/fixture assertions; replaced literal-only deadline assertion with actual fixture fields before final fresh full suite",
+    "rejectedOverclaims": [
+      "work budget proves anti-Ponzi/newcomer independence",
+      "old script accuracy proves attack immunity/profit",
+      "T-minus3 is selected Council timing",
+      "cycle/hub/ring/low activity is guilt",
+      "one-sixth is already funded universal DEOS flow",
+      "common notice implies funded review/quorum/merits",
+      "fixture books are admitted Council cases"
+    ]
+  },
+  "preservation": {
+    "runtimeSourceChanged": false,
+    "defaultsRngChanged": false,
+    "historicalStudiesMethodsTestsUnchanged": true,
+    "D63FrozenPacketsUnchanged": true,
+    "externalChannelActions": 0,
+    "scientificRegistrations": 0,
+    "researchLabels": 0,
+    "researchCaptures": 0,
+    "masterG1Pass": false,
+    "automaticSlashDecayOrQuota": false,
+    "repositoryPush": "scoped configured upstream, no rewrite"
+  },
+  "handoff": {
+    "status": "finite fixture and protocol documentation cohort complete; real Council queue/extra-clock/reward/case procedure not implemented",
+    "canonical": "BACKLOG.md#deferred-research-and-owner-gates",
+    "nextScope": "actual accepted priority/capacity/referral/clock/quorum/merits/reward contract and supported gated method before mechanism research, not a diffusion study or last-three-days filter",
+    "growLoopScheduled": false
+  }
+}

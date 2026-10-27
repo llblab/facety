@@ -1,0 +1,725 @@
+{
+  "schema": "facety-council-attention-fixtures/v1",
+  "status": "FINITE SOFTWARE FIXTURES, NOT A COUNCIL QUEUE/BACKEND, RESEARCH REGISTRATION OR RESILIENCE RESULT",
+  "captureEnabled": false,
+  "authority": "D65,2026-10-27; D64 visibility/additional-time/reward direction retained. D66 explicitly permits voting anytime while the dispute is open, no final-three-days gate. D67 supplies near-immediate common-channel notice, no separate diffusion study. Operational remainder separately OPEN.",
+  "assumptions": {
+    "money": "Integer FACY from actual matured Self-ID conversion; no seeded balances.15 funded software acts before each isolated tape.",
+    "genesis": "a,b,c are supplied reference genesis subjects, not verified humans; guaranteeFee0 named fixture-only bootstrap assumption.",
+    "resources": "Two offered review slots and all amounts/arrival hours are uncalibrated supplied software demand; slots are not consumed by any Council algorithm.",
+    "custody": "Both existing unsecured and reserved references; neither selected production stake priority.",
+    "councilTiming": "any-time-while-dispute-open; no last-three-days gate",
+    "notice": "common-dispute-channel; no material dissemination delay to declared present Council members; no separate diffusion model or actual channel access",
+    "time": "Arrival hours measured from paid bootstrap completion. H168 ends observation only; no verdict, automatic stake release or Council activation.",
+    "evidence": "No trusted allegation merits/evidence, admissions, identities, external person data or fee/reward funding law supplied.",
+    "scope": "DDoS prerequisites, public-observation equivalence, ring/capital false-positive controls. No autonomous priority, flow-cycle verdict/slash, treasury1/6, XP decay, capacity formula or T-minus3 default."
+  },
+  "fixtures": [
+    {
+      "id": "recycled-stakes/adversarial-intent",
+      "family": "recycled-stakes",
+      "observed": {
+        "funding": {
+          "a": 12,
+          "b": 2,
+          "c": 1
+        },
+        "family": "recycled-stakes",
+        "transfers": [
+          {
+            "from": "a",
+            "to": "b",
+            "amount": 12
+          },
+          {
+            "from": "b",
+            "to": "a",
+            "amount": 12
+          }
+        ],
+        "arrivals": [
+          {
+            "id": "bulk-00",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 0
+          },
+          {
+            "id": "bulk-01",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 1
+          },
+          {
+            "id": "bulk-02",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 2
+          },
+          {
+            "id": "bulk-03",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 3
+          },
+          {
+            "id": "bulk-04",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 4
+          },
+          {
+            "id": "bulk-05",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 5
+          },
+          {
+            "id": "bulk-06",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 6
+          },
+          {
+            "id": "bulk-07",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 7
+          },
+          {
+            "id": "bulk-08",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 8
+          },
+          {
+            "id": "bulk-09",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 9
+          },
+          {
+            "id": "bulk-10",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 10
+          },
+          {
+            "id": "bulk-11",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 11
+          },
+          {
+            "id": "bulk-12",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 12
+          },
+          {
+            "id": "bulk-13",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 13
+          },
+          {
+            "id": "bulk-14",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 14
+          },
+          {
+            "id": "bulk-15",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 15
+          },
+          {
+            "id": "small",
+            "owner": "b",
+            "amount": 2,
+            "atHour": 24
+          }
+        ],
+        "guarantees": [],
+        "missing": "No stake-origin cycle classifier, Council reward priority or admissible-case/merits claim.",
+        "horizonHours": 168,
+        "offeredReviewSlots": [
+          0,
+          24
+        ],
+        "ordinaryLastMoveWindowHours": 168
+      },
+      "evaluator": {
+        "intent": "adversarial-intent",
+        "role": "Synthetic scenario metadata only; never passed to protocol methods or an attention policy. Identical public facts can arise in both controls; no guilt/classifier labels inferred."
+      }
+    },
+    {
+      "id": "recycled-stakes/legitimate-control",
+      "family": "recycled-stakes",
+      "observed": {
+        "funding": {
+          "a": 12,
+          "b": 2,
+          "c": 1
+        },
+        "family": "recycled-stakes",
+        "transfers": [
+          {
+            "from": "a",
+            "to": "b",
+            "amount": 12
+          },
+          {
+            "from": "b",
+            "to": "a",
+            "amount": 12
+          }
+        ],
+        "arrivals": [
+          {
+            "id": "bulk-00",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 0
+          },
+          {
+            "id": "bulk-01",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 1
+          },
+          {
+            "id": "bulk-02",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 2
+          },
+          {
+            "id": "bulk-03",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 3
+          },
+          {
+            "id": "bulk-04",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 4
+          },
+          {
+            "id": "bulk-05",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 5
+          },
+          {
+            "id": "bulk-06",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 6
+          },
+          {
+            "id": "bulk-07",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 7
+          },
+          {
+            "id": "bulk-08",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 8
+          },
+          {
+            "id": "bulk-09",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 9
+          },
+          {
+            "id": "bulk-10",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 10
+          },
+          {
+            "id": "bulk-11",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 11
+          },
+          {
+            "id": "bulk-12",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 12
+          },
+          {
+            "id": "bulk-13",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 13
+          },
+          {
+            "id": "bulk-14",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 14
+          },
+          {
+            "id": "bulk-15",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 15
+          },
+          {
+            "id": "small",
+            "owner": "b",
+            "amount": 2,
+            "atHour": 24
+          }
+        ],
+        "guarantees": [],
+        "missing": "No stake-origin cycle classifier, Council reward priority or admissible-case/merits claim.",
+        "horizonHours": 168,
+        "offeredReviewSlots": [
+          0,
+          24
+        ],
+        "ordinaryLastMoveWindowHours": 168
+      },
+      "evaluator": {
+        "intent": "legitimate-control",
+        "role": "Synthetic scenario metadata only; never passed to protocol methods or an attention policy. Identical public facts can arise in both controls; no guilt/classifier labels inferred."
+      }
+    },
+    {
+      "id": "early-burst/adversarial-intent",
+      "family": "early-burst",
+      "observed": {
+        "funding": {
+          "a": 12,
+          "b": 2,
+          "c": 1
+        },
+        "family": "early-burst",
+        "transfers": [],
+        "arrivals": [
+          {
+            "id": "bulk-00",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 0
+          },
+          {
+            "id": "bulk-01",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 3
+          },
+          {
+            "id": "bulk-02",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 6
+          },
+          {
+            "id": "bulk-03",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 9
+          },
+          {
+            "id": "bulk-04",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 12
+          },
+          {
+            "id": "bulk-05",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 15
+          },
+          {
+            "id": "bulk-06",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 18
+          },
+          {
+            "id": "bulk-07",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 21
+          },
+          {
+            "id": "bulk-08",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 24
+          },
+          {
+            "id": "bulk-09",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 27
+          },
+          {
+            "id": "bulk-10",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 30
+          },
+          {
+            "id": "bulk-11",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 33
+          },
+          {
+            "id": "bulk-12",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 36
+          },
+          {
+            "id": "bulk-13",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 39
+          },
+          {
+            "id": "bulk-14",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 42
+          },
+          {
+            "id": "bulk-15",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 45
+          },
+          {
+            "id": "late-small",
+            "owner": "b",
+            "amount": 2,
+            "atHour": 144
+          }
+        ],
+        "guarantees": [],
+        "missing": "No last-three-days Council rule or48h tripwire implemented. Late offer's ordinary168h interval extends beyondH; do not resolve at horizon.",
+        "horizonHours": 168,
+        "offeredReviewSlots": [
+          0,
+          24
+        ],
+        "ordinaryLastMoveWindowHours": 168
+      },
+      "evaluator": {
+        "intent": "adversarial-intent",
+        "role": "Synthetic scenario metadata only; never passed to protocol methods or an attention policy. Identical public facts can arise in both controls; no guilt/classifier labels inferred."
+      }
+    },
+    {
+      "id": "early-burst/legitimate-control",
+      "family": "early-burst",
+      "observed": {
+        "funding": {
+          "a": 12,
+          "b": 2,
+          "c": 1
+        },
+        "family": "early-burst",
+        "transfers": [],
+        "arrivals": [
+          {
+            "id": "bulk-00",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 0
+          },
+          {
+            "id": "bulk-01",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 3
+          },
+          {
+            "id": "bulk-02",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 6
+          },
+          {
+            "id": "bulk-03",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 9
+          },
+          {
+            "id": "bulk-04",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 12
+          },
+          {
+            "id": "bulk-05",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 15
+          },
+          {
+            "id": "bulk-06",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 18
+          },
+          {
+            "id": "bulk-07",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 21
+          },
+          {
+            "id": "bulk-08",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 24
+          },
+          {
+            "id": "bulk-09",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 27
+          },
+          {
+            "id": "bulk-10",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 30
+          },
+          {
+            "id": "bulk-11",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 33
+          },
+          {
+            "id": "bulk-12",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 36
+          },
+          {
+            "id": "bulk-13",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 39
+          },
+          {
+            "id": "bulk-14",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 42
+          },
+          {
+            "id": "bulk-15",
+            "owner": "a",
+            "amount": 4,
+            "atHour": 45
+          },
+          {
+            "id": "late-small",
+            "owner": "b",
+            "amount": 2,
+            "atHour": 144
+          }
+        ],
+        "guarantees": [],
+        "missing": "No last-three-days Council rule or48h tripwire implemented. Late offer's ordinary168h interval extends beyondH; do not resolve at horizon.",
+        "horizonHours": 168,
+        "offeredReviewSlots": [
+          0,
+          24
+        ],
+        "ordinaryLastMoveWindowHours": 168
+      },
+      "evaluator": {
+        "intent": "legitimate-control",
+        "role": "Synthetic scenario metadata only; never passed to protocol methods or an attention policy. Identical public facts can arise in both controls; no guilt/classifier labels inferred."
+      }
+    },
+    {
+      "id": "guarantee-ring/adversarial-intent",
+      "family": "guarantee-ring",
+      "observed": {
+        "funding": {
+          "a": 12,
+          "b": 2,
+          "c": 1
+        },
+        "family": "guarantee-ring",
+        "transfers": [],
+        "arrivals": [],
+        "guarantees": [
+          [
+            "a",
+            "b"
+          ],
+          [
+            "b",
+            "c"
+          ],
+          [
+            "c",
+            "a"
+          ]
+        ],
+        "missing": "Public topology has no evaluator ownership oracle, economic-value verifier, automatic decay or selected lifetime-capacity rule.",
+        "horizonHours": 168,
+        "offeredReviewSlots": [
+          0,
+          24
+        ],
+        "ordinaryLastMoveWindowHours": 168
+      },
+      "evaluator": {
+        "intent": "adversarial-intent",
+        "role": "Synthetic scenario metadata only; never passed to protocol methods or an attention policy. Identical public facts can arise in both controls; no guilt/classifier labels inferred."
+      }
+    },
+    {
+      "id": "guarantee-ring/legitimate-control",
+      "family": "guarantee-ring",
+      "observed": {
+        "funding": {
+          "a": 12,
+          "b": 2,
+          "c": 1
+        },
+        "family": "guarantee-ring",
+        "transfers": [],
+        "arrivals": [],
+        "guarantees": [
+          [
+            "a",
+            "b"
+          ],
+          [
+            "b",
+            "c"
+          ],
+          [
+            "c",
+            "a"
+          ]
+        ],
+        "missing": "Public topology has no evaluator ownership oracle, economic-value verifier, automatic decay or selected lifetime-capacity rule.",
+        "horizonHours": 168,
+        "offeredReviewSlots": [
+          0,
+          24
+        ],
+        "ordinaryLastMoveWindowHours": 168
+      },
+      "evaluator": {
+        "intent": "legitimate-control",
+        "role": "Synthetic scenario metadata only; never passed to protocol methods or an attention policy. Identical public facts can arise in both controls; no guilt/classifier labels inferred."
+      }
+    },
+    {
+      "id": "capital-shift/adversarial-intent",
+      "family": "capital-shift",
+      "observed": {
+        "funding": {
+          "a": 12,
+          "b": 2,
+          "c": 1
+        },
+        "family": "capital-shift",
+        "transfers": [
+          {
+            "from": "a",
+            "to": "b",
+            "amount": 10
+          }
+        ],
+        "arrivals": [
+          {
+            "id": "small",
+            "owner": "a",
+            "amount": 2,
+            "atHour": 0
+          },
+          {
+            "id": "large",
+            "owner": "b",
+            "amount": 10,
+            "atHour": 24
+          }
+        ],
+        "guarantees": [],
+        "missing": "Liquid capital is not XP or Council vote weight. Age/quality-based capacity formula remains OPEN; no selected maximum megavoucher rule.",
+        "horizonHours": 168,
+        "offeredReviewSlots": [
+          0,
+          24
+        ],
+        "ordinaryLastMoveWindowHours": 168
+      },
+      "evaluator": {
+        "intent": "adversarial-intent",
+        "role": "Synthetic scenario metadata only; never passed to protocol methods or an attention policy. Identical public facts can arise in both controls; no guilt/classifier labels inferred."
+      }
+    },
+    {
+      "id": "capital-shift/legitimate-control",
+      "family": "capital-shift",
+      "observed": {
+        "funding": {
+          "a": 12,
+          "b": 2,
+          "c": 1
+        },
+        "family": "capital-shift",
+        "transfers": [
+          {
+            "from": "a",
+            "to": "b",
+            "amount": 10
+          }
+        ],
+        "arrivals": [
+          {
+            "id": "small",
+            "owner": "a",
+            "amount": 2,
+            "atHour": 0
+          },
+          {
+            "id": "large",
+            "owner": "b",
+            "amount": 10,
+            "atHour": 24
+          }
+        ],
+        "guarantees": [],
+        "missing": "Liquid capital is not XP or Council vote weight. Age/quality-based capacity formula remains OPEN; no selected maximum megavoucher rule.",
+        "horizonHours": 168,
+        "offeredReviewSlots": [
+          0,
+          24
+        ],
+        "ordinaryLastMoveWindowHours": 168
+      },
+      "evaluator": {
+        "intent": "legitimate-control",
+        "role": "Synthetic scenario metadata only; never passed to protocol methods or an attention policy. Identical public facts can arise in both controls; no guilt/classifier labels inferred."
+      }
+    }
+  ]
+}
