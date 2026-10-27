@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { FacetyModel, DAY } from '../src/model.mjs';
+import { challengeAccess } from '../src/disputes.mjs';
+import { DisputeStakes } from '../src/dispute-stakes.mjs';
 
 const packet = JSON.parse(readFileSync(new URL('../studies/2026-10-26-trust-topology-condition-map/core-authority-fixtures.json', import.meta.url)));
 const ids = Array.from({ length: 100 }, (_, i) => `p${String(i).padStart(3, '0')}`);
@@ -119,4 +121,68 @@ test('D71 analytic exclusion changes the relevant electorate without executing a
   const spread = packet.plans[1];
   assert.ok(spread.council.ruleFollowing > spread.council.comparison);
   assert.ok(spread.peer.bothRuleFollowing[0] < spread.peer.bothRuleFollowing[1]);
+});
+
+function smallCorrectiveCohort(receipts, reverse) {
+  const people = Array.from({ length: 10 }, (_, i) => `p${String(i).padStart(3, '0')}`);
+  const model = new FacetyModel({ genesis: people, policy: { xpFinality: 'maturity' } });
+  assert.equal(model.audit().minted, 0);
+  assert.ok(model.subjects().every(person => person.xp === 0 && person.liquidFacy === 0));
+  const order = reverse ? [...people].reverse() : people;
+  for (let day = 0; day < 10; day++) {
+    const acts = [];
+    for (const id of order) if (receipts[people.indexOf(id)] > day) acts.push([id, model.createSelfId(id, model.registerArtifact(id))]);
+    model.advanceTo((day + 1) * DAY);
+    for (const [id, act] of acts) model.convertToCollector(id, act);
+  }
+  for (const [i, id] of people.entries()) {
+    assert.equal(model.subject(id).xp, receipts[i]);
+    assert.equal(model.subject(id).liquidFacy, receipts[i]);
+    assert.equal(model.isActive(id), true);
+    const acts = model.selfIds().filter(act => act.subject === id);
+    assert.equal(acts.length, receipts[i]);
+    assert.ok(acts.every(act => act.xpCredit.at === act.recordedAt + DAY && act.xpCredit.recipients.length === 1 && act.xpCredit.recipients[0].subject === id));
+    assert.ok(!['cohort', 'genuine', 'following', 'controller', 'coalition'].some(key => Object.hasOwn(model.subject(id), key)));
+  }
+  assert.equal(model.now, 240); assert.equal(model.activeCount(), 10);
+  assert.equal(model.audit().minted, 23); assert.equal(model.audit().collector, 23);
+  assert.deepEqual(model.guaranteeRelations(), []); assert.deepEqual(model.invitations(), []);
+  return { model, people };
+}
+
+test('coordinated corrective majority cannot pool XP through the ordinary entry gate; same totals with one eligible senior can reserve entry', t => {
+  const profiles = [
+    { id: 'distributed', receipts: [...Array(9).fill(2), 5], eligible: [] },
+    { id: 'senior-available', receipts: [10, ...Array(8).fill(1), 5], eligible: ['p000'] },
+  ], rows = [];
+  assert.ok(3 * 18 > 2 * 23); assert.ok(3 * 9 > 2 * 10);
+  for (const profile of profiles) {
+    const normalized = [];
+    for (const reverse of [false, true]) {
+      const { model, people } = smallCorrectiveCohort(profile.receipts, reverse), before = state(model);
+      const access = people.slice(0, 9).map(id => ({ id, ...challengeAccess(model, id, 'p009', 1) }));
+      assert.deepEqual(state(model), before, 'all informed/willing group members can inspect the actual gate without mutations');
+      assert.ok(access.every(row => row.preconditions.liquidFacy >= row.preconditions.stake));
+      assert.deepEqual(access.filter(row => row.allowed).map(row => row.id), profile.eligible);
+      assert.ok(access.filter(row => !row.allowed).every(row => row.reason === 'challenge XP gate'));
+      assert.equal(people.slice(0, 9).reduce((sum, id) => sum + model.subject(id).xp, 0), 18);
+      assert.equal(people.slice(0, 9).reduce((sum, id) => sum + model.subject(id).liquidFacy, 0), 18);
+      assert.equal(model.subject('p009').xp, 5); assert.equal(model.subject('p009').liquidFacy, 5);
+      normalized.push({ subjects: model.subjects(), money: model.audit(), access });
+      const book = new DisputeStakes(model, 'reserved');
+      for (const row of access) if (row.allowed) book.open('ordinary-entry-reference', row.id, 1);
+      assert.equal(book.cases().length, profile.eligible.length);
+      assert.equal(model.audit().collector, 23 - profile.eligible.length);
+      assert.equal(model.audit().stakeVault, profile.eligible.length);
+      assert.equal(model.audit().burned, 0); assert.equal(model.audit().debt, 0);
+      assert.ok(model.subjects().every(subject => subject.identityStatus === 'accepted'));
+      rows.push({ profile: profile.id, reverse, receipts: profile.receipts, suppliedPeople: 10, correctivePeople: 9,
+        correctiveXp: 18, totalXp: 23, correctiveLiquid: 18, totalLiquid: 23, accused: 'p009', accusedXp: 5,
+        hour: model.now, access, financialCases: book.cases(), finalMoney: model.audit(),
+        formalCouncilUnderSuppliedN10: false, verdictExecuted: false, identityExcluded: false });
+    }
+    assert.deepEqual(normalized[0], normalized[1], 'operation order changes no normalized funding or access fact');
+  }
+  t.diagnostic('core-coalition-entry ' + JSON.stringify({ rows, profiles: profiles.length,
+    newPeopleAdmitted: 0, scientificWorlds: 0, scope: 'ordinary reference entry only, no coalition XP aggregation or selected act/Council route' }));
 });

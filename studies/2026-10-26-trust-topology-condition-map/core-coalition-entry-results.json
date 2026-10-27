@@ -1,0 +1,814 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D68/D76 funded coordinated-defense ordinary-entry prerequisite, not cooperation-effect/attack/capture/viability confirmation",
+  "baseCommit": "1d9bf9edb2ac8b6dd044d5bab421aa45a0b9c911",
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "55b8c770951cab9b1ede431989c683161a53aa79",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "test/core-authority.test.mjs",
+      "gitBlob": "39cbcaadf25007cd564eb528b8cb613112a7729c"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/core-coalition-entry-contract.md",
+      "gitBlob": "4dd577884e79027b1850345cc87f31988739ee1e"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/core-coalition-entry-results.md",
+      "gitBlob": "16b6ae6a15715d136c816ce4b358badc149b8170"
+    }
+  ],
+  "preCode": "separate fixed two-profile/reversed-order contract written before test extension; no parameter search or mechanism registration",
+  "actual": {
+    "rows": [
+      {
+        "profile": "distributed",
+        "reverse": false,
+        "receipts": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          5
+        ],
+        "suppliedPeople": 10,
+        "correctivePeople": 9,
+        "correctiveXp": 18,
+        "totalXp": 23,
+        "correctiveLiquid": 18,
+        "totalLiquid": 23,
+        "accused": "p009",
+        "accusedXp": 5,
+        "hour": 240,
+        "access": [
+          {
+            "id": "p000",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p001",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p002",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p003",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p004",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p005",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p006",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p007",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p008",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          }
+        ],
+        "financialCases": [],
+        "finalMoney": {
+          "minted": 23,
+          "burned": 0,
+          "supply": 23,
+          "emitterVault": 0,
+          "collector": 23,
+          "feeVault": 0,
+          "stakeVault": 0,
+          "debt": 0
+        },
+        "formalCouncilUnderSuppliedN10": false,
+        "verdictExecuted": false,
+        "identityExcluded": false
+      },
+      {
+        "profile": "distributed",
+        "reverse": true,
+        "receipts": [
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          5
+        ],
+        "suppliedPeople": 10,
+        "correctivePeople": 9,
+        "correctiveXp": 18,
+        "totalXp": 23,
+        "correctiveLiquid": 18,
+        "totalLiquid": 23,
+        "accused": "p009",
+        "accusedXp": 5,
+        "hour": 240,
+        "access": [
+          {
+            "id": "p000",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p001",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p002",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p003",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p004",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p005",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p006",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p007",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p008",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 2,
+              "targetXp": 5,
+              "liquidFacy": 2,
+              "stake": 1
+            }
+          }
+        ],
+        "financialCases": [],
+        "finalMoney": {
+          "minted": 23,
+          "burned": 0,
+          "supply": 23,
+          "emitterVault": 0,
+          "collector": 23,
+          "feeVault": 0,
+          "stakeVault": 0,
+          "debt": 0
+        },
+        "formalCouncilUnderSuppliedN10": false,
+        "verdictExecuted": false,
+        "identityExcluded": false
+      },
+      {
+        "profile": "senior-available",
+        "reverse": false,
+        "receipts": [
+          10,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          5
+        ],
+        "suppliedPeople": 10,
+        "correctivePeople": 9,
+        "correctiveXp": 18,
+        "totalXp": 23,
+        "correctiveLiquid": 18,
+        "totalLiquid": 23,
+        "accused": "p009",
+        "accusedXp": 5,
+        "hour": 240,
+        "access": [
+          {
+            "id": "p000",
+            "allowed": true,
+            "reason": null,
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 10,
+              "targetXp": 5,
+              "liquidFacy": 10,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p001",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p002",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p003",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p004",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p005",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p006",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p007",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p008",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          }
+        ],
+        "financialCases": [
+          {
+            "id": "ordinary-entry-reference",
+            "openedAt": 240,
+            "closedAt": null,
+            "status": "open",
+            "winner": null,
+            "positions": [
+              {
+                "owner": "p000",
+                "amount": 1,
+                "side": "fraud",
+                "atHour": 240
+              }
+            ],
+            "accounting": null
+          }
+        ],
+        "finalMoney": {
+          "minted": 23,
+          "burned": 0,
+          "supply": 23,
+          "emitterVault": 0,
+          "collector": 22,
+          "feeVault": 0,
+          "stakeVault": 1,
+          "debt": 0
+        },
+        "formalCouncilUnderSuppliedN10": false,
+        "verdictExecuted": false,
+        "identityExcluded": false
+      },
+      {
+        "profile": "senior-available",
+        "reverse": true,
+        "receipts": [
+          10,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          5
+        ],
+        "suppliedPeople": 10,
+        "correctivePeople": 9,
+        "correctiveXp": 18,
+        "totalXp": 23,
+        "correctiveLiquid": 18,
+        "totalLiquid": 23,
+        "accused": "p009",
+        "accusedXp": 5,
+        "hour": 240,
+        "access": [
+          {
+            "id": "p000",
+            "allowed": true,
+            "reason": null,
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 10,
+              "targetXp": 5,
+              "liquidFacy": 10,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p001",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p002",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p003",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p004",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p005",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p006",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p007",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          },
+          {
+            "id": "p008",
+            "allowed": false,
+            "reason": "challenge XP gate",
+            "preconditions": {
+              "challengerStatus": "accepted",
+              "targetStatus": "accepted",
+              "challengerXp": 1,
+              "targetXp": 5,
+              "liquidFacy": 1,
+              "stake": 1
+            }
+          }
+        ],
+        "financialCases": [
+          {
+            "id": "ordinary-entry-reference",
+            "openedAt": 240,
+            "closedAt": null,
+            "status": "open",
+            "winner": null,
+            "positions": [
+              {
+                "owner": "p000",
+                "amount": 1,
+                "side": "fraud",
+                "atHour": 240
+              }
+            ],
+            "accounting": null
+          }
+        ],
+        "finalMoney": {
+          "minted": 23,
+          "burned": 0,
+          "supply": 23,
+          "emitterVault": 0,
+          "collector": 22,
+          "feeVault": 0,
+          "stakeVault": 1,
+          "debt": 0
+        },
+        "formalCouncilUnderSuppliedN10": false,
+        "verdictExecuted": false,
+        "identityExcluded": false
+      }
+    ],
+    "profiles": 2,
+    "newPeopleAdmitted": 0,
+    "scientificWorlds": 0,
+    "scope": "ordinary reference entry only, no coalition XP aggregation or selected act/Council route"
+  },
+  "scope": {
+    "suppliedGenesis": 10,
+    "initialMoneyXp": 0,
+    "newAdmitted": 0,
+    "setupDays": 10,
+    "correctiveActors": 9,
+    "correctiveEarnedXpAndLiquid": 18,
+    "accusedEarnedXpAndLiquid": 5,
+    "totalEarnedAndLiquid": 23,
+    "stake": 1,
+    "scenarioPremises": [
+      "supplied admitted/verified distinct actors for the phase statement, not measured verification",
+      "all corrective actors informed/willing, not a behavioral finding",
+      "individual histories/balances differ intentionally, aggregate funds/horizon same",
+      "public protocol state has no evaluator role/control labels"
+    ],
+    "notExecuted": [
+      "adversarial strategy or dynamic coalition formation",
+      "communication-on/off ablation",
+      "selected act/Council case/merits",
+      "timeout/verdict/penalty/identity exclusion"
+    ],
+    "noCouncil": "only conditional selected N_verified10<100 rule, not native activeCount as personhood or legacy council() replacement"
+  },
+  "facts": {
+    "distributedEligible": 0,
+    "seniorAvailableEligible": 1,
+    "refusals": "challenge XP gate; all9 have at least1 liquid FACY",
+    "reservation": "only actual eligible senior reserves1, collector22/stakeVault1/burned0/debt0",
+    "globalMajority": "9/10 people and18/23 XP are scenario arithmetic, not safety thresholds",
+    "notProven": "not all full-protocol paths impossible, accused guilt, coordination uselessness or automatic senior creation"
+  },
+  "fresh": {
+    "unit": {
+      "command": "node --test test/core-authority.test.mjs",
+      "log": "/tmp/facety-core-coalition-entry-unit.txt",
+      "passed": 4,
+      "failed": 0,
+      "addedFamilies": 1,
+      "firstRunGreen": true
+    },
+    "focused": {
+      "command": "node --test test/core-authority.test.mjs test/dispute-stakes.test.mjs test/xp-provenance.test.mjs",
+      "log": "/tmp/facety-core-coalition-entry-focused.txt",
+      "passed": 22,
+      "failed": 0
+    },
+    "full": {
+      "command": "npm test",
+      "log": "/tmp/facety-core-coalition-entry-full.txt",
+      "currentPassed": 734,
+      "currentFailed": 0,
+      "historicalPassed": 21,
+      "historicalFailed": 0,
+      "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "meaning": "21 original historical bodies on isolated compatible source, not current-source assurance"
+    },
+    "nativePreservation": {
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+      "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+    }
+  },
+  "reusedSourceOnly": {
+    "basis": "same src/runtime as previous checkpoint; no DAG/two-trajectory rerun",
+    "record": "studies/2026-10-26-trust-topology-condition-map/core-xp-exit-results.json",
+    "dag": {
+      "files": 53,
+      "edges": 168,
+      "acyclic": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "trajectories": {
+      "excludedOnly": "provenance.implementation",
+      "legacy": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouch": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530"
+    }
+  },
+  "preservation": {
+    "originalC0PrefixUnchangedAfterTwoNewImports": true,
+    "originalC0FixtureAndAllPriorPacketsUnchanged": true,
+    "sourceDefaultsRngChanged": false,
+    "newSourceModulesOrApiOrEngineOrScalar": 0,
+    "newScientificWorldsOrSeeds": 0,
+    "registeredConfirmationOrG1": false,
+    "newExternalDataOrAccountActions": 0,
+    "ownerHypothesisNotNewXpPoolingQuorumOrMigration": true
+  },
+  "review": "inline funded-source/aggregate versus individual/ordinary versus selected act-route/phase/privacy/scoped counterexample review, not independent authorship",
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-core-coalition-entry-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "review": "Existing structure/meta/sparsity/index/wide-table warnings reviewed; no new wide table. Contract/results reachable in existing master/index and BACKLOG remains sole task owner. D68 main/Appendix hypothesis reviewed directly because large-protocol scan skips; no new XP pooling, quorum or default migration. Four controls explicitly ordinary-entry prerequisite, not coalition effectiveness/early-formation/actual truth. Source-only DAG/two trajectories reused versus fresh734 current+21 compatible-source historical. Original C0 prefix/data and all prior packets preserved; next actual funded standing actions, not another engine or generic verification question."
+  },
+  "handoff": {
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "scope": "D76 organized defense against organized attack under D68",
+    "closed": "actual ordinary first-entry barrier despite aggregate corrective majority/funds, with real-senior financial positive control; no larger coalition engine",
+    "next": "freeze and execute a minimal same-distributed-history support/no-support functional comparison: actual transfers/guarantee responsibilities/subsequent source receipts that might produce an eligible individual at real cost, not group-XP pooling; then inspect real case path",
+    "gate": "guarantee price/accepted genesis/behavior are declared diagnostic references, not selected protocol answers. No act/Council merits/expulsion or empirical gate bypass. C3/indexer/rescue/lifetime-K remain parked",
+    "continuationWarranted": true,
+    "signature": "d68-coalition-entry/2profiles-4traces-18of23-XP-0vs1ordinary-entry/22focused-734current-21historical/source91db-test55b8c770/next-funded-earned-standing-not-pooling"
+  }
+}
