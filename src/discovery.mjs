@@ -7,9 +7,10 @@ import { provenance } from './provenance.mjs';
 import { combineExperimentRandomness, requireLegacyExperiment } from './experiment-config.mjs';
 import { VOUCH_ENGINE, VOUCH_OBSERVABLES } from './vouch-experiment-config.mjs';
 import { PB_ENGINE, PB_OBSERVABLES } from './pb-experiment-config.mjs';
+import { LIVING_ENGINE, LIVING_OBSERVABLES } from './living-experiment-config.mjs';
 
 export const OBSERVABLES = Object.freeze({
-  ...VOUCH_OBSERVABLES, ...PB_OBSERVABLES,
+  ...VOUCH_OBSERVABLES, ...PB_OBSERVABLES, ...LIVING_OBSERVABLES,
   subjects: 1, falseSubjects: 1, activeSubjects: 1, requiredGuarantors: 1, humanOperators: 1,
   attackerShare: 0.05, falseShare: 0.05,
   'xp.total': 1, 'xp.gini': 0.05, 'xp.topDecileShare': 0.05, 'xp.attackerShare': 0.05,
@@ -75,12 +76,13 @@ function settingsFrom(overrides = {}) {
 export function observableForExperiment(metric, config = {}) {
   if (config.engine === VOUCH_ENGINE) return Object.hasOwn(VOUCH_OBSERVABLES, metric);
   if (config.engine === PB_ENGINE) return Object.hasOwn(PB_OBSERVABLES, metric);
+  if (config.engine === LIVING_ENGINE) return Object.hasOwn(LIVING_OBSERVABLES, metric);
   if (config.engine !== undefined) return false;
-  return Object.hasOwn(OBSERVABLES, metric) && !Object.hasOwn(VOUCH_OBSERVABLES, metric) && !Object.hasOwn(PB_OBSERVABLES, metric);
+  return Object.hasOwn(OBSERVABLES, metric) && !Object.hasOwn(VOUCH_OBSERVABLES, metric) && !Object.hasOwn(PB_OBSERVABLES, metric) && !Object.hasOwn(LIVING_OBSERVABLES, metric);
 }
 
 export function metricSeries(history, metric, { days, offsetHours = 0, engine } = {}) {
-  if (engine !== undefined && ![VOUCH_ENGINE, PB_ENGINE].includes(engine)) throw new Error('unsupported observable engine');
+  if (engine !== undefined && ![VOUCH_ENGINE, PB_ENGINE, LIVING_ENGINE].includes(engine)) throw new Error('unsupported observable engine');
   if (Object.hasOwn(OBSERVABLES, metric) && !observableForExperiment(metric, { engine })) throw new Error('observable does not belong to experiment engine: ' + metric);
   if (![0, DAY].includes(offsetHours)) throw new RangeError('daily sampling offset must be 0 or 24 hours');
   if (!Array.isArray(history) || !Object.hasOwn(OBSERVABLES, metric)) throw new Error('unknown history or observable');

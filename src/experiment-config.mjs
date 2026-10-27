@@ -8,6 +8,7 @@ import { SUBDAY_RANDOMNESS } from './activity-schedule.mjs';
 import { canonicalJson } from './provenance.mjs';
 import { vouchExperimentConfig, VOUCH_ENGINE, VOUCH_RANDOMNESS } from './vouch-experiment-config.mjs';
 import { pbExperimentConfig, PB_ENGINE, PB_RANDOMNESS } from './pb-experiment-config.mjs';
+import { livingExperimentConfig, LIVING_ENGINE, LIVING_RANDOMNESS } from './living-experiment-config.mjs';
 
 export const SCENARIOS = Object.freeze(['honest-growth', 'sybil-cone', 'real-cartel']);
 // Model ablations remove protocol mechanisms; behavior ablations remove scripted agent choices.
@@ -237,6 +238,7 @@ export function experimentRandomness(config) {
   if (config.engine !== undefined) {
     if (config.engine === VOUCH_ENGINE) return VOUCH_RANDOMNESS;
     if (config.engine === PB_ENGINE) return PB_RANDOMNESS;
+    if (config.engine === LIVING_ENGINE) return LIVING_RANDOMNESS;
     throw new Error('unsupported experiment randomness engine');
   }
   const base = config.stepHours === 24 ? RANDOMNESS_POLICY : SUBDAY_RANDOMNESS;
@@ -282,6 +284,7 @@ export function experimentConfig(overrides = {}) {
   if (overrides && Object.hasOwn(overrides, 'engine')) {
     if (overrides.engine === VOUCH_ENGINE) return vouchExperimentConfig(overrides);
     if (overrides.engine === PB_ENGINE) return pbExperimentConfig(overrides);
+    if (overrides.engine === LIVING_ENGINE) return livingExperimentConfig(overrides);
     throw new Error('unsupported experiment engine');
   }
   const nested = { activity: {}, budgets: {}, weights: {}, policy: {}, ablations: {}, perturbations: [], disputes: {}, deviants: {}, social: {}, reviewReserve: {} };
