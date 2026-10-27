@@ -1209,7 +1209,7 @@ Membership changes with XP/activity. **Recalculation is not turnover:** continuo
 
 ### 27.2 Voluntary intervention
 
-**[SELECTED]** The Council may decide to intervene in **any dispute**. It is not required to take every local conflict. Its members can hold a public vote on whether collective intervention is appropriate.
+**[SELECTED]** The Council may decide to intervene in **any dispute**. It is not required to take every local conflict. D70 selects individual-consul initiation and a collective referendum on the opposing position's merits (§27.3), not merely an administrative vote granting permission to intervene.
 
 **D66 — [SELECTED anytime voting / rejection of a late-only rule], documented 2026-10-27.** The Council may vote **at any time while a dispute is ongoing**, under its applicable procedure. There is no rule requiring it to wait until the final three days, the second half of a dispute or a fixed T-minus threshold. The owner's explicit correction rejects the late-only interpretation in the D65 strategic brief. Information diffusion may be modeled as an optional research mechanism; high-XP dispute prominence is an expected signal, not a mandatory artificial waiting period or a calibrated diffusion law. This timing permission does not supply turnout, referral access, quorum, merits or automatic intervention. D69 clarifies that the Council uses the same seven-day last-entry clock, without a separate added Council interval; timing permission and collective-entry recognition remain distinct.
 
@@ -1217,23 +1217,28 @@ Membership changes with XP/activity. **Recalculation is not turnover:** continuo
 
 This creates an upper review path for conflicts involving the largest amount of social capital, including an allegation against a subject that nobody can challenge through the ordinary `XP(challenger) > XP(owner)` gate.
 
-The Council's capacity to hear apex cases prevents individual maximum-XP immunity in the intended design. **[SELECTED restatement, 2026-10-23]** A consul has no seniority immunity: another consul may challenge through the applicable ordinary or collective route. XP does not add votes inside the Council. This restatement does not settle the still-OPEN referral and merits procedures.
+The Council's capacity to hear apex cases prevents individual maximum-XP immunity in the intended design. **[SELECTED restatement, 2026-10-23]** A consul has no seniority immunity: another consul may challenge through the applicable ordinary or collective route. XP does not add votes inside the Council. D70 below selects the individual-consul referral and merits-referendum shape; its remaining operational contracts are explicit.
 
-### 27.3 An intervention vote is not automatically a truth verdict
+<a id="273-an-intervention-vote-is-not-automatically-a-truth-verdict"></a>
 
-A vote on **whether to intervene** is different from a vote on **which underlying claim is true**. The design permits a collective Council resolution route, but the exact merits procedure has not been selected.
+### 27.3 Individual initiation and collective merits referendum (D70)
 
-**[OPEN]** Define separately:
+**D70 — [SELECTED initiator, sequence and ballot subject; operational remainder OPEN], documented 2026-10-27.** Source: the owner's clarification of how a Council that is not yet participating joins an existing dispute. Any formal Council member may select such a dispute and initiate the Council's referendum, proposing to take the side **opposite the last non-Council participant**, in accordance with Chekharda's alternation. One member can initiate consideration; that is not unilateral power to impose the Council's collective position. The no-formal-Council phase in §27.1 supplies no individual substitute for this power.
 
-1. Who can submit a case for Council attention.
-2. Whether a public vote opens formal intervention.
-3. The quorum and majority required for intervention.
-4. Whether the Council subsequently votes on the merits or activates another bounded procedure.
-5. Whether an accused member can participate, and how conflicts of interest are handled.
-6. Exact recognition of collective Council entry and member ballots/finality under D69's shared seven-day last-entry clock; no additional Council window, and D66 permits voting throughout an ongoing dispute.
-7. How evidence, appeals, finality, and penalties are recorded.
+The referendum asks the Council to judge the disputed positions: **is taking the proposed opposite side correct, or was the last non-Council participant already on the correct side?** It is a collective merits choice, not only “may our colleague intervene?” A collective result supporting opposition backs the proposed opposite position; a collective result supporting the previous participant means the proposed opposition was not justified. That second merits result is not equivalent to no opinion, insufficient turnout or an expired/unresolved ballot. A vote is a procedural judgment under the evidence rules, not an infallible truth oracle; ordinary error, correlated error and capture remain possible. Preserve the actual claim and alternating position meaning rather than hard-code “yes” as fraud or “no” as genuine identity.
 
-A 51-versus-50 simple-majority example illustrates equal voting. It is not an approved threshold. A supermajority for cases against apex participants was a separate candidate, not an adopted rule at that checkpoint. **D33 (§46.9)** now recommends simple majority for ordinary decisions and two-thirds for critical interventions; quorum, vote denominator, critical-case definition and merits/referral procedures remain OPEN. The earlier example is historical, not an alternate current threshold.
+This settles who initiates, what follows and what is voted on. It does **not** silently select whether referendum initiation itself or a later ratified position is the accepted collective entry for clock/stake purposes. The earlier assistant-proposed “request without any clock effect, followed by accepted entry only after approval” is not an owner-selected default. D69 still supplies one shared seven-day last-entry clock and terminal collective Council participation, D66 anytime voting, and D67 common-channel near-immediate notice. Do not create a second clock or treat each member ballot as a ladder entry. A consul's ordinary private participation and an explicit Council referral are distinct roles; mere membership cannot automatically convert every private act into a collective Council act.
+
+**[OPEN]** Define the remaining execution contracts:
+
+1. Referral representation, formal initiator/membership snapshot and the last-position/claim snapshot bound by the referendum, including intervening ordinary moves and duplicate referrals.
+2. The event recognized as collective entry, effects while the referendum is pending, and legal clock/stake/XP/finality consequences of either merits result; no silent rollback or deletion “as if never entered.”
+3. Applicable quorum, vote denominator, majority/critical-case threshold, ties, abstention and insufficient-turnout/timeout effects, separately from explicit support for the previous participant. No example48–72h window,50%+1 quorum or shorter three-day exception is selected here.
+4. Evidence presentation/access, reasoning, error and recording within the selected collective merits referendum; its existence and ballot subject are no longer OPEN alternatives to an unspecified replacement court.
+5. Accused-member participation, conflicts/recusal and active-case membership changes.
+6. Authorized settlement, collectible proceeds/rewards, appeals and attribution/recording of consequences. Public defense, an incorrect vote or refusal alone is not an independently proved violation.
+
+A 51-versus-50 simple-majority example illustrates equal voting. It is not an approved threshold. A supermajority for cases against apex participants was a separate candidate, not an adopted rule at that checkpoint. **D33 (§46.9)** now recommends simple majority for ordinary decisions and two-thirds for critical interventions; quorum, vote denominator, critical-case definition and operational merits/referral contracts remain OPEN; D70 selects the initiator and merits-ballot subject. The earlier example is historical, not an alternate current threshold.
 
 ### 27.4 The limit of internal legitimacy
 
@@ -2578,6 +2583,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Shared Chekharda clock clarification recorded 2026-10-27
 
 **D69 — [SELECTED shared timer / correction of documentary misinterpretation], §26.5.** Source: the owner's explicit voice clarification: no additional seven-day Council window or special clock; each new opposing entrant, including the Council as final collective entrant, renews the common seven-day dispute window. Council voting fits within it, not a further extension; individual ballots do not create successive ladder entries. No need for every member to vote; exact applicable collective-entry/ballot/quorum/merits/finality contracts remain. A suggested shorter three-day Council duration is unselected and differs from the already-rejected final-three-days access gate. This corrects the earlier D64 record rather than claiming the owner changed an established separate-clock rule. Existing native fixture/source-bound checkpoint bytes remain historical; their code did not implement the erroneous additional interval. No default migration, new data or proof follows.
+
+### Council merits referendum clarification recorded 2026-10-27
+
+**D70 — [SELECTED individual-consul initiation and collective merits ballot; execution remainder OPEN], §27.3.** Source: the owner's voice clarification of the prior D70 draft: an open dispute has no Council yet; any formal member may select it and propose the opposing side, triggering a referendum on whether that opposition is right or the previous non-Council participant was already right. This is not merely ratifying permission for a colleague or an administrative decision not to participate. Explicit support for the previous position differs from no quorum/timeout/unknown. It grants no unilateral Council verdict, private-consul immunity, new numerical quorum, example48–72h window, delegation/committee/election system, infallibility or automatic sanctions. The earlier assistant-recommended request/ratification clock model is not implicitly selected. Recognition of collective entry and position snapshots, pending/negative/tied/unresolved ballot effects and custody/settlement under D69's common clock remain explicit. D66/D67 timing/notice and D68 core-first/method gates survive; no code, new experiment or claim of a completed Council procedure follows.
 
 ### Earlier supersessions
 
