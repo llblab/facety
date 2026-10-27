@@ -1,0 +1,169 @@
+{
+  "schema": "facety-engineering-route-validation/v1",
+  "classification": "D68/D76 exact first missing act-case/public-position/finality/source binding, plus frozen pre-code opt-in acceptance. No new implementation/court/study.",
+  "baseCommit": "dce1d211a3cab1aceb9c540af5acc61300d256b8",
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "2dab71d63868b07c0bc94fcf0034fd4f24dcec47",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/core-correction-route-contract.md",
+      "gitBlob": "01a5565a425402ed156a3b533939846978cbe7e1"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/core-correction-route-results.md",
+      "gitBlob": "a1f7954d3c4b088b86ba0facb946b9440d992596"
+    },
+    {
+      "path": "/tmp/facety-core-correction-route-probe.mjs",
+      "gitBlob": "457d50bbf491f082aebeaa856a6df9d8fe1a5f8f",
+      "meaning": "program captured below so raw audit remains reproducible without temporary file"
+    }
+  ],
+  "probeProgram": "import assert from 'node:assert/strict';\nimport { runActRelayExample } from '/home/llb/Repos/facety/examples/act-relay.mjs';\nimport { causalWorld } from '/home/llb/Repos/facety/examples/causal-walkthroughs.mjs';\nimport { EvidenceRelay, accountabilitySnapshot } from '/home/llb/Repos/facety/src/accountability.mjs';\nimport { experimentConfig } from '/home/llb/Repos/facety/src/experiment.mjs';\nimport { challengeAccess } from '/home/llb/Repos/facety/src/disputes.mjs';\nimport { provenance } from '/home/llb/Repos/facety/src/provenance.mjs';\nconst example = runActRelayExample();\nassert.equal(example.attemptedEntry.reason, 'act-defect-adjudication-unimplemented');\nassert.equal(example.relay.cases.length, 0);\nassert.equal(example.relay.stakes.cases, 0);\nassert.equal(example.review.ok, true);\nassert.equal(example.protocolStateUnchanged, true);\nconst { model, acts } = causalWorld(), before = accountabilitySnapshot(model);\nconst access = challengeAccess(model, 'Bela', 'Mira', 1);\nassert.equal(access.allowed, true);\nassert.deepEqual(model.disputeStakes(), []);\nconst sourcePlanInput = { initiator: 'Bela', caseId: 'not-an-admitted-case-readonly-probe', upheld: true };\nconst sourcePlan = model.previewSelfIdResolution(acts.Mira, sourcePlanInput);\nassert.equal(sourcePlan.kind, 'external-chain-cut');\nassert.equal(sourcePlan.punitivePenaltiesApplied, false);\nassert.deepEqual(accountabilitySnapshot(model), before);\nlet timedRejection;\ntry {\n  new EvidenceRelay(model, { claim: 'act-defect', actors: [], rules: experimentConfig({ disputes: { enabled: true, procedure: 'chekharda-timed', stakeBacking: 'reserved' } }).disputes });\n} catch (error) { timedRejection = error.message; }\nassert.match(timedRejection, /requires normalized enabled one-step/);\nassert.deepEqual(accountabilitySnapshot(model), before);\nconsole.log(JSON.stringify({ schema: 'facety-engineering-route-audit/v1', provenance: provenance(),\n  classification: 'current-source readonly integration probe plus existing public software example, not human evidence or a court',\n  example, readonlySourceBoundary: { subject: 'Mira', selfId: acts.Mira, access, existingFinancialCases: 0,\n    sourcePlanInput, sourcePlan, modelUnchanged: true,\n    meaning: 'D59 preview is intentionally a trusted execution plan, not case/authority validation; a fresh caller caseId is no proof of merits' },\n  timedRelayApi: { rejected: true, message: timedRejection, modelUnchanged: true },\n  newCasesOpened: 0, newVerdictsOrPenaltiesOrSourceCutsExecuted: 0,\n  roleOfProbe: 'locate exact missing per-act case/position/finality/authorized-source binding; do not change act claim into a false identity or host-chosen boolean',\n  assumptions: ['Existing causalWorld is a funded legacy terminal-credit source fixture, not D42/qualified-genesis migration.',\n    'Public example all-one observation rates and software label are unchanged existing boundary controls, not empirical seeds/accuracy.',\n    'Distinct review source tags are declarations, not independently verified truth.',\n    'No existing source/runtime/test/body/packet changed; supplied source-plan verdict is previewed only, never enforced.'] }, null, 2));\n",
+  "actual": {"schema":"facety-engineering-route-audit/v1","provenance":{"implementation":{"method":"sha256-src-mjs-v1","digest":"91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108","files":53},"runtime":{"node":"v26.8.1"}},"classification":"current-source readonly integration probe plus existing public software example, not human evidence or a court","example":{"schema":"facety-act-relay-software-example/v1","level":"software-interface-example-not-research","implementation":{"method":"sha256-src-mjs-v1","digest":"91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108","files":53},"assumptions":["Native funded admission/acts, but legacy reference XP/custody, not D42 migration; prefix setup work remains unpriced.","Validity is a supplied external act fact, not a selected requirement, media authentication or court conclusion.","Extreme all-one rates are software boundary witnesses, not a detector recommendation, tenfold calibration or case-frequency model.","Budgets/capacities use existing illustrative non-refilling relay work accounting, not calibrated human attention or D46 scheduler replacement.","Distinct sourceGroup tags are declared scenario provenance only, not verified independent evidence or humans.","Eligible act-defect sponsorship deliberately opens no case/stake and cannot invoke identity sanctions."],"evaluatorInputs":{"facts":{"subjects":[{"id":"Mira","genuine":true,"behaviorProfile":"good-faith"}],"acts":[{"id":"self-id:15","subject":"Mira","kind":"self-id","recordedAt":48,"valid":false}]},"options":{"seed":"act-relay-example-software-only","rates":{"self-id":{"ordinary":{"valid":1,"invalid":1},"guarantor":{"valid":1,"invalid":1}},"invitation":{"ordinary":{"valid":1,"invalid":1},"guarantor":{"valid":1,"invalid":1}},"guarantee":{"ordinary":{"valid":1,"invalid":1},"guarantor":{"valid":1,"invalid":1}}}}},"observationPolicy":{"generator":"sha256-xoshiro128starstar-v2","observations":"act-observation-keyed-v1","trialUnit":"observer-act-hour-opportunity","dependence":"keyed-per-declared-opportunity"},"sourceAccess":{"allowed":false,"reason":"challenge XP gate","preconditions":{"challengerStatus":"accepted","targetStatus":"accepted","challengerXp":3,"targetXp":3,"liquidFacy":1,"stake":1}},"observation":{"ok":true,"value":"observation:0","basis":"funded native act reference and fallible evidence; no validity verdict","work":1,"traceRef":"decision:0"},"evidence":{"ok":true,"value":"package:1","basis":"event-linked allegation, not a correctness certificate","work":1,"traceRef":"decision:1"},"route":{"ok":true,"value":"route:[\"package:1\",\"Bela\"]","basis":"explicit routing choice; no automatic fallback or payment","work":1,"traceRef":"decision:2"},"review":{"ok":true,"value":"review:route:[\"package:1\",\"Bela\"]","reason":null,"basis":"fallible act review; distinct declared source tags do not certify independence","work":1,"traceRef":"decision:3"},"attemptedEntry":{"ok":false,"reason":"act-defect-adjudication-unimplemented","preconditions":{"challengerStatus":"accepted","targetStatus":"accepted","challengerXp":7,"targetXp":3,"liquidFacy":2,"stake":1},"basis":"XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened","work":1,"traceRef":"decision:4"},"relay":{"actors":[{"id":"Aster","subject":"Aster","budget":12,"reviewCapacity":2,"spent":3,"denied":0,"reviews":[]},{"id":"Bela","subject":"Bela","budget":12,"reviewCapacity":2,"spent":2,"denied":0,"reviews":[[3,1]]}],"observations":[{"id":"observation:0","actor":"Aster","selfId":"self-id:15","subject":"Mira","atHour":72,"role":"guarantor","opportunity":"source-look","observationPolicy":"act-observation-keyed-v1","suspicious":true,"sourceGroup":"public-media"}],"packages":[{"id":"package:1","origin":"Aster","selfId":"self-id:15","subject":"Mira","claim":"act-defect","observationIds":["observation:0"],"sourceGroups":["public-media"],"createdAt":72,"status":"open","routes":[{"id":"route:[\"package:1\",\"Bela\"]","sponsor":"Bela","atHour":72,"status":"reviewed","review":{"id":"review:route:[\"package:1\",\"Bela\"]","role":"guarantor","opportunity":"sponsor-look","observationPolicy":"act-observation-keyed-v1","suspicious":true,"sourceGroup":"declared-other-source","atHour":72}}]}],"cases":[],"stakes":{"backing":"reserved","cases":0,"openCases":0,"nominalCommitted":0,"pendingNominal":0,"nominalLosing":0,"transferred":0,"burned":0,"released":0,"unpaid":0}},"trace":{"limit":100,"omitted":0,"records":[{"id":"decision:0","startedAt":72,"atHour":72,"actor":"Aster","action":"observe","target":"Mira","visible":{"selfId":"self-id:15","sourceGroup":"public-media","suspicious":true,"role":"guarantor","opportunity":"source-look","observationPolicy":"act-observation-keyed-v1"},"preconditions":{},"basis":"funded native act reference and fallible evidence; no validity verdict","outcome":{"ok":true,"reason":null},"work":1,"error":null,"changes":{"subjects":[],"ledger":{},"council":{"entered":[],"left":[]}},"supports":["protocol:29"],"mechanisms":["M04"],"protocolEvents":[]},{"id":"decision:1","startedAt":72,"atHour":72,"actor":"Aster","action":"package","target":["observation:0"],"visible":{"observationIds":["observation:0"]},"preconditions":{},"basis":"event-linked allegation, not a correctness certificate","outcome":{"ok":true,"reason":null},"work":1,"error":null,"changes":{"subjects":[],"ledger":{},"council":{"entered":[],"left":[]}},"supports":["decision:0"],"mechanisms":["M04"],"protocolEvents":[]},{"id":"decision:2","startedAt":72,"atHour":72,"actor":"Aster","action":"route","target":"Bela","visible":{"packageId":"package:1","sponsor":"Bela"},"preconditions":{},"basis":"explicit routing choice; no automatic fallback or payment","outcome":{"ok":true,"reason":null},"work":1,"error":null,"changes":{"subjects":[],"ledger":{},"council":{"entered":[],"left":[]}},"supports":["decision:1"],"mechanisms":["M04"],"protocolEvents":[]},{"id":"decision:3","startedAt":72,"atHour":72,"actor":"Bela","action":"review","target":"Mira","visible":{"packageId":"package:1","observation":{"suspicious":true,"sourceGroup":"declared-other-source"},"available":true,"conflicted":false,"dailyCapacity":2,"role":"guarantor","opportunity":"sponsor-look","observationPolicy":"act-observation-keyed-v1"},"preconditions":{},"basis":"fallible act review; distinct declared source tags do not certify independence","outcome":{"ok":true,"reason":null},"work":1,"error":null,"changes":{"subjects":[],"ledger":{},"council":{"entered":[],"left":[]}},"supports":["decision:1","decision:2"],"mechanisms":["M04","M09"],"protocolEvents":[]},{"id":"decision:4","startedAt":72,"atHour":72,"actor":"Bela","action":"formal-challenge","target":"Mira","visible":{"packageId":"package:1"},"preconditions":{"challengerStatus":"accepted","targetStatus":"accepted","challengerXp":7,"targetXp":3,"liquidFacy":2,"stake":1},"basis":"XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened","outcome":{"ok":false,"reason":"act-defect-adjudication-unimplemented"},"work":1,"error":null,"changes":{"subjects":[],"ledger":{},"council":{"entered":[],"left":[]}},"supports":["decision:1","decision:3"],"mechanisms":["M04","M07","M09"],"protocolEvents":[]}],"interpretation":"Execution ancestry and mechanism tags are explanations, not independent causal evidence."},"protocolStateUnchanged":true},"readonlySourceBoundary":{"subject":"Mira","selfId":"self-id:15","access":{"allowed":true,"reason":null,"preconditions":{"challengerStatus":"accepted","targetStatus":"accepted","challengerXp":7,"targetXp":3,"liquidFacy":2,"stake":1}},"existingFinancialCases":0,"sourcePlanInput":{"initiator":"Bela","caseId":"not-an-admitted-case-readonly-probe","upheld":true},"sourcePlan":{"caseId":"not-an-admitted-case-readonly-probe","selfId":"self-id:15","subject":"Mira","initiator":"Bela","upheld":true,"kind":"external-chain-cut","at":72,"head":"self-id:15","acts":[{"selfId":"self-id:15","previousStatus":"converted","previousDisposition":"collector","recovery":"liquid-or-debt","recipients":["Mira","Bela","Aster"]}],"recovery":{"emitterBurn":0,"alreadyBurned":0,"requestedFromAuthor":1,"collected":1,"debtAdded":0},"accountingPolicy":"self-id-source-recovery/v1","punitivePenaltiesApplied":false,"xpChanges":[]},"modelUnchanged":true,"meaning":"D59 preview is intentionally a trusted execution plan, not case/authority validation; a fresh caller caseId is no proof of merits"},"timedRelayApi":{"rejected":true,"message":"relay reference requires normalized enabled one-step rules","modelUnchanged":true},"newCasesOpened":0,"newVerdictsOrPenaltiesOrSourceCutsExecuted":0,"roleOfProbe":"locate exact missing per-act case/position/finality/authorized-source binding; do not change act claim into a false identity or host-chosen boolean","assumptions":["Existing causalWorld is a funded legacy terminal-credit source fixture, not D42/qualified-genesis migration.","Public example all-one observation rates and software label are unchanged existing boundary controls, not empirical seeds/accuracy.","Distinct review source tags are declarations, not independently verified truth.","No existing source/runtime/test/body/packet changed; supplied source-plan verdict is previewed only, never enforced."]},
+  "fresh": {
+    "probe": {
+      "command": "node /tmp/facety-core-correction-route-probe.mjs",
+      "log": "/tmp/facety-core-correction-route-probe.json",
+      "passed": true,
+      "newCases": 0,
+      "newEnforcedVerdictsOrPenaltiesOrCuts": 0
+    },
+    "focused": {
+      "command": "node --test test/act-relay.test.mjs test/disputes.test.mjs test/dispute-stakes.test.mjs test/self-id-resolution.test.mjs",
+      "log": "/tmp/facety-core-correction-route-focused.txt",
+      "passed": 35,
+      "failed": 0
+    },
+    "guardFacts": {
+      "receivedReview": true,
+      "strictXpGate": true,
+      "sponsorXp": 7,
+      "targetXp": 3,
+      "sponsorLiquid": 2,
+      "stake": 1,
+      "sourceWork": 3,
+      "sponsorWork": 2,
+      "firstRefusal": "act-defect-adjudication-unimplemented",
+      "timedCtorRefusal": "relay reference requires normalized enabled one-step rules",
+      "economicStateUnchanged": true
+    },
+    "sourcePreview": "fresh caller caseId accepted intentionally by trusted readonly D59 plan, not case/authority verification or a security bug; no result enforced"
+  },
+  "reused": {
+    "basis": "identical src/test tree and runtime to dce1d21, no npm/full/DAG/trajectory rerun",
+    "currentAndHistorical": {
+      "command": "npm test",
+      "log": "/tmp/facety-core-coalition-support-full.txt",
+      "currentPassed": 735,
+      "currentFailed": 0,
+      "historicalPassed": 21,
+      "historicalFailed": 0,
+      "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "meaning": "isolated original historical bodies on compatible source, not current-source assurance"
+    },
+    "sourceOnly": {
+      "basis": "same src/runtime as previous checkpoint; no DAG/two-trajectory rerun",
+      "record": "studies/2026-10-26-trust-topology-condition-map/core-xp-exit-results.json",
+      "dag": {
+        "files": 53,
+        "edges": 168,
+        "acyclic": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "trajectories": {
+        "excludedOnly": "provenance.implementation",
+        "legacy": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+        "vouch": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530"
+      }
+    },
+    "nativePreservation": {
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+      "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+    }
+  },
+  "contractScope": {
+    "status": "frozen before any code, not callable",
+    "owner": "existing src/accountability.mjs EvidenceRelay only, no new module/framework",
+    "constructor": "actCaseReference:{formalCouncil:'absent'} with normalized timed/reserved/councilDepth0/window168/stake1/growth0.1; optional, defaults/guards unchanged",
+    "newMethodsPlanned": [
+      "enterActCase(actorId,caseId)",
+      "finalizeActCase(caseId)"
+    ],
+    "sourceSubset": "non-author/post24h/converted/debt-free/unlocked/accepted/static target head/no overlapping case; unsupported states fail",
+    "humanRole": "received evidence and explicit participant opposite-side requests, not evaluator labels or an automatic truth classifier",
+    "selectedReuse": [
+      "protocol25 ordinary eligible Self-ID challenge",
+      "26.1 strict increasing XP/alternation",
+      "26.5 shared seven-day last-opposing-entry finality",
+      "D59 external suffix/valid-prefix/source-only recovery, not identity exclusion"
+    ],
+    "researchAssumptions": [
+      "reserved stake1/growth0.1 and current financial settlement semantics, not selected economics",
+      "supplied admitted/qualified people and absent formal Council",
+      "scripted willing/informed human actions/public signals, not calibrated behavior",
+      "converted/static source subset, not full frozen-maturity/Council/self-author migration"
+    ],
+    "goldensNotExecuted": {
+      "prefix": "three supplied admitted actors author3/challenger8/reviewer12 own source credits+liquid,23 actual units from zero in12days",
+      "initialHour": 288,
+      "act": "author index2, suffix2 units, valid prefix retained",
+      "correction": {
+        "deadline": 456,
+        "finalize": 457,
+        "sourceUnitsRecovered": 2,
+        "authorFinalXp": 1,
+        "identityExcluded": false
+      },
+      "validActDefense": {
+        "opposingEntry": 292,
+        "stake": 2,
+        "reviewerXp": 12,
+        "deadline": 460,
+        "finalize": 461,
+        "sourceUnitsRecovered": 0,
+        "firstXpAfterProceduralLoss": 4,
+        "actualTransfer": 1,
+        "winningRefund": 2
+      }
+    },
+    "notSelectedOrClaimed": [
+      "new economics/quorum/admission exception",
+      "full adjudication or actual truth/honest-only advantage",
+      "source/identity penalty mapping via arbitrary bool",
+      "new scientific mechanism/G1/v2 confirmation",
+      "Council C3 or indexer/rescue/lifetime-K fallback"
+    ]
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-core-correction-route-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "review": "Existing structure/meta/index/wide-table warnings reviewed, no new table/orphan. Current API remains guarded/one-step only; new opt-in contract explicitly future/not callable. Ordinary Self-ID/XP/alternation/seven-day rules are not reopened; native financial/behavior/absent-Council assumptions named, source/controller/merits layers distinct, exact-deadline/Council/self-author/unspent/debt/concurrent bounds unsupported, no identity/host-bool court. No protocol owner-decision change or AGENTS duplication needed because durable human-path boundary already exists. BACKLOG next narrowed to necessary source integration, register records diagnostic level, root/index/model contract/history linked without full raw copies. Fresh35 focused versus reused735current+21historical/DAG/two trajectories under exact src/test/runtime equality. Contract/refusal/source-preview review is inline evidence, not independent authorship or an implemented court."
+  },
+  "handoff": {
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "scope": "D76 actual human correction path under D68",
+    "closed": "reviewed/funded/eligible act still cannot create case; existing guarded/identity/trusted-source references are not a connected act court; selected ordinary rules separated from implementation and OPENs; minimal optional reference acceptance frozen",
+    "next": "implement only frozen timed act-source-only subset in existing owner, preserve default/old guards and all old bodies/packets, no supplied boolean/identity shortcut; literal real correction and valid-act response/clock/source/custody/replay tests",
+    "classification": "local-actionable scoped reference integration; stop/narrow explicitly if concrete unsupported dependency appears",
+    "validationNext": "Source changes require fresh focused/full current+compatible historical, DAG, reference default trajectories and source/RNG/context preservation; this docs/probe baseline cannot substitute",
+    "continuationWarranted": true,
+    "signature": "d76-act-case-route/first-missing-binding-located-7vs3-2liquid-reviewed-0cases/frozen-optin-converted-nonauthor-noCouncil/35fresh-735current21historical-reused/src91db-test2dab/next-source-bridge-not-another-xp-scenario"
+  }
+}
