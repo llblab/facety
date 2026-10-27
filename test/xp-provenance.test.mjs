@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { FacetyModel, DAY } from '../src/model.mjs';
+import { challengeAccess, preflightIdentityVerdict } from '../src/disputes.mjs';
+import { DisputeStakes } from '../src/dispute-stakes.mjs';
 
 function fixture(policy = {}, ablations = {}) {
   return new FacetyModel({ genesis: ['a', 'b', 'c'], policy: { guarantorEligibility: 'accepted', ...policy }, ablations });
@@ -262,47 +264,49 @@ test('unsupported frozen/debt/identity maturity fails before clock or partial XP
   }
 });
 
+function paidExitTrace(guaranteeFee, linkBreakXp, timing) {
+  const model = fixture({ xpFinality: 'maturity', guaranteeFee, linkBreakXp });
+  const fundingActs = 2 * (guaranteeFee + 1);
+  for (let i = 0; i < fundingActs; i++) cash(model);
+  const base = model.now, beforeXp = model.subject('b').xp, beforeMoney = model.ledger();
+  assert.equal(beforeXp, fundingActs); assert.equal(model.subject('b').liquidFacy, fundingActs);
+  let peakLive = 0;
+  const acts = [], intervals = [], observe = () => {
+    const live = model.guaranteeRelations().filter(r => r.status === 'active' && r.guarantor === 'b').length;
+    assert.ok(live <= 1); peakLive = Math.max(peakLive, live); check(model);
+  };
+  for (const [i, target] of ['a', 'c'].entries()) {
+    model.advanceTo(base + i * (DAY + 2)); observe();
+    const relation = link(model, 'b', target); observe();
+    const act = identify(model, target); acts.push(act); observe();
+    const created = model.now;
+    model.advanceTo(created + (timing === 'early' ? 1 : DAY + 1)); observe();
+    model.endGuarantee('b', relation); observe();
+    assert.equal(model.guaranteeRelations().filter(r => r.status === 'active').length, 0);
+    intervals.push({ target, created, ended: model.now, creditAt: created + DAY });
+  }
+  model.advanceTo(base + 2 * (DAY + 2)); observe();
+  const receipts = acts.map(id => model.selfId(id).xpCredit.recipients.find(r => r.subject === 'b'));
+  assert.ok(receipts.every(r => r && r.role === 'guarantor'));
+  const revoked = receipts.filter(r => r.revokedAt !== null).length;
+  const delta = model.subject('b').xp - beforeXp;
+  assert.equal(delta, timing === 'late' && linkBreakXp === 'revoke' ? 0 : 2);
+  assert.equal(revoked, timing === 'late' && linkBreakXp === 'revoke' ? 2 : 0);
+  for (const id of acts) assert.deepEqual(model.selfId(id).guarantors, ['b']);
+  assert.equal(model.subject('a').xp, 1); assert.equal(model.subject('c').xp, 1);
+  assert.equal(model.subject('b').liquidFacy, 0); assert.equal(model.subject('b').debt, 0);
+  assert.equal(model.guaranteeRelations().filter(r => r.status === 'ended').length, 2);
+  const row = { guaranteeFee, linkBreakXp, timing, fundingActs, beforeXp, afterXp: model.subject('b').xp, delta,
+    issuedGuarantorReceipts: receipts.length, revokedGuarantorReceipts: revoked, peakLive, finalLive: 0,
+    horizon: model.now, intervals, beforeMoney, afterMoney: model.audit() };
+  return { model, acts, row };
+}
+
 test('core convergence: matched paid rotations retain different XP when exit crosses maturity, despite identical final support and money', t => {
   const rows = [];
   for (const guaranteeFee of [0, 1]) for (const linkBreakXp of ['keep', 'revoke']) {
-    const pair = [];
-    for (const timing of ['early', 'late']) {
-      const model = fixture({ xpFinality: 'maturity', guaranteeFee, linkBreakXp });
-      const fundingActs = 2 * (guaranteeFee + 1);
-      for (let i = 0; i < fundingActs; i++) cash(model);
-      const base = model.now, beforeXp = model.subject('b').xp, beforeMoney = model.ledger();
-      assert.equal(beforeXp, fundingActs); assert.equal(model.subject('b').liquidFacy, fundingActs);
-      let peakLive = 0;
-      const acts = [], intervals = [], observe = () => {
-        const live = model.guaranteeRelations().filter(r => r.status === 'active' && r.guarantor === 'b').length;
-        assert.ok(live <= 1); peakLive = Math.max(peakLive, live); check(model);
-      };
-      for (const [i, target] of ['a', 'c'].entries()) {
-        model.advanceTo(base + i * (DAY + 2)); observe();
-        const relation = link(model, 'b', target); observe();
-        const act = identify(model, target); acts.push(act); observe();
-        const created = model.now;
-        model.advanceTo(created + (timing === 'early' ? 1 : DAY + 1)); observe();
-        model.endGuarantee('b', relation); observe();
-        assert.equal(model.guaranteeRelations().filter(r => r.status === 'active').length, 0);
-        intervals.push({ target, created, ended: model.now, creditAt: created + DAY });
-      }
-      model.advanceTo(base + 2 * (DAY + 2)); observe();
-      const receipts = acts.map(id => model.selfId(id).xpCredit.recipients.find(r => r.subject === 'b'));
-      assert.ok(receipts.every(r => r && r.role === 'guarantor'));
-      const revoked = receipts.filter(r => r.revokedAt !== null).length;
-      const delta = model.subject('b').xp - beforeXp;
-      assert.equal(delta, timing === 'late' && linkBreakXp === 'revoke' ? 0 : 2);
-      assert.equal(revoked, timing === 'late' && linkBreakXp === 'revoke' ? 2 : 0);
-      for (const id of acts) assert.deepEqual(model.selfId(id).guarantors, ['b']);
-      assert.equal(model.subject('a').xp, 1); assert.equal(model.subject('c').xp, 1);
-      assert.equal(model.subject('b').liquidFacy, 0); assert.equal(model.subject('b').debt, 0);
-      assert.equal(model.guaranteeRelations().filter(r => r.status === 'ended').length, 2);
-      const row = { guaranteeFee, linkBreakXp, timing, fundingActs, beforeXp, afterXp: model.subject('b').xp, delta,
-        issuedGuarantorReceipts: receipts.length, revokedGuarantorReceipts: revoked, peakLive, finalLive: 0,
-        horizon: model.now, intervals, beforeMoney, afterMoney: model.audit() };
-      rows.push(row); pair.push(row);
-    }
+    const pair = ['early', 'late'].map(timing => paidExitTrace(guaranteeFee, linkBreakXp, timing).row);
+    rows.push(...pair);
     assert.deepEqual(pair[0].beforeMoney, pair[1].beforeMoney);
     assert.deepEqual(pair[0].afterMoney, pair[1].afterMoney);
     assert.deepEqual(pair[0].intervals.map(r => [r.target, r.created, r.creditAt]), pair[1].intervals.map(r => [r.target, r.created, r.creditAt]));
@@ -310,4 +314,58 @@ test('core convergence: matched paid rotations retain different XP when exit cro
   }
   t.diagnostic('core-xp-exit ' + JSON.stringify({ rows, traces: rows.length, newSubjectsAdmitted: 0,
     capacityEnforcementImplemented: false, historicalD34LiabilityMeasured: false, scientificWorlds: 0 }));
+});
+
+test('core convergence: retained XP, reserved challenge funding and trusted historical collection are distinct causal gates', t => {
+  const rows = [];
+  for (const timing of ['early', 'late']) for (const topUp of [0, 2]) {
+    const { model, acts, row } = paidExitTrace(1, 'revoke', timing);
+    const fundedSources = [];
+    for (let i = 0; i < 2; i++) {
+      if (topUp) fundedSources.push(cash(model));
+      else model.advanceTo(model.now + DAY);
+    }
+    check(model);
+    const beforeAccess = state(model), access = challengeAccess(model, 'b', 'a', 1);
+    assert.deepEqual(state(model), beforeAccess, 'access preflight is inert');
+    assert.ok(access.preconditions.challengerXp > access.preconditions.targetXp);
+    assert.equal(access.allowed, topUp === 2);
+    assert.equal(access.reason, topUp ? null : 'insufficient challenge stake');
+    const book = new DisputeStakes(model, 'reserved');
+    if (access.allowed) book.open('financial-access-reference', 'b', 1);
+    assert.equal(model.audit().stakeVault, topUp ? 1 : 0);
+    const beforeProjection = state(model);
+    const legacy = preflightIdentityVerdict(model, 'b', 'a', { fineMode: 'fixed', fine: 1, liability: 'guarantors', rewardShare: 0 });
+    assert.deepEqual(legacy.liable, ['a']);
+    assert.deepEqual(state(model), beforeProjection, 'legacy liability projection is not a verdict');
+    const beforeXp = model.subject('b').xp, beforePenaltyMoney = model.audit();
+    const penalty = model.applySelfIdPenalty(acts[0], { caseId: 'trusted-self-id-sanction', fine: 1 });
+    assert.deepEqual(penalty.parties, ['a', 'b']);
+    const sponsor = penalty.penalties.find(p => p.subject === 'b');
+    assert.equal(sponsor.collected, topUp ? 1 : 0); assert.equal(sponsor.debtAdded, topUp ? 0 : 1);
+    assert.equal(sponsor.halveXp, false); assert.equal(model.subject('b').xp, beforeXp);
+    assert.equal(model.subject('a').xp, 0); assert.equal(model.subject('c').xp, 1);
+    assert.equal(model.selfId(acts[0]).xpCredit.revokedAt, null);
+    assert.deepEqual(model.selfId(acts[0]).guarantors, ['b']);
+    assert.equal(model.subject('b').liquidFacy, 0); assert.equal(model.subject('b').debt, topUp ? 0 : 1);
+    assert.equal(model.audit().stakeVault, topUp ? 1 : 0);
+    assert.equal(model.audit().burned, topUp ? 1 : 0);
+    assert.equal(model.audit().debt, topUp ? 1 : 2);
+    assert.equal(model.guaranteeRelations().filter(r => r.status === 'active').length, 0);
+    check(model);
+    rows.push({ timing, topUp, priorSponsorXp: row.afterXp, now: model.now, fundedSources,
+      access, financialCase: book.cases(), legacyLiable: legacy.liable, historicalParties: penalty.parties,
+      beforeXp, afterXp: model.subject('b').xp, sponsorPenalty: sponsor, beforePenaltyMoney, afterPenaltyMoney: model.audit() });
+  }
+  for (const topUp of [0, 2]) {
+    const [early, late] = rows.filter(r => r.topUp === topUp);
+    assert.equal(early.beforeXp - late.beforeXp, 2);
+    assert.equal(early.access.allowed, late.access.allowed);
+    assert.deepEqual(early.beforePenaltyMoney, late.beforePenaltyMoney);
+    assert.deepEqual(early.afterPenaltyMoney, late.afterPenaltyMoney);
+    assert.deepEqual(early.sponsorPenalty, late.sponsorPenalty);
+  }
+  t.diagnostic('core-authority-recovery ' + JSON.stringify({ rows, traces: rows.length, scientificWorlds: 0,
+    gateScope: 'legacy XP/liquid financial reference only; no selected Council or merits',
+    trustedSanctionIsNotFinancialCaseVerdict: true, D34Implemented: false }));
 });
