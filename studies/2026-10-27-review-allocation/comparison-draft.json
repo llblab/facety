@@ -1,0 +1,459 @@
+{
+  "schema": "facety-review-allocation-comparison-draft/v1",
+  "status": "NOT EXECUTION READY / NO RESEARCH LABELS OR CAPTURE",
+  "authority": "D63 analyst-selected finite comparison candidate, master gates intact; not facety-hypothesis registration",
+  "canonicalTasks": "BACKLOG.md#d44-guarantor-prevention-boundaries",
+  "captureEnabled": false,
+  "sourceAtDesign": {
+    "commit": "d15f2e9",
+    "implementation": "384090bc310226d4ece57f04e504c5234b87888eca54778c3cc175a641158f78",
+    "files": 53,
+    "node": "v26.8.1"
+  },
+  "historicalInheritance": "Literal numeric/activity/legacy-policy reference from F54 design, not its data/seeds/runner/evidence. Current Source/config must be bound again in a separate executable method after eligibility; preserve this draft.",
+  "base": {
+    "scenario": "sybil-cone",
+    "seed": "UNALLOCATED-DO-NOT-RUN",
+    "initialSize": 12,
+    "attackerShare": 0.25,
+    "days": 7,
+    "stepHours": 4,
+    "actorProfiles": [],
+    "invitationReviewTiming": "first-attended",
+    "invitationEvidence": "independent",
+    "initialTopology": "clique",
+    "initialDegree": 3,
+    "localInspectionShare": 0.8,
+    "sensitivity": 0.8,
+    "falsePositiveRate": 0.01,
+    "maxSubjects": 200,
+    "maxActions": 100000,
+    "targetFalseConversions": 1,
+    "successCriterion": "false-liquidity",
+    "includeState": true,
+    "activity": {
+      "honest": {
+        "selfId": 0.8,
+        "invite": 0,
+        "guarantee": 0.3,
+        "inspect": 0,
+        "respond": 0.9,
+        "challenge": 0,
+        "review": 1,
+        "defend": 0,
+        "bribe": 0,
+        "cashout": 0,
+        "convert": 1
+      },
+      "attackers": {
+        "selfId": 1,
+        "invite": 0.4,
+        "guarantee": 2,
+        "inspect": 0,
+        "respond": 0,
+        "challenge": 0,
+        "review": 0,
+        "defend": 1,
+        "bribe": 0,
+        "cashout": 0,
+        "convert": 1
+      }
+    },
+    "budgets": {
+      "honest": 261,
+      "attackers": 100000
+    },
+    "weights": {
+      "selfId": 1,
+      "fakeSelfId": 1,
+      "fabricateIdentity": 1,
+      "recruitHuman": 1,
+      "invite": 1,
+      "acceptInvitation": 1,
+      "proposeGuarantee": 1,
+      "confirmGuarantee": 1,
+      "inspect": 1,
+      "respond": 1,
+      "challenge": 1,
+      "verify": 1,
+      "bribe": 1,
+      "cashout": 1,
+      "convert": 1
+    },
+    "policy": {
+      "xpFinality": "terminal",
+      "cancellationAuthority": "snapshot",
+      "guarantorEligibility": "active",
+      "guaranteeFee": 0,
+      "councilSize": 101,
+      "debtRecovery": "reserve-until-mature",
+      "councilEligibility": "active",
+      "invitationFreezeHours": 24,
+      "linkBreakXp": "revoke",
+      "spendMaturityHours": 24,
+      "conversionMaturityHours": 24,
+      "artifactReuse": "registration-only"
+    },
+    "ablations": {
+      "withholdGuarantorXp": false,
+      "disableInvitationVeto": false,
+      "fixedInvitationThreshold": null,
+      "randomGuaranteeTargets": false
+    },
+    "perturbations": [],
+    "disputes": {
+      "enabled": false,
+      "accuracy": 0.9,
+      "stake": 1,
+      "fine": 5,
+      "liability": "inviter-chain",
+      "rewardShare": 0.5,
+      "loserHalvesXp": true,
+      "excludeLiable": false,
+      "fineMode": "chain",
+      "stakeBacking": "unsecured",
+      "procedure": "one-step",
+      "stakeGrowth": 0.2,
+      "signalAccuracy": 0.7,
+      "closeSignalAccuracy": 0.9,
+      "xpValue": 0.05,
+      "maxRounds": 60,
+      "maxScan": 60,
+      "councilDepth": 0,
+      "reputationWeight": 0,
+      "disputeWindowHours": 168,
+      "noticeBase": 0.02,
+      "evidenceGain": 0.1,
+      "civicValue": 0,
+      "entrantChoice": "lowest",
+      "roundsPerDay": 1,
+      "entryTiming": "daily-quota",
+      "trackRecordWeight": 0,
+      "regularsNotice": 0,
+      "evidence": "private-signal",
+      "proofStrength": 0.98,
+      "clusterFollowUp": false
+    },
+    "deviants": {
+      "share": 0,
+      "honest": null,
+      "attackers": null
+    },
+    "social": {
+      "scope": "public",
+      "hops": 2,
+      "strangerRate": 0,
+      "screening": false,
+      "screeningQuantile": 0.2,
+      "screeningShare": 0.5,
+      "verification": false,
+      "verificationSensitivity": 0.9,
+      "verificationFalsePositiveRate": 0.01,
+      "investigation": false,
+      "maxFollowUps": 20,
+      "bribeAcceptance": 0,
+      "bribePrice": 5,
+      "exitOnFraud": false,
+      "flowTracing": false,
+      "flowHubThreshold": 3,
+      "honestTransferRate": 0,
+      "attentionFeedback": false,
+      "gossipHops": 0,
+      "gossipShare": 0.5
+    }
+  },
+  "arms": [
+    {
+      "id": "pooled",
+      "honestBudget": 261,
+      "honestReserve": 0,
+      "generalCeiling": 261,
+      "role": "primary same-total baseline"
+    },
+    {
+      "id": "reserved",
+      "honestBudget": 261,
+      "honestReserve": 18,
+      "generalCeiling": 243,
+      "role": "primary same-total allocation intervention"
+    },
+    {
+      "id": "more-total",
+      "honestBudget": 279,
+      "honestReserve": 0,
+      "generalCeiling": 279,
+      "role": "explicitly18 extra total resource, not matched-resource primary; quantity alternative"
+    },
+    {
+      "id": "general-only",
+      "honestBudget": 243,
+      "honestReserve": 0,
+      "generalCeiling": 243,
+      "role": "same general ceiling as reserved, but18 less total; resource-unequal displacement/unused-reserve alternative"
+    }
+  ],
+  "contexts": [
+    {
+      "id": "fabricated:independent:active",
+      "population": "fabricated",
+      "scenario": "sybil-cone",
+      "evidence": "independent",
+      "review": 1,
+      "disableInvitationVeto": false
+    },
+    {
+      "id": "fabricated:independent:effect-disabled",
+      "population": "fabricated",
+      "scenario": "sybil-cone",
+      "evidence": "independent",
+      "review": 1,
+      "disableInvitationVeto": true
+    },
+    {
+      "id": "fabricated:shared-target:active",
+      "population": "fabricated",
+      "scenario": "sybil-cone",
+      "evidence": "shared-target",
+      "review": 1,
+      "disableInvitationVeto": false
+    },
+    {
+      "id": "fabricated:shared-target:effect-disabled",
+      "population": "fabricated",
+      "scenario": "sybil-cone",
+      "evidence": "shared-target",
+      "review": 1,
+      "disableInvitationVeto": true
+    },
+    {
+      "id": "fabricated:no-review",
+      "population": "fabricated",
+      "scenario": "sybil-cone",
+      "evidence": "independent",
+      "review": 0,
+      "disableInvitationVeto": false
+    },
+    {
+      "id": "valid-coordinated:independent:active",
+      "population": "valid-coordinated",
+      "scenario": "real-cartel",
+      "evidence": "independent",
+      "review": 1,
+      "disableInvitationVeto": false
+    },
+    {
+      "id": "valid-coordinated:independent:effect-disabled",
+      "population": "valid-coordinated",
+      "scenario": "real-cartel",
+      "evidence": "independent",
+      "review": 1,
+      "disableInvitationVeto": true
+    },
+    {
+      "id": "valid-coordinated:shared-target:active",
+      "population": "valid-coordinated",
+      "scenario": "real-cartel",
+      "evidence": "shared-target",
+      "review": 1,
+      "disableInvitationVeto": false
+    },
+    {
+      "id": "valid-coordinated:shared-target:effect-disabled",
+      "population": "valid-coordinated",
+      "scenario": "real-cartel",
+      "evidence": "shared-target",
+      "review": 1,
+      "disableInvitationVeto": true
+    },
+    {
+      "id": "valid-coordinated:no-review",
+      "population": "valid-coordinated",
+      "scenario": "real-cartel",
+      "evidence": "independent",
+      "review": 0,
+      "disableInvitationVeto": false
+    }
+  ],
+  "scope": {
+    "arms": 4,
+    "contexts": 10,
+    "cellsPerWorld": 40,
+    "candidateFutureWorlds": 12,
+    "candidateFutureRuns": 480,
+    "horizonDays": 7,
+    "horizonHours": 168,
+    "stepHours": 4,
+    "seedLabelsAllocated": 0,
+    "confirmationNamespaceAllocated": false,
+    "notPopulationOrAttackProbability": true
+  },
+  "resourceBasis": {
+    "unit": "uncalibrated whole-cohort/run weighted action effort",
+    "initialRoots": 12,
+    "initialCoalitionOperators": 3,
+    "initialHonestOperators": 9,
+    "initialDirectedEdges": 132,
+    "honestSetupCost": 198,
+    "coalitionSetupCost": 66,
+    "honestReserve18Basis": "2 unit-cost inspect/respond actions times9 scenario honest roots; illustrative arithmetic, not per-person entitlement, calibrated attention or safe threshold",
+    "nominalHonestMaintenance": {
+      "pooled": 63,
+      "reserved": {
+        "general": 45,
+        "protected": 18
+      },
+      "more-total": 81,
+      "general-only": 45
+    },
+    "sameBootstrapRequired": true,
+    "privateAcquisitionCostUnknown": true,
+    "noRefillOrFreeSetup": true
+  },
+  "contrasts": [
+    {
+      "id": "allocation",
+      "lhs": "reserved",
+      "rhs": "pooled",
+      "matchedTotal": true,
+      "question": "Does earmarking the same261 effort change false admissions/paid prevention and ordinary/genuine burdens?"
+    },
+    {
+      "id": "quantity",
+      "lhs": "more-total",
+      "rhs": "pooled",
+      "matchedTotal": false,
+      "question": "Does18 extra work help where reallocation does not? Must not be called same-resource safety."
+    },
+    {
+      "id": "protected-versus-general",
+      "lhs": "reserved",
+      "rhs": "general-only",
+      "matchedTotal": false,
+      "question": "Separate added protected opportunity from merely lowering ordinary general capacity; total differs explicitly."
+    },
+    {
+      "id": "no-review-identity",
+      "lhs": "reserved",
+      "rhs": "general-only",
+      "contexts": "no-review only",
+      "matchedTotal": false,
+      "question": "With no eligible protected actions, ordinary/native facts should coincide at same general ceiling, reserve18 stays unused; do not force equality of config/allocation/budget headers."
+    }
+  ],
+  "statistics": [
+    {
+      "id": "recordedFalse",
+      "metric": "falseSubjects",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "receivedLooks",
+      "metric": "invitationReview.inspections",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "failedLooks",
+      "metric": "invitationReview.inspectionDenied",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "positiveSignals",
+      "metric": "invitationReview.positiveSignals",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "nativeVetoes",
+      "metric": "invitationReview.cancelled",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "selfWorkPerDay",
+      "metric": "cohorts.honest.byAction.selfId.effort",
+      "summary": "mean",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "convertWorkPerDay",
+      "metric": "cohorts.honest.byAction.convert.effort",
+      "summary": "mean",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "wholeHonestWork",
+      "metric": "defenderEffort",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "operators",
+      "metric": "humanOperators",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    },
+    {
+      "id": "falseConversions",
+      "metric": "falseConversions",
+      "summary": "endpoint",
+      "window": null,
+      "subtract": null
+    }
+  ],
+  "interpretation": {
+    "primary": "world-paired vectors/descriptive summaries of reserved-minus-pooled; no p-values/mechanism confirmation/recommended safe budget or scalar welfare",
+    "worlds": "12 future paired synthetic worlds is a finite design choice, not precision/power guarantee; seed namespace must be selected/bound only in eligible committed method, no search/extension",
+    "demand": "same ex-ante opportunities/rates/seed-key law, not equal realized invitations after intervention; retain endogenous proposal/preparation/acceptance/denial changes",
+    "noAttack": "valid-coordinated scenario participants follow the valid-act script; coordination is not misconduct. This controls genuine cohort-descendant access, not independently calibrated external recruitment or full D49 growth",
+    "legacy": "D33/D34/D42 migration/verified independence/actual personhood/court/market rules not implemented by this design"
+  },
+  "retention": {
+    "mode": "future exploratory raw single-run case record; includeState:true allowed only via direct native run, not confirmation registration",
+    "records": [
+      "full normalized config/source/runtime/randomness",
+      "whole Native report including state/events/invitations/truth, effort/allocation/actions/phases, stage counters/evaluator, money/system/impact/history",
+      "named scalar projections from that same in-memory report",
+      "explicit missing/censored/pending/unsupported status and artifacts"
+    ],
+    "noRunPerMetric": true,
+    "scalarConfirmationGuardRetained": true,
+    "confirmation": "No actual v2 registration/confirmation claimed; includeState:true remains forbidden there. Any later scalar-only confirmation needs its own eligible committed supported method/fresh reserved labels/primary-secondary transport.",
+    "perTarget": "only source-bound generation/creator/event reconstruction where justified; no invented paid-look/duty/truth receipt or automatic F55 decoder reuse"
+  },
+  "stops": {
+    "sourceRuntimeConfigOrRngDrift": "any mismatch stops before capture; no allowImplementationChange or in-place draft relabel",
+    "bootstrap": "any mismatch across arms in funded132 edges/198+66 work/zero initial money-XP/no setup denial stops; do not label shut admission as protection",
+    "computationalCensor": "retain partial raw/unknown scalars; do not report complete contrasts or favorable retuning, stop remaining capture pending separately committed disposition",
+    "unexpectedNoReviewDifference": "stop for method/source correctness, not evidence for emergence",
+    "complete": "no output-driven label extension, seed search or repeated sealed block. Retain adverse/mixed/null outcomes.",
+    "recommendation": "none from this draft; no global price/security/10x or calibrated human claim"
+  },
+  "eligibility": {
+    "masterG1": false,
+    "postG1DataAllowed": false,
+    "actualExecutableStudyMethod": false,
+    "actualProgrammeRegistration": false,
+    "seedAndAttemptContract": false,
+    "fullGenuineGrowthContract": false,
+    "independentAuditOrAuthentication": false,
+    "required": "master G1 priors1-3/7 evidence plus supported source-bound method/raw-scalar/inference/seed/error-search-kill contract before data; no new harness for momentum"
+  },
+  "safety": {
+    "noPersonalDataOrNetwork": true,
+    "noSelectedRuleOrDefaultChange": true,
+    "noHistoricalReplay": true,
+    "noAutomaticWpgOrLifetimeFallback": true
+  }
+}
