@@ -7,7 +7,7 @@ import { capturePathWitnessModelView, isPathWitnessView, PATH_VIEW_LIMITS } from
 export const PATH_REPLAY_LIMITS = Object.freeze({ maxEvents: 100000, maxIdBytes: 256 });
 const structural = ['subject-added', 'identity-invalidated', 'guarantee-proposed', 'guarantee-activated', 'guarantee-ended', 'vouch-committed'];
 const passive = ['vouch-admitted', 'vouch-exited', 'vouch-bond-released', 'vouch-bond-case-opened', 'vouch-bond-case-resolved',
-  'facy-transferred', 'debt-recovered', 'key-rotated', 'artifact-registered', 'self-id-created', 'self-id-cancelled',
+  'facy-transferred', 'debt-recovered', 'key-rotated', 'artifact-registered', 'self-id-created', 'self-id-cancelled', 'self-id-self-cancelled',
   'invitation-created', 'invitation-accepted', 'invitation-cancelled', 'collector-converted', 'self-id-frozen', 'self-id-unfrozen',
   'dispute-stake-reserved', 'dispute-stake-settled', 'dispute-participation-started', 'dispute-participation-ended', 'dispute-participant-joined', 'penalty-applied', 'act-penalty-applied', 'self-id-source-recovered', 'self-id-resolved', 'self-id-chain-voided'];
 export const PATH_REPLAY_EVENT_TYPES = Object.freeze([...structural, ...passive].sort());

@@ -737,3 +737,80 @@ test('D77 later entrant joins the existing case atomically, keeps earlier immuta
   const closed = participationState(model); assert.throws(() => model.addDisputeParticipant('A', 'd'), /not open/);
   assert.deepEqual(participationState(model), closed); model.audit();
 });
+test('D79 author or actual guarantor can freely cancel before24h without inventing roles, money, XP or deleted history', () => {
+  for (const xpFinality of ['terminal', 'maturity']) for (const cancellationAuthority of xpFinality === 'maturity' ? ['snapshot'] : ['snapshot', 'current'])
+    for (const actor of ['a', 'b']) for (const offset of [0, 23]) {
+      const model = new FacetyModel({ genesis: ['a', 'b', 'c'], policy: { xpFinality, cancellationAuthority, guarantorEligibility: 'accepted' } });
+      guarantee(model, 'b', 'a'); const relations = model.guaranteeRelations(), source = identify(model, 'a'), original = model.selfId(source);
+      model.advanceTo(offset); model.cancelSelfId(actor, source);
+      const act = model.selfId(source);
+      assert.equal(act.status, 'cancelled'); assert.equal(act.disposition, actor === 'a' ? 'author-cancelled' : 'guarantor-veto');
+      assert.deepEqual(act.guarantors, original.guarantors); assert.deepEqual(act.xpRecipients, original.xpRecipients);
+      assert.equal(act.chainIndex, 1); assert.equal(act.previousSelfId, null); assert.equal(act.recordedAt, 0);
+      assert.equal(model.subject('a').lastRewardAt, 0); assert.deepEqual(model.guaranteeRelations(), relations);
+      assert.deepEqual(model.audit(), { minted: 1, burned: 1, supply: 0, emitterVault: 0, collector: 0, feeVault: 0, stakeVault: 0, debt: 0 });
+      const event = model.events().at(-1);
+      assert.deepEqual(event, actor === 'a' ? { at: offset, type: 'self-id-self-cancelled', selfId: source, author: 'a' }
+        : { at: offset, type: 'self-id-cancelled', selfId: source, guarantor: 'b' });
+      const before = protocolState(model); assert.throws(() => model.cancelSelfId(actor, source), /spent or disputed/);
+      assert.deepEqual(protocolState(model), before);
+      model.advanceTo(DAY); assert.equal(model.subject('a').xp, 0); assert.equal(model.subject('b').xp, 0);
+      assert.equal(model.selfIdResolutions().length, 0, 'preventive cancellation is not an upheld court resolution'); model.audit();
+    }
+});
+
+test('D79 cancel/recreate cannot reset or extend the original rolling24h slot, including nonzero time, key and artifact changes', () => {
+  for (const xpFinality of ['terminal', 'maturity']) for (const [t0, offset] of [[0, 0], [0, 23], [100, 23]]) {
+    const model = new FacetyModel({ genesis: ['a'], policy: { xpFinality } }); model.advanceTo(t0);
+    const first = identify(model, 'a'); model.advanceTo(t0 + offset); model.cancelSelfId('a', first);
+    model.rotateKey('a', 'rotated:' + t0 + ':' + offset);
+    const artifact = model.registerArtifact('a', { faceCount: 2 });
+    const before = protocolState(model);
+    for (const face of [0, 1]) assert.throws(() => model.createSelfId('a', artifact, face), /rolling 24-hour/);
+    assert.deepEqual(protocolState(model), before); assert.equal(model.subject('a').lastRewardAt, t0);
+    model.advanceTo(t0 + DAY - 1); assert.throws(() => identify(model, 'a'), /rolling 24-hour/);
+    model.advanceTo(t0 + DAY);
+    const second = identify(model, 'a'); assert.equal(model.selfId(second).recordedAt, t0 + DAY);
+    assert.equal(model.selfId(second).chainIndex, 2); assert.equal(model.selfId(second).previousSelfId, first);
+    model.cancelSelfId('a', second); assert.throws(() => identify(model, 'a'), /rolling 24-hour/);
+    model.advanceTo(t0 + 2 * DAY); const third = identify(model, 'a');
+    assert.equal(model.selfId(third).chainIndex, 3); assert.equal(model.selfId(third).previousSelfId, second);
+    assert.equal(model.subject('a').xp, 0); assert.equal(model.audit().burned, 2);
+  }
+});
+
+test('D79 author authority is not stranger/locked/spent/mature/debt forgiveness or a release from a D77 hold', () => {
+  for (const xpFinality of ['terminal', 'maturity']) for (const state of ['stranger', 'locked', 'unused24', 'converted24', 'invitation24', 'debt', 'held']) {
+    const model = new FacetyModel({ genesis: ['a', 'b', 'c'], policy: { xpFinality, guarantorEligibility: 'accepted' } });
+    guarantee(model, 'b', 'a');
+    if (state === 'debt') model.penalize('a', { fine: 2, halveXp: false });
+    const source = identify(model, 'a');
+    if (state === 'locked') model.freezeSelfId(source, 'specific-case');
+    if (state.endsWith('24')) {
+      model.advanceTo(DAY);
+      if (state === 'converted24') model.convertToCollector('a', source);
+      if (state === 'invitation24') model.createInvitation('a', source, 'new');
+    }
+    if (state === 'held') model.beginDisputeParticipation('trusted-hold-not-case-admission', ['a', 'c']);
+    const before = protocolState(model), roster = model.disputeParticipations();
+    if (['debt', 'held'].includes(state)) {
+      model.cancelSelfId('a', source);
+      assert.deepEqual(model.disputeParticipations(), roster, 'cancelling an unlocked right never closes a hold/case');
+      if (state === 'debt') {
+        assert.equal(model.subject('a').debt, 2); assert.equal(model.selfId(source).debtReserved, false);
+        model.advanceTo(DAY); const next = identify(model, 'a'); assert.equal(model.selfId(next).debtReserved, true);
+      } else {
+        model.advanceTo(DAY); assert.throws(() => identify(model, 'a'), /activity restriction/);
+        model.endDisputeParticipation('trusted-hold-not-case-admission'); identify(model, 'a');
+      }
+    } else {
+      assert.throws(() => model.cancelSelfId(state === 'stranger' ? 'c' : 'a', source));
+      assert.deepEqual(protocolState(model), before); assert.deepEqual(model.disputeParticipations(), roster);
+      if (state === 'unused24') {
+        if (xpFinality === 'terminal') model.cancelSelfId('b', source);
+        else assert.throws(() => model.cancelSelfId('b', source), /expired at24h/);
+      }
+    }
+    model.audit();
+  }
+});

@@ -2,6 +2,7 @@
 
 This index owns project navigation. The protocol is the independently readable statement of Facety's purpose and design, not a hub that requires these files to supply its meaning. Implementation, research and evidence documents below identify what they realize or test and where they depart from that design.
 
+- [D79 author cancellation/original slot](../studies/2026-10-26-trust-topology-condition-map/d79-author-cancel-results.md): selected free pending-Self-ID author cancellation before24h, cancel23→next24, no reset/new24h/post-maturity veto; Model/replay change, not a new author strategy/self-court.
 - [Typed living scalar adapter/prefix proof](../studies/2026-10-26-trust-topology-condition-map/living-adapter-results.md): actual3k-command pre-case paid prefixes,14cash-matched rounds/1birth/962sources, censoredH365/null scalars; no new annual control/court outcome/scientific gate pass, engineering loop stops.
 - [Equal-cost support allocation/admission](../studies/2026-10-26-trust-topology-condition-map/support-allocation-results.md): pre-data responsibility-concentration control, equal per-person funding rounds and actual8API refusals; no new outcomes/scientific admission, minimum scalar adapter contract only.
 - [Settled-history NEW-act compatibility](../studies/2026-10-26-trust-topology-condition-map/settled-history-results.md): distinct profile/captured same-year arm,5resolved including former repeat refusal, no old XP/principal restoration or guaranteed truth; old converted-v1 bytes/meaning retained.

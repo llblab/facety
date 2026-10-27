@@ -646,9 +646,16 @@ export class FacetyModel {
       if (this.#revokeXp(act, 'self-id-cancelled')) for (const receipt of act.xpCredit.recipients) this.#replayXp(this.#subject(receipt.subject));
     } else this.#credit(act);
   }
-  cancelSelfId(guarantor, selfIdId) {
-    this.#subject(guarantor, true);
+  cancelSelfId(actor, selfIdId) {
+    this.#subject(actor, true);
     const act = this.#act(selfIdId);
+    if (actor === act.subject) {
+      if (this.now - act.recordedAt >= DAY) throw new ProtocolRejection('original Self-ID veto expired at24h');
+      this.#dispose(act, 'cancelled', 'author-cancelled');
+      this.#event('self-id-self-cancelled', { selfId: selfIdId, author: actor });
+      return;
+    }
+    const guarantor = actor;
     if (this.policy.xpFinality === 'maturity' && this.now - act.recordedAt >= DAY) throw new ProtocolRejection('original Self-ID veto expired at24h');
     const authorized = this.policy.cancellationAuthority === 'snapshot' ? act.guarantors.includes(guarantor) : Boolean(this.guarantees.edge(guarantor, act.subject));
     if (!authorized) throw new ProtocolRejection('no cancellation authority');

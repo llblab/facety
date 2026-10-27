@@ -167,3 +167,13 @@ test('same-hour order/scalar Unicode IDs are deterministic, pure replay has no f
   assert.equal(pure(events.slice(0, 3)).storage.edges.length, 0); assert.equal(a.storage.edges.length, 1);
   const source = readFileSync(new URL('../src/path-witness-replay.mjs', import.meta.url), 'utf8'); assert.doesNotMatch(source, /Math\.random|randomBytes/);
 });
+test('D79 author cancellation is passive graph history, not a forged guarantor/court authority certificate', () => {
+  const model = new FacetyModel({ genesis: ['u', 'a', 'b'] }); activate(model, 'a', 'u');
+  const source = model.createSelfId('u', model.registerArtifact('u')), before = audit(model);
+  model.cancelSelfId('u', source); const after = audit(model);
+  assert.deepEqual(after.replay.storage, before.replay.storage); assert.deepEqual(after.replay.subjects, before.replay.subjects);
+  assert.equal(model.events().at(-1).type, 'self-id-self-cancelled'); assert.equal(model.events().at(-1).author, 'u');
+  assert.equal(Object.hasOwn(model.events().at(-1), 'guarantor'), false);
+  const forged = model.events().map(row => row.type === 'self-id-self-cancelled' ? { ...row, author: 'b' } : row);
+  assert.deepEqual(pure(forged), pure(model.events()), 'graph-only replay deliberately does not certify passive author payload');
+});

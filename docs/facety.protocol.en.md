@@ -238,7 +238,7 @@ Guarantors must not bear responsibility for another person's identity acts witho
 
 An eligible guarantor can cancel a specific unspent Self-ID emission without paying a fee **before its 24-hour maturity** (D42). The cancellation destroys that emission right and its backing FACY under the selected monetary representation. Merely leaving the value unused does not extend the free veto beyond that window.
 
-This is preventive accountability. It is separate from a later dispute that establishes liability and applies penalties. **D78 [OWNER PROPOSAL, not yet selected/implemented]:** the author should also be able to cancel its own eligible still-pending Self-ID for free before24h, without opening a dispute (§20.2–§20.5). The owner's “I think” is retained as a proposed authorization extension, not silently treated as an existing guarantor permission, a new free post-maturity veto or an implemented port.
+This is preventive accountability. It is separate from a later dispute that establishes liability and applies penalties. **D79 [SELECTED basic rule, confirmed2026-10-28]:** the author as well as an eligible guarantor may cancel the author's eligible still-pending Self-ID for free before24h, without a dispute (§20.2–§20.5). Cancellation does not return the author's rolling24h issuance slot: the next act is no earlier than the original recording time+24h, not cancellation time+24h and not immediate retry. This confirms D78's earlier candidate; it is not a renewed mature veto or a guarantor-link termination.
 
 A guarantor can keep a long-term relationship with a real person while rejecting one invalid Self-ID from that person. A person can also unilaterally break an established guarantee link if the guarantor abuses cancellation power. The established-link break has its own **1 FACY fee**.
 
@@ -601,9 +601,9 @@ A guarantee commitment is also a permitted network operation after 24 hours. **[
 
 **[SELECTED, D1; clarified by D42 on 2026-10-24]** Let `age = chain_time - SelfId.recorded_at`. The one-day schedule replaces the earlier 3-day / 7-day schedule. **D42 selects age-based maturation, not spending-triggered XP or an unlimited unspent-right veto.**
 
-| Age/state | Ordinary use and network use | Free guarantor cancellation | Ordinary XP |
+| Age/state | Ordinary use and network use | Free preventive cancellation | Ordinary XP |
 | --- | --- | --- | --- |
-| `0 <= age < 24 hours` | No owner spending or withdrawal. | Yes, while eligible and unspent. | Not yet earned. |
+| `0 <= age < 24 hours` | No owner spending or withdrawal. | Author or eligible guarantor, while cancellable/unspent (D79). | Not yet earned. |
 | `age >= 24 hours`, ordinary uncancelled act | The matured own right remains in place without automatic withdrawal; its holder chooses Collector conversion or eligible invitation use. | **No**, even if the value remains unused. | Once: +1 to the subject and +1 to each eligible guarantor, without waiting for an operation. |
 | After invitation use or withdrawal | Cannot spend the same backing again. | Cannot cancel the original matured emission through this veto. | No second credit for spending or withdrawal. |
 
@@ -625,6 +625,8 @@ Self-ID recorded at t0
                  -> later withdrawal OR eligible invitation use
                  -> neither disposition awards another Self-ID XP credit
 ```
+
+**D79 — [SELECTED,2026-10-28] Cancellation retains the original rolling slot.** Recording at `t0` uses that subject's rolling24h issuance slot even if the author or guarantor later cancels the act. A cancellation at `t0+23h` permits the next otherwise eligible act at `t0+24h`, not immediately and not at `t0+47h`; cancellation at `t0` also cannot permit a new act before `t0+24h`. Retain the original recording/cooldown history across cancellation, artifact/face/key changes and D56 chain positions. This limits repeated issue/cancel/reissue under one subject; it is not a universal network DoS proof, extra cancellation cooldown or a waiver of other eligibility/transaction limits.
 
 The independence in D42 concerns **later disposition**, not independence of cancellation from the right/XP maturation condition. The invitation has its own separate 24-hour freeze after its creation. Cancelling that invitation does not by itself retroactively cancel the already matured original Self-ID or its XP; any such effect needs a separately specified rule. This ordinary diagram chooses no precedence for frozen/disputed acts, debt, link changes or same-hour competing events, and is not a native migration.
 
@@ -856,7 +858,7 @@ This protection does **not** automatically clear liability for a separate false-
 
 The cancellation also does not prove malicious intent. A later dispute establishes the type of misconduct and the correct consequences, if any.
 
-**D78 early author-cancellation candidate — [OWNER PROPOSAL, documented2026-10-27; not selected/implemented].** In discussing practical correction, the owner suggests that both the responsible guarantor and the author should be able to cancel the author's pending Self-ID during its first24h, free and without a dispute. This would be an author authorization for preventive cancellation, not making the author its own guarantor or backdating the act's roster. Its ordinary candidate scope is the same eligible unspent/unlocked pending right; cancellation would prevent that act's ordinary maturity credit and dispose its backing once while retaining D56's historical position/predecessor. Selection and exact authorization/atomic execution remain to be bound before implementation; no permission to defeat an already admitted case, cancel converted/consumed/frozen value, bypass debt/attached-right chronology or waive guarantor-link termination fees is inferred. At exactly24h/afterwards, ordinary D42 maturity remains distinct from admitted and upheld D58/D59 self-dispute. This proposal does not reopen no-automatic-withdrawal or silently alter the legacy simulator default.
+**D79 early author cancellation — [SELECTED basic rule, confirmed2026-10-28].** The owner confirms D78's candidate as basic protocol behavior: the author can cancel its own eligible pending Self-ID for free, just as an authorized guarantor can, while age<24h and without a dispute. The author need not wait for guarantors to be online or prove the mistake before exercising this prevention right. Author authorization does not make the author its own guarantor or alter old NFT rosters. Cancel the existing backing once and prevent this act's ordinary maturity XP while retaining D56 record/index/predecessor and the original used24h slot; no identity-invalidity finding, general exoneration or responsibility for separate false-person/history claims is implied. Preserve unspent/unlocked/otherwise eligible-source and applicable dispute-precedence limits: no frozen/consumed/converted right cancellation or case/hold termination follows. A reserved canceled right cannot erase the actual debt; broader debt/maturity chronology remains OPEN. At exactly24h/afterwards the free right has ended; correction is through appropriately admitted/upheld D58/D59 self-dispute, not a restored free veto. D42 no-automatic-withdrawal, same-act credit provenance and guarantor-link termination fees remain unchanged. D78's proposal is retained as dated history in AppendixA, superseded here by the explicit confirmation.
 
 ### 20.3 Why prevention matters
 
@@ -1689,6 +1691,7 @@ create_self_id(subject, artifact_id, detector_version, face_index, assertions):
     require artifact registration age <= 24 hours
     require detector and face_index valid under selected profile
     require subject has not used its rolling 24-hour reward slot
+    record the used slot at original creation time; cancellation cannot reset it (D79)
     create unique SelfId with one unspent emission right
     perform approved FACY issuance/custody transition
     schedule ordinary XP credit and the end of free veto at 24-hour maturity (D42)
@@ -1702,19 +1705,20 @@ An invalid claim can still be recorded if the only problem is that another subje
 ### 36.3 Cancel an unspent Self-ID
 
 ```text
-cancel_self_id(guarantor, self_id_id):
-    require guarantor has the defined authority over this act
+cancel_self_id(actor, self_id_id):
+    require actor is this act's author OR an eligible authorized guarantor (D79)
     require original emitter right is still cancellable and unspent
     require Self-ID age < 24 hours (D42)
     require applicable dispute-precedence policy
     cancel the Self-ID emission
     burn the unit held in emitter custody under minted-escrow design
     record that this cancelled act earns no ordinary maturation XP
-    record that this guarantor prevented this act's emission
-    do not automatically break the long-term guarantee relation
+    record actual canceller as author or guarantor, without changing the old roster
+    preserve the used rolling slot and original recording/chain history (D79)
+    do not automatically break the long-term guarantee relation or close an open case
 ```
 
-There is no cancellation fee for an authorized guarantor. Other transaction-validity and anti-spam checks still apply. A truly free blockchain submission must work through the complete transaction-payment pipeline, not merely refund a fee after dispatch.
+There is no cancellation fee for the author or an authorized guarantor within the eligible original window. The author waits only until the original act's24h boundary for its next otherwise eligible Self-ID; cancellation neither refunds the used slot nor restarts24h. Other transaction-validity and anti-spam checks still apply. A truly free blockchain submission must work through the complete transaction-payment pipeline, not merely refund a fee after dispatch.
 
 ### 36.4 Create an invitation
 
@@ -1794,7 +1798,7 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 13. From 24 hours onward, only explicitly approved network-building operations can use a still-restricted Emitter emission.
 14. An invitation cannot be applied before its 24-hour freeze ends, and a current guarantor of its creator can cancel it during the freeze.
 15. Ordinary uncancelled Self-ID maturity at 24 hours credits XP once and leaves a matured own right in place; withdrawal/invitation use is a separate holder choice, not an automatic transfer or second credit (D42).
-16. Original free guarantor cancellation requires age < 24 hours; leaving an emission unused does not extend it (D42).
+16. Free author/eligible guarantor cancellation requires age < 24 hours; leaving an emission unused does not extend it (D42/D79), and cancellation never resets the original issued24h slot.
 17. A consumed or converted emission cannot be cancelled again through the original free Emitter-veto mechanism.
 18. An active dispute freezes its target's still-unspent emission against use or conversion.
 19. FACY bought or received from another subject does not create invitation eligibility.
@@ -1938,7 +1942,7 @@ Compare a wide honest network, a very dense group of mutually guaranteeing genui
 
 ### 41.4 Emitter lifecycle adversaries
 
-Test free cancellation at age 23 hours and rejection at exactly 24; an unused act must credit ordinary XP at 24 hours without a spend/withdrawal call. Invitation use, withdrawal and debt recovery must not duplicate that credit. A matured act left unused for weeks must not become freely cancellable again. Test the separate invitation freeze/cancellation and report its still-OPEN consequences for prior matured XP. Freeze/appeal and exact same-time credit/penalty ordering require declared contracts; historical terminal/unspent-veto fixtures are compatibility references, not D42 acceptance.
+Test author and guarantor free cancellation at age23h and rejection at exactly24h; cancel23→next24 and cancel0→next24 must retain the original issued slot across key/artifact changes, not allow instant retry or start a new24h wait (D79). An unused act must credit ordinary XP at24h without a spend/withdrawal call. Invitation use, withdrawal and debt recovery must not duplicate that credit. A matured act left unused for weeks must not become freely cancellable again. Test the separate invitation freeze/cancellation and report its still-OPEN consequences for prior matured XP. Freeze/appeal and exact same-time credit/penalty ordering require declared contracts; historical terminal/unspent-veto fixtures are compatibility references, not D42 acceptance.
 
 ### 41.5 Duplicate FaceRef and group artifacts
 
@@ -2721,6 +2725,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Practical defense, public audience and correction clarification recorded2026-10-27
 
 **D78 — [OWNER audience/practical-defense/accountability clarification; early author-cancellation PROPOSAL, not selected], §1/§5/§20.2/§20.5/§25.2/§26.6.** Source: the owner's voice response to the project's evaluation, contrasting real-world person-presence/meetings/vouching/voluntarily offered identity evidence with a supposed inability of genuine people to defend themselves. The owner treats invitation/guarantee/publicity friction as part of the defense and the intended audience's commitment, not Facebook-like universal instant registration; easier access at scale is a hypothesis, not verified accessibility or an instruction to exclude inconvenient genuine controls. A problematic subject/act gives reasons to inspect guarantors, inviter/invitation ancestry and their histories, not automatically judge/charge every neighbor. Existing D34/D47/D52/D57 and D58/D59 early appropriate self-correction retained; person evidence does not settle a genuine person's separate act violation, and recorded liability/traceability is not actual collection. The owner says “I think” the author as well as guarantor may freely cancel its own pending Self-ID before24h without dispute; retain that as a proposed author authorization, NOT an implemented/selected rule, mature free veto, frozen-case escape or automatic Collector conversion. No personal-data authorization, mandatory passport/celebrity/publicity threshold, truth oracle, new penalty/fault/merits/Council/termination rule, default migration or scientific/master gate waiver follows.
+
+### Free author cancellation and original-slot retention recorded2026-10-28
+
+**D79 — [SELECTED basic rule], §5/§17.3/§20.2/§36.2–§36.3.** Source: the owner's explicit voice confirmation2026-10-28 01:31:15Europe/Samara after D78's proposal was separated from existing guarantor cancellation. The author can freely cancel its own eligible pending Self-ID before24h without a dispute or waiting for guarantors, including after noticing its own erroneous act. Cancellation retains the original issued slot: nextSelfID≥originalRecordedAt+24h, NOT cancellationAt+24h and not immediate retry; anti-issue/cancel-spam rationale does not establish total network DoS resistance. Same unspent/unlocked/eligibility/source-disposal/history protections apply; no backdated guarantor role, new fee, second burn/XP credit, identity exoneration, case/hold escape, debt erasure, mature free veto, automatic Collector transfer or new merits/penalty rule. Ordinary Source port implementation is distinct from a general self-dispute controller/maturity migration or default author behavioral policy. D78's2026-10-27 candidate remains historical and is now explicitly confirmed; ordinary D42/D56 and D58/D59 later correction retained, research gates unchanged.
 
 ### Earlier supersessions
 
