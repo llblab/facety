@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { runExperiment, experimentConfig, DEFAULT_ACTIVITY } from '../src/experiment.mjs';
-import { DAY } from '../src/model.mjs';
+import { DAY, FacetyModel } from '../src/model.mjs';
+import { Random } from '../src/random.mjs';
 import * as facade from '../src/experiment.mjs';
 import * as configuration from '../src/experiment-config.mjs';
 
@@ -147,4 +148,34 @@ test('cohort shares expose integer rounding and policies reject unknown or inval
   const config = experimentConfig();
   assert.throws(() => { config.activity.honest.inspect = 0; }, TypeError);
   assert.throws(() => { config.policy.xpFinality = 'immediate'; }, TypeError);
+});
+
+test('idle inspection avoids historical snapshots but retains zero-count draws and full daily/subday audits', t => {
+  const rows = [];
+  for (const stepHours of [24, 4, 6]) {
+    const selfIds = FacetyModel.prototype.selfIds, audit = FacetyModel.prototype.audit, next = Random.prototype.next;
+    let inspectionSnapshots = 0, audits = 0, zeroCountDraws = 0;
+    FacetyModel.prototype.selfIds = function (...args) {
+      if (new Error().stack.includes('at inspectionWork')) inspectionSnapshots++;
+      return selfIds.apply(this, args);
+    };
+    FacetyModel.prototype.audit = function (...args) { audits++; return audit.apply(this, args); };
+    Random.prototype.next = function (...args) {
+      if (this.seed.includes('inspection-count')) zeroCountDraws++;
+      return next.apply(this, args);
+    };
+    let run;
+    try {
+      run = runExperiment({ seed: 'idle-inspection-software', initialSize: 6, attackerShare: 0, initialTopology: 'none', days: 4, stepHours,
+        activity: { honest: { ...quiet, selfId: 1, convert: 1 }, attackers: quiet } });
+    } finally {
+      FacetyModel.prototype.selfIds = selfIds; FacetyModel.prototype.audit = audit; Random.prototype.next = next;
+    }
+    assert.equal(inspectionSnapshots, 0, 'zero inspection must not snapshot all historical acts');
+    assert.equal(zeroCountDraws, 6 * 4 * 24 / stepHours, 'even zero-rate slots retain the same actual keyed draws');
+    assert.ok(audits >= 4 * 24 / stepHours, 'full per-tick invariant audits remain');
+    assert.equal(run.observations.inspections, 0);
+    rows.push({ stepHours, inspectionSnapshots, zeroCountDraws, audits });
+  }
+  t.diagnostic('idle-inspection-fastpath ' + JSON.stringify({ rows, retainedAudits: true, randomnessLayoutChanged: false }));
 });

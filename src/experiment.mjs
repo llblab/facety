@@ -705,6 +705,11 @@ export function runExperiment(overrides = {}) {
   // Candidate acts are the phase-start unspent acts, minus own, already inspected and vetoed acts.
   // Honest choices use index arithmetic over that ordered list; draws match filtering the list.
   function inspectionWork(actors) {
+    if (!config.social.screening && !config.social.flowTracing && !config.social.attentionFeedback && actors.every(actor => activityOf(actor).inspect === 0)) {
+      // Preserve zero-count draws and slot bookkeeping without copying unused act history.
+      for (const actor of actors) if (model.subject(actor).identityStatus === 'accepted') actionSlots('inspection-count', actor, 0, 'attention');
+      return;
+    }
     const list = model.selfIds().filter(act => act.status === 'unspent' && model.subject(act.subject).identityStatus === 'accepted');
     const available = new Map(list.map(act => [act.id, act]));
     const positions = new Map(list.map((act, index) => [act.id, index]));
