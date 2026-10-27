@@ -1,5 +1,7 @@
 # WP1/G1 readiness after actual ordinary receipt comparisons
 
+**Subsequent2026-10-28 checkpoint:** [prior7 software acceptance](wp1-prior7-attribution-results.md) now closes the pure local raw-count seam. The reconciliation below retains its pre-code base/bindings and does not claim that completed implementation is still missing; BACKLOG owns the next independent static/method check. G1 remains not passed.
+
 **2026-10-28 · DIAGNOSTIC source/evidence reconciliation, not G1.** CurrentSource39ea0865,55files; [ordinary counterpart](wp1-maturity-receipts-results.md) closes a real software seam, not the master's whole prior3. [programme.json](programme.json)/[decision packet](decision-packet.md) retain gate authority; BACKLOG alone owns work. Historical prior audit82fe4ac and all old validation/results stay unchanged.
 
 ## Current acceptance, without moving the gate
