@@ -1,0 +1,393 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "Core C1 narrow existing-reference correctness repair; retargeted from D72 acceptance preparation by actual native failure",
+  "baseCommit": "f9fe4c0b267457b61b0b438e255c3cc224a5ae74",
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "3652dce6b2d9c779628647730f136883f193c22a",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "src/experiment.mjs",
+      "gitBlob": "53e1d636efda135b42ed091d6c20556d5cc4a4f5"
+    },
+    {
+      "path": "test/disputes.test.mjs",
+      "gitBlob": "40345952d41d04eb723b2636896e4d2b3e9b12e8"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/core-council-rejection.md",
+      "gitBlob": "ddaa8622af13be4b1076fc4dfb7f35ce12dd6221"
+    }
+  ],
+  "before": {
+    "script": "/tmp/facety-council-entry-contract-check.mjs",
+    "gitBlob": "555f9e1fe53bbb515b7c9719656e16c94690ed7c",
+    "log": "/tmp/facety-council-entry-contract-check.json",
+    "evidence": {
+      "classification": "Existing source/API pre-code engineering probe, no D72 implementation or research run",
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "384090bc310226d4ece57f04e504c5234b87888eca54778c3cc175a641158f78",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "softwareModelCalls": 2,
+      "researchModelCalls": 0,
+      "rejections": [
+        "unknown experiment key: councilEntries",
+        "unknown experiment key: councilEntries"
+      ],
+      "base": {
+        "seed": "core-council-entry-contract-software",
+        "stepHours": 4,
+        "days": 8,
+        "initialSize": 30,
+        "attackerShare": 0.2,
+        "includeState": true,
+        "policy": {
+          "councilSize": 11
+        },
+        "activity": {
+          "honest": {
+            "inspect": 3,
+            "challenge": 1
+          },
+          "attackers": {
+            "defend": 0
+          }
+        },
+        "disputes": {
+          "enabled": true,
+          "procedure": "chekharda-timed",
+          "entryTiming": "each-tick",
+          "roundsPerDay": 6,
+          "noticeBase": 0,
+          "councilDepth": 0,
+          "stakeBacking": "reserved"
+        }
+      },
+      "prefix": {
+        "horizon": 192,
+        "cases": 6,
+        "pending": 6,
+        "stakeVault": 6,
+        "members": [
+          {
+            "id": "n1",
+            "xp": 62
+          },
+          {
+            "id": "n9",
+            "xp": 60
+          },
+          {
+            "id": "n3",
+            "xp": 58
+          },
+          {
+            "id": "n24",
+            "xp": 57
+          },
+          {
+            "id": "n28",
+            "xp": 55
+          },
+          {
+            "id": "n18",
+            "xp": 54
+          },
+          {
+            "id": "n10",
+            "xp": 30
+          },
+          {
+            "id": "n26",
+            "xp": 30
+          },
+          {
+            "id": "n12",
+            "xp": 29
+          },
+          {
+            "id": "n13",
+            "xp": 29
+          },
+          {
+            "id": "n20",
+            "xp": 29
+          }
+        ],
+        "publicPrefixCandidates": [
+          {
+            "caseId": "dispute:0",
+            "subject": "member:3",
+            "challenger": "n23",
+            "ordinaryPositions": 1,
+            "lastMoveAt": 92,
+            "oldDeadline": 260,
+            "initiators": [
+              "n1",
+              "n9",
+              "n3",
+              "n24",
+              "n28",
+              "n18",
+              "n10",
+              "n26",
+              "n12",
+              "n13",
+              "n20"
+            ]
+          },
+          {
+            "caseId": "dispute:1",
+            "subject": "member:2",
+            "challenger": "n12",
+            "ordinaryPositions": 1,
+            "lastMoveAt": 100,
+            "oldDeadline": 268,
+            "initiators": [
+              "n1",
+              "n9",
+              "n3",
+              "n24",
+              "n28",
+              "n18",
+              "n10",
+              "n26",
+              "n13",
+              "n20"
+            ]
+          },
+          {
+            "caseId": "dispute:2",
+            "subject": "member:5",
+            "challenger": "n25",
+            "ordinaryPositions": 1,
+            "lastMoveAt": 104,
+            "oldDeadline": 272,
+            "initiators": [
+              "n1",
+              "n9",
+              "n3",
+              "n24",
+              "n28",
+              "n18",
+              "n10",
+              "n26",
+              "n12",
+              "n13",
+              "n20"
+            ]
+          }
+        ],
+        "prefixDigest": "eab9c184b758dfe687100f0a1848e5cefc0b5d3e6e3c4d15ea69cc7d036e8db7"
+      },
+      "automaticFailure": {
+        "name": "TypeError",
+        "message": "Reduce of empty array with no initial value",
+        "stack": "TypeError: Reduce of empty array with no initial value\n    at Array.reduce (<anonymous>)\n    at settleDispute (file:///home/llb/Repos/facety/src/experiment.mjs:566:72)\n    at resolveTimedDispute (file:///home/llb/Repos/facety/src/experiment.mjs:631:20)\n    at timedDisputeWork (file:///home/llb/Repos/facety/src/experiment.mjs:646:9)\n    at runExperiment (file:///home/llb/Repos/facety/src/experiment.mjs:911:7)\n    at file:///tmp/facety-council-entry-contract-check.mjs:12:19\n    at ModuleJob.run (node:internal/modules/esm/module_job:569:25)\n    at async node:internal/modules/esm/loader:650:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+      },
+      "hypothetical": {
+        "requestHour": 193,
+        "newDeadline361": 361,
+        "identity": "opening+168, not oldDeadline+168, no actor round at off-grid request",
+        "selectedCandidate": "first publicPrefixCandidates row, first nonparty reference-member initiator; no future evaluator truth"
+      }
+    },
+    "warning": "Historical pre-fix384090bc failure only, not a current-source pass. Initial uncaught error also retained in tool trace; capture script preserves same fixed input, no seed/cap tuning."
+  },
+  "contract": {
+    "beforeCode": true,
+    "scope": "settleDispute winning ordinary leader only",
+    "fix": "null when no ordinary entrant occupies Council-winning side; otherwise exact previous greatest-current-XP/first-tie reduce",
+    "unmodified": "winner, scripted beliefs/vote rule, stake disposition/refunds/burn/shortfall, XP penalties, target remedies, RNG, public API/defaults, no new winner/payee",
+    "consumers": "clusterFollowUp is sole lead consumer and existing genuine-win branch has no ordinary defenders; no fallback actor is supplied",
+    "regressionCombinations": 8,
+    "dimensions": [
+      "instant/timed Chekharda",
+      "unsecured/reserved",
+      "cluster follow-up off/on"
+    ],
+    "initialRegression": "old source TypeError at empty reduce; after minimal code fix green, then shared instant caller coverage added before final fresh focused/full",
+    "notClaimed": [
+      "atomic rollback of former failed execution",
+      "new Council reward/funding law",
+      "correct real-person merits or D70/D71/D72 lifecycle",
+      "G1/empirical mechanism proof"
+    ]
+  },
+  "red": {
+    "command": "node --test --test-name-pattern='Council rejection can settle' test/disputes.test.mjs",
+    "failed": 1,
+    "error": "TypeError: Reduce of empty array with no initial value",
+    "log": "/tmp/facety-core-council-rejection-red.txt"
+  },
+  "after": {
+    "script": "/tmp/facety-core-council-rejection-post-check.mjs",
+    "gitBlob": "c3158cb97e6d90773d94d36f59ea17d1ca732d2c",
+    "evidence": {
+      "classification": "same fixed software input after source correction, not research or D72 implementation",
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "softwareModelCalls": 2,
+      "depthZeroPrefixUnchanged": true,
+      "prefixDigest": "eab9c184b758dfe687100f0a1848e5cefc0b5d3e6e3c4d15ea69cc7d036e8db7",
+      "automatic": {
+        "cases": 16,
+        "councilInterventions": 16,
+        "rejectedWithoutOrdinaryWinner": 16,
+        "transferredInThoseCases": 0,
+        "burnedInThoseCases": 16,
+        "stakeVault": 0
+      },
+      "researchRuns": 0
+    },
+    "warning": "16 Council rejections/no ordinary winner and16 actual burned FACY are legacy losing-top accounting, not rewards/new economics or proof of authentic correctness"
+  },
+  "fresh": {
+    "focused": {
+      "command": "node --test test/disputes.test.mjs test/dispute-stakes.test.mjs test/guarantor-response.test.mjs test/core-authority.test.mjs",
+      "passed": 26,
+      "failed": 0,
+      "log": "/tmp/facety-core-council-rejection-focused.txt"
+    },
+    "full": {
+      "command": "npm test",
+      "current": {
+        "passed": 721,
+        "failed": 0
+      },
+      "historical": {
+        "passed": 21,
+        "failed": 0,
+        "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+        "assurance": "isolated compatible-source historical bodies, not current-source assurance"
+      },
+      "log": "/tmp/facety-core-council-rejection-full.txt"
+    },
+    "architecture": {
+      "errors": 0,
+      "warnings": 0,
+      "items": [
+        {
+          "level": "info",
+          "message": "Root: /home/llb/Repos/facety",
+          "details": {}
+        },
+        {
+          "level": "info",
+          "message": "Config: /home/llb/Repos/facety/domain-dag.json",
+          "details": {}
+        },
+        {
+          "level": "info",
+          "message": "Source files 53, local edges 168",
+          "details": {}
+        },
+        {
+          "level": "pass",
+          "message": "Local source import graph is acyclic",
+          "details": {}
+        },
+        {
+          "level": "pass",
+          "message": "Domain modules do not import configured entrypoints",
+          "details": {}
+        },
+        {
+          "level": "pass",
+          "message": "Domain headers are present",
+          "details": {}
+        },
+        {
+          "level": "pass",
+          "message": "No shared-bucket candidates found",
+          "details": {}
+        }
+      ]
+    },
+    "fixedTrajectories": {
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "excludedOnly": "provenance.implementation",
+      "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "matched": true,
+      "classification": "two fixed software trajectories, not sealed-study replay or new scientific data"
+    }
+  },
+  "nativePreservation": {
+    "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+    "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+    "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+    "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+    "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-core-council-rejection-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "review": "Existing structure/meta-principle/sparsity/index-bloat/wide-table warnings reviewed. New small contract/validation links resolve; unchanged large protocol scans skipped. Backlog retargeted/closed the source bug, D72 contract remains next and gated empirical work unchanged. No duplicate task owner or historical source/result relabeling."
+  },
+  "preservation": {
+    "sourceFilesChanged": [
+      "src/experiment.mjs"
+    ],
+    "newModulesExportsDefaultsPoliciesRng": 0,
+    "oldStudyRegistrationCaptureTestBodiesUnchanged": true,
+    "coreC0BindingsUnchanged": true,
+    "protocolDecisionChange": false,
+    "researchLabels": 0,
+    "researchCaptures": 0,
+    "newScientificRegistrations": 0,
+    "oldStudyReplay": false,
+    "masterG1Pass": false
+  },
+  "review": {
+    "method": "inline source/consumer/contract/monetary/represented-winner and null-branch review, not independent authorship",
+    "retarget": "actual native correctness failure outranks convenient continuation; one coupled cohort, no second feature cohort",
+    "ruleBoundary": "Do not substitute Council/subject/initiator as personal winner, invent payout, select a quorum or conflate reference code fix with protocol admission"
+  },
+  "handoff": {
+    "scope": "D68 core-first",
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "closed": "existing Council empty-winning-side settlement correctness prerequisite",
+    "notClosed": "D72 explicit entry/common-clock acceptance and selected Council lifecycle",
+    "next": "return to bounded existing case-owner D72 acceptance contract, with current settlement no longer crashing on a legitimate reference rejection. No new engine/detector/unregistered data or parked-worker fallback.",
+    "continuationWarranted": true,
+    "signature": "d68-core-c1/empty-Council-winning-side/null-no-payee/red-green8/26focused-721current-21historical/source91db8605/next-d72-contract"
+  }
+}

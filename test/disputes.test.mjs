@@ -161,6 +161,36 @@ test('all dispute references expose exclusive reserved custody, pending cases an
   }
 });
 
+test('Council rejection can settle without an ordinary winning entrant or invented payee', () => {
+  const reference = { seed: 'core-council-entry-contract-software', stepHours: 4, days: 8, initialSize: 30, attackerShare: 0.2, includeState: true,
+    policy: { councilSize: 11 }, activity: { honest: { inspect: 3, challenge: 1 }, attackers: { defend: 0 } },
+    disputes: { enabled: true, procedure: 'chekharda-timed', entryTiming: 'each-tick', roundsPerDay: 6, noticeBase: 0, councilDepth: 1 } };
+  for (const procedure of ['chekharda', 'chekharda-timed']) for (const stakeBacking of ['unsecured', 'reserved']) for (const clusterFollowUp of [false, true]) {
+    const run = runExperiment({ ...reference, disputes: { ...reference.disputes, procedure, entryTiming: procedure === 'chekharda-timed' ? 'each-tick' : 'daily-quota', stakeBacking, clusterFollowUp } });
+    assert.equal(run.outcome.censored, false);
+    const rejected = run.disputes.cases.filter(record => record.status === 'settled' && record.winner === 'genuine');
+    assert.ok(rejected.length > 0);
+    for (const record of rejected) {
+      assert.equal(record.reason, 'depth-triggered-council-reference');
+      assert.equal(record.upheld, false);
+      assert.equal(record.positions.length, 1);
+      assert.equal(record.positions[0].side, 'fraud');
+      assert.equal(record.positions.some(position => position.side === record.winner), false);
+      assert.equal(record.accounting.transferred, 0, 'no ordinary winner or new Council payee is invented');
+      assert.equal(record.accounting.released, 0);
+      assert.equal(record.accounting.nominalLosing, record.positions[0].amount);
+      assert.equal(record.accounting.nominalLosing, record.accounting.burned + record.accounting.unpaid);
+      if (stakeBacking === 'reserved') assert.equal(record.accounting.unpaid, 0);
+    }
+    assert.equal(run.system.sanctions.clusterChallenges, 0, 'no losing ordinary defender supplies a secondary-case target');
+    const ledger = run.metrics.ledger, stakes = run.disputes.stakes;
+    assert.equal(ledger.supply, ledger.collector + ledger.emitterVault + ledger.feeVault + ledger.stakeVault);
+    assert.equal(stakes.nominalLosing, stakes.transferred + stakes.burned + stakes.unpaid);
+    assert.equal(stakes.pendingNominal, stakeBacking === 'reserved' ? ledger.stakeVault : run.disputes.cases.filter(record => record.status === 'open').reduce((n, record) => n + record.positions.reduce((m, position) => m + position.amount, 0), 0));
+    assert.ok(run.state.disputeStakes.every(record => !Object.hasOwn(record, 'genuine') && !Object.hasOwn(record, 'cohort')));
+  }
+});
+
 test('public proof is shared by every noticer and cluster follow-ups challenge defenders of proven fakes', () => {
   assert.throws(() => experimentConfig({ disputes: { evidence: 'rumor' } }), /evidence/);
   const settings = {

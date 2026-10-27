@@ -563,7 +563,9 @@ export function runExperiment(overrides = {}) {
     }
     sanctions.ladderDepth = Math.max(sanctions.ladderDepth, entrants.length);
     dispute.defenders = winner === 'fraud' ? entrants.filter(entrant => entrant.side === 'genuine').map(entrant => entrant.id) : [];
-    dispute.lead = entrants.filter(entrant => entrant.side === winner).reduce((top, entrant) => (model.subject(entrant.id).xp > model.subject(top.id).xp ? entrant : top)).id;
+    const winners = entrants.filter(entrant => entrant.side === winner);
+    // A Council verdict need not have a winning ordinary entrant.
+    dispute.lead = winners.length ? winners.reduce((top, entrant) => (model.subject(entrant.id).xp > model.subject(top.id).xp ? entrant : top)).id : null;
     return winner === 'fraud';
   }
   // Everyone who defended a proven fake becomes a suspect: the winning side's most senior member
