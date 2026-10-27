@@ -1,0 +1,193 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D63 C2 source/measurement/namespace and synthetic-table audit, frozen minimal scalar-admission contract; no new support/telemetry/Model/empirical data",
+  "baseCommit": "7429179736b5c6e5b9100016ab8095aa5b0aba87",
+  "sourceTree": "47c69d37711b5249ad99823f16c23769c36b8504",
+  "testTree": "855c5c8ec1890a05add78564efd0436d529918ac",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "e44844b3644fd4139f420a43535b8ba7db7d6f2fde41699df0925a1666e2b899",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "contract": {
+    "path": "measurement-contract.md",
+    "gitBlob": "e86e92a73e52a5fc0c52deeda8588c3b80ea7c28",
+    "status": "frozen before admission code, not a study/registration"
+  },
+  "sourceBindings": [
+    {
+      "path": "src/observables.mjs",
+      "gitBlob": "5c3a11cbc2cfc35c82a137b99efaa13a42855c58"
+    },
+    {
+      "path": "src/discovery.mjs",
+      "gitBlob": "00fa1f717fa2aa3a995c048d40fb917ae3102d3b"
+    },
+    {
+      "path": "src/evidence.mjs",
+      "gitBlob": "09e1c95050ea84397d50c8c09556ca24348c690b"
+    },
+    {
+      "path": "src/experiment.mjs",
+      "gitBlob": "027e775d6b2bdf09d409663fafb3313ab88eca38"
+    },
+    {
+      "path": "studies/2026-10-27-review-allocation/implementation-validation.json",
+      "gitBlob": "dc772b3e582c2221b3ff42c0eef14630b19364cb"
+    }
+  ],
+  "checker": {
+    "path": "/tmp/facety-review-measurement-contract-check.mjs",
+    "gitBlob": "13801406a11ecd43ec35b77fc42a97701446a34d",
+    "command": "node /tmp/facety-review-measurement-contract-check.mjs",
+    "notMaintainedRuntimeOrEmpiricalMethod": true
+  },
+  "probe": {
+    "classification": "source-backed scalar-admission audit and synthetic two-day table only; no runExperiment or research labels",
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "e44844b3644fd4139f420a43535b8ba7db7d6f2fde41699df0925a1666e2b899",
+        "files": 53
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "paths": [
+      "falseSubjects",
+      "invitationReview.inspections",
+      "invitationReview.inspectionDenied",
+      "invitationReview.positiveSignals",
+      "invitationReview.cancelled",
+      "cohorts.honest.byAction.selfId.effort",
+      "cohorts.honest.byAction.convert.effort"
+    ],
+    "allSevenCurrentAdmissionsRejected": true,
+    "projected": {
+      "falseSubjects": [
+        1,
+        2
+      ],
+      "invitationReview.inspections": [
+        3,
+        5
+      ],
+      "invitationReview.inspectionDenied": [
+        1,
+        4
+      ],
+      "invitationReview.positiveSignals": [
+        1,
+        2
+      ],
+      "invitationReview.cancelled": [
+        1,
+        1
+      ],
+      "cohorts.honest.byAction.selfId.effort": [
+        2,
+        4
+      ],
+      "cohorts.honest.byAction.convert.effort": [
+        1,
+        3
+      ]
+    },
+    "knownEndpoint": 14,
+    "missingEndpoint": null,
+    "incompleteMean": null,
+    "censoredKnownScalar": null,
+    "dailySelfIdMean": 3,
+    "dailyConvertMean": 2,
+    "cumulativeReviewEndpoint": 5,
+    "cumulativeReviewMean": 4,
+    "cumulativeReviewChange": 2,
+    "newModelRuns": 0,
+    "newResearchLabels": [],
+    "newRuntimeSupport": false
+  },
+  "findings": {
+    "existingNativeColumns": 7,
+    "currentlyScalarAdmitted": 0,
+    "newTelemetryRequired": false,
+    "sourceClosure": "measureNetwork: falseSubjects; measureWork: daily paid byAction cost; experiment.sample: current invitationReview cumulative counters only under subday schedule; guardianWork separates look/signal/verification/cancel and failed look reasons; candidate truth installed only on actual admission",
+    "semantics": "failed look != universal budget-only, positive signal != cancellation, cancellation != valid prevention, honest cohort != all genuine actors, final balances != observed allocation timeline; daily paid effort != cumulative endpoint work, falseSubjects includes recorded invalidated subjects",
+    "minimalNext": "existing discovery dictionary seven paths plus existing evidence primary/subtract/mode preflight only; no new source module/export/observation/config/metricSeries parameter/engine/draw/history field or default discovery metric set",
+    "mode": "four invitationReview fields require declared legacy4/6h; omitted stepHours=actual24h default reject for scalar registration/base/eacharm/context/direct/pre-run single/multi tasks, zero activity at4/6 still valid0 counters. Namespace predicate/raw supplied-table parser are not full mode/data-authentication checks",
+    "missingness": "preserve declared horizon/offset, missing endpoint/incomplete mean/censored known scalar null, missing in-row path explicit error, explicit null propagation. Invalid metric/engine/mode cannot be made valid by censorship. Existing math/method policy unchanged",
+    "remaining": "raw allocation/action/harm/pending/context/trace retention; scalar-only confirmation rejects includeState:true; no false/genuine per-target paid evidence receipts inferred; checked source-dependent generation/creator/event reconstruction or unknown. Master G1 and real method/numeric inference/transport controls remain absent"
+  },
+  "reusedUnchangedEvidence": {
+    "record": "implementation-validation.json",
+    "atCommit": "7429179",
+    "basis": "exact src47c69d37/test855c5c8e/53-filee44844b3/Nodev26.8.1; source/tests/defaults/data not changed, aggregate tests/streams/trajectories/DAG not rerun in C2",
+    "focused": {
+      "command": "node --test test/review-reserve.test.mjs test/effort.test.mjs test/experiment.test.mjs test/path-witness-*.test.mjs",
+      "passed": 253,
+      "failed": 0,
+      "skipped": 0
+    },
+    "current": {
+      "passed": 706,
+      "failed": 0,
+      "skipped": 0
+    },
+    "isolatedHistorical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "notCurrentSourceAssurance": true
+    },
+    "nativePreservationStreams": 10,
+    "fixedTrajectories": 2,
+    "architecture": {
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+      "files": 53,
+      "edges": 168,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0,
+      "freshAtC1ReusedNotRerunAtC2": true,
+      "scope": "three existing owners/internal arithmetic/option wiring, no imports/back-edge/shared bucket or source module added"
+    }
+  },
+  "review": {
+    "kind": "inline actual producer/consumer/normalization/source-scope/causal-denominator/availability/missingness and minimality review",
+    "independentAuthorship": false,
+    "boundary": "synthetic2-day data and pre-model rejection are not observations about people, prevalence, resource efficiency or welfare; no scientific output, old study/source audit or protocol-default change"
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "warningSetUnchangedExceptOffsets": true,
+    "disposition": "Reviewed existing structure/density/index-bloat/wide-table warnings; unchanged large protocol scans skipped. C2 source/admission/unit/missingness and remaining raw-genuine/master boundaries indexed, C0/C1/old packets unchanged, tasks only in BACKLOG."
+  },
+  "research": {
+    "newModelRuns": 0,
+    "newEmpiricalCaptures": 0,
+    "newRegistrations": 0,
+    "newConfirmations": 0,
+    "researchLabels": [],
+    "historicalReplay": false,
+    "newSelectedRule": false,
+    "masterG1Pass": false
+  },
+  "handoff": {
+    "surface": "BACKLOG.md#d44-guarantor-prevention-boundaries",
+    "cohort": "C2 source/measurement audit and frozen minimal admission only",
+    "closed": "source measurement inventory and exact minimal admission gap; no new telemetry pipeline justified",
+    "next": "C3 seven existing paths and4/6h scalar-mode admission with source-native/synthetic/worker/missingness tests; no study/confirmation/old packet work",
+    "actionability": "local-actionable",
+    "gatedRemainder": "actual method/primary-secondary raw/single-run-stat transport/genuine/no-attack/resource/horizon/error-search-kill/source-RNG-seeds and master G1 placement before research",
+    "continue": true
+  }
+}
