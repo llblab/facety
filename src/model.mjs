@@ -129,6 +129,8 @@ export class FacetyModel {
   #selfIdResolutions = new Map();
   #debtReservations = new Set();
   #disputeStakes = new Map();
+  #disputeParticipations = new Map();
+  #activityCasesBySubject = new Map();
   #contentHashes = new Set();
   #activityVersion = 0;
   #activeCache = null;
@@ -204,6 +206,38 @@ export class FacetyModel {
   guaranteeRelations() { return [...this.#guaranteeRecords.values()].map(value => Object.freeze({ ...value })); }
   events() { return [...this.#events]; }
   disputeStakes() { return [...this.#disputeStakes.values()].map(value => Object.freeze({ ...value })); }
+  // Trusted execution port: admission/merits belong to the controller, not this activity index.
+  previewDisputeParticipation(caseId, subjects) {
+    if (this.vouching !== null) throw new ProtocolRejection('D77 vouching participation requires an explicit reference');
+    if (typeof caseId !== 'string' || !caseId.length || this.#disputeParticipations.has(caseId)) throw new ProtocolRejection('invalid or repeated participation case');
+    if (!Array.isArray(subjects) || subjects.length < 2 || new Set(subjects).size !== subjects.length) throw new ProtocolRejection('participation requires distinct case subjects');
+    for (const id of subjects) this.#subject(id, true);
+    return Object.freeze({ caseId, subjects: Object.freeze([...subjects]) });
+  }
+  beginDisputeParticipation(caseId, subjects) {
+    const plan = this.previewDisputeParticipation(caseId, subjects);
+    this.#disputeParticipations.set(caseId, { ...plan, openedAt: this.now, closedAt: null });
+    for (const id of plan.subjects) {
+      if (!this.#activityCasesBySubject.has(id)) this.#activityCasesBySubject.set(id, new Set());
+      this.#activityCasesBySubject.get(id).add(caseId);
+    }
+    this.#event('dispute-participation-started', plan);
+  }
+  endDisputeParticipation(caseId) {
+    const record = this.#disputeParticipations.get(caseId);
+    if (!record || record.closedAt !== null) throw new ProtocolRejection('participation case is not open');
+    record.closedAt = this.now;
+    for (const id of record.subjects) {
+      const cases = this.#activityCasesBySubject.get(id);
+      cases.delete(caseId);
+      if (!cases.size) this.#activityCasesBySubject.delete(id);
+    }
+    this.#event('dispute-participation-ended', { caseId });
+  }
+  disputeParticipations() { return [...this.#disputeParticipations.values()].map(record => Object.freeze({ ...record, subjects: Object.freeze([...record.subjects]) })); }
+  #requireActivity(id) {
+    if (this.#activityCasesBySubject.has(id)) throw new ProtocolRejection('open-dispute activity restriction');
+  }
   #requireVouching() {
     if (this.vouching === null) throw new ProtocolRejection('experimental vouching is disabled');
     return this.vouching;
@@ -429,6 +463,7 @@ export class FacetyModel {
   proposeGuarantee(guarantor, guaranteed) {
     this.#subject(guarantor, true);
     this.#subject(guaranteed, true);
+    this.#requireActivity(guarantor);
     if (guarantor === guaranteed || this.guarantees.edge(guarantor, guaranteed)) throw new ProtocolRejection('invalid or duplicate guarantee');
     const id = this.#id('guarantee');
     this.#guaranteeRecords.set(id, { id, guarantor, guaranteed, proposedAt: this.now, activatedAt: null, endedAt: null, status: 'proposed' });
@@ -440,6 +475,8 @@ export class FacetyModel {
     if (!relation || relation.status !== 'proposed' || relation.guaranteed !== actor) throw new ProtocolRejection('no matching guarantee proposal');
     const payer = this.#subject(relation.guarantor, true);
     this.#subject(actor, true);
+    this.#requireActivity(relation.guarantor);
+    this.#requireActivity(actor);
     if (this.guarantees.edge(relation.guarantor, actor)) throw new ProtocolRejection('guarantee already active');
     if (payer.liquidFacy < this.policy.guaranteeFee) throw new ProtocolRejection('insufficient guarantee fee');
     this.guarantees.assertCapacity({ edgeIds: 1 });
@@ -540,6 +577,7 @@ export class FacetyModel {
   }
   createSelfId(subjectId, artifactId, faceIndex = 0) {
     const subject = this.#subject(subjectId, true);
+    this.#requireActivity(subjectId);
     const artifact = this.#artifacts.get(artifactId);
     if (!artifact || this.now - artifact.registeredAt > DAY) throw new ProtocolRejection('artifact is unknown or outside reference window');
     natural(faceIndex, 'faceIndex');
@@ -609,6 +647,7 @@ export class FacetyModel {
       act.status === 'unspent' && act.disputeLock === null && !act.debtReserved && this.now - act.recordedAt >= minimumAge).map(act => act.id);
   }
   createInvitation(creatorId, selfIdId, target) {
+    this.#requireActivity(creatorId);
     if (this.vouchAdmission !== null) throw new ProtocolRejection('vouch admission reference disables invitation admission');
     if (this.invitationLimit !== null) return this.#createLimitedInvitation(creatorId, selfIdId, target);
     const creator = this.#subject(creatorId, true);
@@ -908,6 +947,17 @@ export class FacetyModel {
     if (vouchReserved !== this.#vouchVault || reserved !== ledger.stakeVault || outstanding !== ledger.emitterVault
       || ledger.supply !== ledger.emitterVault + ledger.collector + ledger.feeVault + ledger.stakeVault + this.#vouchVault) throw new Error('FACY conservation invariant failed');
     for (const value of Object.values(ledger)) natural(value, 'ledger value');
+    const activity = new Map();
+    for (const [caseId, record] of this.#disputeParticipations) {
+      if (caseId !== record.caseId || record.openedAt > this.now || (record.closedAt !== null && (record.closedAt < record.openedAt || record.closedAt > this.now))
+        || record.subjects.length < 2 || new Set(record.subjects).size !== record.subjects.length || record.subjects.some(id => !this.#subjects.has(id))) throw new Error('dispute participation invariant failed');
+      if (record.closedAt === null) for (const id of record.subjects) {
+        if (!activity.has(id)) activity.set(id, new Set());
+        activity.get(id).add(caseId);
+      }
+    }
+    if (activity.size !== this.#activityCasesBySubject.size || [...activity].some(([id, cases]) => cases.size !== this.#activityCasesBySubject.get(id)?.size
+      || [...cases].some(caseId => !this.#activityCasesBySubject.get(id).has(caseId)))) throw new Error('dispute activity index invariant failed');
     for (const subject of this.#subjects.values()) {
       natural(subject.xp, 'XP');
       natural(subject.xpHalvings, 'XP halvings');

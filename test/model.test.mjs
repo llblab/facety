@@ -656,3 +656,64 @@ test('the same media content cannot be registered twice, and transfers carry a p
   assert.equal(model.events().at(-1).memo, 'challenge-reward');
   assert.throws(() => model.transferFacy('b', 'a', 1, ''), TypeError);
 });
+
+function participationState(model) { return { ...protocolState(model), participations: model.disputeParticipations() }; }
+
+test('D77 trusted activity port blocks otherwise-valid new operations for both parties, not uninvolved funded life', () => {
+  const model = new FacetyModel({ genesis: ['a', 'b', 'c', 'd'], policy: { xpFinality: 'maturity', guarantorEligibility: 'accepted' } });
+  guarantee(model, 'b', 'a'); guarantee(model, 'c', 'b');
+  const acts = Object.fromEntries(['a', 'b', 'c', 'd'].map(id => [id, identify(model, id)]));
+  const outgoing = model.proposeGuarantee('a', 'c'), incoming = model.proposeGuarantee('d', 'b');
+  model.advanceTo(DAY); model.convertToCollector('d', acts.d);
+  const artifacts = Object.fromEntries(['a', 'b'].map(id => [id, model.registerArtifact(id)]));
+  model.beginDisputeParticipation('case:A', ['a', 'b']);
+  for (const action of [() => model.createSelfId('a', artifacts.a), () => model.createSelfId('b', artifacts.b),
+    () => model.createInvitation('a', acts.a, 'newA'), () => model.createInvitation('b', acts.b, 'newB'),
+    () => model.proposeGuarantee('a', 'd'), () => model.proposeGuarantee('b', 'd'),
+    () => model.confirmGuarantee('c', outgoing), () => model.confirmGuarantee('b', incoming)]) {
+    const before = participationState(model);
+    assert.throws(action, /open-dispute activity restriction/);
+    assert.deepEqual(participationState(model), before);
+  }
+  guarantee(model, 'd', 'c'); identify(model, 'c');
+  const invitation = model.createInvitation('c', acts.c, 'newC');
+  model.advanceTo(2 * DAY); model.acceptInvitation(invitation, 'newC');
+  assert.equal(model.subject('newC').identityStatus, 'accepted');
+  assert.equal(model.disputeParticipations()[0].closedAt, null);
+  model.endDisputeParticipation('case:A');
+  for (const id of ['a', 'b']) identify(model, id);
+  model.confirmGuarantee('c', outgoing); model.confirmGuarantee('b', incoming);
+  assert.equal(model.selfIds().filter(act => act.subject === 'a').length, 2, 'no catch-up issuance for paused days');
+  model.audit();
+});
+
+test('D77 overlapping activity cases release only their own membership and time/key changes cannot bypass remaining restrictions', () => {
+  const model = new FacetyModel({ genesis: ['a', 'b', 'c'], policy: { xpFinality: 'maturity' } });
+  model.beginDisputeParticipation('case:A', ['a', 'b']); model.beginDisputeParticipation('case:B', ['a', 'c']);
+  model.endDisputeParticipation('case:A'); identify(model, 'b');
+  const artifact = model.registerArtifact('a');
+  assert.throws(() => model.createSelfId('a', artifact), /activity restriction/);
+  model.advanceTo(DAY); model.rotateKey('a', 'a:new-key');
+  assert.throws(() => model.createSelfId('a', artifact), /activity restriction/);
+  model.endDisputeParticipation('case:B'); identify(model, 'a'); identify(model, 'c');
+  assert.ok(model.disputeParticipations().every(row => row.closedAt !== null));
+  const before = participationState(model);
+  assert.throws(() => model.endDisputeParticipation('case:B'), /not open/);
+  assert.throws(() => model.beginDisputeParticipation('case:A', ['a', 'b']), /repeated/);
+  assert.deepEqual(participationState(model), before); model.audit();
+});
+
+test('D77 roster preflight and immutable views are inert, and invalid batches never partially restrict a subject', () => {
+  const model = new FacetyModel({ genesis: ['a', 'b', 'c'] }), before = participationState(model);
+  for (const [id, subjects] of [['', ['a', 'b']], ['case', []], ['case', ['a']], ['case', ['a', 'a']], ['case', ['a', 'missing']]]) {
+    assert.throws(() => model.beginDisputeParticipation(id, subjects));
+    assert.deepEqual(participationState(model), before);
+  }
+  const subjects = ['a', 'b'], plan = model.previewDisputeParticipation('case', subjects);
+  assert.throws(() => plan.subjects.push('c'), TypeError); assert.deepEqual(participationState(model), before);
+  model.beginDisputeParticipation('case', subjects); subjects.push('c');
+  assert.deepEqual(model.disputeParticipations()[0].subjects, ['a', 'b']);
+  assert.throws(() => model.disputeParticipations()[0].subjects.push('c'), TypeError);
+  assert.throws(() => model.events().at(-1).subjects.push('c'), TypeError);
+  identify(model, 'c'); model.audit();
+});

@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CausalJournal, EvidenceRelay, accountabilitySnapshot } from '../src/accountability.mjs';
 import { experimentConfig } from '../src/experiment.mjs';
+import { FacetyModel, DAY } from '../src/model.mjs';
+import { DisputeStakes } from '../src/dispute-stakes.mjs';
 import { causalWorld, runWalkthrough, WALKTHROUGHS } from '../examples/causal-walkthroughs.mjs';
 
 function setup({ budget = 12, capacity = 2, traceLimit = 200, disputeOverrides = {} } = {}) {
@@ -253,4 +255,113 @@ test('paired removal of losing-challenger XP halving changes the later gate, not
   assert.deepEqual(results[0].evidence, results[1].evidence);
   assert.deepEqual(results[0].work, results[1].work);
   // This is necessity of an encoded gate in one fixture, not registered emergence or a protocol option.
+});
+
+function d77World() {
+  const model = new FacetyModel({ genesis: ['a', 'b', 'c', 'd'], policy: { xpFinality: 'maturity', guarantorEligibility: 'accepted' } });
+  for (const id of ['a', 'b']) model.confirmGuarantee('c', model.proposeGuarantee(id, 'c'));
+  const counts = { a: 4, b: 2, c: 1, d: 1 }, acts = {};
+  for (let day = 0; day < 4; day++) {
+    const fresh = Object.keys(counts).filter(id => counts[id] > day).map(id => [id, model.createSelfId(id, model.registerArtifact(id))]);
+    model.advanceTo((day + 1) * DAY);
+    for (const [id, act] of fresh) { model.convertToCollector(id, act); acts[id] = act; }
+  }
+  const rules = experimentConfig({ disputes: { enabled: true, stakeBacking: 'reserved' } }).disputes;
+  const relay = new EvidenceRelay(model, { rules, participationReference: 'd77-one-step-converted/v1', traceLimit: 200,
+    actors: [{ id: 'Outside', subject: null, budget: 50, reviewCapacity: 0 }, { id: 'a', subject: 'a', budget: 50, reviewCapacity: 10 }] });
+  return { model, relay, rules, acts };
+}
+function d77Reviewed(world, target = 'b') {
+  const observation = world.relay.observe('Outside', world.acts[target], { suspicious: true, sourceGroup: 'public' }).value;
+  const id = world.relay.package('Outside', [observation]).value;
+  assert.ok(world.relay.route('Outside', id, 'a').ok);
+  assert.ok(world.relay.review('a', id, { suspicious: true, sourceGroup: 'declared-review' }).ok);
+  return id;
+}
+function d77State(model) { return { ...accountabilitySnapshot(model), participations: model.disputeParticipations() }; }
+
+test('opted-in admitted D77 reference restricts both parties while nonparty source XP and a funded admission continue', () => {
+  const world = d77World(), { model, relay } = world;
+  const caseId = relay.sponsor('a', d77Reviewed(world)).value;
+  assert.deepEqual(model.disputeParticipations()[0].subjects, ['a', 'b']);
+  assert.equal(relay.snapshot().participationReference, 'd77-one-step-converted/v1');
+  for (const id of ['a', 'b']) {
+    const artifact = model.registerArtifact(id), before = d77State(model);
+    assert.throws(() => model.createSelfId(id, artifact), /activity restriction/);
+    assert.deepEqual(d77State(model), before);
+  }
+  const beforeXp = ['a', 'b'].map(id => model.subject(id).xp);
+  const act = model.createSelfId('c', model.registerArtifact('c'));
+  model.advanceTo(120);
+  assert.equal(model.selfId(act).xpCredit.at, 120); assert.equal(model.selfId(act).status, 'unspent');
+  assert.deepEqual(['a', 'b'].map(id => model.subject(id).xp), beforeXp.map(xp => xp + 1), 'D77 does not delete earlier guarantee snapshot entitlements');
+  const invitation = model.createInvitation('c', act, 'newcomer');
+  model.advanceTo(144); model.acceptInvitation(invitation, 'newcomer');
+  assert.equal(model.subjects().length, 5); assert.equal(model.disputeParticipations()[0].closedAt, null);
+  assert.equal(model.ledger().stakeVault, 1); assert.equal(model.ledger().burned, 1);
+  assert.ok(relay.resolve(caseId, false).ok);
+  assert.equal(model.disputeParticipations()[0].closedAt, 144);
+  for (const id of ['a', 'b']) model.createSelfId(id, model.registerArtifact(id));
+  const before = d77State(model); assert.equal(relay.resolve(caseId, true).reason, 'case-already-resolved');
+  assert.deepEqual(d77State(model), before); model.audit();
+});
+
+test('two admitted D77 reference cases sharing a challenger do not release that challenger when only one case closes', () => {
+  const world = d77World(), { model, relay } = world;
+  const first = relay.sponsor('a', d77Reviewed(world, 'b')).value;
+  const second = relay.sponsor('a', d77Reviewed(world, 'd')).value;
+  assert.equal(model.disputeParticipations().filter(row => row.closedAt === null).length, 2);
+  assert.ok(relay.resolve(first, false).ok);
+  model.createSelfId('b', model.registerArtifact('b'));
+  const artifact = model.registerArtifact('a'); assert.throws(() => model.createSelfId('a', artifact), /activity restriction/);
+  assert.ok(relay.resolve(second, false).ok);
+  model.createSelfId('a', artifact); model.createSelfId('d', model.registerArtifact('d'));
+  model.audit();
+});
+
+test('D77 reference success and moot release holds, while changed binding or failed economic preflight cannot settle or release', () => {
+  for (const mode of ['upheld', 'moot', 'changed', 'overflow']) {
+    const world = d77World(), { model, relay } = world;
+    const caseId = relay.sponsor('a', d77Reviewed(world)).value;
+    if (mode === 'moot') model.invalidateIdentity('b');
+    if (mode === 'changed') model.endDisputeParticipation(caseId);
+    if (mode === 'overflow') {
+      model.penalize('c', { fine: Number.MAX_SAFE_INTEGER, halveXp: false });
+      model.penalize('c', { fine: 1, halveXp: false });
+      model.transferFacy('b', 'd', model.subject('b').liquidFacy);
+    }
+    const before = d77State(model);
+    if (mode === 'overflow') {
+      assert.throws(() => relay.resolve(caseId, true), /overflow aggregate debt/);
+      assert.deepEqual(d77State(model), before);
+      assert.equal(model.disputeParticipations()[0].closedAt, null);
+    } else if (mode === 'changed') {
+      assert.equal(relay.resolve(caseId, true).reason, 'case-participation-binding-changed');
+      assert.deepEqual(d77State(model), before);
+    } else {
+      const result = relay.resolve(caseId, true);
+      assert.equal(result.ok, mode === 'upheld');
+      if (mode === 'moot') assert.equal(result.reason, 'moot-target-not-accepted');
+      assert.equal(model.disputeParticipations()[0].closedAt, model.now);
+      model.createSelfId('a', model.registerArtifact('a'));
+    }
+    model.audit();
+  }
+});
+
+test('D77 profile refuses unsupported admission before debit and a financial reservation alone never creates participation', () => {
+  const world = d77World(), { model, relay, rules } = world;
+  for (const options of [{ participationReference: 'unknown' }, { participationReference: 'd77-one-step-converted/v1', claim: 'act-defect' },
+    { participationReference: 'd77-one-step-converted/v1', rules: { ...rules, stakeBacking: 'unsecured' } }])
+    assert.throws(() => new EvidenceRelay(model, { actors: [], rules, ...options }), /unsupported D77/);
+  const id = d77Reviewed(world);
+  model.createSelfId('b', model.registerArtifact('b'));
+  const before = d77State(model), result = relay.sponsor('a', id);
+  assert.equal(result.reason, 'D77 reference requires converted debt-free party sources');
+  assert.deepEqual(d77State(model), before); assert.equal(relay.snapshot().cases.length, 0);
+  const independent = d77World();
+  const book = new DisputeStakes(independent.model, 'reserved'); book.open('financial-only', 'a', 1);
+  assert.deepEqual(independent.model.disputeParticipations(), []);
+  independent.model.createSelfId('a', independent.model.registerArtifact('a'));
+  independent.model.audit();
 });

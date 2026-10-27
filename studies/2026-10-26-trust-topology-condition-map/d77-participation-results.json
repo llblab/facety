@@ -1,0 +1,2080 @@
+{
+  "schema": "facety-d77-participation-validation/v1",
+  "classification": "diagnostic engineering constraint/lifecycle, not human act merits/security or selected default migration",
+  "baseCommit": "e464cc70846f6a9ef3bd458792c6fe4639c7215e",
+  "sourceTree": "3c045b8c7f787fec4dfdbfd2e4fb8c068817d54a",
+  "testTree": "a393be8b8d7d48b996f464fc8ecfaee4ff64d935",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "ad325b0dca833d3cde30633bb14a20cd7d1917737d3170ee8cebe16a4fce42f8",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "reference": {
+    "root": "/tmp/facety-d77-reference-n3smAF",
+    "sourceTree": "8d84f0d5b1cb76477afd3da8802d6423629e2780",
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "65aae8a189e5c98822d80b27445339c4450a594314393b7859093f48f5d94352",
+        "files": 53
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "creation": "git archive HEAD src examples into fresh directory BEFORE source mutation"
+  },
+  "files": [
+    {
+      "path": "src/model.mjs",
+      "gitBlob": "b4d0b444d1b0b90205c78ae6ba39af4b32dbe5ce"
+    },
+    {
+      "path": "src/accountability.mjs",
+      "gitBlob": "d3601e16aa4484c46260ffe822d8f392c36f028a"
+    },
+    {
+      "path": "src/path-witness-replay.mjs",
+      "gitBlob": "b4e95b6b0b495ed671979842e6807d103b842845"
+    },
+    {
+      "path": "test/model.test.mjs",
+      "gitBlob": "ed03af8110477ca9e2d888309a59c2bd63891b6e"
+    },
+    {
+      "path": "test/accountability.test.mjs",
+      "gitBlob": "1f1937a2be8aaf54ef4f6b0d2e5446bf15e7286f"
+    },
+    {
+      "path": "test/path-witness-replay.test.mjs",
+      "gitBlob": "baf33f1e0a10e9ab9c6d3cb73b68afa1dbc5c0e9"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/d77-participation-contract.md",
+      "gitBlob": "e1c85d0172ae752d25776335fb0cc0c99e6bbf78"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/d77-participation-results.md",
+      "gitBlob": "3c1368915c988143dd378f88f6703f7e957c7531"
+    },
+    {
+      "path": "/tmp/facety-d77-participation-conformance.mjs",
+      "gitBlob": "b02d485f6a14518fc5372f235c1c68e7e80d67e7"
+    }
+  ],
+  "preCode": "new D77 horizontal lifecycle/guard contract frozen before code; existing admitted one-step reference chosen as first real caller, no act→identity relabel or unconsumed kernel/framework",
+  "implementation": {
+    "profile": "participationReference:'d77-one-step-converted/v1'",
+    "caller": "existing reviewed/eligible/reserved false-identity one-step reference",
+    "modelPorts": [
+      "previewDisputeParticipation",
+      "beginDisputeParticipation",
+      "endDisputeParticipation",
+      "disputeParticipations"
+    ],
+    "trust": "Model execution ports do not authenticate court; financial reservation alone does not activate holds",
+    "roster": "actual admitted challenger+target, no source/reviewer/attention/hidden-cohort labels",
+    "guards": [
+      "party Self-ID",
+      "party new invitation before limit delegation",
+      "acting party guarantee proposal",
+      "activation involving either party endpoint"
+    ],
+    "holds": "per-case immutable initial subjects/open/end plus independently audited per-subject open-case index",
+    "release": "only completed case; another open case persists; no automatic timed expiry",
+    "sourceEvents": [
+      "dispute-participation-started",
+      "dispute-participation-ended"
+    ],
+    "passiveGraphMeaning": "recognizer has no activity/authority/roster validation; payload omission tested, not hash collision",
+    "unsupported": [
+      "vouch activity",
+      "nonconverted/debt/locked own party sources in relay profile",
+      "experimental invitation profile in relay",
+      "same-case later entrants",
+      "timed act procedure",
+      "Council participation/custody",
+      "selected termination exception"
+    ],
+    "defaultPolicyOrRngChanged": false,
+    "newModules": 0
+  },
+  "factsBasis": "asserted properties and literal fresh test bodies/inputs, not a sampled scientific data set",
+  "functionalFacts": {
+    "suppliedGenesis": 4,
+    "initialWealthXp": 0,
+    "fundedOwnSources": 8,
+    "daysBeforeAdmission": 4,
+    "admittedReferenceStake": 1,
+    "challenger": "a",
+    "target": "b",
+    "roster": [
+      "a",
+      "b"
+    ],
+    "nonpartyEmissionHour": 96,
+    "ordinaryCreditHour": 120,
+    "invitationUsesActualOwnUnit": true,
+    "nonpartyBirthHour": 144,
+    "populationAfterBirth": 5,
+    "stakeStillReservedDuringBirth": 1,
+    "invitationBurnDuringOpen": 1,
+    "partyGuaranteedNonpartyXpPreserved": true,
+    "actualUnopposedHumanVerdict": false,
+    "suppliedBooleanMeritsReferenceUnchanged": true,
+    "postEndOwnActsAllowedWithoutCatchup": true,
+    "twoOverlappingAdmittedCases": true,
+    "failureGuards": [
+      "malformed/replayed rosters",
+      "inert/immutable views",
+      "key/time bypass",
+      "otherwise-valid forbidden operations",
+      "pending-party own source",
+      "unsupported claim/backing",
+      "binding changed out-of-band",
+      "aggregate-debt overflow before custody/release",
+      "moot/duplicate resolution"
+    ],
+    "scientificWorlds": 0,
+    "fullSelectedActCaseClaim": false
+  },
+  "fresh": {
+    "focused": {
+      "command": "node --test test/model.test.mjs test/accountability.test.mjs test/act-relay.test.mjs test/path-witness-replay.test.mjs",
+      "log": "/tmp/facety-d77-participation-focused.txt",
+      "passed": 68,
+      "failed": 0,
+      "newFamilies": 8,
+      "allocation": {
+        "model": 3,
+        "accountability": 4,
+        "replay": 1
+      }
+    },
+    "full": {
+      "command": "npm test",
+      "log": "/tmp/facety-d77-participation-full.txt",
+      "currentPassed": 745,
+      "currentFailed": 0,
+      "historicalPassed": 21,
+      "historicalFailed": 0,
+      "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "meaning": "isolated original compatible-source tests are historical compatibility, not current assurance"
+    },
+    "conformance": {
+      "command": "node /tmp/facety-d77-participation-conformance.mjs",
+      "log": "/tmp/facety-d77-participation-conformance.json",
+      "defaultComparisons": 15,
+      "walkthroughTraceComparisons": 30,
+      "excludedOnly": "provenance.implementation",
+      "exactKeyedDrawsForksAuditsSnapshots": true
+    },
+    "dag": {
+      "command": "bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json",
+      "log": "/tmp/facety-d77-participation-dag.json",
+      "modules": 53,
+      "edges": 168,
+      "actual": {
+        "errors": 0,
+        "warnings": 0,
+        "items": [
+          {
+            "level": "info",
+            "message": "Root: /home/llb/Repos/facety",
+            "details": {}
+          },
+          {
+            "level": "info",
+            "message": "Config: /home/llb/Repos/facety/domain-dag.json",
+            "details": {}
+          },
+          {
+            "level": "info",
+            "message": "Source files 53, local edges 168",
+            "details": {}
+          },
+          {
+            "level": "pass",
+            "message": "Local source import graph is acyclic",
+            "details": {}
+          },
+          {
+            "level": "pass",
+            "message": "Domain modules do not import configured entrypoints",
+            "details": {}
+          },
+          {
+            "level": "pass",
+            "message": "Domain headers are present",
+            "details": {}
+          },
+          {
+            "level": "pass",
+            "message": "No shared-bucket candidates found",
+            "details": {}
+          }
+        ]
+      }
+    },
+    "trajectories": {
+      "command": "node /tmp/facety-fastpath-trajectories.mjs",
+      "log": "/tmp/facety-d77-participation-trajectories.json",
+      "actual": {
+        "provenance": {
+          "implementation": {
+            "method": "sha256-src-mjs-v1",
+            "digest": "ad325b0dca833d3cde30633bb14a20cd7d1917737d3170ee8cebe16a4fce42f8",
+            "files": 53
+          },
+          "runtime": {
+            "node": "v26.8.1"
+          }
+        },
+        "excludedOnly": "provenance.implementation",
+        "legacyConfig": {
+          "scenario": "honest-growth",
+          "seed": "legacy-dispatch-software-preservation",
+          "initialSize": 2,
+          "attackerShare": 0,
+          "days": 2,
+          "stepHours": 24,
+          "actorProfiles": [],
+          "invitationReviewTiming": "daily-slot",
+          "invitationEvidence": "independent",
+          "initialTopology": "none",
+          "initialDegree": 1,
+          "localInspectionShare": 0.8,
+          "sensitivity": 0.8,
+          "falsePositiveRate": 0.01,
+          "maxSubjects": 4,
+          "maxActions": 500000,
+          "targetFalseConversions": 1,
+          "successCriterion": "false-liquidity",
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 0.8,
+              "invite": 0.05,
+              "guarantee": 0.3,
+              "inspect": 1,
+              "respond": 0.9,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0.4,
+              "guarantee": 2,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 1,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "budgets": {
+            "honest": 100000,
+            "attackers": 100000
+          },
+          "weights": {
+            "selfId": 1,
+            "fakeSelfId": 1,
+            "fabricateIdentity": 1,
+            "recruitHuman": 1,
+            "invite": 1,
+            "acceptInvitation": 1,
+            "proposeGuarantee": 1,
+            "confirmGuarantee": 1,
+            "inspect": 1,
+            "respond": 1,
+            "challenge": 1,
+            "verify": 1,
+            "bribe": 1,
+            "cashout": 1,
+            "convert": 1
+          },
+          "policy": {
+            "xpFinality": "terminal",
+            "cancellationAuthority": "snapshot",
+            "guarantorEligibility": "active",
+            "guaranteeFee": 0,
+            "councilSize": 101,
+            "debtRecovery": "reserve-until-mature",
+            "councilEligibility": "active",
+            "invitationFreezeHours": 24,
+            "linkBreakXp": "revoke",
+            "spendMaturityHours": 24,
+            "conversionMaturityHours": 24,
+            "artifactReuse": "registration-only"
+          },
+          "ablations": {
+            "withholdGuarantorXp": false,
+            "disableInvitationVeto": false,
+            "fixedInvitationThreshold": null,
+            "randomGuaranteeTargets": false
+          },
+          "perturbations": [],
+          "disputes": {
+            "enabled": false,
+            "accuracy": 0.9,
+            "stake": 1,
+            "fine": 5,
+            "liability": "inviter-chain",
+            "rewardShare": 0.5,
+            "loserHalvesXp": true,
+            "excludeLiable": false,
+            "fineMode": "chain",
+            "stakeBacking": "unsecured",
+            "procedure": "one-step",
+            "stakeGrowth": 0.2,
+            "signalAccuracy": 0.7,
+            "closeSignalAccuracy": 0.9,
+            "xpValue": 0.05,
+            "maxRounds": 60,
+            "maxScan": 60,
+            "councilDepth": 0,
+            "reputationWeight": 0,
+            "disputeWindowHours": 168,
+            "noticeBase": 0.02,
+            "evidenceGain": 0.1,
+            "civicValue": 0,
+            "entrantChoice": "lowest",
+            "roundsPerDay": 1,
+            "entryTiming": "daily-quota",
+            "trackRecordWeight": 0,
+            "regularsNotice": 0,
+            "evidence": "private-signal",
+            "proofStrength": 0.98,
+            "clusterFollowUp": false
+          },
+          "deviants": {
+            "share": 0,
+            "honest": null,
+            "attackers": null
+          },
+          "social": {
+            "scope": "public",
+            "hops": 2,
+            "strangerRate": 0,
+            "screening": false,
+            "screeningQuantile": 0.2,
+            "screeningShare": 0.5,
+            "verification": false,
+            "verificationSensitivity": 0.9,
+            "verificationFalsePositiveRate": 0.01,
+            "investigation": false,
+            "maxFollowUps": 20,
+            "bribeAcceptance": 0,
+            "bribePrice": 5,
+            "exitOnFraud": false,
+            "flowTracing": false,
+            "flowHubThreshold": 3,
+            "honestTransferRate": 0,
+            "attentionFeedback": false,
+            "gossipHops": 0,
+            "gossipShare": 0.5
+          }
+        },
+        "vouchConfig": {
+          "engine": "native-vouch-tape/v1",
+          "reference": "native-funded-composition-reference/v1",
+          "days": 8,
+          "seed": "wp1-native-backend-software-only",
+          "includeState": true,
+          "maxActions": 100,
+          "maxSubjects": 10,
+          "successCriterion": "unbound",
+          "model": {
+            "genesis": [
+              "a",
+              "b"
+            ],
+            "policy": {
+              "xpFinality": "maturity",
+              "cancellationAuthority": "snapshot",
+              "guarantorEligibility": "accepted",
+              "guaranteeFee": 0,
+              "councilSize": 101,
+              "debtRecovery": "reserve-until-mature",
+              "councilEligibility": "active",
+              "invitationFreezeHours": 24,
+              "linkBreakXp": "revoke",
+              "spendMaturityHours": 24,
+              "conversionMaturityHours": 24,
+              "artifactReuse": "registration-only"
+            },
+            "ablations": {
+              "withholdGuarantorXp": false,
+              "disableInvitationVeto": false,
+              "fixedInvitationThreshold": null
+            },
+            "invitationLimit": null,
+            "vouching": {
+              "K": 2,
+              "T": 1,
+              "V": 3,
+              "B": 2,
+              "reference": {
+                "eligibility": "accepted-reference",
+                "clockOrigin": "commitment",
+                "funding": "collector-liquid",
+                "exitSlot": "retain-until-V",
+                "bondRelease": "supplied-clearance"
+              }
+            },
+            "vouchAdmission": {
+              "c": 2,
+              "reference": "native-guarantees-commitment-reference"
+            }
+          },
+          "work": {
+            "reference": "paid-single-suspicion-veto-reference",
+            "actors": [
+              {
+                "id": "review-a",
+                "subject": "a",
+                "budget": 1
+              },
+              {
+                "id": "review-x",
+                "subject": "x",
+                "budget": 2
+              }
+            ],
+            "costs": {
+              "inspect": 1,
+              "respond": 1
+            }
+          },
+          "environment": {
+            "subjects": [
+              {
+                "id": "a",
+                "genuine": true,
+                "behaviorProfile": "software-fact-only"
+              },
+              {
+                "id": "b",
+                "genuine": true,
+                "behaviorProfile": "software-fact-only"
+              },
+              {
+                "id": "x",
+                "genuine": true,
+                "behaviorProfile": "software-fact-only"
+              },
+              {
+                "id": "y",
+                "genuine": true,
+                "behaviorProfile": "software-fact-only"
+              }
+            ],
+            "validity": {
+              "a:0": true,
+              "b:0": true,
+              "a:24": true,
+              "b:24": true,
+              "x:48": true,
+              "b:48": true,
+              "x:72": true,
+              "b:72": true,
+              "y:96": false
+            },
+            "rates": {
+              "self-id": {
+                "ordinary": {
+                  "valid": 0,
+                  "invalid": 1
+                },
+                "guarantor": {
+                  "valid": 0,
+                  "invalid": 1
+                }
+              },
+              "invitation": {
+                "ordinary": {
+                  "valid": 0,
+                  "invalid": 1
+                },
+                "guarantor": {
+                  "valid": 0,
+                  "invalid": 1
+                }
+              },
+              "guarantee": {
+                "ordinary": {
+                  "valid": 0,
+                  "invalid": 1
+                },
+                "guarantor": {
+                  "valid": 0,
+                  "invalid": 1
+                }
+              }
+            }
+          },
+          "events": [
+            {
+              "atHour": 0,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "a",
+              "id": "media:a:0"
+            },
+            {
+              "atHour": 0,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "a",
+              "id": "a:0",
+              "artifact": "media:a:0"
+            },
+            {
+              "atHour": 0,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "b",
+              "id": "media:b:0"
+            },
+            {
+              "atHour": 0,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "b",
+              "id": "b:0",
+              "artifact": "media:b:0"
+            },
+            {
+              "atHour": 24,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "a",
+              "id": "media:a:24"
+            },
+            {
+              "atHour": 24,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "a",
+              "id": "a:24",
+              "artifact": "media:a:24"
+            },
+            {
+              "atHour": 24,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "b",
+              "id": "media:b:24"
+            },
+            {
+              "atHour": 24,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "b",
+              "id": "b:24",
+              "artifact": "media:b:24"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "withdraw",
+              "owner": "a",
+              "id": "a:0"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "withdraw",
+              "owner": "a",
+              "id": "a:24"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "withdraw",
+              "owner": "b",
+              "id": "b:0"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "withdraw",
+              "owner": "b",
+              "id": "b:24"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "commit",
+              "owner": "a",
+              "target": "x",
+              "id": "ax"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "commit",
+              "owner": "b",
+              "target": "x",
+              "id": "bx"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "admit",
+              "target": "x",
+              "bonds": [
+                "ax",
+                "bx"
+              ]
+            },
+            {
+              "atHour": 48,
+              "authority": "trusted-administration",
+              "op": "pool"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "x",
+              "id": "media:x:48"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "x",
+              "id": "x:48",
+              "artifact": "media:x:48"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "b",
+              "id": "media:b:48"
+            },
+            {
+              "atHour": 48,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "b",
+              "id": "b:48",
+              "artifact": "media:b:48"
+            },
+            {
+              "atHour": 49,
+              "authority": "subject-call",
+              "op": "exit",
+              "owner": "a",
+              "id": "ax"
+            },
+            {
+              "atHour": 49,
+              "authority": "custody-review",
+              "op": "review",
+              "actor": "review-a",
+              "id": "x:48",
+              "opportunity": "composed-x-fixed"
+            },
+            {
+              "atHour": 72,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "x",
+              "id": "media:x:72"
+            },
+            {
+              "atHour": 72,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "x",
+              "id": "x:72",
+              "artifact": "media:x:72"
+            },
+            {
+              "atHour": 72,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "b",
+              "id": "media:b:72"
+            },
+            {
+              "atHour": 72,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "b",
+              "id": "b:72",
+              "artifact": "media:b:72"
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "withdraw",
+              "owner": "x",
+              "id": "x:48"
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "withdraw",
+              "owner": "x",
+              "id": "x:72"
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "withdraw",
+              "owner": "b",
+              "id": "b:48"
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "withdraw",
+              "owner": "b",
+              "id": "b:72"
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "commit",
+              "owner": "x",
+              "target": "y",
+              "id": "xy"
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "commit",
+              "owner": "b",
+              "target": "y",
+              "id": "by"
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "admit",
+              "target": "y",
+              "bonds": [
+                "xy",
+                "by"
+              ]
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "artifact",
+              "owner": "y",
+              "id": "media:y:96"
+            },
+            {
+              "atHour": 96,
+              "authority": "subject-call",
+              "op": "issue",
+              "owner": "y",
+              "id": "y:96",
+              "artifact": "media:y:96"
+            },
+            {
+              "atHour": 97,
+              "authority": "custody-review",
+              "op": "review",
+              "actor": "review-x",
+              "id": "y:96",
+              "opportunity": "composed-y-fixed"
+            },
+            {
+              "atHour": 97,
+              "authority": "trusted-administration",
+              "op": "hold",
+              "id": "ax",
+              "caseId": "case"
+            },
+            {
+              "atHour": 120,
+              "authority": "trusted-administration",
+              "op": "refund",
+              "id": "ax",
+              "clear": true,
+              "clearanceId": "a"
+            },
+            {
+              "atHour": 120,
+              "authority": "trusted-administration",
+              "op": "refund",
+              "id": "bx",
+              "clear": true,
+              "clearanceId": "b"
+            },
+            {
+              "atHour": 121,
+              "authority": "trusted-administration",
+              "op": "settle",
+              "id": "ax",
+              "caseId": "case",
+              "upheld": true,
+              "burn": 1,
+              "transfers": []
+            },
+            {
+              "atHour": 121,
+              "authority": "trusted-administration",
+              "op": "refund",
+              "id": "ax",
+              "clear": true,
+              "clearanceId": "a"
+            },
+            {
+              "atHour": 168,
+              "authority": "trusted-administration",
+              "op": "refund",
+              "id": "xy",
+              "clear": true,
+              "clearanceId": "xy"
+            },
+            {
+              "atHour": 168,
+              "authority": "trusted-administration",
+              "op": "refund",
+              "id": "by",
+              "clear": true,
+              "clearanceId": "by"
+            }
+          ]
+        },
+        "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+        "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+        "matched": true
+      }
+    },
+    "native": {
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "oldFullCurrent": "4ff93e9446f7ecce223b37d57552de3b1beb45af5fcbcb7f97377b14da1741fb",
+      "newFullCurrent": "c2621185f493863cbe3dcbe3f4efafe70bc54b6543586573dca7f5cd7e6a9f3e",
+      "jointChurnPlan": "ca3d88b6bc6a4043167c6bb0183e930ff38dbb4ea2d2b1f88605d28905731518",
+      "physicalJointChurn": {
+        "cells": 72,
+        "queryRows": 864,
+        "positives": 360,
+        "warmHits": 180,
+        "observedMismatch": 0
+      },
+      "meaning": "legitimate new source provenance/full-current identity, not old result relabel"
+    }
+  },
+  "actualConformance": {
+    "walkthroughs": [
+      {
+        "name": "support-finalized",
+        "traceLimit": 0,
+        "digest": "d3c4f71d6d9a2ac0db44f661a72234947ac628ce44fbc0cbc350ffc9f28d9b59",
+        "matched": true
+      },
+      {
+        "name": "support-finalized",
+        "traceLimit": 1,
+        "digest": "0bc90ba1858bd91181a7bc65211a4b45fe5145711427c1bfe044873ae51d4944",
+        "matched": true
+      },
+      {
+        "name": "support-finalized",
+        "traceLimit": 200,
+        "digest": "86e8f7c18732adf4658a90fc3bdb4d6b450483fef3c2ba6c00e2a892cba70e5d",
+        "matched": true
+      },
+      {
+        "name": "support-vetoed",
+        "traceLimit": 0,
+        "digest": "81f592f6e5f1b59621166f76df4bf9384fee651a12401933d1b4405010d55ec0",
+        "matched": true
+      },
+      {
+        "name": "support-vetoed",
+        "traceLimit": 1,
+        "digest": "a5b02a92ac6c10755055e79dec2878218ff055be37fdb27167c3cc801aec65cd",
+        "matched": true
+      },
+      {
+        "name": "support-vetoed",
+        "traceLimit": 200,
+        "digest": "f56a256b010be31a5e54a0bda35094084735db685f111ada0ac796c62a0b3853",
+        "matched": true
+      },
+      {
+        "name": "early-veto",
+        "traceLimit": 0,
+        "digest": "f7bb2dd38c4370bd5fe38819c01fecde36d96b446d9d83301c61144cc1d12462",
+        "matched": true
+      },
+      {
+        "name": "early-veto",
+        "traceLimit": 1,
+        "digest": "725c257cc101b0ca021b76566c0157a3496bb804f63af48de0b45719f24e8478",
+        "matched": true
+      },
+      {
+        "name": "early-veto",
+        "traceLimit": 200,
+        "digest": "4b5f7d08952be0e532b7e0ff7d55712622aeb452e7a310efad4f8e28ecb725c0",
+        "matched": true
+      },
+      {
+        "name": "missed-veto",
+        "traceLimit": 0,
+        "digest": "f3a90ff9f971ef8613d38dd63891f53a1bb157f092f620ba6dea658637bcd808",
+        "matched": true
+      },
+      {
+        "name": "missed-veto",
+        "traceLimit": 1,
+        "digest": "6db14b5991152cb0bd797eb40719dda7060f0ea507167c118ae74be9f66ead72",
+        "matched": true
+      },
+      {
+        "name": "missed-veto",
+        "traceLimit": 200,
+        "digest": "c859b9cb7be722d168655df23cbd0172cba1f68d6670e93b07dc241bc1a224e3",
+        "matched": true
+      },
+      {
+        "name": "outsider-confirmed",
+        "traceLimit": 0,
+        "digest": "dfb689fd56922373be4ca39b79fdb48717bf2ee9a8c5c6329df002137940a978",
+        "matched": true
+      },
+      {
+        "name": "outsider-confirmed",
+        "traceLimit": 1,
+        "digest": "201cbe25a454d21d2bef28eac9d9bb151c43e4c07864ed0825b1090b0d1a130a",
+        "matched": true
+      },
+      {
+        "name": "outsider-confirmed",
+        "traceLimit": 200,
+        "digest": "b06962fca8e6f56db4531bce0a0ea7722f984453a53ebee085ee69d7d7ff9ab9",
+        "matched": true
+      },
+      {
+        "name": "outsider-refused",
+        "traceLimit": 0,
+        "digest": "8992845dde1bef2d91608260edb01a92df021e9fe289492954379b4d45d23124",
+        "matched": true
+      },
+      {
+        "name": "outsider-refused",
+        "traceLimit": 1,
+        "digest": "f05229a873d8847ddc1bafb742a0d4a063793d55698fd487fb11b03f323993ce",
+        "matched": true
+      },
+      {
+        "name": "outsider-refused",
+        "traceLimit": 200,
+        "digest": "4b6244d41a34381aae4c444f41c551a0d022668a8aba4922e18f00e76f79a6c0",
+        "matched": true
+      },
+      {
+        "name": "false-allegation-rejected",
+        "traceLimit": 0,
+        "digest": "a4ceef6081dc5ee499889243512db88fde25358edf01335dc8bdb286f5ec13e5",
+        "matched": true
+      },
+      {
+        "name": "false-allegation-rejected",
+        "traceLimit": 1,
+        "digest": "3c44ba5ff5c5004898aeca150cb06b027c580acf51955de3e0008eee7258d7ea",
+        "matched": true
+      },
+      {
+        "name": "false-allegation-rejected",
+        "traceLimit": 200,
+        "digest": "608030901f41d87284807706bd35e529a64daae4e91e1148cdb6ea73e48681ff",
+        "matched": true
+      },
+      {
+        "name": "false-allegation-upheld",
+        "traceLimit": 0,
+        "digest": "a39c2841b1e87d3bba5f32b01a4185b5395a361b942175344fdc7e0dabfcdbdb",
+        "matched": true
+      },
+      {
+        "name": "false-allegation-upheld",
+        "traceLimit": 1,
+        "digest": "4644693359967bba8527c2a9c8a67d9d6e78bd208d8f553d6930f550cec983fa",
+        "matched": true
+      },
+      {
+        "name": "false-allegation-upheld",
+        "traceLimit": 200,
+        "digest": "1defd3e6ca8bb9588beb91e3667effe010e01a584eb6b4316fbe7a077e05bc42",
+        "matched": true
+      },
+      {
+        "name": "authority-boundary",
+        "traceLimit": 0,
+        "digest": "b2057069b0f0fc6d70cd1377d8d4ba3f85b4a3b2c49ed97bd166f5f135a1412b",
+        "matched": true
+      },
+      {
+        "name": "authority-boundary",
+        "traceLimit": 1,
+        "digest": "2eac388aa04f0c3c9ff03f08eb5b54253ae42b326edad057d106ed4bfadab8f8",
+        "matched": true
+      },
+      {
+        "name": "authority-boundary",
+        "traceLimit": 200,
+        "digest": "ff5b200562405a7cbf39a1dde4fc7ba6b4ca967c584fcdd36cb92024a9efcdc0",
+        "matched": true
+      },
+      {
+        "name": "neglect-restored",
+        "traceLimit": 0,
+        "digest": "c7bcbe5fad1b876657387c891608cac5cce3e4e929b6ccf8b029673b5fe1e2eb",
+        "matched": true
+      },
+      {
+        "name": "neglect-restored",
+        "traceLimit": 1,
+        "digest": "526eaa6993989554e08bd190da292e6cf3e390ca1216e115cafd460c78e8d7e9",
+        "matched": true
+      },
+      {
+        "name": "neglect-restored",
+        "traceLimit": 200,
+        "digest": "976315b2d98d01f2bb075f36748226b2226b4a25baf2c6e841ebb075d940d8f5",
+        "matched": true
+      }
+    ],
+    "schema": "facety-d77-default-conformance/v1",
+    "referenceRoot": "/tmp/facety-d77-reference-n3smAF/src/",
+    "referenceProvenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "65aae8a189e5c98822d80b27445339c4450a594314393b7859093f48f5d94352",
+        "files": 53
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "currentProvenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "ad325b0dca833d3cde30633bb14a20cd7d1917737d3170ee8cebe16a4fce42f8",
+        "files": 53
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "excludedOnly": "provenance.implementation",
+    "rows": [
+      {
+        "id": "daily-idle",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          }
+        },
+        "passed": true,
+        "resultDigest": "7d514c0d5edc75a34387c6e2277511341af1661a3f7f489fb4de6dae152e95ae",
+        "trace": {
+          "draws": 295,
+          "forks": 260,
+          "inspectionDraws": 48,
+          "digest": "3c1c4f25595f1f47b1c993df937c0ce255c2001c729d96e5c01aab6a7e0502bd"
+        },
+        "audits": 9,
+        "referenceInspectionSnapshots": 0,
+        "currentInspectionSnapshots": 0,
+        "elapsedHours": 192
+      },
+      {
+        "id": "four-idle",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "stepHours": 4
+        },
+        "passed": true,
+        "resultDigest": "ac7b9eccc0e70b093eafc0141fa9e696836707b8b12d2623efab00e6a2a38366",
+        "trace": {
+          "draws": 2041,
+          "forks": 1847,
+          "inspectionDraws": 288,
+          "digest": "eec9de5e062375f701fa1da918e591e921db5ba3d128bc3432276af9d3d1f938"
+        },
+        "audits": 57,
+        "referenceInspectionSnapshots": 0,
+        "currentInspectionSnapshots": 0,
+        "elapsedHours": 192
+      },
+      {
+        "id": "six-idle",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "stepHours": 6
+        },
+        "passed": true,
+        "resultDigest": "b912f2d6fba03816c486ac91b43c0e1128cd3da103a0e5a4a5f3a3df0879391a",
+        "trace": {
+          "draws": 1375,
+          "forks": 1245,
+          "inspectionDraws": 192,
+          "digest": "2052af4500a7dcb0de6f593375b8c89fdce3c1003eb2fd685c006b1571adff6f"
+        },
+        "audits": 41,
+        "referenceInspectionSnapshots": 0,
+        "currentInspectionSnapshots": 0,
+        "elapsedHours": 192
+      },
+      {
+        "id": "later-daily",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "stepHours": 24,
+          "perturbations": [
+            {
+              "id": "later-inspection",
+              "startDay": 3,
+              "endDay": 6,
+              "activity": {
+                "honest": {
+                  "inspect": 2
+                },
+                "attackers": {
+                  "inspect": 2
+                }
+              }
+            }
+          ]
+        },
+        "passed": true,
+        "resultDigest": "c1140dee37cc78dfc5c6ba3c0e63f8647b32933b5677fca211bea88aa22ff3d9",
+        "trace": {
+          "draws": 403,
+          "forks": 332,
+          "inspectionDraws": 48,
+          "digest": "b23b38c8b55e72b12bdfbdd5d78a344fb5fbb25626de339066bfb4f03803f653"
+        },
+        "audits": 9,
+        "referenceInspectionSnapshots": 3,
+        "currentInspectionSnapshots": 3,
+        "elapsedHours": 192
+      },
+      {
+        "id": "later-four",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "stepHours": 4,
+          "perturbations": [
+            {
+              "id": "later-inspection",
+              "startDay": 3,
+              "endDay": 6,
+              "activity": {
+                "honest": {
+                  "inspect": 2
+                },
+                "attackers": {
+                  "inspect": 2
+                }
+              }
+            }
+          ]
+        },
+        "passed": true,
+        "resultDigest": "08894d348969faeafe8ff4af8dc99150274e2287e8434d11705fb1cf26ccded2",
+        "trace": {
+          "draws": 2366,
+          "forks": 2136,
+          "inspectionDraws": 504,
+          "digest": "e124fdb7420f9008bb3b938eca29ab51e62cad75d6e7de8e3f9df19e58ebfec6"
+        },
+        "audits": 57,
+        "referenceInspectionSnapshots": 18,
+        "currentInspectionSnapshots": 18,
+        "elapsedHours": 192
+      },
+      {
+        "id": "actor-positive",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "stepHours": 4,
+          "actorProfiles": [
+            {
+              "subject": "n0",
+              "activity": {
+                "inspect": 2
+              }
+            }
+          ]
+        },
+        "passed": true,
+        "resultDigest": "e70202872eb7eb628c4ea5196337c711fcd3b160d83306884cb7519cb45c5c83",
+        "trace": {
+          "draws": 2183,
+          "forks": 1974,
+          "inspectionDraws": 384,
+          "digest": "60142da1198a3b9aa5ef3f7a2ee9be36ddb6a4b2509f414eabbb9010eee6f8aa"
+        },
+        "audits": 57,
+        "referenceInspectionSnapshots": 48,
+        "currentInspectionSnapshots": 48,
+        "elapsedHours": 192
+      },
+      {
+        "id": "actor-unavailable",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "stepHours": 6,
+          "actorProfiles": [
+            {
+              "subject": "n0",
+              "activity": {
+                "inspect": 2
+              },
+              "attentionHours": []
+            }
+          ]
+        },
+        "passed": true,
+        "resultDigest": "2af513a2982ee05c770f3e3fbcc001dc63d44e66a9619020e3d6b0f1e1aad5b4",
+        "trace": {
+          "draws": 1343,
+          "forks": 1213,
+          "inspectionDraws": 160,
+          "digest": "c763fe53203812ba327f797f79065c668ba8230f7fdb5908111c91a27edc8927"
+        },
+        "audits": 41,
+        "referenceInspectionSnapshots": 32,
+        "currentInspectionSnapshots": 32,
+        "elapsedHours": 192
+      },
+      {
+        "id": "deviant-positive",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "stepHours": 4,
+          "deviants": {
+            "share": 0.5,
+            "honest": {
+              "activity": {
+                "inspect": 2
+              }
+            }
+          }
+        },
+        "passed": true,
+        "resultDigest": "abef98cfb109892983cbdd05e0a157b4ccc901b0ca438a42ca264a947db87b90",
+        "trace": {
+          "draws": 2306,
+          "forks": 2094,
+          "inspectionDraws": 480,
+          "digest": "539c502b409e84860552c759f661d3db48d42e916eb7af9b726c273656f5df7d"
+        },
+        "audits": 57,
+        "referenceInspectionSnapshots": 48,
+        "currentInspectionSnapshots": 48,
+        "elapsedHours": 192
+      },
+      {
+        "id": "deviant-idle",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 2,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "deviants": {
+            "share": 1,
+            "honest": {
+              "activity": {
+                "selfId": 1,
+                "invite": 0,
+                "guarantee": 0,
+                "inspect": 0,
+                "respond": 0,
+                "challenge": 0,
+                "review": 0,
+                "defend": 0,
+                "bribe": 0,
+                "cashout": 0,
+                "convert": 1
+              }
+            }
+          }
+        },
+        "passed": true,
+        "resultDigest": "88191974d522c7c955436d703a6405769c4d63d780338bdf5d02a7768ada314f",
+        "trace": {
+          "draws": 299,
+          "forks": 262,
+          "inspectionDraws": 48,
+          "digest": "f426fff49283d9cf9a863e8cef1d63957c3bda59c9b975c0ce1328e29400e77e"
+        },
+        "audits": 9,
+        "referenceInspectionSnapshots": 0,
+        "currentInspectionSnapshots": 0,
+        "elapsedHours": 192
+      },
+      {
+        "id": "screening",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "social": {
+            "screening": true
+          }
+        },
+        "passed": true,
+        "resultDigest": "a8a6a8667055cab44508d3b1967c9bf3707cdcfb62b2afbff83ac65f0aa1d12a",
+        "trace": {
+          "draws": 295,
+          "forks": 260,
+          "inspectionDraws": 48,
+          "digest": "3c1c4f25595f1f47b1c993df937c0ce255c2001c729d96e5c01aab6a7e0502bd"
+        },
+        "audits": 9,
+        "referenceInspectionSnapshots": 8,
+        "currentInspectionSnapshots": 8,
+        "elapsedHours": 192
+      },
+      {
+        "id": "flow",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "social": {
+            "flowTracing": true,
+            "honestTransferRate": 1,
+            "flowHubThreshold": 2
+          }
+        },
+        "passed": true,
+        "resultDigest": "17271b58fa4392ad35a3922ee242409fe1bdc37d04d5c6bbe90d46a153c48dc7",
+        "trace": {
+          "draws": 343,
+          "forks": 308,
+          "inspectionDraws": 48,
+          "digest": "77c9e5d54e2dbc89c4965ecd4b577d6c7934a21a9044774b4392da1119ea6413"
+        },
+        "audits": 9,
+        "referenceInspectionSnapshots": 8,
+        "currentInspectionSnapshots": 8,
+        "elapsedHours": 192
+      },
+      {
+        "id": "attention",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "social": {
+            "attentionFeedback": true
+          }
+        },
+        "passed": true,
+        "resultDigest": "d7e1b8aec88b9586c0981171167d14660262bb79b54e63bc4e7dbb45cf17ae44",
+        "trace": {
+          "draws": 295,
+          "forks": 260,
+          "inspectionDraws": 48,
+          "digest": "3c1c4f25595f1f47b1c993df937c0ce255c2001c729d96e5c01aab6a7e0502bd"
+        },
+        "audits": 9,
+        "referenceInspectionSnapshots": 8,
+        "currentInspectionSnapshots": 8,
+        "elapsedHours": 192
+      },
+      {
+        "id": "zero-budget",
+        "config": {
+          "seed": "fastpath-conformance-software",
+          "initialSize": 6,
+          "attackerShare": 0.333,
+          "initialTopology": "clique",
+          "days": 8,
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0,
+              "guarantee": 0,
+              "inspect": 0,
+              "respond": 0,
+              "challenge": 0,
+              "review": 0,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "budgets": {
+            "honest": 0,
+            "attackers": 0
+          }
+        },
+        "passed": true,
+        "resultDigest": "d858128259a1548dacc457f40da6e0a59be5ec37d0c5ebd034d33bac2c1ee6a4",
+        "trace": {
+          "draws": 253,
+          "forks": 218,
+          "inspectionDraws": 48,
+          "digest": "a759b58fc72daf220e993fd301b0d4eb88402f195643fb4406bf7078baa48b2b"
+        },
+        "audits": 9,
+        "referenceInspectionSnapshots": 0,
+        "currentInspectionSnapshots": 0,
+        "elapsedHours": 192
+      },
+      {
+        "id": "default-positive",
+        "config": {
+          "seed": "fastpath-default-control",
+          "initialSize": 8,
+          "days": 10,
+          "includeState": true
+        },
+        "passed": true,
+        "resultDigest": "98442c9a1ad25a7a03cc5b669319d46074e8276487f59d9edf14c08bb6e45514",
+        "trace": {
+          "draws": 864,
+          "forks": 704,
+          "inspectionDraws": 91,
+          "digest": "b454e5ce42f5bf67349daf854dd91eceec3b76ccf5284947cd3588e45cc755e9"
+        },
+        "audits": 11,
+        "referenceInspectionSnapshots": 10,
+        "currentInspectionSnapshots": 10,
+        "elapsedHours": 240
+      },
+      {
+        "id": "timed-held-control",
+        "config": {
+          "scenario": "real-cartel",
+          "seed": "longitudinal-engineering-timed-v1",
+          "initialSize": 30,
+          "attackerShare": 0.2,
+          "days": 45,
+          "stepHours": 4,
+          "actorProfiles": [],
+          "invitationReviewTiming": "daily-slot",
+          "invitationEvidence": "independent",
+          "initialTopology": "random",
+          "initialDegree": 3,
+          "localInspectionShare": 0.8,
+          "sensitivity": 0.8,
+          "falsePositiveRate": 0.05,
+          "maxSubjects": 200,
+          "maxActions": 100000,
+          "targetFalseConversions": 1,
+          "successCriterion": "council-majority",
+          "includeState": true,
+          "activity": {
+            "honest": {
+              "selfId": 1,
+              "invite": 0.01,
+              "guarantee": 0.1,
+              "inspect": 1,
+              "respond": 0.9,
+              "challenge": 1,
+              "review": 0.2,
+              "defend": 0,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            },
+            "attackers": {
+              "selfId": 1,
+              "invite": 0.01,
+              "guarantee": 0.1,
+              "inspect": 1,
+              "respond": 0,
+              "challenge": 1,
+              "review": 0,
+              "defend": 1,
+              "bribe": 0,
+              "cashout": 0,
+              "convert": 1
+            }
+          },
+          "budgets": {
+            "honest": 100000,
+            "attackers": 100000
+          },
+          "weights": {
+            "selfId": 1,
+            "fakeSelfId": 1,
+            "fabricateIdentity": 1,
+            "recruitHuman": 1,
+            "invite": 1,
+            "acceptInvitation": 1,
+            "proposeGuarantee": 1,
+            "confirmGuarantee": 1,
+            "inspect": 1,
+            "respond": 1,
+            "challenge": 1,
+            "verify": 1,
+            "bribe": 1,
+            "cashout": 1,
+            "convert": 1
+          },
+          "policy": {
+            "xpFinality": "terminal",
+            "cancellationAuthority": "snapshot",
+            "guarantorEligibility": "active",
+            "guaranteeFee": 0,
+            "councilSize": 101,
+            "debtRecovery": "reserve-until-mature",
+            "councilEligibility": "active",
+            "invitationFreezeHours": 24,
+            "linkBreakXp": "revoke",
+            "spendMaturityHours": 24,
+            "conversionMaturityHours": 24,
+            "artifactReuse": "registration-only"
+          },
+          "ablations": {
+            "withholdGuarantorXp": false,
+            "disableInvitationVeto": false,
+            "fixedInvitationThreshold": null,
+            "randomGuaranteeTargets": false
+          },
+          "perturbations": [
+            {
+              "id": "delayed-activity-only",
+              "startDay": 0,
+              "endDay": 15,
+              "activity": {
+                "honest": {},
+                "attackers": {
+                  "inspect": 0,
+                  "challenge": 0,
+                  "defend": 0
+                }
+              }
+            }
+          ],
+          "disputes": {
+            "enabled": true,
+            "accuracy": 0.9,
+            "stake": 1,
+            "fine": 5,
+            "liability": "inviter-chain",
+            "rewardShare": 0.5,
+            "loserHalvesXp": true,
+            "excludeLiable": false,
+            "fineMode": "chain",
+            "stakeBacking": "reserved",
+            "procedure": "chekharda-timed",
+            "stakeGrowth": 0.2,
+            "signalAccuracy": 0.7,
+            "closeSignalAccuracy": 0.9,
+            "xpValue": 0.05,
+            "maxRounds": 100,
+            "maxScan": 100000,
+            "councilDepth": 0,
+            "reputationWeight": 0,
+            "disputeWindowHours": 168,
+            "noticeBase": 0.02,
+            "evidenceGain": 0.1,
+            "civicValue": 0,
+            "entrantChoice": "lowest",
+            "roundsPerDay": 6,
+            "entryTiming": "each-tick",
+            "trackRecordWeight": 0,
+            "regularsNotice": 0,
+            "evidence": "private-signal",
+            "proofStrength": 0.98,
+            "clusterFollowUp": false
+          },
+          "deviants": {
+            "share": 0,
+            "honest": null,
+            "attackers": null
+          },
+          "social": {
+            "scope": "public",
+            "hops": 2,
+            "strangerRate": 0,
+            "screening": false,
+            "screeningQuantile": 0.2,
+            "screeningShare": 0.5,
+            "verification": false,
+            "verificationSensitivity": 0.9,
+            "verificationFalsePositiveRate": 0.01,
+            "investigation": false,
+            "maxFollowUps": 20,
+            "bribeAcceptance": 0,
+            "bribePrice": 5,
+            "exitOnFraud": false,
+            "flowTracing": false,
+            "flowHubThreshold": 3,
+            "honestTransferRate": 0,
+            "attentionFeedback": false,
+            "gossipHops": 0,
+            "gossipShare": 0.5
+          }
+        },
+        "passed": true,
+        "resultDigest": "d32e5cef2b775e97190aeebfe6c2499966ff8dbda2d7a0b782201bcddaa7cea0",
+        "trace": {
+          "draws": 85637,
+          "forks": 74273,
+          "inspectionDraws": 17930,
+          "digest": "89f04d644041b22500cd91e5169f73e67666a9fe083cbcc17baa5f9eb7165fe4"
+        },
+        "audits": 316,
+        "referenceInspectionSnapshots": 281,
+        "currentInspectionSnapshots": 281,
+        "elapsedHours": 1080
+      }
+    ],
+    "passed": 15,
+    "mismatches": 0,
+    "newScientificWorlds": 0,
+    "policyOrRandomnessChange": false
+  },
+  "conformanceProgram": "import assert from 'node:assert/strict';\nimport { readFileSync } from 'node:fs';\nimport { createHash } from 'node:crypto';\nimport { pathToFileURL } from 'node:url';\nimport { runExperiment as current } from '/home/llb/Repos/facety/src/experiment.mjs';\nimport { FacetyModel as CurrentModel } from '/home/llb/Repos/facety/src/model.mjs';\nimport { Random as CurrentRandom } from '/home/llb/Repos/facety/src/random.mjs';\nimport { digestOf, provenance } from '/home/llb/Repos/facety/src/provenance.mjs';\nconst refRoot = '/tmp/facety-d77-reference-n3smAF/src/';\nconst { runExperiment: reference } = await import(pathToFileURL(refRoot + 'experiment.mjs'));\nconst { FacetyModel: RefModel } = await import(pathToFileURL(refRoot + 'model.mjs'));\nconst { Random: RefRandom } = await import(pathToFileURL(refRoot + 'random.mjs'));\nconst { provenance: refProvenance } = await import(pathToFileURL(refRoot + 'provenance.mjs'));\nconst prior = JSON.parse(readFileSync('/home/llb/Repos/facety/studies/2026-10-26-trust-topology-condition-map/longitudinal-preflight-results.json'));\nassert.deepEqual(refProvenance(), JSON.parse(readFileSync('/home/llb/Repos/facety/studies/2026-10-26-trust-topology-condition-map/longitudinal-fastpath-results.json')).provenance);\nconst idle = { selfId: 1, invite: 0, guarantee: 0, inspect: 0, respond: 0, challenge: 0, review: 0, defend: 0, bribe: 0, cashout: 0, convert: 1 };\nconst base = { seed: 'fastpath-conformance-software', initialSize: 6, attackerShare: 0.333, initialTopology: 'clique', days: 8, includeState: true,\n  activity: { honest: idle, attackers: idle } };\nconst later = stepHours => ({ ...base, stepHours, perturbations: [{ id: 'later-inspection', startDay: 3, endDay: 6, activity: { honest: { inspect: 2 }, attackers: { inspect: 2 } } }] });\nconst cases = [\n  ['daily-idle', base], ['four-idle', { ...base, stepHours: 4 }], ['six-idle', { ...base, stepHours: 6 }],\n  ['later-daily', later(24)], ['later-four', later(4)],\n  ['actor-positive', { ...base, stepHours: 4, actorProfiles: [{ subject: 'n0', activity: { inspect: 2 } }] }],\n  ['actor-unavailable', { ...base, stepHours: 6, actorProfiles: [{ subject: 'n0', activity: { inspect: 2 }, attentionHours: [] }] }],\n  ['deviant-positive', { ...base, stepHours: 4, deviants: { share: 0.5, honest: { activity: { inspect: 2 } } } }],\n  ['deviant-idle', { ...base, activity: { honest: { ...idle, inspect: 2 }, attackers: idle }, deviants: { share: 1, honest: { activity: idle } } }],\n  ['screening', { ...base, social: { screening: true } }],\n  ['flow', { ...base, social: { flowTracing: true, honestTransferRate: 1, flowHubThreshold: 2 } }],\n  ['attention', { ...base, social: { attentionFeedback: true } }],\n  ['zero-budget', { ...base, budgets: { honest: 0, attackers: 0 } }],\n  ['default-positive', { seed: 'fastpath-default-control', initialSize: 8, days: 10, includeState: true }],\n  ['timed-held-control', prior.actualRows.find(r => r.kind === 'start' && r.id === 'timed-life-terminal').config],\n];\nfunction captured(run, Model, Random, config) {\n  const selfIds = Model.prototype.selfIds, audit = Model.prototype.audit, next = Random.prototype.next, fork = Random.prototype.fork;\n  const hash = createHash('sha256'); let draws = 0, forks = 0, inspectionDraws = 0, audits = 0, inspectionSnapshots = 0;\n  Model.prototype.selfIds = function (...args) { if (new Error().stack.includes('at inspectionWork')) inspectionSnapshots++; return selfIds.apply(this, args); };\n  Model.prototype.audit = function (...args) { audits++; return audit.apply(this, args); };\n  Random.prototype.next = function (...args) { const value = next.apply(this, args); draws++; if (this.seed.includes('inspection-count')) inspectionDraws++; hash.update(JSON.stringify(['draw', this.seed, value]) + '\\n'); return value; };\n  Random.prototype.fork = function (...args) { forks++; hash.update(JSON.stringify(['fork', this.seed, args]) + '\\n'); return fork.apply(this, args); };\n  let result;\n  try { result = run(config); } finally { Model.prototype.selfIds = selfIds; Model.prototype.audit = audit; Random.prototype.next = next; Random.prototype.fork = fork; }\n  const { implementation, ...rest } = result.provenance;\n  return { result: { ...result, provenance: rest }, trace: { draws, forks, inspectionDraws, digest: hash.digest('hex') }, audits, inspectionSnapshots };\n}\nconst rows = [];\nfor (const [id, config] of cases) {\n  const before = captured(reference, RefModel, RefRandom, config), after = captured(current, CurrentModel, CurrentRandom, config);\n  assert.deepEqual(after.result, before.result, id + ' complete output excluding ONLY implementation');\n  assert.deepEqual(after.trace, before.trace, id + ' exact keyed fork/draw stream');\n  assert.equal(after.audits, before.audits, id + ' audits retained');\n  assert.equal(after.inspectionSnapshots, before.inspectionSnapshots, id + ' exact snapshot calls with D77 mode absent');\n  if (['screening', 'flow', 'attention', 'actor-positive', 'actor-unavailable', 'default-positive', 'timed-held-control'].includes(id)) assert.equal(after.inspectionSnapshots, before.inspectionSnapshots, id + ' ordinary/diagnostic path retained');\n  rows.push({ id, config, passed: true, resultDigest: digestOf(after.result), trace: after.trace, audits: after.audits,\n    referenceInspectionSnapshots: before.inspectionSnapshots, currentInspectionSnapshots: after.inspectionSnapshots, elapsedHours: after.result.outcome.elapsedHours });\n}\nconst currentWalk = await import('/home/llb/Repos/facety/examples/causal-walkthroughs.mjs');\nconst refWalk = await import(pathToFileURL('/tmp/facety-d77-reference-n3smAF/examples/causal-walkthroughs.mjs'));\nconst walkthroughs = [];\nfor (const name of currentWalk.WALKTHROUGHS) for (const traceLimit of [0, 1, 200]) {\n  const before = refWalk.runWalkthrough(name, { traceLimit }), after = currentWalk.runWalkthrough(name, { traceLimit });\n  const strip = value => { const { implementation, ...p } = value.provenance; return { ...value, provenance: p }; };\n  assert.deepEqual(strip(after), strip(before), name + ':old full walkthrough/trace');\n  walkthroughs.push({ name, traceLimit, digest: digestOf(strip(after)), matched: true });\n}\nconsole.log(JSON.stringify({ walkthroughs, schema: 'facety-d77-default-conformance/v1', referenceRoot: refRoot, referenceProvenance: refProvenance(), currentProvenance: provenance(),\n  excludedOnly: 'provenance.implementation', rows, passed: rows.length, mismatches: 0, newScientificWorlds: 0, policyOrRandomnessChange: false }, null, 2));\n",
+  "preservation": {
+    "oldTestBodies": true,
+    "oldPackets": true,
+    "oldActGuard": true,
+    "defaultNoNewFields": true,
+    "noOriginalHistoricalGuardWeakened": true,
+    "noScientificRegistrationOrReplay": true,
+    "annual": "NOT rerun/rebound to new Source, prior completed quiet-year identity remains historical"
+  },
+  "review": "inline authority/atomic preflight/overlap/phase/index/audit/default/keyed/architecture/evidence review plus independently archived Source comparison; no independent reviewer authorship claim",
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-d77-participation-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "review": "Existing structure/meta/index/wide-table warnings, no new orphan/table. No protocol owner rule was added; D77's tentative termination stays unselected. Model trusted hold ports separated from admission; DisputeStakes alone inert; actual opt-in reviewed/access/custody reference caller needed and implemented, act-defect guard not bypassed or relabeled. All-party roster/overlap index independently audited; operation guards precede ID/debit/activation including payer endpoint, malformed/preflight/duplicate/moot/overflow/binding-change controls. Nonparty actual birth/ordinary mature custody/previous guarantor XP continue. No same-case entrant/Council/old-right/vouch migration claimed, endGuarantee remains prior reference behavior not an adopted exception. Replay lifecycle classification passive only, omitted roster payload not authority/hash collision. Fresh745current+21isolated original compatible historical/68focused, independent archived65aa Source15full default keyed comparisons/30walkthroughs/two trajectories and freshDAG53x168 distinguished from scientific evidence/performance. New ad325b0d/c2621185 provenance, old packets/test bodies/defaults/RNG untouched; annual not rerun/rebound. Existing BACKLOG alone owns next D77-aware timed-act/later-roster/derived-finality→D59 subset; no static-controller automatic fallback/framework."
+  },
+  "handoff": {
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "scope": "D76 organized longitudinal protection/opposition enabled by D77",
+    "cohort": "first actual admitted-reference lifecycle/operation guard, single coupled Model/controller/replay cohort",
+    "closed": "opt-in actual existing one-step case→both-party holds→overlap-safe end, continued nonparty funded birth and earlier guarantor XP; old defaults preserved",
+    "next": "D77-aware timed ACT-source profile in existing accountability/Model: actual later roster extension/opposing positions/shared168h/derived finality→D59, stored source/initiator, converted/unencumbered ordinary no-Council subset and nonparty growth, no caller winner/false-identity shortcut; new pre-code before Source",
+    "classification": "local-actionable engineering, scientific v2/G1/master/evidence gates retained; no broad frozen/precredited/Council/termination default selected",
+    "signature": "d77-participation/Model4trustedPorts-auditedIndex/optInActualOneStep2Parties-overlapSafeEnd-nonpartyPaidBirth/68focused745current21historical/15defaultKeyed30walkthroughs-DAG53x168-2trajectories/srcad325b0d/noActCourtOrDefault/nextD77timedAct",
+    "continuationWarranted": true
+  }
+}

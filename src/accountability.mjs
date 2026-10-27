@@ -73,6 +73,7 @@ export class EvidenceRelay {
   #book;
   #rules;
   #claim;
+  #participationReference;
   #actors = new Map();
   #observations = new Map();
   #packages = new Map();
@@ -81,10 +82,13 @@ export class EvidenceRelay {
   #refs = new Map();
   #sequence = 0;
   #journal;
-  constructor(model, { actors, rules, traceLimit = 0, journal = null, claim = 'false-identity' }) {
+  constructor(model, { actors, rules, traceLimit = 0, journal = null, claim = 'false-identity', participationReference = null }) {
     if (!['false-identity', 'act-defect'].includes(claim)) throw new Error('unsupported relay claim');
     this.#claim = claim;
     if (!rules?.enabled || rules.procedure !== 'one-step') throw new Error('relay reference requires normalized enabled one-step rules');
+    if (participationReference !== null && (participationReference !== 'd77-one-step-converted/v1' || claim !== 'false-identity' || rules.stakeBacking !== 'reserved'
+      || model.vouching !== null || model.invitationLimit !== null)) throw new Error('unsupported D77 participation reference');
+    this.#participationReference = participationReference;
     this.#model = model;
     this.#rules = Object.freeze(structuredClone(rules));
     this.#book = new DisputeStakes(model, rules.stakeBacking);
@@ -236,8 +240,16 @@ export class EvidenceRelay {
     if (!access.allowed) return { ok: false, reason: access.reason, preconditions: access.preconditions };
     if (item.claim === 'act-defect') return { ok: false, reason: 'act-defect-adjudication-unimplemented', preconditions: access.preconditions,
       basis: 'XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened' };
-    const id = 'relay-case:' + this.#sequence++;
+    const id = 'relay-case:' + this.#sequence;
+    const subjects = [actor.subject, item.subject];
+    if (this.#participationReference !== null) {
+      this.#model.previewDisputeParticipation(id, subjects);
+      if (subjects.some(id => this.#model.subject(id).debt !== 0) || this.#model.selfIds().some(act => subjects.includes(act.subject)
+        && (act.status !== 'converted' || act.disputeLock !== null))) throw new ProtocolRejection('D77 reference requires converted debt-free party sources');
+    }
+    this.#sequence++;
     this.#book.open(id, actor.subject, this.#rules.stake);
+    if (this.#participationReference !== null) this.#model.beginDisputeParticipation(id, subjects);
     this.#cases.set(id, { id, packageId: item.id, challenger: actor.subject, subject: item.subject, openedAt: this.#model.now, resolvedAt: null, upheld: null });
     item.status = 'pending';
     return { ok: true, value: id, preconditions: access.preconditions, basis: 'existing strict XP and liquid-stake access gates passed' };
@@ -275,8 +287,14 @@ export class EvidenceRelay {
     return this.#journal.step(this.#model, { actor: 'reference-adjudicator', action: 'adjudicate-and-enforce', target: record.subject,
       visible: { caseId, upheld, procedure: 'one-step' }, supports: [this.#refs.get(caseId)], mechanisms: ['M04', 'M07', 'M09'], work: 0 }, () => {
       if (record.resolvedAt !== null) return { ok: false, reason: 'case-already-resolved' };
+      if (this.#participationReference !== null) {
+        const participation = this.#model.disputeParticipations().find(row => row.caseId === caseId);
+        if (!participation || participation.closedAt !== null || participation.subjects.length !== 2
+          || participation.subjects[0] !== record.challenger || participation.subjects[1] !== record.subject) return { ok: false, reason: 'case-participation-binding-changed' };
+      }
       if (this.#model.subject(record.subject).identityStatus !== 'accepted') {
         this.#book.moot(caseId);
+        if (this.#participationReference !== null) this.#model.endDisputeParticipation(caseId);
         record.resolvedAt = this.#model.now;
         this.#package(record.packageId).status = 'resolved';
         return { ok: false, reason: 'moot-target-not-accepted' };
@@ -285,6 +303,7 @@ export class EvidenceRelay {
         { releasedStake: this.#book.backing === 'reserved' ? this.#book.get(caseId).positions[0].amount : 0 });
       settleOneStepPosition(this.#model, this.#book, caseId, record.challenger, upheld, this.#rules);
       const consequences = upheld ? enforceIdentityVerdict(this.#model, record.challenger, record.subject, this.#rules) : null;
+      if (this.#participationReference !== null) this.#model.endDisputeParticipation(caseId);
       record.resolvedAt = this.#model.now;
       record.upheld = upheld;
       record.consequences = consequences;
@@ -295,7 +314,9 @@ export class EvidenceRelay {
   snapshot() {
     return { actors: [...this.#actors.values()].map(({ reviews, ...actor }) => ({ ...actor, reviews: [...reviews] })),
       observations: structuredClone([...this.#observations.values()]), packages: structuredClone([...this.#packages.values()]),
-      cases: structuredClone([...this.#cases.values()]), stakes: this.#book.summary() };
+      cases: structuredClone([...this.#cases.values()]), stakes: this.#book.summary(),
+      ...(this.#participationReference === null ? {} : { participationReference: this.#participationReference,
+        participations: this.#model.disputeParticipations().filter(row => this.#cases.has(row.caseId)) }) };
   }
   trace() { return this.#journal.snapshot(); }
 }

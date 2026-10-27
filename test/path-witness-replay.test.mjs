@@ -30,6 +30,20 @@ test('all current literal Native event types are explicitly classified; unknown 
   assert.throws(() => pure([{ at: 0, type: 'guarantee-slashed', relation: 'r' }]), /unknown/);
 });
 
+test('D77 activity lifecycle replays as passive graph history, not authority or a bound participation roster', () => {
+  const model = new FacetyModel({ genesis: ['u', 'a', 'b'] }), before = audit(model);
+  model.beginDisputeParticipation('case', ['u', 'a']);
+  const during = audit(model), forged = model.events().map(row => row.type === 'dispute-participation-started' ? { ...row, subjects: ['u', 'b'] } : row);
+  assert.deepEqual(during.replay.storage, before.replay.storage);
+  assert.deepEqual(during.replay.subjects, before.replay.subjects);
+  assert.notEqual(during.version.journalDigest, before.version.journalDigest);
+  assert.equal(pure(forged).journalDigest, during.version.journalDigest, 'passive payload omission is not a roster binding or hash collision');
+  model.endDisputeParticipation('case');
+  const after = audit(model);
+  assert.deepEqual(after.replay.storage, before.replay.storage); assert.deepEqual(after.replay.subjects, before.replay.subjects);
+  assert.equal(after.replay.eventCount, before.replay.eventCount + 2);
+});
+
 test('24 same-hour committed operation orderings/336 checkpoints replay graph counters, relation history and public status exactly without mutation', () => {
   const orders = permutations(['Ap', 'Ac', 'Bp', 'Bc']).filter(v => v.indexOf('Ap') < v.indexOf('Ac') && v.indexOf('Bp') < v.indexOf('Bc'));
   assert.equal(orders.length, 6); let scripts = 0, checkpoints = 0;
