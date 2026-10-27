@@ -223,6 +223,20 @@ export class FacetyModel {
     }
     this.#event('dispute-participation-started', plan);
   }
+  previewDisputeParticipant(caseId, subject) {
+    const record = this.#disputeParticipations.get(caseId);
+    if (!record || record.closedAt !== null) throw new ProtocolRejection('participation case is not open');
+    this.#subject(subject, true);
+    if (record.subjects.includes(subject)) throw new ProtocolRejection('subject already participates in case');
+    return Object.freeze({ caseId, subject });
+  }
+  addDisputeParticipant(caseId, subject) {
+    const plan = this.previewDisputeParticipant(caseId, subject), record = this.#disputeParticipations.get(caseId);
+    record.subjects = Object.freeze([...record.subjects, subject]);
+    if (!this.#activityCasesBySubject.has(subject)) this.#activityCasesBySubject.set(subject, new Set());
+    this.#activityCasesBySubject.get(subject).add(caseId);
+    this.#event('dispute-participant-joined', plan);
+  }
   endDisputeParticipation(caseId) {
     const record = this.#disputeParticipations.get(caseId);
     if (!record || record.closedAt !== null) throw new ProtocolRejection('participation case is not open');

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { EvidenceRelay, accountabilitySnapshot } from '../src/accountability.mjs';
 import { actObservationEnvironment } from '../src/act-observations.mjs';
 import { experimentConfig } from '../src/experiment.mjs';
+import { FacetyModel, DAY } from '../src/model.mjs';
 import { digestOf } from '../src/provenance.mjs';
 import { causalWorld, runWalkthrough } from '../examples/causal-walkthroughs.mjs';
 
@@ -196,4 +197,175 @@ test('all ten legacy walkthroughs preserve economic digests except provenance an
     };
     assert.equal(digestOf(legacy(run)), digest, name);
   }
+});
+
+function timedWorld(valid = false) {
+  const counts = { author: 3, challenger: 8, defender: 12, creator: 1, giver: 1 };
+  const model = new FacetyModel({ genesis: Object.keys(counts), policy: { xpFinality: 'maturity', guaranteeFee: 1 } });
+  for (let day = 0; day < 12; day++) {
+    const fresh = Object.keys(counts).filter(id => counts[id] > day).map(id => [id, model.createSelfId(id, model.registerArtifact(id))]);
+    model.advanceTo((day + 1) * DAY);
+    for (const [id, act] of fresh) model.convertToCollector(id, act);
+  }
+  const original = model.selfIds().filter(act => act.subject === 'author'), target = original[1];
+  const rates = Object.fromEntries(['self-id', 'invitation', 'guarantee'].map(kind => [kind, { ordinary: { valid: 1, invalid: 1 }, guarantor: { valid: 1, invalid: 1 } }]));
+  const environment = actObservationEnvironment({ subjects: Object.keys(counts).map(id => ({ id, genuine: true, behaviorProfile: 'supplied' })),
+    acts: [{ id: target.id, subject: 'author', kind: 'self-id', recordedAt: target.recordedAt, valid }] }, { seed: 'd77-timed-software', rates });
+  const options = { claim: 'act-defect', participationReference: 'd77-timed-act-converted/v1', actCaseReference: { formalCouncil: 'absent' }, traceLimit: 200,
+    rules: experimentConfig({ disputes: { enabled: true, procedure: 'chekharda-timed', stakeBacking: 'reserved', councilDepth: 0, stakeGrowth: 0.1 } }).disputes,
+    actors: [{ id: 'Outside', subject: null, budget: 50, reviewCapacity: 0 }, ...Object.keys(counts).map(id => ({ id, subject: id, budget: 50, reviewCapacity: 10 }))] };
+  const relay = new EvidenceRelay(model, options);
+  const observation = relay.observeAct('Outside', target.id, environment, { role: 'ordinary', opportunity: 'initial', sourceGroup: 'public' }).value;
+  const packageId = relay.package('Outside', [observation]).value;
+  assert.ok(relay.route('Outside', packageId, 'challenger').ok);
+  assert.ok(relay.reviewAct('challenger', packageId, environment, { role: 'ordinary', opportunity: 'review', sourceGroup: 'declared-other' }).ok);
+  return { model, relay, original, target, options, packageId };
+}
+function timedState(world) { return { model: accountabilitySnapshot(world.model), participation: world.model.disputeParticipations(), resolutions: world.model.selfIdResolutions() }; }
+function openTimed(world) { const opened = world.relay.sponsor('challenger', world.packageId); assert.ok(opened.ok, opened.reason); return opened.value; }
+function nonpartyLife(world) {
+  const { model } = world;
+  model.confirmGuarantee('creator', model.proposeGuarantee('giver', 'creator'));
+  return model.createSelfId('creator', model.registerArtifact('creator'));
+}
+
+test('timed ACT positions derive source correction or rejection with D77 parties paused and actual nonparty growth, never evaluator truth', t => {
+  const rows = [];
+  for (const opposed of [false, true]) {
+    const states = [];
+    for (const valid of [false, true]) {
+      const world = timedWorld(valid), { model, relay, original, target } = world, caseId = openTimed(world);
+      assert.equal(relay.snapshot().cases[0].selfId, target.id);
+      assert.equal(relay.snapshot().cases[0].deadline, 456);
+      for (const id of ['author', 'challenger']) {
+        const artifact = model.registerArtifact(id), before = timedState(world);
+        assert.throws(() => model.createSelfId(id, artifact), /activity restriction/); assert.deepEqual(timedState(world), before);
+      }
+      const act = nonpartyLife(world);
+      if (opposed) {
+        model.advanceTo(292); assert.ok(relay.enterActCase('defender', caseId).ok);
+        assert.equal(relay.snapshot().cases[0].deadline, 460);
+        const artifact = model.registerArtifact('defender'); assert.throws(() => model.createSelfId('defender', artifact), /activity restriction/);
+        assert.equal(model.ledger().stakeVault, 3);
+      }
+      model.advanceTo(312); assert.equal(model.selfId(act).xpCredit.at, 312); assert.equal(model.selfId(act).status, 'unspent');
+      const invitation = model.createInvitation('creator', act, 'newcomer');
+      model.advanceTo(336); model.acceptInvitation(invitation, 'newcomer');
+      assert.equal(model.subjects().length, 6); assert.equal(model.audit().minted, 26); assert.equal(model.audit().burned, 1);
+      model.advanceTo(opposed ? 456 : 455);
+      assert.equal(relay.finalizeActCase(caseId).reason, 'act-case-response-window-open');
+      model.advanceTo(opposed ? 460 : 456);
+      assert.equal(relay.finalizeActCase(caseId).reason, 'act-case-exact-deadline-unsupported');
+      model.advanceTo(opposed ? 461 : 457);
+      assert.ok(relay.finalizeActCase(caseId).ok);
+      const record = relay.snapshot().cases[0], money = model.audit();
+      assert.equal(record.upheld, !opposed); assert.equal(record.sourceOutcome.selfId, target.id);
+      assert.equal(record.sourceOutcome.initiator, 'challenger'); assert.equal(record.sourceOutcome.caseId, caseId);
+      assert.equal(record.sourceOutcome.punitivePenaltiesApplied, false);
+      assert.deepEqual(model.selfId(original[0].id), original[0]);
+      assert.ok(model.subjects().every(subject => subject.identityStatus === 'accepted'));
+      assert.equal(model.subject('author').xp, opposed ? 3 : 1); assert.equal(model.subject('challenger').xp, opposed ? 4 : 8);
+      assert.equal(model.subject('defender').liquidFacy, opposed ? 13 : 12);
+      assert.equal(record.sourceOutcome.acts.length, opposed ? 0 : 2);
+      assert.equal(record.sourceOutcome.recovery.collected, opposed ? 0 : 2);
+      assert.equal(record.sourceOutcome.recovery.debtAdded, 0);
+      assert.equal(money.minted, 26); assert.equal(money.burned, opposed ? 1 : 3); assert.equal(money.collector, opposed ? 24 : 22);
+      assert.equal(money.feeVault, 1); assert.equal(money.stakeVault + money.emitterVault + money.debt, 0);
+      assert.equal(model.subjects().reduce((sum, subject) => sum + subject.xp, 0), opposed ? 23 : 25);
+      assert.ok(model.disputeParticipations().every(row => row.closedAt === model.now));
+      const settled = timedState(world); assert.equal(relay.finalizeActCase(caseId).reason, 'case-already-resolved'); assert.deepEqual(timedState(world), settled);
+      assert.throws(() => relay.resolve(caseId, !opposed), /cannot use identity verdict/);
+      const state = { ...timedState(world), relay: relay.snapshot(), trace: relay.trace() }; states.push(state);
+      rows.push({ opposed, evaluatorValid: valid, hour: model.now, finalDeadline: record.deadline, population: model.size,
+        authorXp: model.subject('author').xp, challengerXp: model.subject('challenger').xp, defenderLiquid: model.subject('defender').liquidFacy,
+        positions: record.positions, sourceOutcome: record.sourceOutcome, money, protocolDigest: digestOf(state), identitiesInvalidated: 0 });
+    }
+    assert.deepEqual(states[0], states[1], 'identical observations/actions cannot be corrected by private validity labels');
+  }
+  t.diagnostic('d77-timed-act ' + JSON.stringify({ rows, scientificWorlds: 0, scope: 'conditional procedural/source operability; supplied signal rates, not truth/security/human calibration' }));
+});
+
+test('timed ACT entry gates, queries, exact/late/duplicate operations cannot move clock or custody', () => {
+  const world = timedWorld(), { model, relay } = world, caseId = openTimed(world);
+  for (const [actor, reason] of [['Outside', 'entrant-has-no-protocol-membership'], ['author', 'act-case-target-or-repeat-entrant'],
+    ['challenger', 'act-case-target-or-repeat-entrant'], ['giver', 'act-case-entry-XP-gate']]) {
+    const before = timedState(world); assert.equal(relay.enterActCase(actor, caseId).reason, reason); assert.deepEqual(timedState(world), before);
+    assert.equal(relay.snapshot().cases[0].deadline, 456);
+  }
+  model.transferFacy('defender', 'giver', 12);
+  const before = timedState(world); assert.equal(relay.enterActCase('defender', caseId).reason, 'insufficient act-case stake'); assert.deepEqual(timedState(world), before);
+  assert.throws(() => relay.enterActCase('giver', caseId, 'valid'), /recorded opposite side/);
+  assert.throws(() => relay.finalizeActCase(caseId, true), /not a supplied verdict/);
+  model.advanceTo(456); assert.equal(relay.enterActCase('defender', caseId).reason, 'act-case-exact-deadline-unsupported');
+  model.advanceTo(457); assert.equal(relay.enterActCase('defender', caseId).reason, 'act-case-response-window-ended');
+  assert.ok(relay.finalizeActCase(caseId).ok); assert.equal(relay.enterActCase('giver', caseId).reason, 'case-already-resolved');
+});
+
+test('a later nonparty can earn and mature before joining, but pending own sources refuse before new stake or D77 roster entry', () => {
+  const world = timedWorld(), { model, relay } = world, caseId = openTimed(world);
+  const own = model.createSelfId('defender', model.registerArtifact('defender'));
+  model.advanceTo(292);
+  const before = timedState(world);
+  assert.equal(relay.enterActCase('defender', caseId).reason, 'D77 reference requires converted debt-free party sources');
+  assert.deepEqual(timedState(world), before); assert.equal(relay.snapshot().cases[0].deadline, 456);
+  model.advanceTo(312); model.convertToCollector('defender', own);
+  assert.ok(relay.enterActCase('defender', caseId).ok); assert.equal(relay.snapshot().cases[0].deadline, 480);
+  assert.equal(model.subject('defender').xp, 13); assert.deepEqual(model.disputeParticipations()[0].subjects, ['challenger', 'author', 'defender']);
+  const artifact = model.registerArtifact('defender'); assert.throws(() => model.createSelfId('defender', artifact), /activity restriction/);
+});
+
+test('timed ACT final preflight refuses changed roster/custody/source/identity and debt overflow before any payout, source cut or release', () => {
+  for (const mode of ['roster', 'custody', 'source', 'identity', 'overflow']) {
+    const world = timedWorld(), { model, relay, target } = world, caseId = openTimed(world);
+    if (mode === 'roster') model.addDisputeParticipant(caseId, 'giver');
+    if (mode === 'custody') model.settleDisputeStake(caseId, 'challenger');
+    if (mode === 'source') model.resolveSelfId(target.id, { caseId: 'external-trusted-case', initiator: 'challenger', upheld: true });
+    if (mode === 'identity') model.invalidateIdentity('author');
+    if (mode === 'overflow') {
+      model.penalize('giver', { fine: Number.MAX_SAFE_INTEGER, halveXp: false }); model.penalize('giver', { fine: 1, halveXp: false });
+      model.transferFacy('author', 'creator', 3);
+    }
+    model.advanceTo(457); const before = timedState(world);
+    if (mode === 'overflow') assert.throws(() => relay.finalizeActCase(caseId), /overflow aggregate debt/);
+    else assert.equal(relay.finalizeActCase(caseId).ok, false);
+    assert.deepEqual(timedState(world), before); assert.equal(relay.snapshot().cases[0].resolvedAt, null);
+    assert.equal(model.disputeParticipations()[0].closedAt, null);
+  }
+});
+
+test('overlapping timed ACT cases keep the shared challenger paused while a released author resumes amid the other open case', () => {
+  const world = timedWorld(), { model, relay } = world, first = openTimed(world);
+  const source = model.selfIds().find(act => act.subject === 'giver');
+  const observation = relay.observe('Outside', source.id, { suspicious: true, sourceGroup: 'other-public-act' }).value;
+  const item = relay.package('Outside', [observation]).value;
+  relay.route('Outside', item, 'challenger'); relay.review('challenger', item, { suspicious: true, sourceGroup: 'other-review' });
+  const second = relay.sponsor('challenger', item); assert.ok(second.ok);
+  assert.equal(model.ledger().stakeVault, 2);
+  model.advanceTo(457); assert.ok(relay.finalizeActCase(first).ok);
+  const artifact = model.registerArtifact('challenger'); assert.throws(() => model.createSelfId('challenger', artifact), /activity restriction/);
+  model.createSelfId('author', model.registerArtifact('author'));
+  assert.ok(relay.finalizeActCase(second.value).ok);
+  model.createSelfId('challenger', artifact);
+  assert.equal(model.selfIdResolutions().length, 2); assert.ok(model.disputeParticipations().every(row => row.closedAt === 457)); model.audit();
+});
+
+test('derived ACT source execution records uncollected principal as debt, not a fictional burn or refunded-stake income', () => {
+  const world = timedWorld(), { model, relay } = world, caseId = openTimed(world);
+  model.transferFacy('author', 'creator', 3);
+  model.advanceTo(457); assert.ok(relay.finalizeActCase(caseId).ok);
+  const source = relay.snapshot().cases[0].sourceOutcome;
+  assert.deepEqual(source.recovery, { emitterBurn: 0, alreadyBurned: 0, requestedFromAuthor: 2, collected: 0, debtAdded: 2 });
+  assert.equal(model.subject('author').debt, 2); assert.equal(model.subject('author').xp, 1);
+  assert.equal(model.ledger().minted, 25); assert.equal(model.ledger().burned, 0); assert.equal(model.ledger().debt, 2);
+  assert.equal(model.subject('challenger').liquidFacy, 8, 'the original reserved1 is refunded, not earned');
+  assert.equal(model.disputeParticipations()[0].closedAt, 457); model.audit();
+});
+
+test('timed ACT profile requires its exact explicit subset and preserves the default act guard instead of inferring Council or merits', () => {
+  const { model, options } = timedWorld();
+  for (const override of [{ claim: 'false-identity' }, { actCaseReference: null }, { actCaseReference: { formalCouncil: 'present' } },
+    { actCaseReference: { formalCouncil: 'absent', winner: true } }, ...['stakeGrowth', 'councilDepth', 'stake', 'disputeWindowHours'].map(key => ({ rules: { ...options.rules, [key]: 9 } }))])
+    assert.throws(() => new EvidenceRelay(model, { ...options, ...override }), /unsupported timed act-case/);
+  assert.throws(() => new EvidenceRelay(model, { ...options, participationReference: null, actCaseReference: null }), /one-step rules/);
+  const old = setup(); assert.equal(old.relay.sponsor('Bela', reviewed(old)).reason, 'act-defect-adjudication-unimplemented');
 });

@@ -74,6 +74,7 @@ export class EvidenceRelay {
   #rules;
   #claim;
   #participationReference;
+  #actCaseReference;
   #actors = new Map();
   #observations = new Map();
   #packages = new Map();
@@ -82,12 +83,19 @@ export class EvidenceRelay {
   #refs = new Map();
   #sequence = 0;
   #journal;
-  constructor(model, { actors, rules, traceLimit = 0, journal = null, claim = 'false-identity', participationReference = null }) {
+  constructor(model, { actors, rules, traceLimit = 0, journal = null, claim = 'false-identity', participationReference = null, actCaseReference = null }) {
     if (!['false-identity', 'act-defect'].includes(claim)) throw new Error('unsupported relay claim');
     this.#claim = claim;
-    if (!rules?.enabled || rules.procedure !== 'one-step') throw new Error('relay reference requires normalized enabled one-step rules');
-    if (participationReference !== null && (participationReference !== 'd77-one-step-converted/v1' || claim !== 'false-identity' || rules.stakeBacking !== 'reserved'
-      || model.vouching !== null || model.invitationLimit !== null)) throw new Error('unsupported D77 participation reference');
+    const timedAct = participationReference === 'd77-timed-act-converted/v1';
+    if (!rules?.enabled || (rules.procedure !== 'one-step' && !(timedAct && rules.procedure === 'chekharda-timed'))) throw new Error('relay reference requires normalized enabled one-step rules');
+    if (timedAct) {
+      if (claim !== 'act-defect' || rules.procedure !== 'chekharda-timed' || rules.stakeBacking !== 'reserved' || rules.disputeWindowHours !== 168
+        || rules.stake !== 1 || rules.stakeGrowth !== 0.1 || rules.councilDepth !== 0 || rules.loserHalvesXp !== true
+        || model.vouching !== null || model.invitationLimit !== null || !actCaseReference || typeof actCaseReference !== 'object' || Array.isArray(actCaseReference)
+        || Object.keys(actCaseReference).join() !== 'formalCouncil' || actCaseReference.formalCouncil !== 'absent') throw new Error('unsupported timed act-case reference');
+    } else if (actCaseReference !== null || (participationReference !== null && (participationReference !== 'd77-one-step-converted/v1' || claim !== 'false-identity' || rules.stakeBacking !== 'reserved'
+      || model.vouching !== null || model.invitationLimit !== null))) throw new Error('unsupported D77 participation reference');
+    this.#actCaseReference = timedAct ? Object.freeze({ formalCouncil: 'absent' }) : null;
     this.#participationReference = participationReference;
     this.#model = model;
     this.#rules = Object.freeze(structuredClone(rules));
@@ -232,25 +240,43 @@ export class EvidenceRelay {
           : 'fallible act review; distinct declared source tags do not certify independence' };
     });
   }
+  #requireConvertedParties(subjects) {
+    if (subjects.some(id => this.#model.subject(id).debt !== 0 || this.#model.subject(id).identityStatus !== 'accepted')
+      || this.#model.selfIds().some(act => subjects.includes(act.subject) && (act.status !== 'converted' || act.disputeLock !== null))) throw new ProtocolRejection('D77 reference requires converted debt-free party sources');
+  }
+  #participationBound(record) {
+    const participation = this.#model.disputeParticipations().find(row => row.caseId === record.id);
+    const subjects = [record.challenger, record.subject, ...(record.positions?.slice(1).map(row => row.subject) ?? [])];
+    return participation && participation.closedAt === null && participation.subjects.length === subjects.length
+      && subjects.every((id, index) => participation.subjects[index] === id);
+  }
   #entry(actor, item, route) {
     if (item.status !== 'open' || route?.status !== 'reviewed') return { ok: false, reason: 'no-reviewed-open-route' };
     if (actor.subject === null) return { ok: false, reason: 'sponsor-has-no-protocol-membership' };
     if ([...this.#cases.values()].some(record => record.subject === item.subject && record.resolvedAt === null)) return { ok: false, reason: 'subject-already-under-dispute' };
     const access = challengeAccess(this.#model, actor.subject, item.subject, this.#rules.stake);
     if (!access.allowed) return { ok: false, reason: access.reason, preconditions: access.preconditions };
-    if (item.claim === 'act-defect') return { ok: false, reason: 'act-defect-adjudication-unimplemented', preconditions: access.preconditions,
+    if (item.claim === 'act-defect' && this.#actCaseReference === null) return { ok: false, reason: 'act-defect-adjudication-unimplemented', preconditions: access.preconditions,
       basis: 'XP/stake eligibility is not act-level jurisdiction or a defined remedy; no case or stake opened' };
     const id = 'relay-case:' + this.#sequence;
     const subjects = [actor.subject, item.subject];
     if (this.#participationReference !== null) {
       this.#model.previewDisputeParticipation(id, subjects);
-      if (subjects.some(id => this.#model.subject(id).debt !== 0) || this.#model.selfIds().some(act => subjects.includes(act.subject)
-        && (act.status !== 'converted' || act.disputeLock !== null))) throw new ProtocolRejection('D77 reference requires converted debt-free party sources');
+      this.#requireConvertedParties(subjects);
+    }
+    let actCase = {};
+    if (this.#actCaseReference !== null) {
+      const source = this.#model.previewSelfIdResolution(item.selfId, { caseId: id, initiator: actor.subject, upheld: true });
+      if (source.kind !== 'external-chain-cut') throw new ProtocolRejection('act-case self-author route is unsupported');
+      const deadline = this.#model.now + this.#rules.disputeWindowHours;
+      if (!Number.isSafeInteger(deadline)) throw new ProtocolRejection('act-case deadline exceeds safe clock');
+      actCase = { selfId: item.selfId, openingHead: source.head, lastMoveAt: this.#model.now, deadline,
+        positions: [{ subject: actor.subject, side: 'defect', stake: this.#rules.stake, atHour: this.#model.now }], sourceOutcome: null };
     }
     this.#sequence++;
     this.#book.open(id, actor.subject, this.#rules.stake);
     if (this.#participationReference !== null) this.#model.beginDisputeParticipation(id, subjects);
-    this.#cases.set(id, { id, packageId: item.id, challenger: actor.subject, subject: item.subject, openedAt: this.#model.now, resolvedAt: null, upheld: null });
+    this.#cases.set(id, { id, packageId: item.id, challenger: actor.subject, subject: item.subject, openedAt: this.#model.now, resolvedAt: null, upheld: null, ...actCase });
     item.status = 'pending';
     return { ok: true, value: id, preconditions: access.preconditions, basis: 'existing strict XP and liquid-stake access gates passed' };
   }
@@ -274,9 +300,68 @@ export class EvidenceRelay {
       const result = assessment.willing === true ? this.#entry(actor, item, route)
         : { ok: false, reason: assessment.willing === false ? 'sponsor-declined' : 'sponsor-willingness-undetermined', basis: 'explicit conditional private utility; no automatic action on ties or unknowns' };
       const decision = { id: 'sponsor-decision:' + this.#sequence++, atHour: this.#model.now, assessment, access, reviewedRoute: ready,
-        attempted, caseOpened: result.ok, entrySupported: false, outcome: result.reason ?? null };
+        attempted, caseOpened: result.ok, entrySupported: this.#actCaseReference !== null, outcome: result.reason ?? null };
       if (route) (route.decisions ??= []).push(structuredClone(decision));
       return { ...result, decision };
+    });
+  }
+  #actCase(caseId) {
+    if (this.#actCaseReference === null) throw new Error('timed act-case reference is not enabled');
+    const record = this.#cases.get(caseId);
+    if (!record) throw new Error('unknown relay case');
+    return record;
+  }
+  enterActCase(actorId, caseId, ...extra) {
+    if (extra.length) throw new TypeError('act-case entry takes the recorded opposite side, not a supplied side');
+    const record = this.#actCase(caseId);
+    return this.#act(actorId, 'enter-act-case', record.subject, { caseId }, [this.#refs.get(caseId)], ['M07', 'M09'], 1, actor => {
+      if (record.resolvedAt !== null) return { ok: false, reason: 'case-already-resolved' };
+      if (!this.#participationBound(record)) return { ok: false, reason: 'case-participation-binding-changed' };
+      if (this.#model.now >= record.deadline) return { ok: false, reason: this.#model.now === record.deadline ? 'act-case-exact-deadline-unsupported' : 'act-case-response-window-ended' };
+      if (actor.subject === null) return { ok: false, reason: 'entrant-has-no-protocol-membership' };
+      if (actor.subject === record.subject || this.#book.hasParticipant(caseId, actor.subject)) return { ok: false, reason: 'act-case-target-or-repeat-entrant' };
+      const previous = record.positions.at(-1), stake = Math.ceil(previous.stake * (1 + this.#rules.stakeGrowth));
+      const candidate = this.#model.subject(actor.subject), floor = this.#model.subject(previous.subject).xp;
+      if (!Number.isSafeInteger(stake) || !Number.isSafeInteger(this.#model.now + this.#rules.disputeWindowHours)) return { ok: false, reason: 'act-case-numeric-bound' };
+      if (candidate.identityStatus !== 'accepted' || candidate.xp <= floor) return { ok: false, reason: 'act-case-entry-XP-gate' };
+      if (candidate.liquidFacy < stake) return { ok: false, reason: 'insufficient act-case stake' };
+      this.#requireConvertedParties([record.subject, ...record.positions.map(row => row.subject), actor.subject]);
+      this.#model.previewDisputeParticipant(caseId, actor.subject);
+      this.#book.enter(caseId, actor.subject, stake);
+      this.#model.addDisputeParticipant(caseId, actor.subject);
+      record.positions.push({ subject: actor.subject, side: previous.side === 'defect' ? 'valid' : 'defect', stake, atHour: this.#model.now });
+      record.lastMoveAt = this.#model.now; record.deadline = record.lastMoveAt + this.#rules.disputeWindowHours;
+      return { ok: true, value: caseId, basis: 'explicit opposing actor request, current strict XP, actual reserved stake and D77 roster entry' };
+    });
+  }
+  finalizeActCase(caseId, ...extra) {
+    if (extra.length) throw new TypeError('act-case finality derives the outcome, not a supplied verdict');
+    const record = this.#actCase(caseId);
+    return this.#journal.step(this.#model, { actor: 'reference-clock', action: 'finalize-act-case', target: record.subject,
+      visible: { caseId, deadline: record.deadline }, supports: [this.#refs.get(caseId)], mechanisms: ['M07', 'M09'], work: 0 }, () => {
+      if (record.resolvedAt !== null) return { ok: false, reason: 'case-already-resolved' };
+      if (!this.#participationBound(record)) return { ok: false, reason: 'case-participation-binding-changed' };
+      if (this.#model.now <= record.deadline) return { ok: false, reason: this.#model.now === record.deadline ? 'act-case-exact-deadline-unsupported' : 'act-case-response-window-open' };
+      this.#requireConvertedParties([record.subject, ...record.positions.map(row => row.subject)]);
+      const upheld = record.positions.at(-1).side === 'defect';
+      const source = this.#model.previewSelfIdResolution(record.selfId, { caseId, initiator: record.challenger, upheld });
+      if (source.head !== record.openingHead) return { ok: false, reason: 'act-case-target-head-changed' };
+      const financial = this.#book.get(caseId), custody = this.#model.disputeStakes().filter(row => row.caseId === caseId);
+      if (financial.status !== 'open' || custody.length !== record.positions.length || financial.positions.length !== record.positions.length
+        || record.positions.some((row, index) => financial.positions[index].owner !== row.subject || financial.positions[index].amount !== row.stake
+          || financial.positions[index].side !== (row.side === 'defect' ? 'fraud' : 'genuine')
+          || !custody.some(stake => stake.owner === row.subject && stake.amount === row.stake && stake.status === 'reserved'))) return { ok: false, reason: 'act-case-custody-binding-changed' };
+      const losing = record.positions.filter(row => row.side !== record.positions.at(-1).side);
+      if (losing.some(row => !Number.isSafeInteger(this.#model.subject(row.subject).xpHalvings + 1))) throw new RangeError('act-case XP halvings exceed safe bounds');
+      this.#model.audit();
+      const accounting = this.#book.settle(caseId, upheld ? 'fraud' : 'genuine');
+      for (const row of losing) this.#model.penalize(row.subject, { fine: 0, halveXp: true });
+      record.sourceOutcome = this.#model.resolveSelfId(record.selfId, { caseId, initiator: record.challenger, upheld });
+      this.#model.endDisputeParticipation(caseId);
+      record.resolvedAt = this.#model.now; record.upheld = upheld;
+      this.#package(record.packageId).status = 'resolved';
+      return { ok: true, value: caseId, accounting: accounting.accounting,
+        basis: 'recorded unopposed side after shared window; source execution, not factual truth or punitive identity verdict' };
     });
   }
   resolve(caseId, upheld) {
@@ -287,11 +372,7 @@ export class EvidenceRelay {
     return this.#journal.step(this.#model, { actor: 'reference-adjudicator', action: 'adjudicate-and-enforce', target: record.subject,
       visible: { caseId, upheld, procedure: 'one-step' }, supports: [this.#refs.get(caseId)], mechanisms: ['M04', 'M07', 'M09'], work: 0 }, () => {
       if (record.resolvedAt !== null) return { ok: false, reason: 'case-already-resolved' };
-      if (this.#participationReference !== null) {
-        const participation = this.#model.disputeParticipations().find(row => row.caseId === caseId);
-        if (!participation || participation.closedAt !== null || participation.subjects.length !== 2
-          || participation.subjects[0] !== record.challenger || participation.subjects[1] !== record.subject) return { ok: false, reason: 'case-participation-binding-changed' };
-      }
+      if (this.#participationReference !== null && !this.#participationBound(record)) return { ok: false, reason: 'case-participation-binding-changed' };
       if (this.#model.subject(record.subject).identityStatus !== 'accepted') {
         this.#book.moot(caseId);
         if (this.#participationReference !== null) this.#model.endDisputeParticipation(caseId);
@@ -316,7 +397,8 @@ export class EvidenceRelay {
       observations: structuredClone([...this.#observations.values()]), packages: structuredClone([...this.#packages.values()]),
       cases: structuredClone([...this.#cases.values()]), stakes: this.#book.summary(),
       ...(this.#participationReference === null ? {} : { participationReference: this.#participationReference,
-        participations: this.#model.disputeParticipations().filter(row => this.#cases.has(row.caseId)) }) };
+        participations: this.#model.disputeParticipations().filter(row => this.#cases.has(row.caseId)) }),
+      ...(this.#actCaseReference === null ? {} : { actCaseReference: this.#actCaseReference }) };
   }
   trace() { return this.#journal.snapshot(); }
 }

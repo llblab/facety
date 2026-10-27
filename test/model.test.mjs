@@ -717,3 +717,23 @@ test('D77 roster preflight and immutable views are inert, and invalid batches ne
   assert.throws(() => model.events().at(-1).subjects.push('c'), TypeError);
   identify(model, 'c'); model.audit();
 });
+
+test('D77 later entrant joins the existing case atomically, keeps earlier immutable rosters and remains held by overlapping cases', () => {
+  const model = new FacetyModel({ genesis: ['a', 'b', 'c', 'd'] });
+  model.beginDisputeParticipation('A', ['a', 'b']); model.beginDisputeParticipation('B', ['c', 'd']);
+  const original = model.disputeParticipations(), before = participationState(model);
+  assert.deepEqual(model.previewDisputeParticipant('A', 'c'), { caseId: 'A', subject: 'c' });
+  assert.deepEqual(participationState(model), before);
+  for (const [caseId, subject] of [['missing', 'c'], ['A', 'a'], ['A', 'unknown']]) {
+    assert.throws(() => model.addDisputeParticipant(caseId, subject)); assert.deepEqual(participationState(model), before);
+  }
+  model.addDisputeParticipant('A', 'c');
+  assert.deepEqual(original[0].subjects, ['a', 'b']); assert.deepEqual(model.disputeParticipations()[0].subjects, ['a', 'b', 'c']);
+  assert.deepEqual(model.events().find(row => row.type === 'dispute-participation-started').subjects, ['a', 'b']);
+  model.endDisputeParticipation('A');
+  const artifact = model.registerArtifact('c'); assert.throws(() => model.createSelfId('c', artifact), /activity restriction/);
+  identify(model, 'a'); identify(model, 'b');
+  model.endDisputeParticipation('B'); model.createSelfId('c', artifact);
+  const closed = participationState(model); assert.throws(() => model.addDisputeParticipant('A', 'd'), /not open/);
+  assert.deepEqual(participationState(model), closed); model.audit();
+});

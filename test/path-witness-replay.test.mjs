@@ -44,6 +44,15 @@ test('D77 activity lifecycle replays as passive graph history, not authority or 
   assert.equal(after.replay.eventCount, before.replay.eventCount + 2);
 });
 
+test('D77 later-party event stays passive graph evidence, never an authenticated activity roster', () => {
+  const model = new FacetyModel({ genesis: ['u', 'a', 'b'] });
+  model.beginDisputeParticipation('case', ['u', 'a']); model.addDisputeParticipant('case', 'b');
+  const result = audit(model), forged = model.events().map(row => row.type === 'dispute-participant-joined' ? { ...row, subject: 'unbound-payload' } : row);
+  assert.equal(pure(forged).journalDigest, result.version.journalDigest);
+  assert.deepEqual(model.disputeParticipations()[0].subjects, ['u', 'a', 'b']);
+  model.endDisputeParticipation('case'); audit(model);
+});
+
 test('24 same-hour committed operation orderings/336 checkpoints replay graph counters, relation history and public status exactly without mutation', () => {
   const orders = permutations(['Ap', 'Ac', 'Bp', 'Bc']).filter(v => v.indexOf('Ap') < v.indexOf('Ac') && v.indexOf('Bp') < v.indexOf('Bc'));
   assert.equal(orders.length, 6); let scripts = 0, checkpoints = 0;
