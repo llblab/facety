@@ -90,7 +90,7 @@ The final trust boundary is human collective judgment. Equal votes limit individ
 | Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
 | XP penalty | A liable loss can halve effective XP; monetary penalties can create collectible debt. |
 | Council | D33 selects a difficulty-based target `1, 11, 101, 1001, 10001, 100001`, capped by active verified/eligible participants; target 1 is no formal Council. Each formal consul has one vote. The old fixed-101 design is preserved below as superseded context. |
-| Atmo | Bucket D activates under policy, releases capital to Treasury D, and can buy and burn FACY under bounded rules. |
+| Atmo | D53 controls conditional Bucket D support; D74 separately assigns four core parameters: guarantor K100, invitations/emission/new-dispute opening enabled. Counting, electorate, activation and pending-rights contracts remain OPEN (§8.1). |
 
 ---
 
@@ -271,11 +271,28 @@ Bucket D (Dormant)
     -> actual FACY burn
 ```
 
-This is a controlled interface between two economies, not a redemption promise. Atmo does not buy individual identity claims. It influences aggregate FACY demand while Facety keeps its own admission, identity, XP, and dispute rules.
+This is a controlled interface between two economies, not a redemption promise. Atmo does not buy individual identity claims. D53's support interface influences aggregate FACY demand; it does not itself authorize changing Facety admission, identity, XP or dispute rules. D74 separately delegates the four expressly named parameter controls in §8.1, not arbitrary identity judgments or a general power to rewrite those rules.
 
-If the Facety trust graph has serious Sybil problems, Atmo can slow or pause buyback. If the network recovers, the approved policy can restore the flow. This makes Bucket D an **economic isolation and coupling mechanism**, similar to an isolation transformer: the systems exchange effects without merging their internal control planes.
+If the Facety trust graph has serious Sybil problems, Atmo can slow or pause buyback. If the network recovers, the approved policy can restore the flow. This makes Bucket D an **economic isolation and coupling mechanism**, similar to an isolation transformer: financial support and internal identity adjudication remain distinct. A buyback pause is not an implicit D74 core-control activation.
 
 The deeper marketing idea is that Atmo does not merely purchase attention. It helps create a reusable human coordination network. The network can grow through invitations, continued Self-ID, responsibility, and the applications that use its identity evidence.
+
+### 8.1 Explicit Atmo core-parameter mandate (D74)
+
+**D74 — [OWNER-selected parameter-governance scope and defaults; execution contracts OPEN], documented 2026-10-27.** Source: the owner's path-gate/core-test brief explicitly assigning four core parameters to voting at the Atmo level. This is a separately recorded extension beyond D53's authority over conditional financial support, not an interpretation that pausing Bucket D already controls Facety.
+
+- **Guarantor limit K — default100.** A guarantor limit is selected; live versus lifetime/pending counts, distinct subjects/acts, direction, slot release/re-entry and reduction/adoption rules remain OPEN.
+- **Invitations — enabled.** Control over new invitations; treatment of existing mature own rights and already frozen/issued invitations remains OPEN.
+- **Emission — enabled.** Control over new FACY issuance and associated XP production; the exact new-act/previously committed-act/credit cutoff and behavior during a pause remain OPEN.
+- **Dispute opening — enabled.** Control over opening new disputes; existing cases, D72 entry into an existing case, shared timers and preventive act-specific vetoes require explicit separate treatment.
+
+These parameter names/defaults do not select a ballot implementation, instantaneous activation or an unlimited emergency mandate. The new controls' electorate, voting weight/quorum, proposal/authentication/execution authority, possible Facety-Council confirmation, health-evidence requirements, time-lock, duration limit and automatic restoration are OPEN. D53's ATMO-token support vote does not silently settle these controls' exact electorate or a proposed Council-plus-Atmo variant. FACY holdings and XP alone create no new outside authority.
+
+K100 is not an already implemented live out-degree cap, a guarantee-price rule, a cluster quota, a permanent100-act lifetime bound or the simulator's separately named K/V probation slots. The meaning must be specified before enforcement. Lowering K cannot by inference erase historical guarantee responsibility, old credits or funded commitments; treatment of an over-cap subject and new versus existing relations needs an adoption contract. The own-emission daily flow does not define K or its renewal.
+
+A pause MUST NOT silently erase source/history, earned XP, pending contractual rights, liabilities, collateral or already-open cases. This preservation boundary does not decide every allowed future disposition: new-act admission, previously committed maturity/credit, in-flight invitations, existing dispute/Council/veto operation, execution order and resumption still need explicit contracts. “Stop opening new disputes” is not automatically “all correction is disabled,” but it is a material attack surface where correction may be needed most. No alleged unhealthy graph or public accusation automatically authorizes activation.
+
+The ordinary autonomous core baseline keeps these controls fixed at their declared defaults and assumes no Atmo financial rescue. Governance capture/false-trigger experiments separately model actual acquisition/authorization costs and genuine losses, not free outside power or protection. D74 selects no automatic cluster quota, default runtime migration, monetary backstop, confiscation, emergency verdict, real ATMO transaction or proof of resilience. The T9 research direction under D73 must distinguish disabling issuance from entrenching existing XP holders and disabling correction.
 
 ## 9. The intended social equilibrium
 
@@ -769,6 +786,8 @@ The implementation MUST distinguish:
 
 No design should assume that a guarantee automatically burns 1 FACY. The confirmed **1 FACY burn** applies to **invitations**, not to every form of guarantee commitment.
 
+**D73/D74 clarification,2026-10-27:** at most one new own-emission unit per24h is a funding-flow constraint, not a cap on accumulated live/history guarantees or a rule of one guarantee/day. Previously matured own rights can accumulate, and the guarantee amount/disposition above is still OPEN. D74 selects a distinct Atmo-controlled guarantor-limit parameter K with default100 (§8.1); its counted resource, renewal, activation and historical treatment must not be silently inferred from this daily flow or from an old simulator's K slots.
+
 ### 19.3 Unilateral link break
 
 **[SELECTED]** Either party can unilaterally end an established guarantee relation under the protocol's rules. A normal established-link break incurs a **1 FACY fee**.
@@ -918,6 +937,8 @@ Indices locate the range relevant to a chain-cut sanction; they are not by thems
 - If the violation starts at the invitation (the subject never was a real, unique person), N is the number of acts the false subject performed. The fine falls on the inviter, who spent an invitation on a non-existent person, and on the inviter's guarantors, who vouched for a person registering fake people and did not cancel the frozen invitation. The false subject's own guarantors are liable as well.
 
 Converted coins cannot be un-minted; recovering them is part of the fine. **[OPEN]** Caps, collection order from recoverable assets, partial cuts for real persons with an isolated invalid act, and exact historical duties/time boundaries for former guarantors. D34 selects survival of past-event liability after link exit; whether exit alone erases that past responsibility is no longer OPEN.
+
+**D73 review boundary,2026-10-27:** D34 does not select a universal “one personal chain of liability per bought bridge.” A guarantor of an inviter may be responsible for multiple historical suspect invitations/child chains under the applicable duties, not only the inviter's own Self-ID chain. A proposed low-exposure attack must specify inviter/guarantor roles, historical rosters, covered events and actual recovery; moving later growth downstream may change that exposure. Conversely, graph connectivity does not authorize fining an entire component. Exact per-party duty/overlap/count/cap rules remain OPEN rather than a favorable assumed price for a bridge.
 
 **[OPEN, audit clarification documented 2026-10-23] Repeat-verdict identity and scope.** The once-per-enforceable-penalty-event invariant in §37 needs a defined event/violation identity across separate cases, overlapping cuts and guarantor duties. Replaying one finalized case differs from admitting a later case with a new basis. Decide whether already adjudicated acts can ground another penalty, how genuinely new suffix acts are counted, and the exact historical event/duty boundary for each liability. D34 now selects historical attribution rather than an adjudication-time current-link test; repeat-event identity remains OPEN. The [chain-replay diagnostic](../studies/2026-10-23-chain-replay/README.md) finds existing case guards, but no lower-level general deduplication contract: raw cuts do not repeat money/XP removal without new acts, whereas explicitly applying an unkeyed verdict helper again can impose another guarantor penalty. This is not a demonstrated guarded-caller exploit or authorization to add blanket per-subject/per-act deduplication. No new penalty or finality rule is selected by this audit.
 
@@ -1771,7 +1792,7 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 44. Bucket D capital activation and Treasury D spending use separate authority checks.
 45. Treasury D purchases market FACY; it does not mint invitation-eligible FACY.
 46. Every successful local buyback/burn accounts for the actual purchased and burned amount, and fails atomically when any indispensable local step fails.
-47. Suspending Atmo buybacks must not silently modify a subject's identity, XP, guarantee status, or legal dispute rights.
+47. Suspending Atmo buybacks must not silently modify a subject's identity, XP, guarantee status, or legal dispute rights. D74 core-parameter actions require their own explicit authority, scope and activation contract; pausing buyback alone is never that authorization or permission to erase historical/pending rights.
 48. Public audit data must not require storing private media bytes directly in runtime state.
 
 ## 38. Bounded execution requirements
@@ -1973,7 +1994,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 ### C. Entry, guarantees, and graph
 
 15. Actual pre-guaranteed genesis membership, verification/activity, financing and activation; the numeric zero clamp and already-guaranteed starting route are selected, not open alternatives.
-16. What makes a guarantor active and eligible; limits on repeated links and reused guarantors.
+16. What makes a guarantor active and eligible; D74 selects an Atmo-controlled guarantor-limit parameter with default K100, while its live/lifetime/pending/distinct-subject/act/direction/renewal/adoption/over-cap semantics and repeated-link treatment remain OPEN.
 17. How disputed or cancelled acts affect the rolling active-subject count.
 18. Invitation target binding, expiration, acceptance, replay protection, and any cancellation remedy.
 19. Amount, source, purpose and disposition of funds in the two-sided guarantee transaction.
@@ -1999,6 +2020,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 33. Treasury D activation, pause and restart policy, credible health measures and market limits.
 34. Bounded on-chain storage, indexing, execution weights, and migrations.
 35. Privacy, access to identity media, safety of public artifact publication, and dispute evidence retention.
+36. D74 core-control electorate/weight/quorum/proposal/execution, health-evidence safeguards, delay/duration/restoration and the exact pending-invitation/emission-XP/existing-case/Council-entry/timer/veto effects; the four delegated parameter names/defaults are selected in §8.1, not OPEN alternatives.
 
 ## 43. Suggested implementation sequence on DEOS
 
@@ -2410,6 +2432,22 @@ This decision changes the specification only. A future reference implementation 
 
 ---
 
+### 46.17 Reused bridges, core loops and incremental gate evidence (D73)
+
+**D73 — [OWNER research redirection / hypotheses under test, not established safety or a selected gate removal], documented 2026-10-27.** Source: the owner's detailed critique and T1–T9 brief. Prioritize the growth loop (actual Self-ID,24h maturity, own-funded invitation/24h freeze, qualifying creator guarantees AND paths, new subject) and correction loop (specific-act24h veto, Chekharda, applicable D70–D72 Council route, authorized chain/liability consequences). Core FACY accounting retains actual issue/burn/debt/collection/custody and required funded costs; no outside buyback, price floor or recovery fork may make the baseline safe by assumption.
+
+**Shared support is not a reserved resource.** A per-issuer D-path certificate does not prevent other issuers using the same intermediaries/bridges. D purchased boundary supports may serve many suitable issuers within a declared short-path topology; internally disjoint paths within one query are not disjoint allocations across all users. This establishes an attack hypothesis and the need for an incremental-benefit test, not “all clusters pass” or “the path has no effect.” At fixed r, admissible degree/count limits, graph orientation, d_eff and qualified anchors can change feasibility. D74's K100 needs its own meaning; D35 still defers cluster quotas and D61's C remains a separately specified research arm.
+
+The comparison MUST distinguish assumed fake graph nodes, non-oracular effective support, per-issuer path certification, actual funded admission and profitable sustained growth. Invitation lineage, public cluster labels, age and XP do not by themselves identify independent people. A d_eff that compresses one apparent cluster may block genuine families/communities; raw count and source/lineage/cap/age alternatives require explicit observation and genuine-access controls. Neither one-chain bridge exposure (§21.1) nor negligible honest exclusion may be assumed. Daily emission/freeze latency is not a permanent stock cap or the established issuer's universal48h cooldown.
+
+**XP accumulation and correction race.** Mutual edges create no XP: qualifying Self-ID source receipts do. An m-member fully directed guarantee clique with one qualifying Self-ID/person/day can conditionally earn m XP/day/member before cancellation/penalties/eligibility changes. A fixed-rate catch-up estimate is not a moving-rank/Council-capture model. XP-centered targets, the case's eligible Council and individual challenge admission remain distinct; anchors grant no Council votes. Detection before an authority crossing is insufficient without usable evidence, authorized funded case/merits and effective correction. Genuine-person violation coalitions, patient growth and legitimate visible coordination need distinct controls. D42 Self-ID cancellation forgoes unissued credit rather than taking already earned XP; invitation prior-credit effects and role-specific D55 sanctions must remain separate.
+
+**Research priority and inclusion rule.** Prepare static T1 reusable bridges, T2 d_eff/genuine-access frontier, T3 guarantee/path factorial and separately specified capacity controls, and T5 weakly connected genuine emitters before dynamic T4 bridge costs, T6 XP/correction race, T7 preventive incentives and T8 no-formal-Council bootstrap. T9 adds capture/false-health-trigger attacks on D74 controls. Static certificate/software checks may prepare the question; empirical execution still requires the existing master gates, supported committed method/source/RNG/ranges/error/precision/search/kills and permission for any external/personal graph. N_verified<100 has no formal Council under the direct rule; at100 the target becomes11, subject to activation/eligibility contracts, not an automatic no-Council100-subject arm.
+
+A claimed core security mechanism must earn retention through registered incremental benefit against amplification, genuine access/harm or declared collapse/correction endpoints, including interactions and named alternatives. “No effect” means no established effect in those contexts/precision, not universal uselessness or authority to delete selected rules/rights after an underpowered sweep. A nonempty simulated cost/d_eff region is conditional candidate evidence, not proof of a working real-world core; finite empty search is not universal impossibility or automatic authorization to add cluster quotas.
+
+Park financial rescue, detailed biometric/FaceRef/group/hash work, external-application ZK/privacy implementation, indexer optimization, capacity except an explicitly defined control, precedent engine, hysteresis and NFT-index polish until the core baseline is evaluated. This does not remove the identity/evidence-error boundary, historical records, privacy permissions or funded correction. The next priority is discriminating structural/semantic evidence, not further pending-Council plumbing for momentum. No current source migration, gate pass, data result, default ranking rule, calibrated human rate or empirical confirmation accompanies D73.
+
 ## Appendix A: Decision log and supersession ledger
 
 This ledger prevents earlier drafts from being mistaken for the latest decisions. Git history holds the exact text changes.
@@ -2605,6 +2643,12 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Immediate Council entry and last-moment safeguard recorded 2026-10-27
 
 **D72 — [SELECTED referendum opening is immediate Council entry / shared-clock restart], §27.3.** Source: the owner's explicit confirmation that opening the Council referendum for an ongoing Chekharda immediately constitutes Council entry and restarts the common seven days, even at the last moment while the dispute is open. No prior collective approval or later ratification is needed for entry; collective merits remain for D70 voting. Deadline is referendum-opening time plus seven days, not an added Council-only window or per-member extension. The owner names this the intended safeguard against ordinary timeout before Council judgment, not an empirical liveness/security proof. Already-participating Council referrals/ballots are not new entrants; exact same-time finalization, custody and negative/no-quorum/tied/unresolved outcome effects remain contracts, not a default time rollback. This closes the general entry-clock OPEN left by D70/D71, without silently choosing D71 peer-case timing, new quorum, rewards, special three-day period or code/default migration. D68 core focus and evidence gates survive; no new study or confirmation follows.
+
+### Core path challenge and four Atmo controls recorded 2026-10-27
+
+**D73 — [OWNER research redirection / conditional structural-economic hypotheses], §46.17 and §21.1.** Source: the owner's detailed path-bridge/core-loop/T1–T9 brief. Prioritizes static reusable-bridge/independence/ablation/genuine-access work before dynamic bridge/XP/incentive/bootstrap/governance tests; parks optional modules and further C3 pending-clock implementation. Individual disjoint paths do not reserve global capacity, but bounded-r/degree/K/anchors/d_eff/economic admission remain explicit. A bridge's liability is not universally limited to one chain; current XP is Self-ID-sourced, detection is not effective correction and small-N ends at the100-person Council boundary. Hypotheses, zero-effect and viable-region criteria need declared context/precision/master-gated method; no capture, rule removal, default quota or G1 pass is selected.
+
+**D74 — [SELECTED Atmo parameter-control scope/defaults; operational contracts OPEN], §8.1/§19.2/§42/invariant47.** Source: the same owner's explicit assignment of four voting levers to Atmo: guarantor limit K100, invitations enabled, emission enabled and opening new disputes enabled. This expressly extends governance beyond D53's support switch, not a consequence of buyback suspension. K counting/renewal/adoption, electorate/weight/quorum/Council-confirmation, activation/authentication/health evidence/time-lock/duration/restoration and pending invite/credit/case/Council/veto effects remain OPEN. It does not identify K with existing probation/lifetime research meanings or cancel history, give automatic graph-based emergency powers, authorize a runtime/default migration or fill in a Council quorum. Autonomous/default-on and separately attacked governance arms remain distinct; no new experiment or real ATMO action accompanies the record.
 
 ### Earlier supersessions
 

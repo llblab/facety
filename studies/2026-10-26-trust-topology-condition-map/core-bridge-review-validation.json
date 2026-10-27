@@ -1,0 +1,217 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D73/D74 owner-brief reconciliation, analytic/specification/source review; no new software/graph/population study",
+  "baseCommit": "3af0815deaa9fbee03e1ab80e820c4eef0724325",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "3652dce6b2d9c779628647730f136883f193c22a",
+  "files": [
+    {
+      "path": "docs/facety.protocol.en.md",
+      "gitBlob": "c6ecb90e939cf49f3d961c39920bf8e12ef0e46c"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/core-bridge-review.md",
+      "gitBlob": "1d38316c517c2e6013c4570d9c73ed2f3416e46b"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/council-entry-contract-validation.json",
+      "gitBlob": "979b13b6279c3abd231418fa2a40bfc012badd3c"
+    }
+  ],
+  "decisions": {
+    "D73": {
+      "date": "2026-10-27",
+      "authority": "owner path-gate/T1–T9/core-loops brief",
+      "status": "research redirection, conditional hypotheses not verified attack/security",
+      "main": "§46.17 and §21.1 liability clarification",
+      "priority": "static T1/T2/T3/T5 eligible preparation before dynamic T4/T6/T7/T8 and T9 governance; C3 and further indexer plumbing parked; master gates unchanged"
+    },
+    "D74": {
+      "date": "2026-10-27",
+      "authority": "explicit owner statement assigning four controls to Atmo voting",
+      "status": "selected parameter-power scope/defaults, not execution/migration",
+      "main": "§8.1, §19.2, §42.16/36, invariant47, glance/Appendix A",
+      "defaults": {
+        "guarantorLimitK": 100,
+        "invitations": "enabled",
+        "emission": "enabled",
+        "newDisputeOpening": "enabled"
+      },
+      "open": "K counted resource/direction/renewal/adoption; electorate/weights/quorum/proposal/execution/health/delay/duration/restore; pending invites/credits/cases/D72 entry/timers/veto/custody",
+      "notInferred": "buyback pause grants no core control, K is not Native K/V/lifetime research, no historical rights erased"
+    }
+  },
+  "analytic": {
+    "arithmetic": {
+      "classification": "Analytic arithmetic checks only; no graph certificate, population/model execution or study",
+      "modelCalls": 0,
+      "graphVerifierCalls": 0,
+      "seedAllocations": 0,
+      "constantRateIllustrations": [
+        {
+          "initialGap": 540,
+          "cliqueRate": 12,
+          "benchmarkRate": 6,
+          "days": 90,
+          "outgoingPerMember": 11
+        },
+        {
+          "initialGap": 540,
+          "cliqueRate": 30,
+          "benchmarkRate": 6,
+          "days": 22.5,
+          "outgoingPerMember": 29
+        }
+      ],
+      "conditionalLiveOutgoingK": {
+        "K": 100,
+        "exampleD": 3,
+        "bridgeOutgoingFormula": "M+D-1",
+        "maxMInThisConstruction": 98,
+        "meaningSelected": false
+      },
+      "directSelectedPhase": [
+        {
+          "N_verified": 7,
+          "D": 1,
+          "target": 1,
+          "formal": false
+        },
+        {
+          "N_verified": 9,
+          "D": 1,
+          "target": 1,
+          "formal": false
+        },
+        {
+          "N_verified": 10,
+          "D": 2,
+          "target": 1,
+          "formal": false
+        },
+        {
+          "N_verified": 12,
+          "D": 2,
+          "target": 1,
+          "formal": false
+        },
+        {
+          "N_verified": 99,
+          "D": 2,
+          "target": 1,
+          "formal": false
+        },
+        {
+          "N_verified": 100,
+          "D": 3,
+          "target": 11,
+          "formal": true
+        }
+      ]
+    },
+    "proof": "Specified D-boundary raw-support family; each issuer has disjoint routes but different issuers reuse them. Multi-anchor length2 versus single-center length3 explicit stored arcs. No-extra-slack/reference only; d_eff/degree/K/funding/qualified anchors remain conditions.",
+    "unboundedScope": "Λ=1+M/D only with unrestricted needed degree, not selected K100 or all topologies/effective support. Conditional live-outgoing interpretation limits this construction to M<=K-D+1, not general theorem.",
+    "liability": "D34 is historical attribution, not universal one-chain bridge cap; exposure may cover several invitations/child chains or differ by role. Actual collected losses, not nominal debt."
+  },
+  "review": {
+    "method": "inline evidence-grounded specification/source/authority/metric/causal-boundary review; no independent-authorship/audit claim",
+    "sourceReuse": "D61/indexer owner-readable summary already distinguishes per-user reuse from global C, targets from Council; no invented new missing capacity implementation",
+    "corrections": [
+      "XP comes from mature qualifying Self-ID receipts not edges",
+      "constant-rate90/22.5 illustrations not moving-rank capture",
+      "notice before capture is not effective correction",
+      "T7 prospective Self-ID versus OPEN invitation/prior-credit and D55 roles",
+      "N_verified<100 no formal Council;100 targets11 subject to activation",
+      "finite no effect/nonempty/empty regions are not universal safety/uselessness/impossibility",
+      "no-face public graph is not blanket license/personal-data authorization"
+    ],
+    "sourceLabelsNotProtocolTruth": true
+  },
+  "reused": {
+    "record": "studies/2026-10-26-trust-topology-condition-map/core-council-rejection-validation.json",
+    "basis": "exact unchanged src/test/runtime; tests/DAG/trajectories not rerun for this documentation review",
+    "focusedPassed": 26,
+    "currentPassed": 721,
+    "historicalPassed": 21,
+    "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+    "historicalAssurance": "separately isolated compatible-source bodies, not current source",
+    "dag": {
+      "sourceFiles": 53,
+      "localEdges": 168,
+      "acyclic": true,
+      "errors": 0,
+      "warnings": 0
+    },
+    "fixedTrajectories": {
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "excludedOnly": "provenance.implementation",
+      "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "matched": true,
+      "classification": "two fixed software trajectories, not sealed-study replay or new scientific data"
+    },
+    "nativePreservation": {
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+      "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+    }
+  },
+  "freshContext": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-core-bridge-review-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "review": "Existing structure/meta-principle/sparsity/index-bloat/wide-table warnings reviewed. Initial31 exposed two new wide tables; changed new control/test material to vertical lists/sections, retained29. Large protocol scans skip345k text, so changed headings/decision records/invariant47/OPEN entries checked directly. BACKLOG retargeted, C3 parked, frozen C0-C2 remain historical; no duplicate task owner. Source/test/runtime equality binds reused suites/DAG/trajectories, not fresh test runs."
+  },
+  "preservation": {
+    "sourceTestRuntimeChanged": false,
+    "oldStudyRegistrationCaptureChanged": false,
+    "coreC0C1C2FrozenPacketsChanged": false,
+    "modelCalls": 0,
+    "graphVerifierCalls": 0,
+    "parameterScreenRuns": 0,
+    "newSeedsOrScientificRegistrations": 0,
+    "newScientificCaptures": 0,
+    "publicGraphDownloads": 0,
+    "externalAtmoOrChannelActions": 0,
+    "masterG1Pass": false,
+    "selectedClusterQuota": false,
+    "implementedGuarantorDefaultOrGovernance": false,
+    "protocolChanges": "explicit D73/D74 record only, no native default/source migration"
+  },
+  "handoff": {
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "closed": "brief reconciliation, authority/default record, corrected T1–T9/analytic scope and current route",
+    "retargeted": "D73 structural gate/independence/access evidence replaces automatic C3 continuation",
+    "deferred": "C3 pending-Council clock, indexer optimization/peripheral rescue and old lifetime-K fallback",
+    "nextLocalActionable": "finite T1 verifier/ref2 certificate/control acceptance, not empirical sweep; raw-support diagnostic does not require pretending K meaning resolved",
+    "humanGate": "confirm selected K counted resource/renewal before default enforcement or K-dependent growth/economic claim; remaining D74 controls need authority/execution contract",
+    "stopReason": "latest user redirect/review answered; no continuation scheduler or old-worker fallback in this turn",
+    "restart": "explicitly resume bounded D73 T1 preparation; for actual K100 model specify live/outgoing/distinct-subject/release versus other semantics",
+    "continuationScheduled": false,
+    "signature": "d73-d74/reconcile2decisions-9tests/analytic90-22.5-raw-reuse/0Model-0graph/source91db-reuse26-721-21/C3parked-Ksemantic-open"
+  }
+}
