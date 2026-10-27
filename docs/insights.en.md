@@ -10,6 +10,10 @@ All findings are conditional on the simulator's declared assumptions, horizons a
 
 ## Owner decisions and design insights
 
+**D63 — Evidence-led security continuation,2026-10-27; OWNER direction, not a new selected mechanic/result.** After the concrete emergence/feedback/security-map report, the owner asks to take the most obvious next slice and implement in Grow Loop in order. [Protocol §49.1/Appendix A](facety.protocol.en.md#491-evidence-led-security-continuation-d63) records the direction. The first fixed-total pooled/reserved work discriminator is an analyst choice; master order, selected-rule OPENs, historical packets and human/privacy/funding boundaries remain. It does not upgrade F1/F2 to the current protocol, close F54/F55 causal alternatives or pass G1.
+
+**D63 review-allocation contract,2026-10-27 — DIAGNOSTIC existing-API/source and scalar accounting only.** [The bounded contract](../studies/2026-10-27-review-allocation/README.md) follows F55's unfunded looks without rerunning it. Current effort has no protected subpool and experimentConfig rejects reviewReserve. For the synthetic B4 six-call tape, the existing ledger pays setup+ordinary work and denies two reviews; independent R2 arithmetic pays setup+reviews and displaces two ordinary actions, still4 effort/6 calls. No new allocator/Model run/research seed/capture exists yet. Work displacement, stranded reserve, false positives and common-mode misses remain alternatives—not evidence of improved welfare or self-regulation. BACKLOG owns minimal opt-in implementation followed by actual method/master/genuine-growth readiness, not a new generic engine or favorable capacity sweep.
+
 | # | Insight | Protocol | Simulator |
 | --- | --- | --- | --- |
 | D1 | All contest windows are one day: 24 h to contest a Self-ID emission before it can be spent or withdrawn, and 24 h to contest an invitation before it applies. One day is understandable, and long delays discourage people. | §3, §17.3, §18.5 [SELECTED] | `spendMaturityHours`, `conversionMaturityHours`, `invitationFreezeHours` = 24 (defaults) |

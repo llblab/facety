@@ -1,0 +1,479 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "D63 pre-code review-work allocation contract/source audit plus existing-ledger/scalar arithmetic, not new allocation implementation/Model experiment/scientific result",
+  "baseCommit": "9d520499d740da219d5c940c59d007ccfdf5f26d",
+  "contract": {
+    "path": "README.md",
+    "gitBlob": "35039ada5b8c675fc00617e2582d209ef81a41e0",
+    "status": "frozen before implementation; no empirical method/seed allocation"
+  },
+  "sourceTree": "e0831652035dd9d17975d7862ce26a49fb14ae8b",
+  "testTree": "8ecc221fbbcbf51e55377b72bb1c3c65e57311e5",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "299ae9738d73962c2c8e381fc5a24320f577c98fbda32ea97391b5a4a9a77300",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "sourceBindings": [
+    {
+      "path": "src/effort.mjs",
+      "gitBlob": "95c27af7093c532d70dd972aecbab46fefe2c21d"
+    },
+    {
+      "path": "src/experiment-config.mjs",
+      "gitBlob": "2c4fd301838fa7b5e6f73ba8b1c4730134962f46"
+    },
+    {
+      "path": "src/experiment.mjs",
+      "gitBlob": "b7c80fb041bd39d6b9efe213d39432498ca1d375"
+    }
+  ],
+  "checker": {
+    "path": "/tmp/facety-review-allocation-contract-check.mjs",
+    "gitBlob": "2e8909cef3fbbe981ff3ca7fd0fbcb137324dc32",
+    "command": "node /tmp/facety-review-allocation-contract-check.mjs",
+    "scope": "temporary existing-API/scalar contract verifier, not maintained runner/source allocation implementation or research method"
+  },
+  "native": {
+    "classification": "Existing-API ticket smoke plus independent scalar accounting; no new allocator/experiment/research labels",
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "299ae9738d73962c2c8e381fc5a24320f577c98fbda32ea97391b5a4a9a77300",
+        "files": 53
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "tape": [
+      [
+        "proposeGuarantee",
+        "setup"
+      ],
+      [
+        "confirmGuarantee",
+        "setup"
+      ],
+      [
+        "selfId",
+        "maintenance"
+      ],
+      [
+        "convert",
+        "maintenance"
+      ],
+      [
+        "inspect",
+        "maintenance"
+      ],
+      [
+        "respond",
+        "maintenance"
+      ]
+    ],
+    "pooled": {
+      "paid": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "summary": {
+        "unit": "uncalibrated weighted action-effort units",
+        "weights": {
+          "selfId": 1,
+          "fakeSelfId": 1,
+          "fabricateIdentity": 1,
+          "recruitHuman": 1,
+          "invite": 1,
+          "acceptInvitation": 1,
+          "proposeGuarantee": 1,
+          "confirmGuarantee": 1,
+          "inspect": 1,
+          "respond": 1,
+          "challenge": 1,
+          "verify": 1,
+          "bribe": 1,
+          "cashout": 1,
+          "convert": 1
+        },
+        "calls": 6,
+        "maxActions": 6,
+        "cohorts": {
+          "honest": {
+            "attempts": 4,
+            "accepted": 4,
+            "rejected": 0,
+            "denied": 2,
+            "effort": 4,
+            "byAction": {
+              "selfId": {
+                "attempts": 1,
+                "accepted": 1,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 1
+              },
+              "fakeSelfId": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "fabricateIdentity": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "recruitHuman": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "invite": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "acceptInvitation": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "proposeGuarantee": {
+                "attempts": 1,
+                "accepted": 1,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 1
+              },
+              "confirmGuarantee": {
+                "attempts": 1,
+                "accepted": 1,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 1
+              },
+              "inspect": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 1,
+                "effort": 0
+              },
+              "respond": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 1,
+                "effort": 0
+              },
+              "challenge": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "verify": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "bribe": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "cashout": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "convert": {
+                "attempts": 1,
+                "accepted": 1,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 1
+              }
+            },
+            "byPhase": {
+              "setup": {
+                "attempts": 2,
+                "accepted": 2,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 2
+              },
+              "maintenance": {
+                "attempts": 2,
+                "accepted": 2,
+                "rejected": 0,
+                "denied": 2,
+                "effort": 2
+              }
+            },
+            "budget": 4,
+            "remaining": 0
+          },
+          "attackers": {
+            "attempts": 0,
+            "accepted": 0,
+            "rejected": 0,
+            "denied": 0,
+            "effort": 0,
+            "byAction": {
+              "selfId": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "fakeSelfId": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "fabricateIdentity": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "recruitHuman": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "invite": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "acceptInvitation": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "proposeGuarantee": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "confirmGuarantee": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "inspect": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "respond": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "challenge": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "verify": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "bribe": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "cashout": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "convert": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              }
+            },
+            "byPhase": {
+              "setup": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              },
+              "maintenance": {
+                "attempts": 0,
+                "accepted": 0,
+                "rejected": 0,
+                "denied": 0,
+                "effort": 0
+              }
+            },
+            "budget": 0,
+            "remaining": 0
+          }
+        }
+      }
+    },
+    "zero": {
+      "paid": [
+        true,
+        true,
+        true,
+        true,
+        false,
+        false
+      ],
+      "calls": 6,
+      "spent": 4,
+      "generalRemaining": 0,
+      "reservedRemaining": 0
+    },
+    "reserved": {
+      "paid": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        true
+      ],
+      "calls": 6,
+      "spent": 4,
+      "generalRemaining": 0,
+      "reservedRemaining": 0
+    },
+    "allocationOptionSupported": false,
+    "experimentalModelCalls": 0,
+    "plannedLabelsExecuted": 0,
+    "ordinaryWorkDisplaced": 2,
+    "reviewWorkEnabled": 2
+  },
+  "implementation": {
+    "status": "NOT IMPLEMENTED",
+    "newRuntimeOrTests": false,
+    "optionCurrentlySupported": false,
+    "target": "existing EffortLedger plus legacy config/construction only; reviewReserve opt-in, maintenance inspect/respond, protected-first/general-spill, actual displaced ordinary work, zero default byte equality"
+  },
+  "reuse": {
+    "record": "../2026-10-26-witness-indexer/m3-joint-churn-validation.json",
+    "atCommit": "9d52049",
+    "basis": "exact src/test tree and53-file299ae973 Source/Nodev26.8.1 unchanged; focused/full/ten streams/trajectories/DAG not rerun in this docs-only cohort",
+    "focused": {
+      "passed": 232,
+      "failed": 0
+    },
+    "current": {
+      "passed": 699,
+      "failed": 0
+    },
+    "isolatedHistorical": {
+      "passed": 21,
+      "failed": 0,
+      "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "notCurrentSourceAssurance": true
+    },
+    "architecture": {
+      "files": 53,
+      "edges": 168,
+      "cycles": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "nativeStreams": 10,
+    "fixedSoftwareTrajectories": 2
+  },
+  "review": {
+    "kind": "inline contract/source-preservation/resource-conservation/causal-alternative/gate review",
+    "independentAuthorship": false,
+    "boundary": "scalar work swapping proves neither runtime support nor improved prevention/welfare; all old study/method/source/labels retained; no fake G1/graph registration or human observation"
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "warningSetUnchangedExceptOffsets": true,
+    "disposition": "Existing AGENTS structure/density/index-bloat and wide-table warnings reviewed. Large protocol link/list scans skipped; changed D63 main section/Appendix anchors checked directly. Initial new changelog adjacent-list blank line failed, corrected without weakening validator; final context0/29. No runtime or evidence result inferred from docs."
+  },
+  "research": {
+    "newModelRuns": 0,
+    "scientificCaptures": 0,
+    "mechanismConfirmations": 0,
+    "newRegisteredMethods": 0,
+    "researchSeedLabels": [],
+    "historicalReplay": false,
+    "masterG1Pass": false,
+    "selectedReservationRule": false
+  },
+  "handoff": {
+    "surface": "BACKLOG.md#d44-guarantor-prevention-boundaries",
+    "cohort": "C0 contract/source/finite-ticket arithmetic only",
+    "transition": "explicit D63 restart retargets stopped WP-G to existing D44 resource-allocation discriminator; no automatic lifetime-K fallback",
+    "next": "C1 minimal opt-in allocator/legacy wiring and independent integer/default/native controls under committed contract",
+    "actionability": "local-actionable engineering; empirical comparison remains gated-but-preparable",
+    "gates": "master G1/order and actual committed method/metrics/numeric error-search-kill/source-RNG-seed readiness; no full genuine-growth/human/economic inference from ticket tests",
+    "continue": true
+  }
+}
