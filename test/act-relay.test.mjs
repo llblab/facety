@@ -199,7 +199,7 @@ test('all ten legacy walkthroughs preserve economic digests except provenance an
   }
 });
 
-function timedWorld(valid = false) {
+function timedWorld(valid = false, participationReference = 'd77-timed-act-converted/v1') {
   const counts = { author: 3, challenger: 8, defender: 12, creator: 1, giver: 1 };
   const model = new FacetyModel({ genesis: Object.keys(counts), policy: { xpFinality: 'maturity', guaranteeFee: 1 } });
   for (let day = 0; day < 12; day++) {
@@ -211,7 +211,7 @@ function timedWorld(valid = false) {
   const rates = Object.fromEntries(['self-id', 'invitation', 'guarantee'].map(kind => [kind, { ordinary: { valid: 1, invalid: 1 }, guarantor: { valid: 1, invalid: 1 } }]));
   const environment = actObservationEnvironment({ subjects: Object.keys(counts).map(id => ({ id, genuine: true, behaviorProfile: 'supplied' })),
     acts: [{ id: target.id, subject: 'author', kind: 'self-id', recordedAt: target.recordedAt, valid }] }, { seed: 'd77-timed-software', rates });
-  const options = { claim: 'act-defect', participationReference: 'd77-timed-act-converted/v1', actCaseReference: { formalCouncil: 'absent' }, traceLimit: 200,
+  const options = { claim: 'act-defect', participationReference, actCaseReference: { formalCouncil: 'absent' }, traceLimit: 200,
     rules: experimentConfig({ disputes: { enabled: true, procedure: 'chekharda-timed', stakeBacking: 'reserved', councilDepth: 0, stakeGrowth: 0.1 } }).disputes,
     actors: [{ id: 'Outside', subject: null, budget: 50, reviewCapacity: 0 }, ...Object.keys(counts).map(id => ({ id, subject: id, budget: 50, reviewCapacity: 10 }))] };
   const relay = new EvidenceRelay(model, options);
@@ -368,4 +368,107 @@ test('timed ACT profile requires its exact explicit subset and preserves the def
     assert.throws(() => new EvidenceRelay(model, { ...options, ...override }), /unsupported timed act-case/);
   assert.throws(() => new EvidenceRelay(model, { ...options, participationReference: null, actCaseReference: null }), /one-step rules/);
   const old = setup(); assert.equal(old.relay.sponsor('Bela', reviewed(old)).reason, 'act-defect-adjudication-unimplemented');
+});
+
+function reviewedTimedSource(world, selfId) {
+  const { relay } = world;
+  const observation = relay.observe('Outside', selfId, { suspicious: true, sourceGroup: 'supplied-new-event' }).value;
+  const packet = relay.package('Outside', [observation]).value;
+  assert.ok(relay.route('Outside', packet, 'challenger').ok);
+  assert.ok(relay.review('challenger', packet, { suspicious: true, sourceGroup: 'supplied-new-review' }).ok);
+  return packet;
+}
+
+test('settled-history reference admits a NEW act after actual correction without restoring history or recollecting old principal; converted-v1 stays refused', () => {
+  for (const profile of ['d77-timed-act-converted/v1', 'd77-timed-act-settled-history/v1']) {
+    const world = timedWorld(false, profile), { model, relay, original } = world;
+    const first = openTimed(world);
+    model.advanceTo(457); assert.ok(relay.finalizeActCase(first).ok);
+    const oldResolution = model.selfIdResolutions()[0], oldActs = original.map(act => model.selfId(act.id));
+    assert.deepEqual(oldResolution.acts.map(act => act.selfId), original.slice(1).map(act => act.id));
+    assert.equal(oldResolution.recovery.collected, 2);
+    const next = [];
+    for (const at of [481, 505]) {
+      const act = model.createSelfId('author', model.registerArtifact('author'));
+      next.push(act); model.advanceTo(at); model.convertToCollector('author', act);
+    }
+    assert.equal(model.subject('author').xp, 3); assert.equal(model.subject('author').liquidFacy, 3);
+    assert.deepEqual(next.map(id => model.selfId(id).chainIndex), [4, 5]);
+    assert.equal(model.selfId(next[0]).previousSelfId, original[2].id);
+    const packet = reviewedTimedSource(world, next[0]), before = timedState(world), opened = relay.sponsor('challenger', packet);
+    if (profile === 'd77-timed-act-converted/v1') {
+      assert.equal(opened.reason, 'D77 reference requires converted debt-free party sources');
+      assert.deepEqual(timedState(world), before); assert.equal(model.disputeParticipations().length, 1);
+    } else {
+      assert.ok(opened.ok, opened.reason);
+      assert.throws(() => model.createSelfId('author', model.registerArtifact('author')), /open-dispute activity restriction/);
+      model.advanceTo(674); assert.ok(relay.finalizeActCase(opened.value).ok);
+      const later = model.selfIdResolutions()[1];
+      assert.deepEqual(later.acts.map(act => act.selfId), next);
+      assert.ok(later.acts.every(act => !oldResolution.acts.some(old => old.selfId === act.selfId)));
+      assert.equal(later.recovery.collected, 2); assert.equal(later.recovery.debtAdded, 0);
+      assert.equal(model.subject('author').xp, 1); assert.equal(model.subject('author').liquidFacy, 1);
+      assert.equal(model.ledger().minted, 27); assert.equal(model.ledger().burned, 4); assert.equal(model.ledger().supply, 23);
+      assert.equal(model.subject('challenger').liquidFacy, 8, 'two refunds are not earnings');
+      assert.deepEqual(model.selfIdResolutions()[0], oldResolution);
+      const after = timedState(world);
+      assert.equal(relay.finalizeActCase(opened.value).ok, false); assert.deepEqual(timedState(world), after);
+    }
+    assert.deepEqual(original.map(act => model.selfId(act.id)), oldActs, 'old prefix/cancelled records/XP revocation are never rewritten');
+    model.audit();
+  }
+});
+
+test('canonical settled self-correction can belong to target or later entrant, but correcting an old source is never reopened', () => {
+  for (const history of ['author', 'defender', 'uncredited-author']) {
+    const subject = history === 'uncredited-author' ? 'author' : history;
+    const world = timedWorld(false, 'd77-timed-act-settled-history/v1'), { model, relay, original } = world;
+    const source = history === 'uncredited-author' ? model.selfId(model.createSelfId(subject, model.registerArtifact(subject)))
+      : model.selfIds().find(act => act.subject === subject && (subject !== 'author' || act.id === original[1].id));
+    const previous = model.resolveSelfId(source.id, { caseId: 'trusted-prior-self-correction', initiator: subject, upheld: true });
+    const oldAct = model.selfId(source.id);
+    assert.equal(oldAct.disposition, 'self-corrected');
+    if (subject === 'author') {
+      const packet = history === 'uncredited-author' ? reviewedTimedSource(world, source.id) : world.packageId;
+      const before = timedState(world), rejected = relay.sponsor('challenger', packet);
+      assert.equal(rejected.reason, 'Self-ID source is already corrected or voided'); assert.deepEqual(timedState(world), before);
+      if (history === 'uncredited-author') { assert.equal(oldAct.xpCredit, null); model.advanceTo(312); }
+      const act = model.createSelfId('author', model.registerArtifact('author'));
+      model.advanceTo(model.now + DAY); model.convertToCollector('author', act);
+      const opened = relay.sponsor('challenger', reviewedTimedSource(world, act)); assert.ok(opened.ok, opened.reason);
+      model.advanceTo(model.now + 169); assert.ok(relay.finalizeActCase(opened.value).ok);
+      assert.deepEqual(model.selfIdResolutions()[1].acts.map(row => row.selfId), [act]);
+      assert.equal(model.selfIdResolutions()[1].recovery.collected, 1);
+    } else {
+      const caseId = openTimed(world);
+      model.advanceTo(292); assert.ok(relay.enterActCase('defender', caseId).ok);
+      assert.equal(model.subject('defender').xp, 11);
+      model.advanceTo(461); assert.ok(relay.finalizeActCase(caseId).ok);
+      assert.equal(model.selfIdResolutions()[1].upheld, false);
+    }
+    assert.deepEqual(model.selfIdResolutions()[0], previous); assert.deepEqual(model.selfId(source.id), oldAct);
+    model.audit();
+  }
+});
+
+test('settled-history is exact canonical D59 compatibility, not permission for veto/legacy void/pending/locked/invitation/debt sources', () => {
+  for (const kind of ['pending', 'locked', 'veto', 'legacy-void', 'rejected-then-legacy-void', 'invitation', 'debt']) {
+    const world = timedWorld(false, 'd77-timed-act-settled-history/v1'), { model, relay, original } = world;
+    if (kind === 'debt') model.penalize('author', { fine: 4, halveXp: false });
+    else if (kind.includes('legacy-void')) {
+      if (kind.startsWith('rejected')) model.resolveSelfId(original[0].id, { caseId: 'rejected-not-settled', initiator: 'challenger', upheld: false });
+      model.voidSelfIdChain('author', { fromAct: original[2].id });
+    } else {
+      if (['veto', 'invitation'].includes(kind)) model.confirmGuarantee('author', model.proposeGuarantee('giver', 'author'));
+      const act = model.createSelfId('author', model.registerArtifact('author'));
+      if (kind === 'locked') model.freezeSelfId(act, 'unrelated-lock');
+      if (kind === 'veto') model.cancelSelfId('giver', act);
+      if (kind === 'invitation') { model.advanceTo(312); model.createInvitation('author', act, 'unused-newcomer'); }
+    }
+    const before = timedState(world), rejected = relay.sponsor('challenger', world.packageId);
+    assert.equal(rejected.reason, 'D77 settled-history reference requires supported debt-free party sources', kind);
+    assert.deepEqual(timedState(world), before, kind + ': no stake/case/hold/cut/restoration');
+    assert.equal(relay.snapshot().cases.length, 0); assert.equal(model.disputeParticipations().length, 0);
+    model.audit();
+  }
 });

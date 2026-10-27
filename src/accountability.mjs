@@ -86,7 +86,7 @@ export class EvidenceRelay {
   constructor(model, { actors, rules, traceLimit = 0, journal = null, claim = 'false-identity', participationReference = null, actCaseReference = null }) {
     if (!['false-identity', 'act-defect'].includes(claim)) throw new Error('unsupported relay claim');
     this.#claim = claim;
-    const timedAct = participationReference === 'd77-timed-act-converted/v1';
+    const timedAct = ['d77-timed-act-converted/v1', 'd77-timed-act-settled-history/v1'].includes(participationReference);
     if (!rules?.enabled || (rules.procedure !== 'one-step' && !(timedAct && rules.procedure === 'chekharda-timed'))) throw new Error('relay reference requires normalized enabled one-step rules');
     if (timedAct) {
       if (claim !== 'act-defect' || rules.procedure !== 'chekharda-timed' || rules.stakeBacking !== 'reserved' || rules.disputeWindowHours !== 168
@@ -241,8 +241,24 @@ export class EvidenceRelay {
     });
   }
   #requireConvertedParties(subjects) {
+    const settledHistory = this.#participationReference === 'd77-timed-act-settled-history/v1';
+    const settled = new Map();
+    if (settledHistory) for (const resolution of this.#model.selfIdResolutions()) {
+      if (!resolution.upheld || !subjects.includes(resolution.subject)) continue;
+      const disposition = resolution.kind === 'self-correction' ? 'self-corrected' : resolution.kind === 'external-chain-cut' ? 'adjudicated-void' : null;
+      if (disposition !== null) for (const act of resolution.acts) settled.set(act.selfId, { subject: resolution.subject, disposition });
+    }
+    const unsupported = act => {
+      if (act.disputeLock !== null) return true;
+      if (!settledHistory) return act.status !== 'converted';
+      if (act.status === 'converted' && act.disposition === 'collector') return false;
+      const previous = settled.get(act.id);
+      return !(act.status === 'cancelled' && previous?.subject === act.subject && previous.disposition === act.disposition
+        && (act.xpCredit === null || act.xpCredit.revokedAt !== null));
+    };
     if (subjects.some(id => this.#model.subject(id).debt !== 0 || this.#model.subject(id).identityStatus !== 'accepted')
-      || this.#model.selfIds().some(act => subjects.includes(act.subject) && (act.status !== 'converted' || act.disputeLock !== null))) throw new ProtocolRejection('D77 reference requires converted debt-free party sources');
+      || this.#model.selfIds().some(act => subjects.includes(act.subject) && unsupported(act))) throw new ProtocolRejection(settledHistory
+        ? 'D77 settled-history reference requires supported debt-free party sources' : 'D77 reference requires converted debt-free party sources');
   }
   #participationBound(record) {
     const participation = this.#model.disputeParticipations().find(row => row.caseId === record.id);
