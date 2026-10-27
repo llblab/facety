@@ -1,0 +1,871 @@
+{
+  "schema": "facety-support-allocation-preparation-validation/v1",
+  "classification": "DIAGNOSTIC funding-prefix arithmetic and actual API refusals ONLY; no network outcome/scientific registration",
+  "baseCommit": "f5bc8411e4cec8db66ee87b5600f95bde14a4160",
+  "sourceTree": "24cfd9a6728ad086ede6dccb1353248fcd308c1e",
+  "testTree": "eda97dbe4737bb37831ea5611591f2cb7d542578",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "07389324ffcda5dfb63280b8f3efc564c877f8d770a7ee4d6232608d4995e29c",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "preProbeContract": {
+    "path": "studies/2026-10-26-trust-topology-condition-map/support-allocation-contract.md",
+    "gitBlob": "e7505c898516c93fe595b616fdf6c5642322b3df"
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/support-allocation-design.json",
+      "gitBlob": "de79aa7c4e807ce4cd199a89f577a94db2aa6e5e"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/support-allocation-admission.mjs",
+      "gitBlob": "ebb2195ef17146888feebf4f6e458d1f0f7dcfe0"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/support-allocation-results.md",
+      "gitBlob": "ed894e788394b9b01cb5ea4936df20141d5f308d"
+    },
+    {
+      "path": "/tmp/facety-support-allocation-admission.json",
+      "gitBlob": "32facd634eeedc8db8e14977456525641f059298"
+    }
+  ],
+  "raw": {
+    "schema": "facety-support-allocation-admission/v1",
+    "classification": "DIAGNOSTIC pre-data API/arithmetic, no network or scientific outcomes",
+    "provenance": {
+      "implementation": {
+        "method": "sha256-src-mjs-v1",
+        "digest": "07389324ffcda5dfb63280b8f3efc564c877f8d770a7ee4d6232608d4995e29c",
+        "files": 53
+      },
+      "runtime": {
+        "node": "v26.8.1"
+      }
+    },
+    "designDigest": "0bc3096c11104f8de1074037d0e1ba441f62fc610d407983501831a54c2b6f2c",
+    "designFileSha256": "0344748706a8db60b33890fdd14557ee998848c142fb76092fab6fcc3adf7352",
+    "matching": [
+      {
+        "arm": "concentrated",
+        "transferCount": 42,
+        "grossTransferred": 42,
+        "supportFees": 30,
+        "days": [
+          {
+            "day": 1,
+            "cash": {
+              "n01": 0,
+              "n02": 0,
+              "n03": 0,
+              "n04": 0,
+              "n05": 0,
+              "n06": 0,
+              "n07": 0,
+              "n08": 0,
+              "n09": 0,
+              "n10": 0,
+              "n11": 0,
+              "n12": 0,
+              "n13": 0,
+              "n14": 0,
+              "n15": 0,
+              "n16": 0,
+              "n17": 0,
+              "n18": 1
+            },
+            "fees": 17
+          },
+          {
+            "day": 2,
+            "cash": {
+              "n01": 0,
+              "n02": 1,
+              "n03": 1,
+              "n04": 1,
+              "n05": 1,
+              "n06": 1,
+              "n07": 1,
+              "n08": 1,
+              "n09": 1,
+              "n10": 1,
+              "n11": 1,
+              "n12": 1,
+              "n13": 1,
+              "n14": 1,
+              "n15": 1,
+              "n16": 1,
+              "n17": 1,
+              "n18": 2
+            },
+            "fees": 18
+          },
+          {
+            "day": 3,
+            "cash": {
+              "n01": 0,
+              "n02": 2,
+              "n03": 2,
+              "n04": 2,
+              "n05": 2,
+              "n06": 2,
+              "n07": 2,
+              "n08": 2,
+              "n09": 2,
+              "n10": 2,
+              "n11": 2,
+              "n12": 2,
+              "n13": 2,
+              "n14": 2,
+              "n15": 2,
+              "n16": 2,
+              "n17": 2,
+              "n18": 3
+            },
+            "fees": 19
+          },
+          {
+            "day": 4,
+            "cash": {
+              "n01": 0,
+              "n02": 3,
+              "n03": 3,
+              "n04": 3,
+              "n05": 3,
+              "n06": 3,
+              "n07": 3,
+              "n08": 3,
+              "n09": 3,
+              "n10": 3,
+              "n11": 3,
+              "n12": 3,
+              "n13": 3,
+              "n14": 3,
+              "n15": 3,
+              "n16": 3,
+              "n17": 3,
+              "n18": 4
+            },
+            "fees": 20
+          },
+          {
+            "day": 5,
+            "cash": {
+              "n01": 0,
+              "n02": 4,
+              "n03": 4,
+              "n04": 4,
+              "n05": 4,
+              "n06": 4,
+              "n07": 4,
+              "n08": 4,
+              "n09": 4,
+              "n10": 4,
+              "n11": 4,
+              "n12": 4,
+              "n13": 4,
+              "n14": 4,
+              "n15": 4,
+              "n16": 4,
+              "n17": 4,
+              "n18": 5
+            },
+            "fees": 21
+          },
+          {
+            "day": 6,
+            "cash": {
+              "n01": 0,
+              "n02": 5,
+              "n03": 5,
+              "n04": 5,
+              "n05": 5,
+              "n06": 5,
+              "n07": 5,
+              "n08": 5,
+              "n09": 5,
+              "n10": 5,
+              "n11": 5,
+              "n12": 5,
+              "n13": 5,
+              "n14": 5,
+              "n15": 5,
+              "n16": 5,
+              "n17": 5,
+              "n18": 6
+            },
+            "fees": 22
+          },
+          {
+            "day": 7,
+            "cash": {
+              "n01": 0,
+              "n02": 6,
+              "n03": 6,
+              "n04": 6,
+              "n05": 6,
+              "n06": 6,
+              "n07": 6,
+              "n08": 6,
+              "n09": 6,
+              "n10": 6,
+              "n11": 6,
+              "n12": 6,
+              "n13": 6,
+              "n14": 6,
+              "n15": 6,
+              "n16": 6,
+              "n17": 6,
+              "n18": 7
+            },
+            "fees": 23
+          },
+          {
+            "day": 8,
+            "cash": {
+              "n01": 0,
+              "n02": 7,
+              "n03": 7,
+              "n04": 7,
+              "n05": 7,
+              "n06": 7,
+              "n07": 7,
+              "n08": 7,
+              "n09": 7,
+              "n10": 7,
+              "n11": 7,
+              "n12": 7,
+              "n13": 7,
+              "n14": 7,
+              "n15": 7,
+              "n16": 7,
+              "n17": 7,
+              "n18": 8
+            },
+            "fees": 24
+          },
+          {
+            "day": 9,
+            "cash": {
+              "n01": 0,
+              "n02": 8,
+              "n03": 8,
+              "n04": 8,
+              "n05": 8,
+              "n06": 8,
+              "n07": 8,
+              "n08": 8,
+              "n09": 8,
+              "n10": 8,
+              "n11": 8,
+              "n12": 8,
+              "n13": 8,
+              "n14": 8,
+              "n15": 8,
+              "n16": 8,
+              "n17": 8,
+              "n18": 9
+            },
+            "fees": 25
+          },
+          {
+            "day": 10,
+            "cash": {
+              "n01": 0,
+              "n02": 9,
+              "n03": 9,
+              "n04": 9,
+              "n05": 9,
+              "n06": 9,
+              "n07": 9,
+              "n08": 9,
+              "n09": 9,
+              "n10": 9,
+              "n11": 9,
+              "n12": 9,
+              "n13": 9,
+              "n14": 9,
+              "n15": 9,
+              "n16": 9,
+              "n17": 9,
+              "n18": 10
+            },
+            "fees": 26
+          },
+          {
+            "day": 11,
+            "cash": {
+              "n01": 0,
+              "n02": 10,
+              "n03": 10,
+              "n04": 10,
+              "n05": 10,
+              "n06": 10,
+              "n07": 10,
+              "n08": 10,
+              "n09": 10,
+              "n10": 10,
+              "n11": 10,
+              "n12": 10,
+              "n13": 10,
+              "n14": 10,
+              "n15": 10,
+              "n16": 10,
+              "n17": 10,
+              "n18": 11
+            },
+            "fees": 27
+          },
+          {
+            "day": 12,
+            "cash": {
+              "n01": 0,
+              "n02": 11,
+              "n03": 11,
+              "n04": 11,
+              "n05": 11,
+              "n06": 11,
+              "n07": 11,
+              "n08": 11,
+              "n09": 11,
+              "n10": 11,
+              "n11": 11,
+              "n12": 11,
+              "n13": 11,
+              "n14": 11,
+              "n15": 11,
+              "n16": 11,
+              "n17": 11,
+              "n18": 12
+            },
+            "fees": 28
+          },
+          {
+            "day": 13,
+            "cash": {
+              "n01": 0,
+              "n02": 12,
+              "n03": 12,
+              "n04": 12,
+              "n05": 12,
+              "n06": 12,
+              "n07": 12,
+              "n08": 12,
+              "n09": 12,
+              "n10": 12,
+              "n11": 12,
+              "n12": 12,
+              "n13": 12,
+              "n14": 12,
+              "n15": 12,
+              "n16": 12,
+              "n17": 12,
+              "n18": 13
+            },
+            "fees": 29
+          },
+          {
+            "day": 14,
+            "cash": {
+              "n01": 0,
+              "n02": 13,
+              "n03": 13,
+              "n04": 13,
+              "n05": 13,
+              "n06": 13,
+              "n07": 13,
+              "n08": 13,
+              "n09": 13,
+              "n10": 13,
+              "n11": 13,
+              "n12": 13,
+              "n13": 13,
+              "n14": 13,
+              "n15": 13,
+              "n16": 13,
+              "n17": 13,
+              "n18": 14
+            },
+            "fees": 30
+          }
+        ]
+      },
+      {
+        "arm": "dispersed",
+        "transferCount": 42,
+        "grossTransferred": 42,
+        "supportFees": 30,
+        "days": [
+          {
+            "day": 1,
+            "cash": {
+              "n01": 0,
+              "n02": 0,
+              "n03": 0,
+              "n04": 0,
+              "n05": 0,
+              "n06": 0,
+              "n07": 0,
+              "n08": 0,
+              "n09": 0,
+              "n10": 0,
+              "n11": 0,
+              "n12": 0,
+              "n13": 0,
+              "n14": 0,
+              "n15": 0,
+              "n16": 0,
+              "n17": 0,
+              "n18": 1
+            },
+            "fees": 17
+          },
+          {
+            "day": 2,
+            "cash": {
+              "n01": 0,
+              "n02": 1,
+              "n03": 1,
+              "n04": 1,
+              "n05": 1,
+              "n06": 1,
+              "n07": 1,
+              "n08": 1,
+              "n09": 1,
+              "n10": 1,
+              "n11": 1,
+              "n12": 1,
+              "n13": 1,
+              "n14": 1,
+              "n15": 1,
+              "n16": 1,
+              "n17": 1,
+              "n18": 2
+            },
+            "fees": 18
+          },
+          {
+            "day": 3,
+            "cash": {
+              "n01": 0,
+              "n02": 2,
+              "n03": 2,
+              "n04": 2,
+              "n05": 2,
+              "n06": 2,
+              "n07": 2,
+              "n08": 2,
+              "n09": 2,
+              "n10": 2,
+              "n11": 2,
+              "n12": 2,
+              "n13": 2,
+              "n14": 2,
+              "n15": 2,
+              "n16": 2,
+              "n17": 2,
+              "n18": 3
+            },
+            "fees": 19
+          },
+          {
+            "day": 4,
+            "cash": {
+              "n01": 0,
+              "n02": 3,
+              "n03": 3,
+              "n04": 3,
+              "n05": 3,
+              "n06": 3,
+              "n07": 3,
+              "n08": 3,
+              "n09": 3,
+              "n10": 3,
+              "n11": 3,
+              "n12": 3,
+              "n13": 3,
+              "n14": 3,
+              "n15": 3,
+              "n16": 3,
+              "n17": 3,
+              "n18": 4
+            },
+            "fees": 20
+          },
+          {
+            "day": 5,
+            "cash": {
+              "n01": 0,
+              "n02": 4,
+              "n03": 4,
+              "n04": 4,
+              "n05": 4,
+              "n06": 4,
+              "n07": 4,
+              "n08": 4,
+              "n09": 4,
+              "n10": 4,
+              "n11": 4,
+              "n12": 4,
+              "n13": 4,
+              "n14": 4,
+              "n15": 4,
+              "n16": 4,
+              "n17": 4,
+              "n18": 5
+            },
+            "fees": 21
+          },
+          {
+            "day": 6,
+            "cash": {
+              "n01": 0,
+              "n02": 5,
+              "n03": 5,
+              "n04": 5,
+              "n05": 5,
+              "n06": 5,
+              "n07": 5,
+              "n08": 5,
+              "n09": 5,
+              "n10": 5,
+              "n11": 5,
+              "n12": 5,
+              "n13": 5,
+              "n14": 5,
+              "n15": 5,
+              "n16": 5,
+              "n17": 5,
+              "n18": 6
+            },
+            "fees": 22
+          },
+          {
+            "day": 7,
+            "cash": {
+              "n01": 0,
+              "n02": 6,
+              "n03": 6,
+              "n04": 6,
+              "n05": 6,
+              "n06": 6,
+              "n07": 6,
+              "n08": 6,
+              "n09": 6,
+              "n10": 6,
+              "n11": 6,
+              "n12": 6,
+              "n13": 6,
+              "n14": 6,
+              "n15": 6,
+              "n16": 6,
+              "n17": 6,
+              "n18": 7
+            },
+            "fees": 23
+          },
+          {
+            "day": 8,
+            "cash": {
+              "n01": 0,
+              "n02": 7,
+              "n03": 7,
+              "n04": 7,
+              "n05": 7,
+              "n06": 7,
+              "n07": 7,
+              "n08": 7,
+              "n09": 7,
+              "n10": 7,
+              "n11": 7,
+              "n12": 7,
+              "n13": 7,
+              "n14": 7,
+              "n15": 7,
+              "n16": 7,
+              "n17": 7,
+              "n18": 8
+            },
+            "fees": 24
+          },
+          {
+            "day": 9,
+            "cash": {
+              "n01": 0,
+              "n02": 8,
+              "n03": 8,
+              "n04": 8,
+              "n05": 8,
+              "n06": 8,
+              "n07": 8,
+              "n08": 8,
+              "n09": 8,
+              "n10": 8,
+              "n11": 8,
+              "n12": 8,
+              "n13": 8,
+              "n14": 8,
+              "n15": 8,
+              "n16": 8,
+              "n17": 8,
+              "n18": 9
+            },
+            "fees": 25
+          },
+          {
+            "day": 10,
+            "cash": {
+              "n01": 0,
+              "n02": 9,
+              "n03": 9,
+              "n04": 9,
+              "n05": 9,
+              "n06": 9,
+              "n07": 9,
+              "n08": 9,
+              "n09": 9,
+              "n10": 9,
+              "n11": 9,
+              "n12": 9,
+              "n13": 9,
+              "n14": 9,
+              "n15": 9,
+              "n16": 9,
+              "n17": 9,
+              "n18": 10
+            },
+            "fees": 26
+          },
+          {
+            "day": 11,
+            "cash": {
+              "n01": 0,
+              "n02": 10,
+              "n03": 10,
+              "n04": 10,
+              "n05": 10,
+              "n06": 10,
+              "n07": 10,
+              "n08": 10,
+              "n09": 10,
+              "n10": 10,
+              "n11": 10,
+              "n12": 10,
+              "n13": 10,
+              "n14": 10,
+              "n15": 10,
+              "n16": 10,
+              "n17": 10,
+              "n18": 11
+            },
+            "fees": 27
+          },
+          {
+            "day": 12,
+            "cash": {
+              "n01": 0,
+              "n02": 11,
+              "n03": 11,
+              "n04": 11,
+              "n05": 11,
+              "n06": 11,
+              "n07": 11,
+              "n08": 11,
+              "n09": 11,
+              "n10": 11,
+              "n11": 11,
+              "n12": 11,
+              "n13": 11,
+              "n14": 11,
+              "n15": 11,
+              "n16": 11,
+              "n17": 11,
+              "n18": 12
+            },
+            "fees": 28
+          },
+          {
+            "day": 13,
+            "cash": {
+              "n01": 0,
+              "n02": 12,
+              "n03": 12,
+              "n04": 12,
+              "n05": 12,
+              "n06": 12,
+              "n07": 12,
+              "n08": 12,
+              "n09": 12,
+              "n10": 12,
+              "n11": 12,
+              "n12": 12,
+              "n13": 12,
+              "n14": 12,
+              "n15": 12,
+              "n16": 12,
+              "n17": 12,
+              "n18": 13
+            },
+            "fees": 29
+          },
+          {
+            "day": 14,
+            "cash": {
+              "n01": 0,
+              "n02": 13,
+              "n03": 13,
+              "n04": 13,
+              "n05": 13,
+              "n06": 13,
+              "n07": 13,
+              "n08": 13,
+              "n09": 13,
+              "n10": 13,
+              "n11": 13,
+              "n12": 13,
+              "n13": 13,
+              "n14": 13,
+              "n15": 13,
+              "n16": 13,
+              "n17": 13,
+              "n18": 14
+            },
+            "fees": 30
+          }
+        ]
+      }
+    ],
+    "rejected": [
+      {
+        "id": "legacy-relay-profile-key",
+        "reason": "unknown experiment key: participationReference"
+      },
+      {
+        "id": "legacy-allocation-key",
+        "reason": "unknown experiment key: supportAllocation"
+      },
+      {
+        "id": "explicit-living-engine",
+        "reason": "unsupported experiment engine"
+      },
+      {
+        "id": "living-randomness-manifest",
+        "reason": "unsupported experiment randomness engine"
+      },
+      {
+        "id": "registration-base-preflight",
+        "reason": "unsupported experiment engine"
+      },
+      {
+        "id": "vouch-has-no-act-case-operation",
+        "reason": "unknown Native vouch operation"
+      },
+      {
+        "id": "pb-is-not-living-relay",
+        "reason": "P/b experiment requires exactly: engine, reference, days, seed, includeState, maxActions, successCriterion, emissionEveryDays, model"
+      },
+      {
+        "id": "scalar-worker-living-metric",
+        "reason": "hypothesis: statistic metric does not belong to experiment engine: living.taggedDefectCasesUpheld"
+      }
+    ],
+    "modelMutatorCalls": [],
+    "constructorCaveat": "Native vouch config performs disposable zero-wealth constructor validation; NOT a population/transaction run",
+    "newOutcomeRuns": 0,
+    "scientificWorlds": 0,
+    "registrationsCreated": 0,
+    "reservedSeedsAllocated": 0,
+    "identifiedGaps": [
+      "config/dispatcher lacks this living reference",
+      "engine-specific living scalar namespace absent",
+      "randomness manifest absent",
+      "fixed no-draw tape has no independent sampling law",
+      "G1 and dependent master gates absent"
+    ],
+    "noSourceOrTestOrDefaultOrRandomnessChange": true,
+    "next": "minimal typed existing-dispatcher/metric adapter under the separate contract, engineering-only; no comparative outcome probe or scientific admission/gate waiver"
+  },
+  "changesInUnderstanding": [
+    "Allocation concentration is not organization-vs-isolation: common public best-willing candidate policy required; private team names do not constitute behavior",
+    "Equal aggregate wealth is weaker than matching individual cash:42actual transport legs/arm match all14end-of-round per-person balances, recipient/day/fee obligations same, different outgoing responsibility/XP/risk and personal work are the treatment",
+    "Common policy/26extra transport legs differ from historical year: BOTH new contexts unobserved, no historical positive arm reused as confirmation",
+    "Existing legacy/Native vouch/P-b/observables/scalar paths do not admit this caller; exact8refusals, no fake registration",
+    "Current deterministic no-draw tape has no independent world law, repeated seed labels cannot give population precision or G1"
+  ],
+  "draftRefinements": "Before closure made historicalFinalSubjectsNotAnAssertion86 explicit (not births86), accepted/current XP eligibility wording exact, leader days1..18 explicitly enumerated rather than ambiguous [1,18] range, and derived common duty count from descriptor; funding-prefix/API checks rerun, no outcome/scenario retuning.",
+  "futureAdapter": {
+    "contract": "studies/2026-10-26-trust-topology-condition-map/support-allocation-contract.md",
+    "proposedEngine": "native-living-accountability/v1",
+    "proposedReference": "support-allocation-control/v1",
+    "status": "NOT IMPLEMENTED",
+    "existingOwners": [
+      "experiment-config: strict dispatch config",
+      "experiment: run dispatcher/existing Model/EvidenceRelay runner",
+      "discovery: engine-specific scalars",
+      "evidence/task-worker: existing scalar execution/verification with no statistical method change"
+    ],
+    "noNewCourtOrGenericFramework": true,
+    "engineeringAcceptanceOnly": "next adapter validation uses predeclared maxActions<=3000 prefix, provably before first day75case with60ordinary sources/day; native funding/matching/audits/censored365day null-stat paths only, NO full annual arm or ACT outcome. Config ceiling100000, smaller engineering cap is explicit not a favorable scenario retune.",
+    "noOutcomeOrScientificCaptureAuthorized": true,
+    "samplingLaw": null,
+    "realRegistration": null,
+    "reservedSeeds": [],
+    "scientificWorlds": 0,
+    "sourceGate": "archive pre-change Source, prove old default/keyed/legacy one-step/timed references/fixed-year/fingerprints/historical bytes; new engine validation must not relabel data or bypass includeState/unbound-success/drift",
+    "masterGate": "G1 absent; actual WP4 comparison requiresG2+G3+G5, adapter correctness alone passes none"
+  },
+  "validation": {
+    "actual": {
+      "command": "node studies/2026-10-26-trust-topology-condition-map/support-allocation-admission.mjs",
+      "result": "14NONVACUOUS matched per-person cash rounds/30support fee-funded duty offers each/42transfers each/100total duties,8explicit API refusals,0Model mutators/0outcomes/0registrations/0worlds",
+      "constructorCaveat": "Native vouch config performs disposable zero-wealth constructor validation; NOT a population/transaction run"
+    },
+    "reused": {
+      "basis": "exact unchanged Source/test/runtime fromf5bc841; no Source/test/default/RNG edit",
+      "currentTests": 757,
+      "historicalTests": 21,
+      "focused": 100,
+      "dag": {
+        "modules": 53,
+        "edges": 168,
+        "errors": 0,
+        "warnings": 0,
+        "rerun": false
+      },
+      "defaultKeyed": 15,
+      "walkthroughs": 30,
+      "priorD77": 2,
+      "priorTimedGoldens": 4,
+      "fixedTrajectories": 2,
+      "notUnexecutedControlAssurance": true,
+      "originalHistoricalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7"
+    }
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-support-allocation-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "review": "Existing29index/meta/wide-table/structure warnings,0new orphan/phantom. Large protocol and now insight register skipped by validator; selected protocol untouched and changed insight entry/link read directly. Source/test/default/RNG/AGENTS/old evidence unchanged, exact Source07389324/testEDA/runtimeNode26 tree binding permits reuse of757current+21original historical/100focused/DAG/default/keyed/timed/trajectory Source assurance, NOT unexecuted contrast evidence. New contract/design/refusal-only program names diagnostic prep not hypothesis/registration; real0outcomes/Modelmutators/worlds/namespaces, constructor-only Native policy validation caveat explicit. Nonvacuous14round18-person cash vectors/30duty targets/42actual transport matches, same total100fees/duties but responsibility/XP/exposure/personal setup work differ; not XP transfer/verified usefulness, no organization-necessity claim. Common public highest-current-XP willing community policy in BOTH arms prevents privileged backup, identity/current entrant/cash gate exact and evaluator facts excluded from actor decisions. Both arms new due policy/26extra common transports, historical positive observations not recycled. No hardcoded86birth outcome or missing/safe/censor/replica-label inference. Exact config/manifest/Nativevouch/P-b/scalar/registration gaps observed, no includeState/unbound-success/legacy-coercion/drift bypass. Next existing-dispatcher/scalar adapter is earned engineering with explicit <=3000 pre-case prefix acceptance only, not a full-year/ACT-outcome research probe or G1/master pass. Canonical BACKLOG owns next work, no new parallel programme/engine framework/parked fallback or personal data authority."
+  },
+  "handoff": {
+    "scope": "D76 living-population evidence core / matched funded responsibility allocation",
+    "canonical": "BACKLOG.md",
+    "closed": "pre-data2arm design has genuinely matched individual funding/total primitive setup work and common responder; actual8public admission gaps/no private truth use/new outcomes; no generic framework added",
+    "next": "implement minimal typed existing-dispatcher/living scalar adapter under bound contract ONLY, using existing Model/EvidenceRelay; archiveSource/preserveoldcases/default/RNG/registrations. No comparative research/real registration. Then assess actual sampling/prior/master admission, not auto-run study.",
+    "actionability": "local-actionable engineering admission prerequisite, actual research gated",
+    "blockers": [
+      "existing config/dispatch/metric/manifest lacks living caller",
+      "no independently sampled context law or committed scientific method",
+      "masterG1 absent, downstream gates unchanged"
+    ],
+    "signature": "supportAllocation-predata100duties42transfer-14cashMatched-commonBestPublicResponder/notOrgVsIsolation-8APIfailures0ModelMutators0outcomes/source07389324-testEDA-757plus21reused/nextTypedScalarAdapterNotResearchCapture",
+    "continuationWarranted": true
+  }
+}

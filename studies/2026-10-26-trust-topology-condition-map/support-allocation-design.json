@@ -1,0 +1,1187 @@
+{
+  "schema": "facety-support-allocation-predata/v1",
+  "status": "DESIGN ONLY / NOT REGISTERED / NOT RUN",
+  "baseCommit": "f5bc841",
+  "sourceDigest": "07389324ffcda5dfb63280b8f3efc564c877f8d770a7ee4d6232608d4995e29c",
+  "contract": "support-allocation-contract.md",
+  "historicalObserved": [
+    "longitudinal-caller-results.md",
+    "settled-history-results.md"
+  ],
+  "inquiry": "same fee-funded responsibilities: concentrated versus dispersed, common communication and best willing public responder, not organization versus isolation",
+  "common": {
+    "days": 365,
+    "hours": 8760,
+    "genesis": 60,
+    "openingFacy": 0,
+    "openingXp": 0,
+    "guaranteeFee": 1,
+    "ownIssuanceHours": 24,
+    "checkpointHours": 4,
+    "participationReference": "d77-timed-act-settled-history/v1",
+    "formalCouncil": "absent supplied world under100; not inferred verified authority",
+    "invitationOpportunities": [
+      7,
+      21,
+      35,
+      49,
+      63,
+      77,
+      91,
+      105,
+      119,
+      133,
+      147,
+      161,
+      175,
+      189,
+      203,
+      217,
+      231,
+      245,
+      259,
+      273,
+      287,
+      301,
+      315,
+      329,
+      343,
+      357
+    ],
+    "historicalFinalSubjectsNotAnAssertion": 86,
+    "publicCommunity": [
+      "n00",
+      "n01",
+      "n02",
+      "n03",
+      "n04",
+      "n05",
+      "n06",
+      "n07",
+      "n08",
+      "n09",
+      "n10",
+      "n11",
+      "n12",
+      "n13",
+      "n14",
+      "n15",
+      "n16",
+      "n17",
+      "n18",
+      "n19",
+      "n20",
+      "n21",
+      "n22",
+      "n23",
+      "n24",
+      "n25",
+      "n26",
+      "n27",
+      "n28",
+      "n29",
+      "n30",
+      "n31",
+      "n32",
+      "n33",
+      "n34",
+      "n35",
+      "n36",
+      "n37",
+      "n38",
+      "n39"
+    ],
+    "workAccounts": "same60root public actors plus reporter; no newborn relay roles",
+    "relayUnitsPerRoot": 100,
+    "dailyReviewCapacity": 20,
+    "transferMediator": "n18",
+    "unchangedDuties": {
+      "leader": {
+        "giver": "n00",
+        "days": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+        "receiverRule": "day+9",
+        "count": 18
+      },
+      "coalition": {
+        "giver": "n40",
+        "days": [
+          30,
+          60
+        ],
+        "counts": [
+          30,
+          20
+        ],
+        "receivers": "same historical50 excludes self"
+      },
+      "inviter": {
+        "givers": [
+          "n58",
+          "n59"
+        ],
+        "receiver": "n55",
+        "day": 1,
+        "count": 2
+      }
+    },
+    "responsePolicy": {
+      "reference": "best-willing-public-standing/v1",
+      "rosterSource": "declared willing public community, NOT evaluator compliance/control labels",
+      "windows": "same old protective windows, old n01 actor replaced by common candidate policy in BOTH arms",
+      "side": "same received public stance, never local validity",
+      "ranking": "highest current public XP, ties SubjectId",
+      "eligible": "accepted current identity, not target/not previous entrant, strict XP above latest entrant CURRENT public XP/current funds for actual next stake",
+      "attempts": "one selected paid observation+actual entry attempt/window, no fallback on native source refusal",
+      "alreadyCurrent": "abstain separately",
+      "empty": "no-public-eligible-candidate, not truth/negative evidence"
+    },
+    "caseTape": [
+      {
+        "id": "defect-old",
+        "day": 75,
+        "sponsor": "n00",
+        "target": "n41",
+        "actDay": 60,
+        "entries": [
+          [
+            76,
+            "n40",
+            "valid"
+          ],
+          [
+            77,
+            "public-community-candidate",
+            "defect"
+          ]
+        ]
+      },
+      {
+        "id": "pressure-a",
+        "day": 210,
+        "sponsor": "n40",
+        "target": "n20",
+        "actDay": 190,
+        "entries": [
+          [
+            211,
+            "public-community-candidate",
+            "valid"
+          ]
+        ]
+      },
+      {
+        "id": "pressure-b",
+        "day": 211,
+        "sponsor": "n40",
+        "target": "n22",
+        "actDay": 191,
+        "entries": [
+          [
+            212,
+            "public-community-candidate",
+            "valid"
+          ]
+        ]
+      },
+      {
+        "id": "repeat-defect",
+        "day": 270,
+        "sponsor": "n00",
+        "target": "n41",
+        "actDay": 250,
+        "entries": [
+          [
+            271,
+            "n40",
+            "valid"
+          ],
+          [
+            272,
+            "public-community-candidate",
+            "defect"
+          ]
+        ]
+      },
+      {
+        "id": "mistaken-defect",
+        "day": 271,
+        "sponsor": "n00",
+        "target": "n21",
+        "actDay": 251,
+        "entries": [
+          [
+            272,
+            "public-community-candidate",
+            "valid"
+          ],
+          [
+            273,
+            "n40",
+            "defect"
+          ]
+        ]
+      }
+    ],
+    "signalRule": "same fallible supplied report/review/stance tape; role-identity/provenance labels reflect selected actual observer, never evaluator local validity",
+    "initialProtectedHistory": "same n00 early18 duties; community pool is assumed willingness, not proved honesty",
+    "sampling": {
+      "generator": "none",
+      "decisionDraws": 0,
+      "observationDraws": 0,
+      "independentSamplingLaw": null,
+      "seedMeaning": "identity only; repeated labels NOT independent scientific worlds"
+    },
+    "safety": {
+      "maxTopLevelAttempts": 100000,
+      "attemptBoundary": "Model caller operations plus Relay commands once, exclude getters/audits/nested controller internals",
+      "noRefill": true,
+      "engineeringWholeProcessSeconds": 90,
+      "notScientificKillOrPrecision": true
+    }
+  },
+  "arms": {
+    "concentrated": {
+      "transfers": [
+        {
+          "day": 1,
+          "from": "n02",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n03",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n04",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n05",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n06",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n07",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n08",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n09",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n10",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n11",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n12",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n13",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n14",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n15",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n16",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n17",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 2,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 2,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 3,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 3,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 4,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 4,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 5,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 5,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 6,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 6,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 7,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 7,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 8,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 8,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 9,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 9,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 10,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 10,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 11,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 11,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 12,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 12,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 13,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 13,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        },
+        {
+          "day": 14,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 14,
+          "from": "n18",
+          "to": "n01",
+          "amount": 1
+        }
+      ],
+      "duties": [
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n10",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n11",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n12",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n13",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n14",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n15",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n16",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n17",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n18",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n19",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n20",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n21",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n22",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n23",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n24",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n25",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n26",
+          "fee": 1
+        },
+        {
+          "day": 2,
+          "giver": "n01",
+          "receiver": "n27",
+          "fee": 1
+        },
+        {
+          "day": 3,
+          "giver": "n01",
+          "receiver": "n28",
+          "fee": 1
+        },
+        {
+          "day": 4,
+          "giver": "n01",
+          "receiver": "n29",
+          "fee": 1
+        },
+        {
+          "day": 5,
+          "giver": "n01",
+          "receiver": "n30",
+          "fee": 1
+        },
+        {
+          "day": 6,
+          "giver": "n01",
+          "receiver": "n31",
+          "fee": 1
+        },
+        {
+          "day": 7,
+          "giver": "n01",
+          "receiver": "n32",
+          "fee": 1
+        },
+        {
+          "day": 8,
+          "giver": "n01",
+          "receiver": "n33",
+          "fee": 1
+        },
+        {
+          "day": 9,
+          "giver": "n01",
+          "receiver": "n34",
+          "fee": 1
+        },
+        {
+          "day": 10,
+          "giver": "n01",
+          "receiver": "n35",
+          "fee": 1
+        },
+        {
+          "day": 11,
+          "giver": "n01",
+          "receiver": "n36",
+          "fee": 1
+        },
+        {
+          "day": 12,
+          "giver": "n01",
+          "receiver": "n37",
+          "fee": 1
+        },
+        {
+          "day": 13,
+          "giver": "n01",
+          "receiver": "n38",
+          "fee": 1
+        },
+        {
+          "day": 14,
+          "giver": "n01",
+          "receiver": "n39",
+          "fee": 1
+        }
+      ]
+    },
+    "dispersed": {
+      "transfers": [
+        {
+          "day": 1,
+          "from": "n02",
+          "to": "n03",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n03",
+          "to": "n04",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n04",
+          "to": "n05",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n05",
+          "to": "n06",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n06",
+          "to": "n07",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n07",
+          "to": "n08",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n08",
+          "to": "n09",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n09",
+          "to": "n10",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n10",
+          "to": "n11",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n11",
+          "to": "n12",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n12",
+          "to": "n13",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n13",
+          "to": "n14",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n14",
+          "to": "n15",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n15",
+          "to": "n16",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n16",
+          "to": "n17",
+          "amount": 1
+        },
+        {
+          "day": 1,
+          "from": "n17",
+          "to": "n02",
+          "amount": 1
+        },
+        {
+          "day": 2,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 2,
+          "from": "n18",
+          "to": "n02",
+          "amount": 1
+        },
+        {
+          "day": 3,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 3,
+          "from": "n18",
+          "to": "n03",
+          "amount": 1
+        },
+        {
+          "day": 4,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 4,
+          "from": "n18",
+          "to": "n04",
+          "amount": 1
+        },
+        {
+          "day": 5,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 5,
+          "from": "n18",
+          "to": "n05",
+          "amount": 1
+        },
+        {
+          "day": 6,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 6,
+          "from": "n18",
+          "to": "n06",
+          "amount": 1
+        },
+        {
+          "day": 7,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 7,
+          "from": "n18",
+          "to": "n07",
+          "amount": 1
+        },
+        {
+          "day": 8,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 8,
+          "from": "n18",
+          "to": "n08",
+          "amount": 1
+        },
+        {
+          "day": 9,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 9,
+          "from": "n18",
+          "to": "n09",
+          "amount": 1
+        },
+        {
+          "day": 10,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 10,
+          "from": "n18",
+          "to": "n10",
+          "amount": 1
+        },
+        {
+          "day": 11,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 11,
+          "from": "n18",
+          "to": "n11",
+          "amount": 1
+        },
+        {
+          "day": 12,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 12,
+          "from": "n18",
+          "to": "n12",
+          "amount": 1
+        },
+        {
+          "day": 13,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 13,
+          "from": "n18",
+          "to": "n13",
+          "amount": 1
+        },
+        {
+          "day": 14,
+          "from": "n01",
+          "to": "n18",
+          "amount": 1
+        },
+        {
+          "day": 14,
+          "from": "n18",
+          "to": "n14",
+          "amount": 1
+        }
+      ],
+      "duties": [
+        {
+          "day": 1,
+          "giver": "n01",
+          "receiver": "n10",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n02",
+          "receiver": "n11",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n03",
+          "receiver": "n12",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n04",
+          "receiver": "n13",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n05",
+          "receiver": "n14",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n06",
+          "receiver": "n15",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n07",
+          "receiver": "n16",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n08",
+          "receiver": "n17",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n09",
+          "receiver": "n18",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n10",
+          "receiver": "n19",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n11",
+          "receiver": "n20",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n12",
+          "receiver": "n21",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n13",
+          "receiver": "n22",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n14",
+          "receiver": "n23",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n15",
+          "receiver": "n24",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n16",
+          "receiver": "n25",
+          "fee": 1
+        },
+        {
+          "day": 1,
+          "giver": "n17",
+          "receiver": "n26",
+          "fee": 1
+        },
+        {
+          "day": 2,
+          "giver": "n02",
+          "receiver": "n27",
+          "fee": 1
+        },
+        {
+          "day": 3,
+          "giver": "n03",
+          "receiver": "n28",
+          "fee": 1
+        },
+        {
+          "day": 4,
+          "giver": "n04",
+          "receiver": "n29",
+          "fee": 1
+        },
+        {
+          "day": 5,
+          "giver": "n05",
+          "receiver": "n30",
+          "fee": 1
+        },
+        {
+          "day": 6,
+          "giver": "n06",
+          "receiver": "n31",
+          "fee": 1
+        },
+        {
+          "day": 7,
+          "giver": "n07",
+          "receiver": "n32",
+          "fee": 1
+        },
+        {
+          "day": 8,
+          "giver": "n08",
+          "receiver": "n33",
+          "fee": 1
+        },
+        {
+          "day": 9,
+          "giver": "n09",
+          "receiver": "n34",
+          "fee": 1
+        },
+        {
+          "day": 10,
+          "giver": "n10",
+          "receiver": "n35",
+          "fee": 1
+        },
+        {
+          "day": 11,
+          "giver": "n11",
+          "receiver": "n36",
+          "fee": 1
+        },
+        {
+          "day": 12,
+          "giver": "n12",
+          "receiver": "n37",
+          "fee": 1
+        },
+        {
+          "day": 13,
+          "giver": "n13",
+          "receiver": "n38",
+          "fee": 1
+        },
+        {
+          "day": 14,
+          "giver": "n14",
+          "receiver": "n39",
+          "fee": 1
+        }
+      ]
+    }
+  },
+  "matching": {
+    "totalSupportDuties": 30,
+    "totalAllDuties": 100,
+    "totalFees": 100,
+    "supportFees": 30,
+    "transfersEachArm": 42,
+    "grossTransferredEachArm": 42,
+    "fundingPrefixDays": [
+      1,
+      14
+    ],
+    "incomeAssumption": "one legitimately matured/withdrawn own unit per participant per day, no cases until75; arithmetic prefix1..18 only not network outcome",
+    "match": "per-person liquid balances after every funding round, total duties/fees/primitive operations/available Relay budgets/public opportunity calendar",
+    "notMatchedByDesign": [
+      "outgoing responsibility allocation",
+      "actual guarantor receipt recipients and exposure",
+      "per-person setup work",
+      "subsequent actual case/issue/XP/cash consequences"
+    ],
+    "notHistoricalReproduction": "BOTH future arms have new common26extra transport legs and common public candidate policy; old fixed-year outputs are exploratory context only"
+  },
+  "scopedEvaluatorFacts": {
+    "defect-old": false,
+    "pressure-a": true,
+    "pressure-b": true,
+    "repeat-defect": false,
+    "mistaken-defect": true
+  },
+  "evaluatorBoundary": "local target validity only, not whole chain/personhood/usefulness/merits; never public actor input",
+  "proposedScalars": {
+    "living.acceptedBirths": "count, actual accepted non-genesis subjects",
+    "living.taggedDefectCasesUpheld": "count actual final upheld cases whose target local-act evaluator tag is defective, not truthful-court accuracy",
+    "living.taggedValidPrincipalCollected": "FACY actually collected in finalized cases whose target local tag is valid, not whole-chain innocence/incremental attack loss",
+    "living.sourcePrincipalCollected": "FACY actual collected, not requested/locked/refunded/debt",
+    "living.unpaidPrincipalDebt": "FACY actual outstanding source principal debt",
+    "living.pausedIssueSlots": "scheduled own daily issue opportunities not served under actual D77 holds, not burn/wage",
+    "living.relayWork": "actual Relay units, not all setup work/human effort"
+  },
+  "admission": {
+    "proposedEngine": "native-living-accountability/v1",
+    "proposedReference": "support-allocation-control/v1",
+    "status": "UNIMPLEMENTED: inspect existing config/registry; no fallback",
+    "requiredPaths": [
+      "strict config",
+      "runExperiment dispatcher",
+      "engine randomness manifest",
+      "engine-specific observable namespace",
+      "common scalar task/verification/provenance paths"
+    ],
+    "successCriterion": "unbound",
+    "outcomeSuccess": null,
+    "registeredIncludeState": false,
+    "registration": null,
+    "reservedSeeds": [],
+    "precision": null,
+    "errorFamily": null,
+    "numericKills": null,
+    "reason": "No fake registration/precision for known deterministic tape. Need supported execution/metrics AND actual committed v2/sampling/claims/contexts/source/RNG/error/held-out/master contracts before outcome captures."
+  },
+  "ceilings": [
+    "No outcome probe in this cohort",
+    "No scientific worlds/G1 or later-WP gate pass",
+    "No aliases/endogenous demand/verified personhood or usefulness/human calibration/market/private utility",
+    "Different payer transport is placebo control, not new social rule",
+    "Direct encoded XP/strict gate alternative not ruled out, allocation not emergent mechanism",
+    "No Source/test/default/RNG/selected protocol change"
+  ]
+}
