@@ -1,0 +1,261 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "T3/T5 test-local finite matched structural acceptance, not empirical population/economic science",
+  "baseCommit": "2ebc1aeca78706d1051c5b7dbf23cfc9c5d90482",
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "f4cc7f1aaa3e94eeb1252aff9595159612fa4011",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "test/core-bridge-reuse.test.mjs",
+      "gitBlob": "b5ae08b45e687a72fca46860b012f33f441e1454"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t3-t5-structural-contract.md",
+      "gitBlob": "0c35586eac6cfd0e20dbd1ed91bfd6150952969b"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t3-t5-structural-plan.json",
+      "gitBlob": "9d599a4855f63640175f78f965c3b85d9d91b775"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t3-t5-structural-contract-validation.json",
+      "gitBlob": "bf17a3226f6a4c9f0920396f3adde498ff78cdd3"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t3-t5-structural-results.md",
+      "gitBlob": "d669ecee6d65ef9256d96f53c5589430e47c1b32"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t3-t5-structural-rows.json",
+      "gitBlob": "27799e5f59418d97cdde57912168f1c7f8d6dbb3"
+    }
+  ],
+  "implementation": {
+    "owner": "test/core-bridge-reuse.test.mjs only; no new module or exported scorer",
+    "originalT1Prefix": "git show baseCommit:test/core-bridge-reuse.test.mjs is an exact prefix after stripping only three added imports; original T1 helper/test body bytes unchanged",
+    "addedTestFamilies": 2,
+    "newImports": [
+      "node:fs readFileSync",
+      "existing findPathWitness",
+      "existing digestOf"
+    ],
+    "method": "fresh M1 T1 builder mutations, independent literal edge algebra; stored incoming raw G, projected M2 P; private raw adjacency/hop reachability/cut and route checks",
+    "scientificRegistration": false,
+    "newProductionAPIs": 0,
+    "newModelCalls": 0,
+    "newScientificWorldsOrSeeds": 0
+  },
+  "facts": {
+    "cells": 192,
+    "diagnosticArmFacts": 768,
+    "templates": 8,
+    "difficulty": [
+      2,
+      3
+    ],
+    "anchorRatios": [
+      2,
+      3
+    ],
+    "maxHops": [
+      2,
+      3
+    ],
+    "projections": 3,
+    "passedCounts": {
+      "none": 192,
+      "guarantee-only": 144,
+      "path-only": 64,
+      "both": 56
+    },
+    "falseCounts": {
+      "none": 0,
+      "guarantee-only": 48,
+      "path-only": 128,
+      "both": 136
+    },
+    "matrixUnknown": 0,
+    "positive": {
+      "count": 64,
+      "evidence": "actual M2 witnesses accepted by primary/ref2 plus raw physical hops/terminals/edges; enumeration complete, no requirement of globally exhausted positive packing"
+    },
+    "negative": {
+      "count": 128,
+      "necessaryProjectedDegree": 72,
+      "completeEnumerationPacking": 56,
+      "independentPhysicalBounds": {
+        "raw-projected-degree": 72,
+        "raw-hop-reachable-terminals": 48,
+        "single-physical-cut": 8
+      },
+      "meaning": "complete/necessary absence, not rejected-wire or advisory search miss"
+    },
+    "matrixOracleQueriesPerSuite": 576,
+    "explicitAdditionalDualPositiveChecks": 128,
+    "matrixRowDigest": "557f9e66fa8217fbfe8794c94a3ede9d46bb73330edc36dd2334a27198e22ba2",
+    "projectionStrata": {
+      "directed-from-anchor": {
+        "cells": 64,
+        "G_raw": 48,
+        "P": 20,
+        "both": 20
+      },
+      "any-live-orientation": {
+        "cells": 64,
+        "G_raw": 48,
+        "P": 36,
+        "both": 28
+      },
+      "reciprocal-only": {
+        "cells": 64,
+        "G_raw": 48,
+        "P": 8,
+        "both": 8
+      }
+    },
+    "controls": {
+      "publicIdenticalFreshGenuineAndRepeat": 192,
+      "reversedArmOrder": 192,
+      "isolatedAnchorPaddingPairs": 96,
+      "boundaries": 5,
+      "unknownBoundaries": 4,
+      "knownDegreeNegativeBeforeZeroBudget": 1,
+      "conjunctionInputs": 9,
+      "invalidQueryContexts": 2
+    },
+    "scope": "raw G not d_eff; P is named D61 distinct-terminal reference, not blanket D36 shared-center/default admission; direction/reciprocity explicitly supplied not a selected general protocol migration; counts dependent software partitions not genuine-population/attack probabilities",
+    "unmeasured": {
+      "elapsedTimeToFirstSuccess": null,
+      "humanEffort": null,
+      "economicCost": null,
+      "realGenuineAccessRate": null,
+      "realIndependenceAccuracy": null,
+      "netGrowthBenefit": null
+    },
+    "capacityC": "UNCONTRACTED/NOT EXECUTED"
+  },
+  "fresh": {
+    "unit": {
+      "command": "node --test test/core-bridge-reuse.test.mjs",
+      "log": "/tmp/facety-t3-t5-unit.txt",
+      "passed": 5,
+      "failed": 0,
+      "addedFamilies": 2,
+      "firstRunGreen": true
+    },
+    "focused": {
+      "command": "node --test test/core-bridge-reuse.test.mjs test/core-support.test.mjs test/path-witness-oracle.test.mjs test/path-witness-view.test.mjs",
+      "log": "/tmp/facety-t3-t5-focused.txt",
+      "passed": 28,
+      "failed": 0
+    },
+    "full": {
+      "command": "npm test",
+      "log": "/tmp/facety-t3-t5-full.txt",
+      "currentPassed": 731,
+      "currentFailed": 0,
+      "historicalPassed": 21,
+      "historicalFailed": 0,
+      "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "historicalMeaning": "separate unchanged source-pinned bodies on compatible isolated source, not current assurance"
+    },
+    "nativePreservation": {
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+      "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+    }
+  },
+  "reusedSourceOnly": {
+    "basis": "same src tree/runtime/implementation, changed only existing test file and documentation/data; no DAG/two-trajectory rerun",
+    "record": "studies/2026-10-26-trust-topology-condition-map/t2-support-validation.json",
+    "evidence": {
+      "basis": "same runtime/src tree/implementation as C1, no Source mutation; source DAG/two trajectories not rerun",
+      "record": "studies/2026-10-26-trust-topology-condition-map/core-council-rejection-validation.json",
+      "dag": {
+        "sourceFiles": 53,
+        "localEdges": 168,
+        "acyclic": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "fixedTrajectories": {
+        "provenance": {
+          "implementation": {
+            "method": "sha256-src-mjs-v1",
+            "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+            "files": 53
+          },
+          "runtime": {
+            "node": "v26.8.1"
+          }
+        },
+        "excludedOnly": "provenance.implementation",
+        "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+        "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+        "matched": true,
+        "classification": "two fixed software trajectories, not sealed-study replay or new scientific data"
+      }
+    }
+  },
+  "review": {
+    "method": "inline frozen-template/physical-bound/source ownership/missingness/matched-identity/denominator and preservation review, not independent authorship",
+    "checks": [
+      "literal stored edge algebra versus reused-builder mutations",
+      "P=>raw G in directed/reciprocal, any outgoing-only counterexample",
+      "direct raw projected degree/hop-shortage or mandatory single-x cut for all negatives",
+      "full native result equality on repeat/fresh outside genuine controls",
+      "all192 actual rows plus5 separately declared boundary controls retained",
+      "old T1 prefix/body/test bytes and pre-code artifacts not overwritten",
+      "old indexer wording still-contracted corrected to still-uncontracted, no capacity implementation"
+    ],
+    "notProven": [
+      "verified people or anchors/d_eff/source validity",
+      "qualified guarantee redundancy",
+      "representative genuine access or human cost",
+      "funded growth, correction success or net incentive benefit",
+      "capacity/quota/governance/K execution semantics",
+      "scientific mechanism confirmation or G1"
+    ]
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-t3-t5-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "review": "Existing structure/meta-principle/sparsity/index-bloat/wide-table warnings reviewed. Raw rows/results/validation reachable; no new wide Markdown table. New execution is separate from frozen pre-code plan/contract and old packets, so historical counts are not relabeled. Simulator/research pre-code paragraphs explicitly historical; BACKLOG alone owns newly bound restart, not duplicate task lists. Unchanged large protocol scan skip and D73/D74 anchors preserved; no protocol decision edited. Source-only DAG/two trajectories reused, fresh731 current+21 compatible-source historical distinctly labeled. Indexer still-contracted wording corrected to still-uncontracted, no capacity policy inferred."
+  },
+  "preservation": {
+    "sourceRuntimeChanged": false,
+    "testOnlyExtension": true,
+    "oldPreCodeAndResultPacketsChanged": false,
+    "protocolDecisionOrDefaultChanged": false,
+    "randomnessPolicyChanged": false,
+    "scientificG1Pass": false,
+    "newAtmoOrExternalDataActions": 0
+  },
+  "handoff": {
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "scope": "D73 finite T1/T2/T3/T5 static engineering checkpoint",
+    "closed": "192-cell/four-arm acceptance in existing T1 test owner with literal matrix/physical/unknown/genuine/matched invariance; no further selected local implementation in this finite slice",
+    "next": "owner-bound restart: K counted resource/renewal and source/qualified verification/anchor/funding/duty/economic contracts plus supported committed method/master G1 before dependent dynamic/empirical execution; T9 governance separately contracted",
+    "exactOwnerQuestion": "Does K100 mean simultaneous active outgoing guarantees to distinct SubjectIDs, with slots released at termination while D34 historical event liability remains? This interpretation is NOT selected by continuation commands.",
+    "unclosed": "actual non-oracular independence, empirical T1/T2/T3/T5 and dynamic T4/T6/T7/T8/T9/master G1; capacity C/K/general migration; C3/indexer/rescue parked",
+    "continuationWarranted": false,
+    "stopProof": "finite selected static engineering tests complete and validated; next dependent empirical/default/dynamic actions require unbound scientific/human authority, not more helper/engine/scalar scaffolding or old-worker fallback",
+    "signature": "d73-t3-t5/192cells-768facts-64positive-72count-56packing/5boundaries/28focused-731current-21historical/source91db-testf4cc7f1a/stop-owner-source-method-master-gates"
+  }
+}

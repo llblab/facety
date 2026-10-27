@@ -1,0 +1,6430 @@
+{
+  "schema": "facety-engineering-rows/v1",
+  "classification": "finite supplied-graph predicate software rows; not scientific sample or funded admission",
+  "baseCommit": "2ebc1ae",
+  "planBlob": "9d599a4855f63640175f78f965c3b85d9d91b775",
+  "sourceImplementation": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+  "matrix": {
+    "cells": 192,
+    "armFacts": 768,
+    "found": 64,
+    "countNegatives": 72,
+    "completeNegatives": 56,
+    "counts": {
+      "none": {
+        "true": 192,
+        "false": 0,
+        "null": 0
+      },
+      "guarantee-only": {
+        "true": 144,
+        "false": 48,
+        "null": 0
+      },
+      "path-only": {
+        "true": 64,
+        "false": 128,
+        "null": 0
+      },
+      "both": {
+        "true": 56,
+        "false": 136,
+        "null": 0
+      }
+    },
+    "oracleCalls": 576,
+    "independentPopulationSamples": 0,
+    "rowDigest": "557f9e66fa8217fbfe8794c94a3ede9d46bb73330edc36dd2334a27198e22ba2",
+    "missingTimeAndCost": true
+  },
+  "rows": [
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "9d94e09476a9d799f0ae466701d34350f7dd5073991138b0bb9484b9464bb959",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "0f43ee52f3ae25f2d53d82c28f988de220e21a3e8ecf95072866b7e73c0eaa11",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "98d563f4d70fe003355d8719f4fd9d77e5ace009c98d03a4421719774c36a703",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "1a3d24bcf65a38ffd2041f31812651dde640c30a200f2b6e6ec8cd76d2a81194",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "c19f4eda1f6e796414aa8fd5a82dd47ef27e6be63cb2a77bb9c7443e679fc4fe",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "21d11c325ed426f246fa7b1c49ff4d20f9c08100028b5e363efb28768d5908d8",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "a7d339f97865abf027615810f1ea40288afca17cd5f933982d3f296af5444f94",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "dd3dacfd7cafc171d5cb0908d249abb256d43a7069672632667c72892d017683",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "d5cfeb50d6a1f2f53fbb63f44f8483e1453f0ccb9e17cc9690dc805c9eae2567",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "cfb84a59711ee845edc12e61240facdc3b97f28bf11f0b3e14b95c908980b6ba",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "71439593421285b9e26eda51cacf2b1dd8a9e0e5065f73c2f632ef74f32cb388",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "53b55a04ad5708fee75256c4f5313cc1b4cb3de36628834e8a2781fd85342a43",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "e236984d34174b4eef5494daa6a1a7e6ced38a6928cd6454a41e0e460aa5d285",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "1be512aeff26b72d80ed856b099c1d11c38698cc80d71d06254991ab4b078597",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "7dc61320f69472918c3f50b9f16090d534a0a88578ad9977b20c55f679e6e96c",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "189c2025e65f5a798971c9c0756e8395b95116b4d900808fea8782a9ef48bfd1",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "b7253e35240ba5c5fdd1707e9c1baad4f0c3d467c4b55dbca85e672108bd9953",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "7cfea94daa757f8094dde8fcfe5a9331d14cbf0a196475acc08c947fb73a416f",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "d1a5117aa9f4333a9b20eb392420d69904cc3ec2d82e47b7f36b88d161bd4f7c",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "015d5ea8cc2cdbfea409fc694f1f02f528ff5367c3a1f1296793ece5f6cbdb01",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "85524f0deed197eb4e1051c6e8f21baa9115899c69ce3031eb97b277ea385a55",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "2e5417766e6711549c55e9de304082b0ef1ad13ef40f666b08e10ff168834600",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "375967733bafc841c37b8956fb4a7e0a937850c9b8ee5117fdbd1e745f0c43f4",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "supported",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "a495f035a5fc4e4636d231447066cff069c87a9b57ec2169a5add55870b6fd98",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "e22d63c9342789308822c71809cb1a3dda1301c10c9aff1c1e05dee7a7966ca3",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "58ff8ffa0cc97b3b9cea7925ed2ffe3bd74736b1130865a64c7196c6973815c7",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "b238018d24a109b5a1db637dc6dffeb89032a261dc01b94abab4556121b10e57",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "68c9c9b73d5cf11905678753f78f4880e0842444a811b2b582e0d04586fd431b",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "9543f47ac562e1d22567d909dafc5a58552b5e02254f3ca44551019b649b2c03",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "b1a0cdc20fc3f54ab7fe6efb5be77d02ee96489efc3060cf7429cd986e1710de",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "844011f0fae986a4edbd7128c91eaa0d78287bd161aba9daf166eac3c49ad988",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "7c48304db9289fecc81d22e1bbf2bd5bf42a4907d0dfae2985ed2db6a29061a5",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "60d4173c381595a8de1f05b9414a56eda670ea8df915e665df87c905cab487f5",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "0f6a394520e7c63e363200e29f4189272e706ae861f8b1f16562f9d469f8d72a",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "b1ec72227e9d6fe335015a5366ed34de6768bd96a56a53f5ce62c27ff0fae48c",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "67b467f0a61bf0358125c4b750b48fc5928deecf6ac73ec2bd4282ee3f16df53",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "48605a845292ccdf278b9ff9232075cce1b81ca45591a11b9b3bd9f39527bd6f",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "b13fc2edef7f24f8f7366200d355e810ff464ce5f908c8baea88e6aafc2f3b9c",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "728f69d93f2fcc93e68abd3ed02a25863b2647193848f4da2e1beef8b828a1a0",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "5fa6da28967a4025420b6615410230aad15f362c46891d0bfeed2350f5eeb6df",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "cd82e796cd7eca86d509c16aadcbacdfd9ec54f5c6c4b6fca1f8fdb5585e61a0",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "710fedbcfaefdb6623f5acc180aa4f843de5e78d974de459502ef3675195372a",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "2ec9e4e357d3aac4d0a32979fc8751f1fe3c1daa6fd03c6d0e2f27a642af0bf7",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "19ace67ecb14dd5873b7fdfc700cda7a5bc2493fb630292ad9214ef3605b236a",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "e081630b02b38e67f23a53d455b3fd385d9038d16eb6126afe77036df576f38f",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "d4d4043db12176870961e84112439ca994517e3fb038e06a1567a2fe25e17779",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "8a889bb69afed71cf3b01b916dd98507f7ffc9b5775af20e86930e2de1d7cf9d",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "boundary-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "68b85f881aa76f982163f8ebcb4c18ab8ee74094441d6e8d851d3ec5c63eafa6",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "1e5a1130a2230f9f4dc230e1f20172a13f53670c7d2cb1af75dab81439944ace",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "424bfbfdd5a1c318a33cb02943f86989929dbae159708a1be3caed79366f4b02",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "01309bb7836dafd84929b8253fd6fd37fd7c82b2376a74f1028b62bbb859d34c",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "single-physical-cut",
+        "vertex": "x",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "09f6b6177c302244bd4cd073692ebd99e0f981bb8e3121d4126180770167a8dc",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "single-physical-cut",
+        "vertex": "x",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "419cda3e42f8d664bf7016cd715980851b6ad0d0ff7cd7c201913b2be7277ccd",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "583ef7905a3d6c5fae240647ec72bcda67dd220ad77bc5977f77aa3a34644204",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "fe438fb389adbab0ef3ed029c709f0f4c3c7ad723ff709aa14f0c966f163c6a9",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "3adc5934fdc1fb47131b6892be3c98a8a4160267dff849c7950c1885cc705771",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "c8e6c84cebf60cfb8811b2344d783e0499fe0ef9c8f8ed3ac6b4b8d2ea8a6f4e",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "single-physical-cut",
+        "vertex": "x",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "f02459929a0a77621ef16db33448dda32b0aaebe53a0a937df398c8ae1e964a8",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "single-physical-cut",
+        "vertex": "x",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "f95ef321384c4a1a18812dcf4ba6e43dfc76b880c8e263c95f457040f6863c5a",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "9ae05232f1582754fff5afb9c5169ec044f0156ce560dec0e704162d83c6830a",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "755756aa84f90807e0142e1d3e33cf4af2e3ade8d682950e7252afe350258a8c",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "bef1fe4a2eabe3d319e6cc6e5c89db0ab0ddfcbdbc17017968442410ff9c43f1",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "c29b25db2bc3daeba56b62f4be84ac82301b4c36694d532620c3f749f86011b6",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "single-physical-cut",
+        "vertex": "x",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "24d58deddff3decccadf062d16834b0eaf8b95a653b25e4dd881056ece21bb51",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "single-physical-cut",
+        "vertex": "x",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "a387f58551629c556a1680cc2634064c2857a2689faa90f0d1accee2ed81b020",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "ab7cbe92790e2984f7c2b9d87549fb9c1329cbb393ce7736d75c9a900b5c4231",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "386997ca8de15cbb1029646d85dcd9d33fa12df018fe0c723b8823fb6385d52b",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "ac97ffa6b51bf6299fa0b02a93bbf3865489a627210a24ef0fb96568f4ae1c52",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "3be4f8279a33a3ca551805ff063162382df6dd945506260683599e1507947171",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "single-physical-cut",
+        "vertex": "x",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "9ef0a5d760ec55a78547a0a8b0947cc4c9238d790e571ce88b446fdd9a171be7",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "single-physical-cut",
+        "vertex": "x",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "67023c43af560f1d327c13e9fb30084c6bc4fc77767a5df04d5c7a404c8f1b7d",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "shared-bottleneck",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "86003be599523930904df54ef21822f8fd9c685134f3f5a0e15cf484a4043235",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "1285e83cce102e10c7638e31a1a1622523067dd08db12f8471eb9c711607e970",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "b635d8d50a469c457bc91e25b865fc0152452b45632d45a698733620d0628001",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "340ce0a4cc64bbf5d4a924a284d7160b2324565bc4126dc9216a9a9a02949d67",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "dadc2c2683daf166b480857abe15271304f41a595d9b6e08b6964a54ffba4822",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "c0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "c1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "409eeb91c9dfae3ab57b3920d1367dde4cacfd30db0e96ed998e51af948f7050",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "c0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "c1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "ba2344789fd20c3ffaa2c317116a3a8638d8782102aa12a4bace756a6630cf67",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "a59991401ab4a643847f8b42c28a10f0c3af0d0d3420ffe62233511f56743589",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "34c565e778527fbb0fe1523984fd44e1f66560e69ab687806fb29bb1f2628671",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "ac695b589a5bf8d1f6f0ab392c9e633d060d86e55f76f43e45567dbacccdc544",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "1986718d32b393212701569f0fcb87d9e1a84bddfe0e742a3e936a4c275d2e41",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "c0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "c1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "dc7ae361891c695dde1a2c578faabc1f9e7fcc27a23ae437d479419d2d6c192f",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "c0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "c1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "long-branches",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "d9b18f14fef74a97334a9b95c271551957e5f3b2f9c4f73cd07187f80bf9d3c1",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "9ef30c1be672f5de9e09592ba2870284328c36c83d291aec7428b57d4f7bb8ba",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "f5e39599d7922e67ee77c07df7e3ab8cec048db1210dac23b2ebd9efbc20130a",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "9b52013183470ac15f7596d44423b0f19bce6ebf7009f83950f1afe6aa01c49c",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "6e5ee4ff7b5c7e14332d515cb668156ab6634fc727a5001b78b81659a904e9b3",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "c0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "c1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "c2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "5ddb50b182c23f4a1b986b061c298911eecc0a5eb8fcf49a7c824b2e4bbe09d9",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "c0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "c1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "c2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "fd06c1626b61fb445eab2fb96bac6d42072c13448395e94d5a15c6d11c0b8c89",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "55ff67f6884096510bc9b61664922f833b549fc4f3fcfe107d6cf461c92c77d6",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 0
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "7a4ef65b41df03e0d4d9d157dcf3943a67ebc78ed542c95f944fec617c5d922e",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "6d52ca9a67d2bf4170f5050d49d762b097a1e2e8fefd220356688f07e49cd097",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "437f66b2d9c36e832068b2cc8b827e37e351a5ca5342d4d07996fe7a4740f00d",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "c0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "c1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "c2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "60202711693edc23677ab9c477e053766f6c5137d9998079db4a79921b46c66d",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "c0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "c1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "c2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "long-branches",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "c3865105094e077880a97bb0257e63cb788c0049821281142c8c05b846f91450",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "5f1ea3d0fad689b42a38a54dba938351d20c0b05a844502b2a50f2e729b37ff0",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": true,
+        "both": false
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "461fa0ae6a9a3c085009543cd0e4194db914ce28ce7ecc06600b864db333980d",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "d067c414430cabaca5eb58b55f613723e0d20ec6a0d8d501e60e4a7ecc0d37c7",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "47f28cf8b6066981e8e6a4f2ddc9bb6d4053106b60fba487724c7af8836b1e19",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": true,
+        "both": false
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "cbfc96de30dfb28e339c01e0aa675413864986ef6100bef8561db3859e32f316",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "d3443ab556ffe1761d335cf6e145beb993ca41a57529710b0e8eb4fb7a84171b",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "e5625a06e313123aa09a302f93c22077247fbcfd83d7fa46e6be47e4b837ad8c",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": true,
+        "both": false
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "ec55f5a242a90f59794e3b1a5d72f6b1c61cc3959d40004cacc42be62224a602",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "54c53598b3c2e6005ae2d772a719e367e25e1533ed9ce1cb9a5ada235f815fa4",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "7fd62c60c8d0c8549a7e22ac1a5684c77c06e557bb1849033fab86deca200330",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": true,
+        "both": false
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "634969b9cb66e760c08c9ee702daa2c2d10088f844f344ebc01055d3965e0142",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "outgoing-only",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "e74bcfcfb97c93d2809fe90fa065372a7edb5cf67055511e25abfdc8e3053a17",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "d227d6ad2920b58a5146756035a1ea1cb7046b6ae1cec716f4a4ff8291f4d760",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": true,
+        "both": false
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "5c71e3821b8dfe4fd25cacb52f6b60e384af720101a431071a4050771dc18190",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "6ae845e63f775c16c34f8c7b549a98fd756b447f00bcb27d860e6ce41e163efb",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "043a97f1923e7a7cb3f799582cdf83b3b50c3f42193674536bbf02968c897f0f",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": true,
+        "both": false
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "6aa1bc3c7dffcbd94a8450ccc0467b37c065beb37432584da85d037888fb7f39",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "8778257266ae8188f57ecf89629e43d1beb177c1bd0db413ee18d9f0abfffca9",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "3f0a0fbc0f85784a235e9a774139bf8c49f3c8984fa3dbe6be01a883ddee7ede",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": true,
+        "both": false
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "f9e62ed651fc6156b28d8a2e2e12bbde02615772fd610cf1478dafe66c63a6bb",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "f1f4d569cdcf68f4572593458a0382ad37974318a4958b2de994dc1c03bdcd74",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "b953f7faedda40652838abd7ad9879d8cdc0b3dd2c842e411aa1aeda24cdab9d",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": true,
+        "both": false
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "4a9787a720c0e5e5df8f373651767b3863f43a1fe95786c9968e96baa9f6f3dd",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "outgoing-only",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "8319cf1d238a73232e272896fad6ba85cec7eb325b2142a18a293c0f77f3da70",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "06d4b6caac2e7fec3a982f331a8447caffe9762502ce6397d5c6d830fc874019",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "b9724869a2076e352cfc358ff9ff74d0c11cbcbd84358eda8f1997deaba8899d",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "5c5c978e114541c7aa1352fb0545b02219fdd81afe97e40b2a2a8b4e95927ce3",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "09091b82a4082eea7069222f096a6fe9caf510475eab5a0c76163c661e8c63bc",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "7b21a3a506538b277efcb495007088d0cd237792886a313e939bb2d97c1db6ea",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "a95f5ad4e5649c43fa14679ad3dd46e5020219c0afd9ac71e15f9723f20093c8",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "75e96a2754b3eda8da35220544b139e0d4c75acc1fd50ee42d042408e2a1db6f",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "8b0a0fc92501dc8cc409ad0c0f643f9dd83822f6814f8bef8a72118f37d25617",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "227563d284c3dbbe6ad8f5c96ddb5c380aa039a026d4c8be5f5fba2385586b63",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "3b26eb5081f138b835798c38ffdf0c67ffb645b269528b8e6f1bb0c54a88fdfb",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "54c0d1ecc3dc4664d3c60420c9008413613c651c43fe133abe907c4a02a3c78a",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "cdb84a3047f332466053d9c6a46c262d69bd1e71ca248eeb0abf44bd91f43437",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "bfdfb9285ef25c9da22a4ffaf91bd9017106b3fb79da6ed88592e8bf17035fbf",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "0d2343c768d67454bff3e318effb2cf14a8b8c5571b3092f7da20d56e012eb34",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "0693a956f3eead8971958df63fb2575d929158d05ae42ce74bd7f1ab8ca26155",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "5ae66122716f134d15826bd31e0253cf4bc095e40a046417e0ee58f8a1e13b29",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "08e729cbe5506fea2ee8a55afb2cbc77a84b0eb06d601d34e135b52dd12af410",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "9f182a483b77b0b8108398f0864c0b89053d8ee364596e141831898a323b752a",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "f67b0e09a47525613960b139b4376e3e996bedbdb08ce2a90b46c69483861716",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "2ef53572288dddd7da49113543d815d11174f0aea9b514300aa161af11d1f889",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "459d3d3da69a0b79b5934302aaadd0cba8b7bc186bdf06663c9002d7cf7dd529",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "f8ec63e3d732d3c92121fb510be1f1309946062ae74adb6c594bd7c6c1cc6a68",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "0855d832790237f001b25a7c99ccd433920fd2ada490ee5efff37c97f53693a3",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "explicit-reciprocal",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "b9ac50ee89b678d9c2998ce02e197650fde9f9880bf9d8a1fce2a82836720d44",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "497c4f7ed02fc09d2aedd0186cc58e7c9c9bab5568f170f5923857628bd4e5b7",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "54c53abf53f0aeaf8d91e0a47a2fd9d4dadb45af0d537f131adbb20d9f263d4b",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "48ec26e0ab6941d04448e82491c1aa2815c598afee663b6b37c36cae2bf5c37b",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "5c952d379eda9f465884c79626e60546055a5a730403c00f8d8e616fdce5f66f",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "d214f6910bda076171db01e515dfda599349d9748c2aadff8e6ae1a7ad1620ef",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "cac7fa703d9222471acb2fa9c44357b357007b8546ffe5d2a4f2108f19ad3f31",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "3326fcdcbe0947d59fea8ae5fa4c1290a6b5f9b26b00e3684d3fecb12b472928",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "2ac875ae1f9cee7b89711628b55d7c3a38715ee3aa410fa4b15b18bb9b578b0b",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "9fe27ca8cfcec16699cf8fa7b8e0414d44fcdb5470bbdd75f74be0fd958e167a",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "4c8c9f8852e951a6e998f11123f9eaa7e8898fc974e08b4e46ab27c1cda15749",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "d7010a72597130492799c00874e4bfdb6e55668c025001f38c4779428e212bbf",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 2,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 1
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "ec560f5c0536fe0847cdeb2232c26e7696953e0ed1b59443c7fdba6f8eec5c10",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "d889d4b94dfe9049fabf36b86621f04005dfebcb2f04d6141f4649f7ff7e48c4",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "e8bfb68ff0cd98a3c46adb2c33e7c77584b9f5744840e74c34920283398e4090",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "e398376c00e3faaa2e463db321d9b853954649edb611b30978f4b61e2feb9ae9",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "9e5dd9393c4bdd286bf100c5ba48565cb1fec9a8e82d08bc153279bb566a4371",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "ad70a9bcde3502580843ee3cb3056d2144da1148eedf2ff65d56171d87d6eea7",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "df9d20ea4106236025a8af805724738826d0015544d0746114266b874b441d74",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "112a0db232893ed792196917a6f18dfba2a047793e365f871445b1cc9ffde543",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "bae3ece9fd366518cc53562a94667c47e93b7a0b5b42d870520854c8fe83d0fc",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "path-shortage",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "fc4ee7268245c89b16772b90cfc9a5e471e471f83e693f01b7c8f973d66302df",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "8148a9add0bbf81d602cdc0f20648c2daadfee8ad31d1880979c77c269877346",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": true,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": true,
+        "both": true
+      },
+      "status": "found",
+      "reason": "ok",
+      "negativeBasis": null,
+      "enumerationComplete": true,
+      "packingComplete": false,
+      "viewRoot": "1bcb7c06e91b312ea4722526da2dd3dfec341634d2c95c7628c393a6938829f8",
+      "paths": [
+        [
+          "u0",
+          "b0",
+          "a0"
+        ],
+        [
+          "u0",
+          "b1",
+          "a1"
+        ],
+        [
+          "u0",
+          "b2",
+          "a2"
+        ]
+      ],
+      "verification": {
+        "primary": true,
+        "ref2": true
+      }
+    },
+    {
+      "template": "one-direction-cut",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 3,
+      "G_raw": true,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": true,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "family-conflict",
+      "negativeBasis": {
+        "kind": "raw-hop-reachable-terminals",
+        "bound": 2
+      },
+      "enumerationComplete": true,
+      "packingComplete": true,
+      "viewRoot": "698888e3c08041c702887fd68eb7e2d72c813fc0bbd131e3b03d7bf5d23e4e6e",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "e8f7f630196ba01d2414ceb06b660853a6430586d140336bdaf6be2fb97bb6c1",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "c9819c3cfd9fe44100f867e07c494c4d954673d3c7f5152e038581e0fc645a37",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "7e2677680957cd7095d6e671ff69d0eb252a6c61da4a159fd01ab733c39d1540",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "c50982fbb1a9d9c3f5db96e36dda575479a3033fccee3c7a802ab195d412ac59",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "4e92f0514581178409a45ae3eb5be6f6abfb5c2fb349f14740e7bb8ace3c71af",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "39a1d6e43cf82e7cf8f67ea09f698dce64e582bdad0f11b6b51d18310f3aafee",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "3165005045b99621175371581164b880509e50e3ffe8de1de23dcc9432f5d483",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "bbdcd730b94d7baaeac9754b9a5cf609abeb5593acc41adfa6f93c2aa5a503af",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "03d12384d447d7dc680e7dd2953e872d54a96c9a2a22becca87ff5cf4e162bea",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "0d905539a431059a0c1d25ba09d2f8db59ef430034c86747c894395630a7e771",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "5fa262386ca4f812d718630ef82f2627a8c7aa0d963e8190e22ef54c7de7b560",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 2,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "71b83df18fa52119c5dcaa9aee3322b08b32256940ec4a8cb964201259ea8dc7",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "d1b0f6f315f6b5e992932040d4bbf9c58abe9b93801bb5ecf1df2be3dbadd6c5",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "ebe8238e6b88fcf563d5bd4f2834c0dd47cd2eab0605556926039183f2b21284",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "6b52afae90fb6f182616887d1770a17f9fd16285e079d0d4c86e1f65213a1aad",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "280d2e591151bde0e6d40bf1ce9ea92ce624188231d68b72fcae6d350c46961b",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "a7888085c148de206b58410303d69bf78e0979c3f07f7e00681390dea00a7eae",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 2,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "6a1ab51d5e89e47986192fc6966e16568c317bd857c2c993f465485e60481bdd",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "479f24a22cb338ae7c0372b7a33949239fab4542f3d7020a846cf072d0a5f7fa",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "4ae4ec6b7b90f148eafc6d2f27ce0c8dfb92cc285691f57eed8d87da6ed3b5b4",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 2,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "ef9e11bcbfea559a9b6dfb08b46d7547d10de5881030cceb51d86269979154bf",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "directed-from-anchor",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "8ab06545df1151061700170c50334daf3b2076b7af3bdc37f68fb515a585cca1",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "any-live-orientation",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "3cdf358f73be4e1fb5e5789cb40f4d55c6d7071ffe852e5eaafcfb2e89bdb92e",
+      "paths": null,
+      "verification": null
+    },
+    {
+      "template": "isolated-target",
+      "D": 3,
+      "anchorRatio": 3,
+      "maxHops": 3,
+      "projection": "reciprocal-only",
+      "target": "u0",
+      "rawIncoming": 0,
+      "G_raw": false,
+      "P": false,
+      "arms": {
+        "none": true,
+        "guarantee-only": false,
+        "path-only": false,
+        "both": false
+      },
+      "status": "infeasible",
+      "reason": "degree-infeasible",
+      "negativeBasis": {
+        "kind": "raw-projected-degree",
+        "bound": 0
+      },
+      "enumerationComplete": false,
+      "packingComplete": false,
+      "viewRoot": "4787fba06bcbab49b6266ff35603ed39ce34ccd25873f3e167a00846733793f7",
+      "paths": null,
+      "verification": null
+    }
+  ],
+  "boundaryControls": {
+    "rows": [
+      {
+        "template": "supported",
+        "projection": "directed-from-anchor",
+        "query": {
+          "epoch": 3,
+          "maxExpansions": 0,
+          "maxPaths": 4096,
+          "maxPackingSteps": 1000000
+        },
+        "snapshotAvailable": true,
+        "G_raw": true,
+        "P": null,
+        "arms": {
+          "none": true,
+          "guarantee-only": true,
+          "path-only": null,
+          "both": null
+        },
+        "status": "censored",
+        "reason": "expansion-limit"
+      },
+      {
+        "template": "outgoing-only",
+        "projection": "any-live-orientation",
+        "query": {
+          "epoch": 3,
+          "maxExpansions": 0,
+          "maxPaths": 4096,
+          "maxPackingSteps": 1000000
+        },
+        "snapshotAvailable": true,
+        "G_raw": false,
+        "P": null,
+        "arms": {
+          "none": true,
+          "guarantee-only": false,
+          "path-only": null,
+          "both": false
+        },
+        "status": "censored",
+        "reason": "expansion-limit"
+      },
+      {
+        "template": "outgoing-only",
+        "projection": "directed-from-anchor",
+        "query": {
+          "epoch": 3,
+          "maxExpansions": 0,
+          "maxPaths": 4096,
+          "maxPackingSteps": 1000000
+        },
+        "snapshotAvailable": true,
+        "G_raw": false,
+        "P": false,
+        "arms": {
+          "none": true,
+          "guarantee-only": false,
+          "path-only": false,
+          "both": false
+        },
+        "status": "infeasible",
+        "reason": "degree-infeasible"
+      },
+      {
+        "template": "supported",
+        "projection": "directed-from-anchor",
+        "query": {
+          "epoch": 4,
+          "maxExpansions": 1000000,
+          "maxPaths": 4096,
+          "maxPackingSteps": 1000000
+        },
+        "snapshotAvailable": true,
+        "G_raw": true,
+        "P": null,
+        "arms": {
+          "none": true,
+          "guarantee-only": true,
+          "path-only": null,
+          "both": null
+        },
+        "status": "unavailable",
+        "reason": "epoch-outside-grace"
+      },
+      {
+        "template": "supported",
+        "projection": "directed-from-anchor",
+        "query": {
+          "epoch": 3,
+          "maxExpansions": 1000000,
+          "maxPaths": 4096,
+          "maxPackingSteps": 1000000
+        },
+        "snapshotAvailable": false,
+        "G_raw": true,
+        "P": null,
+        "arms": {
+          "none": true,
+          "guarantee-only": true,
+          "path-only": null,
+          "both": null
+        },
+        "status": "unavailable",
+        "reason": "snapshot-unavailable"
+      }
+    ],
+    "conjunctionCells": 9,
+    "invalidQueryContexts": 2,
+    "fullMatrixUncertainty": 0
+  },
+  "unmeasured": {
+    "elapsedTimeToSuccess": null,
+    "humanEffort": null,
+    "economicCost": null,
+    "representativeGenuineAccessRate": null,
+    "capacityC": "UNCONTRACTED/NOT EXECUTED"
+  },
+  "scientificPopulationSamples": 0
+}
