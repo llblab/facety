@@ -261,3 +261,53 @@ test('unsupported frozen/debt/identity maturity fails before clock or partial XP
     assert.throws(() => fixture({ xpFinality: 'maturity', ...policy }), /maturity XP requires/);
   }
 });
+
+test('core convergence: matched paid rotations retain different XP when exit crosses maturity, despite identical final support and money', t => {
+  const rows = [];
+  for (const guaranteeFee of [0, 1]) for (const linkBreakXp of ['keep', 'revoke']) {
+    const pair = [];
+    for (const timing of ['early', 'late']) {
+      const model = fixture({ xpFinality: 'maturity', guaranteeFee, linkBreakXp });
+      const fundingActs = 2 * (guaranteeFee + 1);
+      for (let i = 0; i < fundingActs; i++) cash(model);
+      const base = model.now, beforeXp = model.subject('b').xp, beforeMoney = model.ledger();
+      assert.equal(beforeXp, fundingActs); assert.equal(model.subject('b').liquidFacy, fundingActs);
+      let peakLive = 0;
+      const acts = [], intervals = [], observe = () => {
+        const live = model.guaranteeRelations().filter(r => r.status === 'active' && r.guarantor === 'b').length;
+        assert.ok(live <= 1); peakLive = Math.max(peakLive, live); check(model);
+      };
+      for (const [i, target] of ['a', 'c'].entries()) {
+        model.advanceTo(base + i * (DAY + 2)); observe();
+        const relation = link(model, 'b', target); observe();
+        const act = identify(model, target); acts.push(act); observe();
+        const created = model.now;
+        model.advanceTo(created + (timing === 'early' ? 1 : DAY + 1)); observe();
+        model.endGuarantee('b', relation); observe();
+        assert.equal(model.guaranteeRelations().filter(r => r.status === 'active').length, 0);
+        intervals.push({ target, created, ended: model.now, creditAt: created + DAY });
+      }
+      model.advanceTo(base + 2 * (DAY + 2)); observe();
+      const receipts = acts.map(id => model.selfId(id).xpCredit.recipients.find(r => r.subject === 'b'));
+      assert.ok(receipts.every(r => r && r.role === 'guarantor'));
+      const revoked = receipts.filter(r => r.revokedAt !== null).length;
+      const delta = model.subject('b').xp - beforeXp;
+      assert.equal(delta, timing === 'late' && linkBreakXp === 'revoke' ? 0 : 2);
+      assert.equal(revoked, timing === 'late' && linkBreakXp === 'revoke' ? 2 : 0);
+      for (const id of acts) assert.deepEqual(model.selfId(id).guarantors, ['b']);
+      assert.equal(model.subject('a').xp, 1); assert.equal(model.subject('c').xp, 1);
+      assert.equal(model.subject('b').liquidFacy, 0); assert.equal(model.subject('b').debt, 0);
+      assert.equal(model.guaranteeRelations().filter(r => r.status === 'ended').length, 2);
+      const row = { guaranteeFee, linkBreakXp, timing, fundingActs, beforeXp, afterXp: model.subject('b').xp, delta,
+        issuedGuarantorReceipts: receipts.length, revokedGuarantorReceipts: revoked, peakLive, finalLive: 0,
+        horizon: model.now, intervals, beforeMoney, afterMoney: model.audit() };
+      rows.push(row); pair.push(row);
+    }
+    assert.deepEqual(pair[0].beforeMoney, pair[1].beforeMoney);
+    assert.deepEqual(pair[0].afterMoney, pair[1].afterMoney);
+    assert.deepEqual(pair[0].intervals.map(r => [r.target, r.created, r.creditAt]), pair[1].intervals.map(r => [r.target, r.created, r.creditAt]));
+    assert.equal(pair[0].horizon, pair[1].horizon);
+  }
+  t.diagnostic('core-xp-exit ' + JSON.stringify({ rows, traces: rows.length, newSubjectsAdmitted: 0,
+    capacityEnforcementImplemented: false, historicalD34LiabilityMeasured: false, scientificWorlds: 0 }));
+});
