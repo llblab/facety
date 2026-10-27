@@ -1,0 +1,435 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "Core C2 frozen pending-only D72 reference contract before code, NOT IMPLEMENTED, no mechanism/security/economic evidence",
+  "baseCommit": "9c98d054db73b46b85536806705b38306c54940c",
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "3652dce6b2d9c779628647730f136883f193c22a",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/council-entry-contract.md",
+      "gitBlob": "a14f15063a41b0c713252bd2b89cd1f6c82a4016"
+    },
+    {
+      "path": "src/experiment.mjs",
+      "gitBlob": "53e1d636efda135b42ed091d6c20556d5cc4a4f5"
+    },
+    {
+      "path": "src/experiment-config.mjs",
+      "gitBlob": "492d8815ab8fe5f6c84047dae263c80c74f62f59"
+    },
+    {
+      "path": "src/dispute-stakes.mjs",
+      "gitBlob": "ea6592db31a2ae4d6ed324ea1804dfa253723cf6"
+    },
+    {
+      "path": "src/clock-agenda.mjs",
+      "gitBlob": "1757b253ca4fe3baa074609a07ca7aad3ee651b7"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/core-council-rejection-validation.json",
+      "gitBlob": "26ff1cf024dead639d3b450fb0899f5aeac3bd50"
+    }
+  ],
+  "ownership": {
+    "extendOnly": [
+      "src/experiment-config.mjs",
+      "src/experiment.mjs"
+    ],
+    "unchangedResponsibilities": [
+      "Model money/XP/freeze",
+      "DisputeStakes actual custody",
+      "clockAgenda marker-only/no event priority",
+      "no detector/engine/module/export/statistic/ballot registry"
+    ],
+    "originalGap": "automatic depth Council is settlement, not a post-admission initiated pending clock; caller-supplied reference event is explicit and not actual formal admission"
+  },
+  "contract": {
+    "field": "optional councilEntries",
+    "version": "supplied-council-entry-clock/v1",
+    "rows": "dense plain exact atHour/caseId/initiator; copied/frozen, max128, IDs<=256UTF8 bytes, strict chronological/distinct hours",
+    "time": "safe integer off-grid[0,H), stepHours4/6, old/new common window168; exact same-time original deadline/admission ordering not selected",
+    "profile": "enabled legacy timed/councilDepth0/active reference body configured>=2/terminal XP/24h spend-conversion-freeze; other legacy settings retain meanings",
+    "canonicalZero": "omitted/[] -> exact old normalized config/report/assumptions/tickets/RNG; malformed rejects, closed vouch/P-b continue reject",
+    "action": "trusted caller-supplied post-admission event, not prior majority approval; no legal/paid/authentic/autonomous/availability claim",
+    "entry": "actual existing case lastMoveAt=opening time; deadline=opening+168, proposed opposite ordinary side, current legacy member eligibility, no personal ordinary stake/position or extra actor round",
+    "noRenewal": "already-entered Council/ballots are not new entrants; ballot fields not implemented/accepted",
+    "unsupported": "party/conflicted/peer requests explicit reason-specific censor before entry; at needed due merits council-merits-unimplemented censor before adjudication/release/penalty",
+    "pending": "conditional on no supplied early Council-merits event, not a prohibition on D66 early votes, measured abstention or D67 diffusion prerequisite. Entry-body IDs historical only, no frozen electorate/automatic void. Actual custody/locks/cases remain open; target-no-longer-accepted reuses existing reference moot, H-pending not completion",
+    "receipts": "nonempty only, per request accepted/rejected/unsupported/not-reached+reason; per accepted case minimum entry/side/clock/member provenance, not general telemetry",
+    "manifest": "councilEntrySchedule=supplied-offgrid-entry-clock/v1 only nonempty; unchanged generator/logical keys/draws, legacy automatic-settlement counter not relabeled",
+    "notChosen": [
+      "real D33 verification/body/voting snapshot",
+      "actual fees/work/collective stake/initiative/willingness",
+      "quorum/merits/reward/finality under negative/insufficient votes",
+      "D71 peer clock or recusal beyond declared unsupported subset",
+      "on-grid/concurrent/subhour events or new protocol limits"
+    ]
+  },
+  "freshSourceGapCheck": {
+    "script": "/tmp/facety-council-entry-acceptance-check.mjs",
+    "gitBlob": "cc894f307d56e4e111a5f156b01f26f125d7925c",
+    "command": "node /tmp/facety-council-entry-acceptance-check.mjs",
+    "log": "/tmp/facety-council-entry-acceptance-check.json",
+    "evidence": {
+      "classification": "Pre-code acceptance/source API gap and arithmetic only, no Model call or event execution",
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "configCalls": 3,
+      "modelCalls": 0,
+      "researchCalls": 0,
+      "rejected": [
+        "unknown experiment key: councilEntries",
+        "unknown experiment key: councilEntries"
+      ],
+      "softwareProfile": {
+        "scenario": "sybil-cone",
+        "seed": "core-council-entry-contract-software",
+        "initialSize": 30,
+        "attackerShare": 0.2,
+        "days": 16,
+        "stepHours": 4,
+        "actorProfiles": [],
+        "invitationReviewTiming": "daily-slot",
+        "invitationEvidence": "independent",
+        "initialTopology": "random",
+        "initialDegree": 3,
+        "localInspectionShare": 0.8,
+        "sensitivity": 0.8,
+        "falsePositiveRate": 0.01,
+        "maxSubjects": 2000,
+        "maxActions": 500000,
+        "targetFalseConversions": 1,
+        "successCriterion": "false-liquidity",
+        "includeState": true,
+        "activity": {
+          "honest": {
+            "selfId": 0.8,
+            "invite": 0.05,
+            "guarantee": 0.3,
+            "inspect": 3,
+            "respond": 0.9,
+            "challenge": 1,
+            "review": 0,
+            "defend": 0,
+            "bribe": 0,
+            "cashout": 0,
+            "convert": 1
+          },
+          "attackers": {
+            "selfId": 1,
+            "invite": 0.4,
+            "guarantee": 2,
+            "inspect": 0,
+            "respond": 0,
+            "challenge": 0,
+            "review": 0,
+            "defend": 0,
+            "bribe": 0,
+            "cashout": 0,
+            "convert": 1
+          }
+        },
+        "budgets": {
+          "honest": 100000,
+          "attackers": 100000
+        },
+        "weights": {
+          "selfId": 1,
+          "fakeSelfId": 1,
+          "fabricateIdentity": 1,
+          "recruitHuman": 1,
+          "invite": 1,
+          "acceptInvitation": 1,
+          "proposeGuarantee": 1,
+          "confirmGuarantee": 1,
+          "inspect": 1,
+          "respond": 1,
+          "challenge": 1,
+          "verify": 1,
+          "bribe": 1,
+          "cashout": 1,
+          "convert": 1
+        },
+        "policy": {
+          "xpFinality": "terminal",
+          "cancellationAuthority": "snapshot",
+          "guarantorEligibility": "active",
+          "guaranteeFee": 0,
+          "councilSize": 11,
+          "debtRecovery": "reserve-until-mature",
+          "councilEligibility": "active",
+          "invitationFreezeHours": 24,
+          "linkBreakXp": "revoke",
+          "spendMaturityHours": 24,
+          "conversionMaturityHours": 24,
+          "artifactReuse": "registration-only"
+        },
+        "ablations": {
+          "withholdGuarantorXp": false,
+          "disableInvitationVeto": false,
+          "fixedInvitationThreshold": null,
+          "randomGuaranteeTargets": false
+        },
+        "perturbations": [],
+        "disputes": {
+          "enabled": true,
+          "accuracy": 0.9,
+          "stake": 1,
+          "fine": 5,
+          "liability": "inviter-chain",
+          "rewardShare": 0.5,
+          "loserHalvesXp": true,
+          "excludeLiable": false,
+          "fineMode": "chain",
+          "stakeBacking": "reserved",
+          "procedure": "chekharda-timed",
+          "stakeGrowth": 0.2,
+          "signalAccuracy": 0.7,
+          "closeSignalAccuracy": 0.9,
+          "xpValue": 0.05,
+          "maxRounds": 60,
+          "maxScan": 60,
+          "councilDepth": 0,
+          "reputationWeight": 0,
+          "disputeWindowHours": 168,
+          "noticeBase": 0,
+          "evidenceGain": 0.1,
+          "civicValue": 0,
+          "entrantChoice": "lowest",
+          "roundsPerDay": 6,
+          "entryTiming": "each-tick",
+          "trackRecordWeight": 0,
+          "regularsNotice": 0,
+          "evidence": "private-signal",
+          "proofStrength": 0.98,
+          "clusterFollowUp": false
+        },
+        "deviants": {
+          "share": 0,
+          "honest": null,
+          "attackers": null
+        },
+        "social": {
+          "scope": "public",
+          "hops": 2,
+          "strangerRate": 0,
+          "screening": false,
+          "screeningQuantile": 0.2,
+          "screeningShare": 0.5,
+          "verification": false,
+          "verificationSensitivity": 0.9,
+          "verificationFalsePositiveRate": 0.01,
+          "investigation": false,
+          "maxFollowUps": 20,
+          "bribeAcceptance": 0,
+          "bribePrice": 5,
+          "exitOnFraud": false,
+          "flowTracing": false,
+          "flowHubThreshold": 3,
+          "honestTransferRate": 0,
+          "attentionFeedback": false,
+          "gossipHops": 0,
+          "gossipShare": 0.5
+        }
+      },
+      "request": {
+        "atHour": 193,
+        "caseId": "dispute:0",
+        "initiator": "n1"
+      },
+      "reference": "supplied-council-entry-clock/v1",
+      "manifestVariant": {
+        "councilEntrySchedule": "supplied-offgrid-entry-clock/v1"
+      },
+      "reusedPublicPrefix": {
+        "record": "core-council-rejection-validation.json",
+        "digest": "eab9c184b758dfe687100f0a1848e5cefc0b5d3e6e3c4d15ea69cc7d036e8db7",
+        "candidate": {
+          "caseId": "dispute:0",
+          "subject": "member:3",
+          "challenger": "n23",
+          "ordinaryPositions": 1,
+          "lastMoveAt": 92,
+          "oldDeadline": 260,
+          "initiators": [
+            "n1",
+            "n9",
+            "n3",
+            "n24",
+            "n28",
+            "n18",
+            "n10",
+            "n26",
+            "n12",
+            "n13",
+            "n20"
+          ]
+        }
+      },
+      "arithmetic": {
+        "ordinaryDeadline": 260,
+        "requestHour": 193,
+        "newDeadline": 361,
+        "notAddedDeadline": 428,
+        "lastMomentExample": {
+          "requestHour": 259,
+          "newDeadline": 427,
+          "executed": false
+        }
+      },
+      "unchangedSourceEvidence": {
+        "focused": 26,
+        "current": 721,
+        "isolatedHistorical": 21,
+        "basis": "exact current source/test/runtime bound separately; C1 cases/probes reused, not rerun"
+      }
+    },
+    "interpretation": "3 config calls/0 Model, current rejects proposed empty and nonempty option; entry361/427 is arithmetic only, not executed or evidence of model compliance"
+  },
+  "reused": {
+    "record": "core-council-rejection-validation.json",
+    "basis": "exact current source/test/runtime; profile config normalization and existing public prefix reused, no rerun of C1 Model cases or suites",
+    "focused": {
+      "command": "node --test test/disputes.test.mjs test/dispute-stakes.test.mjs test/guarantor-response.test.mjs test/core-authority.test.mjs",
+      "passed": 26,
+      "failed": 0,
+      "log": "/tmp/facety-core-council-rejection-focused.txt"
+    },
+    "full": {
+      "command": "npm test",
+      "current": {
+        "passed": 721,
+        "failed": 0
+      },
+      "historical": {
+        "passed": 21,
+        "failed": 0,
+        "source": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+        "assurance": "isolated compatible-source historical bodies, not current-source assurance"
+      },
+      "log": "/tmp/facety-core-council-rejection-full.txt"
+    },
+    "architecture": {
+      "errors": 0,
+      "warnings": 0,
+      "items": [
+        {
+          "level": "info",
+          "message": "Root: /home/llb/Repos/facety",
+          "details": {}
+        },
+        {
+          "level": "info",
+          "message": "Config: /home/llb/Repos/facety/domain-dag.json",
+          "details": {}
+        },
+        {
+          "level": "info",
+          "message": "Source files 53, local edges 168",
+          "details": {}
+        },
+        {
+          "level": "pass",
+          "message": "Local source import graph is acyclic",
+          "details": {}
+        },
+        {
+          "level": "pass",
+          "message": "Domain modules do not import configured entrypoints",
+          "details": {}
+        },
+        {
+          "level": "pass",
+          "message": "Domain headers are present",
+          "details": {}
+        },
+        {
+          "level": "pass",
+          "message": "No shared-bucket candidates found",
+          "details": {}
+        }
+      ]
+    },
+    "fixedTrajectories": {
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "excludedOnly": "provenance.implementation",
+      "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+      "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+      "matched": true,
+      "classification": "two fixed software trajectories, not sealed-study replay or new scientific data"
+    },
+    "nativePreservation": {
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+      "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+    }
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-council-entry-acceptance-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "review": "Existing structure/meta-principle/sparsity/index-bloat/wide-table warnings reviewed; unchanged large protocol scan skipped, linked D70/D72 anchor already retained. New acceptance/binding files indexed and reachable; BACKLOG sole implementation owner, decisions/model/insights carry assumptions not duplicate tasks. C1/C0 and sealed packets remain historical. Source/test/runtime exact equality warrants reused tests/DAG/trajectories, not fresh passes."
+  },
+  "review": {
+    "method": "inline owner/domain-direction/clock/custody/preflight/missingness/zero compatibility/reference-authority review",
+    "independentAuthorshipOrAuthentication": false,
+    "keyBoundaries": [
+      "keep journal/timer in existing experiment owner, not clockAgenda/domain engine extraction",
+      "post-admission supplied action is not actual free or verified defense",
+      "unsupported missing merits cannot silently become ordinary last-side verdict",
+      "explicit legacy/ref selection and conservative profile restrictions, no chosen protocol quorum/time collision",
+      "nonempty descriptor/receipts not new scalar/telemetry pipeline",
+      "missing future event after censor not rejection"
+    ]
+  },
+  "research": {
+    "newModelCalls": 0,
+    "newScientificRegistrations": 0,
+    "researchLabels": 0,
+    "researchCaptures": 0,
+    "oldStudyReplay": false,
+    "newSelectedProtocolRule": false,
+    "masterG1Pass": false
+  },
+  "handoff": {
+    "scope": "D68 core-first, D72 pending-only temporal execution reference",
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "closed": "C2 source-bound pre-code acceptance/profile/falsification contract",
+    "next": "C3 implement exactly the frozen opt-in subset in existing owners, with native lifecycle/zero/preflight/censor/worker tests, fresh full/pinned/DAG/two trajectories/streams/context; no fake merits/fees/new engine",
+    "actionability": "local-actionable engineering under trusted supplied-reference input; scientific core/economic/membership/merits claims remain gated",
+    "continuationWarranted": true,
+    "signature": "d68-core-c2/frozen-councilEntries-pending-clock/existing2owners/3config-0Model/source91db8605-test3652dce6/reuse26-721-21/next-optin-implementation"
+  }
+}
