@@ -1,0 +1,275 @@
+{
+  "schema": "facety-engineering-validation/v1",
+  "classification": "T2 pre-code supplied-observation acceptance/Source projection audit, no implemented scorer or scientific T2 result",
+  "baseCommit": "4f44d8666ac58bb6cf2d27db2d24a4fa8a8ef9bd",
+  "sourceTree": "7287b4a21bfef3d151bc635bd2b565427f34a592",
+  "testTree": "b16ad63547d0de21ceab97797530ca8c8684f15a",
+  "provenance": {
+    "implementation": {
+      "method": "sha256-src-mjs-v1",
+      "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+      "files": 53
+    },
+    "runtime": {
+      "node": "v26.8.1"
+    }
+  },
+  "files": [
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t2-support-contract.md",
+      "gitBlob": "a877330278ee4aef49026d703e8b2b69fa5e110e"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t2-support-vectors.json",
+      "gitBlob": "15de9087d004cb91e6a927ad9f692173b0962f8e"
+    },
+    {
+      "path": "studies/2026-10-26-trust-topology-condition-map/t1-reuse-validation.json",
+      "gitBlob": "223a1c9c356d90023b74dce0a445cbdd9471693e"
+    },
+    {
+      "path": "src/model.mjs",
+      "gitBlob": "b8062939d0685adceaa38cee1f825a15ab31966c"
+    },
+    {
+      "path": "src/path-witness-view.mjs",
+      "gitBlob": "059358eaef526b9207a075d9f5cc2f359113f76a"
+    },
+    {
+      "path": "src/path-witness-replay.mjs",
+      "gitBlob": "6f0dcfb10d560a3a71258e4af707273e51cbd14a"
+    }
+  ],
+  "contract": {
+    "beforeScoringCode": true,
+    "status": "NOT IMPLEMENTED; named observable-support-counterfactual/v1, no native extractor/API",
+    "fixtureCount": 12,
+    "parameterControls": 3,
+    "observation": "subject/atHour/difficulty/complete raw incoming rows or null/partial public origin-parent forest; relation identity/proposedAt/activatedAt separate",
+    "arms": {
+      "I0": "N complete raw incoming",
+      "I1": "full observed invitation-to-explicit-genesis-root cap1",
+      "I2": "same-root sum min(q,n_s), q is not K; q1=I1",
+      "I3": "current activation age>=explicit threshold, not pair history/proposal/person age; separate arm"
+    },
+    "unknown": "known bounded lower + one possible unit per unknown source/age; null incoming unknown, knownempty zero; invalid not a legal fraud verdict",
+    "verdict": "lower>=D pass, upper<D fail, otherwise unknown; bounds conservative not hidden-partition extrema",
+    "normalization": "count-equivalent support only; no probability/XP/universal trust product",
+    "truth": "no evaluator/expected/case labels in score, identical public observation has identical output under outside genuine/fake assignments",
+    "notSelected": [
+      "protocol d_eff/age/cap/default",
+      "D74 K meaning",
+      "verified genesis people or authenticated independent ancestry",
+      "native source/extractor qualification/funding",
+      "population error/effect/precision/horizon/human rates"
+    ],
+    "scientificCaptureEnabled": false,
+    "nextImplementation": "one test-local finite scorer/input validator with literal goldens/invariances, no src module/engine/statistic/backend or fake scientific schema"
+  },
+  "sourceAudit": {
+    "script": "/tmp/facety-t2-support-source-check.mjs",
+    "gitBlob": "96c3351c1adca1d8a5503db8545ca4fcbedc0813",
+    "command": "node /tmp/facety-t2-support-source-check.mjs",
+    "log": "/tmp/facety-t2-support-source-check.json",
+    "evidence": {
+      "classification": "Existing path graph/status replay projection boundary, not an economic Native history or security-hash collision",
+      "provenance": {
+        "implementation": {
+          "method": "sha256-src-mjs-v1",
+          "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+          "files": 53
+        },
+        "runtime": {
+          "node": "v26.8.1"
+        }
+      },
+      "replayCalls": 2,
+      "modelCalls": 0,
+      "scorerCalls": 0,
+      "researchRuns": 0,
+      "inputs": [
+        [
+          {
+            "at": 0,
+            "type": "subject-added",
+            "subject": "p0",
+            "genesis": true
+          },
+          {
+            "at": 0,
+            "type": "subject-added",
+            "subject": "p1",
+            "genesis": true
+          },
+          {
+            "at": 24,
+            "type": "invitation-created",
+            "invitation": "invitation:0",
+            "creator": "p0",
+            "target": "g0"
+          },
+          {
+            "at": 48,
+            "type": "subject-added",
+            "subject": "g0",
+            "genesis": false
+          },
+          {
+            "at": 48,
+            "type": "invitation-accepted",
+            "invitation": "invitation:0",
+            "subject": "g0"
+          }
+        ],
+        [
+          {
+            "at": 0,
+            "type": "subject-added",
+            "subject": "p0",
+            "genesis": true
+          },
+          {
+            "at": 0,
+            "type": "subject-added",
+            "subject": "p1",
+            "genesis": true
+          },
+          {
+            "at": 24,
+            "type": "invitation-created",
+            "invitation": "invitation:0",
+            "creator": "p1",
+            "target": "g0"
+          },
+          {
+            "at": 48,
+            "type": "subject-added",
+            "subject": "g0",
+            "genesis": false
+          },
+          {
+            "at": 48,
+            "type": "invitation-accepted",
+            "invitation": "invitation:0",
+            "subject": "g0"
+          }
+        ]
+      ],
+      "fullInputDigests": [
+        "53b57775b2797761a704d0ca0ecf751bf266aa7535e46018ec124035a01472ab",
+        "4a805f49fd23f0d11975972c2717c4b595a447615d4ab6f866742de235bdad67"
+      ],
+      "sameExportedProjection": true,
+      "journalDigest": "5330c2f3bf0ff36f920533f84cffe75b392f1270f52d2195814d11cb5efcc7ff",
+      "subjectFields": [
+        "id",
+        "identityStatus"
+      ],
+      "exportedFields": [
+        "atHour",
+        "eventCount",
+        "journalDigest",
+        "lastEventHour",
+        "relations",
+        "schema",
+        "storage",
+        "subjects"
+      ],
+      "interpretation": "Passive invitation-created payload is outside this digest projection; do not use it to bind parent/source lineage. Existing API correctly excludes lineage/economic replay; no source fix or authentication claim."
+    },
+    "meaning": "exact same graph/status replay projection despite different passive invitation creator; full inputs differ. Scoped projection, not cryptographic collision or Source bug; synthetic API data not economically executed Native history.",
+    "otherBindings": "Model accepted invite/lineage/genesis and native activation records exist; path capture subject rows omit genesis/lineage; non-genesis vouch birth has no invitation parent. Actual native extraction requires separate full relevant observation binding.",
+    "modelCalls": 0,
+    "scorerCalls": 0,
+    "replayCalls": 2
+  },
+  "reused": {
+    "basis": "exact unchanged src/test/runtime at4f44d86; no current/focused/historical suite/DAG/trajectory rerun",
+    "record": "studies/2026-10-26-trust-topology-condition-map/t1-reuse-validation.json",
+    "focused": {
+      "command": "node --test test/core-bridge-reuse.test.mjs test/path-witness-verifier.test.mjs test/path-witness-view.test.mjs test/disjoint-paths.test.mjs",
+      "passed": 27,
+      "failed": 0,
+      "log": "/tmp/facety-t1-reuse-focused.txt"
+    },
+    "full": {
+      "command": "npm test",
+      "currentPassed": 724,
+      "currentFailed": 0,
+      "historicalPassed": 21,
+      "historicalFailed": 0,
+      "historicalSource": "aab881f50c3cd2fd2cf76962558b7b71649252d7",
+      "historicalAssurance": "isolated compatible-source bodies only, not current-source proof",
+      "log": "/tmp/facety-t1-reuse-full.txt"
+    },
+    "sourceDagAndTrajectories": {
+      "basis": "same runtime/src tree/implementation as C1, no Source mutation; source DAG/two trajectories not rerun",
+      "record": "studies/2026-10-26-trust-topology-condition-map/core-council-rejection-validation.json",
+      "dag": {
+        "sourceFiles": 53,
+        "localEdges": 168,
+        "acyclic": true,
+        "errors": 0,
+        "warnings": 0
+      },
+      "fixedTrajectories": {
+        "provenance": {
+          "implementation": {
+            "method": "sha256-src-mjs-v1",
+            "digest": "91db86054e0e839307b4f3e1719cd3c3fce0ddeac18f5dc8f98f544fdc578108",
+            "files": 53
+          },
+          "runtime": {
+            "node": "v26.8.1"
+          }
+        },
+        "excludedOnly": "provenance.implementation",
+        "legacySemanticDigest": "1ebf0288e8b3ce59495cf91c46b511b6da6b73f37a0d8361b0df44258dd0261a",
+        "vouchFullStateSemanticDigest": "67b6ec47df2a61b9ba4bc6e615752a0dde5c02f4f686d8b322de8682a02f9530",
+        "matched": true,
+        "classification": "two fixed software trajectories, not sealed-study replay or new scientific data"
+      }
+    },
+    "nativePreservation": {
+      "composite": "ce1e17be2cd94f693c093c3ec07811e0af877cbf202a64b0f52d3476ab6b3c50",
+      "jointLifetime": "ce84c8022125dba2afd8852ac0aa34c0808a763ec829d9de61e3207f95bb18d0",
+      "jointChurnFullCurrent": "2ec824e77d80c382faedfee772ba228f7d4e7d09eeae9dc604138a8625b78b17",
+      "priorJointChurnAt384090bc": "c4484c88c48e41fc46a1e15167b60e698fd29cd7c6803e819dcfeca8dba233d3",
+      "meaning": "Full-current hash retains changed source provenance; no old packet relabeled, no path-algorithm behavioural change or missingness stripped"
+    }
+  },
+  "context": {
+    "command": "node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety",
+    "log": "/tmp/facety-t2-support-contract-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "orphans": 0,
+    "phantoms": 0,
+    "review": "Existing structure/meta-principle/sparsity/index-bloat/wide-table warnings reviewed. New contract/vector/validation links reachable, no wide tables added. Large protocol unchanged/skipped, original D73/D74 anchors preserved. BACKLOG narrows contract to finite-test acceptance; source-of-truth stays there, no duplicate implementation plan or fake study method. Old T1/review/C0-C2 packets and Source/test/runtime exact; reused724+21/DAG/trajectory evidence is not freshly rerun."
+  },
+  "review": {
+    "method": "inline current-source/model-origin/time/replay-projection/unknown-bound/golden-vector/role-input/lifetime-vs-local-cap/empirical-method boundary review",
+    "independentAuthorshipOrAuthentication": false,
+    "necessaryCorrection": "do not promote scoped path root/journalDigest into full invitation-source or personhood evidence; no Source digest modification needed",
+    "finiteVersusScience": "expected interval/status fixtures are pre-code arithmetic assertions, not newly scored worlds or measured genuine/fake rates; empirical thresholds remain UNBOUND"
+  },
+  "preservation": {
+    "sourceTestRuntimeChanged": false,
+    "protocolDecisionChanged": false,
+    "oldFrozenReviewT1C0C1C2StudyPacketsChanged": false,
+    "newScoringOrModelOrGraphStudy": 0,
+    "scientificRegistrationsOrSeeds": 0,
+    "masterG1Pass": false,
+    "KQuestionAnswered": false,
+    "externalGraphOrAtmoActions": 0
+  },
+  "handoff": {
+    "scope": "D73 T2 observable-support acceptance only",
+    "canonical": "BACKLOG.md#trust-topology-condition-map-master-programme",
+    "closed": "counterfactual definitions/public Source provenance/missingness/golden controls before code",
+    "next": "finite12-vector/3-control test-local scoring/validation with same-public genuine/fake equality, full-root/age/unknown/empty/re-entry/non-genesis/cap/parameter/permutation/rename/copy invariants; no native default or empirical sweep",
+    "unclosed": "true independence/source validity, K meanings, real access/effort/error/method/precision and master G1; C3 stays parked",
+    "continuationWarranted": true,
+    "signature": "d73-t2/frozen4observableArms-12vectors-3controls/2replay-0Model-0scorer/91db-b16ad-reuse724-21/next-finite-test"
+  }
+}

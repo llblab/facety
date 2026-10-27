@@ -1,0 +1,1061 @@
+{
+  "schema": "facety-support-counterfactual-vectors/v1",
+  "status": "pre-code test-only synthetic observations/expected intervals, not scientific registration/result or Model extractor",
+  "reference": "observable-support-counterfactual/v1",
+  "captureEnabled": false,
+  "roleAssignments": "Outside all-genuine versus assumed-fake labels are never passed with observation/parameters; same public observation must yield same result",
+  "populationInference": {
+    "falsePassTolerance": null,
+    "genuineRejectTolerance": null,
+    "effectMargin": null,
+    "precision": null,
+    "horizon": null,
+    "status": "UNBOUND — no empirical T2 execution"
+  },
+  "vectors": [
+    {
+      "id": "distinct",
+      "description": "Complete distinct recorded roots and old active relations",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 0
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r1"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "r2"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I2": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    },
+    {
+      "id": "shared",
+      "description": "Three guarantors in one recorded lineage",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 0
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "r0"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 1,
+          "upper": 1,
+          "status": "fail"
+        },
+        "I2": {
+          "lower": 2,
+          "upper": 2,
+          "status": "fail"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    },
+    {
+      "id": "deep-shared",
+      "description": "Different immediate parent, same full observed root",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 0
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "p"
+          },
+          {
+            "id": "p",
+            "origin": "invitation",
+            "parent": "r0"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 1,
+          "upper": 1,
+          "status": "fail"
+        },
+        "I2": {
+          "lower": 2,
+          "upper": 2,
+          "status": "fail"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    },
+    {
+      "id": "age-boundary",
+      "description": "Two exactly24h old, one23h old",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 24
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 24
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 25
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r1"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "r2"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I2": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I3": {
+          "lower": 2,
+          "upper": 2,
+          "status": "fail"
+        }
+      }
+    },
+    {
+      "id": "unknown-age",
+      "description": "Current relation activation missing, not presumed old",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": null
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r1"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "r2"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I2": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I3": {
+          "lower": 2,
+          "upper": 3,
+          "status": "unknown"
+        }
+      }
+    },
+    {
+      "id": "unknown-root",
+      "description": "One invitation ancestor outside observed coverage",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 0
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r1"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "not-observed"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 2,
+          "upper": 3,
+          "status": "unknown"
+        },
+        "I2": {
+          "lower": 2,
+          "upper": 3,
+          "status": "unknown"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    },
+    {
+      "id": "known-pass-plus-unknown",
+      "description": "Three recorded distinct sources suffice with a fourth unattributed",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:3",
+            "guarantor": "g3",
+            "proposedAt": 0,
+            "activatedAt": 0
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r1"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "r2"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 4,
+          "upper": 4,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 3,
+          "upper": 4,
+          "status": "pass"
+        },
+        "I2": {
+          "lower": 3,
+          "upper": 4,
+          "status": "pass"
+        },
+        "I3": {
+          "lower": 4,
+          "upper": 4,
+          "status": "pass"
+        }
+      }
+    },
+    {
+      "id": "shared-plus-unknown",
+      "description": "One-source fails even upper bound; cap2 unresolved",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 0
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "not-observed"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 1,
+          "upper": 2,
+          "status": "fail"
+        },
+        "I2": {
+          "lower": 2,
+          "upper": 3,
+          "status": "unknown"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    },
+    {
+      "id": "known-empty",
+      "description": "Complete empty incoming observation is zero",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [],
+        "lineage": []
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 0,
+          "upper": 0,
+          "status": "fail"
+        },
+        "I1": {
+          "lower": 0,
+          "upper": 0,
+          "status": "fail"
+        },
+        "I2": {
+          "lower": 0,
+          "upper": 0,
+          "status": "fail"
+        },
+        "I3": {
+          "lower": 0,
+          "upper": 0,
+          "status": "fail"
+        }
+      }
+    },
+    {
+      "id": "unavailable",
+      "description": "No current incoming capture is not a zero",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": null,
+        "lineage": []
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": null,
+          "upper": null,
+          "status": "unknown"
+        },
+        "I1": {
+          "lower": null,
+          "upper": null,
+          "status": "unknown"
+        },
+        "I2": {
+          "lower": null,
+          "upper": null,
+          "status": "unknown"
+        },
+        "I3": {
+          "lower": null,
+          "upper": null,
+          "status": "unknown"
+        }
+      }
+    },
+    {
+      "id": "reentry-activation",
+      "description": "New relation starts now despite old proposal/pair story",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "new-rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 48
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r1"
+          },
+          {
+            "id": "g2",
+            "origin": "invitation",
+            "parent": "r2"
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I2": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I3": {
+          "lower": 2,
+          "upper": 2,
+          "status": "fail"
+        }
+      }
+    },
+    {
+      "id": "unattributed-origin",
+      "description": "Parentless non-genesis/vouch-like subject is not a genesis source",
+      "observation": {
+        "subject": "u",
+        "atHour": 48,
+        "difficulty": 3,
+        "incoming": [
+          {
+            "relationId": "rel:0",
+            "guarantor": "g0",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:1",
+            "guarantor": "g1",
+            "proposedAt": 0,
+            "activatedAt": 0
+          },
+          {
+            "relationId": "rel:2",
+            "guarantor": "g2",
+            "proposedAt": 0,
+            "activatedAt": 0
+          }
+        ],
+        "lineage": [
+          {
+            "id": "r0",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r1",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "r2",
+            "origin": "genesis",
+            "parent": null
+          },
+          {
+            "id": "g0",
+            "origin": "invitation",
+            "parent": "r0"
+          },
+          {
+            "id": "g1",
+            "origin": "invitation",
+            "parent": "r1"
+          },
+          {
+            "id": "g2",
+            "origin": "unattributed",
+            "parent": null
+          }
+        ]
+      },
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 2,
+          "upper": 3,
+          "status": "unknown"
+        },
+        "I2": {
+          "lower": 2,
+          "upper": 3,
+          "status": "unknown"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    }
+  ],
+  "parameterControls": [
+    {
+      "base": "shared",
+      "parameters": {
+        "sourceCap": 1,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 1,
+          "upper": 1,
+          "status": "fail"
+        },
+        "I2": {
+          "lower": 1,
+          "upper": 1,
+          "status": "fail"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    },
+    {
+      "base": "shared",
+      "parameters": {
+        "sourceCap": 3,
+        "minimumAgeHours": 24
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 1,
+          "upper": 1,
+          "status": "fail"
+        },
+        "I2": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    },
+    {
+      "base": "reentry-activation",
+      "parameters": {
+        "sourceCap": 2,
+        "minimumAgeHours": 0
+      },
+      "expected": {
+        "I0": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I1": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I2": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        },
+        "I3": {
+          "lower": 3,
+          "upper": 3,
+          "status": "pass"
+        }
+      }
+    }
+  ]
+}
