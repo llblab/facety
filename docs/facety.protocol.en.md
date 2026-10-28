@@ -12,7 +12,7 @@ source_basis: "Owner-selected design and dated decisions; open contracts and con
 
 > **Facety's strategic thesis is an accountability substrate for emission distribution and network growth—not merely a dispute protocol.** It coordinates mutual identification through mutual guarantees and public accountability to ask: “Who are we actually dealing with?” The aim is distribution resistant to farming that sustains honest participation and useful network effects. This is a deliberate evaluation lens, not demonstrated sustainability. Repeated identity assertions, earned non-transferable XP, economic consequences and collective disputes support that coordination; none alone defines it. XP rewards responsibility, not truth or purchasable voting weight. Anyone may discover evidence, while qualified participants accept formal challenge responsibility. Whether these routes keep earned influence correctable is the research question—not a promised outcome. Atmo support is a separate conditional integration.
 
-**[DIRECTION — D31, documented 2026-10-23; owner-provided framing]** “Mutual” describes the social architecture. Both parties consent to a directed guarantee; that consent does not create a reverse guarantee. Guarantees, invitation lineage, acquaintance channels and reachability evidence have different meanings. A path never proves unique personhood.
+**[DIRECTION — D31, documented 2026-10-23; owner-provided framing]** “Mutual” describes the social architecture. Both parties consent to a directed guarantee; that consent does not create a reverse guarantee. Guarantees, invitation lineage, acquaintance channels and reachability evidence have different meanings. A path never proves unique personhood. **Subsequent D82 clarification (2026-10-28):** this dated directed-record description does not permit guarantor XP without an established mutual guarantee; see the current XP/establishment rule in §17.5/§19.1. It does not select automatic reverse edges.
 
 ## How to read this document
 
@@ -374,7 +374,7 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Guarantor** — A subject that explicitly accepts responsibility for another subject's identity under an established guarantee relation.
 
-**Guarantee relation** — A directed responsibility edge that requires matching transactions from both parties. A reciprocal guarantee is a separate relation.
+**Guarantee relation** — An established mutual bilateral responsibility relationship under D81/D82, not an unanswered unilateral vote/offer. Both parties authorize establishment; canonical directional records and atomic activation remain execution contracts. The earlier directed-edge/independently authorized reverse-edge representation is retained as history in §19.1, not permission to earn guarantor XP without the established mutual relationship.
 
 **Invitation** — An entry authorization created by burning **1 FACY from the creator's own eligible Self-ID emission** and satisfying both the difficulty-sized guarantee and XP-centered-path conditions. It is not a guarantee of the invitee.
 
@@ -650,6 +650,8 @@ A freeze MUST preserve the original emission disposition and history. It is a pr
 
 **[SELECTED]** A subject can receive at most one normal rewarded Self-ID per rolling 24 hours, regardless of key rotation. A valid act provides:
 
+**D82 — [SELECTED mutual-guarantee prerequisite for guarantor XP], documented2026-10-28.** The owner clarifies: proposing to vouch is not having established a guarantee; without an established mutual guarantee there is no guarantor XP from the other person's Self-ID. Unilateral votes/offers, an uncompleted activation, or mere acknowledgment of a directed proposal are not an alternative XP-earning relationship. Mutual establishment is necessary, not by itself a credit event: an eligible role must belong to the particular new Self-ID's creation-time roster, followed by that act's ordinary D42 maturity/cancellation rules. Later establishment does not backdate that roster. This concerns GUARANTOR XP from another person's act, not the author's own XP or a new ban on own emission. D54 pending rights after exit and separate D9 older-credit treatment remain; no requirement to hold a link for an extra24h is selected. Canonical mutual activation/records, funding, other permissions and general eligibility remain separate execution contracts. Existing directed-reference XP/code/results remain legacy, not D82 evidence or a default migration.
+
 | Recipient | Reward |
 | --- | --- |
 | Subject that created the Self-ID | 1 FACY on the Self-ID Emitter. |
@@ -770,7 +772,9 @@ An invitation must retain its creator, timestamp, intended scope, and later use.
 
 **[SELECTED]** A guarantee edge requires **two matching protocol transactions**, one from each participating subject. One person cannot create an active guarantee merely by naming another person.
 
-For a directed guarantee `A guarantees B`:
+**Current D81/D82 meaning:** a proposal is not an established mutual guarantee, and no guarantor XP is earned from the other person's Self-ID without that mutual establishment (§17.5). Receiving or acknowledging an offer must not be silently treated as the completed XP-qualifying relationship. This preserves the two-party matching requirement without choosing canonical record layout, activation ordering or funding; two raw opposite graph edges alone are not proof of authorized establishment.
+
+**Historical D31 directed-establishment representation, not sufficient by itself for D82 XP:** for a directed guarantee `A guarantees B`:
 
 ```text
 A: proposes responsibility for B
@@ -779,7 +783,7 @@ B: confirms that same proposed relation
     -> activate directed A -> B guarantee
 ```
 
-The matching confirmation does not automatically produce `B guarantees A`. Reciprocity requires another explicitly authorized directed relation.
+In that historical representation, matching confirmation does not automatically produce `B guarantees A`; reciprocity requires another explicitly authorized directed relation. D82 now excludes using the directed-only state as an XP-earning substitute for an established mutual guarantee. Do not silently implement this as automatic reverse edges, rewrite old rosters, or relabel the existing directed simulator as current mutual semantics.
 
 A guarantee makes a specific claim: A accepts the defined responsibility for B's asserted real and unique identity. It does not certify every future opinion or action by B.
 
@@ -791,7 +795,7 @@ A guarantee makes a specific claim: A accepts the defined responsibility for B's
 
 The implementation MUST distinguish:
 
-- **Proposal** — one party expresses intent; the counterparty has not matched it. Under D81, an incoming unreciprocated vote/offer is not itself a counted mutual link.
+- **Proposal** — one party expresses intent; the counterparty has not matched it. Under D81/D82, an unreciprocated vote/offer is neither a counted mutual link nor a source of guarantor XP.
 - **Matched authorization** — both parties have agreed to the bilateral guarantee relationship; canonical records and each financial/XP/act-role transition still need their contract, not just a raw reciprocal-edge test.
 - **Active guarantee** — the protocol has applied the defined eligibility and economic transitions; an effective mutual relationship counts under §19.4 at both endpoints.
 - **Ended guarantee** — one side has validly broken the established relation; immediate counted-capacity release does not erase relevant historical responsibility.
@@ -820,7 +824,7 @@ The free cancellation of a particular Self-ID and the paid termination of an est
 
 **D81 — [SELECTED counted relationship, referendum-adjustable ceiling and non-destructive reduction], documented2026-10-28.** Source: the owner's direct clarification after the assistant separated incoming guarantors from outgoing support: unsolicited one-way guarantor votes/offers to a popular subject may be numerous, but that subject cannot reciprocate with everyone. The bounded resource is the participant's active **mutual, bilateral guarantee relationships**, not the number of people offering one-way support to it. D81 clarifies/supersedes D75's outgoing-only wording wherever that wording would count unmatched unilateral support as a mutual relationship; D75's valid-end capacity release and retained D34 history remain.
 
-For participant g at time t, let M_g(t) be the set of distinct other SubjectIds s with an effective active mutually accepted guarantee relationship g↔s. Count one counterpart per active bilateral relationship, once for EACH endpoint, not per Self-ID/NFT/act/key or lifetime beneficiary. This is a semantic relationship predicate, not an instruction to infer mutual responsibility from raw reciprocal graph edges, two endorsements or the legacy simulator's directed records. Its canonical representation and active-state mapping need the execution contract. An unreciprocated incoming fan vote/offer consumes no mutual slot of the recipient and creates no obligation to reciprocate; this K is not an incoming-popularity ceiling. Exact unilateral vote/offer versus active-guarantee eligibility, XP/veto/funding and evidentiary effects are separate contracts: uncounted support is not automatically verified personhood, Council authority, free admission or an exemption from any actually assumed guarantee responsibility.
+For participant g at time t, let M_g(t) be the set of distinct other SubjectIds s with an effective active mutually accepted guarantee relationship g↔s. Count one counterpart per active bilateral relationship, once for EACH endpoint, not per Self-ID/NFT/act/key or lifetime beneficiary. This is a semantic relationship predicate, not an instruction to infer mutual responsibility from raw reciprocal graph edges, two endorsements or the legacy simulator's directed records. Its canonical representation and active-state mapping need the execution contract. An unreciprocated incoming fan vote/offer consumes no mutual slot of the recipient and creates no obligation to reciprocate; this K is not an incoming-popularity ceiling. D82 (§17.5/§19.1) settles the XP boundary: absent established mutual guarantee, no guarantor XP from the other person's act; unilateral support is not an XP-earning alternative. Canonical state/authorization, other eligibility/veto/funding and evidentiary effects remain separate contracts. Uncounted support is not automatically verified personhood, Council authority, free admission or an exemption from actually assumed duties.
 
 **A bounded current parameter, not a permanent100 or automatic growth law.** D74's initial/default ceiling is K=100 for all participants. Governance referendums may raise OR lower the common value. Examples100→150/200→300 illustrate possible decisions, not an automatic schedule, population trigger, predetermined maximum or proof that the network can support that scale. Many members reaching the current ceiling can motivate a referendum; it does not itself change K. Raising K creates capacity only, not automatic new links, XP, money, eligibility or authority. D74's exact electorate/weights/quorum/authorization/activation/timing contracts remain OPEN.
 
@@ -2745,6 +2749,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Mutual links, variable K and preserved existing relationships recorded2026-10-28
 
 **D81 — [SELECTED], §8.1/§19.2/§19.4/§42.** Source: owner voice `voice-k1awbot-199814.ogg`, clarifying that one-way incoming guarantor votes/offers may be numerous (a popular subject may have many fans), but reciprocating creates bilateral responsibility and consumes the bounded mutual-link capacity. The current resource is active mutual bilateral relationships per distinct counterpart, initial K100; referendums can raise or lower the common ceiling, with100/150/200/300 as examples rather than automatic growth stages. Lowering MUST preserve existing effective links, including over-cap grandfathered counts, not force termination; normal new mutual activations use the applicable current ceiling. D81 qualifies/supersedes D75's outgoing-only wording where it would include unmatched one-way support, not its immediate valid-end release or D34 history. Exact unilateral-support/active-mutual representation, XP/veto/eligibility/economic effects, pending/cutover/replacement and governance execution remain OPEN; no two-raw-edge/path-projection choice, default/runtime migration, lifetime rule, old-evidence relabel/replay, scientific G1 or external/private-data authority. Current selected meaning is in the main §19.4; D75/D80 and old study records retain their dates.
+
+### No guarantor XP without established mutual guarantee recorded2026-10-28
+
+**D82 — [SELECTED clarification], §17.5/§19.1–§19.4.** Source: the owner's direct text correction after the assistant offered an old directed-code possibility as a protocol question: “взаимного поручения не установлено -- нет XP”. Proposing is not establishing a guarantee. Without established mutual guarantee, unilateral votes/offers or a directed-only acknowledgment do not earn guarantor XP from the other person's Self-ID. This settles the previously OPEN unilateral-versus-mutual XP question; D81's mutual K and variable/reduction rules are unchanged. Actual eligible per-act creation-time roles and ordinary D42 maturity/cancellation still supply credit, not relationship creation itself; no backdated rosters, new author-XP restriction, extra holding period, blanket exit/prior-credit rule, financial/veto/admission/path-projection choice or native/default migration. D54 pending entitlement and separate D9 older-credit treatment retained. Old D31 directed wording/code/evidence remains dated legacy, not authorization to apply that XP rule to D82; canonical mutual/funded activation and other execution contracts remain OPEN.
 
 ### Earlier supersessions
 
