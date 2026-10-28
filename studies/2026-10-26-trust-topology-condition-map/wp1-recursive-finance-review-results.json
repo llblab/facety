@@ -1,0 +1,919 @@
+{
+  "schema": "facety-wp1-recursive-finance-review-results/v1",
+  "date": "2026-10-28",
+  "classification": "DIAGNOSTIC independent static conditional source/algebra acceptance, NOT empirical/software/scientific confirmation or G1",
+  "canonical": "BACKLOG.md",
+  "completion": {
+    "batch": "51e3dd7c-4047-4e81-a429-661c60def063",
+    "at": "2026-10-28T01:54:14.469Z",
+    "run": "run:facety-wp1-recursive-finance-20261028",
+    "instance": "76de4890-0555-485d-b278-6965e1b45903",
+    "status": "done",
+    "activeSubagents": 0,
+    "primary": "not_selected; diagnostic command metadata and retained stage captures are not selected primary output",
+    "diagnostic": {
+      "path": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/evidence/result-diagnostics-304a3bb96ea9779b9d4a38cdcd6cd42c220eeee4bb2eac93c9d08e63b3763911.json",
+      "sha256": "5392bae2b98d7ad7e4b87523c61128c4c5de7c21423d2ecf1a0a3f98bd8667ec",
+      "bytes": 18260,
+      "fields": [
+        "command"
+      ]
+    }
+  },
+  "frozenContract": {
+    "schema": "facety-wp1-recursive-finance-review/v1",
+    "date": "2026-10-28",
+    "classification": "DIAGNOSTIC independent static NEW-result review request, not registration/experiment/scientific acceptance",
+    "canonical": "BACKLOG.md",
+    "task": {
+      "inputBaseCommit": "c27f863fa88a66d3f9c2a4bc48dddd7765d403b1",
+      "contractCommitBeforeDerivation": "66915f43d59ed36a204afe1516e5133250937c94",
+      "frozenInputBlobs": {
+        "src/graph.mjs": "696705486990261b8625811f156a62c1c0893115",
+        "src/model.mjs": "876b962261ff7652fab95647eea0d98375667c5b",
+        "src/vouch-experiment-config.mjs": "b25d2ef666d7b4606f6213ccc5ca525ec9e8b72b",
+        "src/vouch-experiment.mjs": "3e888d237501fdbf31e7ceeeef384482ea3ec6e8",
+        "studies/2026-10-26-trust-topology-condition-map/native-reference-bridge.mjs": "de522c1baf36f2a5b215aef89edee6f5466a6aae",
+        "studies/2026-10-26-trust-topology-condition-map/programme.json": "48bbc8352eafb9f9dee11535de5a988daed2d3bd",
+        "studies/2026-10-26-trust-topology-condition-map/reference.mjs": "af6827fc8af471015f711c89cc187a5e1ab8886d",
+        "studies/2026-10-26-trust-topology-condition-map/wp1-composition-fixture.json": "c5660b9cac96e2101de4fe0cf072d2726c54e55b",
+        "studies/2026-10-26-trust-topology-condition-map/wp1-earned-birth.md": "272522aa38f148e20e1a0b680037d5812a1c7f95",
+        "studies/2026-10-26-trust-topology-condition-map/wp1-prior7-c5-review-results.md": "67cf31e26f496868bb13ef206b17d6a23f809eac",
+        "studies/2026-10-26-trust-topology-condition-map/wp1-prior7-internal-growth.md": "fd58d3347873ee24216fb512dd5e73930281c0cd",
+        "studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance-contract.md": "358437b9aa1b32bd96e78d7211e33065be12eabf",
+        "studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance.md": "3c0c3deb81472a884f964b2bba3e71dd8eae3e16"
+      },
+      "implementation": {
+        "policy": "sha256-src-mjs-v1",
+        "digest": "39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448",
+        "files": 55,
+        "srcTree": "9d3eb889ad256ceb72cf28abe979752b2e01cc70",
+        "testTree": "9c0640c84e7f11aa72a912d047320573972a7434",
+        "runtime": "v26.8.1",
+        "separateStudyMethod": "69cd10b557879ca490feaad37787e50645a16833c8a3c3455e5126653104ac63"
+      },
+      "owner": "Coordinator owns immutable task/launch/integration; read-only complementary actors own independent source/arithmetic findings",
+      "scope": "NEW finite recursive-finance proof only, no repeat of old accepted mathematics or stopped METHOD/sensitivity study",
+      "threshold": "2semantically usable complementary reviewers plus verifier with original raw reports; tail partial input remains DEGRADED",
+      "stop": "No mutable source/contract/proof, constructor/reference/test/simulation/namespace or shell execution; task mismatch stops, no hidden fixes/OPEN selection."
+    },
+    "recipe": "swarm/lens-review",
+    "request": {
+      "scope": "READ-ONLY NEW recursive-finance derivation source/algebra review in /home/llb/Repos/facety. FIRST read studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance-review.json task/bindings and exact wp1-recursive-finance-contract.md + wp1-recursive-finance.md pinned atbasec27f863 (proofblob3c0c3deb81472a884f964b2bba3e71dd8eae3e16). Apply ONLY your complementary lens. No shell, numerical trial, Model/config/reference/test/RNG/namespace/data or write. Static reasoning/arithmetic allowed. Reuse accepted earned prefix interface; do NOT repeat old C1-C3/C5 or the stopped stochastic METHOD study. Conditional proof assumes supplied acceptance/consent/no intervention, NOT verified people, willing real populations or defeated defense. Derive independently from actual source predicates; finding a missed gate refutes/narrows the proof, never authorizes new rules/API. Inputs frozen until terminal; coordinator may update only request/launch/backlog status metadata. No G1.",
+      "lenses": [
+        "RECURSIVE-PAYER / clocks / frozen-cohort induction. Independently reconstruct the claimed induction under EXACT contract positiveB/c2/K_slot1/fee0/accepted/maturity profile: earned q0=B+max(B,T,V), L=max(B,T,V), public admission-ordered disjoint pairs; odd unmatched idle/no sources; no newborn reuse inside birth batch. Verify each author's original24h issuance window incl x-lastprefix2B-1, y/newborn first issue at already-accepted hour, previous paired/idle-returning gap, explicit mature conversion before boundary debit, accepted XP recipients/debt/freeze exclusions. Check EVERY payer owns B before OWN debit (no pooling/refund/reuse), distinct fresh intact live targets/records, successful-use T and half-open V freeing one slot while retaining guarantees/principal, other pairs' funding unaffected, graph safe-domain assumptions. Prove or counterexample Mnext=M+floor(M/2), E=M-2,N=2+M and checkpoint cash/source statements, distinguishing post-batch checkpoints from Native pre-command daily rows. A slower attaining family is not fastest/fluid/empirical growth; test actual gates not omitted full CORE/court/human contracts. Do not redo prefix proof beyond checking its reused interface.",
+        "RECURSIVE-ACCOUNTING / finite counters / scope-duties. Independently derive per-party k participation funds/bonds and S=4B+2BE, held capital/no burn/zero other buckets; total ordinary XP6B(1+E)<=3S from exact snapshot-role receipts not admission XP. Derive participant vs total/admission counts, finite rational M envelope, C=4+2E, graph lineage revision4+E/guarantee8+3E/nextEdgeC, generated IDs J=S+10+5E, own-chain B*max(R+1,2), activity versionS, calls Q=3S+3(2+E) and event/storage formula. Inspect actual Model/Graph semantics incl any automatic events or ID allocations; require safe intermediate/XP/balance/time/counter/storage not just final labels. Check integer H<=3650/H>qR =>q0<=3649,R<=floor((3649-q0)/L), no infinite capped-host or O(Q) CPU inference. Check outside a,b source guarantor/veto/XP/duty retention, U cut/D3 and conditional F=M vs genuine-access meaning, active outgoing x1+R/yR is NOT renewable K1 or D75. No false/genuine/control truth leak or real attack/defeated defense/Standing/G1 claim. Give counterexamples or exact source-supported limits; no data/Model/reference execution."
+      ],
+      "thinking": "medium",
+      "tools": "read",
+      "subagent_ttl_ms": 600000,
+      "reviewer_concurrency": "2",
+      "min_successful_reviewers": 2,
+      "claim": "The NEW finite recursive-finance induction and exact per-payer/accounting/clock/cohort/counter limits are independently supported OR corrected/refuted under their frozen contract; no general/physical growth, profitable attack, full differential/software/scientific/G1 inference follows.",
+      "evidence_policy": "Independently derive from actual inspected source/reference predicates and arithmetic; cite methods/sections for every material conclusion. Record actual read source/body coverage vs references only; read-only inspection does not authenticate Git (coordinator binds separately). Original-report verifier must preserve both bodies/dissent; merger/judge/normalizer cannot claim source-to-tail fidelity without inputs.",
+      "risk_policy": "Preserve every source-backed counterexample, omitted gate, bad count/resource or duty/causal overclaim. Declared accepted/no-intervention/consent/human/CORE/court exclusions are not automatic new feature requirements. A safe-domain premise is not proof of resource availability. No rule/OPEN/default changes, generator change, stopped sensitivity/lifetime/C3/WP-G fallback, numerical samples or reviewer-count proof.",
+      "merge_policy": "Require both complementary scopes/min2; preserve semantic/preflight failures and partial results. Verifier/merger/judge input coverage stays exact; downstream prior-body-only stages remain DEGRADED without original-source/report fidelity. Coordinator integrates retained originals separately and does not rewrite statuses, dissent or claim scientific replication.",
+      "output_format": "ROLE-CONDITIONAL: If actual prompt starts Preflight check for stage, reply EXACTLY ACTOR_PREFLIGHT_OK and nothing else; no file inspection. For substantive reviewer/verifier/merger/judge/normalizer, Markdown: Status(complete/degraded/insufficient_data); Assigned Scope; Verdict(supported/corrected/refuted/unknown within exact finite contract); Independent Derivation/Source Predicates; Counterexamples or Confirmations; Exact Financial/Time/Counter Boundaries; Continuing Duties/Labels/Nonclaims; Minority Findings; Actual Input Coverage; One Remaining Gate; Evidence References. No preflight token for substantive tasks."
+    },
+    "launch": {
+      "contractCommittedBeforeSpawn": "58afe629432a8e10452624f4b91ca5e8ec7426b3",
+      "target": "run:facety-wp1-recursive-finance-20261028",
+      "instance": "76de4890-0555-485d-b278-6965e1b45903",
+      "launchKind": "spawn",
+      "launchState": "running",
+      "model": "inherited:openai/gpt-6.1-sol",
+      "thinking": "explicit:medium",
+      "recipe": "swarm/lens-review",
+      "pid": 2865825,
+      "observedLocations": {
+        "directory": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028",
+        "metadata": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/run.json",
+        "trace": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/trace.jsonl",
+        "stdout": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/stdout.log",
+        "stderr": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/stderr.log",
+        "basis": "Exact generation mutable starting locations only; result/execution/context_index/control/published_sessions missing at launch, no guessed captures or body/completion evidence"
+      },
+      "preflightAndReview": "PENDING: running launch is not model/tool readiness, semantic preflight or independent result acceptance. Preserve all failures/partial/DEGRADED stages.",
+      "validation": {
+        "contextErrors": 0,
+        "existingReviewedWarnings": 29,
+        "contextLog": "/tmp/facety-wp1-recursive-finance-review-context.txt",
+        "sourceBindings": "All13pinned inputs plus core/test/runtime/separate-study exact before spawn; existing778+21/37/DAG55x177 reused, NOT rerun",
+        "newNativeOrScientificCalls": 0
+      },
+      "waitBasis": "Latest comparable maintained2lens/10stage method pipeline completed in379seconds, earlier finite C5 reviews about285seconds. This narrower new-proof review is expected in that range; after bookkeeping allow300seconds, with earlier automatic terminal delivery. No busy polling or coordinator shadow proof."
+    },
+    "handoff": {
+      "status": "running readonly NEW-result review; preflights/findings pending, no new acceptance or data",
+      "newNativeOrScientificCalls": 0,
+      "newRegistrations": 0,
+      "G1": "NOT passed",
+      "sourceTestEvidence": "Exact existing778+21/37/DAG55x177 core/test/runtime/separate-study evidence reused; not rerun",
+      "continuationWarranted": true
+    }
+  },
+  "execution": {
+    "version": 1,
+    "run": "facety-wp1-recursive-finance-20261028",
+    "run_instance_id": "76de4890-0555-485d-b278-6965e1b45903",
+    "status": "done",
+    "model_policy": {
+      "model": {
+        "inherited_keys": [
+          "model"
+        ],
+        "source": "inherited",
+        "value": "openai/gpt-6.1-sol"
+      },
+      "thinking": {
+        "explicit_keys": [
+          "thinking"
+        ],
+        "source": "explicit",
+        "value": "medium"
+      }
+    },
+    "active_subagents": 0,
+    "commands": [
+      {
+        "id": "command-001",
+        "stage": "preflight",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T01:48:41.612Z",
+        "completed_at": "2026-10-28T01:48:50.653Z",
+        "label": "preflight:reviewer",
+        "recipe_context": {
+          "alias": "preflight",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+          "name": "subagent-preflight",
+          "path": "preflight",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-001 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-001.md",
+        "prompt_file": "prompts/command-001.md",
+        "prompt_bytes": 13795,
+        "session_dir": "sessions/command-001",
+        "session_files": [
+          "sessions/command-001/2026-10-28T01-48-41-950Z_01a18031-fc5d-7693-95b0-c227e47f839f.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-001/attempt-001/stdout.log",
+              "bytes": 19
+            },
+            "stderr": {
+              "path": "captures/command-001/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 19,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-002",
+        "stage": "preflight",
+        "occurrence": 2,
+        "status": "done",
+        "started_at": "2026-10-28T01:48:41.622Z",
+        "completed_at": "2026-10-28T01:48:50.838Z",
+        "label": "preflight:verifier",
+        "recipe_context": {
+          "alias": "preflight",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+          "name": "subagent-preflight",
+          "path": "preflight",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-002 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-002.md",
+        "prompt_file": "prompts/command-002.md",
+        "prompt_bytes": 13795,
+        "session_dir": "sessions/command-002",
+        "session_files": [
+          "sessions/command-002/2026-10-28T01-48-42-038Z_01a18031-fcb5-7023-9773-ba8f0e7fa0e0.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-002/attempt-001/stdout.log",
+              "bytes": 19
+            },
+            "stderr": {
+              "path": "captures/command-002/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 19,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-003",
+        "stage": "preflight",
+        "occurrence": 3,
+        "status": "done",
+        "started_at": "2026-10-28T01:48:41.637Z",
+        "completed_at": "2026-10-28T01:48:50.116Z",
+        "label": "preflight:merger",
+        "recipe_context": {
+          "alias": "preflight",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+          "name": "subagent-preflight",
+          "path": "preflight",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-003 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-003.md",
+        "prompt_file": "prompts/command-003.md",
+        "prompt_bytes": 13793,
+        "session_dir": "sessions/command-003",
+        "session_files": [
+          "sessions/command-003/2026-10-28T01-48-41-951Z_01a18031-fc5e-763e-ba09-f8d6a8c98029.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-003/attempt-001/stdout.log",
+              "bytes": 19
+            },
+            "stderr": {
+              "path": "captures/command-003/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 19,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-004",
+        "stage": "preflight",
+        "occurrence": 4,
+        "status": "done",
+        "started_at": "2026-10-28T01:48:41.643Z",
+        "completed_at": "2026-10-28T01:48:49.603Z",
+        "label": "preflight:judge",
+        "recipe_context": {
+          "alias": "preflight",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+          "name": "subagent-preflight",
+          "path": "preflight",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-004 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-004.md",
+        "prompt_file": "prompts/command-004.md",
+        "prompt_bytes": 13792,
+        "session_dir": "sessions/command-004",
+        "session_files": [
+          "sessions/command-004/2026-10-28T01-48-42-023Z_01a18031-fca6-765e-b7b1-07c9ac1502e0.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-004/attempt-001/stdout.log",
+              "bytes": 19
+            },
+            "stderr": {
+              "path": "captures/command-004/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 19,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-005",
+        "stage": "reviewer",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T01:48:50.843Z",
+        "completed_at": "2026-10-28T01:50:44.219Z",
+        "branch_index": "0",
+        "recipe_context": {
+          "alias": "reviewer",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-review.json",
+          "name": "subagent-review",
+          "path": "reviewer",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-005 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-005.md",
+        "prompt_file": "prompts/command-005.md",
+        "prompt_bytes": 16881,
+        "session_dir": "sessions/command-005",
+        "session_files": [
+          "sessions/command-005/2026-10-28T01-48-51-128Z_01a18032-2037-73a5-ade2-2ed1f8ef3086.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-005/attempt-001/stdout.log",
+              "bytes": 10633
+            },
+            "stderr": {
+              "path": "captures/command-005/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 10633,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-006",
+        "stage": "reviewer",
+        "occurrence": 2,
+        "status": "done",
+        "started_at": "2026-10-28T01:48:50.850Z",
+        "completed_at": "2026-10-28T01:50:36.960Z",
+        "branch_index": "1",
+        "recipe_context": {
+          "alias": "reviewer",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-review.json",
+          "name": "subagent-review",
+          "path": "reviewer",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-006 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-006.md",
+        "prompt_file": "prompts/command-006.md",
+        "prompt_bytes": 16793,
+        "session_dir": "sessions/command-006",
+        "session_files": [
+          "sessions/command-006/2026-10-28T01-48-51-122Z_01a18032-2031-73c8-9674-ddaa63129afc.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-006/attempt-001/stdout.log",
+              "bytes": 11445
+            },
+            "stderr": {
+              "path": "captures/command-006/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 11445,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-007",
+        "stage": "verifier",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T01:50:44.225Z",
+        "completed_at": "2026-10-28T01:52:13.394Z",
+        "recipe_context": {
+          "alias": "verifier",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-verify.json",
+          "name": "subagent-verify",
+          "path": "verifier",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-007 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-007.md",
+        "prompt_file": "prompts/command-007.md",
+        "prompt_bytes": 15887,
+        "session_dir": "sessions/command-007",
+        "session_files": [
+          "sessions/command-007/2026-10-28T01-50-44-495Z_01a18033-db0f-71c2-8437-754ad5153d97.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-007/attempt-001/stdout.log",
+              "bytes": 10444
+            },
+            "stderr": {
+              "path": "captures/command-007/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 10444,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-008",
+        "stage": "merger",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T01:52:13.401Z",
+        "completed_at": "2026-10-28T01:53:02.645Z",
+        "recipe_context": {
+          "alias": "merger",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-merge.json",
+          "name": "subagent-merge",
+          "path": "merger",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-008 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-008.md",
+        "prompt_file": "prompts/command-008.md",
+        "prompt_bytes": 14848,
+        "session_dir": "sessions/command-008",
+        "session_files": [
+          "sessions/command-008/2026-10-28T01-52-13-752Z_01a18035-37b7-7061-b9eb-2947c2edc636.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-008/attempt-001/stdout.log",
+              "bytes": 10487
+            },
+            "stderr": {
+              "path": "captures/command-008/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 10487,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-009",
+        "stage": "judge",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T01:53:02.648Z",
+        "completed_at": "2026-10-28T01:53:43.588Z",
+        "recipe_context": {
+          "alias": "judge",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-judge.json",
+          "name": "subagent-judge",
+          "path": "judge",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-009 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-009.md",
+        "prompt_file": "prompts/command-009.md",
+        "prompt_bytes": 14265,
+        "session_dir": "sessions/command-009",
+        "session_files": [
+          "sessions/command-009/2026-10-28T01-53-02-906Z_01a18035-f7ba-75b0-bf72-0c3a283a25e1.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-009/attempt-001/stdout.log",
+              "bytes": 8306
+            },
+            "stderr": {
+              "path": "captures/command-009/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 8306,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-010",
+        "stage": "normalizer",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T01:53:43.592Z",
+        "completed_at": "2026-10-28T01:54:14.457Z",
+        "recipe_context": {
+          "alias": "normalizer",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-normalize.json",
+          "name": "subagent-normalize",
+          "path": "normalizer",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/sessions/command-010 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/prompts/command-010.md",
+        "prompt_file": "prompts/command-010.md",
+        "prompt_bytes": 14444,
+        "session_dir": "sessions/command-010",
+        "session_files": [
+          "sessions/command-010/2026-10-28T01-53-43-867Z_01a18036-97ba-77f9-a943-18f928530beb.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-010/attempt-001/stdout.log",
+              "bytes": 8374
+            },
+            "stderr": {
+              "path": "captures/command-010/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 8374,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      }
+    ],
+    "report_evidence": {
+      "required": [
+        "execution.json#command-005",
+        "execution.json#command-006",
+        "execution.json#command-007",
+        "execution.json#command-008",
+        "execution.json#command-009"
+      ],
+      "cited": [
+        "execution.json#command-005",
+        "execution.json#command-006",
+        "execution.json#command-007",
+        "execution.json#command-008",
+        "execution.json#command-009"
+      ],
+      "missing": [],
+      "claims_complete": false,
+      "complete_allowed": true
+    },
+    "updated_at": "2026-10-28T01:54:14.469Z"
+  },
+  "rawStages": [
+    {
+      "commandId": "command-001",
+      "stage": "preflight",
+      "branchIndex": null,
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-001/attempt-001/stdout.log",
+      "stdout": "ACTOR_PREFLIGHT_OK\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-001/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 19,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-002",
+      "stage": "preflight",
+      "branchIndex": null,
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-002/attempt-001/stdout.log",
+      "stdout": "ACTOR_PREFLIGHT_OK\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-002/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 19,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-003",
+      "stage": "preflight",
+      "branchIndex": null,
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-003/attempt-001/stdout.log",
+      "stdout": "ACTOR_PREFLIGHT_OK\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-003/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 19,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-004",
+      "stage": "preflight",
+      "branchIndex": null,
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-004/attempt-001/stdout.log",
+      "stdout": "ACTOR_PREFLIGHT_OK\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-004/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 19,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-005",
+      "stage": "reviewer",
+      "branchIndex": "0",
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-005/attempt-001/stdout.log",
+      "stdout": "ACTOR_REVIEW_RESULT\n\n## Status\n**complete** — assigned read-only payer/clock/cohort review completed. This is static source-and-algebra assessment, not execution, Git authentication, or acceptance of the complementary accounting/counter review.\n\n## Assigned Scope\nRECURSIVE-PAYER: reuse the earned-prefix interface; independently check issuance and maturity clocks, individual funding, retained-slot reuse, admission predicates, frozen-cohort induction, and post-batch checkpoints under the exact positive-B/c2/K_slot1/accepted/maturity contract.\n\n## Verdict\n**supported within the exact finite contract.**\n\nI found no omitted source predicate or individual-wallet shortfall that refutes this induction. Support remains conditional on the declared accepted/consenting/no-intervention profile and safe, available finite resources. It does not establish their real-world availability.\n\n## Independent Derivation / Source Predicates\n\n### 1. Reused base and original issuance windows\n\nI reused—not reproved—the earned-prefix interface:\n\n- \\(q_0=B+L\\), \\(L=\\max(B,T,V)\\);\n- participants \\(A_0=(x,y)\\), two nonparticipating outsiders \\(a,b\\);\n- four B-bonds fully held; all 4B sources converted; liquid/Emitter/debt/fee/stake/burn zero;\n- x last issued at day \\(2B-1\\) and last committed at \\(q_0\\); y has never issued or committed.\n\n`createSelfId` requires accepted status, no activity hold, a sufficiently recent artifact, and at least DAY since the original `lastRewardAt`. It imposes neither a minimum incoming-guarantor count nor an additional waiting period after acceptance. Thus:\n\n- **x’s first continuation:** \\(q_0-(2B-1)=L-B+1\\ge1\\) day.\n- **y/newborn first issue:** `#addSubject` initializes `lastRewardAt:null`; issue at the already-accepted hour is permitted, provided admission precedes it.\n- **Previously paired member:** last issue in round s was \\(q_s+B-1\\); next block’s first issue in round r has gap\n  \\[\n  (r-s)L-B+1\\ge1.\n  \\]\n- **Idle-returning member:** additional idle rounds only enlarge that gap; idle time supplies no issuance or cash.\n- **Within a block:** successive issue times differ by exactly one day.\n\nFresh explicit artifacts registered immediately before issue satisfy the artifact-window and face-index predicates.  \n**Evidence:** `src/model.mjs`: `#addSubject`, `registerArtifact`, `createSelfId`; earned-prefix document’s construction/interface.\n\n### 2. Maturity is not withdrawal; each payer earns its own B\n\nFor a paired member, source i is issued at \\(q_r+i\\), matures and is explicitly converted at \\(q_r+i+1\\). The last conversion is due at \\(q_r+B\\le q_{r+1}\\).\n\n`advanceTo` credits due maturity XP but does **not** move the emission principal to Collector. `convertToCollector` requires an accepted owner, own mature source, no debt reservation, and—through `#dispose/#requireUnspent`—an unspent, undisputed source.\n\nThe stipulated order therefore matters: advance and perform older conversions before simultaneous new issuance, and finish all conversions before boundary commitments.\n\nStarting from liquid zero, each paired member receives exactly B own converted units, then its own `commitVouch` debits exactly B. Its liquid balance is between zero and B throughout, and is **B immediately before its own debit**. No admission, other payer’s debit, or graph operation supplies that cash.\n\nThe reference independently reconstructs precisely this restriction:\n\\[\ncash(v)=\\#\\text{own converted sources}-\\sum\\text{own bond debits}\n\\]\nwhen refunds and settlements are absent.  \n**Evidence:** Model `advanceTo`, `convertToCollector`, `#requireUnspent`, `#dispose`, `commitVouch`; reference `cash`, `apply(issue/withdraw/commit)`.\n\n### 3. Accepted snapshots and maturity exclusions remain satisfied\n\n`eligibleGuarantors` uses accepted incoming guarantors under this profile, not `isActive`. Consequently, inactivity beyond 28 days does not disqualify retained a/b or other accepted guarantors.\n\nEach new source snapshots its actual incoming eligible guarantors. With no added incoming guarantees, exits, identity changes, penalties, holds or debt:\n\n- maturity’s frozen/debt/changed-recipient guards do not trigger;\n- creation-time recipients remain accepted;\n- `#credit` produces receipt credit once;\n- conversion does not duplicate that credit;\n- XP never substitutes for liquid collateral.\n\n**Evidence:** Model `eligibleGuarantors`, `advanceTo`, `#credit`, `createSelfId`, `#dispose`; reference `credit` and `apply(issue)`.\n\n### 4. T and V clear the slot, not the liability or principal\n\nA returning payer’s previous commitment was at \\(q_t\\), \\(t\\le r\\). Its next commitment at \\(q_{r+1}\\) is at least L days later, hence satisfies both T and V.\n\nThis includes x’s special round-zero previous commitment at \\(q_0\\). First-use y/newborns have no prior-use cooldown.\n\n`#vouchOccupies` uses **now < expiresAt**. Equality at V therefore frees the retained probation slot. It does not terminate the guarantee or refund the bond: those require separate operations, absent here.\n\n**Evidence:** Model `#vouchOccupies`, `vouchCapacity`, `commitVouch`, `exitVouch`, `releaseVouchBond`; reference `capacity`.\n\n### 5. Each frozen pair passes the actual admission gates\n\nFor each pair:\n\n1. Its two vouchers are distinct, accepted, existing members.\n2. Both have their own B before their individual commitments.\n3. A fresh target avoids existing subjects and graph nodes.\n4. Fresh records have intact B principal, reserved status, no exit, pending case or prior attachment.\n5. Same-hour admission occurs strictly before their expiries because \\(V>0\\).\n6. The exact two distinct record IDs satisfy c2.\n7. Fresh target and distinct existing parents avoid duplicate/self graph edges, subject to the explicit capacity/resource domain.\n\nPairs have disjoint payers and different fresh targets. Earlier admissions do not alter a later pair’s wallets, cooldowns or reservations. Newborns are excluded from the frozen payer list until the complete batch ends.\n\n**Evidence:** Model `commitVouch`, `admitVouched`, `#addSubject`; Graph `assertCapacity`, `addNode`, `addEdge`; reference `apply(commit/admit)`.\n\n## Counterexamples or Confirmations\n\n**Confirmation:** the disjoint frozen matching gives exactly\n\\[\np_r=\\lfloor M_r/2\\rfloor\n\\]\nsuccessful admissions. No newborn funds its own birth batch. Therefore\n\\[\nM_{r+1}=M_r+p_r,\\qquad\nE_R=\\sum p_r=M_R-2,\\qquad\nN_R=2+M_R.\n\\]\n\nAn odd unmatched member remains idle with no new source, debit or liquid balance. It is not assumed to participate immediately next round.\n\n**No source-backed counterexample found within this lens.** The exact equality cases \\(L=B\\), \\(L=T\\), and \\(L=V\\) are permitted by the inspected predicates, provided the required conversion-before-debit order is retained.\n\n## Exact Financial / Time / Counter Boundaries\n\nAfter a **complete** round-r birth batch:\n\n- every paired member has converted B and committed B;\n- idle members and newborns have liquid zero;\n- prior collateral remains held;\n- all issued sources are converted.\n\nHence, inductively,\n\\[\nS_R=4B+2BE_R,\\qquad\nminted=supply=vouchVault=S_R,\n\\]\nwith Collector/Emitter/fee/stake/debt/burn zero at that checkpoint.\n\nThese are not assertions about every intermediate instant. During source creation/conversion, Emitter and Collector can be positive.\n\nThey are also **not Native daily-row values at the same boundary**. `runVouchExperiment` samples endpoints before commands at that exact hour. Such a row can precede the last withdrawals, commitments and admissions; automatic maturity alone does not perform those withdrawals.\n\nGraph preflights and safe arithmetic/storage are genuine restrictions, not conclusions supplied by the recurrence. I checked their admission-path applicability; exhaustive generated-ID/event/host-counter formulas belong to the complementary lens.\n\n## Continuing Duties / Labels / Nonclaims\n\n- Expired probation occupancy does not release collateral, erase active guarantees, or extinguish historical duties.\n- a/b remain relevant creation-time guarantors and XP recipients despite supplying no later funding.\n- Renewable K_slot1 is not D75 active-outgoing K1 or a lifetime limit.\n- Public admission order, not evaluator ownership/personhood labels, determines matching.\n- Acceptance/consent/no intervention are supplied conditions—not verified people, endogenous cooperation, defeated defense, immunity, or evidence that human labor is free.\n- This is one slower attaining finite family, not a fastest schedule, fluid law, equilibrium, empirical population forecast, full CORE/court implementation, or G1.\n\n## Minority Findings\nNone independently identified in this assigned lens. This does not prejudge findings from the other reviewer.\n\n## Actual Input Coverage\n\n**Bodies read completely:**\n\n- `wp1-recursive-finance-review.json`\n- `wp1-recursive-finance-contract.md`\n- `wp1-recursive-finance.md`\n- `wp1-earned-birth.md` — reused interface only; no renewed prefix proof\n- `wp1-composition-fixture.json`\n- `reference.mjs`\n- `native-reference-bridge.mjs`\n- `src/graph.mjs`\n- `src/vouch-experiment.mjs`\n\n**Partial source coverage:**\n\n- `src/model.mjs` lines 1–780 and 981–1086, including all principal issuance/maturity/conversion/vouch/admission predicates used above and the inspected audit tail.\n\nI did not read all Model bodies, host config, historical review reports, or tests. No shell, runtime/model/reference invocation, numerical trial, mutation, or Git authentication occurred. Recorded commit/blob bindings remain coordinator-supplied until independently bound.\n\n## One Remaining Gate\n**Coordinator acceptance of the combined original evidence:** authenticate the frozen inputs separately and reconcile this report with the original complementary accounting/counter report and verifier, preserving any dissent. This lens alone cannot close that combined gate.\n\n## Evidence References\n\n- `studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance-contract.md` — frozen family, earned base, matching/ordering, exclusions.\n- `studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance.md` — induction and checkpoint claims reviewed.\n- `src/model.mjs` — named methods cited above.\n- `src/graph.mjs` — capacity and graph mutation predicates.\n- `studies/2026-10-26-trust-topology-condition-map/reference.mjs` — independent cash/capacity/transition definitions.\n- `src/vouch-experiment.mjs` — `sample` and event-loop endpoint ordering.\n- `wp1-earned-birth.md` and `wp1-composition-fixture.json` in the same study directory — reused prefix interface and exact policy/reference profile.\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-005/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 10633,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-006",
+      "stage": "reviewer",
+      "branchIndex": "1",
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-006/attempt-001/stdout.log",
+      "stdout": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**complete** for the assigned static accounting/counter/duty lens. No execution, mutation, numerical sampling, Git authentication or independent review of the complementary payer/cohort lens was performed.\n\n## Assigned Scope\n\nNEW recursive-finance derivation: per-party funding and retained principal; ordinary snapshot XP; participant/admission/resource counts; automatic events and generated IDs; finite host limits; outside-guarantor duties and interpretation boundaries.\n\n## Verdict\n\n**supported within the exact finite contract.**\n\nI found no source-backed accounting or counterexample requiring correction to the stated formulas. Support is conditional on the supplied earned-prefix interface, successful scheduled admissions/conversions, consent/accepted eligibility, absence of intervention, and **actual availability of all declared safe-domain resources**. It is not an unconditional realizability claim.\n\n## Independent Derivation / Source Predicates\n\n### 1. Per-party principal and conservation\n\n`FacetyModel.createSelfId` increases minted supply and Emitter custody by one. `convertToCollector` requires the owner's mature, unspent, unrestricted source; `#dispose(..., 'converted', ...)` moves that unit from Emitter to that same owner's liquid balance without burning it. `commitVouch` subtracts **B from its own payer**, adds B to `#vouchVault`, and records intact reserved principal. `admitVouched` creates membership and relations, not money or XP.\n\nFor participation counts \\(k_v\\), each later admission consumes two distinct participation occurrences, hence:\n\n\\[\n\\sum_{v\\in A_R}k_v=2E_R.\n\\]\n\nUsing the accepted prefix interface, cumulative own conversions and retained bonds are:\n\n| Party | Own conversions = retained bond principal |\n|---|---:|\n| a | B |\n| b | 2B |\n| x | \\(B(1+k_x)\\) |\n| y | \\(Bk_y\\) |\n| Later child v | \\(Bk_v\\) |\n\nTherefore:\n\n\\[\nS_R=B+2B+B+B\\sum_vk_v=4B+2BE_R.\n\\]\n\nAt completed batch checkpoints:\n\n\\[\n\\text{minted}=\\text{supply}=\\text{vouchVault}=S_R,\n\\]\n\nwith Collector, Emitter, fee/stake custody, debt and burn all zero. **No burn does not mean no required capital:** later rounds require another \\(2BE_R\\) units earned and escrowed.\n\n`#vouchOccupies` only determines slot occupancy. Neither it nor `advanceTo` releases principal or terminates guarantees at expiry. Refund requires a separate `releaseVouchBond` call with supplied clearance, absent here.\n\n### 2. XP comes from source receipts, not admission\n\n`createSelfId` snapshots `[author, ...eligibleGuarantors]`; accepted eligibility preserves the two incoming guarantors of each admitted participant. `advanceTo` credits ordinary maturity through `#credit`; later conversion does not credit again because `xpCredit !== null` returns immediately.\n\nThe accepted prefix supplies:\n\n- 3B founder sources with one receipt each;\n- B x-sources with author+a+b receipts.\n\nThus prefix XP is 6B. Later sources number \\(2BE_R\\), each with three unchanged snapshot-role receipts:\n\n\\[\nX_R=6B+3(2BE_R)=6B(1+E_R).\n\\]\n\nSince \\(3S_R=12B+6BE_R\\), \\(X_R\\le3S_R\\), with difference 6B. No admission transaction itself grants XP.\n\nThese results also follow independently from `CompositionReference.cash`, `credit`, `balance`, and `apply` branches `issue`, `withdraw`, `commit`, and `admit`.\n\n### 3. Exact member, graph, ID and operation counts\n\nEach new pair admission adds one member, two commitments and two guarantee edges. Telescoping the supplied recurrence gives \\(E_R=M_R-2\\).\n\n| Quantity | Derived total |\n|---|---:|\n| Participating members | \\(M_R=2+E_R\\) |\n| All accepted subjects | \\(N_R=4+E_R=M_R+2\\) |\n| Non-genesis admission records | \\(2+E_R=M_R\\) |\n| Commitment records / active guarantee edges | \\(C_R=4+2E_R\\) |\n| Explicit artifacts / Self-ID records | \\(S_R\\) |\n| Lineage revision | \\(4+E_R\\), with no lineage edges |\n| Guarantee revision | \\(N_R+C_R=8+3E_R\\) |\n| Guarantee `nextEdge` | \\(C_R\\) |\n\nThe equality between admission count and participating membership is specific to excluding a,b from participation. It does not mean all participants have issued sources: an unpaired newborn can have zero own issuance and bonds.\n\nFor generated Model IDs, each source allocates one; each birth allocates two commitment IDs, one admission ID and two guarantee IDs. Explicit artifact IDs and subject IDs allocate none:\n\n\\[\nJ_R=S_R+5(2+E_R)=S_R+10+5E_R.\n\\]\n\nGraph edge IDs are a **separate** counter. `admitVouched` does not call propose/confirm and therefore adds no hidden proposal ID.\n\nPersonal-chain length is bounded by \\(B\\max(R+1,2)\\): x has \\(B(R+1)\\), b has 2B, and every other author is bounded by these. `#activityVersion` increases once per created source in this no-cancellation/no-resolution trajectory, giving \\(S_R\\).\n\nSubject calls are:\n\n\\[\nQ_R=3S_R+3(2+E_R),\n\\]\n\nnamely artifact/issue/conversion per source and two commitments/one admission per birth.\n\n### 4. Automatic effects and event storage\n\n`#credit` allocates receipt objects but emits **no event and no generated ID**. Debt settlement produces no effects here because no debt reservation exists. `audit`, capacity queries and graph mutations add no Model events.\n\nConsequently Model event count is exactly:\n\n\\[\n2+3S_R+6(2+E_R).\n\\]\n\nThe terms are two genesis `subject-added` events; three events per source; and, per birth, two commitments, one subject addition, two guarantee activations and one admission.\n\nThis is an event-record formula, **not total storage or bytes**. Actual storage additionally includes source and artifact maps, personal chains, claims, candidate and credited XP-recipient arrays, recipient indexes, commitment/admission/relation indexes, both graph adjacency structures, IDs/strings, temporary copies, and—if hosted natively—Q action rows and H endpoint rows.\n\n## Counterexamples or Confirmations\n\n- **Confirmed:** expiry frees renewable K_slot occupancy without reclaiming old B or removing the old guarantee.\n- **Confirmed:** automatic maturity adds receipts, but no hidden event or generated ID invalidates the formulas.\n- **Confirmed:** per-party historical chain lengths and graph revision increments agree with the source.\n- **No accounting counterexample found** within the specified domain.\n\nA broader inference would fail: “slot free again” cannot imply “same capital reused,” “active outgoing degree bounded by one,” or “old guarantor responsibility ended.”\n\n## Exact Financial / Time / Counter Boundaries\n\nFor the recurrence,\n\n\\[\nM_{r+1}-1\\ge\\tfrac32(M_r-1),\\qquad M_{r+1}\\le\\tfrac32M_r,\n\\]\n\nso finite exact rational induction yields:\n\n\\[\n1+(3/2)^R\\le M_R\\le2(3/2)^R.\n\\]\n\nThis does not establish an infinite realizable host trajectory.\n\nAll monotone cumulative counts above must fit their counters and containers. All intermediate wallet/Emitter/custody balances remain nonnegative and bounded by S; aggregate receipt XP is bounded by 3S. Those bounds must themselves be checked safely. In particular, `#id`, minted/activity increments and XP increments are not all locally guarded against overflow: the external safe-domain premise is substantive, not redundant.\n\nSafe time arithmetic must include prefix hours, issuance/maturity hours, T/V products, every commitment expiry, and the final \\(24(q_R+V)\\), even if expiry is after the host endpoint.\n\n`vouchExperimentConfig` requires integer \\(H\\le3650\\) and commands strictly before \\(24H\\). Therefore:\n\n\\[\nH>q_R\\Rightarrow q_R\\le3649,\n\\]\n\\[\nq_0\\le3649,\\qquad\nR\\le\\left\\lfloor\\frac{3649-q_0}{L}\\right\\rfloor.\n\\]\n\n`maxSubjects ≥ N_R` and `maxActions ≥ Q_R` are necessary alongside resource availability. Native endpoint sampling precedes same-hour commands, so it is not the post-admission checkpoint used in the proof.\n\n**No O(Q) CPU inference:** capacity/overlap checks scan historical commitments, audit scans retained state and replays receipt-derived XP, and maturity processing scans pending maturities. Record counts do not establish linear runtime.\n\n## Continuing Duties / Labels / Nonclaims\n\na,b remain source-snapshot guarantors even though they stop authoring and funding. Specifically, later x-sources retain a,b, and y-sources retain b,x. Their own principal remains B and 2B. Under this schedule, their ordinary XP can continue growing: a receives \\(B(2+R)\\), b receives \\(B(3+2R)\\), including prefix receipts.\n\nEach new source creates its own original preventive window; that window expires at maturity under this policy. Historical receipts, records and applicable responsibilities are not erased by expiry. No later recovery amount or full court outcome is derived here.\n\nAll later guarantees are internal to declared U, leaving exactly the prefix’s three external records a→x, b→x, b→y. This is a cut/count statement, not liability immunity or defeated defense.\n\nIf evaluator labels assign every participant false, \\(F=M_R\\); genuine labels yield the same admission/accounting trajectory. Neither interpretation is verified by source predicates. No hidden person/control/validity label is needed for these accounting deductions.\n\nBecause x,y pair every round, their retained active outgoing counts are respectively \\(1+R\\) and R. **Renewable K_slot=1 is not active-outgoing K=1 and does not implement D75.**\n\nNo profit, actual alias attack, willing population, genuine-access affordability, Standing, verified independence, all-rule safety result, or G1 follows.\n\n## Minority Findings\n\nNo dissenting source-backed finding within this lens. The unchecked-counter and non-linear-work qualifications above must survive downstream synthesis; they are not evidence that the contract’s explicitly conditioned finite family fails.\n\n## Actual Input Coverage\n\nRead completely:\n\n- `wp1-recursive-finance-review.json`\n- `wp1-recursive-finance-contract.md`\n- `wp1-recursive-finance.md`\n- `src/model.mjs`\n- `src/graph.mjs`\n- `reference.mjs`\n- `native-reference-bridge.mjs`\n- `src/vouch-experiment-config.mjs`\n- `src/vouch-experiment.mjs`\n\nStudy paths are under `studies/2026-10-26-trust-topology-condition-map/`.\n\nThe earned-prefix interface was reused as instructed; its historical proof/review bodies, fixture, programme, tests and implementation digest were **not independently reverified**. File reading does not authenticate the declared commit/blob bindings. No other reviewer body was available or assessed.\n\n## One Remaining Gate\n\nCoordinator must authenticate frozen-input equality and integrate the complementary payer/cohort review with this original report, preserving any dissent. This report alone does not close that complementary gate or establish an executable resource allocation.\n\n## Evidence References\n\n- **Contract:** “Frozen family and earned base”; “Candidate claim / required proof and falsifiers.”\n- **Derivation:** “Exact per-party capital and ordinary XP/duties”; “Explicit finite/host/storage boundary.”\n- **Model:** `#id`, `#addSubject`, `commitVouch`, `admitVouched`, `#vouchOccupies`, `releaseVouchBond`, `advanceTo`, `eligibleGuarantors`, `#credit`, `createSelfId`, `#dispose`, `convertToCollector`, `ledger`, `audit`.\n- **Graph:** `#requireCapacity`, `assertCapacity`, `addNode`, `addEdge`.\n- **Reference:** `cash`, `credit`, `capacity`, `balance`, `CompositionReference.apply`, `snapshot`.\n- **Host:** `vouchExperimentConfig`; `runVouchExperiment`, `sample`, action/subject cap checks.\n- **Bridge:** `NativeReferenceBridge.apply` and `snapshot`, inspected statically only.\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-006/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 11445,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-007",
+      "stage": "verifier",
+      "branchIndex": null,
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-007/attempt-001/stdout.log",
+      "stdout": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**complete** — original-report verification against both usable reviewer bodies, the frozen contract and derivation, and directly inspected source predicates.\n\nThe header supplies **2 usable / 2 expected / minimum 2**. Both complementary scopes are represented. This completes the bounded static verification, **not** Git authentication, execution, resource-allocation proof or coordinator acceptance.\n\n## Assigned Scope\n\nVerify the NEW recursive-finance claim by reconciling:\n\n- payer/issuance/maturity/slot/cohort evidence: `execution.json#command-005`;\n- accounting/XP/counters/resources/duties evidence: `execution.json#command-006`.\n\nPreserve both reports’ qualifications and dissent; distinguish conditional mathematical support from unavailable physical, software and scientific evidence. Reuse the accepted earned-prefix interface without repeating its historical proof.\n\n## Verdict\n\n**supported within the exact finite contract.**\n\nBoth original reports give compatible, source-grounded support. My inspected predicates and independent arithmetic identify no correction or refutation of the stated finite construction.\n\n- **Proven conditionally:** the frozen-pair induction, individual funding, exact checkpoint accounting, ordinary receipt XP and listed finite counters.\n- **Disproven broader interpretations:** expiry refunds capital, renewable K_slot1 bounds active outgoing guarantees, or maturity automatically withdraws principal.\n- **Unknown/not established:** actual resource availability, endogenous consent, physical uniqueness, profitable attack, effective defense/correction and general population growth.\n- **Missing acceptance evidence:** independently authenticated equality to the declared Git/blob bindings. No execution, full differential/software validation, scientific confirmation or G1 follows.\n\nReviewer count is not the proof; the support rests on the inspected predicates and derivations below.\n\n## Independent Derivation / Source Predicates\n\n### Payer clocks and funded induction\n\n`createSelfId` requires accepted membership, no activity restriction, a recent artifact, a valid face index and an original rolling DAY issuance interval. It does not impose an incoming-guarantor minimum or acceptance-age delay.\n\nWith \\(L=\\max(B,T,V)\\):\n\n- x’s first continuation gap is \\(L-B+1\\ge1\\) day;\n- y/newborns have `lastRewardAt:null`, after actual acceptance;\n- a returning author’s gap is \\((r-s)L-B+1\\ge1\\);\n- consecutive block issues are exactly one day apart.\n\n`advanceTo` credits due maturity XP but does not withdraw principal. `convertToCollector`, through `#dispose/#requireUnspent`, requires an own mature, unspent, undisputed, non-debt-reserved source. The specified conversion-before-issue/debit order therefore supplies **each payer’s own B**, independently of every other payer.\n\n`commitVouch` debits that payer’s liquid balance. `vouchCapacity/#vouchOccupies` permit reuse at equality with T and V, because occupancy is `now < expiresAt`. Neither expiry nor time advancement refunds bonds.\n\n`admitVouched` checks fresh canonical target, exactly c distinct commitments, distinct accepted vouchers, live intact reserved principal, no pending case and no previous attachment, then graph capacity. Fresh targets and disjoint existing payers satisfy these conditions within the declared resource domain.\n\nThus each frozen pair adds exactly one child, with no newborn reuse inside its birth batch:\n\n\\[\nM_{r+1}=M_r+\\lfloor M_r/2\\rfloor,\\qquad\nE_R=M_R-2,\\qquad N_R=4+E_R.\n\\]\n\n**Sources:** Model `#addSubject`, `registerArtifact`, `createSelfId`, `advanceTo`, `convertToCollector`, `commitVouch`, `admitVouched`; reference `cash`, `capacity`, `apply(issue/withdraw/commit/admit)`.\n\n### Accounting and ordinary XP\n\nFor participation counts \\(k_v\\), each later admission consumes two payer occurrences:\n\n\\[\n\\sum_v k_v=2E_R.\n\\]\n\nRetained principal equals cumulative own conversions: a has B, b has 2B, x has \\(B(1+k_x)\\), y has \\(Bk_y\\), and each later child has \\(Bk_v\\). Therefore:\n\n\\[\nS_R=4B+2BE_R.\n\\]\n\nAt completed checkpoints:\n\n\\[\nminted=supply=vouchVault=S_R,\n\\]\n\nwith all wallets, Emitter, fees, stakes, debt and burn zero. This is not an invariant of intermediate creation/conversion instants.\n\n`eligibleGuarantors` uses accepted incoming guarantors under this policy. With unchanged incoming relations, each later source has author plus two guarantor recipients. `#credit` creates receipts once; subsequent conversion does not duplicate credit. Reusing prefix XP \\(6B\\):\n\n\\[\nX_R=6B+3(2BE_R)=6B(1+E_R)\\le3S_R.\n\\]\n\nAdmission grants neither money nor XP.\n\n**Sources:** Model `eligibleGuarantors`, `#credit`, `createSelfId`, `#dispose`, `commitVouch`; reference `cash`, `credit`, `balance`.\n\n## Counterexamples or Confirmations\n\nNo source-backed counterexample was supplied by either lens or found in my inspected scope.\n\nConfirmed boundary cases:\n\n- \\(L=B,T,\\) or V permit equality under the inspected predicates.\n- Idle members acquire no banked issuance or cash.\n- Accepted inactive guarantors remain eligible under this exact policy.\n- Automatic maturity allocates receipts, not events or generated IDs.\n- “No burn” does **not** mean “no additional capital”: later funding escrows another \\(2BE_R\\).\n\nThe host’s same-hour daily sample is **not** the post-batch checkpoint: `runVouchExperiment` samples before commands at that hour.\n\n## Exact Financial / Time / Counter Boundaries\n\nThe accounting reviewer’s totals agree with inspected allocation sites:\n\n| Quantity | Total/bound |\n|---|---:|\n| Admission records | \\(2+E_R\\) |\n| Commitments / active guarantee edges | \\(C_R=4+2E_R\\) |\n| Artifacts / sources | \\(S_R\\) each |\n| Lineage revision | \\(4+E_R\\) |\n| Guarantee revision | \\(8+3E_R\\) |\n| Guarantee nextEdge | \\(C_R\\) |\n| Shared Model ID allocations | \\(J_R=S_R+10+5E_R\\) |\n| Maximum personal-chain length | \\(B\\max(R+1,2)\\) |\n| Activity-version increments | \\(S_R\\) |\n| Subject calls | \\(Q_R=3S_R+3(2+E_R)\\) |\n| Model events | \\(2+3S_R+6(2+E_R)\\) |\n\nA birth allocates two commitment IDs, one admission ID and two guarantee IDs. Explicit artifact IDs consume no shared ID. Graph edge IDs are separate.\n\nFinite recurrence algebra gives:\n\n\\[\n1+(3/2)^R\\le M_R\\le2(3/2)^R.\n\\]\n\nNative requires integer \\(H\\le3650\\) and commands strictly before \\(24H\\), hence:\n\n\\[\nq_R\\le3649,\\qquad\nR\\le\\left\\lfloor\\frac{3649-q_0}{L}\\right\\rfloor.\n\\]\n\nNecessary additional conditions include `maxSubjects ≥ N_R`, `maxActions ≥ Q_R`, safe intermediate arithmetic—including XP sums and final expiry \\(24(q_R+V)\\)—and actual container/memory/CPU availability. A valid Native tape also needs its required authority, subject-fact and issue-validity metadata; these are declarations, not actor access to hidden truth.\n\n**Preserved qualification:** several Model increments are not locally overflow-guarded. The external safe-domain premise is substantive. Event counts are not byte/storage bounds, and call counts do not imply O(Q) CPU.\n\n**Sources:** Model `#id`, `#event`, relevant transition bodies; Graph `assertCapacity/addNode/addEdge`; `vouchExperimentConfig`; `runVouchExperiment`.\n\n## Continuing Duties / Labels / Nonclaims\n\nBoth reports correctly retain:\n\n- old escrow, active guarantees, historical records and applicable duties after probation expiry;\n- a/b as creation-time guarantors and continuing ordinary XP recipients, despite no later funding;\n- per-source preventive windows expiring at maturity, not historical erasure;\n- x/y active outgoing counts \\(1+R\\) and R, distinct from renewable K_slot1 and D75;\n- exactly three external prefix acquisition records, without liability immunity or defeated defense;\n- evaluator-only false/genuine/control labels, unnecessary to the matching or accounting.\n\nAcceptance, consent and no intervention remain supplied conditions. This is one slower attaining finite family—not an optimum, equilibrium, empirical growth law, real alias attack, immunity result, full CORE/court implementation or G1.\n\n## Minority Findings\n\nNeither original report records dissent. No contradiction was found between them.\n\nThe following qualifications must survive synthesis: unchecked-counter exposure, unavailable resource guarantees, nonlinear work, pre-command sampling, retained collateral/duties and unverified Git bindings.\n\n## Actual Input Coverage\n\n**Read completely in this verifier:**\n\n- `wp1-recursive-finance-review.json`\n- `wp1-recursive-finance-contract.md`\n- `wp1-recursive-finance.md`\n- both original reviewer bodies supplied in the prompt;\n- `reference.mjs`\n- `src/graph.mjs`\n- `src/vouch-experiment-config.mjs`\n- `src/vouch-experiment.mjs`\n\nStudy filenames above reside under `studies/2026-10-26-trust-topology-condition-map/`.\n\n**Partial direct source coverage:** `src/model.mjs` lines 1–780 and 981–1086.\n\nI did not independently read the bridge, fixture, earned-prefix proof, historical reviews, programme or tests. Those remain reviewer-reported coverage or reused premises, not verifier-inspected bodies.\n\nNo shell, execution, numerical trial, mutation, Git authentication or new scientific evidence occurred.\n\n## One Remaining Gate\n\n**Coordinator frozen-input authentication and acceptance:** bind the inspected working files and retained original reports to the declared immutable inputs, then integrate both originals and this verification without removing qualifications or upgrading the evidence level.\n\nThis verifier supports bounded static acceptance; it does not authenticate bytes or authorize an experiment.\n\n## Evidence References\n\n- **Original payer/clock/cohort report:** `ACTOR_EVIDENCE_REF: execution.json#command-005`\n- **Original accounting/counter/duty report:** `ACTOR_EVIDENCE_REF: execution.json#command-006`\n- **Frozen scope/bindings:** `wp1-recursive-finance-review.json`, `task` and `request`.\n- **Contract:** “Frozen family and earned base”; “Deterministic generation/matching policy”; “Candidate claim / required proof and falsifiers.”\n- **Derivation:** both induction sections; “Exact per-party capital and ordinary XP/duties”; “Explicit finite/host/storage boundary.”\n- **Direct implementation/reference evidence:** named methods and files cited above.\n\nOriginal bodies were available for this verification. Their subsequent source-to-tail preservation must be established by downstream stages from their actual inputs, not inferred from this verdict.\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-007/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 10444,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-008",
+      "stage": "merger",
+      "branchIndex": null,
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-008/attempt-001/stdout.log",
+      "stdout": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**degraded** — consensus-first synthesis of the supplied verifier body, with both original reviewer references retained but neither original reviewer body present in this merger’s actual input.\n\nThe verifier reports **2 usable / 2 expected / minimum 2**, representing both complementary scopes. That is upstream-reported threshold satisfaction, not independently established original-report fidelity at this stage.\n\nThe verifier’s own **complete** status remains unchanged. This merger’s degraded status reflects narrower input coverage, not a discovered mathematical refutation.\n\n## Assigned Scope\n\nReconcile and preserve the reported findings for:\n\n- payer, issuance, maturity, slot and frozen-cohort evidence: `execution.json#command-005`;\n- accounting, XP, counters, resources and continuing duties: `execution.json#command-006`;\n- their bounded static verification: `execution.json#command-007`.\n\nReuse the accepted earned-prefix interface without re-proving it. Preserve qualifications, dissent and evidence-level boundaries. Do not authorize execution, change protocol rules or infer physical/resource feasibility.\n\n## Verdict\n\n**Supported within the exact finite contract, as reported by the supplied verifier; original-report consensus is not independently established by this merger.**\n\nThe verifier reports compatible source-grounded support from both complementary reviewers and no source-backed counterexample in its inspected scope.\n\nThe supported conditional construction covers:\n\n- frozen-pair recursive admission;\n- each payer’s individual funding;\n- exact completed-checkpoint accounting;\n- ordinary receipt XP;\n- the listed finite counters.\n\nIt does **not** establish actual resource availability, endogenous consent, physical uniqueness, profitable attack, effective defense/correction, general population growth, software replication or G1.\n\nThe following broader readings are expressly rejected:\n\n1. Commitment expiry refunds capital.\n2. Renewable `K_slot1` bounds active outgoing guarantees.\n3. Maturity automatically withdraws principal.\n\nReviewer count is not the proof. The support depends on the stated predicates, derivation and substantive finite safe-domain assumptions.\n\n## Independent Derivation / Source Predicates\n\n**Merger coverage limitation:** the following preserves the verifier’s derivation and source attributions. This merger performed no independent source inspection or execution.\n\n### Individual funding and recursive admission\n\nLet \\(L=\\max(B,T,V)\\). The reported issuance gaps satisfy the original rolling daily interval:\n\n- x’s first continuation gap: \\(L-B+1\\ge1\\);\n- returning author: \\((r-s)L-B+1\\ge1\\);\n- consecutive issues inside a block: exactly one day;\n- y and newborns: `lastRewardAt:null`, following actual acceptance.\n\nThe verifier attributes these boundaries to `createSelfId` and related membership/artifact predicates, with no incoming-guarantor minimum or acceptance-age delay under this policy.\n\n`advanceTo` credits due maturity XP but does not withdraw principal. Own mature, unspent, undisputed, non-debt-reserved sources can be converted before subsequent issuance/debit. This supplies **each payer’s own B**, without cross-payer funding.\n\n`commitVouch` debits liquid balance. Occupancy uses `now < expiresAt`, permitting reuse at equality with T and V; expiry does not refund the bond.\n\nUnder the supplied freshness, distinctness, intact-principal, no-case, attachment and graph-capacity conditions, each frozen pair admits one child without newborn reuse inside its birth batch:\n\n\\[\nM_{r+1}=M_r+\\lfloor M_r/2\\rfloor,\\qquad\nE_R=M_R-2,\\qquad N_R=4+E_R.\n\\]\n\n### Accounting and ordinary XP\n\nEach later admission consumes two payer occurrences:\n\n\\[\n\\sum_v k_v=2E_R.\n\\]\n\nThe reported retained-principal allocation is:\n\n- a: B;\n- b: 2B;\n- x: \\(B(1+k_x)\\);\n- y and each later child: \\(Bk_v\\).\n\nConsequently:\n\n\\[\nS_R=4B+2BE_R.\n\\]\n\nAt **completed checkpoints only**:\n\n\\[\nminted=supply=vouchVault=S_R,\n\\]\n\nwith wallets, Emitter, fees, stakes, debt and burn zero. Intermediate issuance/conversion instants need not satisfy this equality.\n\nWith unchanged incoming relations, the exact policy credits each later source to its author and two eligible guarantors. Credit receipts occur once; conversion does not duplicate them. Reusing prefix XP \\(6B\\):\n\n\\[\nX_R=6B+3(2BE_R)=6B(1+E_R)\\le3S_R.\n\\]\n\nAdmission itself grants neither money nor XP.\n\n## Counterexamples or Confirmations\n\nThe verifier reports no source-backed counterexample from either reviewer or its own inspected scope. This merger cannot independently confirm the originals’ complete findings or absence of dissent.\n\nReported confirmations and limitations:\n\n- Equality at \\(L=B,T,\\) or V is permitted by the inspected predicates.\n- Idle members acquire neither banked issuance nor cash.\n- Accepted inactive guarantors remain eligible under this exact policy.\n- Automatic maturity creates receipts, not Model events or generated IDs.\n- No burn does **not** mean no additional capital: later funding escrows another \\(2BE_R\\).\n- The host’s same-hour daily sample occurs **before commands**, not at the post-batch checkpoint.\n\nNo semantic or preflight failure is reported in the supplied verifier body. This merger received no separate preflight record and makes no independent success claim about it.\n\n## Exact Financial / Time / Counter Boundaries\n\nThe verifier reports agreement with allocation sites for:\n\n| Quantity | Total/bound |\n|---|---:|\n| Admission records | \\(2+E_R\\) |\n| Commitments / active guarantee edges | \\(C_R=4+2E_R\\) |\n| Artifacts / sources | \\(S_R\\) each |\n| Lineage revision | \\(4+E_R\\) |\n| Guarantee revision | \\(8+3E_R\\) |\n| Guarantee `nextEdge` | \\(C_R\\) |\n| Shared Model ID allocations | \\(J_R=S_R+10+5E_R\\) |\n| Maximum personal-chain length | \\(B\\max(R+1,2)\\) |\n| Activity-version increments | \\(S_R\\) |\n| Subject calls | \\(Q_R=3S_R+3(2+E_R)\\) |\n| Model events | \\(2+3S_R+6(2+E_R)\\) |\n\nA birth allocates two commitment IDs, one admission ID and two guarantee IDs. Explicit artifact IDs do not consume shared Model IDs; graph edge IDs are separate.\n\nThe finite recurrence bounds are:\n\n\\[\n1+(3/2)^R\\le M_R\\le2(3/2)^R.\n\\]\n\nNative’s integer \\(H\\le3650\\) and commands strictly before \\(24H\\) imply:\n\n\\[\nq_R\\le3649,\\qquad\nR\\le\\left\\lfloor\\frac{3649-q_0}{L}\\right\\rfloor.\n\\]\n\nNecessary additional conditions remain substantive:\n\n- `maxSubjects ≥ N_R`;\n- `maxActions ≥ Q_R`;\n- safe intermediate arithmetic, including XP sums and final expiry \\(24(q_R+V)\\);\n- actual container, memory and CPU availability;\n- required Native authority, subject-fact and issue-validity metadata.\n\nSeveral Model increments reportedly lack local overflow guards. An external safe-domain premise is **not** proof that the implementation enforces it or that resources exist. Event counts are not storage-byte bounds; call counts do not establish O(Q) CPU. Metadata declarations do not give actors access to hidden truth.\n\n## Continuing Duties / Labels / Nonclaims\n\nThe synthesis retains:\n\n- old escrow, active guarantees, historical records and applicable duties after probation expiry;\n- a/b as creation-time guarantors and continuing ordinary XP recipients despite no later funding;\n- preventive windows expiring at source maturity, without historical erasure;\n- x/y active outgoing counts \\(1+R\\) and R, distinct from renewable `K_slot1` and D75;\n- exactly three external prefix acquisition records, without liability immunity or defeated-defense claims;\n- evaluator-only false/genuine/control labels, unnecessary to matching or accounting.\n\nAcceptance, consent and no intervention remain supplied conditions. The construction is one slower attaining finite family—not an optimum, equilibrium, empirical growth law, real alias attack, immunity result, full CORE/court implementation or G1.\n\nDeclared exclusions are not automatically new feature requirements. No rule/OPEN/default change, generator change, numerical sampling or stopped-work fallback follows.\n\n## Minority Findings\n\nThe verifier states that neither original reviewer recorded dissent and that it found no contradiction between them. That remains an **upstream report**, not independently verified original-body coverage here.\n\nThe following qualifications must survive downstream integration:\n\n- unchecked-counter exposure;\n- unavailable resource guarantees;\n- potentially nonlinear work;\n- pre-command sampling;\n- retained collateral and duties;\n- unauthenticated Git/blob bindings;\n- this merger’s missing original reviewer bodies.\n\n## Actual Input Coverage\n\n**Directly available to this merger:**\n\n- the supplied verifier body, attributed to `execution.json#command-007`;\n- the merger task and recipe context;\n- retained reference strings for commands 005, 006 and 007.\n\n**Not directly inspected by this merger:**\n\n- either original reviewer body;\n- `execution.json` or its retained command records;\n- the frozen review manifest, contract or derivation;\n- implementation/reference files;\n- Git/blob bindings, tests or execution results.\n\nThe verifier reports complete reads of the study manifest, contract, derivation, both original reviewer bodies, `reference.mjs`, graph and vouch-experiment files, plus partial Model coverage at lines 1–780 and 981–1086. Those are **verifier-reported reads**, not merger-inspected evidence.\n\nNo project-source inspection, execution, numerical trial, mutation or Git authentication occurred in this stage.\n\n## One Remaining Gate\n\n**Coordinator frozen-input authentication and acceptance, including original-report fidelity.**\n\nThe coordinator must authenticate the inspected working files against declared immutable bindings and integrate both retained original reports separately alongside the verifier and this degraded synthesis. Preserve original statuses, partial results, dissent and qualifications.\n\nThis gate does not authorize an experiment or upgrade static conditional support into software or scientific replication.\n\n## Evidence References\n\n- Payer/clock/cohort original — referenced, body unavailable here:  \n  ACTOR_EVIDENCE_REF: execution.json#command-005\n- Accounting/counter/duty original — referenced, body unavailable here:  \n  ACTOR_EVIDENCE_REF: execution.json#command-006\n- Verification — body supplied and used for this synthesis:  \n  ACTOR_EVIDENCE_REF: execution.json#command-007\n\nThese references preserve provenance pointers, not authenticated source-to-tail equality.\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-008/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 10487,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-009",
+      "stage": "judge",
+      "branchIndex": null,
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-009/attempt-001/stdout.log",
+      "stdout": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**degraded** — the merger body is directly available, but neither original reviewer body nor the verifier body is independently available in this judge’s input.\n\nThe merger’s **degraded** status is preserved. The verifier’s **complete** status is retained only as reported by the merger; this judgment neither upgrades nor invalidates it.\n\n## Assigned Scope\n\nJudge `execution.json#command-008` for evidence preservation, severity calibration, consensus purity, internal consistency and merge bias.\n\nThis is a review of the supplied synthesis, not source verification, frozen-input authentication, execution authorization or a new proof of the construction.\n\n## Verdict\n\n**Supported as a qualified synthesis; unknown as to original-report fidelity and source correctness within the exact finite contract.**\n\nThe merger appropriately:\n\n- distinguishes upstream-reported reviewer agreement from independently established consensus;\n- identifies missing original reviewer bodies;\n- preserves financial exposure, continuing duties, finite-domain restrictions and resource limitations;\n- rejects refund-on-expiry, automatic maturity withdrawal and conflation of renewable slots with active outgoing guarantees;\n- declines to turn static conditional support into empirical growth, attack profitability, effective defense or G1.\n\nNo material internal contradiction is apparent in the supplied body. However, its fidelity to commands 005–007 cannot be judged from command 008 alone.\n\n**Disposition:** retain as a degraded synthesis pending coordinator authentication and comparison with the original reports. Do not present this judgment as another independent confirmation of the underlying construction.\n\n## Independent Derivation / Source Predicates\n\nOnly internal algebra and consistency can be checked here.\n\nFrom the merger’s stated recurrence and definitions:\n\n\\[\nM_0=2,\\qquad M_{r+1}=M_r+\\lfloor M_r/2\\rfloor,\\qquad E_R=M_R-2.\n\\]\n\nEach later admission has two payer occurrences, so the stated allocation gives:\n\n\\[\nS_R=B+2B+B(1+k_x)+B\\sum_{v\\ne x}k_v\n=4B+2BE_R.\n\\]\n\nIts stated XP expression then satisfies:\n\n\\[\nX_R=6B+6BE_R=6B(1+E_R),\n\\]\n\nand, for nonnegative \\(B\\),\n\n\\[\n3S_R-X_R=6B\\ge0.\n\\]\n\nThese are algebraic consequences of the supplied premises. They do not verify those premises against implementation.\n\nThe recurrence bounds are also internally compatible: using\n\\(\\lfloor m/2\\rfloor\\le m/2\\) and\n\\(\\lfloor m/2\\rfloor\\ge(m-1)/2\\) yields the reported upper and lower bounds by induction.\n\nNo payer eligibility, maturity, debit, receipt, allocation-site or chronology predicate was independently source-checked by this judge.\n\n## Counterexamples or Confirmations\n\n### Confirmations within the supplied text\n\n- **Evidence preservation:** material qualifications remain visible rather than being relegated to an unconditional “supported” headline.\n- **Severity calibration:** unchecked increments are described as implementation exposure, not as a demonstrated overflow in the stipulated safe domain.\n- **Consensus purity:** “2 usable / 2 expected / minimum 2” is explicitly upstream-reported; reviewer count is not treated as proof.\n- **Internal consistency:** maturity XP without automatic withdrawal is compatible with later explicitly chosen conversion. Completed-checkpoint accounting is distinguished from intermediate states and pre-command samples.\n- **Merge bias:** acceptance, consent, no intervention and resource availability remain conditions, not inferred accomplishments.\n\n### Unresolved limitations\n\n- Original-report omissions, softened dissent or attribution errors cannot be excluded without the originals.\n- The exact counter formulas cannot be authenticated by their mutual algebraic compatibility.\n- “No source-backed counterexample” remains an upstream report, not this judge’s independently established finding.\n\nNo mathematical refutation is established by the available input.\n\n## Exact Financial / Time / Counter Boundaries\n\nPreserve the merger’s reported boundaries without upgrading them:\n\n| Boundary | Judge assessment |\n|---|---|\n| \\(S_R=4B+2BE_R\\) | Algebraically consistent with supplied allocation |\n| \\(X_R=6B(1+E_R)\\le3S_R\\) | Algebraically consistent for nonnegative \\(B\\) |\n| Checkpoint `minted = supply = vouchVault = S_R` | Source-dependent; not independently verified |\n| \\(C_R=4+2E_R\\), \\(J_R=S_R+10+5E_R\\) and remaining counters | Retain as reported; allocation sites unavailable here |\n| Equality at commitment/slot expiry | Predicate-dependent; not independently verified |\n| \\(q_R\\le3649\\) and the resulting bound on \\(R\\) | Conditional on the reported Native horizon, scheduling and positive \\(L\\) |\n| Safe arithmetic and sufficient subjects/actions | Substantive external premises, not implementation enforcement |\n| Memory, CPU and container capacity | Not established |\n\nRetain the distinction between event counts and storage bytes, and between subject-call counts and CPU complexity. No performance bound follows from the reported counts alone.\n\n## Continuing Duties / Labels / Nonclaims\n\nThe synthesis correctly retains:\n\n- old escrow, active guarantees, historical records and applicable duties after probation expiry;\n- creation-time guarantors’ continuing XP eligibility under the exact supplied policy;\n- maturity expiry of preventive windows without historical erasure;\n- active outgoing counts distinct from renewable `K_slot1` and D75;\n- evaluator-only identity/control labels outside actor-visible evidence;\n- additional escrow requirements despite no burn.\n\nIt does not claim endogenous adoption, verified uniqueness, profitable abuse, immunity, effective correction, general population feasibility, software replication or G1. These exclusions must survive normalization.\n\nNo protocol change, experiment, generator change or fallback work is authorized.\n\n## Minority Findings\n\nActual original-reviewer dissent is **not checkable** in this input. Preserve the merger’s wording that absence of dissent is verifier-reported, rather than asserting unanimous original agreement.\n\nThe following qualifications remain material:\n\n- unchecked-counter exposure;\n- unavailable resource guarantees;\n- potentially nonlinear work;\n- pre-command sampling;\n- retained collateral and duties;\n- unauthenticated Git/blob bindings;\n- missing original reviewer bodies at the merger stage;\n- missing original reviewer **and verifier bodies at this judge stage**.\n\nThe last item is this judge’s additional coverage qualification, not a newly discovered defect in the construction.\n\n## Actual Input Coverage\n\n**Directly inspected:**\n\n- the supplied merger body attributed to `execution.json#command-008`;\n- the judge task and recipe context;\n- retained reference strings for commands 005–008;\n- operating/review skills, which supply process guidance, not construction evidence.\n\n**Not independently inspected:**\n\n- reviewer bodies for commands 005 and 006;\n- verifier body for command 007;\n- `execution.json`, frozen manifest, contract or derivation;\n- implementation files, immutable Git/blob bindings, tests or execution results.\n\nNo project-source inspection, execution, mutation or authentication occurred.\n\n## One Remaining Gate\n\n**Coordinator frozen-input authentication and original-report fidelity acceptance.**\n\nCompare the original reviewers, verifier and merger against their retained records and declared immutable bindings. Preserve each original status, partial result, dissent and qualification separately.\n\nUntil then, this synthesis is suitable for a **degraded, conditional handoff**, not an authenticated consensus certificate or execution authorization.\n\n## Evidence References\n\n- Original payer/clock/cohort review — pointer only; body unavailable to this judge:  \n  ACTOR_EVIDENCE_REF: execution.json#command-005\n- Original accounting/counter/duty review — pointer only; body unavailable to this judge:  \n  ACTOR_EVIDENCE_REF: execution.json#command-006\n- Verifier — pointer and merger attribution only; body unavailable to this judge:  \n  ACTOR_EVIDENCE_REF: execution.json#command-007\n- Merger — supplied body directly reviewed:  \n  ACTOR_EVIDENCE_REF: execution.json#command-008\n\nThese references preserve attribution, not authenticated source-to-output equality.\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-009/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 8306,
+        "stderr": 0
+      }
+    },
+    {
+      "commandId": "command-010",
+      "stage": "normalizer",
+      "branchIndex": null,
+      "semanticAcceptance": "accepted",
+      "stdoutPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-010/attempt-001/stdout.log",
+      "stdout": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**degraded**\n\nThe judge body is directly available. The original reviewer, verifier and merger bodies are not independently available to this normalizer.\n\nPreserved upstream statuses:\n\n- **Merger:** degraded, as reported by the judge.\n- **Verifier:** complete, only as attributed by the merger and relayed by the judge.\n- **Judge:** degraded.\n\nNormalization does not upgrade any branch status or authenticate its evidence.\n\n## Assigned Scope\n\nNormalize the supplied judgment concerning `execution.json#command-008`, preserving evidence limitations, severity, qualifications, minority findings and source attribution.\n\nThis is not source verification, frozen-input authentication, execution authorization or an additional independent confirmation of the construction.\n\n## Verdict\n\n**Supported as a qualified synthesis; unknown as to original-report fidelity and source correctness within the exact finite contract.**\n\nThe judge reports that the merger appropriately preserves conditionality, financial exposure, continuing duties, finite-domain restrictions and resource limitations. It does not convert reported reviewer agreement into independently established consensus.\n\nThe judge found no material internal contradiction in the merger body it inspected. That finding is retained as the judge’s assessment, not independently repeated here.\n\n**Disposition:** retain a degraded, conditional handoff pending coordinator authentication and comparison with the original reports. Do not present the normalized result as an authenticated consensus certificate or execution authorization.\n\n## Independent Derivation / Source Predicates\n\nThe judge checked internal algebra from the merger’s stated premises:\n\n\\[\nM_0=2,\\qquad M_{r+1}=M_r+\\lfloor M_r/2\\rfloor,\\qquad E_R=M_R-2.\n\\]\n\nGiven two payer occurrences per later admission and the supplied allocation:\n\n\\[\nS_R=B+2B+B(1+k_x)+B\\sum_{v\\ne x}k_v\n=4B+2BE_R.\n\\]\n\nThe supplied XP expression gives:\n\n\\[\nX_R=6B+6BE_R=6B(1+E_R),\n\\]\n\nand, for \\(B\\ge0\\),\n\n\\[\n3S_R-X_R=6B\\ge0.\n\\]\n\nThe judge also found the reported recurrence bounds internally compatible with:\n\n\\[\n\\lfloor m/2\\rfloor\\le m/2,\\qquad\n\\lfloor m/2\\rfloor\\ge(m-1)/2.\n\\]\n\nThese are conditional algebraic checks, not implementation verification. Neither the judge nor this normalization independently source-checked payer eligibility, maturity, debit, receipt, allocation-site or chronology predicates. This normalization adds no new derivation.\n\n## Counterexamples or Confirmations\n\n### Judge-reported confirmations\n\n- Material qualifications remain visible rather than being replaced by an unconditional “supported” conclusion.\n- Unchecked increments are treated as implementation exposure, not demonstrated overflow within the stipulated safe domain.\n- “2 usable / 2 expected / minimum 2” remains upstream-reported, not independent consensus evidence.\n- Maturity XP without automatic withdrawal remains compatible with later explicitly chosen conversion.\n- Completed-checkpoint accounting remains distinct from intermediate states and pre-command samples.\n- Acceptance, consent, no intervention and resource availability remain conditions, not accomplishments.\n- Refund-on-expiry, automatic maturity withdrawal and conflation of renewable slots with active outgoing guarantees are rejected.\n- Static conditional support is not presented as empirical growth, attack profitability, effective defense or G1.\n\n### Unresolved limitations\n\nOriginal-report omissions, softened dissent and attribution errors cannot be excluded without the originals. Algebraic compatibility does not authenticate counter formulas or allocation sites.\n\n“No source-backed counterexample” remains an upstream report, not an independently established finding of the judge or normalizer. No mathematical refutation was established from the judge’s available input.\n\n## Exact Financial / Time / Counter Boundaries\n\n| Boundary | Preserved assessment |\n|---|---|\n| \\(S_R=4B+2BE_R\\) | Algebraically consistent with the supplied allocation |\n| \\(X_R=6B(1+E_R)\\le3S_R\\) | Algebraically consistent for nonnegative \\(B\\) |\n| Checkpoint `minted = supply = vouchVault = S_R` | Source-dependent; not independently verified |\n| \\(C_R=4+2E_R\\), \\(J_R=S_R+10+5E_R\\), and remaining counters | Retained as reported; allocation sites unavailable |\n| Equality at commitment/slot expiry | Predicate-dependent; not independently verified |\n| \\(q_R\\le3649\\) and resulting bound on \\(R\\) | Conditional on the reported Native horizon, scheduling and positive \\(L\\) |\n| Safe arithmetic and sufficient subjects/actions | Substantive external premises, not established implementation enforcement |\n| Memory, CPU and container capacity | Not established |\n\nEvent counts are not storage-byte bounds. Subject-call counts are not CPU-complexity bounds. No performance guarantee follows from the reported counts alone.\n\n## Continuing Duties / Labels / Nonclaims\n\nPreserve:\n\n- Old escrow, active guarantees, historical records and applicable duties after probation expiry.\n- Creation-time guarantors’ continuing XP eligibility under the exact supplied policy.\n- Expiry of maturity preventive windows without historical erasure.\n- Active outgoing guarantee counts as distinct from renewable `K_slot1` and D75.\n- Evaluator-only identity/control labels outside actor-visible evidence.\n- Additional escrow requirements despite no burn.\n\nThe result does **not** establish endogenous adoption, verified uniqueness, profitable abuse, immunity, effective correction, general population feasibility, software replication or G1.\n\nNo protocol change, experiment, generator change or fallback work is authorized.\n\n## Minority Findings\n\nActual original-reviewer dissent is **not checkable** from the supplied input. Absence of dissent remains verifier-reported through the merger and judge; it must not become a claim of independently established unanimity.\n\nMaterial qualifications retained:\n\n- Unchecked-counter exposure.\n- Unavailable resource guarantees.\n- Potentially nonlinear work.\n- Pre-command sampling.\n- Retained collateral and duties.\n- Unauthenticated Git/blob bindings.\n- Missing original reviewer bodies at the merger stage.\n- Missing original reviewer and verifier bodies at the judge stage.\n- At this normalization stage, only the judge body is directly available; the merger body is also available only through the judge’s account.\n\nThese are coverage limitations, not newly demonstrated defects in the construction.\n\n## Actual Input Coverage\n\n**Directly available to this normalizer:**\n\n- The supplied judge body attributed to `execution.json#command-009`.\n- The normalization instructions and recipe context.\n- Retained evidence-reference strings for commands 005–009.\n\n**Reported as directly inspected by the judge:**\n\n- The merger body attributed to `execution.json#command-008`.\n\n**Not independently inspected by this normalizer:**\n\n- Original reviewer bodies, verifier body or merger body.\n- `execution.json`, frozen manifest, contract or derivation.\n- Implementation files, immutable Git/blob bindings, tests or execution results.\n\nNo project-source inspection, execution, mutation or authentication occurred during normalization.\n\n## One Remaining Gate\n\n**Coordinator frozen-input authentication and original-report fidelity acceptance.**\n\nCompare the original reviewers, verifier, merger and judge against retained records and declared immutable bindings. Preserve every original status, partial result, dissent and qualification separately.\n\nUntil that gate is satisfied, retain this result only as a **degraded, conditional handoff**.\n\n## Evidence References\n\n- Original payer/clock/cohort reviewer — pointer only; body unavailable here:  \n  ACTOR_EVIDENCE_REF: execution.json#command-005\n- Original accounting/counter/duty reviewer — pointer only; body unavailable here:  \n  ACTOR_EVIDENCE_REF: execution.json#command-006\n- Verifier — pointer and indirect attribution only; body unavailable here:  \n  ACTOR_EVIDENCE_REF: execution.json#command-007\n- Merger — inspected by the judge; body not independently available here:  \n  ACTOR_EVIDENCE_REF: execution.json#command-008\n- Judge — supplied body directly normalized:  \n  ACTOR_EVIDENCE_REF: execution.json#command-009\n\nThese references preserve attribution, not authenticated source-to-output equality.\n",
+      "stderrPath": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/captures/command-010/attempt-001/stderr.log",
+      "stderr": "",
+      "claimedBytes": {
+        "stdout": 8374,
+        "stderr": 0
+      }
+    }
+  ],
+  "coordinator": {
+    "integrationBaseCommit": "40c33364b6544dc576404b065ee649465c9b2e2d",
+    "verdict": "Supported within the EXACT finite contract; no source-backed correction or counterexample in inspected scope. New static seam closed after independent source/algebra review plus coordinator original-body/input binding integration, NOT G1 or new data authority.",
+    "readCoverage": "Coordinator directly read/reconciled both complete originals005/006, verifier007, merger008, judge009 and normalizer010; preflight bodies retained/read. Original agreements can be reported from their actual bodies without granting missing coverage to tail stages. Coordinator separately authenticates declared frozen file/Git and capture bytes, not another complete reinspection of every source predicate.",
+    "stageCoverage": {
+      "reviewer005": "complete payer/clock/cohort lens; principal Model ranges1-780/981-1086, whole graph/execution/reference/bridge/contract/proof, not all Model/host config/history/tests; supported",
+      "reviewer006": "complete accounting/counter/duty lens; whole Model/graph/execution/hostconfig/reference/bridge/contract/proof; prefix interface reused/not historical proofs/fixture/tests; supported",
+      "verifier007": "complete; both original bodies usable2/expected2/min2, primary contract/proof/reference/graph/host/execution plus Model1-780/981-1086; not all original inspected source",
+      "merger008": "DEGRADED; direct verifier body only, original bodies/source not inspected",
+      "judge009": "DEGRADED; direct merger body only; internal algebra from supplied premises, no source/original/verifier reinspection",
+      "normalizer010": "DEGRADED; direct judge body only, no originals/verifier/merger/source; no new derivation",
+      "coordinator": "all10raw bodies integrated and bindings authenticated; original status/coverage/dissent remain unchanged, no proof by vote"
+    },
+    "supported": [
+      {
+        "id": "RF1",
+        "scope": "finite recursive cohort",
+        "finding": "Exactly one child per frozen pair: Mnext=M+floor(M/2), E=M-2,N=4+E=2+M. Newborns are already accepted before a later source block but never reused in their own birth batch; odd member idle/no banked issuance.",
+        "sources": [
+          "command-005",
+          "command-006",
+          "command-007"
+        ]
+      },
+      {
+        "id": "RF2",
+        "scope": "per-party source/funding/clocks",
+        "finding": "Original issuance gaps including x/newborn/idle-returning pass; ordinary maturity is not withdrawal, explicit conversion precedes own B debit. T/V equality frees retained slot, not bond or guarantee; pairs have disjoint payers/fresh live intact targets. S=4B+2BE=minted=supply=held at completed post-batch checkpoint, not every instant or same-hour Native daily row.",
+        "sources": [
+          "command-005",
+          "command-006",
+          "command-007"
+        ]
+      },
+      {
+        "id": "RF3",
+        "scope": "XP/accountability",
+        "finding": "X=6B(1+E)<=3S from original source role receipts, not admission XP/cash. a/b remain creation-time guarantors/XP/history/duties. Source-reported additional per-party identities XP_a=B(2+R), XP_b=B(3+2R) follow x/y pairing every round under exclusions; no useful/honest/Standing/money claim.",
+        "sources": [
+          "command-006",
+          "command-007"
+        ]
+      },
+      {
+        "id": "RF4",
+        "scope": "finite counters and host",
+        "finding": "C=4+2E; graph lineage rev4+E, guarantee rev8+3E/nextEdgeC; J=S+10+5E; chain<=B*max(R+1,2); activityVersionS; callsQ=3S+3(2+E); events2+3S+6(2+E). Ordinary credit creates receipts but no hidden Model event or ID. H<=3650,H>qR impliesqR<=3649 and round bound, plus subjects/actions/safe expiry/resources.",
+        "sources": [
+          "command-006",
+          "command-007"
+        ]
+      }
+    ],
+    "qualifications": [
+      "The safe-domain premise is substantive: Model #id/minted/activity/XP increments are not all locally guarded against overflow. No actual overflow is established within the conditioned family, and no new guard/API change is authorized.",
+      "Event count is NOT total storage bytes; real maps/indexes/strings/receipt arrays/temporary copies and native action/endpoint rows need capacity. Call count is NOT O(Q) CPU; scans/audits/XP reconstruction can be nonlinear.",
+      "Post-batch checkpoints differ from pre-command Native daily rows and from intermediate positive Emitter/Collector states.",
+      "Formal finite geometric envelopes are not actual infinite-host execution/optimum/fluid or empirical growth.",
+      "D3/F=M is only static supplied-cut/false-label interpretation; genuine labels give same access accounting, not unique-person proof or a real alias attack.",
+      "Outside duties/principal/preventive windows persist; x1+R/yR outgoing is not renewable K_slot1 or selected D75 active-outgoing1.",
+      "Accepted/consenting/no-intervention/resource conditions are supplied, not endogenous willingness, actual calibration, defeated defense/correction, recovery, profit or scientific acceptance.",
+      "Native wire also needs exact authority/subject/act-validity metadata; declaration does not leak evaluator truth into actors.",
+      "Tail008-010 remains DEGRADED; coordinator all-original integration is not tail source fidelity or another independent scientific world."
+    ],
+    "dissent": "Neither original records a counterexample/dissent; coordinator directly checked both actual originals. This is absence within their inspected scopes, not universal proof by agreement.",
+    "remaining": "Static recursive-finance seam CLOSED within frozen scope. Reconcile actual WP1/G1 readiness and identify ONE decision-relevant supported next claim or exact unavoidable blocker; do not repeat completed C1-C3/C5/METHOD/recursive reviews, resurrect stopped3072plan/parkedprior2 or add generator/metric/backend/scenario merely to continue. G1 still requires actual committed scientific method/registration and all-prior coverage.",
+    "newNativeOrScientificCalls": 0,
+    "newRegistrations": 0,
+    "G1": "NOT passed",
+    "softwareEvidence": "Existing778current+21original-compatible historical/37focused/DAG55x177 reused only on exact core/test/runtime/separate-study equality, NOT rerun",
+    "validation": "Frozen13working input equality verified before live reconciliation; capture/terminal/Git/runtime hashes and context/link/diff checks retained below, no source changes.",
+    "retentionManifest": {
+      "basis": "13working frozen inputs exact BEFORE live reconciliation; terminal/diagnostic/UTF8/capture hashes verified; code/test/runtime/study unchanged. No config/Model/reference/test/research/namespace call",
+      "rawStdoutBytes": 59765,
+      "rawStderrBytes": 0,
+      "stages": {
+        "command-001": {
+          "stdoutBytes": 19,
+          "stderrBytes": 0,
+          "stdoutSha256": "f6a120615211d598e4f666bdf03edbe2d3675b4cac4343e3b80c3492c38f9d67",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-002": {
+          "stdoutBytes": 19,
+          "stderrBytes": 0,
+          "stdoutSha256": "f6a120615211d598e4f666bdf03edbe2d3675b4cac4343e3b80c3492c38f9d67",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-003": {
+          "stdoutBytes": 19,
+          "stderrBytes": 0,
+          "stdoutSha256": "f6a120615211d598e4f666bdf03edbe2d3675b4cac4343e3b80c3492c38f9d67",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-004": {
+          "stdoutBytes": 19,
+          "stderrBytes": 0,
+          "stdoutSha256": "f6a120615211d598e4f666bdf03edbe2d3675b4cac4343e3b80c3492c38f9d67",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-005": {
+          "stdoutBytes": 10633,
+          "stderrBytes": 0,
+          "stdoutSha256": "531c6fecb89ab1169ce4e22abbc3570c7420eb016d16c207565c5e045b841d42",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-006": {
+          "stdoutBytes": 11445,
+          "stderrBytes": 0,
+          "stdoutSha256": "d12319b1ed5a2882108508509e07b3ef7f17149585a93d7de9e87b1829c071c0",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-007": {
+          "stdoutBytes": 10444,
+          "stderrBytes": 0,
+          "stdoutSha256": "8455639cdc0d5052720fb485453130c9b240484d481aa744b7502c349b3c6271",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-008": {
+          "stdoutBytes": 10487,
+          "stderrBytes": 0,
+          "stdoutSha256": "dff1c154f9590823df7b39cbc4d7480a16ee634d142fe2a021a8fad69e7ed749",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-009": {
+          "stdoutBytes": 8306,
+          "stderrBytes": 0,
+          "stdoutSha256": "0fdbf43de0381bf6ee67dc2f8c0a466477d9930a813e3da140ce9bcd26071b1b",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "command-010": {
+          "stdoutBytes": 8374,
+          "stderrBytes": 0,
+          "stdoutSha256": "257a574b41234e7b88c3a4fb8c26a056da062700b168c234d7c568eb33117153",
+          "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "checkpoint": "recursiveFinance-independentFiniteSupport/Mrecurrence-ownB-heldS-receiptXP-counterBounds/allOriginals-tailDEGRADED/uncheckedCounter+nonlinearWorkPremises/core39ea-test9c064-study69cd/noData-noG1",
+    "continuationWarranted": true
+  }
+}

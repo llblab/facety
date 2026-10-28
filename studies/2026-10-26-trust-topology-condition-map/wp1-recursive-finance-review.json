@@ -82,11 +82,25 @@
     "waitBasis": "Latest comparable maintained2lens/10stage method pipeline completed in379seconds, earlier finite C5 reviews about285seconds. This narrower new-proof review is expected in that range; after bookkeeping allow300seconds, with earlier automatic terminal delivery. No busy polling or coordinator shadow proof."
   },
   "handoff": {
-    "status": "running readonly NEW-result review; preflights/findings pending, no new acceptance or data",
+    "status": "terminal independent finite-contract support; all original bodies integrated, no scientific/software/G1 acceptance",
     "newNativeOrScientificCalls": 0,
     "newRegistrations": 0,
     "G1": "NOT passed",
     "sourceTestEvidence": "Exact existing778+21/37/DAG55x177 core/test/runtime/separate-study evidence reused; not rerun",
-    "continuationWarranted": true
+    "continuationWarranted": true,
+    "results": {
+      "markdown": "wp1-recursive-finance-review-results.md",
+      "json": "wp1-recursive-finance-review-results.json"
+    },
+    "terminal": {
+      "batch": "51e3dd7c-4047-4e81-a429-661c60def063",
+      "at": "2026-10-28T01:54:14.469Z",
+      "instance": "76de4890-0555-485d-b278-6965e1b45903",
+      "status": "done",
+      "activeSubagents": 0,
+      "acceptedCommands": 10,
+      "tail": "008/009/010 remain DEGRADED; prior-stage-body-only actual input"
+    },
+    "next": "ONE WP1 readiness/convergence assessment: decision-linked supported claim or first genuine blocker/stop. No repeated completed reviews, stopped sensitivity or automatic backend/world/scenario."
   }
 }
