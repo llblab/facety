@@ -86,10 +86,24 @@
     "waitBasis": "Comparable maintained2lens/10stage reviews took about285seconds; after launch bookkeeping allow240seconds, with earlier automatic root completion delivery. No busy-polling, duplicate launch or coordinator shadow review."
   },
   "handoff": {
-    "status": "running readonly METHOD review; preflights/findings pending, no new acceptance/data or G1",
+    "status": "terminal REFINE; all original raw stages integrated, no software/registration/research admission",
     "newNativeOrScientificCalls": 0,
     "G1": "NOT passed",
     "sourceTestEvidence": "Existing778+21/37/DAG55x177 reused only on exact core/test/runtime/separate-study equality; no new tests",
-    "continuationWarranted": true
+    "continuationWarranted": true,
+    "results": {
+      "markdown": "wp1-continuation-method-review-results.md",
+      "json": "wp1-continuation-method-review-results.json"
+    },
+    "terminal": {
+      "batch": "ceeddf67-0ee4-4fb0-9b76-9e8e8d963689",
+      "at": "2026-10-28T01:24:27.013Z",
+      "instance": "eb9f9fb4-115f-4cb0-9c61-f1b3191abf55",
+      "status": "done",
+      "activeSubagents": 0,
+      "acceptedCommands": 10,
+      "tail": "008/009/010 remain DEGRADED, prior-stage-body only"
+    },
+    "next": "One static decision-linked WP1 proposition/outcome/master applicability/closed-evidence disposition; no code/data/extra review/engine. Stop this proposal if no useful uncertainty remains."
   }
 }
