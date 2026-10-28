@@ -61,7 +61,7 @@ Use the following labels:
 
 ## From identity work to a maintained network
 
-A participant makes a signed Self-ID about fresh presence. The act creates one restricted FACY entitlement, not immediately liquid money or verified personhood. At the end of its 24-hour contest period, an uncancelled act earns the subject and its eligible guarantors 1 XP each, even if its value remains unused; the original free guarantor veto ends then (D42). The matured value remains the subject's own non-vetoable emission right, not an automatic Collector payment. Its holder separately chooses withdrawal or invitation use, subject to own-emission provenance and the independent-guarantee/path conditions (D42 clarification, 2026-10-24; §17.3). The invitation then has its own 24-hour freeze. D84 now intends invitation opening of a mutual-guarantee channel, but admission, acceptance/activation and the newcomer's own identity work must have explicit transitions; a payment or unaccepted offer alone must not silently activate responsibility.
+A participant makes a signed Self-ID about fresh presence. The act creates one restricted FACY entitlement, not immediately liquid money or verified personhood. At the end of its 24-hour contest period, an uncancelled act earns the subject and its eligible guarantors 1 XP each, even if its value remains unused; the original free guarantor veto ends then (D42). The matured value remains the subject's own non-vetoable emission right, not an automatic Collector payment. Its holder separately chooses withdrawal or invitation use, subject to own-emission provenance and the independent-guarantee/path conditions (D42 clarification, 2026-10-24; §17.3). The invitation then has its own 24-hour freeze. D92 selects accepted inviter-paid2FACY invitation as the special first mutual link, with no newborn payment/debt. Admission/acceptance/activation and the newcomer's own identity work retain distinct explicit transitions; an unaccepted offer alone does not create mutual responsibility.
 
 A guarantee joins compensation to responsibility: qualifying identity work can earn its guarantor XP, while the guarantor can inspect and prevent specific suspect acts. A genuine mistake need not destroy the relationship. Either party can end the guarantee under its separate fee/XP rules, but ending it does not erase responsibility for historical events under D34. Whether participants willingly maintain these relations, rather than avoid risk or conceal problems, is a hypothesis about human choices, not a result of credit arithmetic.
 
@@ -81,12 +81,12 @@ The final trust boundary is human collective judgment. Equal votes limit individ
 
 | Event | Human and economic rule |
 | --- | --- |
-| Self-ID | D84: at least1mutual guarantor with mutual-path reachability to an admissible Council member. Signed presence act creates1FACY entitlement; ordinary XP at24h, not withdrawal (D42); no-Council startup explicit. |
+| Self-ID | At least1mutual guarantor; outside initial D91 bootstrap also Council reachability. Signed act creates1FACY entitlement, ordinary XP at24h (D42); no automatic withdrawal. |
 | First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel it for free during this window. A cancelled act earns no ordinary XP. |
 | From 24 hours | The uncancelled act earns the subject and each eligible guarantor 1 XP even if unused. The original free veto ends. Invitation use also retains that credit and creates no second XP reward. The matured own right stays in place until its holder chooses withdrawal or invitation use; no automatic Collector movement. |
-| Invitation | Own1FACY burn currently stated;2is only a candidate. Creator needs at leastD qualifying guarantors AND D internally vertex-disjoint mutual paths to an admissible Council member (D84).24h freeze retained; invite-channel acceptance/activation and funding exception unbound, no cluster quota. |
+| Invitation | D92 inviter burns2own FACY, newcomer pays0/no debt; acceptance establishes special mutual link.≥Dmutual guarantors; outside initial D91 startup also D internally vertex-disjoint Council paths.24h freeze/no cluster quota retained. |
 | Liability | A proven false identity voids its whole Self-ID chain. Its inviter and the guarantors liable at the relevant historical events owe the defined per-act sanction; under D34, later link termination does not erase past responsibility. Timely cancellation can prevent the defined act/invitation liability; exit limits future exposure, not past responsibility. Exact event/duty, overlap and recovery contracts remain OPEN. |
-| Guarantee | D83: established mutual identification link burns own1FACY per side,2total; one-sided offers give no guarantee XP/liability. D85 leaves free end versus1any-origin FACY burn unselected; D86 paid re-establishment needs current-K room. |
+| Guarantee / valence | D93 creates a one-sided valence for immediate1own-FACY burn, even unanswered; only valid opposite valences establish ordinary mutual XP/liability. D94 own withdrawal leaves opposite open; recreate own for NEW1burn/current K, not a fresh opposite charge. |
 | Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
 | XP penalty | A liable loss can halve effective XP; monetary penalties can create collectible debt. |
 | Council | D33 selects a difficulty-based target `1, 11, 101, 1001, 10001, 100001`, capped by active verified/eligible participants; target 1 is no formal Council. Each formal consul has one vote. The old fixed-101 design is preserved below as superseded context. |
@@ -380,9 +380,11 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Guarantor** — A subject that explicitly accepts responsibility for another subject's identity under an established guarantee relation.
 
-**Guarantee relation** — An established mutual bilateral responsibility relationship under D81/D82, not an unanswered unilateral vote/offer. Both parties authorize establishment; canonical directional records and atomic activation remain execution contracts. The earlier directed-edge/independently authorized reverse-edge representation is retained as history in §19.1, not permission to earn guarantor XP without the established mutual relationship.
+**Valence** — A paid, one-sided request to guarantee a particular account (D93): creation immediately burns1own-issued eligible FACY. It can remain open without an answer and is not mutual responsibility or guarantor XP.
 
-**Invitation** — Own-emission-funded entry authorization subject to D guarantor AND independent mutual-path/Council conditions. D84 retains the stated1FACY expenditure (2is a candidate) and intends opening a mutual-guarantee channel; exact acceptance/activation and funding relative to ordinary D83 establishment need a contract. Pending invitation, lineage and active mutual responsibility are not interchangeable records.
+**Guarantee relation** — Established mutual responsibility from two valid opposite valences, or D92's accepted special invitation. Ordinary matching/current-K checks and canonical signed records are required, not raw legacy reciprocal graph edges. D94 withdrawal removes only one's valence and preserves the opposite; history survives. The earlier directed-only model is dated history, not the current XP/liability rule.
+
+**Invitation** — D92 special admission paid by2eligible own-issued FACY from the inviter, with no newcomer payment/debt. Acceptance establishes a first mutual inviter–newcomer link with distinct inviter provenance/responsibility. Initial D91 bootstrap requires≥Dmutual guarantors; outside startup also D independent mutual/Council paths. Pending invitation, lineage and established mutuality remain distinct canonical records.
 
 **Active subject** — A distinct subject with a qualifying Self-ID during the previous 28 days. Counting a subject once does not establish a unique human. The exact treatment of disputed or cancelled acts is OPEN.
 
@@ -551,7 +553,7 @@ The runtime or an authorized index should support efficient lookup of other clai
 
 ### 17.1 Identity claim, not a tradable NFT
 
-**D84 — [SELECTED eligibility distinction],2026-10-29.** A new rewarded Self-ID needs at least ONE established mutual guarantor with a path of mutual-guarantee links to any admissible Council member. D guarantors AND independent paths are instead required for invitations (§18.2). Prior admission is not a permanent support exemption; unilateral offers do not qualify. Council/active-state snapshots, bounded verification, no-formal-Council startup and same-time changes need contracts. This conditions NEW acts, not retroactive erasure of identity/XP/sources; D77 and evidence/24h rules remain.
+**D84 — [SELECTED eligibility distinction],2026-10-29, with D91 bootstrap exception.** A new rewarded Self-ID needs at least ONE established mutual guarantor. Outside D91's INITIAL bootstrap, that guarantor must have a mutual-guarantee path to an admissible Council member. D guarantors AND independent paths are instead required for invitations (§18.2). Prior admission is not a permanent support exemption; unilateral offers do not qualify. D91 selects the initial no-Council path waiver (§46.14); exact phase/count snapshots, first100 activation, bounded verification and same-time changes still need contracts. This conditions NEW acts, not retroactive erasure of identity/XP/sources; D77 and evidence/24h rules remain.
 
 **[DIRECTION]** Each Self-ID is a unique, individually addressable, non-transferable object with immutable evidence fields and a controlled state for its emission right. Calling it an *NFT-like Self-ID* describes uniqueness and one-time disposition. It does not imply that it must use an NFT marketplace or `pallet_nfts`.
 
@@ -594,16 +596,16 @@ Valid guarantor cancellation:
     burn its 1 FACY from the Emitter vault
     Self-ID.emission = Cancelled
 
-Invite creation after 24 hours:
-    burn its 1 FACY from the Emitter vault
-    Self-ID.emission = UsedForInvitation
+D92 invite creation from 2 distinct eligible own rights after 24 hours:
+    burn both backing units (2 FACY total), not a mint
+    mark each source Self-ID.emission = UsedForInvitation
 
 Collector conversion after 24 hours:
     transfer its 1 FACY from the Emitter vault to Collector
     Self-ID.emission = Converted
 ```
 
-**D83 — [SELECTED],2026-10-29.** Ordinary successful mutual-guarantee establishment burns1eligible self-issued FACY from EACH party,2irreversibly total (§19.2), not a refundable bond or mint. Existing own-source maturity/eligibility remains; unmatched-offer custody/payment timing and atomic matching still need a contract. D84's invitation-opening route is separately bound.
+**D93 clarifies D83,2026-10-29:** successful creation of each one-sided valence IMMEDIATELY burns1eligible self-issued FACY, even if never answered (§19.2). A fresh ordinary pair accounts for two paid valences/2FACY, not an atomic fresh2burn at every activation or a refundable bond. D94 can restore mutuality with a retained opposite valence without charging it again. D92 separately burns2own FACY from the inviter, none from the newcomer. Existing maturity/provenance and atomic failure handling remain.
 
 ### 17.3 The one-day schedule
 
@@ -696,9 +698,9 @@ The system MUST record a terminal emission disposition exactly once.
 The creator MUST:
 
 1. Have a valid Facety subject with the right to create invitations.
-2. Satisfy **both** the dynamic independent-guarantee threshold and the separate XP-centered-path threshold in §18.2, under declared verification, anchor and graph contracts.
-3. Control **one unspent Self-ID emission earned by that subject**, aged at least 24 hours.
-4. Burn the **1 FACY** corresponding to that emission as part of creating the invitation.
+2. Have at leastDqualifying established mutual guarantors. Outside initial D91 bootstrap, ALSO satisfy the independent mutual-path/Council threshold (§18.2); verification/snapshots remain explicit.
+3. Control **two distinct unspent Self-ID emissions earned by that subject**, each aged at least24hours (D92).
+4. Burn their **2 FACY** irreversibly when creating the invitation; the invited newcomer pays nothing and receives no invitation debt (D92).
 5. Record an invitation that can be traced to the creator and its authorization.
 
 A FACY unit bought, gifted, received from a transfer, or received from another subject's Self-ID does **not** provide invitation eligibility. A unit already converted to normal circulating FACY on the Collector does not regain Self-ID provenance through a market purchase.
@@ -713,10 +715,11 @@ The restriction applies to the **origin of the emission right**, not merely the 
 D_target = floor(log10(max(1, N_verified))) + 1
 D = the applicable adopted difficulty under the declared transition policy
 qualifying_independent_guarantees(creator) >= D
-qualifying_mutual_internally_vertex_disjoint_paths(creator, Council_anchor) >= D
+if outside_initial_D91_bootstrap:
+    qualifying_mutual_internally_vertex_disjoint_paths(creator, Council_anchor) >= D
 ```
 
-**Both tests apply to the invitation creator, not the recipient.** Neither test substitutes for the other. Each path is simple and distinct. Counted paths toward a single center may share the creator and final center, but no intermediary. Edge-disjoint routes through the same intermediary do not supply separate paths. D84 (2026-10-29) now selects established mutual-guarantee paths to any admissible Council member, not all members or an arbitrary highest-XP/healthy seed. Canonical mutual records, independent-support qualification, Council snapshots, mixed-terminal/self/zero-hop and small-network startup remain contracts (§46.14–§46.15). D61 remains a research reference, not a default migration, capacity quota or Standing-to-XP conversion.
+**The invitation tests apply to the creator, not the recipient.** D91 waives Council-path checks ONLY during initial bootstrap before the first100active participants; at leastDmutual guarantors remain required. Outside that phase both tests apply, neither substituting for the other. Each path is simple and distinct. Counted paths toward a single center may share the creator and final center, but no intermediary. Edge-disjoint routes through the same intermediary do not supply separate paths. D84 (2026-10-29) now selects established mutual-guarantee paths to any admissible Council member, not all members or an arbitrary highest-XP/healthy seed. Canonical mutual records, independent-support qualification, Council snapshots, mixed-terminal/self/zero-hop and small-network startup remain contracts (§46.14–§46.15). D61 remains a research reference, not a default migration, capacity quota or Standing-to-XP conversion.
 
 | Active verified participants | Direct difficulty target / minimum qualifying guarantees and paths |
 | ---: | ---: |
@@ -739,15 +742,19 @@ At zero the numeric target is also one; the formula creates neither a founder no
 
 ### 18.3 Economic effect
 
-**D84 invitation-channel clarification,2026-10-29.** The owner describes the one-sided invitation transaction as opening a mutual-guarantee channel with the invitee. The stated price remains1personally issued FACY;2to cover the invitee's side is an offered CANDIDATE, not adopted. Bind acceptance/channel activation, both endpoints' K, XP/liability start and this admission route's relation to D83's ordinary1+1burn. Do not infer responsibility from an unaccepted invite, pre-fund a newborn, or silently add another charge/subsidy/exemption. The old blanket invitation/guarantee separation is historical insofar as D84 now intends a channel; lineage and guarantee records still have distinct meanings.
+**D92 — [SELECTED special invitation route and2FACY price],2026-10-29.** The inviter burns2eligible self-issued FACY. Acceptance establishes the first mutual inviter–newcomer link; the newcomer pays nothing and gets no minus1debt/automatic first-emission collection. This is a SPECIAL invitation transaction, not two ordinary paid valences by two already admitted people. It counts like a mutual link for K and later per-act XP/responsibility; inviter provenance and the stronger invitation role remain distinct. Bind K checks, freeze/cancellation/acceptance ordering and canonical special records before code; an unaccepted invite is not an active mutual link.
 
-An invitation destroys one **existing** personally earned FACY unit under the minted-escrow reference design. It also consumes the underlying Self-ID emission right.
+The stronger inviter responsibility reflects the risk that an inviter itself created/registered a fake. This is a role-specific scrutiny/accountability rationale, not proof of shared control, automatic guilt, a new numeric sanction or release of other historically liable parties. Preserve D34/D55/D57 and D54 act rosters.
+
+**Dated history:** D84 retained1FACY and offered2as a candidate. D92 now selects2paid entirely by the inviter; the1+newcomer-debt alternative is not adopted. Old data is not repriced/relabelled.
+
+Under minted escrow, a D92 invitation destroys TWO existing personally earned backing units and consumes two distinct eligible Self-ID rights. No FACY is minted/transferred to fund the newcomer; old one-source/one-burn code remains legacy.
 
 ```text
-own Self-ID -> Emitter emission
-    -> at least 24 hours
-    -> qualifying independent-guarantee AND XP-centered-path checks
-    -> burn 1 personally earned FACY
+2 distinct own Self-IDs -> 2 Emitter rights
+    -> each at least 24 hours
+    -> D mutual guarantors; outside initial D91 bootstrap ALSO D independent Council paths
+    -> burn 2 personally earned FACY (D92)
     -> invitation recorded and frozen for 24 hours
     -> invitee admitted unless a guarantor of the creator cancelled it
 ```
@@ -780,7 +787,7 @@ An invitation must retain its creator, timestamp, intended scope, and later use.
 
 ### 19.1 Both parties must agree
 
-**[SELECTED]** A guarantee edge requires **two matching protocol transactions**, one from each participating subject. One person cannot create an active guarantee merely by naming another person.
+**[SELECTED, clarified D93/D94]** Ordinary mutuality requires two valid opposite paid valences, one authorized by each subject. One-sided creation immediately burns its own1FACY but does not create mutual responsibility/XP. Recreating only one's withdrawn valence can match the still-open opposite without charging it again. D92 accepted invitation is a special mutually authorized admission route paid2entirely by the inviter, not two ordinary paid newborn valences.
 
 **Current D81/D82 meaning:** a proposal is not an established mutual guarantee, and no guarantor XP is earned from the other person's Self-ID without that mutual establishment (§17.5). Receiving or acknowledging an offer must not be silently treated as the completed XP-qualifying relationship. This preserves the two-party matching requirement without choosing canonical record layout, activation ordering or funding; two raw opposite graph edges alone are not proof of authorized establishment.
 
@@ -801,18 +808,20 @@ A guarantee makes a specific claim: A accepts the defined responsibility for B's
 
 **[SELECTED]** An eligible Self-ID emission can be used for a defined network-building guarantee operation after it reaches 24 hours of age. Such use is different from arbitrary FACY spending.
 
-**D83 — [SELECTED cost and responsibility],2026-10-29.** Ordinary mutual identification-guarantee establishment irreversibly BURNS1eligible self-issued FACY per party,2total. Purchased/gifted funding or a refundable B-bond does not substitute for own issuance. Existing source maturity applies; provenance/custody, matching/atomic burn and unmatched/failed offers need contracts. One-sided transactions are not the established double relationship: before establishment there is NO guarantee-derived XP or mutual guarantee responsibility. This does not waive authors' own acts or independent duties. Establishment itself awards no XP; D42/D54 govern later per-act credit and D34 retains historical duties after exit. Old B-bond findings are counterfactual, not this burn rule.
+**D93 — [SELECTED paid valences and matching],2026-10-29.** A valence is a signed one-sided request to guarantee a particular account. Successful creation IMMEDIATELY burns1eligible self-issued FACY as a protocol transaction charge, even if unanswered. The open valence is NOT a mutual link, XP entitlement or guarantee responsibility. Unmatched payment is not refunded; no implicit expiry is selected. Own-act/independent duties remain. Whether this charge is additional to or integrated with host/base fees is unselected; the FACY burn is not replaced by another asset.
+
+Two present valid opposite valences establish an ordinary mutual relationship, subject to current K/eligibility. A fresh pair accounts for two1FACY burns at their creation times, NOT a fresh deferred atomic2burn at each matching. Only the established double link supplies guarantor XP roles/mutual responsibility; D42/D54 per-act receipts, not payment/establishment itself, produce XP. Authorized paid valences are not raw reciprocal legacy edges or personhood proof. D92 is a separate inviter-paid special route.
 
 The implementation MUST distinguish:
 
-- **Proposal** — one party expresses intent; the counterparty has not matched it. Under D81/D82, an unreciprocated vote/offer is neither a counted mutual link nor a source of guarantor XP.
-- **Matched authorization** — both parties have agreed to the bilateral guarantee relationship; canonical records and each financial/XP/act-role transition still need their contract, not just a raw reciprocal-edge test.
-- **Active guarantee** — the protocol has applied the defined eligibility and economic transitions; an effective mutual relationship counts under §19.4 at both endpoints.
-- **Ended guarantee** — one side has validly broken the established relation; immediate counted-capacity release does not erase relevant historical responsibility.
+- **Open valence** — paid one-sided request, no mutual slot/guarantor XP/guarantee liability by itself.
+- **Ordinary mutual relationship** — valid opposite valences and admitted capacity/eligibility; one counterpart slot at both endpoints.
+- **Invitation mutual relationship** — D92 accepted invitation with special funding/provenance; no newborn payment/fabricated ordinary valence.
+- **Withdrawn valence / ended interval** — one's withdrawal ends ordinary mutuality but leaves the opposite valence open if not withdrawn (D94).
 
-**Dated supersession:** guarantee amount/disposition was OPEN before D83; now ordinary mutual establishment has a1+1own-issued burn. Unmatched-proposal payment timing remains unchosen; D84's invitation channel/optional2price is separately bound.
+Own-source/identity validation, duplicate requests, D77 phases, matching/current-K atomicity, rejected-transaction/host fee handling and invitation-specific withdrawal mapping need execution contracts. Do not partially activate/debit on rejection or silently activate an over-cap relationship when room later appears.
 
-**D73/D74 clarification,2026-10-27:** at most one new own-emission unit per24h is a funding-flow constraint, not a cap on accumulated live/history guarantees or a rule of one guarantee/day. Previously matured own rights can accumulate; D83 now selects ordinary establishment amount/disposition, while unmatched custody and exact execution remain OPEN. D74 selects a distinct Atmo-controlled guarantor-limit parameter K with default100 (§8.1). D81 clarifies the current counted resource as active mutual bilateral relationships, with a referendum-adjustable ceiling and no forced cuts of already effective links after a reduction; D75 valid-end capacity release and D34 history remain (§19.4). Neither that meaning nor a throughput bound follows from daily funding flow or old simulator K/V slots.
+**Dated supersession:** D83 chose fresh-pair own1+own1 cost; D93 resolves immediate per-valence burn and lasting unmatched state. Old unpaid directed proposals/refundable B-bonds remain legacy; no replay/default migration or new quota.
 
 ### 19.3 Unilateral link break
 
@@ -838,9 +847,9 @@ For participant g at time t, let M_g(t) be the set of distinct other SubjectIds 
 
 **A bounded current parameter, not a permanent100 or automatic growth law.** D74's initial/default ceiling is K=100 for all participants. Governance referendums may raise OR lower the common value. Examples100→150/200→300 illustrate possible decisions, not an automatic schedule, population trigger, predetermined maximum or proof that the network can support that scale. Many members reaching the current ceiling can motivate a referendum; it does not itself change K. Raising K creates capacity only, not automatic new links, XP, money, eligibility or authority. D74's exact electorate/weights/quorum/authorization/activation/timing contracts remain OPEN.
 
-**Lowering K must NOT force existing mutual links to break.** Already effective bilateral relationships are preserved, even when a participant's retained count exceeds the newly lowered value. Thus |M_g(t)|≤K(t) is the ordinary NEW-admission ceiling, not a universal retrospective invariant after a reduction. Normal new mutual-link activation must fit the applicable current ceiling at BOTH endpoints; neither an over-cap participant nor an older membership receives implicit permission to keep increasing its mutual count above that ceiling. The owner does not require automatic pruning, forced fees, retroactive invalidation or erasure of capital/XP/duties. **D86 — [SELECTED],2026-10-29.** Restoration needs actual current-K room at both endpoints from a sufficient K increase or other valid closures, not an over-cap swap/old-limit entitlement. A new establishing transaction again costs1self-issued FACY for its signer, as in D83; no automatic restoration or burned-source refund/reuse. Paired reauthorization, surviving unilateral records/offer freshness and payment ordering remain contracts, not a silently free opposite leg. Cutover/pending reservations remain explicit. New participants also use current K.
+**Lowering K must NOT force existing mutual links to break.** Already effective bilateral relationships are preserved, even when a participant's retained count exceeds the newly lowered value. Thus |M_g(t)|≤K(t) is the ordinary NEW-admission ceiling, not a universal retrospective invariant after a reduction. Normal new mutual-link activation must fit the applicable current ceiling at BOTH endpoints; neither an over-cap participant nor an older membership receives implicit permission to keep increasing its mutual count above that ceiling. The owner does not require automatic pruning, forced fees, retroactive invalidation or erasure of capital/XP/duties. **D86 — [SELECTED],2026-10-29.** Restoration needs actual current-K room at both endpoints from a sufficient K increase or other valid closures, not an over-cap swap/old-limit entitlement. **D94:** withdrawal removes ONLY one's own valence; the opposite stays open if its owner has not withdrawn it. Recreating one's valence burns a NEW1self-issued FACY immediately. If the opposite remains valid and current-K room exists, mutuality returns without another transaction/charge from that opposite party; otherwise the new valence stays unmatched. No refund/repeated charge of the retained valence, automatic restoration, backdated roster or automatic old-XP reinstatement; preserve D54 pending/separate D9 older credit. Canonical authorization/status, failed matches and special invitation mapping remain execution contracts. Cutover/pending reservations remain explicit. New participants also use current K.
 
-A valid end of an active mutual relationship releases its counted capacity immediately, without an extra K-specific holding period/cooldown, as retained from D75. The exact directed-record/counterparty/unilateral-remnant representation and funded atomic operation are not silently chosen. Capacity release is NOT release from D34 responsibility for earlier events. Historical intervals, personal-chain positions and act-time guarantor rosters must survive termination, reuse and parameter changes. Ending/reducing a slot count does not cancel old acts, clear debt/verdicts, refund funds or implement general D34 adjudication/collection.
+A valid end of an active mutual relationship releases its counted capacity immediately, without an extra K-specific holding period/cooldown, as retained from D75. D94 now selects ordinary withdrawal's surviving opposite valence; canonical records, invitation-specific mapping and atomic operation remain contracts. Capacity release is NOT release from D34 responsibility for earlier events. Historical intervals, personal-chain positions and act-time guarantor rosters must survive termination, reuse and parameter changes. Ending/reducing a slot count does not cancel old acts, clear debt/verdicts, refund funds or implement general D34 adjudication/collection.
 
 Counting or changing K itself mints no XP and selects no blanket XP deletion/retention rule. D54 pending entitlement, D42 ordinary24h maturity/free-veto expiry, separately recorded D9 older-credit behavior and D55 per-act roles remain distinct. D85 leaves free termination versus burning1FACY (not necessarily self-issued) as alternatives rather than the old fixed-fee assumption; payer/source/debt and pending/frozen/disputed states remain explicit. D81 alone selected K's counted resource; D84 now separately selects semantic mutual-guarantee paths to admissible Council members. Neither choice supplies a raw reciprocal-record projection, verified-N/bootstrap contract, new anchor powers, cluster quota or calibrated independence proxy.
 
@@ -1127,6 +1136,8 @@ The owner expects some such chains to be very rare; this is **[HYPOTHESIS / SCEN
 
 ## 26. Chekharda / Leapfrog
 
+**D91 selected startup exception,2026-10-29:** Chekharda is OFF during INITIAL bootstrap before the first100active participants (§46.14), while the1/Dmutual-guarantor thresholds, preventive vetoes and other duties remain. Later shrinkage below100does not automatically reactivate startup mode or close cases; transition/count/history contracts remain. The earlier D89 paragraph below is dated proposal history, now refined by D91 for initial startup.
+
 **D89 — [OWNER startup proposal/direction, not a completed activation contract],2026-10-29.** While no Council has formed (the owner gives fewer than100active participants), Chekharda may be disabled as a startup mode. This does not create a Council/path anchor, waive D84's Self-ID/invitation reachability gates, disable preventive Self-ID/invitation vetoes, erase liability/history or close existing cases. Bind canonical active-count/phase snapshots, enablement at the boundary, downward crossings/adoption, existing cases/D77 holds/pending rights and access to later correction before implementation. Do not substitute raw legacy counts, evaluator labels or a static `disputes.enabled` arm for that chronology. The D84 no-Council eligibility/startup contract remains OPEN; no runtime/default change or scientific conclusion is selected by this proposal.
 
 ### 26.1 Alternating positions
@@ -1370,10 +1381,10 @@ The design distinguishes actual token operations from ledger claims.
 | Operation | Effect on fungible FACY supply |
 | --- | --- |
 | Valid Self-ID under minted-escrow reference | Mint 1 FACY into controlled Emitter custody. |
-| Invite from eligible Emitter right | Burn its one backing FACY. |
+| D92 invitation | Burn2distinct eligible own-source backing FACY from inviter; newcomer pays0/no debt. |
 | Free eligible Self-ID cancellation before 24 h | Burn Emitter backing; no maturity XP (D42). |
 | Collector conversion | Transfer an existing FACY unit; do **not** mint a second unit. |
-| Mutual-guarantee establishment | D83: burn 1 own-issued FACY per party, 2 total; atomic custody OPEN (§19.2). |
+| D93 valence creation | Burn1own-issued FACY now, even unanswered; matching has no extra burn (§19.2). |
 | Established-link termination | D85: free OR burn 1 any-origin FACY, neither selected (§19.3). |
 | Monetary sanction | Burn only if the approved rule executes an actual burn; otherwise transfer or record debt. |
 | Treasury D buyback | Buy existing market FACY; burn the acquired quantity. |
@@ -1450,7 +1461,7 @@ The debt should follow the `SubjectId`, not a changeable account key. A person w
 
 **[OPEN]** Decide the seizure order among Collector FACY, unspent Emitter emissions, other eligible balances, commitments, and future rewards; debt ceilings; appeal effects; inherited liability; write-offs; and what happens if a debtor abandons participation. Distinguish a promised nominal fine from a recoverable amount.
 
-**[DIRECTION]** Proven serious violations can create actual deflation through burns of collectible FACY. This is separate from the 1 FACY invitation burn and from the Atmo buyback burn.
+**[DIRECTION]** Proven serious violations can create actual deflation through burns of collectible FACY. This is separate from D92's2FACY invitation burn, D93's1FACY valence charge and Atmo buyback burn.
 
 ## 31. The DEOS / Atmo capital model
 
@@ -1745,17 +1756,17 @@ There is no cancellation fee for the author or an authorized guarantor within th
 ### 36.4 Create an invitation
 
 ```text
-create_invitation(creator, source_self_id):
+create_invitation(creator, two_source_self_ids):
     require active and authorized creator
-    require declared verification, graph, XP-anchor and difficulty-transition contracts
+    require declared bootstrap/Council/verification/graph/difficulty and K-activation contracts
     D = applicable_network_difficulty(canonical_snapshot)
-    require qualifying_independent_guarantors(creator) >= D
-    require qualifying_mutual_internally_vertex_disjoint_paths(creator, Council_anchor) >= D
-    require source_self_id belongs to creator
-    require emitter right is unspent and not disputed
-    require emitter right age >= 24 hours
-    burn exactly ONE_FACY of eligible emitter backing
-    mark source emission UsedForInvitation
+    require qualifying_mutual_guarantors(creator) >= D
+    if outside_initial_D91_bootstrap:
+        require qualifying_mutual_internally_vertex_disjoint_paths(creator, Council_anchor) >= D
+    require exactly 2 distinct own source rights, unspent, eligible and not disputed
+    require each source right age >= 24 hours
+    burn exactly TWO_FACY of their existing backing (D92), no newcomer debit/debt
+    mark each source emission UsedForInvitation
     record accountable invitation, frozen for 24 hours
     commit all changes atomically
 
@@ -1824,14 +1835,14 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 17. A consumed or converted emission cannot be cancelled again through the original free Emitter-veto mechanism.
 18. An active dispute freezes its target's still-unspent emission against use or conversion.
 19. FACY bought or received from another subject does not create invitation eligibility.
-20. An invitation burns exactly 1 FACY backed by its creator's personally earned eligible Emitter emission.
+20. D92 invitation burns exactly2FACY backed by two distinct creator-earned eligible Emitter rights; no newcomer debit or invitation debt.
 21. Every actual burn reduces fungible FACY issuance by the amount actually burned under the selected asset model.
 22. The custody and entitlement ledger cannot create multiple claims against the same backing FACY.
 23. Debt and nominal penalties cannot be counted as actual token burns.
 
 ### Social graph and responsibility
 
-24. An established mutual identification guarantee requires both parties' matching authorization and D83 own1+own1 irreversible burn; a unilateral transaction is not that relationship.
+24. D93 ordinary mutuality requires valid opposite paid valences; each creation immediately burns1own-issued FACY even unanswered. D92 accepted invitation is a special inviter-paid2route, not two newborn-paid valences.
 25. Before mutual establishment, a unilateral vote/offer gives no guarantee-derived XP or mutual guarantee responsibility; this does not waive own-act/independent duties or choose raw reciprocal records.
 26. Link termination is distinct from free Self-ID cancellation; D85 free-versus-burning1any-origin FACY remains unselected, with valid-end capacity release/history preserved.
 27. An authorized guarantor can prevent liability for a specific suspect Self-ID by validly cancelling that act, without automatically negating the underlying guarantee.
@@ -2056,16 +2067,16 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 10. Guarantor authority snapshot versus current graph authority at the time of cancellation.
 11. Precedence of an authorized guarantor cancellation and an open Self-ID dispute.
 12. Freeze and appeal effects on age-based eligibility and finality.
-13. D83 selects ordinary mutual establishment's own1+own1 irreversible burn; canonical provenance/custody, unmatched-offer treatment and atomic execution remain.
+13. D93 selects immediate1own-FACY burn per created valence, even unanswered/no refund; source provenance, invalid/frozen/debt/D77/failure/matching/K atomic execution remain.
 14. Meaning of a terminal Emitter right when backing value was only temporarily reserved.
 
 ### C. Entry, guarantees, and graph
 
 15. Actual pre-guaranteed genesis membership, verification/activity, financing and activation; the numeric zero clamp and already-guaranteed starting route are selected, not open alternatives.
-16. Canonical mutual active/eligible/proposed state, source custody and pending/cutover ordering. D81/D83/D84/D86 select variable K100/no forced existing cuts, ordinary own1+own1 burn, Self-ID1mutual-guarantor/Council path versus invitation D/independent mutual paths, and paid current-capacity restoration. No-Council startup, invite-channel activation/funding, path/member snapshots/bounds/self cases and paired reauthorization still need contracts; no raw reciprocal projection, over-cap swaps, free restoration or lifetime quota is inferred.
+16. D91 resolves INITIAL<100path waiver/Chekharda-off and1/Dmutual support; D92 selects inviter2/newborn0accepted special mutual link; D93/D94 select immediate1valence burn, opposite persistence and paid1side restoration under current K. Remaining contracts: canonical signed ordinary/special records, source/failure/duplicate/D77/K ordering, invitation-specific withdrawal, first100phase/count/Council activation/pending operations, mature downturns and path/member snapshot/bounds/self cases. No raw legacy projection, over-cap swap, automatic restore or lifetime quota.
 17. How disputed or cancelled acts affect the rolling active-subject count.
 18. Invitation target binding, expiration, acceptance, replay protection, and any cancellation remedy.
-19. D83 ordinary price/source/burn settled:1self-issued eligible FACY per side,2total. Unmatched/provisional payment timing, canonical provenance, atomic activation and D84 invitation-channel funding remain unbound.
+19. D92–D94 settle invite2paid by inviter/newborn0, immediate1own-FACY valence burn, opposite persistence and NEW1side paid restoration. Canonical ordinary/special records, K/pending/failure/D77 and source chronology remain, not those price/state choices.
 20. D85 termination pricing is free versus burning1any-origin FACY (neither selected); bind payer/source/debt and execution, not the superseded fixed-fee premise.
 21. Connectedness policy, liability scope for upstream roots, recovery and alternative paths.
 
@@ -2421,13 +2432,13 @@ This owner-provided summary is interpreted with the exact phase rule, genesis li
 
 **D35 — [SELECTED / DIRECTION / OPEN], documented 2026-10-23.** Source: the owner's voice clarification of the three D33 blockers. This records the chosen direction without silently supplying a graph algorithm, reciprocal guarantee semantics or a simulator migration.
 
-**Current D84 eligibility,2026-10-29.** A new rewarded Self-ID needs ONE mutual guarantor with a mutual-guarantee path to an admissible Council member. Invitations require at least D qualifying guarantors AND D qualifying simple internally vertex-disjoint mutual paths to an admissible Council member; neither test replaces the other. D remains adopted difficulty. Any admissible Council member is an endpoint, not every member or necessarily the highest-XP account.
+**Current D84/D91 eligibility,2026-10-29.** Initial bootstrap before the FIRST100active participants requires1mutual guarantor for Self-ID/≥Dfor invitations, no Council paths/Chekharda. Outside that initial mode, Self-ID additionally needs the guarantor's Council reachability and invitations ALSO D simple internally vertex-disjoint mutual Council paths; neither post-startup test replaces the other. D remains adopted difficulty. Any admissible Council member is an endpoint, not every member or necessarily the highest-XP account.
 
 D36 remains: issuer/terminal endpoints may be shared, intermediaries may not. For a common Council terminal, §46.15 applies. Mixed terminals/terminal-intermediary conflicts, membership/status snapshots, path length/resource bounds, self/zero-hop and adoption remain contracts. The semantic graph is established mutual guarantees, not invitation lineage, raw reciprocal legacy edges, verified independence or cross-user capacity.
 
 **Dated D35 history,2026-10-23.** The former anchor concept was XP apex/core (“consuls or first place”), with exact anchor and direction OPEN. D84 now selects Council reachability through mutual links; it does not solve canonical authorization/eligibility. D35's two tests, pre-guaranteed genesis and no cluster quotas remain. Reachability/disjointness/XP is not personhood, honesty or usefulness; no native migration or WP-G restart.
 
-**Small-network activation remains OPEN.** D33 has no formal Council in its small-network/one-consul phase. D84 does not silently create one, authorize a lone sovereign, substitute evaluator seeds or waive its gate. D89 proposes disabling Chekharda below100active participants, but that supplies no Council endpoint and does NOT select a reachability-gate waiver or singleton anchor. Bind startup Council/anchor eligibility before applying D84 to D35's small pre-guaranteed genesis.
+**D91 — [SELECTED INITIAL bootstrap],2026-10-29.** Before the network first reaches100active participants, Self-ID requires1established mutual guarantor and invitations at leastDmutual guarantors, WITHOUT Council-path checks; Chekharda is disabled. This resolves the initial no-Council endpoint question, not a singleton anchor or waiver of own-source costs/evidence/K/24h rules. It is a starting impulse for rapid growth, not a perpetual `N<100` mode. A mature network later falling below100is explicitly a DIFFERENT unresolved situation: no automatic bootstrap reentry/dispute shutdown, legitimacy verdict, reset or history/debt erasure. Exact canonical count/phase snapshot, first100/Council/path activation/adoption and pending operations still need contracts. The owner's expectation that startup dispute disablement prevents domination is an OWNER HYPOTHESIS, not verified safety.
 
 **Pre-guaranteed genesis.** The network MUST support starting from an explicit genesis state containing a small initial participant set and its already established guarantees. The owner's example is roughly 7–12 initial participants who already guarantee one another and then begin operation. This is a supplied starting trust assumption, not ordinary funded admission and not proof of Sybil resistance. It replaces the need to manufacture the first guarantee through normal invitations from an empty graph. It does not select an exact population, a complete graph, free money/XP, permanently honest founders or immunity from later correction.
 
@@ -2782,6 +2793,16 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Square-root referendum-weight candidate recorded2026-10-29
 
 **D90 — [OWNER CANDIDATE, NOT SELECTED], §8.1.** Source: “рассмотреть силу голосу ... как квадратный корень из FACY * XP”. Whole-product `sqrt(FACY_committed × personal_XP)` is a working interpretation, not confirmed radical scope; distinguish `sqrt(FACY_committed) × personal_XP` before a model/method. D88 product is retained, not replaced/adopted. Shares/custody/lock/burn/non-reuse, personal-XP snapshots/quorum/denominator and governance choice remain OPEN. Arithmetic compression is not evidence of capture resistance, account-splitting gains, fair access or profitability; do not pool/transfer XP, run a new study or migrate defaults by implication.
+
+### Initial bootstrap, invitation funding and valence lifecycle recorded2026-10-29
+
+**D91 — [SELECTED initial startup; security claim OWNER HYPOTHESIS], §17.1/§18.2/§26/§46.14.** Source: voice `voice-k1awbot-200148.ogg`,2026-10-29 00:46:48Europe/Samara, response1. Before FIRST reaching100active participants, Self-ID needs1mutual guarantor and invitations≥Dmutual guarantors without Council paths; Chekharda off. Rapid mass is intent, no-domination unproved. Mature shrinkage below100is explicitly different/unresolved, not automatic reentry/shutdown/reset/legitimacy verdict. Count/phase/first100activation/pending contracts remain.
+
+**D92 — [SELECTED], §18.** Source: response2's final preference for2FACY. Inviter burns2own eligible FACY; newcomer pays nothing/no minus1debt. Acceptance creates a special first mutual inviter–newcomer link, counted like ordinary mutuality but with distinct/stronger inviter accountability/provenance; not two newcomer-paid transactions. The1+newcomer-debt alternative is not adopted. K/freeze/acceptance/record ordering and exact fault/remedies remain contracts, no instant unaccepted-invite liability/automatic guilt/new numeric sanction. Old1FACY data remains historical.
+
+**D93 — [SELECTED], §19.1–§19.2.** Source: response3. Create a valence/one-sided request and immediately burn1self-issued FACY, even if unanswered; lasting open valence gives no guarantee XP/responsibility. Two valid opposite valences establish ordinary mutuality under K/eligibility. Fresh pair total2is burned per transaction, not deferred/charged again per activation. No unmatched refund/implicit expiry, raw-edge proof, own-act immunity or host-fee choice. Canonical validation/failure/operation phases remain contracts.
+
+**D94 — [SELECTED], §19.3–§19.4.** Source: response4. Remove only one's own valence to break mutuality; the opposite remains open unless withdrawn. Recreate one's valence with a NEW1own-issued-FACY burn; if opposite valid/current K permits, mutuality returns without recharging that opposite, otherwise an open valence results. No refund/reuse, automatic old-XP/roster restoration or erasure of historical duties. D85 withdrawal-price alternatives remain unchosen; D34/D42/D54/D9 retained. No native/default/scientific migration.
 
 ### Earlier supersessions
 
