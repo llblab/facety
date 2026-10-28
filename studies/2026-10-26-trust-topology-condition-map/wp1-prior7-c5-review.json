@@ -49,11 +49,37 @@
     "merge_policy": "Require both complementary scopes; preserve original branch status and semantic-stage failures. Reviewer agreement is not scientific replication. If merger/judge lack original raw inputs, retain DEGRADED instead of inferring full fidelity from references. Fresh judge checks actual available report/dissent; coordinator integrates all retained raw bodies separately, never rewrites their coverage status.",
     "output_format": "ROLE-CONDITIONAL: For an actual preflight check (prompt starts Preflight check for stage), reply EXACTLY ACTOR_PREFLIGHT_OK and nothing else; do not inspect files. For substantive reviewers/verifier/merger/judge/normalizer, provide Markdown: Status(complete/degraded/insufficient_data), Assigned C5 Scope, Independent Derivation/Source Anchors, Confirmations or Counterexamples, Actual Violations versus Declared Limits, Continuing Outside Accountability, Finite Resource/Horizon Limits, Minority Findings, One Remaining Gate, Evidence References. Apply assigned scope only; no preflight token for substantive tasks."
   },
-  "launch": null,
+  "launch": {
+    "contractCommittedBeforeSpawn": "b69ad969bbcbd73ac70862abdcb0a0da531c8c99",
+    "target": "run:facety-wp1-prior7-c5-20261028",
+    "instance": "d175ff4d-25bf-4e68-b91c-87fbf120658c",
+    "launchKind": "spawn",
+    "launchState": "running",
+    "model": "inherited:openai/gpt-6.1-sol",
+    "thinking": "explicit:medium",
+    "recipe": "swarm/lens-review",
+    "observedLocations": {
+      "directory": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior7-c5-20261028",
+      "metadata": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior7-c5-20261028/run.json",
+      "trace": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior7-c5-20261028/trace.jsonl",
+      "stdout": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior7-c5-20261028/stdout.log",
+      "stderr": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior7-c5-20261028/stderr.log",
+      "basis": "Exact generation's mutable starting file locations only; result/execution/context_index/control/published_sessions missing at launch. No guessed captures or proof of preflight/substantive completion."
+    },
+    "preflightAndReview": "Pending; spawn running is neither model/tool readiness nor independent claim acceptance. Preserve actual semantic stages and tail coverage/degradation.",
+    "validation": {
+      "contextErrors": 0,
+      "existingWarnings": 29,
+      "contextLog": "/tmp/facety-wp1-c5-review-context.txt",
+      "sourceTestMethodInputs": "Unchanged against frozen request; existing778+21/37/DAG55x177 reused on exact equality, NOT fresh tests.",
+      "newNativeOrScientificCalls": 0
+    },
+    "waitBasis": "Latest comparable two-lens/ten-stage pipeline took285seconds. After launch bookkeeping allow an approximately240second async wait; automatic terminal delivery may arrive earlier. No short-loop polling or duplicate reviewer work."
+  },
   "handoff": {
-    "status": "Prelaunch contract/request only, to be committed before spawn; no independent findings.",
+    "status": "VERIFIED frozen task/request committed before actual maintained Recipe spawn; launch only, independent C5 evidence pending.",
     "canonical": "BACKLOG.md",
-    "next": "Launch exactly this public maintained Recipe request, retain actual run/generation/locations and pending truth; await automatic completion without routine polling. Integrate source-cited confirmations/corrections/dissent in a later bounded cohort; no duplicate review/Native fixture or scientific gate bypass.",
+    "next": "Await automatic root completion for the retained generation, then integrate actual source-cited C5 confirmations/corrections/dissent and all raw stage/coverage evidence in a bounded cohort. If overdue/blocked use owning actors diagnosis; no routine polling/relaunch, duplicate C1-C3 review, Native fixture or scientific gate bypass.",
     "continuationWarranted": true
   }
 }
