@@ -45,9 +45,36 @@
     "merge_policy": "Require both complementary scopes and original-body verifier/min2. Preserve failed/partial/semantic results. Merger/judge/normalizer with only prior-stage body remain DEGRADED; do not infer original-source fidelity from references. Coordinator integrates all retained originals separately without rewriting coverage or proof by vote.",
     "output_format": "ROLE-CONDITIONAL: If actual prompt starts Preflight check for stage, reply EXACTLY ACTOR_PREFLIGHT_OK and nothing else, no files. Substantive reviewer/verifier/merger/judge/normalizer: Markdown Status(complete/degraded/insufficient_data); Assigned Scope; Verdict(supported/corrected/refuted/unknown within frozen contract); Independent Mathematical Derivation; Counterexamples or Confirmations; New-versus-Total/Boundary/Resource/Nonclaim Qualifications; Minority Findings; Actual Input Coverage; One Remaining Gate; Evidence References. No preflight token for substantive tasks."
   },
-  "launch": null,
+  "launch": {
+    "contractCommittedBeforeSpawn": "534360566341d3ea37e590a17f3ab4d2bbd01bf2",
+    "target": "run:facety-wp1-prior2-distinctness-20261028",
+    "instance": "474c8322-a062-4e3b-87a0-519e6e907b73",
+    "launchKind": "spawn",
+    "launchState": "running",
+    "model": "inherited:openai/gpt-6.1-sol",
+    "thinking": "explicit:medium",
+    "recipe": "swarm/lens-review",
+    "pid": 3264425,
+    "observedLocations": {
+      "directory": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior2-distinctness-20261028",
+      "metadata": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior2-distinctness-20261028/run.json",
+      "trace": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior2-distinctness-20261028/trace.jsonl",
+      "stdout": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior2-distinctness-20261028/stdout.log",
+      "stderr": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-prior2-distinctness-20261028/stderr.log",
+      "basis": "Exact generation mutable starting locations; result/execution/context_index/control/published_sessions missing at launch. No guessed captures/readiness/primary body or completion evidence."
+    },
+    "preflightAndReview": "PENDING: running spawn is not model/tool readiness or independent mathematical acceptance. Preserve all semantic/preflight failures/partial/DEGRADED stages.",
+    "validation": {
+      "contextErrors": 0,
+      "existingReviewedWarnings": 29,
+      "contextLog": "/tmp/facety-wp1-prior2-review-context.txt",
+      "frozenInputs": "5proof/contract/audit/authority-source files plus core/test/runtime/separate-study exact before spawn; existing778+21/37/DAG55x177 reused NOT rerun or math proof",
+      "newNativeOrScientificCalls": 0
+    },
+    "waitBasis": "Maintained2lens/10stage review pipelines have taken roughly285-379seconds; after launch bookkeeping allow300seconds and earlier automatic root terminal delivery. Reassess actual remaining phase on wake, no busy polling or coordinator duplicate proof."
+  },
   "handoff": {
-    "status": "frozen prelaunch mathematical review request; not spawned/ready/accepted",
+    "status": "running read-only independent math review; preflight/findings/acceptance pending",
     "newNativeOrScientificCalls": 0,
     "newRegistrations": 0,
     "G1": "NOT passed",
