@@ -1,0 +1,83 @@
+{
+  "schema": "facety-wp1-conditional-static-review-launch/v1",
+  "date": "2026-10-28",
+  "classification": "DIAGNOSTIC read-only independent analytic/source review LAUNCH, not findings/data/G1",
+  "canonical": "BACKLOG.md",
+  "contract": {
+    "path": "studies/2026-10-26-trust-topology-condition-map/wp1-conditional-static-review.md",
+    "committedBeforeLaunch": "900d383",
+    "gitBlob": "7b767c3461921a55e8d9deb5d1ff177e9d858c8b",
+    "inputBase": "2e45060ec2f6f0628644085a1f364b00845f5035"
+  },
+  "unchangedInputs": {
+    "coreDigestMethod": "sha256-src-mjs-v1",
+    "coreDigest": "39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448",
+    "coreFiles": 55,
+    "srcTree": "9d3eb889ad256ceb72cf28abe979752b2e01cc70",
+    "testTree": "9c0640c84e7f11aa72a912d047320573972a7434",
+    "node": "v26.8.1",
+    "earnedBirthBlob": "272522aa38f148e20e1a0b680037d5812a1c7f95",
+    "incentivesBlob": "8e8cd86a8e40d5c7a3390beaec1f88cfe3cb20b4",
+    "studyAttributionBlob": "937ed2cea5804db9cb622a3706f4c35b60fc04c2",
+    "studyAttributionSha256": "69cd10b557879ca490feaad37787e50645a16833c8a3c3455e5126653104ac63",
+    "attributionFindingsBlob": "c2d823d96cb3257f217b161d879bf51f71dcc541",
+    "masterProgrammeBlob": "48bbc8352eafb9f9dee11535de5a988daed2d3bd",
+    "validationReuse": "Exact unchanged core/test/method/runtime equality to 2e45060; fresh778current+21original-compatible historical/37focused/DAG55x177 evidence reused, NOT rerun. Src digest does not include the study method: its distinct binding is mandatory."
+  },
+  "run": {
+    "target": "run:facety-wp1-conditional-static-20261028",
+    "instance": "e8b31c6b-7905-492e-9015-1448daa04aef",
+    "recipe": "swarm/lens-review",
+    "launchKind": "spawn",
+    "launchState": "running",
+    "model": "inherited:openai/gpt-6.1-sol",
+    "thinking": "explicit:medium",
+    "tools": "read",
+    "reviewers": 2,
+    "reviewerConcurrency": 2,
+    "minSuccessfulReviewers": 2,
+    "subagentTtlMs": 600000,
+    "lenses": [
+      "L1/C1+C4: independent earned-birth lower bound AND constructive source feasibility; exact remaining gate",
+      "L2/C2+C3+C4: actual ordinary same-party receipt cash/XP/work and passive attribution semantics/limits; exact remaining gate"
+    ],
+    "publicOutputFormat": "ROLE-CONDITIONAL FORMAT: If your actual task is a PRE-FLIGHT CHECK (the prompt starts 'Preflight check for stage'), reply EXACTLY ACTOR_PREFLIGHT_OK, with no Markdown, explanation, sections or file inspection. Otherwise, for substantive reviewer/verifier/merger/judge/normalizer tasks, provide Markdown sections: Status (complete/degraded/insufficient_data), Assigned Claim IDs, Independent Derivations/Source Anchors, Confirmations/Corrections, Declared Exclusions versus Real Violations, Minority Findings/Contradictions, Scientific/Owner Gates, One Smallest Next Gate, Evidence References. Apply only the scope actually assigned; do not return a preflight token for a substantive task.",
+    "preflight": "Maintained Recipe preflights before fanout; this receipt proves launch only. Role-conditional caller format avoids blindly imposing review sections on preflight, NOT an actors implementation fix/readiness claim. Actual stage semantics still pending; preserve any failure/DEGRADED status, do not retry a favorable verdict.",
+    "result": "pending, no independent confirmation/correction yet",
+    "observedLocations": {
+      "directory": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028",
+      "metadata": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/run.json",
+      "trace": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/trace.jsonl",
+      "stdout": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/stdout.log",
+      "stderr": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/stderr.log",
+      "basis": "Exact generation's mutable file-locations-only spawn receipt; context index/result/execution were missing at launch. No guessed captures/results or routine status/body polling."
+    },
+    "terminalProof": "Await automatic root completion; follow exact admitted result/primary/inventory/source references, retain raw stage bodies/status/completeness and judge input limits before acceptance. Diagnose any failure through owning actors surfaces, never duplicate/repair hidden runtime state."
+  },
+  "boundaries": {
+    "sourceTestMethodDefaultProtocolChanges": 0,
+    "nativeExperimentTestCalls": 0,
+    "newScientificWorldsRegistrations": 0,
+    "dataOrPersonalSources": 0,
+    "primaryDenominatorOrLifetimeChoice": false,
+    "reviewerEvidenceIsIndependentExperimentalSample": false,
+    "earlierDegradedReviewUnchanged": true
+  },
+  "validation": {
+    "contextLog": "/tmp/facety-wp1-conditional-review-context.txt",
+    "errors": 0,
+    "warnings": 29,
+    "diffCheck": true,
+    "meaning": "Context/input binding checks only; earlier software suites reused on exact equality, no fresh tests or review findings."
+  },
+  "handoff": {
+    "scope": "Existing WP1/G1 conditional earned-birth/receipt/attribution independent static prerequisite under BACKLOG",
+    "cohort": "Freeze new claim/evidence scopes, commit before maintained two-lens launch, retain real Run generation and pending-state proof",
+    "status": "VERIFIED preparation/launch only; complementary raw review evidence pending",
+    "planTransition": "existing next static-check cohort is active; G1/scientific/method/owner gates unchanged",
+    "next": "Consume actual terminal derivations/code findings/dissent, not another fixture/backend or old review replay; if still within expected execution await without polling, if overdue/blocked use owning actors diagnosis. Any confirmed issue earns a separate bounded remediation after this review-only cohort.",
+    "waitBasis": "Previous comparable ten-stage/two-lens review took roughly nine minutes. Allow evidence-sized async wait; root automatic completion may arrive earlier. No routine short-loop polling while reviewers own valid independent scopes.",
+    "checkpoint": "conditionalReview900d383/C1earnedMath-C2cash-C3passiveAttribution-C4method/e8b31c6b-running/core39ea-study69cd10-test9c064-same/context0x29/noDataNoG1",
+    "continuationWarranted": true
+  }
+}
