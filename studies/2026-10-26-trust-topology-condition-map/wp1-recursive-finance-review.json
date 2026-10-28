@@ -1,0 +1,65 @@
+{
+  "schema": "facety-wp1-recursive-finance-review/v1",
+  "date": "2026-10-28",
+  "classification": "DIAGNOSTIC independent static NEW-result review request, not registration/experiment/scientific acceptance",
+  "canonical": "BACKLOG.md",
+  "task": {
+    "inputBaseCommit": "c27f863fa88a66d3f9c2a4bc48dddd7765d403b1",
+    "contractCommitBeforeDerivation": "66915f43d59ed36a204afe1516e5133250937c94",
+    "frozenInputBlobs": {
+      "src/graph.mjs": "696705486990261b8625811f156a62c1c0893115",
+      "src/model.mjs": "876b962261ff7652fab95647eea0d98375667c5b",
+      "src/vouch-experiment-config.mjs": "b25d2ef666d7b4606f6213ccc5ca525ec9e8b72b",
+      "src/vouch-experiment.mjs": "3e888d237501fdbf31e7ceeeef384482ea3ec6e8",
+      "studies/2026-10-26-trust-topology-condition-map/native-reference-bridge.mjs": "de522c1baf36f2a5b215aef89edee6f5466a6aae",
+      "studies/2026-10-26-trust-topology-condition-map/programme.json": "48bbc8352eafb9f9dee11535de5a988daed2d3bd",
+      "studies/2026-10-26-trust-topology-condition-map/reference.mjs": "af6827fc8af471015f711c89cc187a5e1ab8886d",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-composition-fixture.json": "c5660b9cac96e2101de4fe0cf072d2726c54e55b",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-earned-birth.md": "272522aa38f148e20e1a0b680037d5812a1c7f95",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-prior7-c5-review-results.md": "67cf31e26f496868bb13ef206b17d6a23f809eac",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-prior7-internal-growth.md": "fd58d3347873ee24216fb512dd5e73930281c0cd",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance-contract.md": "358437b9aa1b32bd96e78d7211e33065be12eabf",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance.md": "3c0c3deb81472a884f964b2bba3e71dd8eae3e16"
+    },
+    "implementation": {
+      "policy": "sha256-src-mjs-v1",
+      "digest": "39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448",
+      "files": 55,
+      "srcTree": "9d3eb889ad256ceb72cf28abe979752b2e01cc70",
+      "testTree": "9c0640c84e7f11aa72a912d047320573972a7434",
+      "runtime": "v26.8.1",
+      "separateStudyMethod": "69cd10b557879ca490feaad37787e50645a16833c8a3c3455e5126653104ac63"
+    },
+    "owner": "Coordinator owns immutable task/launch/integration; read-only complementary actors own independent source/arithmetic findings",
+    "scope": "NEW finite recursive-finance proof only, no repeat of old accepted mathematics or stopped METHOD/sensitivity study",
+    "threshold": "2semantically usable complementary reviewers plus verifier with original raw reports; tail partial input remains DEGRADED",
+    "stop": "No mutable source/contract/proof, constructor/reference/test/simulation/namespace or shell execution; task mismatch stops, no hidden fixes/OPEN selection."
+  },
+  "recipe": "swarm/lens-review",
+  "request": {
+    "scope": "READ-ONLY NEW recursive-finance derivation source/algebra review in /home/llb/Repos/facety. FIRST read studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance-review.json task/bindings and exact wp1-recursive-finance-contract.md + wp1-recursive-finance.md pinned atbasec27f863 (proofblob3c0c3deb81472a884f964b2bba3e71dd8eae3e16). Apply ONLY your complementary lens. No shell, numerical trial, Model/config/reference/test/RNG/namespace/data or write. Static reasoning/arithmetic allowed. Reuse accepted earned prefix interface; do NOT repeat old C1-C3/C5 or the stopped stochastic METHOD study. Conditional proof assumes supplied acceptance/consent/no intervention, NOT verified people, willing real populations or defeated defense. Derive independently from actual source predicates; finding a missed gate refutes/narrows the proof, never authorizes new rules/API. Inputs frozen until terminal; coordinator may update only request/launch/backlog status metadata. No G1.",
+    "lenses": [
+      "RECURSIVE-PAYER / clocks / frozen-cohort induction. Independently reconstruct the claimed induction under EXACT contract positiveB/c2/K_slot1/fee0/accepted/maturity profile: earned q0=B+max(B,T,V), L=max(B,T,V), public admission-ordered disjoint pairs; odd unmatched idle/no sources; no newborn reuse inside birth batch. Verify each author's original24h issuance window incl x-lastprefix2B-1, y/newborn first issue at already-accepted hour, previous paired/idle-returning gap, explicit mature conversion before boundary debit, accepted XP recipients/debt/freeze exclusions. Check EVERY payer owns B before OWN debit (no pooling/refund/reuse), distinct fresh intact live targets/records, successful-use T and half-open V freeing one slot while retaining guarantees/principal, other pairs' funding unaffected, graph safe-domain assumptions. Prove or counterexample Mnext=M+floor(M/2), E=M-2,N=2+M and checkpoint cash/source statements, distinguishing post-batch checkpoints from Native pre-command daily rows. A slower attaining family is not fastest/fluid/empirical growth; test actual gates not omitted full CORE/court/human contracts. Do not redo prefix proof beyond checking its reused interface.",
+      "RECURSIVE-ACCOUNTING / finite counters / scope-duties. Independently derive per-party k participation funds/bonds and S=4B+2BE, held capital/no burn/zero other buckets; total ordinary XP6B(1+E)<=3S from exact snapshot-role receipts not admission XP. Derive participant vs total/admission counts, finite rational M envelope, C=4+2E, graph lineage revision4+E/guarantee8+3E/nextEdgeC, generated IDs J=S+10+5E, own-chain B*max(R+1,2), activity versionS, calls Q=3S+3(2+E) and event/storage formula. Inspect actual Model/Graph semantics incl any automatic events or ID allocations; require safe intermediate/XP/balance/time/counter/storage not just final labels. Check integer H<=3650/H>qR =>q0<=3649,R<=floor((3649-q0)/L), no infinite capped-host or O(Q) CPU inference. Check outside a,b source guarantor/veto/XP/duty retention, U cut/D3 and conditional F=M vs genuine-access meaning, active outgoing x1+R/yR is NOT renewable K1 or D75. No false/genuine/control truth leak or real attack/defeated defense/Standing/G1 claim. Give counterexamples or exact source-supported limits; no data/Model/reference execution."
+    ],
+    "thinking": "medium",
+    "tools": "read",
+    "subagent_ttl_ms": 600000,
+    "reviewer_concurrency": "2",
+    "min_successful_reviewers": 2,
+    "claim": "The NEW finite recursive-finance induction and exact per-payer/accounting/clock/cohort/counter limits are independently supported OR corrected/refuted under their frozen contract; no general/physical growth, profitable attack, full differential/software/scientific/G1 inference follows.",
+    "evidence_policy": "Independently derive from actual inspected source/reference predicates and arithmetic; cite methods/sections for every material conclusion. Record actual read source/body coverage vs references only; read-only inspection does not authenticate Git (coordinator binds separately). Original-report verifier must preserve both bodies/dissent; merger/judge/normalizer cannot claim source-to-tail fidelity without inputs.",
+    "risk_policy": "Preserve every source-backed counterexample, omitted gate, bad count/resource or duty/causal overclaim. Declared accepted/no-intervention/consent/human/CORE/court exclusions are not automatic new feature requirements. A safe-domain premise is not proof of resource availability. No rule/OPEN/default changes, generator change, stopped sensitivity/lifetime/C3/WP-G fallback, numerical samples or reviewer-count proof.",
+    "merge_policy": "Require both complementary scopes/min2; preserve semantic/preflight failures and partial results. Verifier/merger/judge input coverage stays exact; downstream prior-body-only stages remain DEGRADED without original-source/report fidelity. Coordinator integrates retained originals separately and does not rewrite statuses, dissent or claim scientific replication.",
+    "output_format": "ROLE-CONDITIONAL: If actual prompt starts Preflight check for stage, reply EXACTLY ACTOR_PREFLIGHT_OK and nothing else; no file inspection. For substantive reviewer/verifier/merger/judge/normalizer, Markdown: Status(complete/degraded/insufficient_data); Assigned Scope; Verdict(supported/corrected/refuted/unknown within exact finite contract); Independent Derivation/Source Predicates; Counterexamples or Confirmations; Exact Financial/Time/Counter Boundaries; Continuing Duties/Labels/Nonclaims; Minority Findings; Actual Input Coverage; One Remaining Gate; Evidence References. No preflight token for substantive tasks."
+  },
+  "launch": null,
+  "handoff": {
+    "status": "frozen prelaunch request, not spawned/ready/accepted",
+    "newNativeOrScientificCalls": 0,
+    "newRegistrations": 0,
+    "G1": "NOT passed",
+    "sourceTestEvidence": "Exact existing778+21/37/DAG55x177 core/test/runtime/separate-study evidence reused; not rerun",
+    "continuationWarranted": true
+  }
+}
