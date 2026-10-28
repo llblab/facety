@@ -1,0 +1,38 @@
+# Prior2 — independent own-earned finite-lift acceptance
+
+**2026-10-28 · DIAGNOSTIC static mathematical/source support, not executed funding, lifetime runtime enforcement, selected D75 migration, scientific confirmation or G1.** [Task](wp1-prior2-funded-review.json) committed0a0e28c BEFORE spawn; [contract](wp1-prior2-funded-realization-contract.md) committed4733467 BEFORE [NEW derivation](wp1-prior2-funded-realization.md) at7d61194. [Complete frozen request/execution/original evidence](wp1-prior2-funded-review-results.json) retains all10raw stages and byte/SHA manifests. BACKLOG alone owns work.
+
+## Finding — sufficient own funding, not a new runtime rule
+
+The NEW derivation is **supported within the exact conditional contract** by original chronology005, original accounting006 and source-reading original-body verifier007. No new in-scope counterexample/correction. The earlier exact unit theorem is a premise, not re-proved or treated as monetary feasibility evidence. Acceptance rests on checked arguments and actual source, not votes, test counts or tail consensus.
+
+- **Own payer and clocks:** accepted zero-stock seeds can issue without invented own-XP/min-guarantor/activity gates. Older newborns issue AFTER admission. At L=max(B,T,V), a returning parent's source gap(j−p)L−B+1>=1day; all within-block sources are1day apart. Explicit own maturity/conversion gives EACH next payerB before its OWN debit. Prior admission/conversion-before-issue/commit ordering handles shared timestamps; no same-stage/self funding or pooled funds.
+- **Capacity and admission:** commitment gaps>=T,V clear actual K_slot1 cooldown and half-open occupancy, not collateral/history. c distinct older accepted parents supply fresh live intact unused records before the child is admitted through canonical Model operations. The parent sets/birth order/logical use<=K_life remain unchanged, not newly enforced by Native. The unit bound applies only to that caller-restricted family, not unrestricted Native or selected D75.
+- **Capital accounting:** with C_j=cj,S_j=BC_j, every subject's own issued/converted/held=B*k_v(j), liquid/outstanding/debt0 at checkpoints. Globalminted=supply=vouchVault=cBj, other stocks/burn/fees/stakes0. Intermediate Emitter<=c,Collector<=cB (both0 ifn0). No-refund/no-slash/intactB admissions necessarily retain cBj principal; this is stock/source cost, NOT burn/net loss/profit/labor or a lifetime monetary cap. Slot release does not recycle capital.
+- **XP/roles:** seed source author-only versus newborn source author+c original guarantors gives X_j=B*A_j+(c+1)B(C_j−A_j), A_jseed-parent uses. Per-party XP=B*k_v+B*sum_child k_w<=B*K_life*(1+K_life); chain lengthBk_v. Maturity plus conversion is idempotent, commitment/admission gives no XP. D42 ordinary maturity/veto expiry is not general D34 historical adjudication/collection.
+- **Finite counters:** exact J_j=S_j+2C_j+j, E_j=s+3S_j+2C_j+2j, Q_j=3S_j+C_j+j, graph nodes/revisions/edges and separate n(B+1_{L>B}) direct-clock calls match the source. Safe intermediate numbers, arrays/maps/strings/temporary clones and actual storage/time remain prerequisites, not implemented universal guards or O(Q)CPU.
+- **Host limits:** optional Q-event vocabulary is supported, not a complete admitted config. Full model/work/private subject/validity/rate/seed/authority/handle fields remain unsupplied. Necessary resource-censor conditions include maxActions>=max(1,Q),maxSubjects>=s+n,H<=3650 and STRICTnL<H. Failure to fit this slow witness does not exclude faster schedules. Daily rows precede same-time commands, and includeState is terminal only; no full-transition differential is established.
+
+No executed funds/resource admission/complete host config/fastest schedule/finite-H maximum, human affordability/advantage, real-person growth, safety or G1 follows. Supplied bootstrap/consent/availability/no intervention/unpriced labor remain substantive controls.
+
+## Original coverage and degraded tail
+
+- **005 chronology:** actual contracted proof, Model issuance/maturity/vouch/admission/disposal predicates, fixture, relevant graph and COMPLETE independent reference inspected. General accounting/count/host scope expressly withheld; preserve that limit.
+- **006 accounting/XP/count/host:** actual Model1–334/427–746/918–end, COMPLETE graph/reference/host config/driver, fixture and contract/proof/request inspected. Old unit theorem remains supplied premise.
+- **007 verifier:** BOTH original bodies and relevant actual source/contract/proof/complete reference/graph/host/fixture inspected; independently reconciles combined conditional claim.
+- **008 merger:** DEGRADED; direct verifier body only, no independent derivation/source inspection. Technical support is attributed and does not itself meet original-source merge threshold.
+- **009 judge and010normalizer:** DEGRADED/report-level ONLY; each has prior-stage body, technical acceptance UNKNOWN to them. Neither authenticates original reports/source or establishes no dissent.
+
+Coordinator read all original bodies, reconciled findings/dissent and authenticated12frozen inputs plus actual captures before live reconciliation. Original005/006/verifier contain no new critical contradiction; tail's inability to establish that fact remains unchanged. Content equality is NOT signed provenance, actor-side Git authentication or automatic per-read proof. Coordinator integration does not upgrade any stage's historical coverage or scope.
+
+## Exact retained evidence
+
+Run `facety-wp1-prior2-funded-20261028`, instance `52defc59-48f2-46f8-8163-2028ed1accbc`, done/active0. Completion batch `bde9b647-b2bb-4893-82b6-6bd30ca944d5` at2026-10-28T07:01:39.173Z. All10stages exit0/semantically accepted,4exact `ACTOR_PREFLIGHT_OK` bodies. Stdout bytes001–010:19,19,19,19,10568,11102,9191,8216,6099,5790; **51042UTF8bytes**, stderr0. JSON retains all bodies/execution/frozen task/launch/20SHA records. Primary=`not_selected`; diagnostic command metadata/captures are NOT a selected primary output.
+
+Diagnostic20824bytes/SHA256 `fbc46538abae6b09b8b7b18f9ee80a5365affbb38d23ff7b255a2345bded9774` matched the captured exact-instance file. Proof blob `042d477ee537be6d00052806e82b19eae8363f28`, contract `bafa84fcc59e27606a58119739164ff90daedf4c`, all12prelaunch/base input blobs and task/request identities match unchanged working/source content. Source39ea0865/src9d3eb889/test9c0640c8/Nodev26.8.1/separate study69cd10b5 exact; existing778current+21isolated original-compatible historical/37focused/DAG55x177 reused, NOT rerun or mathematical evidence. Historical compatibility is not current-source assurance. Programme research.runs0; no Model/config/reference/test/RNG/solver/grid/namespace/data call, source/default/method change or new registration.
+
+## Disposition
+
+This NEW funded static seam is CLOSED; do not repeat its review or the earlier quota/C1–C3/C5/recursive/METHOD reviews. D80 does not admit lifetime software/default migration, scientific data or other parked/stopped work.
+
+The changed closure now permits ONE bounded prior2 acceptance/method-fit disposition: separate what existing supported Native observations can actually differentially test from externally scripted lifetime discipline, unsupported runtime enforcement or missing per-transition observation. Reuse the accepted results and stopped proposal; identify a decision-linked supported next slice OR an exact stop/gate, without manufacturing an engine/registration/data/extra review. BACKLOG alone owns that next decision. G1 remains NOT passed, not scientifically failed. Checkpoint `prior2IndependentFundedLift/ownB-serialChronology+retainedCapital+XP-counters-hostConditional/fullOriginals-tailDEGRADED-reportOnly/noExecution-noG1`.
