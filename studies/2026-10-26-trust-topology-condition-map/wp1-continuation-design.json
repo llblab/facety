@@ -1,0 +1,147 @@
+{
+  "schema": "facety-wp1-continuation-prespec/v1",
+  "classification": "DIAGNOSTIC pre-data design, NOT facety-hypothesis/v2 or a registration/result",
+  "declaredOn": "2026-10-28",
+  "status": "frozen design pending independent method review and software admission; no research runs authorized",
+  "canonical": "BACKLOG.md",
+  "question": "Conditional fixed-prefix continuation sensitivity to finite early-guarantor review work, not protocol safety, new mechanism, honest incentive superiority or G1",
+  "candidateHypothesisId": "wp1-fixed-prefix-work-sensitivity-v1",
+  "nativeEngine": "native-vouch-tape/v1",
+  "reference": "native-funded-composition-reference/v1",
+  "wirePlan": {
+    "baseSeed": "wp1-fixed-prefix-work-sensitivity-v1",
+    "includeState": false,
+    "successCriterion": "unbound",
+    "stepHours": 24,
+    "note": "Vouch wire has no stepHours field; its native daily endpoint loop supplies24h. This planning field MUST NOT be injected as an unknown vouch-config key.",
+    "targets": "a,b,x,y,z:1,...,z:50 in that construction order; all subject facts explicit with behaviorProfile=wp1-fixed-calendar and context genuine flag (a,b always genuine)",
+    "sourceHandles": "source:${owner}:${integerDay}; artifact:${owner}:${integerDay}, every offered source fresh",
+    "bondHandles": "bond:${owner}:${target}; admit lists its two corresponding handles in owner call order",
+    "opportunityHandles": "early:${sourceHandle}; unchanged across contexts/arms",
+    "stableEventOrder": "At a shared hour: older conversions in declared owner order; due commits/admit; pool once after y admission; for each owner in declared order do artifact THEN issue before next owner. Prefix founders a,b; second prefix b,x; continuation x,y. At+1h review x then y. No unstable sort, random order or actor/opportunity renaming.",
+    "namespace": "baseSeed is a fixed design salt only; actual reserved confirmation seeds come solely from the verified actual registration and public replicaSeed after software admission"
+  },
+  "profile": {
+    "fixture": "wp1-composition-fixture.json",
+    "fixtureBlob": "c5660b9cac96e2101de4fe0cf072d2726c54e55b",
+    "unchanged": "Complete existing policy/ablations/reference, accepted genesis, snapshot ordinary24h, zero guarantee fee, invitationLimit null; no cases/exit/refund/transfer/identity/key changes",
+    "genesis": ["a", "b"],
+    "c": 2,
+    "KSlot": 1,
+    "B": 3,
+    "TDays": 1,
+    "VDays": 7,
+    "openingProtocolCashXpSources": 0,
+    "parameterBasis": "Synthetic no-human-basis working point; not a calibrated/plausible-range estimate or selected D75/CORE rule"
+  },
+  "calendar": {
+    "horizonDays": 365,
+    "hoursPerDay": 24,
+    "tauXDays": 3,
+    "tauYDays": 10,
+    "intervalDays": 7,
+    "continuationTargets": 50,
+    "lastAdmissionDay": 360,
+    "prefix": "a,b each issue on days0,1,2/convert1,2,3; a,b commit to x/admit x atday3; b,x issue3,4,5/convert4,5,6; b,x commit to y/admit y atday10. No prefix reviews or pool. Fresh explicit synthetic artifacts, faceCount1/null-contentHash per issue.",
+    "continuation": "For j1..50 startday10+7*(j-1): x,y issue each on offsets0,1,2 and convert each at age1day; fresh x,y commits/admit z:j atday10+7*j. Stop source creation after block50. No adaptive retries/catch-up/refills/forced success.",
+    "review": "Create work pool immediately after successful y admission atday10, before continuation issue actions. For EVERY continuation source of x then y, schedule review-b atrecordedAt+1hour, x before y at shared hour. No review of prefix sources or z targets.",
+    "sharedTimeOrder": "Advance/mature, convert older sources, then commits x/y and admit target if due, then setup pool if first prefix endpoint, then register/issue next sources; review at+1hour. Atday3 admit x before its first source. Failed commands remain recorded without mutation/retry.",
+    "otherActivity": "No z:j sources or post-prefix a/b own sources. Only x/y continuation offers occur;365day horizon is not a full living-population/D76 behavior model.",
+    "expectedOfferedSources": 312,
+    "expectedOfferedCoreCommands": 1092,
+    "expectedOfferedReviewCommands": 300,
+    "expectedPoolCommands": 1,
+    "expectedTotalCommands": 1393,
+    "maxSubjectsPossible": 54,
+    "meaning": "Offered-calendar counts, NOT observed outcomes or a promise every withdraw/commit/admit succeeds"
+  },
+  "work": {
+    "unit": "Finite nonrefilling uncalibrated work allowance; not FACY, wages, real human effort or earned defense funding",
+    "reference": "paid-single-suspicion-veto-reference",
+    "actor": { "id": "review-b", "subject": "b" },
+    "costs": { "inspect": 1, "respond": 1 },
+    "arms": { "quiet": 0, "finite": 90 },
+    "parameterOverride": "Replace whole work.actors array; no array-index path or automatic source/native API change"
+  },
+  "signalLaw": {
+    "validSuspicionProbability": 0.1,
+    "invalidSuspicionProbability": 0.75,
+    "applyTo": "Complete existing self-id/invitation/guarantee x ordinary/guarantor rate vocabulary, same working rates; only self-id guarantor requests occur",
+    "basis": "NO HUMAN BASIS; declared synthetic conditional signal law, not observed detector quality/personhood proof",
+    "randomness": "sha256-xoshiro128starstar-v2 / act-observation-keyed-v1 / observer-act-hour-opportunity",
+    "unit": "One full paired arm/context evidence-realization vector per registered replica seed; not a new human population",
+    "dependence": "Same replica seed across arms/contexts; canonical generated act IDs can diverge after failed actions. No per-logical-act draw equality or cross-context independence asserted"
+  },
+  "contexts": [
+    { "id": "aliases-invalid", "newTargetsGenuine": false, "newAuthorsActsValid": false, "meaning": "All x,y,z:j insideU evaluator-assumed aliases; only x/y issue acts" },
+    { "id": "people-valid", "newTargetsGenuine": true, "newAuthorsActsValid": true, "meaning": "Genuine compliant access under false suspicion; count is access, not F" },
+    { "id": "people-invalid", "newTargetsGenuine": true, "newAuthorsActsValid": false, "meaning": "Long-lived coordinated genuine-person act violators, separate from false aliases; not a claim every accusation establishes guilt" }
+  ],
+  "evaluator": {
+    "cut": "a,b outsideU; all offered x,y,z:1..z:50 insideU, fixed before outcomes. No other membership or vouch target",
+    "aliasControl": "One supplied controller of assumed aliases; no authority leak into actors",
+    "genuineControl": "Distinct supplied genuine people/controllers in a coordinated U group; true personhood is not violation-free behavior",
+    "prefixD": 3,
+    "DProof": "Actual successful paid a->x,b->x,b->y before all review; later commits only internal x/y->z:j. Prefix failure stops design as invalid, never dropped/resampled/forced",
+    "numeratorProof": "Native admissions excludes genesis; all new admitted targets are inU. F=admissions only in aliases-invalid; other contexts use genuine-access/violating-group counts. R=count/3 only under the recorded closed cut/prefix",
+    "outsideActs": "a,b prefix sources valid in all contexts; x prefix and x/y continuation validity follow context. Person flags never drive the public policy"
+  },
+  "inference": {
+    "prospectiveKind": "association",
+    "statistic": { "metric": "vouch.admissions", "summary": "endpoint", "window": null, "subtract": null },
+    "contrast": { "quiet": 1, "finite": -1 },
+    "direction": "greater",
+    "marginCount": 3.5,
+    "equivalentIntegerEvent": "quiet endpoint count minus finite endpoint count >=4",
+    "probability": 0.5,
+    "claimRole": "presence",
+    "claimId": "finite-work-count-sensitivity",
+    "replicas": 256,
+    "alpha": 0.025,
+    "analysisPolicy": "family-contradiction/v1",
+    "family": "One claim x all3 contexts; support intersection-union and actual3-component contradiction correction. No context selected/dropped after results",
+    "estimand": "For EACH frozen context, P(paired count contrast>3.5)>0.5 under the synthetic evidence law, NOT mean effect/profit, safety or an optimized attack",
+    "marginBasis": "Four admissions is an explicit working effect scale, NOT an acceptable-loss threshold or X1/X2/Y2/eps",
+    "precision": { "absoluteFrequencyTolerance": 0.11, "familyErrorBudget": 0.025, "bound": "If all256 seed vectors complete and satisfy the sampling assumption, simultaneous over3 contexts: P(any |pHat-p|>0.11)<=6*exp(-2*256*0.11^2)<0.025. Report bound, exact intervals and unknowns, not empirical human confidence" },
+    "powerCase": { "assumedTrueHoldProbabilityEachContextAtLeast": 0.75, "certificateEmpiricalCut": 0.625, "bound": "Under p0<=0.5, tail at pHat>=0.625 <=exp(-8)<alpha; under p>=0.75, miss cut <=exp(-8). Actual exact-binomial power at least1-exp(-8), all3 support at least1-3exp(-8). Conditional planning bound, NOT a prediction of actual scenario outcomes" },
+    "unknowns": "Keep null/censor/denied evidence and original planned denominator; actual native unknowns count against support/contradiction direction. Any failed prefix/source mismatch or resource abort invalidates scientific completion; no favorable truncation/resample",
+    "secondary": ["full admission trajectory", "commitments/unused reservation evidence", "mint/burn/Collector/Emitter/bond stocks", "paid observed/denied/response/veto work", "XP receipts and current guarantee duty scope", "descriptive mean/quantiles, not another confirmatory mean test"]
+  },
+  "capture": {
+    "primary": "Actual registerHypothesis/verifyRegistration and confirmHypothesis with includeState:false, workers2, no implementation override; actual v2 only after accepted immutable software/method bindings",
+    "rawSecondary": "Prospectively declared exact replay of EVERY same registered config/seed after canonical primary, still includeState:false. Seal primary result before operator interpretation; save native actions/history/config/Source/RNG and value equality for every cell before releasing analysis. No hidden rerun/new sample",
+    "replayPlan": "Use public replicaSeed + normalized registered contexts/arms + withExperimentParameters in exact canonical planner order/seed semantics; software conformance before admission. Recompute runStatistic on actual raw run and compare exact canonical value/censor/seed. Never inject a custom scalar/State snapshot into analysis",
+    "independentReference": "Import-free CompositionReference per actual declared action/time and received Boolean/null tape; independently check accept/refuse, prefix actual D, daily money/XP/admissions/commitments/work/nulls and resource invariants. It does NOT independently certify RNG/human laws or personhood",
+    "coverageLimit": "includeState:false raw actions/history expose Native call outcomes/daily aggregates, not every per-owner wallet after each transition. Reference reconstructs expected per-owner state but this is NOT full directly observed Native-state differential. Method review must decide adequacy for count/prefix/master obligations; stop/narrow if inadequate, no automatic state/scalar bypass/backend.",
+    "provenance": "Bind complete factory/driver/reference-adapter/method file hashes separately from src-only digest and include immutable references in supported specification text/exploration.source. No new schema fields or lookalike registration",
+    "plannedPrimaryNativeRuns": 1536,
+    "plannedRawReplayNativeRuns": 1536,
+    "independentSampleUnits": 256,
+    "genuineInvalidControl": "Expected label invariance relative to aliases-invalid when act facts/policy/seed equal; retain as genuine-violation context, NOT additional independent populations. Mismatch is a leak/invariant failure, not a favorable alternative result"
+  },
+  "resources": {
+    "maxActionsPerRun": 2000,
+    "maxSubjectsPerRun": 64,
+    "workers": 2,
+    "wallSecondsTotal": 7200,
+    "compressedRawBytesTotal": 1073741824,
+    "basis": "Hard planning ceilings, not measured cost/performance promises; no optimization or extended budget after viewing outcomes",
+    "stop": "Stop all study processing on wrong Source/RNG/method/hash, prefix/proxy/reference/value mismatch, hidden retry/duplicate/unknown seed, missing raw capture, worker error, timeout/disk cap or censored incomplete scope. Preserve all artifacts and mark incomplete/invalid, no SAFE/G1 verdict or automatic rerun"
+  },
+  "selectionAndHeldOut": {
+    "discoveryOrSearch": "NONE; no policy/parameter/margin/rate search or alpha-spending refinement",
+    "exposure": "Earlier software/annual/receipt/raw fixtures and their labels remain exposed and excluded as confirmation. This exact365day/50target work/rate/context design has no observed outcomes. Design is informed by earlier algebra, not claimed blind discovery",
+    "heldOutProfiles": [
+      { "id": "reserved-slower", "B": 4, "TDays": 2, "VDays": 9, "KSlot": 1 },
+      { "id": "reserved-faster", "B": 2, "TDays": 1, "VDays": 5, "KSlot": 2 }
+    ],
+    "heldOutRule": "No outcomes here; points excluded from primary design/tuning and reserved for a separately fully bound/registered later profile check. Single-point association grants NO held-out robustness, frozen-boundary both-sides or G6 pass",
+    "kills": "Local method-integrity/resource aborts above only. Master all-plausible-rule X1/X2/Y2/eps kills are NOT evaluated/waived, no synthetic acceptable-harm threshold is invented. No network-effect alpha is implemented by this closed tape; mandatory master1.5 robustness remains a later unsatisfied gate",
+    "programGates": "G1 NOT passed; prior2 lifetime remains parked; no WP2 evidence-rule/rental/access frontier, WP3 adaptive search, D76 annual allocation or selected CORE/Standing/court/topology migration"
+  },
+  "softwareAdmission": {
+    "beforeRegistration": "Independent METHOD review of this new prospective statistical/capture design, including whether a fixed-point association is admissible before outstanding programme contracts; a subsidiary label is NOT a master-gate exemption. Not another C5 proof review. Only if accepted, narrowly implement study-local config factory/canonical-primary/raw-replay/reference audit driver WITHOUT changing source engines/scalars",
+    "allowedBeforeResearch": "After committed method contract, config constructor-only/structure/calendar/API admission checks with zero offered-action execution; driver/reader schema tests on explicit stubs and already exposed tiny software Native fixtures. No planned365day/nondegenerate-law research run or reserved namespace until real registration accepted",
+    "requiredBeforeData": "Retained factory/driver/source/test/method conformance, current full tests when behavior changes, exact native v2 registration committed/verified with actual hashes, then one planned attempt; no fake registrations or changed default effort/ownership policies"
+  }
+}
