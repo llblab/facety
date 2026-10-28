@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Integrated independent support for the NEW exact prior2 unit-lifetime maximum: triangular residual upper bound plus all-subset integral chronological attainment, no mathematical correction. Preserved upper-only lens/tail DEGRADED and49822raw UTF8bytes/all10stages/frozen bindings; funded/time realization and scientific G1 remain separate, no solver/Native/data/default change.
 - Derived the exact prior2 unit-lifetime maximum under the committed D80 contract: lastK newborns necessarily retain triangular quota K(K+1)/2; a finite integral chronological matching certificate attains the resulting bound. Historical inventory/newest-only inequalities remain valid but need not be sharp. Self-authored proof awaits independent scrutiny; no solver/Model/data/default change or G1.
 - Recorded owner D80 lifting the checking pause and explicitly reselecting WP1 prior2 lifetime-quota counterfactual, without changing D75/defaults/master gates or reopening unrelated parked work. Reused existing inventory audit and froze a pre-derivation distinct-preexisting-voucher attainability contract; no new proof, engine, data or G1.
 - Reconciled WP1 at an evidenced local authorized-scope fixed point: completed static/software seams retained, stopped sensitivity not revived, and automatic continuation paused rather than inventing another study. G1 still requires explicitly parked prior2 plus actual scientific method/all-prior acceptance; named concrete restart conditions without demanding routine owner numeric preferences or declaring protocol success/failure.
