@@ -1,0 +1,57 @@
+{
+  "schema": "facety-wp1-prior2-distinctness-review/v1",
+  "date": "2026-10-28",
+  "classification": "DIAGNOSTIC independent NEW mathematical result review request, not experiment/registration or selected lifetime/G1 acceptance",
+  "canonical": "BACKLOG.md",
+  "task": {
+    "inputBaseCommit": "bd7b5a2cf347d0337573ece7cb3af06a4c99271f",
+    "contractCommitBeforeDerivation": "5f82dc847c4aa97bbec65e1335874768ae538ca8",
+    "ownerScope": "D80 owner lifts checking pause and reselects prior2 on2026-10-28 10:08:07Europe/Samara; all other gates preserved",
+    "frozenInputBlobs": {
+      "src/model.mjs": "876b962261ff7652fab95647eea0d98375667c5b",
+      "studies/2026-10-26-trust-topology-condition-map/programme.json": "48bbc8352eafb9f9dee11535de5a988daed2d3bd",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-prior2-distinctness-contract.md": "1acf0be9d4c3108f76c2423f2c2550f54a2c5a91",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-prior2-distinctness.md": "96e4664577b9edeb8b6f5849cc6084c231d1289c",
+      "studies/2026-10-26-trust-topology-condition-map/wp1-priors.md": "4607eea5e6aa00d31f6b53b707e12c32199d1f66"
+    },
+    "implementation": {
+      "policy": "sha256-src-mjs-v1",
+      "digest": "39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448",
+      "files": 55,
+      "srcTree": "9d3eb889ad256ceb72cf28abe979752b2e01cc70",
+      "testTree": "9c0640c84e7f11aa72a912d047320573972a7434",
+      "runtime": "v26.8.1",
+      "separateStudyMethod": "69cd10b557879ca490feaad37787e50645a16833c8a3c3455e5126653104ac63"
+    },
+    "owner": "Coordinator owns frozen inputs, launch and raw integration; complementary read-only reviewers own independent proof judgments",
+    "threshold": "2semantically usable complementary reviewers plus verifier with both originals, all partial/DEGRADED/contradictory evidence retained",
+    "stop": "Any actual input mismatch/read-only violation/provider-preflight failure requires owning diagnosis; no hidden retry or new model/solver/rule."
+  },
+  "recipe": "swarm/lens-review",
+  "request": {
+    "scope": "READ-ONLY NEW prior2 exact unit-lifetime maximum review in /home/llb/Repos/facety. FIRST read studies/2026-10-26-trust-topology-condition-map/wp1-prior2-distinctness-review.json task/bindings, wp1-prior2-distinctness-contract.md and wp1-prior2-distinctness.md (proofblob96e4664577b9edeb8b6f5849cc6084c231d1289c, basebd7b5a2). Apply ONLY assigned complementary math lens. D80 reselected this COUNTERFACTUAL checking, NOT a selected lifetime rule/native mode or G1 waiver. No shell/CAS/numeric recurrence/grid/enumeration/flow library/solver/Model/config/reference/test/RNG/namespace/data call or project write; pure static reasoning/arithmetic allowed. Independent derivation/counterexample is the task, no rubber stamp. Historical wp1-priors inequalities explicitly were NOT claimed attainable: do not falsely refute them or repeat prior1/C5/recursive/METHOD reviews. Frozen proof/contract/source remain unchanged until terminal; coordinator only records task/launch/backlog status.",
+    "lenses": [
+      "PRIOR2-UPPER / residual bound / exact-domain interpretation. Independently derive the necessary upper bound in contract c>=2,s>=0,0<=K<c, one unit from each of c distinct EXISTING positive-quota parents before child getsK. Check s<c/K0 impossible starts, Q=sK-n(c-K), lastK newborn residual>=1+...+K, no doublecount, correct handling n<K via candidate>=K in supported-start region, all integer/floor/new-vs-total formulas and nonnegative numerator. Compare historical inventory/newest-only necessary bounds (valid not false), K1 sharpness claim, hand witness c3/K2/s3 including every parent/quota chronology and actual maximum3 versus necessary newest4. No example/grid-as-global-proof. Review quotas-not-FACY/B/XP/personhood/funded native, unsupported K>=c/c1, safe input vs product/container caveats. Give supported/corrected/refuted/unknown within exact contract and strongest source-backed issue, not a demand to implement a counterfactual engine.",
+      "PRIOR2-ATTAINMENT / cut-integrality / chronology. Independently prove or refute that the maximum is ATTAINABLE, not merely upper: mathematical bipartite parent copies seeds+new1..n capacityK, targetcopies1..n demandc, unit edges seeds->all or newi->j ONLYi<j. Verify mincut criterion for EVERY J, optimized parent placement cost min(K,degreeJ), integrality argument without solver execution; earliest-t subset minimality j_l>=l for EACH newborn parent and exact piecewise F(t), all t<=K/t>=K and t=K/n<K boundaries. Then require a legal chronological quota process with no early newborn grant, no self/batch funding, c distinct positive existing parents, per-parent total uses<=K. Challenge any circularity/ignored cut/correlation/negative quota. No greedy optimality presumed; network capacity certificate is not early protocol credit or an actually executed flow. Check exact nstar attains overall maximum; symbolic graph can exceed machine-safe products, no runtime/funded/growth/default/G1 implication. Preserve actual inspected input and omitted assumptions."
+    ],
+    "thinking": "medium",
+    "tools": "read",
+    "subagent_ttl_ms": 600000,
+    "reviewer_concurrency": "2",
+    "min_successful_reviewers": 2,
+    "claim": "The NEW exact prior2 unit-lifetime maximum and its residual upper/integral chronological attainment proofs are independently supported OR corrected/refuted within the frozen complete-parent-choice family; no funded Native/selected-rule/human/scientific/G1 inference.",
+    "evidence_policy": "Give explicit mathematical steps and inspected definitions/sections for every material conclusion; identify exact counterexample or proof gap if found, not test/reviewer counts. Read-only tools do NOT authenticate Git; coordinator separately binds files/captures. Verifier gets original reports and checks both; all stages preserve actual body/source input coverage, dissent, and unavailable evidence.",
+    "risk_policy": "Preserve critical gap/counterexample even minority. A loose historical upper bound is not false just because not attained; unitquota !=money/XP/D75/renewable slots, complete parent choice/consent is assumed. No solver/model/data call or alternate-rule/code fix to rescue result. Independent support of a formal finite counterfactual is NOT scientific confirmation, resource availability, honest advantage or G1.",
+    "merge_policy": "Require both complementary scopes and original-body verifier/min2. Preserve failed/partial/semantic results. Merger/judge/normalizer with only prior-stage body remain DEGRADED; do not infer original-source fidelity from references. Coordinator integrates all retained originals separately without rewriting coverage or proof by vote.",
+    "output_format": "ROLE-CONDITIONAL: If actual prompt starts Preflight check for stage, reply EXACTLY ACTOR_PREFLIGHT_OK and nothing else, no files. Substantive reviewer/verifier/merger/judge/normalizer: Markdown Status(complete/degraded/insufficient_data); Assigned Scope; Verdict(supported/corrected/refuted/unknown within frozen contract); Independent Mathematical Derivation; Counterexamples or Confirmations; New-versus-Total/Boundary/Resource/Nonclaim Qualifications; Minority Findings; Actual Input Coverage; One Remaining Gate; Evidence References. No preflight token for substantive tasks."
+  },
+  "launch": null,
+  "handoff": {
+    "status": "frozen prelaunch mathematical review request; not spawned/ready/accepted",
+    "newNativeOrScientificCalls": 0,
+    "newRegistrations": 0,
+    "G1": "NOT passed",
+    "sourceTestEvidence": "Existing778+21/37/DAG55x177 reused on exact core/test/runtime/study equality, not mathematical validation or new tests",
+    "continuationWarranted": true
+  }
+}
