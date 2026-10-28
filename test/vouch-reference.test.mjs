@@ -173,3 +173,142 @@ test('the comparator detects a skipped Native money transition rather than recon
   assert.equal(h.reference.snapshot().members.find(m => m.id === 'a').liquidFacy, 1);
   assert.equal(h.native.snapshot().members.find(m => m.id === 'a').liquidFacy, 0);
 });
+
+test('prior2 c3 funded certificate matches actual projected state across four frozen clock boundaries', t => {
+  const cases = [
+    { id: 'funding-binding', B: 2, T: 1, V: 1, commands: 72 },
+    { id: 'cooldown-binding', B: 1, T: 2, V: 1, commands: 45 },
+    { id: 'probation-binding', B: 1, T: 1, V: 2, commands: 45 },
+    { id: 'all-tied', B: 1, T: 1, V: 1, commands: 42 },
+  ];
+  const people = ['a', 'b', 'c', 'x', 'y', 'z'], targets = ['x', 'y', 'z'];
+  const parents = [['a', 'b', 'c'], ['a', 'b', 'x'], ['c', 'x', 'y']];
+  const uses = [[1, 1, 1, 0], [2, 2, 1, 1, 0], [2, 2, 2, 2, 1, 0]];
+  const xp = [[1, 1, 1, 0], [3, 3, 2, 1, 0], [5, 5, 4, 3, 1, 0]];
+  const sourceId = (owner, stage, unit) => owner + ':s' + stage + ':u' + unit;
+  const bondId = (owner, stage) => 'prior2:' + stage + ':' + owner + ':' + targets[stage - 1];
+  const safeSnapshot = actor => {
+    try { return actor?.snapshot() ?? null; } catch (error) { return { unavailable: error.message }; }
+  };
+  let totalOffered = 0;
+  for (const point of cases) {
+    const { B, T, V } = point, L = Math.max(B, T, V), p = structuredClone(profile);
+    p.genesis = ['a', 'b', 'c']; p.vouchAdmission.c = 3;
+    Object.assign(p.vouching, { K: 1, B, T, V });
+    let h, lastCommand = null, offered = 0, collectorPeak = 0, emitterPeak = 0;
+    const checkpoints = [];
+    try {
+      h = harness(p);
+      assert.deepEqual(h.native.snapshot(), h.reference.snapshot());
+      const step = q => {
+        lastCommand = q; offered++;
+        const before = h.native.snapshot();
+        if (q.op === 'commit') assert.equal(before.members.find(m => m.id === q.owner).liquidFacy, B, 'own B before debit');
+        h.step(q);
+        assert.equal(h.counts().rejections, 0, 'every frozen positive command must succeed');
+        const s = h.native.snapshot();
+        collectorPeak = Math.max(collectorPeak, s.ledger.collector);
+        emitterPeak = Math.max(emitterPeak, s.ledger.emitterVault);
+        assert.ok(offered <= 80 && s.members.length <= 6 && s.sources.length <= 18);
+        assert.ok(s.now < 7 * 24 && s.ledger.collector <= 3 * B && s.ledger.emitterVault <= 3);
+        assert.equal(s.ledger.supply, s.ledger.minted);
+        assert.equal(s.ledger.emitterVault + s.ledger.collector + s.ledger.vouchVault, s.ledger.supply);
+        for (const member of s.members) {
+          assert.equal(member.identityStatus, 'accepted'); assert.equal(member.debt, 0);
+          assert.ok(member.liquidFacy >= 0 && member.liquidFacy <= B);
+          const owned = s.sources.filter(a => a.owner === member.id).sort((a, b) => a.index - b.index);
+          assert.equal(member.lastRewardAt, owned.at(-1)?.at ?? null);
+          for (const [index, a] of owned.entries()) {
+            assert.equal(a.index, index + 1); assert.equal(a.previous, owned[index - 1]?.id ?? null);
+            if (index) assert.ok(a.at - owned[index - 1].at >= 24);
+          }
+        }
+        for (const a of s.sources) {
+          const roster = parents[targets.indexOf(a.owner)] ?? [];
+          assert.equal(a.artifact, 'media:' + a.id); assert.deepEqual(a.guarantors, roster);
+          assert.equal(a.xpCredited, s.now - a.at >= 24);
+          if (!a.xpCredited) { assert.equal(a.credit, null); continue; }
+          assert.equal(a.credit.at, a.at + 24); assert.equal(a.credit.revokedAt, null);
+          assert.equal(a.credit.revocation, null);
+          assert.deepEqual(a.credit.recipients, [a.owner, ...roster].sort().map(subject => ({ subject,
+            role: subject === a.owner ? 'subject' : 'guarantor', halvingsBefore: 0, revokedAt: null, revocation: null })));
+        }
+      };
+      for (let j = 0; j < 3; j++) {
+        const start = j * L * 24, boundary = (j + 1) * L * 24;
+        assert.equal(h.native.snapshot().now, start);
+        const issueUnit = unit => {
+          for (const owner of parents[j]) {
+            const id = sourceId(owner, j + 1, unit);
+            step(artifact(owner, id)); step(issue(owner, id));
+          }
+        };
+        issueUnit(0);
+        for (let unit = 1; unit <= B; unit++) {
+          step(time(start + unit * 24));
+          for (const owner of parents[j]) step(fund(owner, sourceId(owner, j + 1, unit - 1)));
+          if (unit < B) issueUnit(unit);
+        }
+        if (h.native.snapshot().now < boundary) step(time(boundary));
+        for (const owner of parents[j]) step(commit(owner, targets[j], bondId(owner, j + 1)));
+        step({ op: 'admit', target: targets[j], bonds: parents[j].map(owner => bondId(owner, j + 1)) });
+        const s = h.native.snapshot(), members = people.slice(0, j + 4), stock = 3 * (j + 1) * B;
+        assert.equal(s.now, boundary); assert.deepEqual(s.members.map(m => m.id), members);
+        assert.deepEqual(s.graph.nodes, members); assert.deepEqual(s.graph.lineageNodes, members);
+        assert.deepEqual(s.graph.lineageEdges, []);
+        assert.deepEqual(s.graph.edges, parents.slice(0, j + 1).flatMap((roster, i) => roster.map(owner => [owner, targets[i]])).sort());
+        assert.equal(s.sources.length, stock); assert.equal(s.artifacts.length, stock);
+        assert.equal(s.bonds.length, 3 * (j + 1)); assert.equal(s.relations.length, 3 * (j + 1));
+        assert.equal(s.admissions.length, j + 1);
+        assert.deepEqual(s.ledger, { minted: stock, burned: 0, supply: stock, emitterVault: 0, collector: 0,
+          feeVault: 0, stakeVault: 0, debt: 0, vouchVault: stock });
+        assert.equal(s.members.reduce((sum, m) => sum + m.xp, 0), [3, 9, 18][j] * B);
+        for (const [i, member] of s.members.entries()) {
+          const owned = s.sources.filter(a => a.owner === member.id), paid = s.bonds.filter(b => b.voucher === member.id);
+          const observedUses = s.admissions.flatMap(a => a.guarantors).filter(id => id === member.id).length;
+          assert.equal(observedUses, uses[j][i]); assert.ok(observedUses <= 2);
+          assert.equal(member.genesis, i < 3); assert.equal(member.liquidFacy, 0);
+          assert.equal(owned.length, B * uses[j][i]);
+          assert.ok(owned.every(a => a.status === 'converted' && a.disposition === 'collector' && a.xpCredited));
+          assert.equal(paid.reduce((sum, b) => sum + b.bondRemaining, 0), B * uses[j][i]);
+          assert.equal(member.xp, B * xp[j][i]);
+          const cap = s.capacities.find(c => c.subject === member.id), current = parents[j].includes(member.id);
+          assert.equal(cap.limit, 1); assert.equal(cap.used, current ? 1 : 0); assert.equal(cap.free, current ? 0 : 1);
+          assert.equal(cap.cooldownRemainingHours, current ? T * 24 : 0);
+        }
+        for (const [i, a] of s.admissions.entries()) {
+          assert.equal(a.subject, targets[i]); assert.equal(a.at, (i + 1) * L * 24);
+          assert.deepEqual(a.guarantors, parents[i]); assert.deepEqual(a.vouches, parents[i].map(owner => bondId(owner, i + 1)).sort());
+        }
+        for (const b of s.bonds) {
+          const i = targets.indexOf(b.target), at = (i + 1) * L * 24;
+          assert.equal(b.id, bondId(b.voucher, i + 1)); assert.equal(b.committedAt, at);
+          assert.equal(b.expiresAt, at + V * 24); assert.ok(b.expiresAt <= 8 * 24);
+          assert.equal(b.bond, B); assert.equal(b.bondRemaining, B); assert.equal(b.bondStatus, 'reserved');
+          assert.equal(b.refunded, 0); assert.equal(b.slashed, 0); assert.equal(b.exitedAt, null);
+          assert.equal(b.releasedAt, null); assert.equal(b.clearanceId, null);
+        }
+        for (const r of s.relations) {
+          const i = targets.indexOf(r.guaranteed);
+          assert.equal(r.status, 'active'); assert.equal(r.endedAt, null);
+          assert.equal(r.proposedAt, (i + 1) * L * 24); assert.equal(r.activatedAt, r.proposedAt);
+          assert.equal(r.vouch, bondId(r.guarantor, i + 1));
+        }
+        assert.equal(s.work, null); assert.deepEqual(s.requests, []); assert.deepEqual(s.cases, []);
+        checkpoints.push({ stage: j + 1, atHour: s.now, ledger: s.ledger, members: s.members,
+          sourceCount: s.sources.length, bondCount: s.bonds.length, admissions: s.admissions, capacities: s.capacities, graph: s.graph });
+      }
+      assert.equal(offered, point.commands); assert.deepEqual(h.counts(), { actions: point.commands, rejections: 0 });
+      assert.equal(collectorPeak, 3 * B); assert.equal(emitterPeak, 3);
+      totalOffered += offered;
+      t.diagnostic('PRIOR2_C3_SOFTWARE ' + JSON.stringify({ classification: 'software-conformance', caseID: point.id,
+        B, T, V, K_slot: 1, K_life: 2, offered, rejected: h.counts().rejections,
+        stockPeaks: { collector: collectorPeak, emitter: emitterPeak }, checkpoints, finalProjection: h.native.snapshot() }));
+    } catch (error) {
+      t.diagnostic('PRIOR2_C3_FAILURE ' + JSON.stringify({ caseID: point.id, command: lastCommand, offered,
+        actual: safeSnapshot(h?.native), reference: safeSnapshot(h?.reference), error: error.message }));
+      throw error;
+    }
+  }
+  assert.equal(totalOffered, 204);
+});
