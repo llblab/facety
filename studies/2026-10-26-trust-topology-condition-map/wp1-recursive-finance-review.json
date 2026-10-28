@@ -53,9 +53,36 @@
     "merge_policy": "Require both complementary scopes/min2; preserve semantic/preflight failures and partial results. Verifier/merger/judge input coverage stays exact; downstream prior-body-only stages remain DEGRADED without original-source/report fidelity. Coordinator integrates retained originals separately and does not rewrite statuses, dissent or claim scientific replication.",
     "output_format": "ROLE-CONDITIONAL: If actual prompt starts Preflight check for stage, reply EXACTLY ACTOR_PREFLIGHT_OK and nothing else; no file inspection. For substantive reviewer/verifier/merger/judge/normalizer, Markdown: Status(complete/degraded/insufficient_data); Assigned Scope; Verdict(supported/corrected/refuted/unknown within exact finite contract); Independent Derivation/Source Predicates; Counterexamples or Confirmations; Exact Financial/Time/Counter Boundaries; Continuing Duties/Labels/Nonclaims; Minority Findings; Actual Input Coverage; One Remaining Gate; Evidence References. No preflight token for substantive tasks."
   },
-  "launch": null,
+  "launch": {
+    "contractCommittedBeforeSpawn": "58afe629432a8e10452624f4b91ca5e8ec7426b3",
+    "target": "run:facety-wp1-recursive-finance-20261028",
+    "instance": "76de4890-0555-485d-b278-6965e1b45903",
+    "launchKind": "spawn",
+    "launchState": "running",
+    "model": "inherited:openai/gpt-6.1-sol",
+    "thinking": "explicit:medium",
+    "recipe": "swarm/lens-review",
+    "pid": 2865825,
+    "observedLocations": {
+      "directory": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028",
+      "metadata": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/run.json",
+      "trace": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/trace.jsonl",
+      "stdout": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/stdout.log",
+      "stderr": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-recursive-finance-20261028/stderr.log",
+      "basis": "Exact generation mutable starting locations only; result/execution/context_index/control/published_sessions missing at launch, no guessed captures or body/completion evidence"
+    },
+    "preflightAndReview": "PENDING: running launch is not model/tool readiness, semantic preflight or independent result acceptance. Preserve all failures/partial/DEGRADED stages.",
+    "validation": {
+      "contextErrors": 0,
+      "existingReviewedWarnings": 29,
+      "contextLog": "/tmp/facety-wp1-recursive-finance-review-context.txt",
+      "sourceBindings": "All13pinned inputs plus core/test/runtime/separate-study exact before spawn; existing778+21/37/DAG55x177 reused, NOT rerun",
+      "newNativeOrScientificCalls": 0
+    },
+    "waitBasis": "Latest comparable maintained2lens/10stage method pipeline completed in379seconds, earlier finite C5 reviews about285seconds. This narrower new-proof review is expected in that range; after bookkeeping allow300seconds, with earlier automatic terminal delivery. No busy polling or coordinator shadow proof."
+  },
   "handoff": {
-    "status": "frozen prelaunch request, not spawned/ready/accepted",
+    "status": "running readonly NEW-result review; preflights/findings pending, no new acceptance or data",
     "newNativeOrScientificCalls": 0,
     "newRegistrations": 0,
     "G1": "NOT passed",
