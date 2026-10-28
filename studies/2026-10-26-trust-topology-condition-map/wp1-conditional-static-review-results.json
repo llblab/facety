@@ -1,0 +1,696 @@
+{
+  "schema": "facety-wp1-conditional-static-review-results/v1",
+  "date": "2026-10-28",
+  "classification": "DIAGNOSTIC independent analytic/source review; no scientific confirmation/G1",
+  "base": "34b5921",
+  "contract": {
+    "path": "studies/2026-10-26-trust-topology-condition-map/wp1-conditional-static-review.md",
+    "commit": "900d383",
+    "blob": "7b767c3461921a55e8d9deb5d1ff177e9d858c8b"
+  },
+  "completion": {
+    "batch": "5eb1bea3-4712-49cf-ac43-3f8e526c28da",
+    "at": "2026-10-28T00:06:43.592Z",
+    "target": "run:facety-wp1-conditional-static-20261028",
+    "instance": "e8b31c6b-7905-492e-9015-1448daa04aef",
+    "status": "done",
+    "primary": "not_selected",
+    "diagnostic": {
+      "path": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/evidence/result-diagnostics-06dbd41a7439d02d39469ed076265e4dfd9555f547797ddee197fbda0ae9116d.json",
+      "run_instance_id": "e8b31c6b-7905-492e-9015-1448daa04aef",
+      "sha256": "ffaed52a916239b52c6c320658faf35dc6768fbf1566797a6ceefdc327de6b4d",
+      "bytes": 18494,
+      "fields": [
+        "command"
+      ],
+      "meaning": "Command-only diagnostic, not primary/substantive review output"
+    },
+    "terminalAcceptance": "natural"
+  },
+  "execution": {
+    "version": 1,
+    "run": "facety-wp1-conditional-static-20261028",
+    "run_instance_id": "e8b31c6b-7905-492e-9015-1448daa04aef",
+    "status": "done",
+    "model_policy": {
+      "model": {
+        "inherited_keys": [
+          "model"
+        ],
+        "source": "inherited",
+        "value": "openai/gpt-6.1-sol"
+      },
+      "thinking": {
+        "explicit_keys": [
+          "thinking"
+        ],
+        "source": "explicit",
+        "value": "medium"
+      }
+    },
+    "active_subagents": 0,
+    "commands": [
+      {
+        "id": "command-001",
+        "stage": "preflight",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T00:01:58.510Z",
+        "completed_at": "2026-10-28T00:02:06.483Z",
+        "label": "preflight:reviewer",
+        "recipe_context": {
+          "alias": "preflight",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+          "name": "subagent-preflight",
+          "path": "preflight",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-001 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-001.md",
+        "prompt_file": "prompts/command-001.md",
+        "prompt_bytes": 13861,
+        "session_dir": "sessions/command-001",
+        "session_files": [
+          "sessions/command-001/2026-10-28T00-01-58-849Z_01a17fd0-4840-77ff-bf98-5bf3c81c01ae.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-001/attempt-001/stdout.log",
+              "bytes": 19
+            },
+            "stderr": {
+              "path": "captures/command-001/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 19,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-002",
+        "stage": "preflight",
+        "occurrence": 2,
+        "status": "done",
+        "started_at": "2026-10-28T00:01:58.521Z",
+        "completed_at": "2026-10-28T00:02:06.490Z",
+        "label": "preflight:verifier",
+        "recipe_context": {
+          "alias": "preflight",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+          "name": "subagent-preflight",
+          "path": "preflight",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-002 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-002.md",
+        "prompt_file": "prompts/command-002.md",
+        "prompt_bytes": 13861,
+        "session_dir": "sessions/command-002",
+        "session_files": [
+          "sessions/command-002/2026-10-28T00-01-58-870Z_01a17fd0-4854-74c2-87a2-21bd53500847.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-002/attempt-001/stdout.log",
+              "bytes": 19
+            },
+            "stderr": {
+              "path": "captures/command-002/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 19,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-003",
+        "stage": "preflight",
+        "occurrence": 3,
+        "status": "done",
+        "started_at": "2026-10-28T00:01:58.536Z",
+        "completed_at": "2026-10-28T00:02:06.892Z",
+        "label": "preflight:merger",
+        "recipe_context": {
+          "alias": "preflight",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+          "name": "subagent-preflight",
+          "path": "preflight",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-003 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-003.md",
+        "prompt_file": "prompts/command-003.md",
+        "prompt_bytes": 13859,
+        "session_dir": "sessions/command-003",
+        "session_files": [
+          "sessions/command-003/2026-10-28T00-01-58-927Z_01a17fd0-488e-7136-9a88-bfa49a0f7dd0.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-003/attempt-001/stdout.log",
+              "bytes": 19
+            },
+            "stderr": {
+              "path": "captures/command-003/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 19,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-004",
+        "stage": "preflight",
+        "occurrence": 4,
+        "status": "done",
+        "started_at": "2026-10-28T00:01:58.543Z",
+        "completed_at": "2026-10-28T00:02:06.993Z",
+        "label": "preflight:judge",
+        "recipe_context": {
+          "alias": "preflight",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-preflight.json",
+          "name": "subagent-preflight",
+          "path": "preflight",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-004 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-004.md",
+        "prompt_file": "prompts/command-004.md",
+        "prompt_bytes": 13858,
+        "session_dir": "sessions/command-004",
+        "session_files": [
+          "sessions/command-004/2026-10-28T00-01-58-877Z_01a17fd0-485c-710c-b528-916e8e389bef.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-004/attempt-001/stdout.log",
+              "bytes": 19
+            },
+            "stderr": {
+              "path": "captures/command-004/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 19,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-005",
+        "stage": "reviewer",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T00:02:07.002Z",
+        "completed_at": "2026-10-28T00:03:31.618Z",
+        "branch_index": "0",
+        "recipe_context": {
+          "alias": "reviewer",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-review.json",
+          "name": "subagent-review",
+          "path": "reviewer",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-005 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-005.md",
+        "prompt_file": "prompts/command-005.md",
+        "prompt_bytes": 16517,
+        "session_dir": "sessions/command-005",
+        "session_files": [
+          "sessions/command-005/2026-10-28T00-02-07-293Z_01a17fd0-693c-70cb-89b3-9e0047f3d0af.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-005/attempt-001/stdout.log",
+              "bytes": 12436
+            },
+            "stderr": {
+              "path": "captures/command-005/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 12436,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-006",
+        "stage": "reviewer",
+        "occurrence": 2,
+        "status": "done",
+        "started_at": "2026-10-28T00:02:07.013Z",
+        "completed_at": "2026-10-28T00:04:20.664Z",
+        "branch_index": "1",
+        "recipe_context": {
+          "alias": "reviewer",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-review.json",
+          "name": "subagent-review",
+          "path": "reviewer",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-006 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-006.md",
+        "prompt_file": "prompts/command-006.md",
+        "prompt_bytes": 16634,
+        "session_dir": "sessions/command-006",
+        "session_files": [
+          "sessions/command-006/2026-10-28T00-02-07-320Z_01a17fd0-6957-753e-a5ab-12d9354cf672.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-006/attempt-001/stdout.log",
+              "bytes": 11730
+            },
+            "stderr": {
+              "path": "captures/command-006/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 11730,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-007",
+        "stage": "verifier",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T00:04:20.669Z",
+        "completed_at": "2026-10-28T00:05:10.749Z",
+        "recipe_context": {
+          "alias": "verifier",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-verify.json",
+          "name": "subagent-verify",
+          "path": "verifier",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-007 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-007.md",
+        "prompt_file": "prompts/command-007.md",
+        "prompt_bytes": 16168,
+        "session_dir": "sessions/command-007",
+        "session_files": [
+          "sessions/command-007/2026-10-28T00-04-20-937Z_01a17fd2-7348-751e-bedf-7f5a83750361.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-007/attempt-001/stdout.log",
+              "bytes": 8902
+            },
+            "stderr": {
+              "path": "captures/command-007/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 8902,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-008",
+        "stage": "merger",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T00:05:10.753Z",
+        "completed_at": "2026-10-28T00:05:48.029Z",
+        "recipe_context": {
+          "alias": "merger",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-merge.json",
+          "name": "subagent-merge",
+          "path": "merger",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-008 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-008.md",
+        "prompt_file": "prompts/command-008.md",
+        "prompt_bytes": 14851,
+        "session_dir": "sessions/command-008",
+        "session_files": [
+          "sessions/command-008/2026-10-28T00-05-11-032Z_01a17fd3-36f7-7304-89b3-dbeacc332862.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-008/attempt-001/stdout.log",
+              "bytes": 7986
+            },
+            "stderr": {
+              "path": "captures/command-008/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 7986,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-009",
+        "stage": "judge",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T00:05:48.038Z",
+        "completed_at": "2026-10-28T00:06:19.533Z",
+        "recipe_context": {
+          "alias": "judge",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-judge.json",
+          "name": "subagent-judge",
+          "path": "judge",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-009 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-009.md",
+        "prompt_file": "prompts/command-009.md",
+        "prompt_bytes": 14331,
+        "session_dir": "sessions/command-009",
+        "session_files": [
+          "sessions/command-009/2026-10-28T00-05-48-309Z_01a17fd3-c894-719a-8f1a-79a70828fb96.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-009/attempt-001/stdout.log",
+              "bytes": 6205
+            },
+            "stderr": {
+              "path": "captures/command-009/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 6205,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      },
+      {
+        "id": "command-010",
+        "stage": "normalizer",
+        "occurrence": 1,
+        "status": "done",
+        "started_at": "2026-10-28T00:06:19.540Z",
+        "completed_at": "2026-10-28T00:06:43.581Z",
+        "recipe_context": {
+          "alias": "normalizer",
+          "file": "/home/llb/.pi/agent/extensions/pi-actors/skills/swarm/recipes/subagent-normalize.json",
+          "name": "subagent-normalize",
+          "path": "normalizer",
+          "role": "import"
+        },
+        "command": "pi --session-dir /home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/sessions/command-010 -p --model openai/gpt-6.1-sol --thinking medium --tools read @/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/prompts/command-010.md",
+        "prompt_file": "prompts/command-010.md",
+        "prompt_bytes": 14510,
+        "session_dir": "sessions/command-010",
+        "session_files": [
+          "sessions/command-010/2026-10-28T00-06-19-835Z_01a17fd4-43ba-7288-b459-e23d45a065e0.jsonl"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "code": 0,
+            "native_exit_code": 0,
+            "killed": false,
+            "stdout": {
+              "path": "captures/command-010/attempt-001/stdout.log",
+              "bytes": 5893
+            },
+            "stderr": {
+              "path": "captures/command-010/attempt-001/stderr.log",
+              "bytes": 0
+            }
+          }
+        ],
+        "exit_code": 0,
+        "native_exit_code": 0,
+        "effective_exit_code": 0,
+        "killed": false,
+        "stdout_bytes": 5893,
+        "stderr_bytes": 0,
+        "stdout_truncated": false,
+        "stderr_truncated": false,
+        "semantic_acceptance": "accepted"
+      }
+    ],
+    "report_evidence": {
+      "required": [
+        "execution.json#command-005",
+        "execution.json#command-006",
+        "execution.json#command-007",
+        "execution.json#command-008",
+        "execution.json#command-009"
+      ],
+      "cited": [
+        "execution.json#command-005",
+        "execution.json#command-006",
+        "execution.json#command-007",
+        "execution.json#command-008",
+        "execution.json#command-009"
+      ],
+      "missing": [],
+      "claims_complete": false,
+      "complete_allowed": true
+    },
+    "updated_at": "2026-10-28T00:06:43.591Z"
+  },
+  "rawStages": [
+    {
+      "id": "command-001",
+      "stage": "preflight",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-001/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 19,
+      "body": "ACTOR_PREFLIGHT_OK\n"
+    },
+    {
+      "id": "command-002",
+      "stage": "preflight",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-002/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 19,
+      "body": "ACTOR_PREFLIGHT_OK\n"
+    },
+    {
+      "id": "command-003",
+      "stage": "preflight",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-003/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 19,
+      "body": "ACTOR_PREFLIGHT_OK\n"
+    },
+    {
+      "id": "command-004",
+      "stage": "preflight",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-004/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 19,
+      "body": "ACTOR_PREFLIGHT_OK\n"
+    },
+    {
+      "id": "command-005",
+      "stage": "reviewer",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-005/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 12436,
+      "body": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**complete — bounded L1 static review.** C1’s earliest-time formulas are supported by independent algebra and the inspected reference/Native gates, under the exact declared family and bounded-realizability qualification. No mathematical counterexample or omitted Native gate was found within that family.\n\nRead-only inspection only: no shell, tests, Model/experiment/data execution, writes, or external sources. The committed identities are supplied contract bindings; I did not independently authenticate Git objects or calculate digests. Historical review degradation remains historical degradation, not repaired by this result. **G1 remains NOT passed.**\n\n## Assigned Claim IDs\n\n- **C1:** Necessary and attainable first/second admissions for the exact zero-capital `a,b→x; b,x→y` family.\n- **C4:** What that proof closes and the smallest remaining method/owner gate.\n- C2/C3 implementation and contract inspection was limited to informing C4; this is **not** an independent acceptance verdict for those complementary claims.\n\n## Independent Derivations/Source Anchors\n\n### 1. Income envelope and necessary funding\n\nUse days, with birth/acceptance time \\(\\beta\\). `createSelfId` permits the first source immediately but subsequent sources only after another 24 hours. `convertToCollector` requires the owner’s mature, unspent, unlocked, non-debt-reserved source. Thus, with no opening funds or other money inflows:\n\n\\[\nC_\\beta(t)\\le \\lfloor t-\\beta\\rfloor \\quad (t\\ge\\beta),\n\\]\n\nwhere \\(C_\\beta(t)\\) is cumulative converted own units. Creation is not liquidity.\n\nFor \\(B>0\\), let \\(s_a,s_b\\) be the successful founder commitments to x. Each costs B liquid units, so:\n\n\\[\ns_a\\ge B,\\quad s_b\\ge B,\\quad \\tau_x\\ge\\max(s_a,s_b)\\ge B.\n\\]\n\nAfter x exists, x must itself convert B units to fund `x→y`:\n\n\\[\n\\tau_y\\ge\\tau_x+B.\n\\]\n\nSeparately, b funds **two** commitments without refunds or transfers, requiring \\(C_0(\\tau_y)\\ge2B\\), hence \\(\\tau_y\\ge2B\\). This is not an extra additive delay: it coincides with, or is weaker than, the newborn constraint because \\(\\tau_x\\ge B\\).\n\n**Source anchors:** `src/model.mjs`, `#addSubject`, `createSelfId`, `convertToCollector`, `#requireUnspent`, `#dispose`; `reference.mjs`, `cash` and `apply(issue/withdraw/commit)`.\n\n### 2. Cooldown, occupancy and delayed first commitments\n\n`vouchCapacity` has no first-use wait: absent `#lastVouchAt`, cooldown is zero. After b’s first successful commitment, its second requires:\n\n\\[\n\\tau_y\\ge s_b+T.\n\\]\n\nFor K=1, the original reservation occupies its slot while `now < expiresAt`, independently of admission or retained principal. Therefore:\n\n\\[\n\\tau_y\\ge s_b+V.\n\\]\n\nFor K≥2, only one prior b reservation exists, so a second slot is available without waiting V.\n\nConsequently every feasible schedule satisfies:\n\n\\[\n\\tau_y\\ge\n\\begin{cases}\n\\max(\\tau_x+B,\\;2B,\\;s_b+T,\\;s_b+V), & K=1,\\\\\n\\max(\\tau_x+B,\\;2B,\\;s_b+T), & K\\ge2.\n\\end{cases}\n\\]\n\nSince \\(s_b,\\tau_x\\ge B\\), this implies:\n\n\\[\n\\tau_y\\ge\n\\begin{cases}\nB+\\max(B,T,V), & K=1,\\\\\nB+\\max(B,T), & K\\ge2.\n\\end{cases}\n\\]\n\nUnequal or delayed first commitments cannot improve these bounds. They can instead make x’s admission impossible: its backing must also satisfy \\(\\tau_x<s_a+V\\) and \\(\\tau_x<s_b+V\\). The proof establishes lower bounds over **feasible** schedules, not legality of arbitrary delayed schedules.\n\nK=0 is infeasible even at B=0: `capacity.free < 1` rejects every commitment.\n\n**Source anchors:** `src/model.mjs`, `#vouchOccupies`, `vouchCapacity`, `commitVouch`, `admitVouched`; `reference.mjs`, `capacity` and `apply(commit/admit)`.\n\n### 3. Attainment, not merely a lower bound\n\nFor B>0:\n\n1. a and b each issue at days \\(0,\\ldots,B-1\\), converting each unit at its issue day+1. Each then has B liquid at day B.\n2. At B, sequentially commit `a→x`, commit `b→x`, then admit x. Both distinct reservations are intact, unused and live because V≥1.\n3. b and x issue at days \\(B,\\ldots,2B-1\\), converting at days \\(B+1,\\ldots,2B\\). b’s new issuance at B is legal: its preceding source was at B−1. x has no pre-acceptance source.\n4. At \\(B+\\max(B,T,V)\\) for K=1, or \\(B+\\max(B,T)\\) for K≥2, commit `b→y` and `x→y`, then admit y. b has sufficient liquid, its repeat cooldown has ended, and its slot is available. x is a first-time voucher with no inherited cooldown.\n\nNo source creation requires a minimum incoming-guarantor count in this reference. `admitVouched` supplies accepted membership and activates the named incoming guarantees without minting money. `advanceTo`’s maturity refusal gates—locks, debt or changed recipient identity—are absent by the declared family.\n\nFor **B=0**, omit every source/artifact/conversion action. Admit x at 0; b’s reuse then determines y’s time: \\(\\max(T,V)\\) for K=1 or T for K≥2. x’s first-use commitment adds no cooldown.\n\nThus the claimed minima are both necessary and attainable.\n\n**Source anchors:** `src/model.mjs`, `advanceTo`, `createSelfId`, `eligibleGuarantors`, `admitVouched`; `native-reference-bridge.mjs`, `apply`, directly mapping these operations to Native calls.\n\n### 4. Every-wallet solvency and endpoint custody\n\nThe constructive schedule has the following cash accounting:\n\n| Subject | Cumulative conversions | Cumulative bond debits | Final liquid |\n|---|---:|---:|---:|\n| a | B | B | 0 |\n| b | 2B | 2B | 0 |\n| x | B | B | 0 |\n| y | 0 | 0 | 0 |\n\nBefore each debit, its payer has accumulated the required B; no intervening action in this schedule reduces that balance. Conversions only add liquid. All wallets are therefore nonnegative after each relevant call—not just in aggregate at the endpoint.\n\nExactly 4B sources are created and converted. Nothing is cancelled, consumed for invitations, burned, refunded or transferred. Hence:\n\n\\[\n\\text{minted}=\\text{supply}=\\text{vouchVault}=4B,\n\\]\n\nwith burned, Emitter, Collector, fee, stake and debt balances zero.\n\nExpiry changes slot occupancy, **not** principal custody or guarantee status. Refund requires a separate `releaseVouchBond` clearance operation; guarantee termination requires an exit. Neither occurs here. b therefore needs genuinely earned second B funding even if its first slot has expired.\n\n**Source anchors:** `src/model.mjs`, `commitVouch`, `releaseVouchBond`, `exitVouch`, vouch/admission invariants in `audit`; `reference.mjs`, `cash`, `balance`, `apply(refund)`, and `snapshot` relation construction.\n\n### 5. Horizon and bounded realization\n\nFor an open command horizon \\([0,H)\\), in **days**, x is attainable iff \\(H>B\\), and both admissions iff \\(H>\\tau_y^*\\), subject to the declared resource limits. If H is expressed in hours, compare against \\(24B\\) and \\(24\\tau_y^*\\). Equality excludes the admission command.\n\nThe construction uses four members, four guarantee edges, four commitments, 4B sources and finitely many O(B) operations. That establishes a finite witness, not arbitrary-size executability. Safe-hour products, each commitment’s expiry endpoint, aggregate custody, counters, graph capacity and available execution resources must remain admissible.\n\n**Source anchors:** `wp1-earned-birth.md`, “Exact question and declared family”; `src/model.mjs`, `vouchingFrom`, `commitVouch`, `admitVouched`; `src/graph.mjs`, `assertCapacity` and graph mutations.\n\n## Confirmations/Corrections\n\n- **Confirmed:** Both earliest-time formulas, including K=0 and B=0 boundaries.\n- **Confirmed:** b’s cumulative 2B funding, newborn-earned B, first-use versus repeat clocks, retained bonds after expiry, and the derived 4B escrow endpoint.\n- **Confirmed:** Native admission does not impose an additional founder XP/Standing/minimum-guarantor gate in this closed profile.\n- **No formula correction required.**\n- **Interpretive qualification:** Bounds covering unequal commitments do not promise that every delayed pair remains live long enough for admission.\n\nThe inspected `test/vouch-reference.test.mjs` contains per-action reference/Native comparisons and boundary partitions. These describe existing software controls; I did not run them or use their counts as proof of the parameterized theorem.\n\n## Declared Exclusions versus Real Violations\n\nThe following are **declared exclusions, not discovered bugs**:\n\n- Supplied accepted founders and target consent are not verified people, willingness or cheap genuine access.\n- K_slot is renewable probation occupancy, not D75 active-outgoing K or a lifetime quota.\n- Instantaneous sequential calls, zero guarantee fee and unmodeled human labor are conditional assumptions, not measured frictionlessness.\n- Cases, D77 participation holds, transfers, exits, penalties and refunds are absent from this family.\n- Two-generation feasibility establishes neither a population exponent nor profitable, defensible or durable growth.\n\nNo selected-rule violation was established by the inspected construction.\n\n## Minority Findings/Contradictions\n\nNo source-backed counterexample to C1 was found.\n\nPreserve this boundary if other reports generalize the result: **K=1 slot reuse can coexist with multiple still-active historical guarantees and unreleased bonds.** Relabeling this result as D75 capacity feasibility would contradict the inspected reference semantics.\n\nAlso, `wp1-earned-birth.md`’s “Convergence decision” names same-party receipt accounting as next work. That is a historical handoff, not a still-missing primitive: the inspected current `src/incentives.mjs` now contains `runMaturityIncentiveForks` and `readMaturityReceiptComparisons`. Do not manufacture a duplicate receipt backend from that older paragraph.\n\n## Scientific/Owner Gates\n\nC1 closes a conditional algebra/Native-mapping prerequisite, not master G1.\n\nFor C4, actual inspection confirms that preparation has advanced:\n\n- `src/incentives.mjs` implements five fixed ordinary-maturity alternatives, funded newborn remittance, a pre-remittance checkpoint and null incomplete transfer-work totals.\n- `prior7-attribution.mjs` implements passive admission/vouch/relation joins, explicit denominator selection, terminal custody checks and D=0→null.\n- Their contracts expressly exclude scientific-world independence, general utility/behavior inference, authentication and full transition validation.\n\nThese existing primitives do not select a scientific denominator, independent world law, error/precision/search/kill contract or held-out confirmation. Nor do they authorize restarting parked lifetime work.\n\n`programme.json`, `gateContracts.G1`, still requires priors1–3/7 independently confirmed/corrected **after committed method/registration**.\n\n## One Smallest Next Gate\n\n**Bind the pre-data scientific estimand for prior7: which exact denominator family and matching numerator/time/cut convention is the intended primary amplification claim about?**\n\nThat scientific/owner choice must precede outcomes and subsequent supported-method registration; this review cannot select it. The calculator already preserves the alternatives, so another extractor, validator framework, backend or fixture does not close this gate. If that choice is not presently authorized, useful implementation preparation for this particular seam is exhausted.\n\n## Evidence References\n\nAll paths below are under `/home/llb/Repos/facety/`:\n\n- `studies/2026-10-26-trust-topology-condition-map/wp1-conditional-static-review.md` — exact review authority; C1/C4 and exclusions.\n- Same directory: `wp1-earned-birth.md`, `wp1-earned-birth-validation.json`, `wp1-composition-fixture.json`.\n- Same directory: `reference.mjs` — independent cash reconstruction, capacity, transition predicates and ledger.\n- Same directory: `native-reference-bridge.mjs` — actual Native operation mapping.\n- `src/model.mjs` — named methods and invariants cited above.\n- `src/graph.mjs` — bounded graph counters/capacity.\n- `test/vouch-reference.test.mjs` — inspected differential controls, not executed.\n- `src/incentives.mjs`; study `wp1-incremental-receipts.md` — current receipt implementation and declared accounting limits.\n- Study `prior7-attribution.mjs`, `wp1-prior7-attribution-contract.md` — current passive attribution implementation and limits.\n- Study `wp1-g1-readiness.md`, `programme.json` — retained master gate and method boundary.\n\nPreflight references `execution.json#command-001` through `#command-004` establish only the supplied startup checks, not substantive review evidence.\n"
+    },
+    {
+      "id": "command-006",
+      "stage": "reviewer",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-006/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 11730,
+      "body": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**complete — bounded static inspection only. G1 NOT passed.**\n\nInspected the named C2/C3 contracts, actual implementations, tests and import-free set oracle. No shell, Model, experiment, test or data execution; no writes. Commit/blob identities are supplied bindings, not independently hash-verified here. This result does not repair or upgrade the earlier review’s DEGRADED evidence.\n\n## Assigned Claim IDs\n\n- **C2:** Ordinary same-party receipt cash, XP and work accounting.\n- **C3:** Passive prior7 attribution, joins, denominator families and payer custody.\n- **C4:** Exact remaining scientific/method gate.\n- **C1:** Not assigned; no earned-birth theorem endorsement supplied.\n\n## Independent Derivations/Source Anchors\n\n### C2 — Accounting is supported for the closed five alternatives\n\n**Source:** `src/incentives.mjs`, `runBranch`, `runMaturityIncentiveForks`, `readMaturityReceiptComparisons`; `src/model.mjs`, `advanceTo`, `#credit`, `#dispose`, `convertToCollector`, `transferFacy`.\n\nLet \\(q\\in\\{0,1\\}\\) be the actual newborn remittance:\n\n1. The common prefix creates one sponsor source and one peer source at hour 0.\n2. At hour 24, lawful wait converts the sponsor source, giving sponsor cash 1. Admission alternatives instead consume that same source for an invitation, giving sponsor cash 0.\n3. The newborn is admitted and issues its source at hour 48; conversion occurs at hour 72.\n4. Only **after conversion**, `runBranch` invokes `transferFacy('newcomer','sponsor',q,...)` when \\(q=1\\).\n\nConsequently:\n\\[\n\\Delta L_s=q-1,\\qquad L_n=1-q,\\qquad\n\\Delta L_{\\{s,n\\}}=(q+1-q)-1=0.\n\\]\n\nThe reader calculates direct terminal wallet differences; it does **not** subtract the burned principal again. Thus retain/remit sponsor differences are **−1/0**, not −2/−1. This is endpoint reimbursement, not demonstrated profit.\n\n**Funding is actual, not an ownership overlay.** `src/model.mjs:762–771`, `transferFacy`, validates a positive integer amount and sufficient present payer liquidity before changing wallets and recording the transfer. It does not modify XP or mint/burn counters. `runBranch` places newborn conversion before the pre-remittance snapshot and transfer.\n\n**Ordinary XP is not disposition-triggered here.** `advanceTo` credits due sources at their original 24-hour maturity; `#credit` returns immediately if a receipt already exists. Thus the two original sources are still unused when credited at hour 24; later conversion/invitation does not duplicate credit. Sponsor earns its own +1 in every branch. Its incremental XP is:\n\n- Invitation alone: **0**.\n- Invitation plus separate guarantee before the newborn act: **+1**, from the newborn act’s actual guarantor receipt at hour 72.\n\nThe reader explicitly checks the unused maturity checkpoint against credited source provenance, separately from the five already-disposed checkpoints checked through `checkedOneDayTimeline`.\n\n**Work derivation:** `src/effort.mjs:3–18` assigns unit illustrative weights to the relevant existing actions. Relative to baseline sponsor conversion:\n\n- Sponsor recruitment + invitation − conversion: \\(2-1=1\\).\n- Newborn acceptance + Self-ID + conversion: \\(3\\).\n- Joint retain increment: \\(1+3=4\\).\n- Separate guarantee adds proposal + confirmation: **6** jointly.\n\nThere is no transfer weight. The implementation records the newborn’s transfer action with `effort:null`; remittance branches have incomplete work and null newborn/joint total weighted effort. Sponsor’s separately recorded work remains known. This is not calibrated human effort.\n\n### C3 — Literal sets match the declared attribution semantics\n\n**Source:** `studies/2026-10-26-trust-topology-condition-map/prior7-attribution.mjs`, `evaluateVouchAttribution`; contract sections “Actual retained inputs and source join,” “Denominator families,” and “Horizon, absence and custody.”\n\nThe implementation establishes:\n\n- Unique canonical source/vouch/admission/relation maps.\n- Successful commit/admit journal bindings and logical-handle→canonical-vouch mappings.\n- Exact \\(c\\)-sized, distinct vouch/guarantor/relation sets.\n- Commitment before admission in journal order, matching target and issuer.\n- Admission before original expiry, and no prior exit.\n- Matching relation proposal/activation/end fields.\n- No reused admission backing or unjoined relation.\n- Complete exact operator/genuine maps over genesis, final members and actual reserved targets.\n\nIts raw set construction follows the contract directly:\n\n| Family | Actual predicate |\n|---|---|\n| Cumulative activated records | Used vouches, issuer outside U, target inside U |\n| Active terminal guarantees | Above, joined relation status `active` |\n| Terminal probation | Above, `H < expiresAt` |\n| Cumulative issuer contacts | Distinct voucher SubjectIds among activated boundary records |\n\nThere is **no denominator default**: the evaluation must supply one of four exact names. Outside operator IDs are reported separately, not substituted for SubjectId contacts.\n\n**Independent literal derivation from the supplied tape:** `test/support/vouch-experiment-fixture.mjs`, `config()`, commits a→x and b→x at hour 48, then x→y and b→y at hour 96. Under the passive overlay assigning x/y to U and a/b outside:\n\n- External activated records: **a→x, b→x, b→y**; x→y is internal.\n- a→x has a recorded exit at hour 49: terminal active external records **2**.\n- With V=3 days, boundary expiries are hour 120, 120 and 168; terminal H=192 gives probation records **0**.\n- Outside voucher SubjectIds: **a,b**, hence **2**.\n\nThe four denominators are therefore **3,2,0,2**. Assuming x/y false gives \\(F=2\\); assuming them genuine gives \\(F=0\\) without changing the protocol tape.\n\n**B0, unused reservations, seeds and custody:** The code includes used zero-original-principal vouches in activated sets, separates unused boundary reservations, and excludes genesis from new-admission F. Initial false/genuine access is retained separately with acquisition cost null. Original expiry is checked as `committedAt + 24*V`; H is bound to declared completed hours, not the last retained row.\n\nPayer cash reconciliation counts converted own sources, original bond deductions, refunds and case payouts. Each vouch must satisfy:\n\\[\nB=\\text{remaining}+\\text{refunded}+\\text{slashed}.\n\\]\nCase allocation separately reconciles slash to burn plus transfers. Output collateral remains explicitly **payer custody**, not attacker cost or recovered loss.\n\n**Oracle:** `test/support/prior7-set-verifier.mjs`, `prior7Sets`, imports neither calculator nor engine and independently walks literal admission/vouch/relation membership. It is a useful separate set calculation, **not** an independent financial validator or scientific replication.\n\n## Confirmations/Corrections\n\n- **C2 confirmed within scope:** sponsor −1/0, newborn 1/0, joint Δ0, principal once, ordinary unused-source XP24, and duty-derived incremental XP0/1.\n- **C3 confirmed within scope:** explicit static maps/cut; ordered canonical joins; distinct denominator families; B0 inclusion; unused/seed separation; payer custody; D0→null.\n- The raw fixture producer explicitly declares **all a,b,x,y genuine** in `test/support/vouch-experiment-fixture.mjs`, `environment.subjects`. Its invalid y act does not establish false personhood. False x/y are separate software-overlay assumptions.\n- **No source-backed contract violation found in the inspected closure.** This is not a claim that the readers reject every possible fabricated Native history.\n\n## Declared Exclusions versus Real Violations\n\nThe following are declared exclusions, not missing features to implement:\n\n- Full transition replay, peak-liquidity feasibility and input authentication.\n- Dynamic ownership/control or retrospective control acquisition.\n- Court merits, authorization, general debt/dispute chronology and default maturity migration.\n- Human consent, willingness, useful contribution, hazard, utility and long-run cooperation.\n\nTests intentionally demonstrate that syntactically valid replacement provenance can remain readable; the readers preserve producer identity fields but do not authenticate them. Treating those checks as authenticated execution **would** violate the stated evidence ceiling.\n\n## Minority Findings/Contradictions\n\nTwo important counterexamples must survive integration:\n\n1. **Positive F with D0 is possible** when initially supplied group access supports internal new admissions. The constructed B0/internal-support control exercises this region. It is neither proof of free attack nor safety.\n2. **F0 with genuine coalition labels is not safety.** The numerator excludes genuine-person act violations by definition. Relabeling x/y genuine preserves exactly the same funded access and potential act-level problems.\n\nThe supplied no-exit analytic illustration and the actual tape are different: the actual tape includes exit, refund and settlement. Its active denominator is **2**, not the illustration’s **3**. Do not merge their circumstances.\n\n## Scientific/Owner Gates\n\n`programme.json`, `gateContracts.G1`, requires priors1–3/7 independently confirmed/corrected **after committed method/registration**. The static contracts and tests do not supply that scientific acceptance.\n\nThe newly completed receipt and attribution software are no longer absent prerequisites. However, neither five deterministic receipt alternatives nor four passive denominator choices supplies an independent population/world law, scientific sampling, error/precision guarantees, search/kill rules or held-out confirmation.\n\nNo result here chooses a primary denominator, wage/hazard/private utility, lifetime arm, court authority or OPEN protocol rule.\n\n## One Smallest Next Gate\n\n**A pre-data, supported scientific method/registration binding for the intended prior7 claim remains necessary:** explicitly fix its numerator, one named denominator/time convention, static cut/seed/prehistory assumptions and admissible source/method identity, with the applicable sampling/error/precision/search/kill/held-out contract.\n\nThe calculator’s four selectable semantics do not choose that research estimand. If no justified choice/support exists, record the method gate as blocked; no additional validator, scalar wrapper, fixture, lifetime restart or favorable review can substitute for it.\n\n## Evidence References\n\nRead-only source anchors:\n\n- `studies/2026-10-26-trust-topology-condition-map/wp1-conditional-static-review.md` — L2/C2/C3 and C4.\n- `studies/2026-10-26-trust-topology-condition-map/wp1-incremental-receipts.md` — accounting, collection and work contracts.\n- `src/incentives.mjs` — `runBranch`, `checkedOneDayTimeline`, `runMaturityIncentiveForks`, `readMaturityReceiptComparisons`.\n- `src/model.mjs` — `advanceTo`, `#credit`, `#dispose`, `createSelfId`, `convertToCollector`, `transferFacy`; vouch admission/custody methods.\n- `src/effort.mjs:3–18` — priced action vocabulary.\n- `test/maturity-receipts.test.mjs` — inspected assertions and rejection controls, not executed results.\n- `studies/2026-10-26-trust-topology-condition-map/wp1-prior7-attribution-contract.md`.\n- `studies/2026-10-26-trust-topology-condition-map/prior7-attribution.mjs` — complete implementation.\n- `test/prior7-attribution.test.mjs`; `test/support/prior7-set-verifier.mjs`.\n- `test/support/vouch-experiment-fixture.mjs`; `src/vouch-experiment.mjs`.\n- Receipt/attribution results notes — checked for consistency, not used as substitutes for source.\n- `wp1-g1-readiness.md`; `programme.json`, `gateContracts.G1`.\n\nNo new execution evidence or independently verified content hashes are claimed.\n"
+    },
+    {
+      "id": "command-007",
+      "stage": "verifier",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-007/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 8902,
+      "body": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**complete — verification of the supplied bounded static-review evidence. Claim supported within its stated scope. G1 is NOT passed.**\n\nThe parallel header reports **2 usable results, 2 expected, minimum 2**. Both raw reviewer outputs are present and have retained evidence references. Acceptance rests on their substantive derivations and source anchors, not that count.\n\nI directly read the exact review contract, the master `programme.json#gateContracts.G1`, and the readiness reconciliation. I did not execute commands, tests, Model operations or data analysis; authenticate Git identities; or independently reinspect every implementation cited by the reviewers. Historical DEGRADED evidence remains unchanged.\n\n## Assigned Claim IDs\n\n- **C4 — verifier:** Determine whether the supplied evidence supports the composite acceptance claim and preserves the actual remaining gate.\n- **C1–C3 — evidence traceability:** Check the complementary reviewer findings for coverage, reasoning, contradictions and scope inflation. This is not a third independent implementation review.\n\n## Independent Derivations/Source Anchors\n\n### C1: Earned-birth evidence contains necessity and attainment\n\nReviewer 1 supplies an actual proof rather than merely endorsing a formula:\n\n- Founders cannot each fund B before day B.\n- Newborn x cannot fund B before \\(\\tau_x+B\\).\n- b must cumulatively fund 2B, with its second use additionally constrained by cooldown and, for K=1, original-slot expiry.\n- Taking the earliest feasible first commitments gives:\n  \\[\n  \\tau_x^*=B,\\qquad\n  \\tau_y^*=\n  \\begin{cases}\n  B+\\max(B,T,V),&K=1,\\\\\n  B+\\max(B,T),&K\\ge2.\n  \\end{cases}\n  \\]\n- The supplied issuance/conversion/commitment schedule attains these bounds with nonnegative payer wallets and 4B retained bond custody.\n\nThe report separately handles K=0, B=0, delayed backing expiry, the open command horizon and bounded realizability. This addresses the obligations in the review contract’s **“L1 — C1”** section.\n\n**Evidence:** `execution.json#command-005`, derivations 1–5.\n\n### C2: Receipt evidence distinguishes cash, XP and unknown work\n\nReviewer 2 derives, for actual newborn remittance \\(q\\in\\{0,1\\}\\):\n\\[\n\\Delta L_s=q-1,\\quad L_n=1-q,\\quad \\Delta L_{\\{s,n\\}}=0.\n\\]\n\nIts cited chronology places conversion before funded remittance. Its XP argument separates ordinary maturity credit from invitation use and from a separately undertaken guarantee duty. It explicitly preserves missing transfer effort as unknown/null rather than free work.\n\nThis supports the closed accounting claim, not profit, utility or general repayment behavior.\n\n**Evidence:** `execution.json#command-006`, “C2 — Accounting is supported for the closed five alternatives.”\n\n### C3: Attribution evidence preserves distinct sets and custody\n\nReviewer 2 supplies literal boundary membership, not only test totals. For the actual exited-relation tape, it derives denominator values **3, 2, 0, 2** for cumulative activated records, active terminal guarantees, terminal probation and distinct issuer subjects.\n\nIt also preserves:\n\n- Explicit denominator selection, with no default.\n- Admission/vouch/relation joins and ordering.\n- B0, unused reservations and seed-access distinctions.\n- D0→null.\n- Payer custody rather than inferred attacker cost.\n- Genuine producer labels versus hypothetical false-person overlays.\n\n**Evidence:** `execution.json#command-006`, “C3 — Literal sets match the declared attribution semantics.”\n\n### C4: Master acceptance remains separate\n\nDirect inspection confirms:\n\n- `wp1-conditional-static-review.md`, **“C4 — both lenses / verifier”**, expressly excludes scientific registration and G1 acceptance.\n- `programme.json`, **`gateContracts.G1`**, requires priors1–3 and7 to be independently differentially confirmed/corrected in writing **after committed method/registration**.\n- `wp1-g1-readiness.md`, opening checkpoint and **“Specific common-path/method boundary”**, records completed software preparation without supplying the missing scientific acceptance.\n\nThus the reviewers’ conditional confirmations do not satisfy the master gate.\n\n## Confirmations/Corrections\n\n| Classification | Verification finding |\n|---|---|\n| **Supported** | C1 has independently derived lower bounds, an attaining schedule and explicit source mappings in reviewer 1’s evidence. |\n| **Supported** | C2/C3 have source-cited accounting and literal-set reasoning in reviewer 2’s evidence. |\n| **Supported** | Both reports retain scientific/owner gates and state G1 NOT passed. |\n| **Contradicted overclaims** | Slot expiry is not automatic bond refund or guarantee termination; endpoint reimbursement is not profit; false overlays are not measured false identities. |\n| **Unknown / not established** | General growth, durable incentives, human cooperation, independent scientific worlds, scientific confirmation and authenticated provenance. |\n| **Missing for scientific acceptance** | A justified pre-data estimand and supported committed method/registration, followed by the required independent confirmation/correction. |\n\n**No correction to the composite claim is necessary.** However, “material dissent remains” must mean **material qualifications and counterexamples remain preserved**. Neither reviewer reports an unresolved source-backed disagreement about the bounded C1–C3 conclusions.\n\n## Declared Exclusions versus Real Violations\n\nNeither report establishes a selected-rule or bounded-contract violation. They correctly distinguish excluded work from missing implementation:\n\n- Full transition validation and authentication.\n- Dynamic ownership, general court/debt chronology and default migration.\n- Calibrated effort, willingness, private utility and longitudinal population behavior.\n- Scientific method and sampling assumptions.\n\nThe supplied evidence does not justify converting those exclusions into new validator/backend tasks.\n\n## Minority Findings/Contradictions\n\nPreserve these findings without flattening them into consensus safety:\n\n1. **K_slot=1 reuse can coexist with multiple active guarantees and retained bonds.** This is not D75 active-outgoing-capacity feasibility.  \n   Source: reviewer 1, `execution.json#command-005`.\n\n2. **F>0 with D=0 is possible** when supplied initial access supports internal admissions. It proves neither free attack nor safety.  \n   Source: reviewer 2, `execution.json#command-006`.\n\n3. **F=0 under genuine-person labels does not exclude genuine-person act violations.** The numerator does not measure them.  \n   Source: reviewer 2, same reference.\n\n4. **Actual tape versus analytic illustration:** the exited-relation tape has active denominator **2**, not the no-exit illustration’s **3**.  \n   Source: reviewer 2, same reference.\n\n5. Older handoff text describing receipt/attribution preparation as next work must not be treated as evidence those primitives are still absent. The readiness document’s subsequent checkpoint and both reviewers preserve that chronology.\n\n## Scientific/Owner Gates\n\nThe reports agree on a remaining boundary, but that agreement does not choose the research design.\n\nStill unbound are the intended primary prior7 estimand and the supported scientific method needed to evaluate it: numerator, denominator/time convention, cut/seed/prehistory assumptions, admissible source identity, and applicable sampling/error/precision/search/kill/held-out conditions.\n\nThis review neither supplies those choices nor authorizes lifetime fallback, WP-G rescue, dependent research or an OPEN protocol-rule selection.\n\n## One Smallest Next Gate\n\n**Bind, before outcomes, the intended primary prior7 estimand: its exact numerator, one named denominator, and matching time/cut convention.**\n\nThis is the first unresolved choice within—not a replacement for—the broader supported-method/registration gate. If no justified authorized choice exists, record that scientific gate as blocked. The supplied evidence does not warrant another extractor, validator framework or duplicate receipt backend.\n\n## Evidence References\n\n**Retained raw reviewer evidence:**\n\n- **ACTOR_EVIDENCE_REF: execution.json#command-005** — reviewer 1; C1 derivation and C4 boundaries.\n- **ACTOR_EVIDENCE_REF: execution.json#command-006** — reviewer 2; C2/C3 implementation reasoning and C4 boundaries.\n\n**Directly inspected documents**, under `/home/llb/Repos/facety/studies/2026-10-26-trust-topology-condition-map/`:\n\n- `wp1-conditional-static-review.md` — exact review scope, acceptance and verifier obligations.\n- `programme.json` — `gateContracts.G1`.\n- `wp1-g1-readiness.md` — subsequent software-completion checkpoint and retained scientific boundary.\n\nCommit/blob identities remain supplied bindings, not independently authenticated evidence. No new execution or scientific result is claimed.\n"
+    },
+    {
+      "id": "command-008",
+      "stage": "merger",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-008/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 7986,
+      "body": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**degraded — consensus-first synthesis of the supplied verifier report; direct raw-review coverage is incomplete. G1 is NOT passed.**\n\nThe supplied verifier reports **2 usable complementary reviewer results, 2 expected, minimum 2**, and supports the bounded composite claim. However, this merger received the verifier’s report, not the full raw reviewer outputs. References to those outputs are retained below; their presence is not equivalent to this merger having inspected them.\n\nAccordingly:\n- The verifier’s **complete** status remains preserved for its assigned verification scope.\n- This merger’s **degraded** status reflects limited input coverage, not a demonstrated defect in C1–C3.\n- Historical **DEGRADED** evidence remains unchanged. No startup or semantic-stage failure is newly established or cleared.\n- No commands, tests, Model operations or scientific analysis were performed by this merger.\n\n## Assigned Claim IDs\n\n- **C1:** Earned-birth lower bounds and attainment.\n- **C2:** Closed receipt accounting, with cash, XP and unknown work distinguished.\n- **C3:** Attribution sets, denominator semantics and payer custody.\n- **C4:** Composite evidence traceability and preservation of scientific/owner gates.\n\nThe merger consolidates the supplied verification of these claims; it is not another independent implementation review.\n\n## Independent Derivations/Source Anchors\n\n**No new independent derivation is claimed by this merger.** The following substantive derivations are reported by the verifier with retained reviewer references.\n\n### C1 — Necessity and attainment\n\nReviewer 1 reportedly derives founder and newborn funding lower bounds, b’s cumulative 2B obligation, cooldown and original-slot-expiry constraints:\n\n\\[\n\\tau_x^*=B,\\qquad\n\\tau_y^*=\n\\begin{cases}\nB+\\max(B,T,V),&K=1,\\\\\nB+\\max(B,T),&K\\ge2.\n\\end{cases}\n\\]\n\nThe reported attaining schedule preserves nonnegative payer wallets and **4B retained bond custody**. K=0, B=0, delayed backing expiry, the open command horizon and bounded realizability are addressed separately.\n\n**Source:** `execution.json#command-005`, derivations 1–5, as traced by the verifier.\n\n### C2 — Closed accounting, not profitability\n\nFor actual newborn remittance \\(q\\in\\{0,1\\}\\), reviewer 2 reportedly derives:\n\n\\[\n\\Delta L_s=q-1,\\qquad L_n=1-q,\\qquad\n\\Delta L_{\\{s,n\\}}=0.\n\\]\n\nConversion precedes funded remittance. Ordinary maturity XP is distinguished from invitation use and separately undertaken guarantee duties. Missing transfer effort remains **unknown/null**, not zero.\n\n**Source:** `execution.json#command-006`, C2, as traced by the verifier.\n\n### C3 — Literal attribution sets\n\nThe actual exited-relation tape reportedly yields denominators **3, 2, 0, 2** for cumulative activated records, active terminal guarantees, terminal probation and distinct issuer subjects respectively.\n\nThe report preserves explicit denominator selection, joins and ordering, B0/reservation/seed-access distinctions, D0→null, payer custody and the separation of genuine labels from hypothetical false-person overlays.\n\n**Source:** `execution.json#command-006`, C3, as traced by the verifier.\n\n### C4 — Scientific acceptance remains separate\n\nThe verifier reports directly inspecting:\n- `wp1-conditional-static-review.md`, C4;\n- `programme.json#gateContracts.G1`;\n- `wp1-g1-readiness.md`, including its subsequent software-completion checkpoint.\n\nIts finding is that G1 requires the specified priors to be independently differentially confirmed/corrected in writing **after committed method/registration**. Static review and completed software preparation do not supply that acceptance.\n\n**Source:** `execution.json#command-007`.\n\n## Confirmations/Corrections\n\n| Finding | Merged disposition |\n|---|---|\n| Bounded C1 necessity and attainment | Supported by the verifier’s account of reviewer 1; raw derivation not independently inspected here. |\n| Bounded C2/C3 accounting and attribution | Supported by the verifier’s account of reviewer 2; raw implementation reasoning not independently inspected here. |\n| G1 remains unpassed | Explicitly preserved. |\n| Unresolved source-backed disagreement about C1–C3 | None reported by the verifier; this merger cannot independently establish its absence from unseen raw outputs. |\n| “Material dissent remains” | Interpret as preserved material qualifications and counterexamples, not an asserted unresolved disagreement. |\n| Composite claim correction | None identified in the supplied verification. Merger input coverage remains qualified. |\n\nSlot expiry is **not** automatic bond refund or guarantee termination. Reimbursement is **not** profit. False-person overlays are **not** measured false identities.\n\n## Declared Exclusions versus Real Violations\n\nThe supplied verification identifies no selected-rule or bounded-contract violation. It distinguishes the reviewed scope from excluded or unestablished matters:\n\n- Full transition validation and authenticated provenance.\n- Dynamic ownership, general court/debt chronology and default migration.\n- Calibrated effort, willingness, private utility and longitudinal population behavior.\n- Scientific registration, independent scientific confirmation and sampling validity.\n\nThose exclusions do not, by themselves, justify another extractor, validator framework, fixture programme or duplicate receipt backend.\n\n## Minority Findings/Contradictions\n\nPreserve all five qualifications reported by the verifier:\n\n1. **K_slot=1 reuse can coexist with multiple active guarantees and retained bonds.** This does not establish D75 active-outgoing-capacity feasibility.\n2. **F>0 with D=0 is possible** under supplied initial access supporting internal admissions. It proves neither free attack nor safety.\n3. **F=0 under genuine-person labels does not exclude genuine-person act violations.**\n4. The **actual exited-relation tape has active denominator 2**; the no-exit analytic illustration has 3.\n5. Older handoff text naming receipt/attribution preparation as next work must not override the later software-completion checkpoint.\n\nThese are scope-limiting findings, not consensus safety claims.\n\n## Scientific/Owner Gates\n\nThe intended primary prior7 estimand and supported scientific method remain unbound. Relevant choices include numerator, denominator/time convention, cut/seed/prehistory assumptions, admissible source identity and applicable sampling/error/precision/search/kill/held-out conditions.\n\nReviewer agreement does not authorize selecting those choices. Same-author tests plus independent static reviewers do not constitute scientific registration, replication or G1 acceptance.\n\nNo lifetime fallback, WP-G rescue, dependent research or OPEN protocol-rule selection follows.\n\n## One Smallest Next Gate\n\n**Before outcomes, bind the intended primary prior7 estimand: its exact numerator, one named denominator and matching time/cut convention.**\n\nThis is the first unresolved choice within the broader supported-method/registration gate—not a substitute for it. If no justified authorized choice exists, record the scientific gate as **blocked**.\n\n## Evidence References\n\n- **ACTOR_EVIDENCE_REF: execution.json#command-005** — reviewer 1; C1 and C4. Reference supplied; raw output not directly inspected by this merger.\n- **ACTOR_EVIDENCE_REF: execution.json#command-006** — reviewer 2; C2/C3 and C4. Reference supplied; raw output not directly inspected by this merger.\n- **ACTOR_EVIDENCE_REF: execution.json#command-007** — verifier report supplied in this turn; primary basis of this synthesis.\n\nDocument anchors reported as directly inspected **by the verifier**, under `studies/2026-10-26-trust-topology-condition-map/`:\n- `wp1-conditional-static-review.md`\n- `programme.json#gateContracts.G1`\n- `wp1-g1-readiness.md`\n\nCommit/blob identities remain supplied bindings, not independently authenticated provenance. No new execution or scientific result is claimed.\n"
+    },
+    {
+      "id": "command-009",
+      "stage": "judge",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-009/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 6205,
+      "body": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**degraded — the supplied merger is appropriately qualified and internally consistent, but source-to-merge fidelity is not independently checkable from the provided input. G1 remains NOT passed.**\n\nThe merger text (`execution.json#command-008`) is directly available in this turn. The raw reviewer outputs and verifier report are referenced but not supplied in full. This judgment therefore evaluates the merger’s wording, evidence boundaries and synthesis discipline—not the underlying mathematical or implementation claims.\n\nThe verifier’s reported **complete** status remains attributed to its assigned scope; it is not upgraded into complete merger or judge coverage. Historical **DEGRADED** evidence remains unchanged.\n\n## Assigned Claim IDs\n\n- **C1–C3:** Judge whether the merger preserves the reported bounded findings and qualifications without inflating their evidentiary strength.\n- **C4:** Judge traceability, scientific/owner-gate preservation and separation of review agreement from scientific acceptance.\n- **Judging rubric:** Evidence preservation, severity calibration, consensus purity, internal consistency and merge bias.\n\nNo new implementation review or independent scientific derivation is claimed.\n\n## Independent Derivations/Source Anchors\n\nDirectly inspected evidence: the supplied merger text, identified as `execution.json#command-008`.\n\nObservable strengths:\n- Its status explicitly distinguishes reported verifier completeness from incomplete merger coverage.\n- C1–C3 retain source references and attribution such as “reportedly derives.”\n- The confirmations table explicitly limits what can be concluded about unseen raw outputs.\n- Five scope-limiting findings are retained rather than collapsed into a safety conclusion.\n- G1 acceptance is explicitly withheld.\n\nThe formulas, denominator values, reviewer counts and verifier inspections are **reported upstream evidence**, not independently verified facts in this judgment.\n\n## Confirmations/Corrections\n\n| Rubric | Judgment |\n|---|---|\n| Evidence preservation | **Qualified pass on visible text.** Source references and uncertainty are retained. Completeness against the raw sources is not checkable. |\n| Severity calibration | **Appropriate.** Missing raw coverage is treated as an evidence limitation, not a demonstrated C1–C3 defect or scientific acceptance. |\n| Consensus purity | **Appropriate within stated limits.** Complementary reviewer coverage is not represented as independent replication of every claim. |\n| Internal consistency | **No material contradiction identified.** Verifier completeness and merger degradation describe different scopes. |\n| Merge bias | **No demonstrated substantive distortion.** Selective omission cannot be ruled out without the upstream outputs. |\n\n**One wording qualification:** Recasting “material dissent remains” as “material qualifications and counterexamples” is an interpretive choice. The listed items are compatible qualifications on their face, but the original dissent context is unavailable. Preserve this as the merger’s interpretation—not a verified resolution or absence of upstream disagreement.\n\nNo substantive correction to C1–C3 is justified by the supplied text alone.\n\n## Declared Exclusions versus Real Violations\n\nNo selected-rule or bounded-contract violation is established by this judgment. That is **not** verification that none exists.\n\nThe merger appropriately excludes:\n- Full transition validation and authenticated provenance.\n- Dynamic court/debt chronology and default migration.\n- Calibrated effort, private utility and longitudinal behavior.\n- Scientific registration, independent confirmation and sampling validity.\n\nThese exclusions do not independently justify more software infrastructure. Equally, static review agreement does not close them.\n\n## Minority Findings/Contradictions\n\nThe merger visibly preserves all five listed qualifications:\n\n1. Slot reuse does not establish D75 active-outgoing-capacity feasibility.\n2. Positive false-person-overlay counts with a zero selected denominator do not prove free attack or safety.\n3. Genuine-person labels do not exclude genuine-person act violations.\n4. The actual exited-relation tape and no-exit illustration have different active denominators.\n5. Older preparation handoffs must not override the reported later software-completion checkpoint.\n\nTheir fidelity to the original reviewers remains unverified. No unresolved substantive contradiction is visible in the supplied merger; none can be ruled out in unseen sources.\n\n## Scientific/Owner Gates\n\n**G1 remains unpassed.**\n\nThe merger correctly separates:\n- Static review from scientific confirmation.\n- Software preparation from registered-method acceptance.\n- Reviewer agreement from authority to select the primary prior7 estimand.\n- Bounded accounting findings from profitability, safety or equilibrium claims.\n\nNo lifetime fallback, WP-G rescue, dependent research authorization or OPEN protocol choice follows.\n\n## One Smallest Next Gate\n\n**Before outcomes, bind the intended primary prior7 estimand: its exact numerator, one named denominator and matching time/cut convention, through an authorized, justified choice.**\n\nThis remains only the first unresolved part of the broader method/registration gate. If no justified authorized choice exists, record it as **blocked**.\n\nFor this report’s normalization, retain the **degraded** status and the qualification that upstream dissent and source fidelity were not independently checked.\n\n## Evidence References\n\n- **ACTOR_EVIDENCE_REF: execution.json#command-005** — reviewer 1; retained upstream reference only, raw output not inspected.\n- **ACTOR_EVIDENCE_REF: execution.json#command-006** — reviewer 2; retained upstream reference only, raw output not inspected.\n- **ACTOR_EVIDENCE_REF: execution.json#command-007** — verifier; conclusions available only through the supplied merger.\n- **ACTOR_EVIDENCE_REF: execution.json#command-008** — merger; text directly inspected in this turn.\n\nNo project commands, tests, Model operations, repository changes or scientific analysis were performed for this judgment.\n"
+    },
+    {
+      "id": "command-010",
+      "stage": "normalizer",
+      "semanticAcceptance": "accepted",
+      "exitCode": 0,
+      "source": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-conditional-static-20261028/captures/command-010/attempt-001/stdout.log",
+      "expectedUtf8Bytes": 5893,
+      "body": "ACTOR_REVIEW_RESULT\n\n## Status\n\n**degraded**\n\nThe supplied judge report finds the merger appropriately qualified and internally consistent within the text it inspected. Source-to-merge fidelity remains independently unchecked because the raw reviewer outputs and verifier report were not supplied in full.\n\nThis normalization directly uses the supplied judge report; it does not independently inspect the merger or upstream artifacts. The verifier’s reported **complete** status applies only to its assigned scope. It does not establish complete merger, judge or normalization coverage. Historical **DEGRADED** evidence remains unchanged.\n\n**G1 remains NOT passed.**\n\n## Assigned Claim IDs\n\n- **C1–C3:** Preserve the judgment that the merger retains reported bounded findings and qualifications without visibly inflating their evidentiary strength.\n- **C4:** Preserve traceability, scientific/owner gates and the distinction between review agreement and scientific acceptance.\n- **Normalization scope:** Preserve meaning, severity, branch status, evidence references and uncertainty. No new implementation review or independent scientific derivation.\n\n## Independent Derivations/Source Anchors\n\n**Direct input:** The judge report, `execution.json#command-009`.\n\nThe judge reports directly inspecting the merger, `execution.json#command-008`, and observing that it:\n- Distinguishes reported verifier completeness from incomplete merger coverage.\n- Retains attribution and source references for C1–C3.\n- Limits conclusions about unseen raw outputs.\n- Preserves five scope-limiting findings.\n- Explicitly withholds G1 acceptance.\n\nThese are attributed judge findings, not independent confirmations by this normalizer. Formulas, denominator values, reviewer counts and verifier inspections remain reported upstream evidence.\n\n## Confirmations/Corrections\n\n| Rubric | Preserved judgment |\n|---|---|\n| Evidence preservation | **Qualified pass on the merger text inspected by the judge.** Completeness against raw sources is not checkable. |\n| Severity calibration | Missing raw coverage is an evidence limitation, not a demonstrated C1–C3 defect or scientific acceptance. |\n| Consensus purity | Complementary reviewer coverage is not independent replication of every claim. |\n| Internal consistency | The judge identified no material contradiction; verifier completeness and merger degradation concern different scopes. |\n| Merge bias | No substantive distortion was demonstrated. Selective omission cannot be ruled out. |\n\n**Wording qualification:** Recasting “material dissent remains” as “material qualifications and counterexamples” is the merger’s interpretation. Without the original dissent context, it is not a verified resolution or proof of absent disagreement.\n\nNo substantive correction to C1–C3 is justified by the supplied report alone.\n\n## Declared Exclusions versus Real Violations\n\nThe supplied judgment establishes no selected-rule or bounded-contract violation. This is **not** verification that none exists.\n\nRetained exclusions:\n- Full transition validation and authenticated provenance.\n- Dynamic court/debt chronology and default migration.\n- Calibrated effort, private utility and longitudinal behavior.\n- Scientific registration, independent confirmation and sampling validity.\n\nStatic review agreement does not close these exclusions. Their existence does not independently justify additional software infrastructure.\n\n## Minority Findings/Contradictions\n\nThe judge reports that the merger preserves these five qualifications:\n\n1. Slot reuse does not establish D75 active-outgoing-capacity feasibility.\n2. Positive false-person-overlay counts with a zero selected denominator establish neither free attack nor safety.\n3. Genuine-person labels do not exclude genuine-person act violations.\n4. The actual exited-relation tape and the no-exit illustration have different active denominators.\n5. Older preparation handoffs must not override the reported later software-completion checkpoint.\n\nFidelity to the original reviewers remains unverified. The judge identified no unresolved substantive contradiction in the merger text it inspected; unseen-source contradictions cannot be ruled out.\n\n## Scientific/Owner Gates\n\n**G1 remains unpassed.**\n\nPreserve the distinctions between:\n- Static review and scientific confirmation.\n- Software preparation and registered-method acceptance.\n- Reviewer agreement and authority to select the primary prior7 estimand.\n- Bounded accounting findings and profitability, safety or equilibrium claims.\n\nNo lifetime fallback, WP-G rescue, dependent research authorization or selection of an OPEN protocol choice follows.\n\n## One Smallest Next Gate\n\n**Before outcomes, bind the intended primary prior7 estimand through an authorized, justified choice: its exact numerator, one named denominator and matching time/cut convention.**\n\nThis is only the first unresolved part of the broader method/registration gate. If no justified authorized choice exists, record it as **blocked**.\n\n## Evidence References\n\n- **ACTOR_EVIDENCE_REF: execution.json#command-005** — Reviewer 1; retained upstream reference, raw output not independently inspected.\n- **ACTOR_EVIDENCE_REF: execution.json#command-006** — Reviewer 2; retained upstream reference, raw output not independently inspected.\n- **ACTOR_EVIDENCE_REF: execution.json#command-007** — Verifier; conclusions attributed through the merger and judge, raw report not independently inspected.\n- **ACTOR_EVIDENCE_REF: execution.json#command-008** — Merger; directly inspected by the judge, not independently inspected in this normalization.\n- **ACTOR_EVIDENCE_REF: execution.json#command-009** — Judge; supplied report directly used for this normalization.\n\nNo project commands, tests, Model operations, repository changes or independent scientific analysis were performed.\n"
+    }
+  ],
+  "acceptance": {
+    "startup": "Four exact ACTOR_PREFLIGHT_OK outputs, all semantically accepted; no actors code/runtime fix, old rejected startup evidence unchanged.",
+    "reviewers": "C1 independent necessity+attainment proof and C2/C3 independent accounting/set source inspection complete within assigned scopes, not repeated independent scientific worlds.",
+    "verifier": "Complete bounded traceability with both raw reviewers; not third independent reinspection of every implementation.",
+    "pipeline": "DEGRADED merger/judge/normalizer due actual previous-only stdin coverage, preserved verbatim. Semantic accepted/exit0 is not complete source-to-merge verification.",
+    "coordinator": "Read ALL ten exact stdout bodies from admitted execution references, authenticate bound unchanged inputs and inspect retained qualifications; this integration does not rewrite pipeline status, replay work or independently re-prove every statement."
+  },
+  "claims": {
+    "C1": "Conditional tau_x=B, tau_y=B+max(B,T,V) for K_slot1 / B+max(B,T) for K_slot>=2; K0 infeasible, B0 no source funding. Necessity and attaining per-call-solvent4B escrow construction supported under exact accepted-reference family, not general financed reproduction/D75/growth.",
+    "C2": "q in{0,1}: sponsor cash Delta=q-1, newborn=1-q, jointDelta0; principal once, unused ordinaryXP24, duty-only XP increment0/1; transfer work unknown/null, reimbursement not profit/general payback.",
+    "C3": "Explicit static evaluator cut/maps; actual canonical joins. Supplied hypothetical false x/y F2 with D cumulative3/active2/probation0/contacts2; actual native producer declares all genuine. Payer custody not attacker cost or collected burn; no primary D or verified personhood.",
+    "C4": "G1 NOT passed. Primary prior7 estimand/justified denominator+numerator/time/cut and applicable supported committed method/registration plus independent scientific requirements still unbound."
+  },
+  "retainedQualifications": [
+    "Renewable slot reuse leaves active guarantees/retained bonds; not D75 capacity.",
+    "Positive F with D0 under supplied seeds/internal growth is undefined, not free attack or safe.",
+    "Genuine F0 does not measure genuine-person act violations.",
+    "Actual exited/refunded tape's activeD2 differs from no-exit illustrative D3.",
+    "Old convergence handoffs do not reopen completed receipt/attribution seams."
+  ],
+  "evidenceLimits": [
+    "Two complementary independent scopes, not duplicate verification of every claim or mathematical certification by vote.",
+    "No Model/experiment/test/probe/data/scientific registration or external/person-data calls.",
+    "No full transition/peak-liquidity/authentication/dynamic ownership/court/debt/default migration; excluded features are not bugs requiring another backend.",
+    "Older independent review/registrations/results remain immutable."
+  ],
+  "validation": {
+    "terminalAndAllTenBodies": "Exact retained stdout strings equal admitted on-disk UTF-8 bytes and per-stage execution byte counts; all exit0/semantic accepted, first4 exact tokens, last3 retain degraded.",
+    "primaryAndDiagnostic": "Primary not_selected preserved; separate command-only diagnostic SHA256/18494bytes verified, not promoted into substantive review output.",
+    "frozenInputBindings": "Contract, earned-birth text, incentives, study calculator, attribution findings and programme blobs match launch; core/test/runtime and separate study SHA256 match. No relevant source/test/method/default/protocol mutation.",
+    "context": { "errors": 0, "warnings": 29, "log": "/tmp/facety-wp1-conditional-review-results-context.txt" },
+    "diffCheck": true,
+    "freshTestsOrExperiments": 0,
+    "reusedSoftwareEvidence": "778current+21original-compatible isolated historical/37focused/DAG55x177; exact equality only, NOT fresh rerun or G1.",
+    "captureHarnessNote": "Initial codemode store-cap failure followed successful file reads, with no repository writes; resumed admitted reads and packaged raw bodies directly without persistent large-value storage. No data/report retuning or review retry."
+  },
+  "unchanged": {
+    "coreDigest": "39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448",
+    "coreFiles": 55,
+    "srcTree": "9d3eb889ad256ceb72cf28abe979752b2e01cc70",
+    "testTree": "9c0640c84e7f11aa72a912d047320573972a7434",
+    "node": "v26.8.1",
+    "studyMethodBlob": "937ed2cea5804db9cb622a3706f4c35b60fc04c2",
+    "studyMethodSha256": "69cd10b557879ca490feaad37787e50645a16833c8a3c3455e5126653104ac63",
+    "reusedSoftwareValidation": "778current+21original-compatible isolated historical/37focused/DAG55x177, exact Source/test/runtime/study equality, NOT fresh rerun."
+  },
+  "handoff": {
+    "canonical": "BACKLOG.md",
+    "cohort": "Integrate actual completed new conditional-prior review; preserve raw evidence, scope, pipeline degradation and unchanged-source authenticity.",
+    "next": "Reconcile authority for the primary prior7 research estimand against Q11/programme and delegated routine choices; justify a candidate numerator/one denominator/time/static cut/seed scope BEFORE any method/data. Do not confuse research measurement with selected protocol choice. If an actual OPEN/owner choice blocks every useful preparation, record exact question; no scalar/backend/fixture/lifetime fallback.",
+    "checkpoint": "C1rederived-C2cash-C3sets-supported/C4estimandMethodUnbound/all10accepted-preflight4exact/tailDEGRADED-preserved/coordinatorRaw10-authenticated/core39ea-study69cd-test9c064/noG1",
+    "continuationWarranted": true
+  }
+}
