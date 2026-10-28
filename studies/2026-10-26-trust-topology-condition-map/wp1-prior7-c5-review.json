@@ -1,0 +1,59 @@
+{
+  "schema": "facety-wp1-c5-static-review/v1",
+  "date": "2026-10-28",
+  "classification": "DIAGNOSTIC pre-review task/public launch request, NOT a Recipe, findings/data/registration/G1",
+  "canonical": "BACKLOG.md",
+  "task": {
+    "purpose": "Independent verification of NEW C5 finite internal-funding induction; C1-C3 already reviewed and not a new assignment.",
+    "inputBase": "ad5a49a870822d0f4a08674fe549c993f2eda9a1",
+    "proof": "studies/2026-10-26-trust-topology-condition-map/wp1-prior7-internal-growth.md",
+    "proofBlob": "fd58d3347873ee24216fb512dd5e73930281c0cd",
+    "preDerivationContract": "studies/2026-10-26-trust-topology-condition-map/wp1-prior7-estimand.md",
+    "preDerivationContractCommit": "7d9fe06",
+    "preDerivationContractBlob": "db0671e573e9fd3de0e4151df362fca76ce7d7f6",
+    "acceptance": "Both complementary scopes must be source-cited/independently reasoned with derivation or concrete counterexample/obstruction, not endorsements based on summaries/test counts. No favorable verdict required. Distinguish an actual violated bounded claim from declared exclusion, material limitation and scientific/owner gate. Preserve minority severe findings and partial/degraded evidence; no reviewer count is a mathematical certificate or experimental world.",
+    "isolation": "Clean read-only contexts. Coordinator owns shared contract/integration and will not mutate proof/contract/runtime/reference/test/method inputs until terminal. No reviewer repository writes, code fixes, shell/Model/reference/experiment/test/probe/data calls, new label/seed/world, external sources/accounts/PII, protocol/OPEN/default selection, lifetime/C3/WP-G fallback or scientific registration.",
+    "evidence": "Inspect exact proof plus relevant actual src/model.mjs, src/graph.mjs and import-free reference.mjs predicates. native-reference-bridge.mjs and src/vouch-experiment-config.mjs may be read, NOT invoked. wp1-earned-birth.md/earlier independent findings supply the base interface; do not rerun their review. Supplied Git identities require coordinator byte checks, not fabricated reviewer hash authentication.",
+    "source": {
+      "digest": "39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448",
+      "files": 55,
+      "srcTree": "9d3eb889ad256ceb72cf28abe979752b2e01cc70",
+      "testTree": "9c0640c84e7f11aa72a912d047320573972a7434",
+      "node": "v26.8.1",
+      "modelBlob": "876b962261ff7652fab95647eea0d98375667c5b",
+      "graphBlob": "696705486990261b8625811f156a62c1c0893115",
+      "referenceBlob": "af6827fc8af471015f711c89cc187a5e1ab8886d",
+      "bridgeBlob": "de522c1baf36f2a5b215aef89edee6f5466a6aae",
+      "studyCalculatorSha256": "69cd10b557879ca490feaad37787e50645a16833c8a3c3455e5126653104ac63",
+      "masterProgrammeBlob": "48bbc8352eafb9f9dee11535de5a988daed2d3bd",
+      "validationReuse": "778current+21original-compatible isolated historical/37focused/DAG55x177 under exact unchanged core/test/runtime/separate-study identity; NOT fresh tests or scientific confirmation. Src digest excludes study code."
+    },
+    "pipeline": "Maintained swarm/lens-review supplies preflights/two reviewers/verifier/merger/fresh judge/normalizer. Role-conditional public format previously produced4exact accepted preflight tokens, not an actors runtime fix. Tail stages may receive only prior text: preserve real coverage DEGRADED, never imply raw references mean inspected bodies or retry favorable work. Coordinator must retain all raw stage evidence/actual generation and explicitly integrate scope/dissent before acceptance.",
+    "nextGatePolicy": "Recommend only an actual correction or one precise remaining causal/method/owner gate; do not invent a framework/fixture/metric/another review if useful preparation is exhausted. No recommendation can waive master G1, select universal D_attack, assume physical aliases feasible or claim a defeated defense from the no-intervention scenario."
+  },
+  "recipe": "swarm/lens-review",
+  "request": {
+    "scope": "READ-ONLY NEW C5 review in /home/llb/Repos/facety. FIRST read studies/2026-10-26-trust-topology-condition-map/wp1-prior7-c5-review.json and the pinned proof wp1-prior7-internal-growth.md (blobfd58d3347873ee24216fb512dd5e73930281c0cd, basead5a49a). Apply ONLY your assigned complementary C5 lens. Inspect exact actual source/reference gates; no executing any Model/reference/experiment/test/data/shell or writing. Do NOT repeat C1-C3 review or upgrade earlier DEGRADED reports. C5 assumes accepted-reference c2/no intervention/zero initial cash, not actual false-person feasibility or full protocol safety. Derive or refute the finite induction and exact bounds within scope; preserve outside ongoing guarantees/veto/XP/duties and source-mapped limits. Inputs remain frozen until terminal. G1 NOT passed, no new registration or rule migration.",
+    "lenses": [
+      "C5-Funding/clock induction: independently reconstruct the checkpoint invariant and base interface, then verify B0/positive-B source blocks, x last prefix issue2B-1 versus tau0>=2B, y first issue, between-block spacingL-B+1>=1, maturity/conversion and debit order at shared hours. Verify each wallet B before its own debit, no bond refund/reuse/pooling, half-open slot expiry at L>=V, repeat cooldown L>=T/first-use, accepted distinct vouchers/live fresh unattached intact commitments and target consent. Derive S=(4+2n)B and per-payer balances or give a counterexample/omitted source gate. L=max(B,T,V) is sufficient, not claimed fastest. No full C1-C3 rerun or simulation.",
+      "C5-Cut/accountability/resource boundary: independently derive fixed external a->x,b->x,b->y D3 versus internal x/y->zj and conditional F2+n, member/active/outgoing counts, graph revisions/edge IDs, logical IDs, XP-safe bound and Q=3S+3(2+n) EXCLUDING clock/audit CPU. Check actual host3650day/maxActions/maxSubjects and H>tn/safe finite limits; no infinite capped-engine/all-rule kill claim. Verify x's funding acts retain outside a,b and y's b,x guarantor/veto/ordinary-XP roles, no proof of outsiders' neglect/guilt or erased duty. False/control labels/no-intervention/accepted-reference are scenario assumptions, not an observed alias attack, selected D75/lifetime rule, profitability or defeat of identity/defense. Distinguish real mathematical/source violation from declared excluded full-court/authentication/behavior."
+    ],
+    "thinking": "medium",
+    "tools": "read",
+    "subagent_ttl_ms": 600000,
+    "reviewer_concurrency": "2",
+    "min_successful_reviewers": 2,
+    "claim": "C5 finite internal continuation is independently source-supported OR corrected/refuted under its exact precommitted family; funding/clocks, fixed external count, growing held capital, finite bounds and continuing outside accountability remain explicit. No G1, actual-person attack, profitability or unbounded-engine inference follows.",
+    "evidence_policy": "Independently reason from actual predicates; cite exact source sections/methods and mathematical steps for each material conclusion. No test counts/summaries as proof, no claimed Git authentication from read-only inspections. Verifier/merger/judge preserve raw source references, actual partial input coverage and substantive dissent.",
+    "risk_policy": "Preserve source-backed counterexamples/unsafe bounds/omitted gates. Treat no intervention and accepted assumed-false members as controls, not defeated defense. Declared full-transition/authentication/dynamic court/evidence/human-model exclusions are not new feature requirements. No covert Model/data call, selected OPEN/default, lifetime fallback or repeated favorable review.",
+    "merge_policy": "Require both complementary scopes; preserve original branch status and semantic-stage failures. Reviewer agreement is not scientific replication. If merger/judge lack original raw inputs, retain DEGRADED instead of inferring full fidelity from references. Fresh judge checks actual available report/dissent; coordinator integrates all retained raw bodies separately, never rewrites their coverage status.",
+    "output_format": "ROLE-CONDITIONAL: For an actual preflight check (prompt starts Preflight check for stage), reply EXACTLY ACTOR_PREFLIGHT_OK and nothing else; do not inspect files. For substantive reviewers/verifier/merger/judge/normalizer, provide Markdown: Status(complete/degraded/insufficient_data), Assigned C5 Scope, Independent Derivation/Source Anchors, Confirmations or Counterexamples, Actual Violations versus Declared Limits, Continuing Outside Accountability, Finite Resource/Horizon Limits, Minority Findings, One Remaining Gate, Evidence References. Apply assigned scope only; no preflight token for substantive tasks."
+  },
+  "launch": null,
+  "handoff": {
+    "status": "Prelaunch contract/request only, to be committed before spawn; no independent findings.",
+    "canonical": "BACKLOG.md",
+    "next": "Launch exactly this public maintained Recipe request, retain actual run/generation/locations and pending truth; await automatic completion without routine polling. Integrate source-cited confirmations/corrections/dissent in a later bounded cohort; no duplicate review/Native fixture or scientific gate bypass.",
+    "continuationWarranted": true
+  }
+}
