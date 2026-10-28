@@ -57,9 +57,36 @@
     "merge_policy": "Require both complementary lenses; preserve raw/semantic stages and insufficient/degraded evidence. Resolve disagreements only with inspected evidence. Merger/judge/normalizer that lack original raw source/report input remain DEGRADED and cannot infer source-to-merge fidelity from references. Coordinator later integrates retained raw bodies separately without rewriting coverage or treating vote count as scientific proof.",
     "output_format": "ROLE-CONDITIONAL: For an actual preflight check (prompt starts Preflight check for stage), reply EXACTLY ACTOR_PREFLIGHT_OK and nothing else; do not inspect files. For substantive reviewers/verifier/merger/judge/normalizer give Markdown: Status(complete/degraded/insufficient_data); Verdict(ADMIT FOR SOFTWARE ONLY/REFINE/REJECT/BLOCKED); Assigned Scope; Value/Master-Gate Assessment; Exact Source/Inference/Proxy Findings; Critical versus Declared Limits; Minority/Unresolved Findings; Actual Input Coverage; Smallest Safe Next Act; Evidence References. Do not output preflight token for substantive tasks."
   },
-  "launch": null,
+  "launch": {
+    "contractCommittedBeforeSpawn": "37dde904679e069a34a46fb6753861c4acc3fe3a",
+    "target": "run:facety-wp1-continuation-method-20261028",
+    "instance": "eb9f9fb4-115f-4cb0-9c61-f1b3191abf55",
+    "launchKind": "spawn",
+    "launchState": "running",
+    "model": "inherited:openai/gpt-6.1-sol",
+    "thinking": "explicit:medium",
+    "recipe": "swarm/lens-review",
+    "pid": 2795482,
+    "observedLocations": {
+      "directory": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-continuation-method-20261028",
+      "metadata": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-continuation-method-20261028/run.json",
+      "trace": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-continuation-method-20261028/trace.jsonl",
+      "stdout": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-continuation-method-20261028/stdout.log",
+      "stderr": "/home/llb/.pi/agent/tmp/pi-actors/runs/facety-wp1-continuation-method-20261028/stderr.log",
+      "basis": "Exact generation mutable starting file locations only; result/execution/context_index/control/published_sessions missing at launch. Not preflight/reviewer completion or guessed capture authority."
+    },
+    "preflightAndReview": "Pending; spawn running is NOT preflight/model/tool readiness, independent finding or acceptance. Preserve actual stage semantics, partial coverage and DEGRADED tails.",
+    "validation": {
+      "contextErrors": 0,
+      "existingReviewedWarnings": 29,
+      "contextLog": "/tmp/facety-wp1-continuation-method-review-context.txt",
+      "sourceBindings": "All18pinned files + core/test/runtime/separate-study exact before spawn; existing778+21/37/DAG55x177 reused, NOT rerun",
+      "newNativeOrScientificCalls": 0
+    },
+    "waitBasis": "Comparable maintained2lens/10stage reviews took about285seconds; after launch bookkeeping allow240seconds, with earlier automatic root completion delivery. No busy-polling, duplicate launch or coordinator shadow review."
+  },
   "handoff": {
-    "status": "frozen prelaunch request; not spawned/ready/completed",
+    "status": "running readonly METHOD review; preflights/findings pending, no new acceptance/data or G1",
     "newNativeOrScientificCalls": 0,
     "G1": "NOT passed",
     "sourceTestEvidence": "Existing778+21/37/DAG55x177 reused only on exact core/test/runtime/separate-study equality; no new tests",
