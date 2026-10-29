@@ -8,6 +8,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 
 - V1 pre-code contract for an opt-in valence/K reference (D83/D93/D94/D97/D98/D100, D82 XP); OPEN choices are required bindings.
 - V1 implemented opt-in in `FacetyModel` (`openValence`, `withdrawValence`, `setOwnedSlotCeiling`, `ownedSlots`, `valenceRecords`) with `test/valences.test.mjs`; structural path replay refuses valence journals explicitly.
+- V2 pre-code contract for invitation-side units (D105–D107).
 
 ### Garden (2026-10-29)
 
