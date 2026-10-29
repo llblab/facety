@@ -12,6 +12,8 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 - C4: README, AGENTS and DECISIONS_NEEDED concentrated (166KB → 46KB); integrity guard now checks README example imports.
 - C5 (part): insight register condensed to one line per decision/finding (334KB → 94KB); simulator D61 narrative replaced by an API/contract table.
 - C7: archived 11 untested outputs (7.1MB) from the four immutable 2026-10-24 packets; the historical guard now pins the archived set and verifies README relinks restore reference bytes.
+- C5: docs index restructured (38KB → 10KB, guard: every study README indexed); research/simulator/indexer result narratives replaced by concise contract text and pointers.
+- Result versus baseline `8b77cd8`: tracked bytes 51.66M → 36.55M (−29%), Markdown 3.53M → 2.81M (−20%); 804 tests green. Optional studies-prose consolidation stays in BACKLOG maintenance.
 
 ### Owned slots, valences and invitations (D81–D107, documentation only)
 

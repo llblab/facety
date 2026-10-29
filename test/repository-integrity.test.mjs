@@ -48,6 +48,12 @@ test('every relative Markdown link resolves to a tracked file or directory', () 
   assert.deepEqual(broken, []);
 });
 
+test('every study README is reachable from the documentation index', () => {
+  const index = text.get('docs/README.md');
+  const missing = markdown.filter(file => /^studies\/[^/]+\/README\.md$/.test(file)).filter(file => !index.includes('../' + file));
+  assert.deepEqual(missing, []);
+});
+
 test('README code examples import only existing named exports', async () => {
   const missing = [];
   for (const block of text.get('README.md').matchAll(/```js\n([\s\S]*?)```/g)) {

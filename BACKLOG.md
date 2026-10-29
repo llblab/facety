@@ -6,18 +6,6 @@ This file alone owns open work. Each item states what is missing, its gate and t
 
 **Current owner priority — [D76 Evidence Core Convergence](docs/facety.protocol.en.md#4618-evidence-core-convergence-d76):** minimum causal evidence for genuine growth, honest incentive advantage, accountable XP/guarantees, funded public correction, capture resistance and recovery, preferring critical falsifiers and longitudinal living-network trajectories over static microcases. [Minimum evidence frontier](docs/research.en.md#minimum-evidence-frontier-d76). D73 core-first focus stands. **Parked, no automatic restart:** C3 Council entry, WP-G indexer, old lifetime-K, peripheral rescue/detection modules, stopped studies. Independent useful checks may proceed around a blocked branch, never through a scientific, authority or privacy gate.
 
-## Consolidation programme (owner request,2026-10-29) — active
-
-Goal: cut at least20% of the tracked project, remove noise, consolidate knowledge and concentrate meaning without losing selected rules, OPEN contracts, evidence pointers or validation. Baseline `8b77cd8`: 906 files, 51,661,067 tracked bytes, 3,525,741 Markdown bytes. **Stop when** tracked bytes ≤41.3M AND Markdown ≤2.82M, `npm test` (with the link/anchor integrity guard) is green and every selected rule/OPEN contract still has one owner. Method per slice: measure → cut/merge → integrity + full tests → reconcile. Removed bytes stay recoverable at `8b77cd8` (see AGENTS archive rule).
-
-- [x] **C1 integrity guard + raw-output archive:** 334 untested raw outputs (7.37MB) archived to permalinks; guard enforces links/anchors.
-- [x] **C2 CHANGELOG:** 183KB narrative → milestone ledger.
-- [x] **C3 BACKLOG:** 88KB → open work, gates and unblockers only.
-- [x] **C4 README/AGENTS/DECISIONS_NEEDED:** 166KB → 46KB; settled/unselected rule lists concentrated in AGENTS; README examples guarded by an export check.
-- [ ] **C5 docs:** done: `insights` 334KB → 94KB (one line per decision/finding), `simulator` D61 API narrative 59KB → 6KB table. Next: remaining `simulator` sections (P/b, Native vouch, D54/D55, D76), `research`, `docs/README` index.
-- [ ] **C6 studies prose:** consolidate per-study Markdown where pages repeat the same packet.
-- [x] **C7 immutable packets:** 11 untested outputs (7.1MB) archived from the four 2026-10-24 packets; `test/historical-source.test.mjs` still forbids any modification/addition, pins the exact archived set and only permits README link retargeting that restores reference bytes.
-
 ## Trust-topology condition map: master programme
 
 [The programme](studies/2026-10-26-trust-topology-condition-map/README.md) (proposal under test) governs scope, order, method and outputs; [G0](studies/2026-10-26-trust-topology-condition-map/checkpoint-g0.md) supplies inventory, [DECISIONS_NEEDED](DECISIONS_NEEDED.md) the assumption register. D62 [majority-resilience framing](studies/2026-10-26-trust-topology-condition-map/majority-resilience.md) and [Q15](DECISIONS_NEEDED.md#q15--majority-conditioned-economic-resilience-d62) separate people, accounts, local power and funded defense; no quorum, price floor or threshold is selected.
@@ -143,6 +131,10 @@ Acceptance for all: claims name strategy menu, valuation and dispute assumptions
 ## Superseded study packets (reference only)
 
 The [condition map](studies/2026-10-25-condition-map/README.md), [CORE v2](studies/2026-10-25-invite-cost-vs-core/README.md) and [P/b invitation limits](studies/2026-10-25-invitation-limits/README.md) packets are retained references; the master programme above owns their tasks.
+
+## Maintenance
+
+- [ ] **Optional studies-prose consolidation:** study Markdown (~1.6MB) still repeats packet narratives across contract/implementation/results pages. Merge only where a packet's pages restate each other; keep every result, method binding and inbound anchor, with `test/repository-integrity.test.mjs` green. Low priority: the consolidation targets are met.
 
 ## Limits
 
