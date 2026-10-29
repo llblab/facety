@@ -46,12 +46,15 @@ function invite(facety, creator, target) {
   return () => facety.createInvitation(creator, facety.eligibleEmissions(creator)[0], target);
 }
 
-test('councilPaths bindings are exact, null when off, and genesis pairs need the V3 reference', () => {
+test('councilPaths bindings are exact; with eligibility off they only set the Council reference (D115)', () => {
   assert.throws(() => construct({ reference: { councilPaths: { ...PATHS, terminal: 'mixed' } } }), TypeError);
   assert.throws(() => construct({ reference: { councilPaths: { ...PATHS, extra: 1 } } }), TypeError);
   assert.throws(() => construct({ reference: { councilPaths: null } }), TypeError);
-  assert.throws(() => construct({ reference: { eligibility: 'off' } }), TypeError, 'non-null councilPaths with eligibility off');
-  assert.throws(() => construct({ reference: { eligibility: 'off', councilPaths: null } }), TypeError, 'genesis pairs with eligibility off');
+  assert.throws(() => construct({ reference: { eligibility: 'off', councilPaths: { ...PATHS, council: 'other' } } }), TypeError);
+  // D115: genesis pairs and a Council binding are allowed without the path gate; no bootstrap latch or gate follows.
+  const off = construct({ reference: { eligibility: 'off' } });
+  assert.equal(off.initialBootstrap, null);
+  assert.ok(off.guarantees.edge('g000', 'g001') && off.guarantees.edge('g001', 'g000'));
   assert.equal(construct({ genesisPairs: [], reference: { eligibility: 'off', councilPaths: null } }).initialBootstrap, null);
 });
 

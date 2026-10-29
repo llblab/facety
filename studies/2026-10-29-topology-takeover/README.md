@@ -1,6 +1,6 @@
 # Topology takeover: does the D104/D36 path gate stop an attacker cone? (D115)
 
-**Status (2026-10-29): pre-code contract.** Committed before the engine code; an implementation section follows once it exists. No result yet.
+**Status (2026-10-29):** pre-code contract committed (`85c63f4`), engine implemented (see Implementation), exploratory trajectories below. No registered confirmation yet.
 
 ## Question
 
@@ -19,7 +19,7 @@ A new runner (`src/topology-experiment.mjs`) drives `FacetyModel` in valence mod
 
 ### Model changes (opt-in, legacy defaults unchanged)
 
-- **D33 Council size.** New `councilPaths.council` binding `'d33-active-lookup'`: `council()` returns the top C active accepted subjects by XP, where `D = digits(max(1, activeCount))`, `r = round(sqrt(D))` and C = 1, 11, 101, 1001, 10001, 100001 for r = 1…6 (beyond 6 rejected). C = 1 means no formal Council (`[]`). `activeCount` stands in for `N_verified`, whose verification contract is OPEN; this is a labeled assumption. `'legacy-active-xp-leaderboard'` keeps today's behavior.
+- **D33 Council size.** New `councilPaths.council` binding `'d33-active-lookup'`: `council()` returns the top C active accepted subjects by XP, where `D = digits(max(1, activeCount))`, `r = round(sqrt(D))` and C = 1, 11, 101, 1001, 10001, 100001 for r = 1…6 (beyond 6 rejected), so under 100 active there is no formal Council and from 100 to 999,999 it has 11 seats. C = 1 means no formal Council (`[]`). `activeCount` stands in for `N_verified`, whose verification contract is OPEN; this is a labeled assumption. `'legacy-active-xp-leaderboard'` keeps today's behavior.
 - **Genesis pairs without the path gate.** `genesisPairs` become allowed with `eligibility: 'off'`, so the no-gate arm starts from the same D35 pre-guaranteed genesis.
 
 ### World
@@ -44,8 +44,14 @@ Every subject attempts at most one Self-ID per day (protocol limit) and spends o
 
 No disputes, challenges, verification or penalties; no fabrication cost; no honest exit; no D77 holds. Results isolate the structural barrier. Seeds are exploration labels until a registration is committed.
 
+## Implementation
+
+`src/topology-experiment.mjs` (`runTopologyExperiment`, `topologyConfig`) and the two `src/model.mjs` changes exist as contracted; [`probe.mjs`](probe.mjs) runs one arm. Tests: `test/d33-council.test.mjs` (lookup boundaries, active-only count, legacy binding unchanged), `test/topology-experiment.test.mjs` (config validation, exact replay, head start, 11-seat Council after bootstrap, no path refusals in the no-gate arm) and the updated `test/valence-council-paths.test.mjs` binding test.
+
+**Correction at implementation.** The contract's first boundary list (10 → 11 seats) was arithmetically wrong: `round(sqrt(2)) = 1`, so the formal Council starts at 100 active participants, as the protocol states. The tests use the correct boundaries.
+
 ## Acceptance before running
 
-- Unit tests: the D33 lookup boundaries (9→1/no Council, 10→11, 99 999→11 with r = 2, 1 000 000→101); `'legacy-active-xp-leaderboard'` unchanged; genesis pairs accepted with eligibility off.
+- Unit tests: the D33 lookup boundaries (under 100 → no Council, 100 → 11); `'legacy-active-xp-leaderboard'` unchanged; genesis pairs accepted with eligibility off.
 - Runner tests: deterministic replay; daily metrics reconcile with final model state; the head start holds (zero attacker subjects before day 100); the gate arm records `insufficient Council paths` refusals while the no-gate arm cannot.
 - Full `npm test` and the pinned historical tests pass.

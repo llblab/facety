@@ -103,18 +103,16 @@ function valencesFrom(value) {
   const keys = [...Object.keys(allowed), 'councilPaths'].sort().join();
   if (!reference || typeof reference !== 'object' || Array.isArray(reference) || Object.keys(reference).sort().join() !== keys) throw new TypeError('valences requires source, withdrawal, pairEndXp, withdrawDuringHold, invitations, eligibility and councilPaths bindings');
   for (const [key, values] of Object.entries(allowed)) if (!values.includes(reference[key])) throw new TypeError('unsupported valence binding: ' + key);
-  const paths = { council: 'legacy-active-xp-leaderboard', terminal: 'single-member', self: 'other-member', bootstrap: 'latch-first-100-active', intermediaries: 'accepted-subjects', search: 'exact-unbounded' };
+  const paths = { council: ['legacy-active-xp-leaderboard', 'd33-active-lookup'], terminal: ['single-member'], self: ['other-member'], bootstrap: ['latch-first-100-active'], intermediaries: ['accepted-subjects'], search: ['exact-unbounded'] };
   let councilPaths = null;
-  if (reference.eligibility === 'off') {
-    if (reference.councilPaths !== null) throw new TypeError('councilPaths must be null when eligibility is off');
-  } else {
+  // With eligibility off, a supplied councilPaths binding only sets the Council reference (no path gate).
+  if (reference.eligibility !== 'off' || reference.councilPaths !== null) {
     const supplied = reference.councilPaths;
     if (!supplied || typeof supplied !== 'object' || Array.isArray(supplied) || Object.keys(supplied).sort().join() !== Object.keys(paths).sort().join()
-      || Object.entries(paths).some(([key, only]) => supplied[key] !== only)) throw new TypeError('unsupported councilPaths binding');
-    councilPaths = Object.freeze({ ...paths });
+      || Object.entries(paths).some(([key, allowed]) => !allowed.includes(supplied[key]))) throw new TypeError('unsupported councilPaths binding');
+    councilPaths = Object.freeze({ ...supplied });
   }
   if (!Array.isArray(genesisPairs) || genesisPairs.some(pair => !Array.isArray(pair) || pair.length !== 2)) throw new TypeError('genesisPairs must be an array of pairs');
-  if (reference.eligibility === 'off' && genesisPairs.length) throw new TypeError('genesis pairs require the V3 eligibility reference');
   return Object.freeze({ K, genesisPairs: Object.freeze(genesisPairs.map(pair => Object.freeze([...pair]))),
     reference: Object.freeze({ ...reference, councilPaths }) });
 }
@@ -1239,10 +1237,19 @@ export class FacetyModel {
     this.#event('self-id-chain-voided', { subject: id, fromAct, acts: cut.length, burnedRights: burned });
     return { acts: cut.length, burnedRights: burned, xpRecipients: [...recipients] };
   }
+  // D33 reference size: D = digits(max(1, activeCount)) stands in for N_verified (OPEN); C = 1 means no formal Council.
+  councilTarget() {
+    if (this.valences?.reference.councilPaths?.council !== 'd33-active-lookup') return this.policy.councilSize;
+    const r = Math.round(Math.sqrt(String(Math.max(1, this.activeCount())).length));
+    if (r > 6) throw new ProtocolRejection('D33 Council lookup is OPEN beyond r = 6');
+    return [1, 11, 101, 1001, 10001, 100001][r - 1];
+  }
   council() {
     const active = this.policy.councilEligibility === 'active';
+    const size = this.councilTarget();
+    if (this.valences?.reference.councilPaths?.council === 'd33-active-lookup' && size === 1) return [];
     return [...this.#subjects.values()].filter(subject => subject.identityStatus === 'accepted' && (!active || this.isActive(subject.id))).map(subject => ({ id: subject.id, xp: subject.xp }))
-      .sort((a, b) => b.xp - a.xp || idOrder(a.id, b.id)).slice(0, this.policy.councilSize);
+      .sort((a, b) => b.xp - a.xp || idOrder(a.id, b.id)).slice(0, size);
   }
   ledger() {
     const subjects = [...this.#subjects.values()];
