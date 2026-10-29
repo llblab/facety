@@ -109,6 +109,20 @@ Implemented as contracted (`detection` block, freeze veto, partner inspection, o
 4. **Gate + zero stranger acceptance + detection is the only combination that slowed takeover:** with 3 infiltrators, 50% on day 156 instead of 128 (11,007 path refusals). It is a delay, not a stop.
 5. **Common cause:** after the first generation the cone is invisible to honest people, and the honest endpoints of attack edges never cut them. Section 18.5 says a guarantor who sees invitations going to people who do not look real is expected to cancel them **and, if needed, leave the relation**; v2 implements the cancel but not the leave.
 
+## v3 contract: leaving, public evidence and escalation (D117)
+
+**Check of the owner's expectation first.** With `includeState`, gate arm, 10 infiltrators, day 125: 1711 fakes, none with an honest mutual partner; 387 fakes issued invitations, each with on average 8.3 mutual partners, all inside the cone; each infiltrator had 1–2 honest partners and issued 16–18 invitations. The selected D104 text counts any qualifying mutual guarantors and allows paths through any accepted subject, so fakes guarantee each other and borrow the infiltrators' honest links. Requiring guarantors outside the inviter's own cluster would be a different rule (OPEN, recorded in D117).
+
+v3 adds to the opt-in `detection` block (new keys default off, so v2 runs are unchanged):
+
+- **`leave` (§18.5).** An honest guarantor who vetoes a fake-looking invitation, or whose partner's invitee is later ruled false, ends its own link with that partner: it withdraws its valence of a valence pair, or ends the invitation link.
+- **`publicLook` (D68).** Each day each honest subject, with this probability, examines one random accepted subject's public record. A *pattern* is at least `patternMinInvitees` (5) admitted invitees whose mutual partners lie, in share at least `patternClosure` (0.8), inside the examined subject's own invitation subtree. On a pattern, the observer looks at up to three invitees (same sensitivity and false-positive rate).
+- **Escalation (D46).** For a suspicious invitee, the observer asks the highest-XP accepted subject within two mutual hops (itself included) whose XP exceeds the target's. Honest sponsors accept with `sponsorWillingness` (0.5); attackers never sponsor against the cone. The sponsor opens the identity case (D77 hold on sponsor and target).
+- **`followUp`.** When a case rules an account false, its sponsor looks at every other admitted invitee of the same inviter and opens cases on suspicious ones; honest partners of that inviter leave (`leave`).
+- Truth labels feed only the noisy look and the verdict; the pattern itself is computed from public graph and lineage data.
+
+Runs: gate arm and no-gate reference, 3 and 10 infiltrators, stranger acceptance 0.05; v2 detection plus `leave`, `publicLook` 0.02 and `followUp` on.
+
 ## Acceptance before running
 
 - Unit tests: the D33 lookup boundaries (under 100 → no Council, 100 → 11); `'legacy-active-xp-leaderboard'` unchanged; genesis pairs accepted with eligibility off.

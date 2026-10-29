@@ -7,7 +7,7 @@ import { provenance } from './provenance.mjs';
 export const TOPOLOGY_ENGINE = 'topology-takeover/v1';
 export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128starstar-v2', decisions: 'actor-day-stream-v1' });
 export const TOPOLOGY_DEFAULTS = Object.freeze({
-  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100,
+  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false,
   honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
   detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9 }),
@@ -39,6 +39,7 @@ export function topologyConfig(overrides = {}) {
     detection: { ...TOPOLOGY_DEFAULTS.detection, ...(overrides.detection ?? {}) } };
   if (typeof config.seed !== 'string' || !config.seed.length) throw new TypeError('seed must be a non-empty string');
   if (typeof config.gate !== 'boolean') throw new TypeError('gate must be boolean');
+  if (typeof config.includeState !== 'boolean') throw new TypeError('includeState must be boolean');
   integer(config.honestGenesis, 'honestGenesis', 6);
   integer(config.genesisChords, 'genesisChords');
   integer(config.days, 'days', 1);
@@ -267,5 +268,10 @@ export function runTopologyExperiment(overrides = {}) {
     schema: 'facety-topology-takeover/v1', config, randomness: TOPOLOGY_RANDOMNESS, assumptions: TOPOLOGY_ASSUMPTIONS, provenance: provenance(),
     outcome: { censored: censoredReason !== null, censoredReason, completedDays: censoredReason ? day : config.days },
     counts, detection, history,
+    ...(config.includeState ? { state: {
+      cohort: Object.fromEntries(cohort), status: Object.fromEntries(model.subjects().map(subject => [subject.id, subject.identityStatus])),
+      guarantees: [...model.guarantees.edges()].map(edge => [edge.from, edge.to]), lineage: [...model.lineage.edges()].map(edge => [edge.from, edge.to]),
+      invitations: model.invitations().map(({ id, creator, target, status, createdAt }) => ({ id, creator, target, status, createdAt })),
+    } } : {}),
   };
 }
