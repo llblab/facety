@@ -4,6 +4,10 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 
 ## Unreleased
 
+### Owned valences (2026-10-29)
+
+- V1 pre-code contract for an opt-in valence/K reference (D83/D93/D94/D97/D98/D100, D82 XP); OPEN choices are required bindings.
+
 ### Garden (2026-10-29)
 
 - Witness indexer packet: superseded pre-code contracts stubbed, README history condensed to a milestone table (439KB → 216KB).
