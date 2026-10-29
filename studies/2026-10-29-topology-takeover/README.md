@@ -52,7 +52,7 @@ No disputes, challenges, verification or penalties; no fabrication cost; no hone
 
 ## Exploratory results (diagnostic, one seed per arm)
 
-Seed `explore-topo-1`; 100 honest genesis; attack on day 100; `maxSubjects` 5000 (A = 10) or 3000 (A = 1–3), whose hit censors the run. Raw rows: [`results/`](results/). By day 100 the honest network has grown from 100 to about 660 people; the Council has 11 seats from day 1.
+Seed `explore-topo-1`; 100 honest genesis; attack on day 100; `maxSubjects` 5000 (A = 10) or 3000 (A = 1–3), whose hit censors the run. Raw rows: [`runs/`](runs/). By day 100 the honest network has grown from 100 to about 660 people; the Council has 11 seats from day 1.
 
 | Infiltrators | Arm | ≥ 50 attackers on day | Attackers ≥ 50% on day | Last day: attackers / honest | Path refusals |
 | ---: | --- | ---: | ---: | --- | ---: |
