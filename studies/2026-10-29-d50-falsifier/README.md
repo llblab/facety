@@ -47,12 +47,14 @@ These numbers are not evidence for or against D50; they show which assumptions d
 
 | Hypothesis | Statistic (day-90 endpoint) | Claim | Registration |
 | --- | --- | --- | --- |
-| [weak, sybil-cone](hypotheses/d50-weak-sybil-cone.json) | `yield.honestPerEffort` − `yield.attackersPerEffort` | > 0, median (p = 0.5) | [reg](hypotheses/d50-weak-sybil-cone.registration.json) |
-| [weak, real-cartel](hypotheses/d50-weak-real-cartel.json) | same | same | [reg](hypotheses/d50-weak-real-cartel.registration.json) |
-| [strong, sybil-cone](hypotheses/d50-strong-sybil-cone.json) | `yield.strongTargetGap` = honest − 10 × attacker | > 0, median | [reg](hypotheses/d50-strong-sybil-cone.registration.json) |
-| [strong, real-cartel](hypotheses/d50-strong-real-cartel.json) | same | same | [reg](hypotheses/d50-strong-real-cartel.registration.json) |
+| [weak, sybil-cone](hypotheses/d50-weak-sybil-cone-v2.json) | `yield.honestPerEffort` − `yield.attackersPerEffort` | > 0, median (p = 0.5) | [reg](hypotheses/d50-weak-sybil-cone-v2.registration.json) |
+| [weak, real-cartel](hypotheses/d50-weak-real-cartel-v2.json) | same | same | [reg](hypotheses/d50-weak-real-cartel-v2.registration.json) |
+| [strong, sybil-cone](hypotheses/d50-strong-sybil-cone-v2.json) | `yield.strongTargetGap` = honest − 10 × attacker | > 0, median | [reg](hypotheses/d50-strong-sybil-cone-v2.registration.json) |
+| [strong, real-cartel](hypotheses/d50-strong-real-cartel-v2.json) | same | same | [reg](hypotheses/d50-strong-real-cartel-v2.registration.json) |
 
-Each has 9 contexts (3 defenses × fabrication weight 1/5/20), 30 replicas, α = 0.05 and the v2 `family-contradiction/v1` analysis; Holm adjustment across the four via `study`. Base: 90 days, `maxSubjects` 10000, `maxActions` 5,000,000 (raised from 500,000 because the action cap, not the design, censored runtime probes), D42 `xpFinality: "maturity"`.
+Each has 9 contexts (3 defenses × fabrication weight 1/5/20), 30 replicas, α = 0.05 and the v2 `family-contradiction/v1` analysis; Holm adjustment across the four via `study`. Base: 90 days, `maxSubjects` 10000, `maxActions` 5,000,000 (raised from 500,000 because the action cap, not the design, censored runtime probes), legacy terminal XP.
+
+**Deviation from D109 (v1 withdrawn).** The first registrations (`hypotheses/d50-*-{sybil-cone,real-cartel}.json`, committed in `ed29272`) bound D42 `xpFinality: "maturity"`. Their first confirmation aborted with `debt/maturity ordering requires an explicit contract`: the model refuses to mature XP once dispute penalties create debt, an OPEN D42 migration item (BACKLOG "Remaining migration"). No statistic was computed or seen. The v2 registrations above differ only by using the labeled legacy terminal XP; the statistic is FACY holdings, which XP finality affects only indirectly through Council/eligibility. A D42-faithful rerun waits for the debt/maturity contract.
 
 **Encoding note.** Q16's log ratio is undefined when attacker yield is ≤ 0, which is the strongest pro-D50 outcome. The registered statistics are the equivalent sign tests (ratio > 1 ⇔ difference > 0; ratio > 10 ⇔ honest − 10 × attacker > 0 for positive yields), defined for every sign. Log ratios are reported descriptively.
 

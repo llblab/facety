@@ -1,4 +1,8 @@
-// Builds the four D109-bound D50 hypothesis files: {sybil-cone, real-cartel} x {weak, strong}.
+// Builds the four D50 hypothesis files: {sybil-cone, real-cartel} x {weak, strong}.
+// v1 (withdrawn before any value): D42 maturity XP, which the engine refuses once disputes create debt.
+// v2 (current): legacy terminal XP; see README 'Registration'.
+const VERSION = process.argv[2] ?? 'v2';
+if (!['v1', 'v2'].includes(VERSION)) throw new Error('version must be v1 or v2');
 import { writeFileSync } from 'node:fs';
 
 const DEFENSES = {
@@ -27,11 +31,11 @@ const EXPLORATION = ['p1', 'p2', 'p3', 'x', 'explore-d50-1', 'explore-d50-2', 'e
 for (const scenario of ['sybil-cone', 'real-cartel']) {
   for (const [level, claim] of Object.entries(CLAIMS)) {
     const hypothesis = {
-      id: 'd50-' + level + '-' + scenario,
+      id: 'd50-' + level + '-' + scenario + (VERSION === 'v2' ? '-v2' : ''),
       statement: claim.statement + ' Scenario: ' + scenario + '.',
       kind: 'association',
       declaredOn: '2026-10-29',
-      base: { scenario, seed: 'd50-' + scenario, days: 90, maxSubjects: 10000, maxActions: 5000000, policy: { xpFinality: 'maturity' } },
+      base: { scenario, seed: 'd50-' + scenario, days: 90, maxSubjects: 10000, maxActions: 5000000, ...(VERSION === 'v1' ? { policy: { xpFinality: 'maturity' } } : {}) },
       statistic: claim.statistic,
       arms: { protocol: {} },
       contexts,
