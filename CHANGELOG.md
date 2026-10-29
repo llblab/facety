@@ -10,6 +10,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 - C2: this ledger replaces the per-change narrative (183KB → 8KB).
 - C3: BACKLOG reduced to open work, gates and unblockers (88KB → 24KB); legacy anchors kept.
 - C4: README, AGENTS and DECISIONS_NEEDED concentrated (166KB → 46KB); integrity guard now checks README example imports.
+- C5 (part): insight register condensed to one line per decision/finding (334KB → 94KB); simulator D61 narrative replaced by an API/contract table.
 
 ### Owned slots, valences and invitations (D81–D107, documentation only)
 
