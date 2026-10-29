@@ -1,5 +1,6 @@
 // Owns: Deterministic Facety transitions; excludes attacker truth and adjudication.
 import { DirectedGraph } from './graph.mjs';
+import { findInternallyDisjointPaths, verifyInternallyDisjointPaths } from './proofs.mjs';
 
 export const DAY = 24;
 export const DEFAULT_POLICY = Object.freeze({
@@ -94,13 +95,28 @@ function vouchingFrom(value) {
 // Opt-in D83/D93/D94/D97/D100 owned-valence reference (V1); OPEN choices are required bindings, never defaults.
 function valencesFrom(value) {
   if (value === null) return null;
-  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).sort().join() !== 'K,reference') throw new TypeError('valences requires K and explicit reference bindings');
-  const { K, reference } = value;
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).sort().join() !== 'K,genesisPairs,reference') throw new TypeError('valences requires K, genesisPairs and explicit reference bindings');
+  const { K, reference, genesisPairs } = value;
   natural(K, 'valence K', 1);
-  const allowed = { source: ['own-mature-right'], withdrawal: ['free', 'burn-one-liquid'], pairEndXp: ['withdrawer-only', 'both-relations'], withdrawDuringHold: ['allow', 'refuse'], invitations: ['v2-special-link', 'refuse'] };
-  if (!reference || typeof reference !== 'object' || Array.isArray(reference) || Object.keys(reference).sort().join() !== Object.keys(allowed).sort().join()) throw new TypeError('valences requires source, withdrawal, pairEndXp, withdrawDuringHold and invitations bindings');
+  const allowed = { source: ['own-mature-right'], withdrawal: ['free', 'burn-one-liquid'], pairEndXp: ['withdrawer-only', 'both-relations'], withdrawDuringHold: ['allow', 'refuse'],
+    invitations: ['v2-special-link', 'refuse'], eligibility: ['v3-council-paths', 'off'] };
+  const keys = [...Object.keys(allowed), 'councilPaths'].sort().join();
+  if (!reference || typeof reference !== 'object' || Array.isArray(reference) || Object.keys(reference).sort().join() !== keys) throw new TypeError('valences requires source, withdrawal, pairEndXp, withdrawDuringHold, invitations, eligibility and councilPaths bindings');
   for (const [key, values] of Object.entries(allowed)) if (!values.includes(reference[key])) throw new TypeError('unsupported valence binding: ' + key);
-  return Object.freeze({ K, reference: Object.freeze({ ...reference }) });
+  const paths = { council: 'legacy-active-xp-leaderboard', terminal: 'single-member', self: 'other-member', bootstrap: 'latch-first-100-active', intermediaries: 'accepted-subjects', search: 'exact-unbounded' };
+  let councilPaths = null;
+  if (reference.eligibility === 'off') {
+    if (reference.councilPaths !== null) throw new TypeError('councilPaths must be null when eligibility is off');
+  } else {
+    const supplied = reference.councilPaths;
+    if (!supplied || typeof supplied !== 'object' || Array.isArray(supplied) || Object.keys(supplied).sort().join() !== Object.keys(paths).sort().join()
+      || Object.entries(paths).some(([key, only]) => supplied[key] !== only)) throw new TypeError('unsupported councilPaths binding');
+    councilPaths = Object.freeze({ ...paths });
+  }
+  if (!Array.isArray(genesisPairs) || genesisPairs.some(pair => !Array.isArray(pair) || pair.length !== 2)) throw new TypeError('genesisPairs must be an array of pairs');
+  if (reference.eligibility === 'off' && genesisPairs.length) throw new TypeError('genesis pairs require the V3 eligibility reference');
+  return Object.freeze({ K, genesisPairs: Object.freeze(genesisPairs.map(pair => Object.freeze([...pair]))),
+    reference: Object.freeze({ ...reference, councilPaths }) });
 }
 
 function vouchAdmissionFrom(value) {
@@ -160,6 +176,7 @@ export class FacetyModel {
   #valenceCeiling = null;
   #preregistrations = new Map();
   #invitationUnits = new Map();
+  #bootstrap = true;
   constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null, vouchAdmission = null, valences = null } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
     const vouchPolicy = vouchingFrom(vouching), admissionPolicy = vouchAdmissionFrom(vouchAdmission);
@@ -177,6 +194,7 @@ export class FacetyModel {
     this.guarantees = new DirectedGraph('guarantees');
     Object.defineProperty(this, 'roots', { value: Object.freeze([...genesis]), enumerable: true });
     for (const id of genesis) this.#addSubject(id, true);
+    if (valencePolicy !== null) for (const [a, b] of valencePolicy.genesisPairs) this.#establishGenesisPair(a, b);
   }
   get now() { return this.#now; }
   get size() { return this.#subjects.size; }
@@ -234,6 +252,77 @@ export class FacetyModel {
   }
   #valenceKey(owner, counterpart) { return owner + '\u0000' + counterpart; }
   valenceRecords() { return [...this.#valences.values()].map(value => Object.freeze({ ...value, pairRelations: Object.freeze([...value.pairRelations]) })); }
+  #establishGenesisPair(a, b) {
+    if (a === b || !this.roots.includes(a) || !this.roots.includes(b)) throw new ProtocolRejection('genesis pairs require two distinct genesis members');
+    if (this.#openValences.has(this.#valenceKey(a, b)) || this.#openValences.has(this.#valenceKey(b, a))) throw new ProtocolRejection('duplicate genesis pair');
+    if (this.#usedSlots(a) >= this.#valenceCeiling || this.#usedSlots(b) >= this.#valenceCeiling) throw new ProtocolRejection('genesis pairs exceed the owned-slot ceiling');
+    this.guarantees.assertCapacity({ edgeIds: 2 });
+    const ids = [];
+    for (const [owner, counterpart] of [[a, b], [b, a]]) {
+      const id = this.#id('valence');
+      this.#valences.set(id, { id, owner, counterpart, openedAt: this.now, closedAt: null, status: 'open', burnSource: null, origin: 'genesis-supplied', pairRelations: [] });
+      this.#openValences.set(this.#valenceKey(owner, counterpart), id);
+      if (!this.#ownedValences.has(owner)) this.#ownedValences.set(owner, new Set());
+      this.#ownedValences.get(owner).add(id);
+      ids.push(id);
+    }
+    const relations = [];
+    for (const [guarantor, guaranteed] of [[a, b], [b, a]]) {
+      const relationId = this.#id('guarantee');
+      this.guarantees.addEdge(guarantor, guaranteed);
+      this.#guaranteeRecords.set(relationId, { id: relationId, guarantor, guaranteed, proposedAt: this.now, activatedAt: this.now, endedAt: null, status: 'active', valencePair: ids });
+      relations.push(relationId);
+    }
+    for (const id of ids) this.#valences.get(id).pairRelations = [...relations];
+    this.#event('valence-pair-established', { valences: ids, relations, genesis: true });
+  }
+  #councilPathsActive() { return this.valences !== null && this.valences.reference.eligibility === 'v3-council-paths'; }
+  // D91 reference: initial bootstrap lasts until 100 active participants are first observed, then latches off permanently.
+  #observeBootstrap() {
+    if (!this.#councilPathsActive() || !this.#bootstrap || this.activeCount() < 100) return;
+    this.#bootstrap = false;
+    this.#event('bootstrap-ended', { active: this.activeCount() });
+  }
+  get initialBootstrap() {
+    if (!this.#councilPathsActive()) return null;
+    this.#observeBootstrap();
+    return this.#bootstrap;
+  }
+  #mutualPartners(id) {
+    return [...this.guarantees.inEdges(id)].map(edge => edge.from).filter(partner => this.#subject(partner).identityStatus === 'accepted' && this.guarantees.edge(id, partner));
+  }
+  // D84/D104 reference: exact internally vertex-disjoint paths over current mutual links to one admissible Council member other than the source.
+  #councilPathCertificate(source, minimumPaths) {
+    const blockedNodes = [...this.#subjects.values()].filter(subject => subject.identityStatus !== 'accepted').map(subject => subject.id);
+    for (const { id: target } of this.council()) {
+      if (target === source) continue;
+      const result = findInternallyDisjointPaths(this.guarantees, { source, target, minimumPaths, blockedNodes });
+      if (result.status !== 'found') continue;
+      if (!verifyInternallyDisjointPaths(this.guarantees, result.proof, { source, target, minimumPaths, blockedNodes })) throw new Error('Council path certificate failed independent verification');
+      return Object.freeze({ target, minimumPaths, proof: result.proof });
+    }
+    return null;
+  }
+  #requireSelfIdSupport(subjectId) {
+    if (!this.#councilPathsActive()) return null;
+    this.#observeBootstrap();
+    const partners = this.#mutualPartners(subjectId);
+    if (!partners.length) throw new ProtocolRejection('Self-ID requires an established mutual guarantor');
+    if (this.#bootstrap) return null;
+    for (const partner of partners) {
+      const certificate = this.#councilPathCertificate(partner, 1);
+      if (certificate) return Object.freeze({ guarantor: partner, ...certificate });
+    }
+    throw new ProtocolRejection('insufficient Council paths');
+  }
+  #requireInvitationPaths(creatorId) {
+    if (!this.#councilPathsActive()) return null;
+    this.#observeBootstrap();
+    if (this.#bootstrap) return null;
+    const certificate = this.#councilPathCertificate(creatorId, this.requiredGuarantors());
+    if (!certificate) throw new ProtocolRejection('insufficient Council paths');
+    return certificate;
+  }
   #usedSlots(id) { return (this.#ownedValences.get(id)?.size ?? 0) + (this.#invitationUnits.get(id)?.size ?? 0); }
   ownedSlots(id) {
     this.#requireValences();
@@ -277,10 +366,11 @@ export class FacetyModel {
     if (guarantors.length < this.requiredGuarantors()) throw new ProtocolRejection('insufficient eligible guarantors');
     if (this.#usedSlots(creatorId) >= this.#valenceCeiling) throw new ProtocolRejection('owned-slot ceiling reached');
     if (this.#usedSlots(target) >= this.#valenceCeiling) throw new ProtocolRejection('recipient owned-slot ceiling reached');
+    const councilPath = this.#requireInvitationPaths(creatorId);
     const id = this.#id('invitation');
     this.#dispose(act, 'consumed', 'invitation');
     this.#invitations.set(id, { id, creator: creatorId, sourceSelfId: selfIdId, target, guarantors, createdAt: this.now, acceptedAt: null, endedAt: null,
-      status: 'pending', units: Object.freeze([creatorId, target]), linkRelations: Object.freeze([]) });
+      status: 'pending', units: Object.freeze([creatorId, target]), linkRelations: Object.freeze([]), ...(councilPath === null ? {} : { councilPath }) });
     this.#addInvitationUnit(creatorId, id);
     this.#addInvitationUnit(target, id);
     this.#event('invitation-created', { invitation: id, creator: creatorId, target, valenceReference: true });
@@ -627,6 +717,7 @@ export class FacetyModel {
     }
     this.#now = hour;
     this.#settleDebtReservations();
+    this.#observeBootstrap();
   }
   // Reserved debt-recovery rights burn once their guarantor veto window has elapsed.
   #settleDebtReservations() {
@@ -790,6 +881,7 @@ export class FacetyModel {
     if (faceIndex >= artifact.faceCount) throw new ProtocolRejection('faceIndex outside modeled detector output');
     if (subject.lastRewardAt !== null && this.now - subject.lastRewardAt < DAY) throw new ProtocolRejection('rolling 24-hour reward limit');
     if (this.policy.artifactReuse === 'once-per-subject' && this.#subjectActs.get(subjectId).some(id => this.#acts.get(id).artifact === artifactId)) throw new ProtocolRejection('subject has already used this artifact');
+    const councilPath = this.#requireSelfIdSupport(subjectId);
     const guarantors = this.eligibleGuarantors(subjectId);
     const id = this.#id('self-id');
     const faceRef = JSON.stringify([artifactId, 'abstract-detector-v1', faceIndex]);
@@ -800,7 +892,8 @@ export class FacetyModel {
     const debtReserved = this.policy.debtRecovery === 'reserve-until-mature' && subject.debt > reservedDebt;
     const chain = this.#subjectActs.get(subjectId);
     const act = { id, subject: subjectId, chainIndex: chain.length + 1, previousSelfId: chain.at(-1) ?? null,
-      artifact: artifactId, faceIndex, recordedAt: this.now, guarantors, xpRecipients, xpCredited: false, xpCredit: null, status: 'unspent', disposition: null, disputeLock: null, collision, debtReserved };
+      artifact: artifactId, faceIndex, recordedAt: this.now, guarantors, xpRecipients, xpCredited: false, xpCredit: null, status: 'unspent', disposition: null, disputeLock: null, collision, debtReserved,
+      ...(councilPath === null ? {} : { councilPath }) };
     if (collision) for (const claim of claims) this.#acts.get(claim).collision = true;
     claims.push(id);
     this.#claims.set(faceRef, claims);
@@ -1159,9 +1252,13 @@ export class FacetyModel {
   #auditValences() {
     const open = new Map(), owned = new Map(), sources = new Set();
     for (const record of this.#valences.values()) {
-      const act = this.#acts.get(record.burnSource);
-      if (!act || act.subject !== record.owner || act.status !== 'consumed' || act.disposition !== 'valence-burn' || sources.has(record.burnSource)) throw new Error('valence burn invariant failed');
-      sources.add(record.burnSource);
+      if (record.burnSource === null) {
+        if (record.origin !== 'genesis-supplied' || !this.roots.includes(record.owner) || !this.roots.includes(record.counterpart)) throw new Error('valence burn invariant failed');
+      } else {
+        const act = this.#acts.get(record.burnSource);
+        if (!act || act.subject !== record.owner || act.status !== 'consumed' || act.disposition !== 'valence-burn' || sources.has(record.burnSource)) throw new Error('valence burn invariant failed');
+        sources.add(record.burnSource);
+      }
       if ((record.status === 'open') !== (record.closedAt === null)) throw new Error('valence status invariant failed');
       if (record.status !== 'open') continue;
       const key = this.#valenceKey(record.owner, record.counterpart);

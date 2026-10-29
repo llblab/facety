@@ -4,9 +4,9 @@ import assert from 'node:assert/strict';
 import { FacetyModel, DAY } from '../src/model.mjs';
 import { replayPathWitnessEvents } from '../src/path-witness-replay.mjs';
 
-const REFERENCE = { source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'v2-special-link' };
+const REFERENCE = { source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'v2-special-link', eligibility: 'off', councilPaths: null };
 function model({ K = 100, reference = {}, policy = {}, genesis = ['a', 'b', 'c'] } = {}) {
-  return new FacetyModel({ genesis, policy, valences: { K, reference: { ...REFERENCE, ...reference } } });
+  return new FacetyModel({ genesis, policy, valences: { K, genesisPairs: [], reference: { ...REFERENCE, ...reference } } });
 }
 function rights(facety, ids, count = 1) {
   const out = Object.fromEntries(ids.map(id => [id, []]));
@@ -36,7 +36,7 @@ function rejectsUnchanged(facety, fn, pattern) {
 test('the refuse binding keeps V1 behavior and pre-registration needs the V2 binding', () => {
   const refuse = model({ reference: { invitations: 'refuse' } });
   assert.throws(() => refuse.preregisterAccount('n'), /does not count invitation-side units/);
-  assert.throws(() => new FacetyModel({ valences: { K: 1, reference: { ...REFERENCE, invitations: undefined } } }), TypeError);
+  assert.throws(() => new FacetyModel({ valences: { K: 1, genesisPairs: [], reference: { ...REFERENCE, invitations: undefined } } }), TypeError);
 });
 
 test('pre-registration mints and burns nothing, is not a subject and holds no slot', () => {

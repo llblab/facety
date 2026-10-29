@@ -3,9 +3,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { FacetyModel, DAY, ProtocolRejection } from '../src/model.mjs';
 
-const REFERENCE = { source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'refuse' };
+const REFERENCE = { source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'refuse', eligibility: 'off', councilPaths: null };
 function model({ K = 100, reference = {}, policy = {}, genesis = ['a', 'b', 'c', 'd'] } = {}) {
-  return new FacetyModel({ genesis, policy, valences: { K, reference: { ...REFERENCE, ...reference } } });
+  return new FacetyModel({ genesis, policy, valences: { K, genesisPairs: [], reference: { ...REFERENCE, ...reference } } });
 }
 // Give every listed subject `count` mature own rights: one Self-ID per day, then wait for maturity.
 function rights(facety, ids, count = 1) {
@@ -32,11 +32,11 @@ test('default model has no valence reference and validation rejects incomplete o
   assert.equal(Object.keys(legacy).includes('valences'), false);
   assert.throws(() => legacy.openValence('a', 'a', 'x'), /valence reference is disabled/);
   assert.throws(() => new FacetyModel({ valences: { K: 100 } }), TypeError);
-  assert.throws(() => new FacetyModel({ valences: { K: 0, reference: REFERENCE } }), RangeError);
+  assert.throws(() => new FacetyModel({ valences: { K: 0, genesisPairs: [], reference: REFERENCE } }), RangeError);
   for (const [key, value] of [['source', 'liquid'], ['withdrawal', 'burn'], ['pairEndXp', 'none'], ['withdrawDuringHold', undefined], ['invitations', undefined], ['invitations', 'legacy']])
-    assert.throws(() => new FacetyModel({ valences: { K: 1, reference: { ...REFERENCE, [key]: value } } }), TypeError);
-  assert.throws(() => new FacetyModel({ valences: { K: 1, reference: { ...REFERENCE, extra: 1 } } }), TypeError);
-  assert.throws(() => new FacetyModel({ valences: { K: 1, reference: REFERENCE }, vouching: { K: 1, T: 1, V: 1, B: 0, reference: {
+    assert.throws(() => new FacetyModel({ valences: { K: 1, genesisPairs: [], reference: { ...REFERENCE, [key]: value } } }), TypeError);
+  assert.throws(() => new FacetyModel({ valences: { K: 1, genesisPairs: [], reference: { ...REFERENCE, extra: 1 } } }), TypeError);
+  assert.throws(() => new FacetyModel({ valences: { K: 1, genesisPairs: [], reference: REFERENCE }, vouching: { K: 1, T: 1, V: 1, B: 0, reference: {
     eligibility: 'accepted-reference', clockOrigin: 'commitment', funding: 'collector-liquid', exitSlot: 'retain-until-V', bondRelease: 'supplied-clearance' } } }), TypeError);
 });
 
