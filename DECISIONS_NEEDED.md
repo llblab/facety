@@ -161,3 +161,13 @@ Answered 2026-10-29: D85 → **D110** free termination cancelling the terminatin
 - **K-referendum weights (D87–D90).** D111 settles the Council. Does a network-wide K referendum also use one participant one vote, dropping the FACY×XP (D88) and sqrt (D90) candidates?
 - **D112 bindings.** Who pays the re-entrant's valence when they hold no eligible own FACY (D93 prices it in self-issued FACY)? Does D84's outside-bootstrap path-to-Council condition still apply to the re-entrant's guarantor?
 - Mixed terminals, invitations to admitted accounts, mature decline below 100 [defer; first test whether the simpler rules fail].
+
+### Q18 — Remedy for a detected fake cluster (D119)
+
+Options, not selections:
+
+1. **Quarantine only.** Cut the entry points; under D84 the cluster can no longer create Self-IDs or invite. Cheap; already-issued FACY stays in circulation.
+2. **Mass invalidation with a burden of proof.** One cluster case: every account in the entry point's invitation subtree must prove it is a real person within a window, otherwise it is invalidated and its chain voided. Real people trapped in the cluster survive by proving reality.
+3. **Liability of entry points and act-time guarantors (D34/D55).** Infiltrators are real people: their identity stays, but each invitation of a fake is a losing invitation act (XP halving for creator and act-time guarantors) with fines collected from liquid FACY and future emission (debt). Honest inviters who brought them in carry D34 responsibility for that one invitation.
+4. **Economic recovery.** Burn unspent rights and liquid FACY on invalidated accounts; FACY already transferred out cannot be un-minted (D53). Recovered value can be burned (benefits all holders), paid as a bounty to the discoverers/sponsors, or used to compensate wrongly harmed honest people.
+5. **Repair for honest people.** An appeal path for wrongful invalidation, and fee-free restoration of honest-honest links cut by false positives.
