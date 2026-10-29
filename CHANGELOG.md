@@ -8,6 +8,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 
 - Witness indexer packet: superseded pre-code contracts stubbed, README history condensed to a milestone table (439KB → 216KB).
 - Trust-topology packet: 25 superseded pre-code contracts/launch specs stubbed, README status narrative replaced by an evidence map (761KB → 545KB).
+- Review allocation: superseded measurement contract stubbed; stale "not implemented"/"acceptance pending" status lines on the C0 contract and two prior2 derivations now carry dated current-status notes. Garden totals: studies Markdown 1.71MB → 1.26MB; repository Markdown 2.81MB → 2.36MB; tracked 36.0MB.
 
 ### Consolidation (2026-10-29)
 

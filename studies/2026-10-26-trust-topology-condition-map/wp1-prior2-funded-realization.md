@@ -1,5 +1,7 @@
 # WP1 prior2 — a conditional own-earned lift of a finite quota certificate
 
+> **Current status (2026-10-28):** independent NEW-result acceptance is complete — see the [review results](wp1-prior2-funded-review-results.md). The status line below is the derivation's original wording.
+
 **2026-10-28 · DIAGNOSTIC self-authored static mathematics/source mapping; independent NEW-result acceptance PENDING.** [Contract](wp1-prior2-funded-realization-contract.md) committed473346726519e60a78507351af3fe01bc921af59 BEFORE this derivation; blobbafa84fcc59e27606a58119739164ff90daedf4c. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns work. No Model/config/reference/experiment/test/RNG/namespace/solver/grid/data call or source/default change. This is not an executed funded trace, a lifetime-enforcing runtime, selected D75 migration, scientific confirmation or G1.
 
 ## Statement, inputs and the three different limits

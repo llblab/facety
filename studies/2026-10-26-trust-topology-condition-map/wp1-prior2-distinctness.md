@@ -1,5 +1,7 @@
 # WP1 prior2 — exact distinct-voucher lifetime maximum
 
+> **Current status (2026-10-28):** independent NEW-result acceptance is complete — see the [review results](wp1-prior2-distinctness-review-results.md). The status line below is the derivation's original wording.
+
 **2026-10-28 · DIAGNOSTIC self-authored mathematical derivation, independent acceptance PENDING; NOT a selected lifetime rule, Native execution, funded admission, scientific confirmation or G1.** [Contract](wp1-prior2-distinctness-contract.md) committed5f82dc847c4aa97bbec65e1335874768ae538ca8 BEFORE this derivation under D80. Exact unit-quota family unchanged. No Model/reference/config/test/RNG/namespace/world/grid/solver/flow-library call or code/API change. BACKLOG alone owns next acceptance.
 
 ## Exact statement: new and total are different
