@@ -9,6 +9,8 @@ export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128
 export const TOPOLOGY_DEFAULTS = Object.freeze({
   seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100,
   honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2 }),
+  // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
+  detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9 }),
 });
 export const TOPOLOGY_ASSUMPTIONS = Object.freeze([
   'Behavior rates are scenario assumptions, not calibrated human behavior.',
@@ -16,6 +18,7 @@ export const TOPOLOGY_ASSUMPTIONS = Object.freeze([
   'Fake accounts cost nothing beyond protocol FACY (no fabrication cost): an upper bound on attacker ease.',
   'activeCount stands in for N_verified in the D33 Council lookup; verified independence is OPEN.',
   'Randomness is one stream per actor and day (actor-day-stream-v1), not per decision.',
+  'Detection (opt-in, D116): independent noisy looks at declared sensitivity/false-positive rate; one-step identity verdicts at declared accuracy; no stakes, fines or chain liability. Attacker operators are genuine people and only cone-created accounts are false identities.',
 ]);
 const PATHS = { terminal: 'single-member', self: 'other-member', bootstrap: 'latch-first-100-active', intermediaries: 'accepted-subjects', search: 'exact-unbounded', council: 'd33-active-lookup' };
 
@@ -31,7 +34,9 @@ export function topologyConfig(overrides = {}) {
   for (const key of Object.keys(overrides)) if (!allowed.has(key)) throw new Error('unknown topology key: ' + key);
   if (overrides.engine !== undefined && overrides.engine !== TOPOLOGY_ENGINE) throw new Error('topology runner requires engine ' + TOPOLOGY_ENGINE);
   for (const key of Object.keys(overrides.honest ?? {})) if (!Object.hasOwn(TOPOLOGY_DEFAULTS.honest, key)) throw new Error('unknown honest behavior: ' + key);
-  const config = { ...TOPOLOGY_DEFAULTS, ...overrides, engine: TOPOLOGY_ENGINE, honest: { ...TOPOLOGY_DEFAULTS.honest, ...(overrides.honest ?? {}) } };
+  for (const key of Object.keys(overrides.detection ?? {})) if (!Object.hasOwn(TOPOLOGY_DEFAULTS.detection, key)) throw new Error('unknown detection setting: ' + key);
+  const config = { ...TOPOLOGY_DEFAULTS, ...overrides, engine: TOPOLOGY_ENGINE, honest: { ...TOPOLOGY_DEFAULTS.honest, ...(overrides.honest ?? {}) },
+    detection: { ...TOPOLOGY_DEFAULTS.detection, ...(overrides.detection ?? {}) } };
   if (typeof config.seed !== 'string' || !config.seed.length) throw new TypeError('seed must be a non-empty string');
   if (typeof config.gate !== 'boolean') throw new TypeError('gate must be boolean');
   integer(config.honestGenesis, 'honestGenesis', 6);
@@ -43,7 +48,10 @@ export function topologyConfig(overrides = {}) {
   integer(config.K, 'K', 5);
   for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar']) probability(config.honest[key], 'honest.' + key);
   integer(config.honest.keepRights, 'honest.keepRights');
-  return Object.freeze({ ...config, honest: Object.freeze(config.honest) });
+  if (typeof config.detection.enabled !== 'boolean') throw new TypeError('detection.enabled must be boolean');
+  for (const key of ['review', 'inspect', 'sensitivity', 'falsePositiveRate', 'accuracy']) probability(config.detection[key], 'detection.' + key);
+  integer(config.detection.windowDays, 'detection.windowDays', 1);
+  return Object.freeze({ ...config, honest: Object.freeze(config.honest), detection: Object.freeze(config.detection) });
 }
 
 // D35 pre-guaranteed genesis: ring lattice with offsets 1 and 2 plus seeded random chords.
@@ -67,6 +75,9 @@ export function runTopologyExperiment(overrides = {}) {
   });
   // Evaluator-only labels: never read by any protocol call or honest decision.
   const cohort = new Map(honestIds.map(id => [id, 'honest']));
+  const falseIdentity = id => id.startsWith('f');
+  const detection = { casesOpened: 0, falseInvalidated: 0, genuineInvalidated: 0, vetoedFalse: 0, vetoedGenuine: 0, casesDismissed: 0 };
+  const openCases = new Map();
   const rosters = { honest: [...honestIds], attackers: [] };
   const decided = new Map();
   const refusals = { honest: {}, attackers: {} };
@@ -103,6 +114,53 @@ export function runTopologyExperiment(overrides = {}) {
     }
     return result.ok;
   }
+  // Evaluator labels feed only this observation function; actors see its noisy output.
+  const look = (random, subject) => random.chance(falseIdentity(subject) ? config.detection.sensitivity : config.detection.falsePositiveRate);
+  function detect() {
+    const settings = config.detection;
+    // Freeze veto: honest current guarantors of the creator review invitations created today.
+    for (const [invitation, { target }] of [...pendingTargets]) {
+      const record = model.invitations().find(value => value.id === invitation);
+      if (record.status !== 'pending' || record.createdAt !== model.now) continue;
+      const reviewers = [...model.guarantees.inEdges(record.creator)].map(edge => edge.from).filter(id => cohort.get(id) === 'honest' && accepted(id)).sort();
+      for (const reviewer of reviewers) {
+        const random = root.fork(JSON.stringify(['review', invitation, reviewer]));
+        if (!random.chance(settings.review) || !look(random, target)) continue;
+        if (tryAction(reviewer, () => model.cancelInvitation(reviewer, invitation)).ok) {
+          detection[falseIdentity(target) ? 'vetoedFalse' : 'vetoedGenuine']++;
+          pendingTargets.delete(invitation);
+          break;
+        }
+      }
+    }
+    // Resolve due identity cases: verdict correct with declared accuracy; a false verdict invalidates and voids the chain.
+    for (const [caseId, record] of [...openCases]) {
+      if (model.now - record.openedAt < settings.windowDays * DAY) continue;
+      const correct = root.fork(JSON.stringify(['verdict', caseId])).chance(settings.accuracy);
+      const verdictFalse = falseIdentity(record.target) ? correct : !correct;
+      model.endDisputeParticipation(caseId);
+      openCases.delete(caseId);
+      if (verdictFalse && accepted(record.target)) {
+        model.invalidateIdentity(record.target);
+        model.voidSelfIdChain(record.target);
+        detection[falseIdentity(record.target) ? 'falseInvalidated' : 'genuineInvalidated']++;
+      } else detection.casesDismissed++;
+    }
+    // Partner inspection: a suspicious look opens one identity case per target (D77 hold on both parties).
+    const targeted = new Set([...openCases.values()].map(record => record.target));
+    for (const id of rosters.honest.filter(accepted)) {
+      const random = stream(id, 'inspect');
+      const partners = [...model.guarantees.outEdges(id)].map(edge => edge.to).filter(other => model.guarantees.edge(other, id) && accepted(other)).sort();
+      for (const partner of partners) {
+        if (!random.chance(settings.inspect) || !look(random, partner) || targeted.has(partner)) continue;
+        const caseId = 'case:' + day + ':' + id + ':' + partner;
+        if (!tryAction(id, () => model.beginDisputeParticipation(caseId, [id, partner])).ok) continue;
+        openCases.set(caseId, { target: partner, challenger: id, openedAt: model.now });
+        targeted.add(partner);
+        detection.casesOpened++;
+      }
+    }
+  }
   function sample() {
     const subjects = model.subjects();
     const acceptedSubjects = subjects.filter(subject => subject.identityStatus === 'accepted');
@@ -119,7 +177,7 @@ export function runTopologyExperiment(overrides = {}) {
       supply, dirtyShare: supply > 0 ? dirty / supply : null,
       active: model.activeCount(), D: model.requiredGuarantors(), bootstrap: model.initialBootstrap,
       councilSize: council.length, councilAttackers: council.filter(member => cohort.get(member.id) === 'attackers').length,
-      attackEdges,
+      attackEdges, detection: { ...detection },
       refusals: { honest: { ...refusals.honest }, attackers: { ...refusals.attackers } },
     });
   }
@@ -196,6 +254,7 @@ export function runTopologyExperiment(overrides = {}) {
           if (honest.length) openValence(id, random.pick(honest), right);
         }
       }
+      if (config.detection.enabled) detect();
       model.audit();
       sample();
     }
@@ -207,6 +266,6 @@ export function runTopologyExperiment(overrides = {}) {
   return {
     schema: 'facety-topology-takeover/v1', config, randomness: TOPOLOGY_RANDOMNESS, assumptions: TOPOLOGY_ASSUMPTIONS, provenance: provenance(),
     outcome: { censored: censoredReason !== null, censoredReason, completedDays: censoredReason ? day : config.days },
-    counts, history,
+    counts, detection, history,
   };
 }

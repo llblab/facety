@@ -88,6 +88,27 @@ Committed before the v2 code. Opt-in `detection` block (default `enabled: false`
 
 Runs: gate arm, 3 and 10 infiltrators, `acceptFar` ∈ {0.05, 0.01, 0} × detection off/on, plus no-gate references at detection on. Exploration seeds only.
 
+## v2 exploratory results (diagnostic, seed `explore-topo-1`)
+
+Implemented as contracted (`detection` block, freeze veto, partner inspection, one-step identity cases with D77 holds). Implementation note: voiding the chain of an invalidated account marks rights that paid valences `valence-burn+voided`; the valence audit now accepts that disposition (`test/d33-council.test.mjs`). Raw rows: [`runs/v2/`](runs/v2/). Attack on day 100, `maxSubjects` 3000.
+
+| Infiltrators | Arm | Stranger acceptance | Detection | Attackers ≥ 50% on day | Fakes invalidated | Genuine invalidated | Fake invitations vetoed |
+| ---: | --- | --- | --- | ---: | ---: | ---: | ---: |
+| 10 | gate | 0.05 / 0.01 / 0 | off | 119 (all three identical) | — | — | — |
+| 10 | gate | 0.05 / 0.01 / 0 | on | 120 (all three identical) | 1 | 19 | 87 |
+| 10 | no gate | 0.05 / 0 | on | 120 | 0 | 17 | 87 |
+| 3 | gate | 0.05 / 0.01 | off | 128 | — | — | — |
+| 3 | gate | 0 | off | not reached; 1294 / 1306 at cap (d141) | — | — | — |
+| 3 | gate | 0.05 / 0.01 | on | 128–129 | 0 | 21–23 | 33–38 |
+| 3 | gate | 0 | on | **156** | 0 | 41 | 89 |
+| 3 | no gate | 0.05 / 0 | on | 124 | 0 | 19 | 34 |
+
+1. **Stranger caution does not matter with 10 infiltrators.** The cone always has members needing partners, so attackers never get to requesting strangers; their attack edges come from the ten invitation links and from honest friend-of-friend valences that reach infiltrators as *near* contacts (acceptance 0.5).
+2. **Detection as modeled hurts honest people more than the cone.** Honest people inspect only their own partners, and almost no fakes are partners of honest people: 0–1 fakes were invalidated against 17–41 genuine people (1% false positives over hundreds of daily looks, 10% wrong verdicts). D77 holds also slowed honest growth (724–811 versus 942–1082 honest at the cap).
+3. **The freeze veto catches only the first generation.** Honest inviters vetoed 33–89 fake invitations from infiltrators, but fakes invite fakes, and their guarantors are cone members who never veto.
+4. **Gate + zero stranger acceptance + detection is the only combination that slowed takeover:** with 3 infiltrators, 50% on day 156 instead of 128 (11,007 path refusals). It is a delay, not a stop.
+5. **Common cause:** after the first generation the cone is invisible to honest people, and the honest endpoints of attack edges never cut them. Section 18.5 says a guarantor who sees invitations going to people who do not look real is expected to cancel them **and, if needed, leave the relation**; v2 implements the cancel but not the leave.
+
 ## Acceptance before running
 
 - Unit tests: the D33 lookup boundaries (under 100 → no Council, 100 → 11); `'legacy-active-xp-leaderboard'` unchanged; genesis pairs accepted with eligibility off.

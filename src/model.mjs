@@ -1263,7 +1263,7 @@ export class FacetyModel {
         if (record.origin !== 'genesis-supplied' || !this.roots.includes(record.owner) || !this.roots.includes(record.counterpart)) throw new Error('valence burn invariant failed');
       } else {
         const act = this.#acts.get(record.burnSource);
-        if (!act || act.subject !== record.owner || act.status !== 'consumed' || act.disposition !== 'valence-burn' || sources.has(record.burnSource)) throw new Error('valence burn invariant failed');
+        if (!act || act.subject !== record.owner || act.status !== 'consumed' || !['valence-burn', 'valence-burn+voided'].includes(act.disposition) || sources.has(record.burnSource)) throw new Error('valence burn invariant failed');
         sources.add(record.burnSource);
       }
       if ((record.status === 'open') !== (record.closedAt === null)) throw new Error('valence status invariant failed');

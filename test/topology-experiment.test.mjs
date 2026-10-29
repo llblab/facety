@@ -38,3 +38,16 @@ test('only the gate arm can refuse for Council paths; the no-gate arm has no boo
   assert.ok(off.history.every(row => row.bootstrap === null));
   assert.equal(off.history.at(-1).councilSize, 11);
 });
+
+test('opt-in detection vetoes and adjudicates through the model while audits keep holding (D116)', () => {
+  const off = runTopologyExperiment(SMALL);
+  assert.deepEqual(off.detection, { casesOpened: 0, falseInvalidated: 0, genuineInvalidated: 0, vetoedFalse: 0, vetoedGenuine: 0, casesDismissed: 0 });
+  const settings = { ...SMALL, detection: { enabled: true, review: 1, inspect: 1, sensitivity: 1, falsePositiveRate: 0, windowDays: 1, accuracy: 1 } };
+  const on = runTopologyExperiment(settings);
+  assert.deepEqual(on.history, runTopologyExperiment(settings).history);
+  // Perfect reviewers never veto or invalidate a genuine person, and they do catch fake invitations.
+  assert.equal(on.detection.vetoedGenuine, 0);
+  assert.equal(on.detection.genuineInvalidated, 0);
+  assert.ok(on.detection.vetoedFalse + on.detection.falseInvalidated > 0);
+  assert.throws(() => runTopologyExperiment({ ...SMALL, detection: { unknown: 1 } }), /unknown detection setting/);
+});

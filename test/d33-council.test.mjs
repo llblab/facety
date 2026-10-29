@@ -33,3 +33,14 @@ test('D33 lookup counts active subjects only and the legacy binding keeps the fi
   assert.equal(legacy.councilTarget(), 7);
   assert.equal(legacy.council().length, 7);
 });
+
+test('voiding a chain whose right paid a valence keeps the valence-burn audit valid (D116)', () => {
+  const model = world(3);
+  model.advanceTo(DAY);
+  const [right] = model.eligibleEmissions('g0');
+  model.openValence('g0', 'g1', right);
+  model.invalidateIdentity('g0');
+  model.voidSelfIdChain('g0');
+  assert.equal(model.selfId(right).disposition, 'valence-burn+voided');
+  model.audit();
+});
