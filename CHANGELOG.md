@@ -6,6 +6,8 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 
 ### Research-gate release (2026-10-29)
 
+- D109–D112: Q16 defaults bind the D50 design; free link termination; equal Council vote regardless of XP; re-entry by mutual guarantee. Remaining Q17 questions restated.
+
 - D108: owner released the master-programme order lock and WP1/G1 method precondition; recorded in protocol §46.18/Appendix A, insights, BACKLOG, AGENTS and README.
 - D50 falsifier study opened with an exploratory yield probe (diagnostic) and draft design; owner bindings in DECISIONS_NEEDED Q16, migration questions in Q17.
 

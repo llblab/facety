@@ -789,6 +789,8 @@ The creator cannot sell the right on the market and later buy it back. Under the
 
 **D95 — [SELECTED re-entry after loss of initial invitation support],2026-10-29.** If the inviter ends the newcomer's only invitation relationship before the newcomer has an eligible own emission, the person lacks current support/access; the broken first invitation does not continue to qualify. Another participant may issue a NEW paid special invitation (current D105 price1own FACY) to that person, restoring support on acceptance without requiring a self-funded ordinary valence first. This is re-entry, not creation of another person, another clean zero Genesis act or a new SubjectId: preserve existing identity, personal-chain/XP/debt/history and per-act rights. “Outside the network” does not mean a proven false identity, erased balances or a blanket transaction ban. Ordinary paid valence entry remains possible when its source/authorization/support conditions can actually be met. Exact re-admission target binding and episode/status/count transitions need a contract; old Native new-target-only admission is not this mechanism.
 
+**D112 — [SELECTED re-entry by mutual guarantee; supersedes D95's invitation requirement], 2026-10-29.** Source: owner reply: "повторный вход может быть без нового приглашения, достаточно установить взаимопоручительские связи, но регистрировать новые Self-ID и заниматься эмиссией FACY можно только при наличии хотя бы одного поручительства — не важно инвайт или нет". A person who lost current support re-enters by establishing ordinary mutual guarantee links; a NEW invitation is one possible route, not a requirement. New Self-IDs and FACY emission require at least one current established mutual guarantee, whether invitation-origin or ordinary (consistent with D84's one-guarantor minimum). SubjectId, chain, XP, debt and history are preserved as under D95. **Pending bindings:** who pays the re-entrant's valence when they hold no eligible own FACY (D93 prices a valence in self-issued FACY), and whether D84's outside-bootstrap path-to-Council condition still applies to that guarantor.
+
 **D98 — [SELECTED new transactions, not reopening closed invitations],2026-10-29.** A closed invitation cannot be resumed or reset. One can create a NEW invitation or a NEW valence transaction; their own costs, current K and authorizations apply. A new ordinary valence must not silently resurrect the old invitation's active type/privileges, and no unpaid opposite valence may be fabricated from a dead invitation. Historical invitation provenance/actual past D34 duties remain records, not a permanent active-link type or assumed extra liability of every new ordinary relationship. D94's retained opposite ordinary valence remains its own still-open record; withdrawing and recreating one's side is a new transaction, never revival of the withdrawn record. Canonical special-link/ordinary-valence mapping remains an execution contract.
 
 An invitation must retain its creator, timestamp, intended scope, and later use. The creator's responsibility does not disappear if the invite reaches an undesirable subject.
@@ -853,9 +855,9 @@ Own-source/identity validation, duplicate requests, D77 phases, matching/current
 
 ### 19.3 Unilateral link break
 
-**[SELECTED]** Either party can unilaterally end an established guarantee under protocol rules. **D85 — [OWNER alternatives, neither selected],2026-10-29:** free termination OR burning1FACY of any permitted origin, even non-self-issued. Do not choose a branch by default; payer/source/debt/atomic ordering and unilateral remnants need contracts.
+**[SELECTED]** Either party can unilaterally end an established guarantee under protocol rules. **D85 — [OWNER alternatives],2026-10-29:** free termination OR burning1FACY of any permitted origin, even non-self-issued. **D110 — [SELECTED free termination], 2026-10-29:** the owner selects the free branch: "цена разрыва связи бесплатна — отменяет валентность" ("breaking a link is free — it cancels the valence"). Termination charges nothing and cancels the terminating party's valence of that link; its K slot is released (D75) and the FACY burned to create it stays burned (D93/D97). The counterparty's valence follows the existing D94/D98 matching rules. Atomic ordering and D34 history still need execution contracts.
 
-**Dated history:** the old1FACY break fee had source/destination OPEN, not an automatic burn. D85 reopens that treatment; legacy fee code is not a current choice. D75 valid-end immediate capacity release and D34 history remain under either candidate.
+**Dated history:** the old1FACY break fee had source/destination OPEN, not an automatic burn. D85 reopened that treatment and D110 selects free termination; legacy fee code is not a current choice. D75 valid-end immediate capacity release and D34 history remain under either candidate.
 
 An abusive guarantor may repeatedly cancel otherwise valid Self-ID records. The guaranteed subject can decide to end that relation. A guarantor can also withdraw from an unsustainable responsibility relation.
 
@@ -865,7 +867,7 @@ An abusive guarantor may repeatedly cancel otherwise valid Self-ID records. The 
 
 **[MODEL FINDING under the legacy current-link liability reference, not D34]** Leaving escapes modeled liability but also removes a watcher. With weak detection, early exits let the coalition's later invitations go unreviewed.
 
-Free cancellation of a particular Self-ID and termination of an established guarantee are separate operations; D85 leaves the latter's free-versus-burn price unselected. Terminating the link must not retroactively erase its previous existence, public decisions, or established liability history.
+Free cancellation of a particular Self-ID and termination of an established guarantee are separate operations; D110 makes the latter free (it cancels the terminating party's valence). Terminating the link must not retroactively erase its previous existence, public decisions, or established liability history.
 
 ### 19.4 Active mutual-guarantee links and a variable ceiling (D75/D81)
 
@@ -1325,7 +1327,7 @@ C_target:   1   11  101  1001  10001  100001
 
 The lookup is not the repunit sequence `1,11,111,...`; behavior beyond `r=6` remains OPEN. Membership cannot exceed the active verified population or the eligible candidate set. A target of one means **no formal Council**: it creates no special office, unilateral verdict power or immunity. Under the direct formula, `N_verified<100` has no formal Council; at 100 the target is 11. The interaction with delayed difficulty adoption remains OPEN (§46.10), not an implicit phase rule.
 
-**[SELECTED] Each formal consul has one vote**, regardless of XP magnitude. Eligibility requires activity over the preceding 28 days under the declared verification/eligibility contract. Topology-aware effective-XP ranking is D33 guidance, not a selected numerical multiplier or a replacement for chronological XP credits/penalties. The ranking/dispute-authority boundary, candidate filters and graph observations still need exact contracts.
+**[SELECTED] Each formal consul has one vote**, regardless of XP magnitude. **D111 — [OWNER reconfirmation], 2026-10-29:** "в совете, да, один участник — один голос, не важно какой у него XP" ("in the Council, yes, one participant — one vote, whatever their XP"). XP may determine Council eligibility/ranking but never vote weight inside the Council. Whether network-wide K referendums (D87–D90) use the same rule is a separate pending clarification. Eligibility requires activity over the preceding 28 days under the declared verification/eligibility contract. Topology-aware effective-XP ranking is D33 guidance, not a selected numerical multiplier or a replacement for chronological XP credits/penalties. The ranking/dispute-authority boundary, candidate filters and graph observations still need exact contracts.
 
 Membership changes with XP/activity. **Recalculation is not turnover:** continuously active leaders may retain seats. Stability is not itself failure, and rapid replacement is not itself success; actual contestability, independence and influence removal after established misconduct matter. An active-case membership snapshot and dynamic membership are distinct references. Ties at the last seat, vacancies, additional recusal, minimum functioning quorum and case-membership updates remain OPEN; D71 excludes both parties from a consul-versus-consul case. A lone remaining member cannot acquire the powers denied to the one-consul phase.
 
@@ -1417,7 +1419,7 @@ The design distinguishes actual token operations from ledger claims.
 | Free eligible Self-ID cancellation before 24 h | Burn Emitter backing; no maturity XP (D42). |
 | Collector conversion | Transfer an existing FACY unit; do **not** mint a second unit. |
 | D93 valence creation | Burn1own-issued FACY now, even unanswered; matching has no extra burn (§19.2). |
-| Established-link termination | D85: free OR burn 1 any-origin FACY, neither selected (§19.3). |
+| Established-link termination | D110: free; cancels the terminating party's valence (§19.3). |
 | Monetary sanction | Burn only if the approved rule executes an actual burn; otherwise transfer or record debt. |
 | Treasury D buyback | Buy existing market FACY; burn the acquired quantity. |
 
@@ -1879,7 +1881,7 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 
 24. D93 ordinary mutuality requires valid opposite paid valences; each creation immediately burns1own-issued FACY even unanswered. D105–D107 invitation is a special inviter-paid1route, recipient zero Genesis conceptual half with no mint/burn/debt, not two newborn-paid valences.
 25. A paid unilateral valence uses1creator-owned K slot from creation (D100), but gives no guarantor XP/mutual responsibility; matching retained units adds no mutual-degree slot. Own-act/independent duties remain.
-26. Link termination is distinct from free Self-ID cancellation; D85 free-versus-burning1any-origin FACY remains unselected, with valid-end capacity release/history preserved.
+26. Link termination is distinct from free Self-ID cancellation; D110 makes it free and cancels the terminating party's valence, with valid-end capacity release/history preserved.
 27. An authorized guarantor can prevent liability for a specific suspect Self-ID by validly cancelling that act, without automatically negating the underlying guarantee.
 28. The graph preserves historical links and accountability after later link breaks, subject recovery, and disputes.
 29. Disconnection alone cannot establish that every dependent subject is fake or liable.
@@ -1950,7 +1952,7 @@ Facety must be evaluated against several adversaries, not only a person who buys
 | XP farming cartel | Use dense mutual guarantees to earn XP at high speed. | Public graph and liability; **open:** whether authority outruns independent evidence. |
 | Impersonation or twins | Claim another person's image or create multiple subjects for one person. | FaceRef collision visibility, signed claims, guarantor cancellation, disputes. |
 | Synthetic group artifact | Generate an image that appears to show several real people. | Multiple claims are inspectable; no automatic guarantee of physical co-presence. |
-| Malicious guarantor | Cancel valid Self-ID acts to coerce a real person. | Subject can terminate; D85 free-versus-burn price remains unselected, so assess access/cost under an explicit arm. |
+| Malicious guarantor | Cancel valid Self-ID acts to coerce a real person. | Subject can terminate for free (D110). |
 | Hidden invalid act | Guarantors ignore suspect Self-ID to protect themselves. | Public challenge by eligible outsiders; risk of collusive concealment remains. |
 | Root collapse | An upstream inviter or guarantor fails identity verification. | Trace dependent paths; distinguish disconnected real people from guilty parties. |
 | Large-debt evasion | Abandon subject after a fine. | Persistent subject debt; ability to compel repayment remains limited by recoverable assets. |
@@ -2112,7 +2114,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 17. How disputed or cancelled acts affect the rolling active-subject count.
 18. Invitation target binding, expiration, acceptance, replay protection, and any cancellation remedy.
 19. D105–D107 settle inviter1/recipient0,1slot at each endpoint at issuance, existing pre-registration/zero Genesis with no recipient mint/burn and no repeated acceptance gate. D93/D94 ordinary paid valence/opposite persistence remain. Bind canonical ordinary/special/zero-act records, duplicates/K/pending/failure/D77/source chronology, not a reopening of those choices.
-20. D85 termination pricing is free versus burning1any-origin FACY (neither selected); bind payer/source/debt and execution, not the superseded fixed-fee premise.
+20. D110 selects free termination (D85's free branch); bind atomic execution and history, not the superseded fixed-fee premise.
 21. Connectedness policy, liability scope for upstream roots, recovery and alternative paths.
 
 ### D. Disputes, XP, and the Council
@@ -2583,6 +2585,8 @@ Prioritize assumptions whose failure would undermine this core, reuse applicable
 
 **D108 — [OWNER research-gate release, not a protocol-rule selection], 2026-10-29 22:30 Europe/Samara.** Source: the owner's reply (in Russian) to the assistant's project review, which named the unbuilt WP1/G1 method as the single blocker and proposed testing the D50 thesis directly: "да, подтверждаю, разрешаю разблокировать гейты" ("yes, I confirm, I allow the gates to be unblocked"). The master-programme order lock (G0→WP1/G1→WP2/WP3/WP5→…) and the WP1/G1 committed-method precondition no longer block research runs. The first released study is the [D50 falsifier](../studies/2026-10-29-d50-falsifier/README.md), with design choices in [Q16](../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108). Unchanged: every claim still needs a committed registration before its reserved-seed confirmation, with its own kill criterion; results keep their actual evidence level; no OPEN protocol rule, default migration, real/personal-data use or ethics approval follows from this release.
 
+**D109 — [OWNER research-design binding, not a protocol rule], 2026-10-29.** Source: owner reply "по Q16 всё по умолчанию" ("Q16: all defaults"). The [D50 falsifier](../studies/2026-10-29-d50-falsifier/README.md) uses the six [Q16](../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108) defaults: per-effort FACY-equivalent holdings, honest versus attacker, as a log ratio per paired replica; weak D50 contradicted if any context shows attacker yield ≥ honest; strong 10× only if it holds in every context; fabrication weights {1, 5, 20} as contexts; three defense contexts; 90 days with a 10000-subject cap; legacy cohort engine with D42 maturity XP.
+
 Remove confirmed dead code, redundant context and unnecessary abstractions only after checking their consumers and preservation duties. Do not delete selected protocol rules merely because their empirical benefit is unproved; unsupported proposals remain explicit proposals. Preserve historical packets and reproducibility. Do not optimize or expand a mechanism/harness merely because it is locally implementable: D75/D81 settle current mutual-K meaning and non-destructive parameter changes, not implementation priority or a proved anti-farming effect. Public disputes and real financial custody remain core; auxiliary indexer optimization, rescue and peripheral modules do not acquire priority through availability.
 
 Use one continuing research sequence: select the largest critical uncertainty, state a falsifiable claim, choose the smallest sufficient check, execute only admitted work, retain the result at its actual evidence level, simplify and re-rank. If one branch needs an owner rule or empirical data, pursue another independent useful permitted check without inventing the blocked assumptions or bypassing scientific gates. Stop when all useful admitted work is exhausted; manufacture no scaffolding for continuation. This direction preserves D33–D36/D34/D42/D54–D55/D73–D75, the prior evidence gates and all remaining OPEN contracts; it selects no new personhood oracle, XP reward, hold period, quota, liability remedy, Council rule, default migration or real-data permission.
@@ -2894,6 +2898,16 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 ### Research-gate release recorded 2026-10-29
 
 **D108 — [OWNER research-gate release; no protocol rule], §46.18.** Source: owner reply 2026-10-29 22:30 Europe/Samara, "да, подтверждаю, разрешаю разблокировать гейты". The master-programme order lock and the WP1/G1 method precondition no longer block research runs; the first released study is the D50 falsifier. Registration-before-confirmation, kill criteria, evidence levels, OPEN rules, default migration and real-data/ethics gates are unchanged.
+
+### D50 design, link termination, Council vote and re-entry recorded 2026-10-29
+
+**D109 — [OWNER research-design binding], §46.18.** Source: "по Q16 всё по умолчанию". All six Q16 defaults bind the D50 falsifier design.
+
+**D110 — [SELECTED free link termination], §19.3.** Source: "цена разрыва связи бесплатна — отменяет валентность". Selects D85's free branch: no charge; the terminating party's valence is cancelled, its slot released, burned creation FACY not refunded.
+
+**D111 — [OWNER reconfirmation], §27.1.** Source: "в совете, да, один участник — один голос, не важно какой у него XP". One equal vote per Council member regardless of XP; K-referendum weights (D87–D90) await clarification.
+
+**D112 — [SELECTED re-entry by mutual guarantee], §18.4.** Source: "повторный вход может быть без нового приглашения, достаточно установить взаимопоручительские связи, но регистрировать новые Self-ID и заниматься эмиссией FACY можно только при наличии хотя бы одного поручительства — не важно инвайт или нет". Supersedes D95's new-invitation requirement; Self-ID and emission need ≥1 current mutual guarantee of any origin. Valence payment for a re-entrant without own FACY and the D84 path condition remain to bind.
 
 ### Earlier supersessions
 

@@ -22,7 +22,7 @@ Main risks: oracle/evidence validity, Sybils, collusion, arbitration capture, bo
 ## Current state
 
 - **Priority:** [D76 Evidence Core Convergence](docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) — minimum causal evidence for genuine growth, honest incentive advantage, accountable XP, public correction, capture resistance and recovery, through longitudinal living-network trajectories. See the [evidence frontier](docs/research.en.md#minimum-evidence-frontier-d76).
-- **Programme:** [D108](docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) released the [master programme](studies/2026-10-26-trust-topology-condition-map/README.md) gates; the first released study is the [D50 falsifier](studies/2026-10-29-d50-falsifier/README.md), awaiting [Q16](DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108). Engineering is ahead of evidence: the annual 100→453-subject no-attack workload completes with full audits, which is not a security result.
+- **Programme:** [D108](docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) released the [master programme](studies/2026-10-26-trust-topology-condition-map/README.md) gates; the first released study is the [D50 falsifier](studies/2026-10-29-d50-falsifier/README.md), design bound by D109. Engineering is ahead of evidence: the annual 100→453-subject no-attack workload completes with full audits, which is not a security result.
 - **Selected but not implemented:** D33/D35/D36 topology (guarantee AND internally vertex-disjoint path gates), D34 event-time liability, D81–D107 owned slots/paid valences/invitations, D70–D72 Council referendum mechanics. The legacy references stay labeled.
 - **Work:** [BACKLOG](BACKLOG.md) alone owns open work; [CHANGELOG](CHANGELOG.md) records milestones.
 

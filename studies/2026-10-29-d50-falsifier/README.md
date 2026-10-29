@@ -1,6 +1,6 @@
 # D50 falsifier: honest versus fraudulent yield per unit of effort (D108)
 
-**Status (2026-10-29):** design draft awaiting owner answers to [Q16](../../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108); one exploratory probe executed. No registration, reserved-seed confirmation or mechanism claim exists yet.
+**Status (2026-10-29):** design bound by [D109](../../docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) (all [Q16](../../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108) defaults accepted); one exploratory probe executed. No registration, reserved-seed confirmation or mechanism claim exists yet.
 
 **Authority:** [D108](../../docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) releases the master-programme order lock and the WP1/G1 method precondition for research runs. The evidence contract itself is unchanged: claims still need a committed registration before a reserved-seed confirmation, with presence, necessity and named alternatives where a mechanism is claimed.
 
@@ -33,7 +33,7 @@ Observations, at diagnostic level only:
 
 These numbers are not evidence for or against D50; they show which assumptions decide the answer: effort weights, defense activity, the cap and the horizon.
 
-## Draft design (pending Q16)
+## Bound design (D109)
 
 - **Engine:** legacy cohort engine with D42 `policy.xpFinality: "maturity"`; V1–V3 valence references are not yet wired into the cohort runner.
 - **Statistic:** a new per-day observable pair `yield.honestPerEffort` / `yield.attackersPerEffort` (holdings over cumulative effort), with the ratio as a contrast on the log scale, plus the absolute per-operator holdings as a reported secondary.
