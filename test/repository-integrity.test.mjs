@@ -48,6 +48,17 @@ test('every relative Markdown link resolves to a tracked file or directory', () 
   assert.deepEqual(broken, []);
 });
 
+test('README code examples import only existing named exports', async () => {
+  const missing = [];
+  for (const block of text.get('README.md').matchAll(/```js\n([\s\S]*?)```/g)) {
+    for (const [, names, path] of block[1].matchAll(/import\s*\{([^}]+)\}\s*from\s*'(\.\/[^']+)'/g)) {
+      const module = await import(new URL(path, new URL('../', import.meta.url)));
+      for (const name of names.split(',').map(value => value.trim()).filter(Boolean)) if (!(name in module)) missing.push(path + '#' + name);
+    }
+  }
+  assert.deepEqual(missing, []);
+});
+
 test('every Markdown heading anchor link resolves in its target document', () => {
   const broken = [];
   for (const file of markdown) for (const target of links(file)) {

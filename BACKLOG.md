@@ -13,7 +13,7 @@ Goal: cut at least20% of the tracked project, remove noise, consolidate knowledg
 - [x] **C1 integrity guard + raw-output archive:** 334 untested raw outputs (7.37MB) archived to permalinks; guard enforces links/anchors.
 - [x] **C2 CHANGELOG:** 183KB narrative → milestone ledger.
 - [x] **C3 BACKLOG:** 88KB → open work, gates and unblockers only.
-- [ ] **C4 README/AGENTS/DECISIONS_NEEDED:** concentrate; remove D-narratives duplicated from the protocol (protocol owns meaning, BACKLOG owns tasks).
+- [x] **C4 README/AGENTS/DECISIONS_NEEDED:** 166KB → 46KB; settled/unselected rule lists concentrated in AGENTS; README examples guarded by an export check.
 - [ ] **C5 docs:** dedupe `insights`, `simulator`, `research` against the protocol and each other.
 - [ ] **C6 studies prose:** consolidate per-study Markdown where pages repeat the same packet.
 - [ ] **C7 immutable packets:** `test/historical-source.test.mjs` forbids any diff in four 2026-10-24 packets holding ~7.1MB of untested outputs. Archiving them needs that guard narrowed to forbid modification/addition but allow deletion; decide after C4–C6 measure the remaining gap.

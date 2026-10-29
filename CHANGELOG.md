@@ -9,6 +9,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 - C1: link/anchor integrity guard (`test/repository-integrity.test.mjs`), two broken Q15 anchors fixed, 334 untested raw study outputs (7.37MB) archived to `8b77cd8` permalinks; test-read files and study inputs kept.
 - C2: this ledger replaces the per-change narrative (183KB → 8KB).
 - C3: BACKLOG reduced to open work, gates and unblockers (88KB → 24KB); legacy anchors kept.
+- C4: README, AGENTS and DECISIONS_NEEDED concentrated (166KB → 46KB); integrity guard now checks README example imports.
 
 ### Owned slots, valences and invitations (D81–D107, documentation only)
 
