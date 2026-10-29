@@ -50,6 +50,7 @@ Each history point retains the earlier population/cost fields and adds:
 - Structure: guarantee reciprocity and the largest weak-component fraction (`null` without edges or nodes), cross-cohort attack edges and attack edges per attacker subject (`null` without attackers), and invitation-lineage maximum and mean depth from the genesis roots.
 - XP coupling: `xp.attackerExcessShare` (attacker XP share minus attacker subject share) and `xp.outDegreeSpearman`, the tie-averaged rank correlation between effective XP and guarantee out-degree (`null` when either is constant).
 - Realized work: cumulative effort and per-action attempted/accepted/rejected/denied work since the preceding sample, separately for both cohorts. The initial sample includes funded topology setup; subsequent increments do not count setup twice.
+- Yield (D50/D109): `yield.honestHoldings`/`yield.attackersHoldings` are cohort FACY-equivalent holdings (liquid + unspent Emitter rights + reserved stake − debt); `yield.honestPerEffort`/`yield.attackersPerEffort` divide them by cumulative cohort effort (`null` at zero effort); `yield.strongTargetGap` is honest − 10 × attacker per-effort yield. This is protocol accounting, not utility: XP, prices and private benefits are excluded.
 
 The existing `defenderEffort` field measures **all honest-cohort work**, including Self-ID and growth. It is not exclusively defensive review labor. Use inspection/response action measurements when studying review costs specifically.
 

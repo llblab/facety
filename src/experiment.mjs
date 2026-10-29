@@ -233,12 +233,24 @@ export function runExperiment(overrides = {}) {
     if (falseConversions !== falseConversionCount) throw new Error('conversion evaluator invariant failed');
     const costs = effort.summary().cohorts;
     const daily = schedule && stage === 'day-end';
+    // D50/D109: cohort FACY-equivalent holdings (liquid + unspent Emitter + reserved stake - debt) per unit of cumulative declared effort.
+    const holdings = { honest: 0, attackers: 0 };
+    for (const subject of model.subjects()) holdings[truth.get(subject.id).cohort] += subject.liquidFacy - subject.debt;
+    for (const act of acts) if (act.status === 'unspent') holdings[truth.get(act.subject).cohort]++;
+    for (const stake of model.disputeStakes()) if (stake.status === 'reserved') holdings[truth.get(stake.owner).cohort] += stake.amount;
+    const perEffort = cohort => costs[cohort].effort > 0 ? holdings[cohort] / costs[cohort].effort : null;
+    const honestPerEffort = perEffort('honest');
+    const attackersPerEffort = perEffort('attackers');
     const network = measureNetwork(model, truth, { previousCouncilIds: daily ? previousDailyCouncilIds : previousCouncilIds });
     history.push({
       atHour: model.now, stage, ...network,
       attackerSeats: seats, councilSeats: council.length, falseConversions,
       attackerEffort: costs.attackers.effort, defenderEffort: costs.honest.effort,
       cohorts: measureWork(costs, daily ? previousDailyCosts : previousSampleCosts),
+      yield: {
+        honestHoldings: holdings.honest, attackersHoldings: holdings.attackers, honestPerEffort, attackersPerEffort,
+        strongTargetGap: honestPerEffort === null || attackersPerEffort === null ? null : honestPerEffort - 10 * attackersPerEffort,
+      },
       effectiveActivity: activity, activePerturbations: [...activePerturbations],
       ...(deviantOperators.size ? { deviantActivity } : {}),
       sanctions: { ...sanctions },

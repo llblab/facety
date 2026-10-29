@@ -1,0 +1,133 @@
+{
+  "id": "d50-weak-real-cartel",
+  "statement": "Weak D50: at day 90, honest cohort FACY-equivalent holdings per unit of declared effort exceed the attacker cohort's (ratio > 1, encoded as a positive difference so negative attacker yields stay defined). Scenario: real-cartel.",
+  "kind": "association",
+  "declaredOn": "2026-10-29",
+  "base": {
+    "scenario": "real-cartel",
+    "seed": "d50-real-cartel",
+    "days": 90,
+    "maxSubjects": 10000,
+    "maxActions": 5000000,
+    "policy": {
+      "xpFinality": "maturity"
+    }
+  },
+  "statistic": {
+    "metric": "yield.honestPerEffort",
+    "summary": "endpoint",
+    "subtract": "yield.attackersPerEffort"
+  },
+  "arms": {
+    "protocol": {}
+  },
+  "contexts": [
+    {
+      "id": "no-defense-fab1",
+      "parameters": {
+        "disputes.enabled": false,
+        "activity.honest.challenge": 0,
+        "weights.fabricateIdentity": 1
+      }
+    },
+    {
+      "id": "no-defense-fab5",
+      "parameters": {
+        "disputes.enabled": false,
+        "activity.honest.challenge": 0,
+        "weights.fabricateIdentity": 5
+      }
+    },
+    {
+      "id": "no-defense-fab20",
+      "parameters": {
+        "disputes.enabled": false,
+        "activity.honest.challenge": 0,
+        "weights.fabricateIdentity": 20
+      }
+    },
+    {
+      "id": "challenge-fab1",
+      "parameters": {
+        "disputes.enabled": true,
+        "activity.honest.challenge": 0.05,
+        "weights.fabricateIdentity": 1
+      }
+    },
+    {
+      "id": "challenge-fab5",
+      "parameters": {
+        "disputes.enabled": true,
+        "activity.honest.challenge": 0.05,
+        "weights.fabricateIdentity": 5
+      }
+    },
+    {
+      "id": "challenge-fab20",
+      "parameters": {
+        "disputes.enabled": true,
+        "activity.honest.challenge": 0.05,
+        "weights.fabricateIdentity": 20
+      }
+    },
+    {
+      "id": "challenge-verification-fab1",
+      "parameters": {
+        "disputes.enabled": true,
+        "activity.honest.challenge": 0.05,
+        "social.verification": true,
+        "social.investigation": true,
+        "weights.fabricateIdentity": 1
+      }
+    },
+    {
+      "id": "challenge-verification-fab5",
+      "parameters": {
+        "disputes.enabled": true,
+        "activity.honest.challenge": 0.05,
+        "social.verification": true,
+        "social.investigation": true,
+        "weights.fabricateIdentity": 5
+      }
+    },
+    {
+      "id": "challenge-verification-fab20",
+      "parameters": {
+        "disputes.enabled": true,
+        "activity.honest.challenge": 0.05,
+        "social.verification": true,
+        "social.investigation": true,
+        "weights.fabricateIdentity": 20
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "weak",
+      "role": "presence",
+      "contrast": {
+        "protocol": 1
+      },
+      "direction": "greater",
+      "margin": 0,
+      "probability": 0.5,
+      "rationale": "D109 kill: contradicted if, in any context, attacker yield per effort is at least honest yield in significantly more than half of the reserved replicas."
+    }
+  ],
+  "alternatives": [],
+  "replicas": 30,
+  "alpha": 0.05,
+  "exploration": {
+    "seeds": [
+      "p1",
+      "p2",
+      "p3",
+      "x",
+      "explore-d50-1",
+      "explore-d50-2",
+      "explore-d50-3",
+      "d50-yield"
+    ],
+    "source": "studies/2026-10-29-d50-falsifier/README.md (probe.mjs and ad hoc 2026-10-29 runtime probes)"
+  }
+}

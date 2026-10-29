@@ -41,6 +41,23 @@ These numbers are not evidence for or against D50; they show which assumptions d
 - **Kill:** weak D50 is contradicted in the model if, in any context, the attacker per-effort yield is at least the honest yield in a significant share of reserved replicas.
 - **Controls:** the honest-growth scenario as the no-attack baseline; the `maxSubjects` cap raised or the horizon shortened so that endpoints are not cap-censored.
 
+## Registration (committed before confirmation)
+
+[`build-hypotheses.mjs`](build-hypotheses.mjs) writes four `association` hypotheses; each was registered with `node bin/facety.mjs register` and committed before any reserved-seed run:
+
+| Hypothesis | Statistic (day-90 endpoint) | Claim | Registration |
+| --- | --- | --- | --- |
+| [weak, sybil-cone](hypotheses/d50-weak-sybil-cone.json) | `yield.honestPerEffort` − `yield.attackersPerEffort` | > 0, median (p = 0.5) | [reg](hypotheses/d50-weak-sybil-cone.registration.json) |
+| [weak, real-cartel](hypotheses/d50-weak-real-cartel.json) | same | same | [reg](hypotheses/d50-weak-real-cartel.registration.json) |
+| [strong, sybil-cone](hypotheses/d50-strong-sybil-cone.json) | `yield.strongTargetGap` = honest − 10 × attacker | > 0, median | [reg](hypotheses/d50-strong-sybil-cone.registration.json) |
+| [strong, real-cartel](hypotheses/d50-strong-real-cartel.json) | same | same | [reg](hypotheses/d50-strong-real-cartel.registration.json) |
+
+Each has 9 contexts (3 defenses × fabrication weight 1/5/20), 30 replicas, α = 0.05 and the v2 `family-contradiction/v1` analysis; Holm adjustment across the four via `study`. Base: 90 days, `maxSubjects` 10000, `maxActions` 5,000,000 (raised from 500,000 because the action cap, not the design, censored runtime probes), D42 `xpFinality: "maturity"`.
+
+**Encoding note.** Q16's log ratio is undefined when attacker yield is ≤ 0, which is the strongest pro-D50 outcome. The registered statistics are the equivalent sign tests (ratio > 1 ⇔ difference > 0; ratio > 10 ⇔ honest − 10 × attacker > 0 for positive yields), defined for every sign. Log ratios are reported descriptively.
+
+**Known inert context.** `real-cartel` attackers recruit genuine people, so the fabrication weight does not touch them; its three weight contexts are expected replicates, not robustness.
+
 ## Not claimed
 
 No real-world profitability, no optimal attacker, no calibrated effort price, no utility of XP and no network externality. A finite strategy menu cannot prove universal deterrence.

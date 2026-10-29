@@ -33,6 +33,8 @@ export const OBSERVABLES = Object.freeze({
   'cohorts.honest.byAction.inspect.accepted': 1,
   'cohorts.honest.byAction.respond.accepted': 1,
   'cohorts.attackers.sincePrevious.effort': 1,
+  'yield.honestHoldings': 1, 'yield.attackersHoldings': 1,
+  'yield.honestPerEffort': 0.01, 'yield.attackersPerEffort': 0.01, 'yield.strongTargetGap': 0.01,
 });
 export const DEFAULT_OBSERVABLES = Object.freeze([
   'subjects', 'xp.gini', 'xp.attackerShare', 'council.attackerShare',
