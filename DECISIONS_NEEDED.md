@@ -157,7 +157,7 @@ Default: licensed public non-face graphs only, otherwise labeled synthetic. WP7 
 
 Answered 2026-10-29: D85 → **D110** free termination cancelling the terminating party's valence; Council vote → **D111** one equal vote regardless of XP; D95 → **D112** re-entry by ordinary mutual guarantee, Self-ID/emission need ≥1 current mutual guarantee of any origin. Still open:
 
-- **Per-invite 24h freeze versus referendum pause (§18.5).** Two different mechanisms share the word "freeze": (a) the selected rule that every new invitation waits 24h, during which the inviter's guarantors may cancel it; (b) the owner's later voice reading of "freeze" as pausing all invitation issuance while a K referendum runs. Question: keep (a), add (b), both, or replace (a) by (b)? [Suggestion: keep (a); add (b) only if K changes need a stable count during the vote.]
+- **Per-invite 24h freeze versus referendum pause (§18.5)** — answered by **D113**: K referendums pause nothing; the per-invitation 24h veto freeze stays.
 - **K-referendum weights (D87–D90).** D111 settles the Council. Does a network-wide K referendum also use one participant one vote, dropping the FACY×XP (D88) and sqrt (D90) candidates?
 - **D112 bindings.** Who pays the re-entrant's valence when they hold no eligible own FACY (D93 prices it in self-issued FACY)? Does D84's outside-bootstrap path-to-Council condition still apply to the re-entrant's guarantor?
 - Mixed terminals, invitations to admitted accounts, mature decline below 100 [defer; first test whether the simpler rules fail].

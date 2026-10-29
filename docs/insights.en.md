@@ -20,6 +20,8 @@ Owner decisions are canonical in [protocol Appendix A](facety.protocol.en.md#app
 - **D109 — OWNER binding.** All six Q16 defaults bind the D50 falsifier design. [§46.18](facety.protocol.en.md#4618-evidence-core-convergence-d76)
 - **D110–D112 — OWNER selected.** Free link termination cancels the terminating party's valence (D85 free branch); one equal Council vote regardless of XP; re-entry by ordinary mutual guarantee without a new invitation, Self-ID/emission need ≥1 current mutual guarantee of any origin (supersedes D95's invitation requirement). [§19.3](facety.protocol.en.md#193-unilateral-link-break), [§27.1](facety.protocol.en.md#271-membership-and-equal-votes), [§18.4](facety.protocol.en.md#184-invitations-are-accountable-not-anonymous-coupons)
 
+- **D113 — OWNER selected.** No pause of any kind during K referendums; the per-invitation 24h veto freeze stays; open-dispute parties make no Self-IDs or new guarantees (D77 restated). [§18.5](facety.protocol.en.md#185-invitation-freeze)
+
 ### Owner decisions D81–D107 (2026-10-28 – 2026-10-29)
 
 - **D105–D107 — OWNER selected.** Inviter pays 1 own eligible FACY, recipient 0/no debt (supersedes D92's 2); one slot at BOTH issuer and recipient from issuance; the target is a pre-registered account with completed fields and a zero Genesis Self-ID; eligibility is checked once, at issuance. [§18](facety.protocol.en.md#18-admission-through-invitation)

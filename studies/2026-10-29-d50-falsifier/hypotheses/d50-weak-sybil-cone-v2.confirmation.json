@@ -1,0 +1,1727 @@
+{
+  "schema": "facety-confirmation/v2",
+  "analysisPolicy": "family-contradiction/v1",
+  "registrationHash": "e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213",
+  "hypothesis": "d50-weak-sybil-cone-v2",
+  "statement": "Weak D50: at day 90, honest cohort FACY-equivalent holdings per unit of declared effort exceed the attacker cohort's (ratio > 1, encoded as a positive difference so negative attacker yields stay defined). Scenario: sybil-cone.",
+  "implementation": {
+    "method": "sha256-src-mjs-v1",
+    "digest": "1f8e92bad89f973ada63c2164deeb012468d745757e33d9133202ef06d4391e3",
+    "files": 55
+  },
+  "implementationMatched": true,
+  "randomness": {
+    "generator": "sha256-xoshiro128starstar-v2",
+    "decisions": "decision-keyed-v1"
+  },
+  "values": {
+    "no-defense-fab1": {
+      "protocol": [
+        {
+          "value": 0.11758576553028197,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 0.14641512866980788,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 0.13072041691483025,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 0.14743222741491727,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 0.12869093113065863,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 0.11743585128356449,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 0.1283653490625454,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 0.13095686358336572,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 0.1288371066309655,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 0.14321947969802085,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 0.12334894570775759,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 0.14210673518328196,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 0.1313811374698352,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 0.12299851138353765,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 0.12049630691109386,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 0.14196585966352077,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 0.1325920787188686,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 0.11806459783228751,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 0.15036318640268959,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 0.13411629036586456,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.12423110002515303,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 0.12411121817933421,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 0.14428134118578642,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 0.13041903723156423,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 0.11822254191086273,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 0.12010116948702046,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 0.1258141202142432,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 0.14600826842201498,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 0.12981118971755684,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 0.121312370335602,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    },
+    "no-defense-fab5": {
+      "protocol": [
+        {
+          "value": 0.14373067751430002,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 0.14717121521965346,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 0.1628340293555846,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 0.13762697017268447,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 0.13702497319244183,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 0.14493107024988214,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 0.13973780546191805,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 0.1624328222589746,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 0.14255372253609544,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 0.13889799563621935,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 0.14916860429780768,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 0.13827335312459954,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 0.1609873793495012,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 0.14204468454605407,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 0.1473688812392427,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 0.16007853131529326,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 0.16448762818840956,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 0.1435547304266292,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 0.14190654036243822,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 0.1643262682006112,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.14893366385927065,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 0.14293121425010197,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 0.14822073870119562,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 0.15836047966631905,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 0.14393554556893762,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 0.14165434372090963,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 0.1507661026952587,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 0.13601086420871455,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 0.15730196798543816,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 0.1480421689032197,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    },
+    "no-defense-fab20": {
+      "protocol": [
+        {
+          "value": 0.18231862259850212,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 0.19689134025171118,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 0.1919405942341636,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 0.19908535740604275,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 0.1896509724013412,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 0.18410610427650848,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 0.1876488859468471,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 0.19211852279750868,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 0.18931437487809638,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 0.19916672370183008,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 0.18778966913133677,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 0.19663287522603978,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 0.19255321407274895,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 0.18320139551306425,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 0.18697823370254502,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 0.1978279079079079,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 0.1916502541296061,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 0.18433750163995877,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 0.2022470734012391,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 0.19491342908438059,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.18540589743589747,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 0.18426492577597842,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 0.19647537867078826,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 0.19279615522802435,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 0.18441630396004283,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 0.18157618134263295,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 0.18852254866238374,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 0.19708486167069567,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 0.19163474773609315,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 0.18521881721442698,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    },
+    "challenge-fab1": {
+      "protocol": [
+        {
+          "value": 0.3208490444234929,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 0.34739815849748057,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 0.3369285982230997,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 0.35457064825930373,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 0.3462067842433203,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 0.33226115253832844,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 0.379932693465385,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 0.3175447315565855,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 0.3740676457024728,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 0.3583778199632578,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 0.3793715294613682,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 0.32296605881586377,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 0.31818709201246514,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 0.3632335268103925,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 0.4663923027844678,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 0.31025949874686715,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 0.34343446670472827,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 0.39396969807868254,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 0.33997557855482896,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 0.2758414362066603,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.3638159699837981,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 0.279540651409255,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 0.35161274251325403,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 0.3279968834186857,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 0.45111090504922197,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 0.34217396701786534,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 0.3764196895968857,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 0.4146592911995763,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 0.34903948443850563,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 0.4489707391729078,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    },
+    "challenge-fab5": {
+      "protocol": [
+        {
+          "value": 0.37629908729501405,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 0.36568879209699146,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 0.34104792207792206,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 0.3385043609022556,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 0.330079298723048,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 0.33473086925458445,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 0.3235678446018042,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 0.32252901092976527,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 0.4390272339921884,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 0.3339490600627975,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 0.3518533347333053,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 0.34288912654360826,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 0.2864317028038135,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 0.30445255335407456,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 0.37542766917293235,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 0.3294814299793042,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 0.3076106743777755,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 0.33052460065307565,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 0.30392575450328985,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 0.408345501905972,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.3561143226052665,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 0.4334679370249728,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 0.35053883089770355,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 0.3773804456991317,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 0.4023727885253885,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 0.35544401260407565,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 0.3779042064660204,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 0.3540445844456309,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 0.3043385172773718,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 0.4330609868718877,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    },
+    "challenge-fab20": {
+      "protocol": [
+        {
+          "value": 0.36899570466122583,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 0.3700321933085502,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 0.3530756088560886,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 0.38419358183566304,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 0.31924119714669696,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 0.40919607487434284,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 0.3673357816640169,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 0.3312959731543624,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 0.3670938338408683,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 0.3236334038547292,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 0.367479217724006,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 0.3953295062840475,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 0.41496457355649874,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 0.325184546442151,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 0.38357967837120094,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 0.3478352200009921,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 0.3335422113888601,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 0.3721607907916703,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 0.31573920573752945,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 0.3701442426430764,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.4007211917401664,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 0.3963588785046729,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 0.4332288549689586,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 0.3974270278920896,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 0.3306579889092617,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 0.4314741505922934,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 0.4970726006176277,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 0.43206932525803976,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 0.3350797367565811,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 0.4433662280425895,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    },
+    "challenge-verification-fab1": {
+      "protocol": [
+        {
+          "value": 1.169004383819379,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 2.4361290020349684,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 1.5608687234042553,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 2.4455775066642973,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 2.1737011369509043,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 2.2035621847002065,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 2.4720016203460933,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 2.5067223964485157,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 2.5313439731410474,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 1.785076065176815,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 2.1677772576652066,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 1.1774944413193558,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 2.599704601403577,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 2.158824517661027,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 2.5182681793595423,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 2.3561955750627015,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 2.370797380548144,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 2.231912803112778,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 2.1053378348986653,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 2.427116705700184,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.6513011235955056,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 2.510516320773406,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 2.327971786703601,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 2.0236536418244335,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 2.269217054788861,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 2.2554511872890677,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 2.0154309158186865,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 2.512604741938994,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 2.0692147987584595,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 2.375724557780819,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    },
+    "challenge-verification-fab5": {
+      "protocol": [
+        {
+          "value": 1.5684090405350863,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 1.8152391465400903,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 1.8558286737895362,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 2.271200141480712,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 1.9474845667447307,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 1.3594201143733051,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 2.0514098927090956,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 2.400028024301531,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 2.690129339487024,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 1.8886009392209873,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 1.881428261283565,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 2.0974793545226023,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 2.478465612550449,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 2.316206287367406,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 2.234095588062277,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 2.1015587433489102,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 2.38230699695479,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 2.5281086724614776,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 1.6033693809736047,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 1.8395861210240496,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.6726799693700892,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 2.4428627941528878,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 2.0575446439628484,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 1.9914381794057336,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 1.7797234791335619,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 2.0853312440663805,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 2.2579596576739966,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 2.557366725567977,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 2.143567793904209,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 2.1069548887224925,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    },
+    "challenge-verification-fab20": {
+      "protocol": [
+        {
+          "value": 1.2848033580018503,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",0]"
+        },
+        {
+          "value": 1.3888562754765152,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",1]"
+        },
+        {
+          "value": 1.3493719948575102,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",2]"
+        },
+        {
+          "value": 1.6688299999999998,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",3]"
+        },
+        {
+          "value": 1.7373388730270434,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",4]"
+        },
+        {
+          "value": 1.4790108620493574,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",5]"
+        },
+        {
+          "value": 1.8128856406108758,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",6]"
+        },
+        {
+          "value": 1.6510982117945465,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",7]"
+        },
+        {
+          "value": 1.8089208177657738,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",8]"
+        },
+        {
+          "value": 1.5503763214714115,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",9]"
+        },
+        {
+          "value": 1.7011413836726628,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",10]"
+        },
+        {
+          "value": 1.7540608344198174,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",11]"
+        },
+        {
+          "value": 1.4821288092466323,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",12]"
+        },
+        {
+          "value": 1.602516933066933,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",13]"
+        },
+        {
+          "value": 1.715363865862258,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",14]"
+        },
+        {
+          "value": 1.4692306807798434,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",15]"
+        },
+        {
+          "value": 1.7360689224239567,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",16]"
+        },
+        {
+          "value": 1.5181413529676813,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",17]"
+        },
+        {
+          "value": 1.4791241403932216,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",18]"
+        },
+        {
+          "value": 1.7969548262359276,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",19]"
+        },
+        {
+          "value": 0.6989194507429242,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",20]"
+        },
+        {
+          "value": 1.7302993090848697,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",21]"
+        },
+        {
+          "value": 1.7878119964402255,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",22]"
+        },
+        {
+          "value": 1.3029745741113345,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",23]"
+        },
+        {
+          "value": 1.7473263747454175,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",24]"
+        },
+        {
+          "value": 1.6908354686370572,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",25]"
+        },
+        {
+          "value": 1.647298501451546,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",26]"
+        },
+        {
+          "value": 1.601633093922652,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",27]"
+        },
+        {
+          "value": 1.3287107621247114,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",28]"
+        },
+        {
+          "value": 1.8522531997387968,
+          "censored": false,
+          "seed": "[\"confirm:e1284dd274dc29a3491dee7071874371d904eb2f340fc705760929657d3a8213\",\"d50-sybil-cone\",29]"
+        }
+      ]
+    }
+  },
+  "analysis": {
+    "analysisPolicy": "family-contradiction/v1",
+    "alpha": 0.05,
+    "contradiction": {
+      "familySize": 9,
+      "rawMinimumPValue": 1,
+      "pValue": 1,
+      "controlled": true,
+      "scope": "one-hypothesis/contradiction-direction"
+    },
+    "method": "Exact one-sided binomial test per claim and context of P(contrast satisfies the claim) > declared probability; replicas are independent seeds; unknown values count against the tested direction. The hypothesis is an intersection-union test: its p-value is the maximum component p-value, valid at alpha without within-hypothesis correction.",
+    "tests": [
+      {
+        "context": "no-defense-fab1",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 0.13071350420889444,
+          "standardDeviation": 0.010113260255400134,
+          "standardError": 0.0018464202572677035,
+          "min": 0.11743585128356449,
+          "p10": 0.11820674750300521,
+          "p50": 0.1293241481742612,
+          "p90": 0.14604895444679428,
+          "max": 0.15036318640268959,
+          "bootstrapMean95": {
+            "lower": 0.12738541113437069,
+            "upper": 0.13423786091725737,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "no-defense-fab5",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 0.1481764990735902,
+          "standardDeviation": 0.008972975765569309,
+          "standardError": 0.0016382337449164992,
+          "min": 0.13601086420871455,
+          "p10": 0.13820871482940802,
+          "p50": 0.1460511427347678,
+          "p90": 0.1624729429686356,
+          "max": 0.16448762818840956,
+          "bootstrapMean95": {
+            "lower": 0.1451621934556937,
+            "upper": 0.15140433003140827,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "no-defense-fab20",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 0.19059229566661143,
+          "standardDeviation": 0.00580248453989443,
+          "standardError": 0.0010593838906917214,
+          "min": 0.18157618134263295,
+          "p10": 0.18401563340016405,
+          "p50": 0.19064286006871717,
+          "p90": 0.1979536528577214,
+          "max": 0.2022470734012391,
+          "bootstrapMean95": {
+            "lower": 0.18858549075823042,
+            "upper": 0.19259558794439405,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "challenge-fab1",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 0.3562369596283002,
+          "standardDeviation": 0.04506488648219036,
+          "standardError": 0.008227684959235098,
+          "min": 0.2758414362066603,
+          "p10": 0.3168162082756137,
+          "p50": 0.3482188214679931,
+          "p90": 0.4180904359969095,
+          "max": 0.4663923027844678,
+          "bootstrapMean95": {
+            "lower": 0.34011829796991166,
+            "upper": 0.372578641217003,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "challenge-fab5",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 0.35303441534603247,
+          "standardDeviation": 0.03999430109974533,
+          "standardError": 0.007301926961328063,
+          "min": 0.2864317028038135,
+          "p10": 0.3044411497464043,
+          "p50": 0.3467139787206559,
+          "p90": 0.4108170504025636,
+          "max": 0.4390272339921884,
+          "bootstrapMean95": {
+            "lower": 0.33960408245782586,
+            "upper": 0.3674638286052201,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "challenge-fab20",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 0.377250284313962,
+          "standardDeviation": 0.04340574657468497,
+          "standardError": 0.007924768841435852,
+          "min": 0.31573920573752945,
+          "p10": 0.32502943218340885,
+          "p50": 0.37008821797581326,
+          "p90": 0.43218527822913166,
+          "max": 0.4970726006176277,
+          "bootstrapMean95": {
+            "lower": 0.3629928687532342,
+            "upper": 0.39311118680556767,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "challenge-verification-fab1",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 2.1469500806229833,
+          "standardDeviation": 0.45894317068080864,
+          "standardError": 0.08379117573160749,
+          "min": 0.6513011235955056,
+          "p10": 1.5225312951957655,
+          "p50": 2.2623341210389643,
+          "p90": 2.5131710856810487,
+          "max": 2.599704601403577,
+          "bootstrapMean95": {
+            "lower": 1.9789452239410041,
+            "upper": 2.291989308349299,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "challenge-verification-fab5",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 2.046859475789713,
+          "standardDeviation": 0.4053676805966323,
+          "standardError": 0.07400967424877491,
+          "min": 0.6726799693700892,
+          "p10": 1.5998733469297528,
+          "p50": 2.0914052992944914,
+          "p90": 2.483429918541552,
+          "max": 2.690129339487024,
+          "bootstrapMean95": {
+            "lower": 1.8981600541862507,
+            "upper": 2.184664874978453,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      },
+      {
+        "context": "challenge-verification-fab20",
+        "claim": "weak",
+        "role": "presence",
+        "replicas": 30,
+        "held": 30,
+        "violated": 0,
+        "unknown": 0,
+        "holdProbabilityLowerBound": 0.9049661471446958,
+        "holdProbabilityUpperBound": 1,
+        "pValue": 9.313225746154793e-10,
+        "contradictionPValue": 1,
+        "supported": true,
+        "contradicted": false,
+        "contrast": {
+          "count": 30,
+          "mean": 1.579142894504112,
+          "standardDeviation": 0.23523374667291871,
+          "standardError": 0.0429476097797378,
+          "min": 0.6989194507429242,
+          "p10": 1.3261371433233737,
+          "p50": 1.6491983566230464,
+          "p90": 1.7981514253889122,
+          "max": 1.8522531997387968,
+          "bootstrapMean95": {
+            "lower": 1.4920534396853389,
+            "upper": 1.6540145749913362,
+            "confidence": 0.95,
+            "resamples": 2000,
+            "method": "percentile bootstrap of the mean"
+          }
+        }
+      }
+    ],
+    "pValue": 9.313225746154793e-10,
+    "verdict": "supported",
+    "evidence": "association-supported-within-model",
+    "contradicted": [],
+    "cautions": [
+      "Support is conditional on the declared scenario, policies, ablation semantics, horizon, contexts and replica distribution; it is not a real-world claim.",
+      "A supported mechanism means the effect appeared, required the ablated mechanism and survived the named alternative controls; unnamed explanations remain untested.",
+      "Aggregate contradiction controls one hypothesis and one direction only; not joint support/refutation or cross-hypothesis error.",
+      "Inconclusive is not evidence of absence. All conclusions are conditional on the declared model and valid supplied inputs.",
+      "adjustStudy (Holm) corrects support across hypotheses, not their contradiction verdicts."
+    ]
+  }
+}
