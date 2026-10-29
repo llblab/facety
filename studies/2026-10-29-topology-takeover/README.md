@@ -120,8 +120,30 @@ v3 adds to the opt-in `detection` block (new keys default off, so v2 runs are un
 - **Escalation (D46).** For a suspicious invitee, the observer asks the highest-XP accepted subject within two mutual hops (itself included) whose XP exceeds the target's. Honest sponsors accept with `sponsorWillingness` (0.5); attackers never sponsor against the cone. The sponsor opens the identity case (D77 hold on sponsor and target).
 - **`followUp`.** When a case rules an account false, its sponsor looks at every other admitted invitee of the same inviter and opens cases on suspicious ones; honest partners of that inviter leave (`leave`).
 - Truth labels feed only the noisy look and the verdict; the pattern itself is computed from public graph and lineage data.
+- **v3.1 amendment (after the first v3 runs, before rerunning).** The pattern-gated public look almost never fired (0–1 patterns in four runs): random looks rarely hit one of the ten infiltrators, and a fake's invitees partner across the whole cone rather than inside the fake's own subtree. A public look now first examines the chosen subject's own identity evidence (same noisy look) and escalates if suspicious; the pattern step stays as an addition. The four first v3 runs are retained in [`runs/v3/`](runs/v3/) as v3.0.
 
 Runs: gate arm and no-gate reference, 3 and 10 infiltrators, stranger acceptance 0.05; v2 detection plus `leave`, `publicLook` 0.02 and `followUp` on.
+
+## v3 exploratory results (diagnostic, seed `explore-topo-1`)
+
+Attack on day 100, stranger acceptance 0.05, `maxSubjects` 3000; v2 detection plus `leave`, `publicLook` 0.02 and `followUp`. Raw rows: [`runs/v3/`](runs/v3/) (v3.0) and [`runs/v3.1/`](runs/v3.1/).
+
+| Infiltrators | Arm | Version | Attackers ≥ 50% on day | Last day: attackers / honest | Fakes invalidated | Genuine invalidated | Genuine invitations vetoed | Links left |
+| ---: | --- | --- | ---: | --- | ---: | ---: | ---: | ---: |
+| 3 | gate | v3.0 | 152 | d153 (cap): 1913 / 1015 | 0 | 40 | 45 | 416 |
+| 3 | gate | **v3.1** | **never** | **d199: 14 / 1843 (1%)** | 18 | 85 | 86 | 976 |
+| 3 | no gate | v3.1 | 132 | d135 (cap): 1848 / 805 | 8 | 30 | 25 | 204 |
+| 10 | gate | v3.0 | 129 | d132 (cap): 1879 / 790 | 0 | 24 | 33 | 191 |
+| 10 | gate | **v3.1** | **155** | d162 (cap): 1178 / 1108 | 131 | 38 | 46 | 287 |
+| 10 | no gate | v3.1 | 119 | d123 (cap): 2177 / 674 | 10 | 29 | 27 | 215 |
+
+1. **Leaving works only together with the gate.** Without the gate, honest people cut every attack edge (0 left) and the cone still grows at full speed: it does not need connections to the honest network. With the gate, cutting attack edges below D closes the cone.
+2. **Gate + leaving + public evidence contained 3 infiltrators for the whole 100 days.** Attack edges fell from 3 to 1–2 within a week, the cone stalled at 5–8 accounts, D rose to 4 at 1000 active people, and public looks then removed most of the remaining fakes (31 at the peak, 14 on day 199).
+3. **Ten infiltrators were delayed by 36 days, not stopped.** Public evidence, escalation and follow-up removed 131 fakes, but ten independent honest inviters gave the cone enough attack edges to pass the gate in bursts. Because eligibility is checked only at issuance (D107), one moment with D edges lets every cone member with a right invite at once.
+4. **Defense has a real cost to honest people:** 38–85 genuine people invalidated, 46–87 genuine invitations vetoed and many honest–honest links cut, all from the 1% false-positive rate over hundreds of daily looks and 10% wrong verdicts. Detection also ran during the head start, so the honest network reached only about 510 people by day 100 instead of 660.
+5. **The public pattern step never fired** (0 patterns), even in v3.1: direct looks at the examined subject did the work.
+
+Single-seed runs: whether 3 infiltrators are reliably contained, and where the infiltrator threshold lies, needs a multi-seed sweep before any claim.
 
 ## Acceptance before running
 

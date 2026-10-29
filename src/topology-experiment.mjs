@@ -10,7 +10,9 @@ export const TOPOLOGY_DEFAULTS = Object.freeze({
   seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false,
   honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
-  detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9 }),
+  detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9,
+    // D117 v3 (off by default): §18.5 leaving, public pattern evidence by anyone, escalation to higher-XP sponsors and same-inviter follow-up.
+    leave: false, publicLook: 0, patternMinInvitees: 5, patternClosure: 0.8, sponsorWillingness: 0.5, followUp: false }),
 });
 export const TOPOLOGY_ASSUMPTIONS = Object.freeze([
   'Behavior rates are scenario assumptions, not calibrated human behavior.',
@@ -49,8 +51,9 @@ export function topologyConfig(overrides = {}) {
   integer(config.K, 'K', 5);
   for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar']) probability(config.honest[key], 'honest.' + key);
   integer(config.honest.keepRights, 'honest.keepRights');
-  if (typeof config.detection.enabled !== 'boolean') throw new TypeError('detection.enabled must be boolean');
-  for (const key of ['review', 'inspect', 'sensitivity', 'falsePositiveRate', 'accuracy']) probability(config.detection[key], 'detection.' + key);
+  for (const key of ['enabled', 'leave', 'followUp']) if (typeof config.detection[key] !== 'boolean') throw new TypeError('detection.' + key + ' must be boolean');
+  for (const key of ['review', 'inspect', 'sensitivity', 'falsePositiveRate', 'accuracy', 'publicLook', 'patternClosure', 'sponsorWillingness']) probability(config.detection[key], 'detection.' + key);
+  integer(config.detection.patternMinInvitees, 'detection.patternMinInvitees', 1);
   integer(config.detection.windowDays, 'detection.windowDays', 1);
   return Object.freeze({ ...config, honest: Object.freeze(config.honest), detection: Object.freeze(config.detection) });
 }
@@ -77,7 +80,8 @@ export function runTopologyExperiment(overrides = {}) {
   // Evaluator-only labels: never read by any protocol call or honest decision.
   const cohort = new Map(honestIds.map(id => [id, 'honest']));
   const falseIdentity = id => id.startsWith('f');
-  const detection = { casesOpened: 0, falseInvalidated: 0, genuineInvalidated: 0, vetoedFalse: 0, vetoedGenuine: 0, casesDismissed: 0 };
+  const detection = { casesOpened: 0, falseInvalidated: 0, genuineInvalidated: 0, vetoedFalse: 0, vetoedGenuine: 0, casesDismissed: 0,
+    ...(config.detection.leave || config.detection.publicLook > 0 || config.detection.followUp ? { linksLeft: 0, patternsFound: 0, escalations: 0, sponsorRefusals: 0, followUpCases: 0 } : {}) };
   const openCases = new Map();
   const rosters = { honest: [...honestIds], attackers: [] };
   const decided = new Map();
@@ -117,8 +121,55 @@ export function runTopologyExperiment(overrides = {}) {
   }
   // Evaluator labels feed only this observation function; actors see its noisy output.
   const look = (random, subject) => random.chance(falseIdentity(subject) ? config.detection.sensitivity : config.detection.falsePositiveRate);
+  const mutualPartners = id => [...model.guarantees.outEdges(id)].map(edge => edge.to).filter(other => model.guarantees.edge(other, id) && accepted(other)).sort();
+  // §18.5: an honest subject ends its own side of the link with a partner (valence withdrawal or invitation-link end).
+  function leave(actor, partner) {
+    const valence = model.valenceRecords().find(record => record.owner === actor && record.counterpart === partner && record.status === 'open' && record.pairRelations.length);
+    const link = valence ? null : model.invitations().find(record => record.status === 'active' && ((record.creator === actor && record.target === partner) || (record.creator === partner && record.target === actor)));
+    if (!valence && !link) return false;
+    const result = tryAction(actor, () => valence ? model.withdrawValence(actor, valence.id) : model.endInvitationLink(actor, link.id));
+    if (result.ok) detection.linksLeft++;
+    return result.ok;
+  }
+  const invitees = id => [...model.lineage.outEdges(id)].map(edge => edge.to).filter(accepted).sort();
+  function subtree(id) {
+    const seen = new Set([id]), queue = [id];
+    while (queue.length) for (const edge of model.lineage.outEdges(queue.shift())) if (!seen.has(edge.to)) { seen.add(edge.to); queue.push(edge.to); }
+    return seen;
+  }
+  // Public record only: invitees whose mutual partners lie inside the examined subject's own invitation subtree.
+  function pattern(id) {
+    const children = invitees(id);
+    if (children.length < config.detection.patternMinInvitees) return false;
+    const inside = subtree(id);
+    let total = 0, closed = 0;
+    for (const child of children) for (const partner of mutualPartners(child)) { total++; if (inside.has(partner)) closed++; }
+    return total > 0 && closed / total >= config.detection.patternClosure;
+  }
+  const openCase = (sponsor, target, followUp = false) => {
+    const caseId = 'case:' + day + ':' + sponsor + ':' + target;
+    if (!tryAction(sponsor, () => model.beginDisputeParticipation(caseId, [sponsor, target])).ok) return false;
+    openCases.set(caseId, { target, challenger: sponsor, openedAt: model.now });
+    detection.casesOpened++;
+    if (followUp) detection.followUpCases++;
+    return true;
+  };
+  // D46 relay: the highest-XP accepted subject within two mutual hops whose XP exceeds the target's; honest sponsors are willing with the declared probability.
+  function escalate(observer, target, random) {
+    const near = new Set([observer]);
+    for (const partner of mutualPartners(observer)) { near.add(partner); for (const second of mutualPartners(partner)) near.add(second); }
+    near.delete(target);
+    const floor = model.subject(target).xp;
+    const sponsor = [...near].map(id => model.subject(id)).filter(subject => subject.identityStatus === 'accepted' && subject.xp > floor)
+      .sort((a, b) => b.xp - a.xp || (a.id < b.id ? -1 : 1))[0]?.id;
+    if (sponsor === undefined) return false;
+    detection.escalations++;
+    if (cohort.get(sponsor) !== 'honest' || !random.chance(config.detection.sponsorWillingness)) { detection.sponsorRefusals++; return false; }
+    return openCase(sponsor, target);
+  }
   function detect() {
     const settings = config.detection;
+    const targeted = new Set([...openCases.values()].map(record => record.target));
     // Freeze veto: honest current guarantors of the creator review invitations created today.
     for (const [invitation, { target }] of [...pendingTargets]) {
       const record = model.invitations().find(value => value.id === invitation);
@@ -130,6 +181,7 @@ export function runTopologyExperiment(overrides = {}) {
         if (tryAction(reviewer, () => model.cancelInvitation(reviewer, invitation)).ok) {
           detection[falseIdentity(target) ? 'vetoedFalse' : 'vetoedGenuine']++;
           pendingTargets.delete(invitation);
+          if (settings.leave) leave(reviewer, record.creator);
           break;
         }
       }
@@ -141,24 +193,43 @@ export function runTopologyExperiment(overrides = {}) {
       const verdictFalse = falseIdentity(record.target) ? correct : !correct;
       model.endDisputeParticipation(caseId);
       openCases.delete(caseId);
-      if (verdictFalse && accepted(record.target)) {
-        model.invalidateIdentity(record.target);
-        model.voidSelfIdChain(record.target);
-        detection[falseIdentity(record.target) ? 'falseInvalidated' : 'genuineInvalidated']++;
-      } else detection.casesDismissed++;
+      targeted.delete(record.target);
+      if (!verdictFalse || !accepted(record.target)) { detection.casesDismissed++; continue; }
+      model.invalidateIdentity(record.target);
+      model.voidSelfIdChain(record.target);
+      detection[falseIdentity(record.target) ? 'falseInvalidated' : 'genuineInvalidated']++;
+      const inviter = [...model.lineage.inEdges(record.target)][0]?.from;
+      if (inviter === undefined || !accepted(inviter)) continue;
+      if (settings.leave) for (const partner of mutualPartners(inviter)) if (cohort.get(partner) === 'honest') leave(partner, inviter);
+      if (settings.followUp && accepted(record.challenger)) {
+        const random = root.fork(JSON.stringify(['follow-up', caseId]));
+        for (const sibling of invitees(inviter)) if (!targeted.has(sibling) && look(random, sibling) && openCase(record.challenger, sibling, true)) targeted.add(sibling);
+      }
     }
     // Partner inspection: a suspicious look opens one identity case per target (D77 hold on both parties).
-    const targeted = new Set([...openCases.values()].map(record => record.target));
     for (const id of rosters.honest.filter(accepted)) {
       const random = stream(id, 'inspect');
-      const partners = [...model.guarantees.outEdges(id)].map(edge => edge.to).filter(other => model.guarantees.edge(other, id) && accepted(other)).sort();
-      for (const partner of partners) {
+      for (const partner of mutualPartners(id)) {
         if (!random.chance(settings.inspect) || !look(random, partner) || targeted.has(partner)) continue;
-        const caseId = 'case:' + day + ':' + id + ':' + partner;
-        if (!tryAction(id, () => model.beginDisputeParticipation(caseId, [id, partner])).ok) continue;
-        openCases.set(caseId, { target: partner, challenger: id, openedAt: model.now });
-        targeted.add(partner);
-        detection.casesOpened++;
+        if (openCase(id, partner)) targeted.add(partner);
+      }
+    }
+    // D68 public evidence: anyone may examine a random subject's public pattern, then escalate suspicious invitees.
+    if (settings.publicLook > 0) {
+      const everyone = [...rosters.honest, ...rosters.attackers].filter(accepted).sort();
+      for (const id of rosters.honest.filter(accepted)) {
+        const random = stream(id, 'public');
+        if (!random.chance(settings.publicLook)) continue;
+        const examined = random.pick(everyone);
+        if (examined === id) continue;
+        // v3.1: the examined subject's own public identity evidence, then its invitees when the public pattern holds.
+        if (!targeted.has(examined) && look(random, examined) && escalate(id, examined, random)) targeted.add(examined);
+        if (!pattern(examined)) continue;
+        detection.patternsFound++;
+        for (const child of random.shuffle(invitees(examined)).slice(0, 3)) {
+          if (targeted.has(child) || !look(random, child)) continue;
+          if (escalate(id, child, random)) targeted.add(child);
+        }
       }
     }
   }

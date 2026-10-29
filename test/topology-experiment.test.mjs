@@ -51,3 +51,16 @@ test('opt-in detection vetoes and adjudicates through the model while audits kee
   assert.ok(on.detection.vetoedFalse + on.detection.falseInvalidated > 0);
   assert.throws(() => runTopologyExperiment({ ...SMALL, detection: { unknown: 1 } }), /unknown detection setting/);
 });
+
+test('v3 leaving, public patterns and follow-up stay opt-in, replay exactly and act through the model (D117)', () => {
+  assert.equal(runTopologyExperiment({ ...SMALL, detection: { enabled: true } }).detection.linksLeft, undefined);
+  const settings = { ...SMALL, days: 30, detection: { enabled: true, review: 1, inspect: 0, sensitivity: 1, falsePositiveRate: 0, windowDays: 1, accuracy: 1,
+    leave: true, publicLook: 1, patternMinInvitees: 2, followUp: true, sponsorWillingness: 1 } };
+  const run = runTopologyExperiment(settings);
+  assert.deepEqual(run.history, runTopologyExperiment(settings).history);
+  assert.ok(run.detection.linksLeft > 0, 'an honest reviewer who vetoes a fake invitation leaves the creator');
+  assert.equal(run.detection.genuineInvalidated, 0);
+  assert.equal(run.detection.vetoedGenuine, 0);
+  for (const key of ['patternsFound', 'escalations', 'sponsorRefusals', 'followUpCases']) assert.ok(Number.isSafeInteger(run.detection[key]));
+  assert.throws(() => runTopologyExperiment({ ...SMALL, detection: { leave: 1 } }), /must be boolean/);
+});
