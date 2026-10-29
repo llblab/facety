@@ -141,3 +141,24 @@ Default: licensed public non-face graphs only, otherwise labeled synthetic. WP7 
 - **D68 amendment:** [core-first](docs/facety.protocol.en.md#293-core-first-survivability-and-recovery-frontier-d68); >2/3 people and >2/3 current effective XP are distinct; cumulative credits separate; zero denominator null; `xp.attackerShare` is fixed-cohort, not the dynamic descriptor. Survival permits nonzero adversaries but needs declared H/H_r, repair actions/budget and collected consequences.
 - **First checkpoint:** [core authority](studies/2026-10-26-trust-topology-condition-map/core-authority.md) — equal 118-unit histories with 106/12 XP give legacy Council 5/6 vs 6/5, so a global condition must be paired with local-authority/response conditions.
 - **Remaining bindings:** horizon/units/loss and risk tolerances, matched no-attack demand/resources, attacker capital/actions, alias admissibility, local concentration, evidence error/latency, collected response, liquidity and recovery. Low attack loss obtained by closing genuine admission fails D49.
+
+### Q16 — D50 falsifier design (D108)
+
+[D108](docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) released the master gates; the [D50 falsifier](studies/2026-10-29-d50-falsifier/README.md) needs these pre-data bindings. Each default is the assistant's proposal, not a selection.
+
+1. **Estimand.** Default: FACY-equivalent holdings (liquid + unspent Emitter + reserved stake − debt) per unit of declared effort, honest versus attacker cohort, compared as a log ratio per paired replica; per-operator absolute holdings reported as a secondary. Alternative: per-operator net profit under a declared price `P` and effort cost `c`, swept.
+2. **Kill criterion.** Default: weak D50 is contradicted in the model if, in any context, attacker yield per effort ≥ honest yield (ratio ≤ 1) in a significant share of reserved replicas; strong D50 (10×) is reported as supported only if ratio ≥ 10 holds in every context.
+3. **Effort weights.** Fabrication currently costs the same as recruiting a real person (`fabricateIdentity = recruitHuman = 1`), which mostly sets the ratio. Default: treat `fabricateIdentity ∈ {1, 5, 20}` as robustness contexts rather than choosing one price.
+4. **Defense activity.** Default honest `challenge` is 0, so no defense fires. Default: three contexts — no defense; honest challenge 0.05/day with one-step disputes; plus verification/investigation.
+5. **Horizon and cap.** Attacker cones hit `maxSubjects = 2000` before day 60. Default: 90 days with `maxSubjects` 10000, or a horizon ending before saturation; report censored replicas as unknown.
+6. **Rules.** Default: legacy cohort engine with D42 `xpFinality: "maturity"`; V1–V3 valence references are not wired into the cohort runner and are out of scope for this first test.
+
+### Q17 — Owner questions blocking selected-topology default migration
+
+These keep D33/D35/D36, D81–D107 and D70–D72 as opt-in references (BACKLOG owner-gated remainder). Assistant suggestions in brackets are not selections.
+
+- Per-invite 24h delay versus referendum pause [keep the per-invite 24h freeze; pause only K changes during a referendum].
+- D85 link-termination price: free versus burning 1 FACY of any origin [free; the paid valence is already sunk].
+- D87–D90 governance weights and ballot root scope [one active subject, one vote, as in the current Council reference].
+- D95 same-ID re-entry [allowed only through a fresh invitation with D107 issuance checks].
+- Mixed terminals, invitations to admitted accounts, mature decline below 100 [defer; first test whether the simpler rules fail].

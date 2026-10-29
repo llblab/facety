@@ -33,7 +33,7 @@ Node.js 22+ research simulator: ESM `.mjs`, native `node:test`, no third-party d
 - Incentive analyses separate recorded consequences, supplied private utility and justified externalities; a max over scripts is not an equilibrium; report valuation sweeps and individual deviations.
 - Mechanism claims need a registered `src/evidence.mjs` confirmation (presence, necessity by ablation, named alternatives), committed before running, on reserved seeds. Exploratory thresholds are not mechanisms; ablations are counterfactuals, not protocol options.
 - D37/D38: v2 registrations bind `family-contradiction/v1`; v1 keeps its digest and statistics. Drift permission is not method switching; new-method analysis of old data is a separate artifact.
-- Master programme gates (G1…G6) are never bypassed by engineering, fixtures, seed labels or delegated routine choices; real/personal data needs explicit license/ethics approval.
+- D108 (2026-10-29) released the master-programme order lock and the WP1/G1 method precondition; every claim still needs a committed registration, kill criterion and reserved-seed confirmation, and real/personal data needs explicit license/ethics approval.
 
 ## Engineering
 

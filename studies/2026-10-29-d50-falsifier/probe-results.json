@@ -1,0 +1,438 @@
+{
+ "schema": "facety-d50-probe/v1",
+ "days": 60,
+ "rows": [
+  {
+   "scenario": "sybil-cone",
+   "arm": "default",
+   "seed": "explore-d50-1",
+   "honest": {
+    "operators": 67,
+    "subjects": 67,
+    "invalidated": 0,
+    "effort": 4300,
+    "holdings": 1028,
+    "perOperator": 15.343,
+    "perEffort": 0.239
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1933,
+    "invalidated": 0,
+    "effort": 52975,
+    "holdings": 5914,
+    "perOperator": 1971.333,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.134
+  },
+  {
+   "scenario": "sybil-cone",
+   "arm": "default",
+   "seed": "explore-d50-2",
+   "honest": {
+    "operators": 61,
+    "subjects": 61,
+    "invalidated": 0,
+    "effort": 4123,
+    "holdings": 1001,
+    "perOperator": 16.41,
+    "perEffort": 0.243
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1939,
+    "invalidated": 0,
+    "effort": 52843,
+    "holdings": 5891,
+    "perOperator": 1963.667,
+    "perEffort": 0.111
+   },
+   "yieldRatio": 2.189
+  },
+  {
+   "scenario": "sybil-cone",
+   "arm": "default",
+   "seed": "explore-d50-3",
+   "honest": {
+    "operators": 71,
+    "subjects": 71,
+    "invalidated": 0,
+    "effort": 4825,
+    "holdings": 1167,
+    "perOperator": 16.437,
+    "perEffort": 0.242
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1929,
+    "invalidated": 0,
+    "effort": 52458,
+    "holdings": 5838,
+    "perOperator": 1946,
+    "perEffort": 0.111
+   },
+   "yieldRatio": 2.18
+  },
+  {
+   "scenario": "sybil-cone",
+   "arm": "disputes",
+   "seed": "explore-d50-1",
+   "honest": {
+    "operators": 67,
+    "subjects": 67,
+    "invalidated": 0,
+    "effort": 4300,
+    "holdings": 1028,
+    "perOperator": 15.343,
+    "perEffort": 0.239
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1933,
+    "invalidated": 0,
+    "effort": 52975,
+    "holdings": 5914,
+    "perOperator": 1971.333,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.134
+  },
+  {
+   "scenario": "sybil-cone",
+   "arm": "disputes",
+   "seed": "explore-d50-2",
+   "honest": {
+    "operators": 61,
+    "subjects": 61,
+    "invalidated": 0,
+    "effort": 4123,
+    "holdings": 1001,
+    "perOperator": 16.41,
+    "perEffort": 0.243
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1939,
+    "invalidated": 0,
+    "effort": 52843,
+    "holdings": 5891,
+    "perOperator": 1963.667,
+    "perEffort": 0.111
+   },
+   "yieldRatio": 2.189
+  },
+  {
+   "scenario": "sybil-cone",
+   "arm": "disputes",
+   "seed": "explore-d50-3",
+   "honest": {
+    "operators": 71,
+    "subjects": 71,
+    "invalidated": 0,
+    "effort": 4825,
+    "holdings": 1167,
+    "perOperator": 16.437,
+    "perEffort": 0.242
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1929,
+    "invalidated": 0,
+    "effort": 52458,
+    "holdings": 5838,
+    "perOperator": 1946,
+    "perEffort": 0.111
+   },
+   "yieldRatio": 2.18
+  },
+  {
+   "scenario": "sybil-cone",
+   "arm": "disputes+verification",
+   "seed": "explore-d50-1",
+   "honest": {
+    "operators": 67,
+    "subjects": 67,
+    "invalidated": 0,
+    "effort": 4637,
+    "holdings": 1038,
+    "perOperator": 15.493,
+    "perEffort": 0.224
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1933,
+    "invalidated": 0,
+    "effort": 52981,
+    "holdings": 5921,
+    "perOperator": 1973.667,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2
+  },
+  {
+   "scenario": "sybil-cone",
+   "arm": "disputes+verification",
+   "seed": "explore-d50-2",
+   "honest": {
+    "operators": 60,
+    "subjects": 60,
+    "invalidated": 0,
+    "effort": 4453,
+    "holdings": 999,
+    "perOperator": 16.65,
+    "perEffort": 0.224
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1940,
+    "invalidated": 0,
+    "effort": 52422,
+    "holdings": 5850,
+    "perOperator": 1950,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2
+  },
+  {
+   "scenario": "sybil-cone",
+   "arm": "disputes+verification",
+   "seed": "explore-d50-3",
+   "honest": {
+    "operators": 72,
+    "subjects": 72,
+    "invalidated": 0,
+    "effort": 5199,
+    "holdings": 1191,
+    "perOperator": 16.542,
+    "perEffort": 0.229
+   },
+   "attackers": {
+    "operators": 3,
+    "subjects": 1928,
+    "invalidated": 0,
+    "effort": 52169,
+    "holdings": 5812,
+    "perOperator": 1937.333,
+    "perEffort": 0.111
+   },
+   "yieldRatio": 2.063
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "default",
+   "seed": "explore-d50-1",
+   "honest": {
+    "operators": 71,
+    "subjects": 71,
+    "invalidated": 0,
+    "effort": 4316,
+    "holdings": 1039,
+    "perOperator": 14.634,
+    "perEffort": 0.241
+   },
+   "attackers": {
+    "operators": 1929,
+    "subjects": 1929,
+    "invalidated": 0,
+    "effort": 53549,
+    "holdings": 6004,
+    "perOperator": 3.112,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.152
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "default",
+   "seed": "explore-d50-2",
+   "honest": {
+    "operators": 60,
+    "subjects": 60,
+    "invalidated": 0,
+    "effort": 4084,
+    "holdings": 1001,
+    "perOperator": 16.683,
+    "perEffort": 0.245
+   },
+   "attackers": {
+    "operators": 1940,
+    "subjects": 1940,
+    "invalidated": 0,
+    "effort": 55265,
+    "holdings": 6194,
+    "perOperator": 3.193,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.188
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "default",
+   "seed": "explore-d50-3",
+   "honest": {
+    "operators": 67,
+    "subjects": 67,
+    "invalidated": 0,
+    "effort": 4733,
+    "holdings": 1170,
+    "perOperator": 17.463,
+    "perEffort": 0.247
+   },
+   "attackers": {
+    "operators": 1933,
+    "subjects": 1933,
+    "invalidated": 0,
+    "effort": 56386,
+    "holdings": 6317,
+    "perOperator": 3.268,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.205
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "disputes",
+   "seed": "explore-d50-1",
+   "honest": {
+    "operators": 71,
+    "subjects": 71,
+    "invalidated": 0,
+    "effort": 4316,
+    "holdings": 1039,
+    "perOperator": 14.634,
+    "perEffort": 0.241
+   },
+   "attackers": {
+    "operators": 1929,
+    "subjects": 1929,
+    "invalidated": 0,
+    "effort": 53549,
+    "holdings": 6004,
+    "perOperator": 3.112,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.152
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "disputes",
+   "seed": "explore-d50-2",
+   "honest": {
+    "operators": 60,
+    "subjects": 60,
+    "invalidated": 0,
+    "effort": 4084,
+    "holdings": 1001,
+    "perOperator": 16.683,
+    "perEffort": 0.245
+   },
+   "attackers": {
+    "operators": 1940,
+    "subjects": 1940,
+    "invalidated": 0,
+    "effort": 55265,
+    "holdings": 6194,
+    "perOperator": 3.193,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.188
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "disputes",
+   "seed": "explore-d50-3",
+   "honest": {
+    "operators": 67,
+    "subjects": 67,
+    "invalidated": 0,
+    "effort": 4733,
+    "holdings": 1170,
+    "perOperator": 17.463,
+    "perEffort": 0.247
+   },
+   "attackers": {
+    "operators": 1933,
+    "subjects": 1933,
+    "invalidated": 0,
+    "effort": 56386,
+    "holdings": 6317,
+    "perOperator": 3.268,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.205
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "disputes+verification",
+   "seed": "explore-d50-1",
+   "honest": {
+    "operators": 71,
+    "subjects": 71,
+    "invalidated": 0,
+    "effort": 4328,
+    "holdings": 1048,
+    "perOperator": 14.761,
+    "perEffort": 0.242
+   },
+   "attackers": {
+    "operators": 1929,
+    "subjects": 1929,
+    "invalidated": 0,
+    "effort": 53550,
+    "holdings": 6005,
+    "perOperator": 3.113,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.161
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "disputes+verification",
+   "seed": "explore-d50-2",
+   "honest": {
+    "operators": 60,
+    "subjects": 60,
+    "invalidated": 0,
+    "effort": 4093,
+    "holdings": 1003,
+    "perOperator": 16.717,
+    "perEffort": 0.245
+   },
+   "attackers": {
+    "operators": 1940,
+    "subjects": 1940,
+    "invalidated": 0,
+    "effort": 55267,
+    "holdings": 6196,
+    "perOperator": 3.194,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.188
+  },
+  {
+   "scenario": "real-cartel",
+   "arm": "disputes+verification",
+   "seed": "explore-d50-3",
+   "honest": {
+    "operators": 69,
+    "subjects": 69,
+    "invalidated": 0,
+    "effort": 4789,
+    "holdings": 1181,
+    "perOperator": 17.116,
+    "perEffort": 0.247
+   },
+   "attackers": {
+    "operators": 1931,
+    "subjects": 1931,
+    "invalidated": 0,
+    "effort": 56170,
+    "holdings": 6308,
+    "perOperator": 3.267,
+    "perEffort": 0.112
+   },
+   "yieldRatio": 2.205
+  }
+ ]
+}

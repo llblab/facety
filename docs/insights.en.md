@@ -12,6 +12,11 @@ All findings are conditional on the simulator's declared assumptions, horizons a
 
 Owner decisions are canonical in [protocol Appendix A](facety.protocol.en.md#appendix-a-decision-log-and-supersession-ledger); study pages hold derivations and raw evidence. This section keeps one line per decision or finding with its evidence level and source. The full pre-consolidation entries (sources, commits, counts and qualifications) are preserved at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/docs/insights.en.md).
 
+### Research-gate release D108 (2026-10-29)
+
+- **D108 — OWNER research-gate release.** The master-programme order lock and the WP1/G1 method precondition no longer block research runs; registration-before-confirmation, kill criteria, evidence levels, OPEN rules and real-data gates are unchanged. First released study: [D50 falsifier](../studies/2026-10-29-d50-falsifier/README.md). [§46.18](facety.protocol.en.md#4618-evidence-core-convergence-d76)
+- **D50 yield probe — DIAGNOSTIC (exploration seeds).** Under legacy defaults, honest per-effort holdings are about 2.0–2.2× the attacker's in sybil-cone and real-cartel, yet three Sybil operators end with about 1950 FACY each versus about 16 per honest operator; zero attacker subjects are invalidated because default honest challenge activity is 0. The ratio follows the illustrative unit effort weights, not the defense. [study](../studies/2026-10-29-d50-falsifier/README.md#exploratory-probe-diagnostic-exploration-seeds)
+
 ### Owner decisions D81–D107 (2026-10-28 – 2026-10-29)
 
 - **D105–D107 — OWNER selected.** Inviter pays 1 own eligible FACY, recipient 0/no debt (supersedes D92's 2); one slot at BOTH issuer and recipient from issuance; the target is a pre-registered account with completed fields and a zero Genesis Self-ID; eligibility is checked once, at issuance. [§18](facety.protocol.en.md#18-admission-through-invitation)
