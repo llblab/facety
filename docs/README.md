@@ -33,7 +33,7 @@ Each study page states its evidence level; untested raw outputs are archived at 
 
 **Other active packets**
 
-- [Owned valences V1 (D83–D100)](../studies/2026-10-29-owned-valences/README.md): pre-code contract and [implementation](../studies/2026-10-29-owned-valences/implementation.md) of the opt-in valence/K reference.
+- [Owned valences V1 (D83–D100)](../studies/2026-10-29-owned-valences/README.md): pre-code contract and [implementation](../studies/2026-10-29-owned-valences/implementation.md) of the opt-in valence/K reference; V2 invitation-side units [contract](../studies/2026-10-29-owned-valences/invitations-contract.md)/[implementation](../studies/2026-10-29-owned-valences/invitations-implementation.md).
 - [Witness indexer (D61)](../studies/2026-10-26-witness-indexer/README.md): M0 charter and M1–M3 history.
 - [Review allocation (D63)](../studies/2026-10-27-review-allocation/README.md): contract, [implementation](../studies/2026-10-27-review-allocation/implementation.md), [comparison](../studies/2026-10-27-review-allocation/comparison.md).
 - [Council attention fixtures (D65)](../studies/2026-10-27-council-attention/README.md).

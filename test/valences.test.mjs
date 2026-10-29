@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { FacetyModel, DAY, ProtocolRejection } from '../src/model.mjs';
 
-const REFERENCE = { source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow' };
+const REFERENCE = { source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'refuse' };
 function model({ K = 100, reference = {}, policy = {}, genesis = ['a', 'b', 'c', 'd'] } = {}) {
   return new FacetyModel({ genesis, policy, valences: { K, reference: { ...REFERENCE, ...reference } } });
 }
@@ -33,7 +33,7 @@ test('default model has no valence reference and validation rejects incomplete o
   assert.throws(() => legacy.openValence('a', 'a', 'x'), /valence reference is disabled/);
   assert.throws(() => new FacetyModel({ valences: { K: 100 } }), TypeError);
   assert.throws(() => new FacetyModel({ valences: { K: 0, reference: REFERENCE } }), RangeError);
-  for (const [key, value] of [['source', 'liquid'], ['withdrawal', 'burn'], ['pairEndXp', 'none'], ['withdrawDuringHold', undefined]])
+  for (const [key, value] of [['source', 'liquid'], ['withdrawal', 'burn'], ['pairEndXp', 'none'], ['withdrawDuringHold', undefined], ['invitations', undefined], ['invitations', 'legacy']])
     assert.throws(() => new FacetyModel({ valences: { K: 1, reference: { ...REFERENCE, [key]: value } } }), TypeError);
   assert.throws(() => new FacetyModel({ valences: { K: 1, reference: { ...REFERENCE, extra: 1 } } }), TypeError);
   assert.throws(() => new FacetyModel({ valences: { K: 1, reference: REFERENCE }, vouching: { K: 1, T: 1, V: 1, B: 0, reference: {
@@ -50,7 +50,7 @@ test('an unmatched valence burns exactly one own mature right and creates no gua
   assert.equal(after.emitterVault, before.emitterVault - 1);
   assert.equal(facety.selfId(own.a[0]).disposition, 'valence-burn');
   assert.equal(facety.guarantees.edge('a', 'b'), undefined);
-  assert.deepEqual(facety.ownedSlots('a'), { K: 100, used: 1, open: [id] });
+  assert.deepEqual(facety.ownedSlots('a'), { K: 100, used: 1, open: [id], invitations: [] });
   assert.equal(facety.ownedSlots('b').used, 0);
   assert.equal(facety.guaranteeRelations().length, 0);
   facety.audit();

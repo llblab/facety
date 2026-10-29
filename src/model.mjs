@@ -97,8 +97,8 @@ function valencesFrom(value) {
   if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).sort().join() !== 'K,reference') throw new TypeError('valences requires K and explicit reference bindings');
   const { K, reference } = value;
   natural(K, 'valence K', 1);
-  const allowed = { source: ['own-mature-right'], withdrawal: ['free', 'burn-one-liquid'], pairEndXp: ['withdrawer-only', 'both-relations'], withdrawDuringHold: ['allow', 'refuse'] };
-  if (!reference || typeof reference !== 'object' || Array.isArray(reference) || Object.keys(reference).sort().join() !== Object.keys(allowed).sort().join()) throw new TypeError('valences requires source, withdrawal, pairEndXp and withdrawDuringHold bindings');
+  const allowed = { source: ['own-mature-right'], withdrawal: ['free', 'burn-one-liquid'], pairEndXp: ['withdrawer-only', 'both-relations'], withdrawDuringHold: ['allow', 'refuse'], invitations: ['v2-special-link', 'refuse'] };
+  if (!reference || typeof reference !== 'object' || Array.isArray(reference) || Object.keys(reference).sort().join() !== Object.keys(allowed).sort().join()) throw new TypeError('valences requires source, withdrawal, pairEndXp, withdrawDuringHold and invitations bindings');
   for (const [key, values] of Object.entries(allowed)) if (!values.includes(reference[key])) throw new TypeError('unsupported valence binding: ' + key);
   return Object.freeze({ K, reference: Object.freeze({ ...reference }) });
 }
@@ -158,6 +158,8 @@ export class FacetyModel {
   #openValences = new Map();
   #ownedValences = new Map();
   #valenceCeiling = null;
+  #preregistrations = new Map();
+  #invitationUnits = new Map();
   constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null, vouchAdmission = null, valences = null } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
     const vouchPolicy = vouchingFrom(vouching), admissionPolicy = vouchAdmissionFrom(vouchAdmission);
@@ -232,11 +234,96 @@ export class FacetyModel {
   }
   #valenceKey(owner, counterpart) { return owner + '\u0000' + counterpart; }
   valenceRecords() { return [...this.#valences.values()].map(value => Object.freeze({ ...value, pairRelations: Object.freeze([...value.pairRelations]) })); }
-  ownedSlots(subject) {
+  #usedSlots(id) { return (this.#ownedValences.get(id)?.size ?? 0) + (this.#invitationUnits.get(id)?.size ?? 0); }
+  ownedSlots(id) {
     this.#requireValences();
-    this.#subject(subject);
-    const open = [...(this.#ownedValences.get(subject) ?? [])];
-    return Object.freeze({ K: this.#valenceCeiling, used: open.length, open: Object.freeze(open) });
+    if (!this.#preregistrations.has(id)) this.#subject(id);
+    const open = [...(this.#ownedValences.get(id) ?? [])], invitations = [...(this.#invitationUnits.get(id) ?? [])];
+    return Object.freeze({ K: this.#valenceCeiling, used: open.length + invitations.length, open: Object.freeze(open), invitations: Object.freeze(invitations) });
+  }
+  #requireValenceInvitations() {
+    if (this.#requireValences().reference.invitations !== 'v2-special-link') throw new ProtocolRejection('valence reference V1 does not count invitation-side units');
+  }
+  preregistrations() { return [...this.#preregistrations.values()].map(value => Object.freeze({ ...value })); }
+  // D107: a caller-supplied assertion that required fields are complete and the zero Genesis act is published; no FACY, right, XP, chain position or slot.
+  preregisterAccount(id) {
+    this.#requireValenceInvitations();
+    if (typeof id !== 'string' || !id.length || this.#subjects.has(id) || this.#preregistrations.has(id)) throw new ProtocolRejection('invalid, duplicate or admitted pre-registration');
+    this.#preregistrations.set(id, { id, registeredAt: this.now, status: 'preregistered', zeroGenesis: 'supplied' });
+    this.#event('account-preregistered', { account: id });
+  }
+  #addInvitationUnit(id, invitationId) {
+    if (!this.#invitationUnits.has(id)) this.#invitationUnits.set(id, new Set());
+    this.#invitationUnits.get(id).add(invitationId);
+  }
+  #releaseInvitationUnits(invitation) {
+    for (const id of invitation.units) {
+      const units = this.#invitationUnits.get(id);
+      units.delete(invitation.id);
+      if (!units.size) this.#invitationUnits.delete(id);
+    }
+  }
+  #createValenceInvitation(creatorId, selfIdId, target) {
+    this.#subject(creatorId, true);
+    this.#requireActivity(creatorId);
+    const registration = this.#preregistrations.get(target);
+    if (!registration || registration.status !== 'preregistered') throw new ProtocolRejection('invitation must target a pre-registered account');
+    if ([...this.#invitations.values()].some(value => value.target === target && value.status === 'pending')) throw new ProtocolRejection('target already holds a pending invitation');
+    const act = this.#act(selfIdId);
+    this.#requireUnspent(act);
+    if (act.subject !== creatorId || this.now - act.recordedAt < Math.max(DAY, this.policy.spendMaturityHours)) throw new ProtocolRejection('invitation requires own mature Emitter right');
+    if (act.debtReserved) throw new ProtocolRejection('emission is reserved for debt recovery');
+    const guarantors = this.eligibleGuarantors(creatorId);
+    if (guarantors.length < this.requiredGuarantors()) throw new ProtocolRejection('insufficient eligible guarantors');
+    if (this.#usedSlots(creatorId) >= this.#valenceCeiling) throw new ProtocolRejection('owned-slot ceiling reached');
+    if (this.#usedSlots(target) >= this.#valenceCeiling) throw new ProtocolRejection('recipient owned-slot ceiling reached');
+    const id = this.#id('invitation');
+    this.#dispose(act, 'consumed', 'invitation');
+    this.#invitations.set(id, { id, creator: creatorId, sourceSelfId: selfIdId, target, guarantors, createdAt: this.now, acceptedAt: null, endedAt: null,
+      status: 'pending', units: Object.freeze([creatorId, target]), linkRelations: Object.freeze([]) });
+    this.#addInvitationUnit(creatorId, id);
+    this.#addInvitationUnit(target, id);
+    this.#event('invitation-created', { invitation: id, creator: creatorId, target, valenceReference: true });
+    return id;
+  }
+  #acceptValenceInvitation(invitationId, subjectId) {
+    const invitation = this.#invitations.get(invitationId);
+    if (!invitation || invitation.status !== 'pending' || invitation.target !== subjectId) throw new ProtocolRejection('invalid invitation acceptance');
+    if (this.now - invitation.createdAt < this.policy.invitationFreezeHours) throw new ProtocolRejection('invitation is frozen');
+    this.guarantees.assertCapacity({ edgeIds: 2 });
+    // D107: eligibility was validated at issuance; creator support, paths or K are not rechecked here.
+    this.#addSubject(subjectId, false, invitation.creator);
+    this.#preregistrations.get(subjectId).status = 'admitted';
+    const relations = [];
+    for (const [guarantor, guaranteed] of [[invitation.creator, subjectId], [subjectId, invitation.creator]]) {
+      const relationId = this.#id('guarantee');
+      this.guarantees.addEdge(guarantor, guaranteed);
+      this.#guaranteeRecords.set(relationId, { id: relationId, guarantor, guaranteed, proposedAt: invitation.createdAt, activatedAt: this.now, endedAt: null, status: 'active', invitationLink: invitationId });
+      relations.push(relationId);
+    }
+    invitation.status = 'active';
+    invitation.acceptedAt = this.now;
+    invitation.linkRelations = Object.freeze(relations);
+    this.#event('invitation-accepted', { invitation: invitationId, subject: subjectId, relations });
+  }
+  endInvitationLink(actor, invitationId) {
+    this.#requireValenceInvitations();
+    const { reference } = this.valences;
+    const invitation = this.#invitations.get(invitationId);
+    if (!invitation || invitation.status !== 'active' || ![invitation.creator, invitation.target].includes(actor)) throw new ProtocolRejection('no active invitation link to end');
+    const payer = this.#subject(actor, true);
+    if (reference.withdrawDuringHold === 'refuse') this.#requireActivity(actor);
+    if (reference.withdrawal === 'burn-one-liquid' && payer.liquidFacy < 1) throw new ProtocolRejection('insufficient valence withdrawal burn');
+    this.guarantees.assertCapacity();
+    if (reference.withdrawal === 'burn-one-liquid') { payer.liquidFacy--; this.#burned++; }
+    invitation.status = 'closed';
+    invitation.endedAt = this.now;
+    this.#releaseInvitationUnits(invitation);
+    this.#event('invitation-link-ended', { invitation: invitationId, actor, burned: reference.withdrawal === 'burn-one-liquid' ? 1 : 0 });
+    for (const id of invitation.linkRelations) {
+      const relation = this.#guaranteeRecords.get(id);
+      this.#deactivateGuarantee(relation, actor, this.policy.linkBreakXp === 'revoke' && (reference.pairEndXp === 'both-relations' || relation.guarantor === actor));
+    }
   }
   setOwnedSlotCeiling(K) {
     this.#requireValences();
@@ -252,7 +339,7 @@ export class FacetyModel {
     if (owner === counterpart) throw new ProtocolRejection('valence requires a distinct counterpart');
     this.#requireActivity(owner);
     if (this.#openValences.has(this.#valenceKey(owner, counterpart))) throw new ProtocolRejection('owner already holds an open valence toward counterpart');
-    if ((this.#ownedValences.get(owner)?.size ?? 0) >= this.#valenceCeiling) throw new ProtocolRejection('owned-slot ceiling reached');
+    if (this.#usedSlots(owner) >= this.#valenceCeiling) throw new ProtocolRejection('owned-slot ceiling reached');
     const act = this.#act(sourceSelfId);
     this.#requireUnspent(act);
     if (act.subject !== owner || this.now - act.recordedAt < this.policy.spendMaturityHours) throw new ProtocolRejection('valence requires own mature Emitter right');
@@ -773,7 +860,7 @@ export class FacetyModel {
       act.status === 'unspent' && act.disputeLock === null && !act.debtReserved && this.now - act.recordedAt >= minimumAge).map(act => act.id);
   }
   createInvitation(creatorId, selfIdId, target) {
-    if (this.valences !== null) throw new ProtocolRejection('valence reference V1 does not count invitation-side units');
+    if (this.valences !== null) { this.#requireValenceInvitations(); return this.#createValenceInvitation(creatorId, selfIdId, target); }
     this.#requireActivity(creatorId);
     if (this.vouchAdmission !== null) throw new ProtocolRejection('vouch admission reference disables invitation admission');
     if (this.invitationLimit !== null) return this.#createLimitedInvitation(creatorId, selfIdId, target);
@@ -815,6 +902,7 @@ export class FacetyModel {
     return id;
   }
   acceptInvitation(invitationId, subjectId) {
+    if (this.valences !== null) { this.#requireValenceInvitations(); return this.#acceptValenceInvitation(invitationId, subjectId); }
     if (this.vouchAdmission !== null) throw new ProtocolRejection('vouch admission reference disables invitation admission');
     const invitation = this.#invitations.get(invitationId);
     if (!invitation || invitation.status !== 'open' || invitation.target !== subjectId) throw new ProtocolRejection('invalid invitation acceptance');
@@ -830,10 +918,12 @@ export class FacetyModel {
   cancelInvitation(guarantor, invitationId) {
     this.#subject(guarantor, true);
     const invitation = this.#invitations.get(invitationId);
-    if (!invitation || invitation.status !== 'open' || this.now - invitation.createdAt >= this.policy.invitationFreezeHours) throw new ProtocolRejection('invitation is not cancellable');
+    const pendingStatus = this.valences === null ? 'open' : 'pending';
+    if (!invitation || invitation.status !== pendingStatus || this.now - invitation.createdAt >= this.policy.invitationFreezeHours) throw new ProtocolRejection('invitation is not cancellable');
     if (!this.guarantees.edge(guarantor, invitation.creator)) throw new ProtocolRejection('no authority to cancel invitation');
     if (this.ablations.disableInvitationVeto) throw new ProtocolRejection('invitation veto disabled by counterfactual ablation');
     invitation.status = 'cancelled';
+    if (this.valences !== null) { invitation.endedAt = this.now; this.#releaseInvitationUnits(invitation); }
     for (const id of invitation.sourceSelfIds ?? [invitation.sourceSelfId]) {
       const act = this.#act(id);
       act.disposition = 'invitation-cancelled';
@@ -1082,14 +1172,31 @@ export class FacetyModel {
     }
     if (open.size !== this.#openValences.size || [...open].some(([key, id]) => this.#openValences.get(key) !== id)) throw new Error('open valence index invariant failed');
     for (const [subject, ids] of this.#ownedValences) if (ids.size !== (owned.get(subject)?.size ?? 0) || [...ids].some(id => !owned.get(subject).has(id))) throw new Error('owned valence index invariant failed');
-    const liveEdges = new Set();
+    const liveEdges = new Set(), units = new Map(), invitationSources = new Set();
+    for (const invitation of this.#invitations.values()) {
+      const act = this.#acts.get(invitation.sourceSelfId), counted = ['pending', 'active'].includes(invitation.status);
+      if (!act || act.subject !== invitation.creator || act.status !== 'consumed' || invitationSources.has(act.id) || sources.has(act.id)
+        || invitation.units.length !== 2 || invitation.units[0] !== invitation.creator || invitation.units[1] !== invitation.target
+        || !this.#preregistrations.has(invitation.target)
+        || invitation.linkRelations.length !== (['active', 'closed'].includes(invitation.status) ? 2 : 0)
+        || this.#subjects.has(invitation.target) !== (this.#preregistrations.get(invitation.target).status === 'admitted')
+        || (invitation.status === 'pending' && this.#subjects.has(invitation.target))) throw new Error('valence invitation invariant failed');
+      invitationSources.add(act.id);
+      if (counted) for (const id of invitation.units) {
+        if (!units.has(id)) units.set(id, new Set());
+        units.get(id).add(invitation.id);
+      }
+    }
+    if (units.size !== this.#invitationUnits.size || [...units].some(([id, set]) => set.size !== this.#invitationUnits.get(id)?.size
+      || [...set].some(value => !this.#invitationUnits.get(id).has(value)))) throw new Error('invitation unit index invariant failed');
     for (const relation of this.#guaranteeRecords.values()) {
-      if (relation.valencePair === undefined) throw new Error('legacy guarantee in valence reference');
-      if (!relation.valencePair.every(id => this.#valences.get(id).pairRelations.includes(relation.id))) throw new Error('valence pair invariant failed');
+      if (relation.valencePair === undefined && relation.invitationLink === undefined) throw new Error('legacy guarantee in valence reference');
+      const parents = relation.valencePair !== undefined ? relation.valencePair.map(id => this.#valences.get(id)) : [this.#invitations.get(relation.invitationLink)];
+      if (relation.valencePair !== undefined ? !parents.every(record => record.pairRelations.includes(relation.id)) : !parents[0].linkRelations.includes(relation.id)) throw new Error('valence pair invariant failed');
       if (relation.status !== 'active') continue;
       const key = this.#valenceKey(relation.guarantor, relation.guaranteed);
       if (liveEdges.has(key) || !this.guarantees.edge(relation.guarantor, relation.guaranteed)
-        || relation.valencePair.some(id => this.#valences.get(id).status !== 'open')) throw new Error('valence pair invariant failed');
+        || parents.some(record => record.status !== (relation.valencePair !== undefined ? 'open' : 'active'))) throw new Error('valence pair invariant failed');
       liveEdges.add(key);
     }
     if (liveEdges.size !== this.guarantees.edgeCount) throw new Error('valence pair edge count invariant failed');
