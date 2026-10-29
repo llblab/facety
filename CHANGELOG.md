@@ -7,6 +7,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 ### Garden (2026-10-29)
 
 - Witness indexer packet: superseded pre-code contracts stubbed, README history condensed to a milestone table (439KB → 216KB).
+- Trust-topology packet: 25 superseded pre-code contracts/launch specs stubbed, README status narrative replaced by an evidence map (761KB → 545KB).
 
 ### Consolidation (2026-10-29)
 

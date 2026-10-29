@@ -136,7 +136,7 @@ The [condition map](studies/2026-10-25-condition-map/README.md), [CORE v2](studi
 
 - [ ] **Garden (owner request 2026-10-29) — active:** keep the tree healthy without losing results: prune superseded/duplicated study prose, weed stale status claims, keep guards green. Studies Markdown baseline 1.71MB.
   - [x] Witness indexer: 14 superseded pre-code contracts reduced to stubs pointing at their implementation pages and the `8b77cd8` verbatim text; README history → milestone table (439KB → 216KB).
-  - [ ] Trust-topology packet (761KB, 87 pages): replace superseded pre-code contract/plan pages whose results page exists with stubs; condense the README history.
+  - [x] Trust-topology packet: 25 superseded pre-code contracts/launch specs stubbed, README status narrative → evidence map (761KB → 545KB).
   - [ ] Remaining packets (review allocation, condition map, CORE v2, causal core): same rule, only where a later page supersedes.
   - Stop when every superseded page is a stub, no study page restates another, and `npm test` is green.
 
