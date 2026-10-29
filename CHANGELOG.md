@@ -4,6 +4,10 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 
 ## Unreleased
 
+### Garden (2026-10-29)
+
+- Witness indexer packet: superseded pre-code contracts stubbed, README history condensed to a milestone table (439KB → 216KB).
+
 ### Consolidation (2026-10-29)
 
 - C1: link/anchor integrity guard (`test/repository-integrity.test.mjs`), two broken Q15 anchors fixed, 334 untested raw study outputs (7.37MB) archived to `8b77cd8` permalinks; test-read files and study inputs kept.

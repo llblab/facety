@@ -134,7 +134,11 @@ The [condition map](studies/2026-10-25-condition-map/README.md), [CORE v2](studi
 
 ## Maintenance
 
-- [ ] **Optional studies-prose consolidation:** study Markdown (~1.6MB) still repeats packet narratives across contract/implementation/results pages. Merge only where a packet's pages restate each other; keep every result, method binding and inbound anchor, with `test/repository-integrity.test.mjs` green. Low priority: the consolidation targets are met.
+- [ ] **Garden (owner request 2026-10-29) — active:** keep the tree healthy without losing results: prune superseded/duplicated study prose, weed stale status claims, keep guards green. Studies Markdown baseline 1.71MB.
+  - [x] Witness indexer: 14 superseded pre-code contracts reduced to stubs pointing at their implementation pages and the `8b77cd8` verbatim text; README history → milestone table (439KB → 216KB).
+  - [ ] Trust-topology packet (761KB, 87 pages): replace superseded pre-code contract/plan pages whose results page exists with stubs; condense the README history.
+  - [ ] Remaining packets (review allocation, condition map, CORE v2, causal core): same rule, only where a later page supersedes.
+  - Stop when every superseded page is a stub, no study page restates another, and `npm test` is green.
 
 ## Limits
 
