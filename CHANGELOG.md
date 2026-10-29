@@ -6,6 +6,8 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 
 ### Research-gate release (2026-10-29)
 
+- D115: topology-takeover/v1 runner (valence mode, D84/D104/D36 gate, D33 Council lookup, 100 honest people with a 100-day head start). Diagnostic: with 10 infiltrators the gate and no-gate arms both reach 79% attackers 24 days after the attack; the gate only delays cones with fewer than D independent attack edges.
+
 - D113 no pause during K referendums; D114 dirty-FACY share and attacker share over time become primary D50 outcomes (`dirty.*` observables). Weak D50 yield confirmed for sybil-cone (30/30 in 9 contexts); trajectories show about 96% attacker takeover by day 30 in every legacy arm.
 
 - D109–D112: Q16 defaults bind the D50 design; free link termination; equal Council vote regardless of XP; re-entry by mutual guarantee. Remaining Q17 questions restated.

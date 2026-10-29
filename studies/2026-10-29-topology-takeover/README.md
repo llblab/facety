@@ -50,6 +50,31 @@ No disputes, challenges, verification or penalties; no fabrication cost; no hone
 
 **Correction at implementation.** The contract's first boundary list (10 → 11 seats) was arithmetically wrong: `round(sqrt(2)) = 1`, so the formal Council starts at 100 active participants, as the protocol states. The tests use the correct boundaries.
 
+## Exploratory results (diagnostic, one seed per arm)
+
+Seed `explore-topo-1`; 100 honest genesis; attack on day 100; `maxSubjects` 5000 (A = 10) or 3000 (A = 1–3), whose hit censors the run. Raw rows: [`results/`](results/). By day 100 the honest network has grown from 100 to about 660 people; the Council has 11 seats from day 1.
+
+| Infiltrators | Arm | ≥ 50 attackers on day | Attackers ≥ 50% on day | Last day: attackers / honest | Path refusals |
+| ---: | --- | ---: | ---: | --- | ---: |
+| 10 | gate | 109 | 119 | d124 (cap): 3830 / 994 (79%) | 22 |
+| 10 | no gate | 109 | 119 | d124 (cap): 3862 / 1020 (79%) | 0 |
+| 3 | gate | 112 | 128 | d129 (cap): 1581 / 1082 (59%) | 510 |
+| 3 | no gate | 112 | 123 | d125 (cap): 1836 / 1036 (64%) | 0 |
+| 2 | gate | 134 | — | d146 (cap): 1342 / 1400 (49%) | 137 |
+| 2 | no gate | 115 | 126 | d127 (cap): 1690 / 1063 (61%) | 0 |
+| 1 | gate | — | — | d169: 33 / 2044 (2%), still growing | 322 |
+| 1 | no gate | 141 | — | d153 (cap): 1278 / 1617 (44%) | 0 |
+
+Observations at diagnostic level:
+
+1. **With 10 infiltrators the gate changes nothing.** Both arms follow the same trajectory to 79% attackers within 24 days of the attack. Ten infiltrators admitted by ten different honest inviters already give the cone ten independent links into the honest region, so every cone member easily finds D = 3 (later 4) internally vertex-disjoint paths to an honest Council member.
+2. **The gate is a threshold on independent attack edges, not a cap on cone size.** It bites only while the cone has fewer than D disjoint connections to the honest region (1–2 infiltrators): it delayed the 2-infiltrator takeover by about 20 days and kept the 1-infiltrator cone at 33 subjects by day 169. Once attack edges reach D, growth matches the no-gate arm. Paths are checked for existence, not consumed: the same few links certify thousands of invitations.
+3. **Attack edges keep growing.** Attackers spend FACY on valence requests to random honest people; at a 5% stranger acceptance rate, 1–3 seeded links became 6–12 within weeks. The day-116 stall in the 3-infiltrator gate run coincides with D rising from 3 to 4 at 1000 active participants, and growth resumed once attack edges reached 4.
+4. **The Council stays honest** (0 attacker seats in every run): the honest head start keeps XP ahead. The gate still fails because paths can end at honest Council members.
+5. **Dirty FACY lags population.** At 79% attackers, attackers hold only 14% of FACY, because they burn their rights on invitations and valences. Population share is the earlier warning sign.
+
+These are single-seed exploration runs under scripted behavior with no detection, disputes or fabrication cost; they are not a confirmation. The structural point in observation 2 is graph-theoretic (Menger: D disjoint paths exist whenever the cut has at least D vertices) and does not depend on the seed.
+
 ## Acceptance before running
 
 - Unit tests: the D33 lookup boundaries (under 100 → no Council, 100 → 11); `'legacy-active-xp-leaderboard'` unchanged; genesis pairs accepted with eligibility off.
