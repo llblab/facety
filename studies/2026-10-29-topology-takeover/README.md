@@ -75,6 +75,19 @@ Observations at diagnostic level:
 
 These are single-seed exploration runs under scripted behavior with no detection, disputes or fabrication cost; they are not a confirmation. The structural point in observation 2 is graph-theoretic (Menger: D disjoint paths exist whenever the cut has at least D vertices) and does not depend on the seed.
 
+## v2 contract: detection, disputes and cautious acceptance (D116)
+
+Committed before the v2 code. Opt-in `detection` block (default `enabled: false`, so v1 trajectories are unchanged):
+
+- **Labels.** Honest people and attacker operators are genuine people; only accounts created by the cone (`f…`) are false identities. Detection can only find false identities; misconduct by genuine colluders is not modeled.
+- **Observation.** A look at a subject returns *suspicious* with probability `sensitivity` (0.8) for a false identity and `falsePositiveRate` (0.01) for a genuine one, independently per look. No actor reads the labels directly.
+- **Invitation veto (§18.5).** On the day an invitation is created, each honest current guarantor of its creator looks at the target with probability `review` (0.5) and cancels the invitation during the 24h freeze if the look is suspicious.
+- **Partner inspection and challenge.** Each day every honest subject looks at each mutual partner with probability `inspect` (0.1). A suspicious look opens an identity case (one open case per target) that puts challenger and target under the D77 activity hold. After `windowDays` (7) the case resolves: the verdict is correct with probability `accuracy` (0.9). A "false" verdict invalidates the identity and voids its Self-ID chain (unspent rights burn, XP revoked); the hold ends either way. No stakes, fines or chain liability in v2.
+- **Cautious acceptance (option 3).** `honest.acceptFar` (stranger acceptance) is swept over 0.05, 0.01 and 0.
+- **New metrics.** Cases opened, false and genuine identities invalidated, invitations vetoed by target type.
+
+Runs: gate arm, 3 and 10 infiltrators, `acceptFar` ∈ {0.05, 0.01, 0} × detection off/on, plus no-gate references at detection on. Exploration seeds only.
+
 ## Acceptance before running
 
 - Unit tests: the D33 lookup boundaries (under 100 → no Council, 100 → 11); `'legacy-active-xp-leaderboard'` unchanged; genesis pairs accepted with eligibility off.

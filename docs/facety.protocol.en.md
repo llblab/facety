@@ -2923,6 +2923,8 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 **D115 — [OWNER research-design direction], §46.18.** Source: "правило 'для приглашения нужно D поручителей и D непересекающихся путей до Совета' является критичным в данной системе, без него нет смысла тестировать!"; "основной тест начинается со 100 честных людей, при этом у них есть фора в 100 дней. совет не всегда состоит из 101! при 100 честных людей совет состоит из 11!". Takeover tests must include the D104/D36 path gate; main test: 100 honest people, 100-day head start, D33 Council size (11 from 100 participants).
 
+**D116 — [OWNER research-direction selection], §46.18.** Source: "2 и 3". Add detection/disputes to the topology runner and test cautious honest acceptance of stranger valence requests; capacity-consuming paths not selected.
+
 ### Earlier supersessions
 
 | Earlier description | Status |
