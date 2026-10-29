@@ -10,6 +10,19 @@ import { assertMethod } from '../studies/2026-10-24-sponsor-pipeline/run.mjs';
 const root = new URL('../', import.meta.url);
 const reference = 'aab881f50c3cd2fd2cf76962558b7b71649252d7';
 const directories = ['2026-10-24-work-headroom', '2026-10-24-shared-evidence-comparison', '2026-10-24-sponsor-pipeline', '2026-10-24-one-day-incentives'];
+const ARCHIVED = [
+  'studies/2026-10-24-one-day-incentives/execution-audit.json',
+  'studies/2026-10-24-one-day-incentives/execution-validation.json',
+  'studies/2026-10-24-one-day-incentives/report-validation.json',
+  'studies/2026-10-24-one-day-incentives/results/report.json',
+  'studies/2026-10-24-one-day-incentives/validation.json',
+  'studies/2026-10-24-shared-evidence-comparison/review-audit-validation.json',
+  'studies/2026-10-24-shared-evidence-comparison/review-audit.json',
+  'studies/2026-10-24-shared-evidence-comparison/validation.json',
+  'studies/2026-10-24-work-headroom/validation.json',
+  'studies/2026-10-24-work-headroom/window-audit-validation.json',
+  'studies/2026-10-24-work-headroom/window-audit.json',
+];
 function packet() {
   const directory = new URL('studies/2026-10-24-sponsor-pipeline/', root);
   return Object.fromEntries(readdirSync(directory).map(file => [file, createHash('sha256').update(readFileSync(new URL(file, directory))).digest('hex')]));
@@ -26,6 +39,14 @@ test('current source refuses original model-bound audit/capture methods while re
 });
 
 test('historical study/method/report files are unchanged rather than rebound to the new XP implementation', () => {
-  const changed = execFileSync('git', ['diff', '--name-only', reference, '--', ...directories.map(name => 'studies/' + name)], { cwd: root, encoding: 'utf8' });
-  assert.equal(changed, '');
+  const diff = filter => execFileSync('git', ['diff', '--name-only', '--diff-filter=' + filter, reference, '--', ...directories.map(name => 'studies/' + name)], { cwd: root, encoding: 'utf8' });
+  // Only link targets to archived outputs may change: undoing the permalink prefix must restore the reference bytes exactly.
+  for (const path of diff('d').split('\n').filter(Boolean)) {
+    assert.ok(path.endsWith('/README.md'), 'only packet READMEs may be relinked: ' + path);
+    const prefix = 'https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/' + path.slice(0, path.lastIndexOf('/') + 1);
+    const restored = readFileSync(new URL(path, root), 'utf8').replaceAll('](' + prefix, '](');
+    assert.equal(restored, execFileSync('git', ['show', reference + ':' + path], { cwd: root, encoding: 'utf8' }), path);
+  }
+  // Consolidation C7 archived these untested outputs; they remain byte-identical at the reference and archive commits.
+  assert.deepEqual(diff('D').split('\n').filter(Boolean).sort(), ARCHIVED.slice().sort());
 });

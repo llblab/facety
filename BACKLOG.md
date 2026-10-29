@@ -16,7 +16,7 @@ Goal: cut at least20% of the tracked project, remove noise, consolidate knowledg
 - [x] **C4 README/AGENTS/DECISIONS_NEEDED:** 166KB → 46KB; settled/unselected rule lists concentrated in AGENTS; README examples guarded by an export check.
 - [ ] **C5 docs:** done: `insights` 334KB → 94KB (one line per decision/finding), `simulator` D61 API narrative 59KB → 6KB table. Next: remaining `simulator` sections (P/b, Native vouch, D54/D55, D76), `research`, `docs/README` index.
 - [ ] **C6 studies prose:** consolidate per-study Markdown where pages repeat the same packet.
-- [ ] **C7 immutable packets:** `test/historical-source.test.mjs` forbids any diff in four 2026-10-24 packets holding ~7.1MB of untested outputs. Archiving them needs that guard narrowed to forbid modification/addition but allow deletion; decide after C4–C6 measure the remaining gap.
+- [x] **C7 immutable packets:** 11 untested outputs (7.1MB) archived from the four 2026-10-24 packets; `test/historical-source.test.mjs` still forbids any modification/addition, pins the exact archived set and only permits README link retargeting that restores reference bytes.
 
 ## Trust-topology condition map: master programme
 
