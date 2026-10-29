@@ -10,7 +10,9 @@ const passive = ['vouch-admitted', 'vouch-exited', 'vouch-bond-released', 'vouch
   'facy-transferred', 'debt-recovered', 'key-rotated', 'artifact-registered', 'self-id-created', 'self-id-cancelled', 'self-id-self-cancelled',
   'invitation-created', 'invitation-accepted', 'invitation-cancelled', 'collector-converted', 'self-id-frozen', 'self-id-unfrozen',
   'dispute-stake-reserved', 'dispute-stake-settled', 'dispute-participation-started', 'dispute-participation-ended', 'dispute-participant-joined', 'penalty-applied', 'act-penalty-applied', 'self-id-source-recovered', 'self-id-resolved', 'self-id-chain-voided'];
-export const PATH_REPLAY_EVENT_TYPES = Object.freeze([...structural, ...passive].sort());
+// Classified but not replayable: the opt-in V1 valence reference creates guarantee edges outside proposal/activation records.
+const unsupported = ['owned-slot-ceiling-set', 'valence-opened', 'valence-pair-established', 'valence-withdrawn'];
+export const PATH_REPLAY_EVENT_TYPES = Object.freeze([...structural, ...passive, ...unsupported].sort());
 const allowed = new Set(PATH_REPLAY_EVENT_TYPES), cmp = (a, b) => Buffer.compare(Buffer.from(a), Buffer.from(b));
 const natural = v => Number.isSafeInteger(v) && !Object.is(v, -0) && v >= 0;
 function fields(v, keys) {
@@ -41,6 +43,7 @@ export function replayPathWitnessEvents(events, input) {
     const e = events[index];
     if (!e || ![Object.prototype, null].includes(Object.getPrototypeOf(e)) || Object.values(Object.getOwnPropertyDescriptors(e)).some(d => !Object.hasOwn(d, 'value'))
       || !Object.hasOwn(e, 'at') || !Object.hasOwn(e, 'type') || !natural(e.at) || e.at < lastHour || e.at > input.atHour || !allowed.has(e.type)) throw new TypeError('unknown/malformed/nonchronological Native event');
+    if (unsupported.includes(e.type)) throw new TypeError('valence reference journals are not supported by structural replay');
     lastHour = e.at; let payload = null;
     switch (e.type) {
       case 'subject-added': {

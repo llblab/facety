@@ -91,6 +91,18 @@ function vouchingFrom(value) {
   return Object.freeze({ K, T, V, B, reference: Object.freeze(binding) });
 }
 
+// Opt-in D83/D93/D94/D97/D100 owned-valence reference (V1); OPEN choices are required bindings, never defaults.
+function valencesFrom(value) {
+  if (value === null) return null;
+  if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).sort().join() !== 'K,reference') throw new TypeError('valences requires K and explicit reference bindings');
+  const { K, reference } = value;
+  natural(K, 'valence K', 1);
+  const allowed = { source: ['own-mature-right'], withdrawal: ['free', 'burn-one-liquid'], pairEndXp: ['withdrawer-only', 'both-relations'], withdrawDuringHold: ['allow', 'refuse'] };
+  if (!reference || typeof reference !== 'object' || Array.isArray(reference) || Object.keys(reference).sort().join() !== Object.keys(allowed).sort().join()) throw new TypeError('valences requires source, withdrawal, pairEndXp and withdrawDuringHold bindings');
+  for (const [key, values] of Object.entries(allowed)) if (!values.includes(reference[key])) throw new TypeError('unsupported valence binding: ' + key);
+  return Object.freeze({ K, reference: Object.freeze({ ...reference }) });
+}
+
 function vouchAdmissionFrom(value) {
   if (value === null) return null;
   if (!value || typeof value !== 'object' || Array.isArray(value) || Object.keys(value).sort().join() !== 'c,reference') throw new TypeError('vouchAdmission requires c and an explicit reference');
@@ -142,13 +154,21 @@ export class FacetyModel {
   #vault = 0;
   #fees = 0;
   #stakeVault = 0;
-  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null, vouchAdmission = null } = {}) {
+  #valences = new Map();
+  #openValences = new Map();
+  #ownedValences = new Map();
+  #valenceCeiling = null;
+  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null, vouchAdmission = null, valences = null } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
     const vouchPolicy = vouchingFrom(vouching), admissionPolicy = vouchAdmissionFrom(vouchAdmission);
     if (admissionPolicy !== null && (vouchPolicy === null || invitationLimit !== null)) throw new TypeError('vouch admission requires funded vouching and no invitation-limit arm');
     Object.defineProperty(this, 'invitationLimit', { value: invitationLimitFrom(invitationLimit), enumerable: invitationLimit !== null });
     Object.defineProperty(this, 'vouching', { value: vouchPolicy, enumerable: vouching !== null });
     Object.defineProperty(this, 'vouchAdmission', { value: admissionPolicy, enumerable: vouchAdmission !== null });
+    const valencePolicy = valencesFrom(valences);
+    if (valencePolicy !== null && (vouchPolicy !== null || admissionPolicy !== null)) throw new TypeError('valences cannot combine with the vouching references');
+    Object.defineProperty(this, 'valences', { value: valencePolicy, enumerable: valences !== null });
+    this.#valenceCeiling = valencePolicy?.K ?? null;
     Object.defineProperty(this, 'policy', { value: policyFrom(policy), enumerable: true });
     Object.defineProperty(this, 'ablations', { value: ablationsFrom(ablations), enumerable: true });
     this.lineage = new DirectedGraph('invitation-lineage');
@@ -203,6 +223,88 @@ export class FacetyModel {
   #penaltySnapshot(value) { return Object.freeze({ ...value,
     parties: Object.freeze([...value.parties]), penalties: Object.freeze(value.penalties.map(penalty => Object.freeze({ ...penalty }))) }); }
   actPenalties() { return [...this.#actPenalties.values()].map(value => this.#penaltySnapshot(value)); }
+  #requireLegacyGuarantees() {
+    if (this.valences !== null) throw new ProtocolRejection('valence reference replaces legacy guarantee operations');
+  }
+  #requireValences() {
+    if (this.valences === null) throw new ProtocolRejection('valence reference is disabled');
+    return this.valences;
+  }
+  #valenceKey(owner, counterpart) { return owner + '\u0000' + counterpart; }
+  valenceRecords() { return [...this.#valences.values()].map(value => Object.freeze({ ...value, pairRelations: Object.freeze([...value.pairRelations]) })); }
+  ownedSlots(subject) {
+    this.#requireValences();
+    this.#subject(subject);
+    const open = [...(this.#ownedValences.get(subject) ?? [])];
+    return Object.freeze({ K: this.#valenceCeiling, used: open.length, open: Object.freeze(open) });
+  }
+  setOwnedSlotCeiling(K) {
+    this.#requireValences();
+    natural(K, 'valence K', 1);
+    const previous = this.#valenceCeiling;
+    this.#valenceCeiling = K;
+    this.#event('owned-slot-ceiling-set', { K, previous });
+  }
+  openValence(owner, counterpart, sourceSelfId) {
+    this.#requireValences();
+    this.#subject(owner, true);
+    this.#subject(counterpart, true);
+    if (owner === counterpart) throw new ProtocolRejection('valence requires a distinct counterpart');
+    this.#requireActivity(owner);
+    if (this.#openValences.has(this.#valenceKey(owner, counterpart))) throw new ProtocolRejection('owner already holds an open valence toward counterpart');
+    if ((this.#ownedValences.get(owner)?.size ?? 0) >= this.#valenceCeiling) throw new ProtocolRejection('owned-slot ceiling reached');
+    const act = this.#act(sourceSelfId);
+    this.#requireUnspent(act);
+    if (act.subject !== owner || this.now - act.recordedAt < this.policy.spendMaturityHours) throw new ProtocolRejection('valence requires own mature Emitter right');
+    if (act.debtReserved) throw new ProtocolRejection('emission is reserved for debt recovery');
+    const oppositeId = this.#openValences.get(this.#valenceKey(counterpart, owner));
+    if (oppositeId !== undefined) {
+      // Conservative V1 boundary: establishment creates a new guarantee for both sides, so a D77-held retained side blocks it.
+      this.#requireActivity(counterpart);
+      if (this.guarantees.edge(owner, counterpart) || this.guarantees.edge(counterpart, owner)) throw new ProtocolRejection('guarantee edge already active');
+      this.guarantees.assertCapacity({ edgeIds: 2 });
+    }
+    const id = this.#id('valence');
+    this.#dispose(act, 'consumed', 'valence-burn');
+    const record = { id, owner, counterpart, openedAt: this.now, closedAt: null, status: 'open', burnSource: sourceSelfId, pairRelations: [] };
+    this.#valences.set(id, record);
+    this.#openValences.set(this.#valenceKey(owner, counterpart), id);
+    if (!this.#ownedValences.has(owner)) this.#ownedValences.set(owner, new Set());
+    this.#ownedValences.get(owner).add(id);
+    this.#event('valence-opened', { valence: id, owner, counterpart, burnSource: sourceSelfId });
+    if (oppositeId !== undefined) {
+      const opposite = this.#valences.get(oppositeId), relations = [];
+      for (const [guarantor, guaranteed] of [[owner, counterpart], [counterpart, owner]]) {
+        const relationId = this.#id('guarantee');
+        this.guarantees.addEdge(guarantor, guaranteed);
+        this.#guaranteeRecords.set(relationId, { id: relationId, guarantor, guaranteed, proposedAt: this.now, activatedAt: this.now, endedAt: null, status: 'active', valencePair: [id, oppositeId] });
+        relations.push(relationId);
+      }
+      record.pairRelations = relations;
+      opposite.pairRelations = [...opposite.pairRelations, ...relations];
+      this.#event('valence-pair-established', { valences: [id, oppositeId], relations });
+    }
+    return id;
+  }
+  withdrawValence(owner, valenceId, sourceSelfId = null) {
+    const { reference } = this.#requireValences();
+    const record = this.#valences.get(valenceId);
+    if (!record || record.status !== 'open' || record.owner !== owner) throw new ProtocolRejection('no open own valence to withdraw');
+    const payer = this.#subject(owner, true);
+    if (sourceSelfId !== null) throw new ProtocolRejection('valence withdrawal takes no source in V1');
+    if (reference.withdrawDuringHold === 'refuse') this.#requireActivity(owner);
+    if (reference.withdrawal === 'burn-one-liquid' && payer.liquidFacy < 1) throw new ProtocolRejection('insufficient valence withdrawal burn');
+    const active = record.pairRelations.map(id => this.#guaranteeRecords.get(id)).filter(relation => relation.status === 'active');
+    if (active.length) this.guarantees.assertCapacity();
+    if (reference.withdrawal === 'burn-one-liquid') { payer.liquidFacy--; this.#burned++; }
+    record.status = 'withdrawn';
+    record.closedAt = this.now;
+    this.#openValences.delete(this.#valenceKey(owner, record.counterpart));
+    this.#ownedValences.get(owner).delete(valenceId);
+    this.#event('valence-withdrawn', { valence: valenceId, owner, burned: reference.withdrawal === 'burn-one-liquid' ? 1 : 0 });
+    for (const relation of active) this.#deactivateGuarantee(relation, owner,
+      this.policy.linkBreakXp === 'revoke' && (reference.pairEndXp === 'both-relations' || relation.guarantor === owner));
+  }
   guaranteeRelations() { return [...this.#guaranteeRecords.values()].map(value => Object.freeze({ ...value })); }
   events() { return [...this.#events]; }
   disputeStakes() { return [...this.#disputeStakes.values()].map(value => Object.freeze({ ...value })); }
@@ -475,6 +577,7 @@ export class FacetyModel {
     return id;
   }
   proposeGuarantee(guarantor, guaranteed) {
+    this.#requireLegacyGuarantees();
     this.#subject(guarantor, true);
     this.#subject(guaranteed, true);
     this.#requireActivity(guarantor);
@@ -485,6 +588,7 @@ export class FacetyModel {
     return id;
   }
   confirmGuarantee(actor, relationId) {
+    this.#requireLegacyGuarantees();
     const relation = this.#guaranteeRecords.get(relationId);
     if (!relation || relation.status !== 'proposed' || relation.guaranteed !== actor) throw new ProtocolRejection('no matching guarantee proposal');
     const payer = this.#subject(relation.guarantor, true);
@@ -504,6 +608,7 @@ export class FacetyModel {
   endGuarantee(actor, relationId) {
     const relation = this.#guaranteeRecords.get(relationId);
     if (!relation || relation.status !== 'active' || ![relation.guarantor, relation.guaranteed].includes(actor)) throw new ProtocolRejection('no authority to end guarantee');
+    if (relation.valencePair !== undefined) throw new ProtocolRejection('valence pairs end only through withdrawValence');
     if (relation.vouch !== undefined) return this.exitVouch(actor, relation.vouch);
     const payer = this.#subject(actor, true);
     if (payer.liquidFacy < 1) throw new ProtocolRejection('insufficient link-break fee');
@@ -512,11 +617,11 @@ export class FacetyModel {
     this.#fees++;
     this.#deactivateGuarantee(relation, actor);
   }
-  #deactivateGuarantee(relation, actor) {
+  #deactivateGuarantee(relation, actor, revoke = this.policy.linkBreakXp === 'revoke') {
     this.guarantees.removeEdge(relation.guarantor, relation.guaranteed);
     relation.status = 'ended';
     relation.endedAt = this.now;
-    if (this.policy.linkBreakXp === 'revoke') {
+    if (revoke) {
       const guarantor = this.#subject(relation.guarantor);
       for (const { act, receipt } of this.#xpByRecipient.get(relation.guarantor)) {
         if (act.subject !== relation.guaranteed || act.xpCredit.revokedAt !== null || receipt.revokedAt !== null) continue;
@@ -668,6 +773,7 @@ export class FacetyModel {
       act.status === 'unspent' && act.disputeLock === null && !act.debtReserved && this.now - act.recordedAt >= minimumAge).map(act => act.id);
   }
   createInvitation(creatorId, selfIdId, target) {
+    if (this.valences !== null) throw new ProtocolRejection('valence reference V1 does not count invitation-side units');
     this.#requireActivity(creatorId);
     if (this.vouchAdmission !== null) throw new ProtocolRejection('vouch admission reference disables invitation admission');
     if (this.invitationLimit !== null) return this.#createLimitedInvitation(creatorId, selfIdId, target);
@@ -960,6 +1066,38 @@ export class FacetyModel {
     return { minted: this.#minted, burned: this.#burned, supply: this.#minted - this.#burned, emitterVault: this.#vault, collector: subjects.reduce((sum, subject) => sum + subject.liquidFacy, 0), feeVault: this.#fees, stakeVault: this.#stakeVault, debt: subjects.reduce((sum, subject) => sum + subject.debt, 0),
       ...(this.vouching === null ? {} : { vouchVault: this.#vouchVault }) };
   }
+  #auditValences() {
+    const open = new Map(), owned = new Map(), sources = new Set();
+    for (const record of this.#valences.values()) {
+      const act = this.#acts.get(record.burnSource);
+      if (!act || act.subject !== record.owner || act.status !== 'consumed' || act.disposition !== 'valence-burn' || sources.has(record.burnSource)) throw new Error('valence burn invariant failed');
+      sources.add(record.burnSource);
+      if ((record.status === 'open') !== (record.closedAt === null)) throw new Error('valence status invariant failed');
+      if (record.status !== 'open') continue;
+      const key = this.#valenceKey(record.owner, record.counterpart);
+      if (open.has(key)) throw new Error('duplicate open valence');
+      open.set(key, record.id);
+      if (!owned.has(record.owner)) owned.set(record.owner, new Set());
+      owned.get(record.owner).add(record.id);
+    }
+    if (open.size !== this.#openValences.size || [...open].some(([key, id]) => this.#openValences.get(key) !== id)) throw new Error('open valence index invariant failed');
+    for (const [subject, ids] of this.#ownedValences) if (ids.size !== (owned.get(subject)?.size ?? 0) || [...ids].some(id => !owned.get(subject).has(id))) throw new Error('owned valence index invariant failed');
+    const liveEdges = new Set();
+    for (const relation of this.#guaranteeRecords.values()) {
+      if (relation.valencePair === undefined) throw new Error('legacy guarantee in valence reference');
+      if (!relation.valencePair.every(id => this.#valences.get(id).pairRelations.includes(relation.id))) throw new Error('valence pair invariant failed');
+      if (relation.status !== 'active') continue;
+      const key = this.#valenceKey(relation.guarantor, relation.guaranteed);
+      if (liveEdges.has(key) || !this.guarantees.edge(relation.guarantor, relation.guaranteed)
+        || relation.valencePair.some(id => this.#valences.get(id).status !== 'open')) throw new Error('valence pair invariant failed');
+      liveEdges.add(key);
+    }
+    if (liveEdges.size !== this.guarantees.edgeCount) throw new Error('valence pair edge count invariant failed');
+    for (const id of open.values()) {
+      const record = this.#valences.get(id), opposite = this.#openValences.get(this.#valenceKey(record.counterpart, record.owner));
+      if (opposite !== undefined && !this.guarantees.edge(record.owner, record.counterpart)) throw new Error('matched valences lack an established pair');
+    }
+  }
   audit() {
     const ledger = this.ledger();
     const outstanding = [...this.#acts.values()].filter(act => act.status === 'unspent').length;
@@ -991,6 +1129,7 @@ export class FacetyModel {
         if (act.subject !== subject.id || act.chainIndex !== index + 1 || act.previousSelfId !== (chain[index - 1] ?? null)) throw new Error('Self-ID personal-chain invariant failed');
       }
     }
+    if (this.valences !== null) this.#auditValences();
     if (this.invitationLimit !== null) {
       const last = new Map(), sources = new Set();
       const { P, b } = this.invitationLimit;
