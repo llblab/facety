@@ -1,6 +1,6 @@
 # Existing observations and minimal scalar admission — C2 frozen contract
 
-**2026-10-27 · base7429179 · source/measurement audit and pre-code contract, NOT IMPLEMENTED / NOT A RESEARCH METHOD.** [C1 allocator](implementation.md) is implemented; [C0](README.md) remains historical. [C2 validation](measurement-validation.json) records the source/engine/missingness check. [BACKLOG](../../BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns work. No empirical label/Model run/capture, new protocol rule or G1 pass is selected here.
+**2026-10-27 · base7429179 · source/measurement audit and pre-code contract, NOT IMPLEMENTED / NOT A RESEARCH METHOD.** [C1 allocator](implementation.md) is implemented; [C0](README.md) remains historical. [C2 validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/measurement-validation.json) records the source/engine/missingness check. [BACKLOG](../../BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns work. No empirical label/Model run/capture, new protocol rule or G1 pass is selected here.
 
 ## Finding: no new telemetry pipeline is needed for this first scalar panel
 

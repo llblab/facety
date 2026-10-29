@@ -8,14 +8,14 @@ The coordinator directly inspected both original reports, verifier, merger, judg
 
 | Runtime reference | Retained report | Role |
 | --- | --- | --- |
-| `execution.json#command-005` | [review-evidence.txt](review-evidence.txt) | Original evidence/statistical reviewer |
-| `execution.json#command-006` | [review-debt.txt](review-debt.txt) | Original debt-reservation reviewer |
-| `execution.json#command-007` | [verification.txt](verification.txt) | Independent reproductions and bounded debt corroboration |
-| `execution.json#command-008` | [merge.txt](merge.txt) | Synthesis, relying on verifier's account of originals |
-| `execution.json#command-009` | [judge.txt](judge.txt) | Report-level judgment; did not receive original reports |
-| `execution.json#command-010` | [normalized.txt](normalized.txt) | Final normalized report; retains degraded status |
+| `execution.json#command-005` | [review-evidence.txt](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/review-evidence.txt) | Original evidence/statistical reviewer |
+| `execution.json#command-006` | [review-debt.txt](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/review-debt.txt) | Original debt-reservation reviewer |
+| `execution.json#command-007` | [verification.txt](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/verification.txt) | Independent reproductions and bounded debt corroboration |
+| `execution.json#command-008` | [merge.txt](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/merge.txt) | Synthesis, relying on verifier's account of originals |
+| `execution.json#command-009` | [judge.txt](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/judge.txt) | Report-level judgment; did not receive original reports |
+| `execution.json#command-010` | [normalized.txt](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/normalized.txt) | Final normalized report; retains degraded status |
 
-[execution.json](execution.json) is the original runtime manifest. Its capture/session paths refer to the originating Run directory, not copied local subdirectories; the table supplies the durable report mapping. The coordinator checked command IDs, roles, successful exits and accepted substantive outputs against this manifest. All six retained reports match their source stdout exactly.
+[execution.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/execution.json) is the original runtime manifest. Its capture/session paths refer to the originating Run directory, not copied local subdirectories; the table supplies the durable report mapping. The coordinator checked command IDs, roles, successful exits and accepted substantive outputs against this manifest. All six retained reports match their source stdout exactly.
 
 **Do not erase the degraded qualification.** The judge received the merger, not the original reviewer/verifier reports, and therefore did not independently establish source-level preservation. The normalizer inherited that limitation. Direct coordinator inspection and exact report retention repair discoverability and mapping, but do not retroactively turn that judge into a source-fidelity audit. No complete cross-session tool-transcript audit or independent fidelity re-review is claimed.
 
@@ -62,4 +62,4 @@ node studies/2026-10-23-evidence-debt-review/witness.mjs
 
 [witness.json](witness.json) retains the synthetic inputs, registrations, outputs and source/runtime identity. It demonstrates the reviewed implementation's current defects, so replay requires that implementation; a future integrity repair is expected to reject the E2 construction instead. The script does not simulate, confirm a hypothesis or overwrite its output file.
 
-Fresh coordinator checks: E1/E2 and retained-input observation reproduced, exact six-report retention and execution mappings checked, runtime source/tests/examples/CLI/package and all prior study artifacts compared to the target, context validator and whitespace check. [validation.json](validation.json) records this evidence. Prior 221-test/DAG evidence from the unchanged target is reused, not relabeled as a fresh test run. Findings remain unresolved; Checkpoint 3 is narrowed to their remediation and remaining scientific/input-boundary decisions, not declared fully accepted.
+Fresh coordinator checks: E1/E2 and retained-input observation reproduced, exact six-report retention and execution mappings checked, runtime source/tests/examples/CLI/package and all prior study artifacts compared to the target, context validator and whitespace check. [validation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/validation.json) records this evidence. Prior 221-test/DAG evidence from the unchanged target is reused, not relabeled as a fresh test run. Findings remain unresolved; Checkpoint 3 is narrowed to their remediation and remaining scientific/input-boundary decisions, not declared fully accepted.

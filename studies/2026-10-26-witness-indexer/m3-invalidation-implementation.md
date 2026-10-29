@@ -1,6 +1,6 @@
 # M3-I explicit dual-cache invalidation — current implementation
 
-**2026-10-26 · implemented bounded engineering, not canonical or economic authority.** [Frozen pre-code contract](m3-invalidation.md) and [dependency/native stream](m3-invalidation-contract-validation.json) retain their original NOT IMPLEMENTED checkpoint. This document and [current validation](m3-invalidation-validation.json) own delivery. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work.
+**2026-10-26 · implemented bounded engineering, not canonical or economic authority.** [Frozen pre-code contract](m3-invalidation.md) and [dependency/native stream](m3-invalidation-contract-validation.json) retain their original NOT IMPLEMENTED checkpoint. This document and [current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-invalidation-validation.json) own delivery. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work.
 
 ## One small public composition
 

@@ -1,9 +1,0 @@
-{
-  "baseline": "94fec29d689a1de5d12afbdc489b84161a66934c",
-  "nativeAndWorldSourceUnchanged": true,
-  "completeDefaultArmComparisons": 72,
-  "comparisonWrapperRunsPerVersion": 18,
-  "wrapperDifferenceAllowed": "Only examples/causal-relay.mjs source-design hash",
-  "historicalScientificStudyReplayed": false,
-  "interpretation": "Default compatibility on control labels, not new scientific replicas."
-}

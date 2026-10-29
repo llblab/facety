@@ -1,6 +1,6 @@
 # T3/T5 matched structural gate/access acceptance — frozen before test extension
 
-**2026-10-27 · base71317d8 · NOT IMPLEMENTED as an acceptance suite; no T3/T5 scientific study.** Follows [finite T1](t1-reuse-results.md), [test-local T2](t2-support-results.md) and the [D73 review](core-bridge-review.md). [Machine plan](t3-t5-structural-plan.json) fixes templates/dimensions/expected regions, not a scientific registration. [Validation/capability probe](t3-t5-structural-contract-validation.json). [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns tasks. This cohort freezes the next finite extension and checks current API capability; it does not implement or execute the full acceptance suite.
+**2026-10-27 · base71317d8 · NOT IMPLEMENTED as an acceptance suite; no T3/T5 scientific study.** Follows [finite T1](t1-reuse-results.md), [test-local T2](t2-support-results.md) and the [D73 review](core-bridge-review.md). [Machine plan](t3-t5-structural-plan.json) fixes templates/dimensions/expected regions, not a scientific registration. [Validation/capability probe](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/t3-t5-structural-contract-validation.json). [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns tasks. This cohort freezes the next finite extension and checks current API capability; it does not implement or execute the full acceptance suite.
 
 ## Existing ownership and precise predicates
 

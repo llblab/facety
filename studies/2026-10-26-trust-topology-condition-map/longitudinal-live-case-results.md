@@ -1,6 +1,6 @@
 # Live-history capability and the exact remaining freeze question
 
-**2026-10-27 · D68/D76 · DIAGNOSTIC accounting/chronology witness, NOT an executed act-court or organized-defense study.** [Pre-code/refinement/scope contract](longitudinal-live-case-contract.md) · [raw rows/bindings/checks](longitudinal-live-case-results.json) · [annual ordinary-growth capacity](longitudinal-fastpath-results.md). No Source/API/default/RNG change, no G1/registration/new scientific world, no relabel of earlier packets. This small mechanical check is a necessary chronology boundary for the living-network scenario, not its replacement.
+**2026-10-27 · D68/D76 · DIAGNOSTIC accounting/chronology witness, NOT an executed act-court or organized-defense study.** [Pre-code/refinement/scope contract](longitudinal-live-case-contract.md) · [raw rows/bindings/checks](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/longitudinal-live-case-results.json) · [annual ordinary-growth capacity](longitudinal-fastpath-results.md). No Source/API/default/RNG change, no G1/registration/new scientific world, no relabel of earlier packets. This small mechanical check is a necessary chronology boundary for the living-network scenario, not its replacement.
 
 ## What actually ran
 

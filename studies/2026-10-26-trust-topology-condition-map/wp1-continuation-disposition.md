@@ -1,6 +1,6 @@
 # WP1 continuation proposal — static decision/value disposition
 
-**2026-10-28 · DIAGNOSTIC static disposition. Decision: STOP THIS3072-execution proposal without implementation, native registration, raw replay or research capture.** This is research-priority/value closure under delegated routine authority, NOT a scientific rejection, protocol failure, categorical ban on subsidiary studies or a new owner/D-rule decision. The [prespec](wp1-continuation-prespec.md), [numeric design](wp1-continuation-design.json), [independent REFINE evidence](wp1-continuation-method-review-results.md)/[all raw bodies](wp1-continuation-method-review-results.json) remain immutable historical inputs. BACKLOG alone owns remaining work.
+**2026-10-28 · DIAGNOSTIC static disposition. Decision: STOP THIS3072-execution proposal without implementation, native registration, raw replay or research capture.** This is research-priority/value closure under delegated routine authority, NOT a scientific rejection, protocol failure, categorical ban on subsidiary studies or a new owner/D-rule decision. The [prespec](wp1-continuation-prespec.md), [numeric design](wp1-continuation-design.json), [independent REFINE evidence](wp1-continuation-method-review-results.md)/[all raw bodies](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-continuation-method-review-results.json) remain immutable historical inputs. BACKLOG alone owns remaining work.
 
 ## What proposition the proposed test actually resolves
 

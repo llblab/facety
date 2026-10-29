@@ -1,6 +1,6 @@
 # Prior2 — c3 funded projected-state software conformance
 
-**2026-10-28 · DIAGNOSTIC observed SOFTWARE conformance, not scientific confidence/G1, personhood, lifetime enforcement or selected D75 migration.** [Pre-code contract](wp1-prior2-conformance-contract.md) committed7402a6e BEFORE archive/mutation/execution. [Test owner](../../test/vouch-reference.test.mjs) appends ONE property family using unchanged bridge/reference/harness. [Retained results/raw evidence](wp1-prior2-conformance-results.json) binds actual observations, full compressed first-run stdout, current/test/runtime identities and archive receipt. BACKLOG alone owns work.
+**2026-10-28 · DIAGNOSTIC observed SOFTWARE conformance, not scientific confidence/G1, personhood, lifetime enforcement or selected D75 migration.** [Pre-code contract](wp1-prior2-conformance-contract.md) committed7402a6e BEFORE archive/mutation/execution. [Test owner](../../test/vouch-reference.test.mjs) appends ONE property family using unchanged bridge/reference/harness. [Retained results/raw evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior2-conformance-results.json) binds actual observations, full compressed first-run stdout, current/test/runtime identities and archive receipt. BACKLOG alone owns work.
 
 ## Actual result — first execution passed without correction
 

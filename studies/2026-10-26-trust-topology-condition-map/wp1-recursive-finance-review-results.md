@@ -1,6 +1,6 @@
 # WP1 recursive finance — independent finite-family acceptance
 
-**2026-10-28 · DIAGNOSTIC independent static source/algebra support within the EXACT finite contract.** [Original raw reports/task/terminal/hashes](wp1-recursive-finance-review-results.json); [frozen request/launch](wp1-recursive-finance-review.json); [contract](wp1-recursive-finance-contract.md)/[derivation](wp1-recursive-finance.md) unchanged. No Model/config/reference/test/experiment/registration/namespace/data call or Source/default change. This closes the NEW static acceptance seam, not software replication, scientific confirmation, real growth or G1. BACKLOG owns next work.
+**2026-10-28 · DIAGNOSTIC independent static source/algebra support within the EXACT finite contract.** [Original raw reports/task/terminal/hashes](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance-review-results.json); [frozen request/launch](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-recursive-finance-review.json); [contract](wp1-recursive-finance-contract.md)/[derivation](wp1-recursive-finance.md) unchanged. No Model/config/reference/test/experiment/registration/namespace/data call or Source/default change. This closes the NEW static acceptance seam, not software replication, scientific confirmation, real growth or G1. BACKLOG owns next work.
 
 ## Original findings and actual coverage
 

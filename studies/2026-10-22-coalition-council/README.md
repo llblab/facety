@@ -6,8 +6,8 @@ This study ran before the Council default became active-only (`councilEligibilit
 
 | Hypothesis | Kind | Verdict | Holm-adjusted p |
 | --- | --- | --- | --- |
-| [H1: guarantor-XP coupling amplifies coalition Council share](h1-coupling-amplification.json) | mechanism | supported within model | 3.7e-11 |
-| [H2: a growing coalition's Council shield is a transient of its age structure](h2-growth-shield.json) | mechanism | supported within model | 1.8e-12 |
+| [H1: guarantor-XP coupling amplifies coalition Council share](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-22-coalition-council/h1-coupling-amplification.json) | mechanism | supported within model | 3.7e-11 |
+| [H2: a growing coalition's Council shield is a transient of its age structure](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-22-coalition-council/h2-growth-shield.json) | mechanism | supported within model | 1.8e-12 |
 
 ## Exploration
 

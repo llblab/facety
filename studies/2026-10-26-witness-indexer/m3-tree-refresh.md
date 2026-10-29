@@ -1,6 +1,6 @@
 # M3-E1 affected-root refresh — frozen pre-code contract
 
-**2026-10-26 · D61 supplied-snapshot engineering; NOT IMPLEMENTED.** Current runtime ends at [cached-tail assembly](m3-segment-joins-implementation.md). [Contract evidence](m3-tree-refresh-contract-validation.json) checks existing rebuild/proposal/verifier behavior, not a new updater. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns implementation and later repair. Live ranking/epoch authority, capacity/funded/default migration and master research gates stay unchanged.
+**2026-10-26 · D61 supplied-snapshot engineering; NOT IMPLEMENTED.** Current runtime ends at [cached-tail assembly](m3-segment-joins-implementation.md). [Contract evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-tree-refresh-contract-validation.json) checks existing rebuild/proposal/verifier behavior, not a new updater. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns implementation and later repair. Live ranking/epoch authority, capacity/funded/default migration and master research gates stay unchanged.
 
 ## Scope and owner
 

@@ -1,6 +1,6 @@
 # M3-C4 two-sided retained-union reference — implementation checkpoint
 
-**2026-10-26 · diagnostic engineering after2271cde.** Implements the [frozen pre-code contract](m3-union.md), retaining its [historical dependency controls](m3-union-contract-validation.json) unchanged. [Current validation](m3-union-validation.json) separately binds Source, new native test and contract. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work. This is an opt-in supplied-state reference API, not a default/protocol migration, production flow solver or scientific cost method.
+**2026-10-26 · diagnostic engineering after2271cde.** Implements the [frozen pre-code contract](m3-union.md), retaining its [historical dependency controls](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-union-contract-validation.json) unchanged. [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-union-validation.json) separately binds Source, new native test and contract. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work. This is an opt-in supplied-state reference API, not a default/protocol migration, production flow solver or scientific cost method.
 
 ## Ownership and actual behavior
 

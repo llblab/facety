@@ -1,6 +1,6 @@
 # WP1 prior7 C5 — retained independent finite-construction review
 
-**2026-10-28 · DIAGNOSTIC independent algebra/source inspection, NOT executed Native data, scientific confirmation, personhood attack or G1.** [Frozen request](wp1-prior7-c5-review.json) committedb69ad96 before launch; [proof](wp1-prior7-internal-growth.md) had prior contract7d9fe06. [All exact raw stages/terminal/bindings](wp1-prior7-c5-review-results.json) are retained. BACKLOG owns remaining work. C1–C3 were inherited, not reopened.
+**2026-10-28 · DIAGNOSTIC independent algebra/source inspection, NOT executed Native data, scientific confirmation, personhood attack or G1.** [Frozen request](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior7-c5-review.json) committedb69ad96 before launch; [proof](wp1-prior7-internal-growth.md) had prior contract7d9fe06. [All exact raw stages/terminal/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior7-c5-review-results.json) are retained. BACKLOG owns remaining work. C1–C3 were inherited, not reopened.
 
 ## Actual coverage, not consensus by references
 

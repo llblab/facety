@@ -1,6 +1,6 @@
 # WP1 core-prerequisite review — service is not funded growth; receipts are not payback
 
-**2026-10-28 · DIAGNOSTIC independent analytic/source review, not G1 or empirical confirmation.** [Committed pre-review contract](wp1-core-prerequisite-review.md)93a6ac4 · [launch](wp1-core-prerequisite-launch.json) · [complete raw outputs and bindings](wp1-core-prerequisite-results.json). Sole work owner: BACKLOG.
+**2026-10-28 · DIAGNOSTIC independent analytic/source review, not G1 or empirical confirmation.** [Committed pre-review contract](wp1-core-prerequisite-review.md)93a6ac4 · [launch](wp1-core-prerequisite-launch.json) · [complete raw outputs and bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-core-prerequisite-results.json). Sole work owner: BACKLOG.
 
 ## Acceptance / provenance / operational limits
 

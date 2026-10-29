@@ -1,6 +1,6 @@
 # M3-F1 bounded prefix workload and route-selection accounting — frozen pre-code contract
 
-**2026-10-26 · D61 supplied-capture engineering; NOT IMPLEMENTED.** Runtime ends at [M3-E2 local repair](m3-tree-repair-implementation.md). [Pre-code checks](m3-workload-contract-validation.json) exercise existing APIs only, not a new runner, measured workload benefit or scientific E1–E8. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work; master/selected-protocol/live/capacity/funded/default gates remain unchanged.
+**2026-10-26 · D61 supplied-capture engineering; NOT IMPLEMENTED.** Runtime ends at [M3-E2 local repair](m3-tree-repair-implementation.md). [Pre-code checks](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-workload-contract-validation.json) exercise existing APIs only, not a new runner, measured workload benefit or scientific E1–E8. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work; master/selected-protocol/live/capacity/funded/default gates remain unchanged.
 
 ## Choice and scope
 

@@ -1,6 +1,6 @@
 # M3-C2 one-hop branch/tree candidate assembly
 
-**2026-10-26 · D61 bounded engineering contract before code, not E1 research.** [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) owns work. This extends the existing anchor-tree owner with `proposePathWitnessFromBranches(forest,view,context,query,advice)`, retaining the unchanged M3-B API/result behavior for `proposePathWitnessFromTrees`. It composes [M3-C1 route advice](m3-pool.md) with retained tree paths, not a complete dynamic/bidirectional indexer. [Validation](m3-branches-validation.json) binds the checkpoint; master gates and D62 economic uncertainty remain unchanged.
+**2026-10-26 · D61 bounded engineering contract before code, not E1 research.** [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) owns work. This extends the existing anchor-tree owner with `proposePathWitnessFromBranches(forest,view,context,query,advice)`, retaining the unchanged M3-B API/result behavior for `proposePathWitnessFromTrees`. It composes [M3-C1 route advice](m3-pool.md) with retained tree paths, not a complete dynamic/bidirectional indexer. [Validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-branches-validation.json) binds the checkpoint; master gates and D62 economic uncertainty remain unchanged.
 
 ## Exact inputs and candidate universe
 

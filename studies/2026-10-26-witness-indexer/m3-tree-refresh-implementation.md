@@ -1,6 +1,6 @@
 # M3-E1 affected-root refresh implementation checkpoint
 
-**2026-10-26 · D61 supplied-snapshot reference engineering, not live/economic acceptance.** Implements the [frozen refresh contract](m3-tree-refresh.md), preserving [pre-code evidence](m3-tree-refresh-contract-validation.json). [Current validation](m3-tree-refresh-validation.json) binds retained source/tests. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns local repair/workload/evidence work. M3 remains open.
+**2026-10-26 · D61 supplied-snapshot reference engineering, not live/economic acceptance.** Implements the [frozen refresh contract](m3-tree-refresh.md), preserving [pre-code evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-tree-refresh-contract-validation.json). [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-tree-refresh-validation.json) binds retained source/tests. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns local repair/workload/evidence work. M3 remains open.
 
 ## Interface and ownership
 

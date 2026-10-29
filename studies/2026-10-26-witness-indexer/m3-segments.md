@@ -1,6 +1,6 @@
 # M3-D1 hot-segment lifecycle — frozen contract, not implemented
 
-**2026-10-26 · D61 documentation-first engineering contract.** Current runtime ends at [M3-C3 prefix/tree joins](m3-prefix-implementation.md); no segment store/API is delivered here. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns implementation and later update repair. [Contract validation](m3-segments-contract-validation.json) checks existing capture/verifier behavior underlying these choices, not a segment implementation or scientific result. Master research gates, D62, selected-rule/legacy boundaries and historical evidence remain unchanged.
+**2026-10-26 · D61 documentation-first engineering contract.** Current runtime ends at [M3-C3 prefix/tree joins](m3-prefix-implementation.md); no segment store/API is delivered here. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns implementation and later update repair. [Contract validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-segments-contract-validation.json) checks existing capture/verifier behavior underlying these choices, not a segment implementation or scientific result. Master research gates, D62, selected-rule/legacy boundaries and historical evidence remain unchanged.
 
 ## Chosen owner, scope and API
 

@@ -1,6 +1,6 @@
 # M3-L joint whole/segment/forest/offer lifetime — implemented
 
-**2026-10-26 · D61 bounded supplied-state engineering only.** [Frozen contract](m3-composite-workload.md)/[existing-native baseline](m3-composite-workload-contract-validation.json) at0f232da remain historical NOT IMPLEMENTED checkpoints. [Current validation](m3-composite-workload-validation.json) binds retained source/test/runtime. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work; M3 stays open and master/scientific/live/funded/default/capacity gates persist. No lifetime-K fallback or production/benchmark authority follows.
+**2026-10-26 · D61 bounded supplied-state engineering only.** [Frozen contract](m3-composite-workload.md)/[existing-native baseline](m3-composite-workload-contract-validation.json) at0f232da remain historical NOT IMPLEMENTED checkpoints. [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-composite-workload-validation.json) binds retained source/test/runtime. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work; M3 stays open and master/scientific/live/funded/default/capacity gates persist. No lifetime-K fallback or production/benchmark authority follows.
 
 ## API and explicit state
 

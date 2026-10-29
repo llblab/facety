@@ -38,7 +38,7 @@ Legacy cohort trials/sweeps, landscape planning, paired controls, strategy-game 
 
 ## Software evidence and remaining gate
 
-[Seven integration families](../../test/pb-v2.test.mjs) exercise genuine config/dispatch/parameters, no-draw/mixed manifests, separated metrics/declared-horizon missingness, real v2 binding/tamper/v1 refusal, actual scalar/multi-task workers and unsupported wrappers. [Validation](wp1-pb-v2-validation.json) records47 focused/467 current passes plus21 separately source-pinned historical passes; DAG37/100 is acyclic, no errors/warnings. Test fixture/reference files outside src are separately blob-bound. The prior backend refusal test now checks the still-required snapshot refusal, rather than falsely claiming mode rejection.
+[Seven integration families](../../test/pb-v2.test.mjs) exercise genuine config/dispatch/parameters, no-draw/mixed manifests, separated metrics/declared-horizon missingness, real v2 binding/tamper/v1 refusal, actual scalar/multi-task workers and unsupported wrappers. [Validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-pb-v2-validation.json) records47 focused/467 current passes plus21 separately source-pinned historical passes; DAG37/100 is acyclic, no errors/warnings. Test fixture/reference files outside src are separately blob-bound. The prior backend refusal test now checks the still-required snapshot refusal, rather than falsely claiming mode rejection.
 
 Software-only reproduction:
 

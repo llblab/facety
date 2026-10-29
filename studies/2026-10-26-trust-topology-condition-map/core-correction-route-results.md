@@ -1,6 +1,6 @@
 # Real correction route: first missing participant transition, not another XP gate
 
-**2026-10-27 · basedce1d21 · DIAGNOSTIC source/readonly-interface audit.** [Frozen integration contract](core-correction-route-contract.md), [actual example/probe/validation](core-correction-route-results.json). BACKLOG owns the next bounded implementation. No Source/test/default/RNG change or new act-case implementation exists at this checkpoint.
+**2026-10-27 · basedce1d21 · DIAGNOSTIC source/readonly-interface audit.** [Frozen integration contract](core-correction-route-contract.md), [actual example/probe/validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/core-correction-route-results.json). BACKLOG owns the next bounded implementation. No Source/test/default/RNG change or new act-case implementation exists at this checkpoint.
 
 The existing public act-relay example now runs on the current exact source: a recorded Self-ID at48 is observed/reviewed at72. Source/sponsor spend3/2 declared work units. The sponsor is accepted with7 XP versus author's3 and2 liquid FACY versus stake1; review succeeds. The next call still returns **act-defect-adjudication-unimplemented**, creates0 cases/stakes and changes no economic state. Existing act-relay tests also exercise valid-act false suspicion and hidden-label invariance; no evidence/truth label can legitimately leap over that guard.
 

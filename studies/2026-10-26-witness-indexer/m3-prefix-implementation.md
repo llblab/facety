@@ -1,6 +1,6 @@
 # M3-C3 prefix frontier implementation checkpoint
 
-**2026-10-26 · D61 bounded engineering, not research/security acceptance.** Implements the previously [frozen prefix contract](m3-prefix.md) without rewriting its [pre-code record](m3-prefix-contract-validation.json), the original tree/one-hop artifacts or either verifier. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work. [Validation](m3-prefix-validation.json) binds current source/tests; master evidence gates, live/funded/Standing/capacity contracts and D62 economic uncertainty remain.
+**2026-10-26 · D61 bounded engineering, not research/security acceptance.** Implements the previously [frozen prefix contract](m3-prefix.md) without rewriting its [pre-code record](m3-prefix-contract-validation.json), the original tree/one-hop artifacts or either verifier. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work. [Validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-prefix-validation.json) binds current source/tests; master evidence gates, live/funded/Standing/capacity contracts and D62 economic uncertainty remain.
 
 ## Public boundary and data
 

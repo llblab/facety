@@ -1,6 +1,6 @@
 # Prior2 — independent exact unit-lifetime maximum review
 
-**2026-10-28 · DIAGNOSTIC mathematical support, not funded/Native/scientific confirmation or G1.** [Prelaunch task](wp1-prior2-distinctness-review.json) committed5343605 BEFORE spawn; [contract](wp1-prior2-distinctness-contract.md) committed5f82dc8 BEFORE [new derivation](wp1-prior2-distinctness.md) atbd7b5a2. [Complete frozen request/execution/raw evidence](wp1-prior2-distinctness-review-results.json) retains all10stage bodies verbatim. BACKLOG alone owns further work.
+**2026-10-28 · DIAGNOSTIC mathematical support, not funded/Native/scientific confirmation or G1.** [Prelaunch task](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior2-distinctness-review.json) committed5343605 BEFORE spawn; [contract](wp1-prior2-distinctness-contract.md) committed5f82dc8 BEFORE [new derivation](wp1-prior2-distinctness.md) atbd7b5a2. [Complete frozen request/execution/raw evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior2-distinctness-review-results.json) retains all10stage bodies verbatim. BACKLOG alone owns further work.
 
 ## Mathematical finding and actual acceptance
 

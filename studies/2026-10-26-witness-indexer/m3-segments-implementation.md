@@ -1,6 +1,6 @@
 # M3-D1 segment-store implementation checkpoint
 
-**2026-10-26 · D61 bounded engineering, not protocol/economic security acceptance.** Implements the [frozen segment lifecycle contract](m3-segments.md) while preserving its [pre-code evidence](m3-segments-contract-validation.json). [Validation](m3-segments-validation.json) binds current source/tests. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns integration and repair. There is no automatic change to prefix search, either verifier, whole-witness fallback, Model, defaults, historical duties or master gates.
+**2026-10-26 · D61 bounded engineering, not protocol/economic security acceptance.** Implements the [frozen segment lifecycle contract](m3-segments.md) while preserving its [pre-code evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-segments-contract-validation.json). [Validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-segments-validation.json) binds current source/tests. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns integration and repair. There is no automatic change to prefix search, either verifier, whole-witness fallback, Model, defaults, historical duties or master gates.
 
 ## Public boundary
 

@@ -29,6 +29,6 @@ node --test test/vouch-reference.test.mjs
 npm test
 ```
 
-[Validation identities](wp1-reference-validation.json) bind the Native digest **and** oracle/bridge/profile/test files, since src-only provenance does not hash study/test modules. Seven focused and435 current tests pass;21 historical tests pass separately in their pinned source checkout, not as current-source validation. DAG evidence is reused only after verifying unchanged Native source/config; context has no errors. All research/search/confirmation/LLM/pilot counts remain zero.
+[Validation identities](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-reference-validation.json) bind the Native digest **and** oracle/bridge/profile/test files, since src-only provenance does not hash study/test modules. Seven focused and435 current tests pass;21 historical tests pass separately in their pinned source checkout, not as current-source validation. DAG evidence is reused only after verifying unchanged Native source/config; context has no errors. All research/search/confirmation/LLM/pilot counts remain zero.
 
 Next is the actual native-v2 engine/config/observable integration and preregistered priors/ranges/precision/kill/search method, then written confirmation/correction of priors1–3/7. This reference's logical comparison alone cannot pass G1 or unlock later WPs.

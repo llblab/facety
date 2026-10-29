@@ -1,6 +1,6 @@
 # M3-D2 cached-tail candidate integration checkpoint
 
-**2026-10-26 · D61 bounded opt-in engineering, not a protocol/economic result.** Implements the [frozen join contract](m3-segment-joins.md), preserving its [pre-code evidence](m3-segment-joins-contract-validation.json). [Current validation](m3-segment-joins-validation.json) binds source/tests. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining repair/evidence work; M3 is still open.
+**2026-10-26 · D61 bounded opt-in engineering, not a protocol/economic result.** Implements the [frozen join contract](m3-segment-joins.md), preserving its [pre-code evidence](m3-segment-joins-contract-validation.json). [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-segment-joins-validation.json) binds source/tests. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining repair/evidence work; M3 is still open.
 
 ## Public interface and ownership
 

@@ -1,6 +1,6 @@
 # Annual diagnosis — history-copy pressure confirmed with a coarse observer
 
-**2026-10-27 · basea4acb99 · DIAGNOSTIC local engineering, not simulation security evidence.** [Frozen profile contract](longitudinal-profile-contract.md), [actual observations/programs/bindings](longitudinal-profile-results.json). Same normalized configs/seed/RNG/source as [the fixed preflight](longitudinal-preflight-results.md); no Source/test/rule change or parameter tuning. BACKLOG owns follow-up.
+**2026-10-27 · basea4acb99 · DIAGNOSTIC local engineering, not simulation security evidence.** [Frozen profile contract](longitudinal-profile-contract.md), [actual observations/programs/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/longitudinal-profile-results.json). Same normalized configs/seed/RNG/source as [the fixed preflight](longitudinal-preflight-results.md); no Source/test/rule change or parameter tuning. BACKLOG owns follow-up.
 
 ## First observer: actual result
 

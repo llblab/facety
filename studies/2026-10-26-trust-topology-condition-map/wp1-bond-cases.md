@@ -18,7 +18,7 @@ All verdict totals, recipient existence/duplicates/balances, supply bounds and r
 
 ## Validation and remaining gate
 
-[Seven new families](../../test/vouch-bond-cases.test.mjs) cover holds across V/exit, actual partial burn/payout/cumulative B caps, pending/depleted admission guards, rejected/replayed/overlapping cases, invalidated/self recipient custody, immutable/canonical allocation and failed-call/future-ID/read atomicity. An independent integer recurrence checks256 two-case burn/transfer/refund partitions. All21 focused families,417 current tests and21 separately source-pinned historical compatibility tests pass. [Validation identity](wp1-bond-validation.json) distinguishes engineering data from unrun research; DAG remains32 files/77 edges, acyclic.
+[Seven new families](../../test/vouch-bond-cases.test.mjs) cover holds across V/exit, actual partial burn/payout/cumulative B caps, pending/depleted admission guards, rejected/replayed/overlapping cases, invalidated/self recipient custody, immutable/canonical allocation and failed-call/future-ID/read atomicity. An independent integer recurrence checks256 two-case burn/transfer/refund partitions. All21 focused families,417 current tests and21 separately source-pinned historical compatibility tests pass. [Validation identity](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-bond-validation.json) distinguishes engineering data from unrun research; DAG remains32 files/77 edges, acyclic.
 
 ```sh
 node --test test/vouch-bond-cases.test.mjs test/vouch-admission.test.mjs test/vouch-commitments.test.mjs

@@ -41,7 +41,7 @@ Under the global contradiction null `θ_j ≥ q_j` for every registered componen
 
 ## Checked synthetic controls
 
-[controls.mjs](controls.mjs) constructs valid current registrations and deliberately supplied scalar rows; [controls.json](controls.json) retains exact output. Values are **not claimed to be realizations of native generator runs**. No `confirmHypothesis`, model execution or historical reanalysis occurs. Native registration verification remains enabled for fresh fixtures; the 32-component historical witness is reused from its retained artifact, not replayed.
+[controls.mjs](controls.mjs) constructs valid current registrations and deliberately supplied scalar rows; [controls.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-e1-contract/controls.json) retains exact output. Values are **not claimed to be realizations of native generator runs**. No `confirmHypothesis`, model execution or historical reanalysis occurs. Native registration verification remains enabled for fresh fixtures; the 32-component historical witness is reused from its retained artifact, not replayed.
 
 | Control | M | Native verdict | A overlay | Family contradiction p |
 | --- | ---: | --- | --- | ---: |
@@ -69,9 +69,9 @@ A future implementation's acceptance controls are the nine partitions above, cla
 
 ## Evidence and stop
 
-- Original [review and attribution](../2026-10-23-evidence-debt-review/review-evidence.txt) and [synthetic witness](../2026-10-23-evidence-debt-review/witness.json).
+- Original [review and attribution](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/review-evidence.txt) and [synthetic witness](../2026-10-23-evidence-debt-review/witness.json).
 - Existing [statistical contract](../../docs/evidence.en.md#statistical-test), `testClaim`/`analyzeConfirmation`/`adjustStudy` in `src/evidence.mjs`, and `holm`/binomial tails in `src/statistics.mjs`.
 - Fresh synthetic checks: `node studies/2026-10-23-e1-contract/controls.mjs`.
-- [Validation](validation.json): executable/native-test inputs unchanged; prior 228-test/DAG evidence reused, not rerun. Fresh context/whitespace checks cover this packet.
+- [Validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-e1-contract/validation.json): executable/native-test inputs unchanged; prior 228-test/DAG evidence reused, not rerun. Fresh context/whitespace checks cover this packet.
 
 **Preparation complete; owner-gated.** Choose A or B and its stated scope before inference changes. Further synthetic permutations cannot choose the intended promise. This is coordinator methodology preparation, not independent review, selected policy, scientific confirmation or evidence of real-world validity.

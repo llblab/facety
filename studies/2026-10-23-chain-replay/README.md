@@ -35,7 +35,7 @@ No runtime source is changed to choose that contract. Repeated `+voided` metadat
 
 - New guard coverage passes on the existing implementation; **no fail-before/fix claim**. Focused model/accountability/stake tests: **48/48**; full suite: **215/215** (`tests.txt`).
 - All **25 source modules and 174 prior study files** match raw Git blobs (`witness.json`). Implementation remains **`a3a5c26e6e34ece29a967d135ccde81ed132f9e7bd226673b4ef26ba7844e0f8`**, Node v26.8.1. Scheduler generator/key policy is unchanged.
-- The [preceding twelve-context scheduler evidence](../2026-10-23-native-id/scheduler-preservation.json) remains applicable through identical runtime, script, baseline and source inputs; it was **reused, not rerun or copied**. No new performance/confirmation campaign was required.
+- The [preceding twelve-context scheduler evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-native-id/scheduler-preservation.json) remains applicable through identical runtime, script, baseline and source inputs; it was **reused, not rerun or copied**. No new performance/confirmation campaign was required.
 - Documentation/context and whitespace validation are recorded in `validation.json` and `context.txt`. DAG evidence is likewise reused from the unchanged 25-module/57-edge source graph.
 - Checks are coordinator execution/inspection, not independent review. There is no new oracle, human-uniqueness, useful-contribution, adoption, sustainable distribution or general attack-probability finding.
 

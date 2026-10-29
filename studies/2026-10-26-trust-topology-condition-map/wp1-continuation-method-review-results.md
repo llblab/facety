@@ -1,6 +1,6 @@
 # WP1 continuation METHOD review — terminal integration
 
-**2026-10-28 · DIAGNOSTIC independent static review, not empirical confirmation/G1. Verdict REFINE: the frozen365day/50target design is NOT admitted for software, registration, replay or research execution.** [Full original bodies/terminal/task bindings](wp1-continuation-method-review-results.json); [request/launch](wp1-continuation-method-review.json); immutable reviewed [prespec](wp1-continuation-prespec.md)/[numeric record](wp1-continuation-design.json) remain unchanged. BACKLOG alone owns next work.
+**2026-10-28 · DIAGNOSTIC independent static review, not empirical confirmation/G1. Verdict REFINE: the frozen365day/50target design is NOT admitted for software, registration, replay or research execution.** [Full original bodies/terminal/task bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-continuation-method-review-results.json); [request/launch](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-continuation-method-review.json); immutable reviewed [prespec](wp1-continuation-prespec.md)/[numeric record](wp1-continuation-design.json) remain unchanged. BACKLOG alone owns next work.
 
 ## What the original reviewers actually establish
 

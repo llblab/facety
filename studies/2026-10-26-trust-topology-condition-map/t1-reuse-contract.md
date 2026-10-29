@@ -1,6 +1,6 @@
 # T1 finite reuse-certificate acceptance — written before test code
 
-**2026-10-27 · basef276722 · engineering/analytic diagnostic, not a T1 study registration.** Implements the finite supplied-graph prerequisite under [D73 review](core-bridge-review.md), not funded population dynamics, d_eff or an assumed K100 interpretation. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns tasks. This contract is written before its test in the same bounded cohort; no claim of preregistered scientific confirmation or independent authorship follows. Results/bindings belong in [a separate validation record](t1-reuse-validation.json); this pre-code record remains historical.
+**2026-10-27 · basef276722 · engineering/analytic diagnostic, not a T1 study registration.** Implements the finite supplied-graph prerequisite under [D73 review](core-bridge-review.md), not funded population dynamics, d_eff or an assumed K100 interpretation. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns tasks. This contract is written before its test in the same bounded cohort; no claim of preregistered scientific confirmation or independent authorship follows. Results/bindings belong in [a separate validation record](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/t1-reuse-validation.json); this pre-code record remains historical.
 
 ## Fixed finite acceptance
 

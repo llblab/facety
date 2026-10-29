@@ -33,7 +33,7 @@ Two permanent native helper tests separately cover expected discovery order, gra
 
 The fresh archive/current comparison reuses the sixteen declared configuration-extraction controls, including three dispute procedures, both stake backings, social hooks, honest growth, genuine cartel, schedules/deviants, explicit legacy timing/ablations and censoring. Their archived outputs also reproduce the retained diagnostic digests. A seventeenth context enables structural screening, acquaintance filtering, verification, gossip and attention together so the new rank owner is exercised through scheduler callers.
 
-Read-only instrumentation returns the complete ordered native event log. Every result field plus **29,528 ordered events** is identical both by deep equality and serialized bytes after removing only provenance. Configurations, counters and digests are retained in [preservation.json](preservation.json). No old empirical confirmation is rerun or transferred.
+Read-only instrumentation returns the complete ordered native event log. Every result field plus **29,528 ordered events** is identical both by deep equality and serialized bytes after removing only provenance. Configurations, counters and digests are retained in [preservation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-social-graph/preservation.json). No old empirical confirmation is rerun or transferred.
 
 ## Validation and provenance
 
@@ -43,7 +43,7 @@ node --test test/social-graph.test.mjs test/social.test.mjs test/experiment.test
 npm test
 ```
 
-Observed: **28 focused tests** and **228 full-suite tests** pass (overlapping counts). Domain DAG: **27 source modules / 65 local edges**, zero errors/warnings. Context, whitespace, source/history guards and full test output are retained in [validation.json](validation.json) and [tests.txt](tests.txt).
+Observed: **28 focused tests** and **228 full-suite tests** pass (overlapping counts). Domain DAG: **27 source modules / 65 local edges**, zero errors/warnings. Context, whitespace, source/history guards and full test output are retained in [validation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-social-graph/validation.json) and [tests.txt](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-social-graph/tests.txt).
 
 All **215** files already tracked under `studies/` at the reference commit remain byte-identical. The source-content fingerprint changes because a module is added; the generator and decision-key policy do not. This is coordinator source/reference/regression evidence, not an independent review, universal behavioral proof, optimization result or scientific mechanism confirmation.
 

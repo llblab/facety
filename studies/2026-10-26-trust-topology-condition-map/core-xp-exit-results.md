@@ -1,6 +1,6 @@
 # Core convergence: paid exit timing changes retained XP
 
-**2026-10-27 · base375590e · DIAGNOSTIC native accounting/composition, not a growth, profitability or authority-capture study.** [Frozen pre-code contract](core-xp-exit-contract.md), [actual rows/bindings](core-xp-exit-results.json), [existing test owner](../../test/xp-provenance.test.mjs). [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns next work. D76 prioritizes critical uncertainty reduction over automatically building the next K engine.
+**2026-10-27 · base375590e · DIAGNOSTIC native accounting/composition, not a growth, profitability or authority-capture study.** [Frozen pre-code contract](core-xp-exit-contract.md), [actual rows/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/core-xp-exit-results.json), [existing test owner](../../test/xp-provenance.test.mjs). [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns next work. D76 prioritizes critical uncertainty reduction over automatically building the next K engine.
 
 ## What was reused, not rediscovered
 

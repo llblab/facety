@@ -1,6 +1,6 @@
 # M3-F2 paired maintenance conformance and cost-admissibility contract
 
-**2026-10-26 · frozen pre-code engineering acceptance; NOT IMPLEMENTED.** Builds on [F1](m3-workload-implementation.md) and its [preflight correction](m3-workload-preflight.md). [Fixture plan](m3-maintenance-pairs-plan.json) is design/input data, not result data. [Dependency evidence](m3-maintenance-pairs-contract-validation.json) exercises existing APIs only. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) owns implementation; no scientific E1–E8 method/registration, benchmark capture, master verdict or new protocol choice is selected.
+**2026-10-26 · frozen pre-code engineering acceptance; NOT IMPLEMENTED.** Builds on [F1](m3-workload-implementation.md) and its [preflight correction](m3-workload-preflight.md). [Fixture plan](m3-maintenance-pairs-plan.json) is design/input data, not result data. [Dependency evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-maintenance-pairs-contract-validation.json) exercises existing APIs only. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) owns implementation; no scientific E1–E8 method/registration, benchmark capture, master verdict or new protocol choice is selected.
 
 ## Purpose, alternatives and gate
 

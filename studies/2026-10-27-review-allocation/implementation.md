@@ -1,6 +1,6 @@
 # Opt-in review-work reservation — implemented engineering checkpoint
 
-**2026-10-27 · D63 · C1 implementation after the committed dc97602 contract.** [The C0 contract](README.md)/[pre-code validation](contract-validation.json) remain unchanged historical NOT IMPLEMENTED/NOT RUN records. This document and [implementation validation](implementation-validation.json) describe current code. [BACKLOG](../../BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns remaining work. This is an allocator/config/software-API result, **not new empirical fraud prevention, emergence, human behavior, welfare, G1 or a selected protocol rule**.
+**2026-10-27 · D63 · C1 implementation after the committed dc97602 contract.** [The C0 contract](README.md)/[pre-code validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/contract-validation.json) remain unchanged historical NOT IMPLEMENTED/NOT RUN records. This document and [implementation validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/implementation-validation.json) describe current code. [BACKLOG](../../BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns remaining work. This is an allocator/config/software-API result, **not new empirical fraud prevention, emergence, human behavior, welfare, G1 or a selected protocol rule**.
 
 ## What actually changed
 

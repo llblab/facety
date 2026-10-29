@@ -1,7 +1,0 @@
-{
-  "falsePositiveRate": [0.05],
-  "disputes.accuracy": [0.9],
-  "sensitivity": [0.2, 0.35, 0.5],
-  "disputes.fineMode": ["fixed", "chain"],
-  "disputes.liability": ["guarantors", "inviter-chain"]
-}

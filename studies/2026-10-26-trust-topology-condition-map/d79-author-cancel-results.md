@@ -1,6 +1,6 @@
 # D79 implemented — author cancellation keeps the original issued slot
 
-**2026-10-28 · SELECTED owner rule / DIAGNOSTIC transition proof, not global DoS or research evidence.** [Pre-code contract](d79-author-cancel-contract.md) · [raw/bindings/checks](d79-author-cancel-results.json). Owner confirmation01:31:15Europe/Samara resolves the prior D78 candidate; protocol main/AppendixA retain the dated proposal then explicit D79 selection. BACKLOG alone owns work.
+**2026-10-28 · SELECTED owner rule / DIAGNOSTIC transition proof, not global DoS or research evidence.** [Pre-code contract](d79-author-cancel-contract.md) · [raw/bindings/checks](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/d79-author-cancel-results.json). Owner confirmation01:31:15Europe/Samara resolves the prior D78 candidate; protocol main/AppendixA retain the dated proposal then explicit D79 selection. BACKLOG alone owns work.
 
 ## Smallest actual change
 

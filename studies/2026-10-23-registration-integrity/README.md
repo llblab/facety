@@ -34,7 +34,7 @@ These are regression properties of the current reference, not selection of D34 c
 - Its old changed-margin construction is now rejected with a digest error instead of becoming `supported`.
 - E1 still has aggregate `contradicted`, raw component p `0.03125` and Holm comparison `1`. E1 is unresolved; this is a control that the integrity repair did not silently alter scientific semantics.
 
-No confirmation or model simulation is executed by this witness. Native test validation does run its ordinary transient test registrations and model fixtures; it does not replay historical studies or confirmations. [witness.json](witness.json) retains current and reviewed implementation identities and these observations. Historical files remain byte-identical.
+No confirmation or model simulation is executed by this witness. Native test validation does run its ordinary transient test registrations and model fixtures; it does not replay historical studies or confirmations. [witness.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-registration-integrity/witness.json) retains current and reviewed implementation identities and these observations. Historical files remain byte-identical.
 
 ## Validation and boundaries
 
@@ -52,7 +52,7 @@ Observed coordinator validation:
 - Focused model: **30 passed**.
 - Full suite: **225 passed**, including those focused tests, not 270 distinct tests.
 - Domain DAG: **25 modules / 58 local edges**, no errors or warnings.
-- Context and whitespace checks, source-scope and historical-file preservation are recorded in [validation.json](validation.json).
+- Context and whitespace checks, source-scope and historical-file preservation are recorded in [validation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-registration-integrity/validation.json).
 
 Only `src/evidence.mjs` changes simulator source; CLI forwarding and test/docs changes accompany it. The model, graph algorithms, randomness and protocol defaults remain unchanged. Source fingerprints deliberately change; old confirmations retain their original implementation and are not silently reconfirmed. The degraded source-fidelity qualification of the original review is preserved. This repair has coordinator regression/reproduction evidence, not a new independent post-fix review or universal correctness guarantee.
 

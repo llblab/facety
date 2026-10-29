@@ -1,6 +1,6 @@
 # M3-H bounded cache/forest lifecycle — current implementation
 
-**2026-10-26 · implemented diagnostic engineering, not a live indexer or scientific experiment.** [Frozen pre-code contract](m3-lifecycle.md) and [pre-code dependency/baseline record](m3-lifecycle-contract-validation.json) retain their original NOT IMPLEMENTED checkpoint. This document and [current validation](m3-lifecycle-validation.json) own subsequent delivery. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining tasks.
+**2026-10-26 · implemented diagnostic engineering, not a live indexer or scientific experiment.** [Frozen pre-code contract](m3-lifecycle.md) and [pre-code dependency/baseline record](m3-lifecycle-contract-validation.json) retain their original NOT IMPLEMENTED checkpoint. This document and [current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-lifecycle-validation.json) own subsequent delivery. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining tasks.
 
 ## Public owner and data boundary
 

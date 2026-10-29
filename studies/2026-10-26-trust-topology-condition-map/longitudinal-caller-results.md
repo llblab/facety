@@ -1,6 +1,6 @@
 # One complete living-population year — fixed caller, real cases, one coverage break
 
-**2026-10-27 · DIAGNOSTIC functional scenario, not a registered human/security/mechanism study.** [Pre-code/measurement refinements](longitudinal-caller-contract.md) · [fixed caller](longitudinal-caller.mjs) · [lossless raw runs/bindings/checks](longitudinal-caller-results.json). No Source/test/default/RNG change; same00d58542 Source/Nodev26.8.1. BACKLOG alone owns follow-up, not another programme.
+**2026-10-27 · DIAGNOSTIC functional scenario, not a registered human/security/mechanism study.** [Pre-code/measurement refinements](longitudinal-caller-contract.md) · [fixed caller](longitudinal-caller.mjs) · [lossless raw runs/bindings/checks](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/longitudinal-caller-results.json). No Source/test/default/RNG change; same00d58542 Source/Nodev26.8.1. BACKLOG alone owns follow-up, not another programme.
 
 ## Actual complete year, not the earlier quiet benchmark
 

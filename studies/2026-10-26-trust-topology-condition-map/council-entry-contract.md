@@ -1,6 +1,6 @@
 # Core C2 — pending-only D72 entry/clock integration contract
 
-**2026-10-27 · base9c98d05 · NOT IMPLEMENTED; acceptance frozen before code.** D68 core-first continuation, [D70/D72](../../docs/facety.protocol.en.md#273-individual-initiation-and-collective-merits-referendum-d70), [C0 coverage](core-authority.md) and the [C1 source correction](core-council-rejection.md) motivate one missing core temporal primitive. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns implementation/tasks. [Contract validation](council-entry-contract-validation.json). This is a supplied research reference, not formal Council admission, an autonomous policy, a complete referendum or a new experiment engine.
+**2026-10-27 · base9c98d05 · NOT IMPLEMENTED; acceptance frozen before code.** D68 core-first continuation, [D70/D72](../../docs/facety.protocol.en.md#273-individual-initiation-and-collective-merits-referendum-d70), [C0 coverage](core-authority.md) and the [C1 source correction](core-council-rejection.md) motivate one missing core temporal primitive. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns implementation/tasks. [Contract validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/council-entry-contract-validation.json). This is a supplied research reference, not formal Council admission, an autonomous policy, a complete referendum or a new experiment engine.
 
 ## 1. Actual owner and missing behavior
 

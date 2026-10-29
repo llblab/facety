@@ -1,6 +1,6 @@
 # T1 finite supplied-graph diagnostic — reused support is not capacity
 
-**2026-10-27 · basef276722 · DIAGNOSTIC native certificate/property evidence, not a scientific T1 parameter screen or an economically executed attack.** [Acceptance written before test code](t1-reuse-contract.md), [test](../../test/core-bridge-reuse.test.mjs), [validation/bindings](t1-reuse-validation.json), [D73 review](core-bridge-review.md), [sole task owner](../../BACKLOG.md#trust-topology-condition-map-master-programme). Original review/contract facts remain dated; these are separate new verification results.
+**2026-10-27 · basef276722 · DIAGNOSTIC native certificate/property evidence, not a scientific T1 parameter screen or an economically executed attack.** [Acceptance written before test code](t1-reuse-contract.md), [test](../../test/core-bridge-reuse.test.mjs), [validation/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/t1-reuse-validation.json), [D73 review](core-bridge-review.md), [sole task owner](../../BACKLOG.md#trust-topology-condition-map-master-programme). Original review/contract facts remain dated; these are separate new verification results.
 
 ## Actual observations
 

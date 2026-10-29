@@ -1,6 +1,6 @@
 # Core convergence: XP, funded access and actual collection are different links
 
-**2026-10-27 · basefc191ac · DIAGNOSTIC conditional native composition, not Council capture, actual D34 adjudication or a viable defense loop.** [Pre-code contract](core-authority-recovery-contract.md), [actual rows/bindings](core-authority-recovery-results.json), [existing XP test owner](../../test/xp-provenance.test.mjs). [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns work. No new rule, runtime source, engine, metric, study namespace or hidden personhood labels.
+**2026-10-27 · basefc191ac · DIAGNOSTIC conditional native composition, not Council capture, actual D34 adjudication or a viable defense loop.** [Pre-code contract](core-authority-recovery-contract.md), [actual rows/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/core-authority-recovery-results.json), [existing XP test owner](../../test/xp-provenance.test.mjs). [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns work. No new rule, runtime source, engine, metric, study namespace or hidden personhood labels.
 
 ## What the four matched traces show
 

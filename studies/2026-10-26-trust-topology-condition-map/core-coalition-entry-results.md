@@ -1,6 +1,6 @@
 # Coordinated defense: aggregate head start is not an ordinary entry credential
 
-**2026-10-27 · base1d9bf9e · DIAGNOSTIC funded ordinary-access prerequisite, not an organized-attack/cooperation-effect study or a selected-protocol immunity theorem.** [Pre-code contract](core-coalition-entry-contract.md), [actual rows/bindings](core-coalition-entry-results.json), [existing test owner](../../test/core-authority.test.mjs). [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) owns work. D68's early organized defensive-coalition advantage remains a hypothesis, not a guaranteed win.
+**2026-10-27 · base1d9bf9e · DIAGNOSTIC funded ordinary-access prerequisite, not an organized-attack/cooperation-effect study or a selected-protocol immunity theorem.** [Pre-code contract](core-coalition-entry-contract.md), [actual rows/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/core-coalition-entry-results.json), [existing test owner](../../test/core-authority.test.mjs). [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) owns work. D68's early organized defensive-coalition advantage remains a hypothesis, not a guaranteed win.
 
 ## Minimal first-step falsifier
 

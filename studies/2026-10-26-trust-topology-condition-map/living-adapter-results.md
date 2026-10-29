@@ -1,6 +1,6 @@
 # Typed living scalar adapter — pre-case engineering acceptance only
 
-**2026-10-27 · DIAGNOSTIC, no comparative research or G1 pass.** [Pre-code](living-adapter-contract.md) · [parent allocation contract](support-allocation-contract.md) · [raw/provenance/checks](living-adapter-results.json). Canonical open work remains BACKLOG. Source changed from07389324 to7f2ec821; original year/refusal/profiles and historical registrations/results remain unchanged, NOT relabeled.
+**2026-10-27 · DIAGNOSTIC, no comparative research or G1 pass.** [Pre-code](living-adapter-contract.md) · [parent allocation contract](support-allocation-contract.md) · [raw/provenance/checks](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/living-adapter-results.json). Canonical open work remains BACKLOG. Source changed from07389324 to7f2ec821; original year/refusal/profiles and historical registrations/results remain unchanged, NOT relabeled.
 
 ## Actual capability, not another simulator
 

@@ -1,6 +1,6 @@
 # WP1 ordinary-maturity receipts — actual collection, not pooled cash
 
-**2026-10-28 · DIAGNOSTIC engineering acceptance of five fixed Native alternatives. NOT G1, statistical/mechanism confirmation, genuine growth or profitable cooperation.** [Pre-code contract](wp1-incremental-receipts.md)dc9b24d · [actual old API refusals](wp1-receipts-admission.json) · [complete new raw fixture and validation](wp1-maturity-receipts-results.json). BACKLOG alone owns work.
+**2026-10-28 · DIAGNOSTIC engineering acceptance of five fixed Native alternatives. NOT G1, statistical/mechanism confirmation, genuine growth or profitable cooperation.** [Pre-code contract](wp1-incremental-receipts.md)dc9b24d · [actual old API refusals](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-receipts-admission.json) · [complete new raw fixture and validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-maturity-receipts-results.json). BACKLOG alone owns work.
 
 ## Implemented seam, not another engine
 

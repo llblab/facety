@@ -1,6 +1,6 @@
 # Settled D59 history no longer prevents a NEW act case — separate reference
 
-**2026-10-27 · DIAGNOSTIC functional coverage, not scientific confirmation.** [Pre-code](settled-history-contract.md) · [lossless raw/provenance/checks](settled-history-results.json) · [captured one-literal caller specialization](longitudinal-settled-history-caller.mjs). Source changed from00d58542 to07389324; old [converted-v1 year](longitudinal-caller-results.md) and caller/packets remain byte-identical, NOT relabeled. BACKLOG owns follow-up.
+**2026-10-27 · DIAGNOSTIC functional coverage, not scientific confirmation.** [Pre-code](settled-history-contract.md) · [lossless raw/provenance/checks](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/settled-history-results.json) · [captured one-literal caller specialization](longitudinal-settled-history-caller.mjs). Source changed from00d58542 to07389324; old [converted-v1 year](longitudinal-caller-results.md) and caller/packets remain byte-identical, NOT relabeled. BACKLOG owns follow-up.
 
 ## Minimal actual compatibility
 

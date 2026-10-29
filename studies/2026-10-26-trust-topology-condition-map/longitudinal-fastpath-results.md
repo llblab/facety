@@ -1,6 +1,6 @@
 # Same-draw fast path completes the held annual workload
 
-**2026-10-27 · base2696f63 · DIAGNOSTIC engineering optimization/operability, not human/security/growth viability evidence.** [Pre-code acceptance](longitudinal-fastpath-contract.md), [actual conformance/year/validation](longitudinal-fastpath-results.json). BACKLOG owns next research work. Prior profile/capability packets remain unchanged; Source now has a legitimate new identity.
+**2026-10-27 · base2696f63 · DIAGNOSTIC engineering optimization/operability, not human/security/growth viability evidence.** [Pre-code acceptance](longitudinal-fastpath-contract.md), [actual conformance/year/validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/longitudinal-fastpath-results.json). BACKLOG owns next research work. Prior profile/capability packets remain unchanged; Source now has a legitimate new identity.
 
 ## Small implementation, independent behavioral check
 

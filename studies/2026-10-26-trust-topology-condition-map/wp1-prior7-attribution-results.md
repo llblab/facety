@@ -1,6 +1,6 @@
 # WP1 prior7 — passive terminal attribution software acceptance
 
-**2026-10-28 · DIAGNOSTIC engineering only. G1 NOT passed.** [Contract](wp1-prior7-attribution-contract.md) committed atd4e1da5 before code; [readiness reconciliation](wp1-g1-readiness.md) retains the scientific gates. BACKLOG owns remaining work. [Machine packet](wp1-prior7-attribution-results.json) retains actual raw input losslessly, exact evaluations/outputs/independent sets, complete reproduction program and source/method/test bindings.
+**2026-10-28 · DIAGNOSTIC engineering only. G1 NOT passed.** [Contract](wp1-prior7-attribution-contract.md) committed atd4e1da5 before code; [readiness reconciliation](wp1-g1-readiness.md) retains the scientific gates. BACKLOG owns remaining work. [Machine packet](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior7-attribution-results.json) retains actual raw input losslessly, exact evaluations/outputs/independent sets, complete reproduction program and source/method/test bindings.
 
 ## Delivered owner, not another backend
 

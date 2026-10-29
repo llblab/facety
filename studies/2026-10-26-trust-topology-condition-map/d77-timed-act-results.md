@@ -1,6 +1,6 @@
 # First D77 timed ACT-source path — admitted positions to actual D59 execution
 
-**2026-10-27 · CONFIRMED bounded software / DIAGNOSTIC network relevance, NOT a full selected court, human calibration or security finding.** [Pre-code](d77-timed-act-contract.md) · [raw facts/provenance/checks](d77-timed-act-results.json). Existing Model/accountability/stakes/source owners only, no new module/engine/framework. BACKLOG owns continuation; original packets/default guards are unchanged.
+**2026-10-27 · CONFIRMED bounded software / DIAGNOSTIC network relevance, NOT a full selected court, human calibration or security finding.** [Pre-code](d77-timed-act-contract.md) · [raw facts/provenance/checks](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/d77-timed-act-results.json). Existing Model/accountability/stakes/source owners only, no new module/engine/framework. BACKLOG owns continuation; original packets/default guards are unchanged.
 
 ## Actual path now available
 

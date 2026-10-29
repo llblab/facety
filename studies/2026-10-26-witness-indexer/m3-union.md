@@ -1,6 +1,6 @@
 # M3-C4 two-sided retained-union proposal — frozen pre-code contract
 
-**2026-10-26 · D61 supplied-capture reference engineering; NOT IMPLEMENTED.** Builds on [C3 prefix joins](m3-prefix-implementation.md), [tree maintenance](m3-tree-repair-implementation.md) and [F2 conformance](m3-maintenance-pairs-implementation.md). [Pre-code evidence](m3-union-contract-validation.json) checks existing dependency/counterexamples, not a new extractor. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns work. No general D33–D36 migration, capacity/voting/epoch rule, benchmark registration, default or master gate changes.
+**2026-10-26 · D61 supplied-capture reference engineering; NOT IMPLEMENTED.** Builds on [C3 prefix joins](m3-prefix-implementation.md), [tree maintenance](m3-tree-repair-implementation.md) and [F2 conformance](m3-maintenance-pairs-implementation.md). [Pre-code evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-union-contract-validation.json) checks existing dependency/counterexamples, not a new extractor. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns work. No general D33–D36 migration, capacity/voting/epoch rule, benchmark registration, default or master gate changes.
 
 ## Scope, alternatives and public boundary
 

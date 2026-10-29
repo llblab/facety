@@ -1,6 +1,6 @@
 # Seven existing review/allocation scalars — C3 implemented
 
-**2026-10-27 · C3 after988c013.** [C2 measurement contract](measurement-contract.md)/[validation](measurement-validation.json) stay unchanged historical NOT IMPLEMENTED records. [C3 validation](measurement-implementation-validation.json) binds current source/tests/results. [C1 reservation](implementation.md) and [C0 contract](README.md) retain their separate scopes. [BACKLOG](../../BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns open work. This closes scalar admission, not an empirical security/growth/welfare result, research registration, raw-data method or G1.
+**2026-10-27 · C3 after988c013.** [C2 measurement contract](measurement-contract.md)/[validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/measurement-validation.json) stay unchanged historical NOT IMPLEMENTED records. [C3 validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/measurement-implementation-validation.json) binds current source/tests/results. [C1 reservation](implementation.md) and [C0 contract](README.md) retain their separate scopes. [BACKLOG](../../BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns open work. This closes scalar admission, not an empirical security/growth/welfare result, research registration, raw-data method or G1.
 
 ## Minimal retained implementation
 

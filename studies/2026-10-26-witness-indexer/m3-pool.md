@@ -1,6 +1,6 @@
 # M3-C1 supplied-score pools and keyed advisory routing
 
-**2026-10-26 · D61 bounded engineering contract before code.** This slice implements only top-M supplied-score selection and without-replacement route advice. It neither produces witnesses nor changes graph, Model, anchor eligibility, Standing, XP, verification, economic permissions or defaults. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) remains the only task owner. D62's majority-conditioned economic question and all master research gates remain unchanged. [Validation](m3-pool-validation.json) records the eventual checkpoint, not an experiment registration.
+**2026-10-26 · D61 bounded engineering contract before code.** This slice implements only top-M supplied-score selection and without-replacement route advice. It neither produces witnesses nor changes graph, Model, anchor eligibility, Standing, XP, verification, economic permissions or defaults. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) remains the only task owner. D62's majority-conditioned economic question and all master research gates remain unchanged. [Validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-pool-validation.json) records the eventual checkpoint, not an experiment registration.
 
 ## Boundary and API
 

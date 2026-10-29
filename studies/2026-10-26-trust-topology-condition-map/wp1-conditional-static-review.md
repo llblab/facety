@@ -1,6 +1,6 @@
 # WP1/G1 — independent static check of completed conditional prerequisites
 
-**2026-10-28 · pre-review contract, DIAGNOSTIC analytic/code review, NOT scientific registration/data/G1.** BACKLOG's existing WP1/G1 item owns this cohort. Owner requires autonomous continuation after checks. [Earlier review](wp1-core-prerequisite-results.md) covered service/delayed-receipt principles before these NEW parameterized earned-birth and actual receipt/attribution implementations existed; it is not rerun or upgraded. Its startup-format/partial-input DEGRADED qualification stays. Current [readiness](wp1-g1-readiness.md)/[master programme](programme.json) retain the gate.
+**2026-10-28 · pre-review contract, DIAGNOSTIC analytic/code review, NOT scientific registration/data/G1.** BACKLOG's existing WP1/G1 item owns this cohort. Owner requires autonomous continuation after checks. [Earlier review](wp1-core-prerequisite-results.md) covered service/delayed-receipt principles before these NEW parameterized earned-birth and actual receipt/attribution implementations existed; it is not rerun or upgraded. Its startup-format/partial-input DEGRADED qualification stays. Current [readiness](wp1-g1-readiness.md)/[master programme](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/programme.json) retain the gate.
 
 ## Why this review, stop condition and ownership
 

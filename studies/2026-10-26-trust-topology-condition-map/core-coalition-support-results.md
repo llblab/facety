@@ -1,6 +1,6 @@
 # Cooperation can create eligible individual standing through real responsibility
 
-**2026-10-27 · base14128e5 · DIAGNOSTIC encoded-rule operability, not actual human cooperation/organized-attack efficacy/viability.** [Frozen pre-code contract](core-coalition-support-contract.md), [actual rows and bindings](core-coalition-support-results.json), [existing test owner](../../test/core-authority.test.mjs); BACKLOG alone owns work. This advances [the ordinary-entry prerequisite](core-coalition-entry-results.md), whose four rows remain identical.
+**2026-10-27 · base14128e5 · DIAGNOSTIC encoded-rule operability, not actual human cooperation/organized-attack efficacy/viability.** [Frozen pre-code contract](core-coalition-support-contract.md), [actual rows and bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/core-coalition-support-results.json), [existing test owner](../../test/core-authority.test.mjs); BACKLOG alone owns work. This advances [the ordinary-entry prerequisite](core-coalition-entry-results.md), whose four rows remain identical.
 
 ## Actual actions, not pooling
 

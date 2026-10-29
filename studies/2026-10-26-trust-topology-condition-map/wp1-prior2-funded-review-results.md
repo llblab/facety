@@ -1,6 +1,6 @@
 # Prior2 — independent own-earned finite-lift acceptance
 
-**2026-10-28 · DIAGNOSTIC static mathematical/source support, not executed funding, lifetime runtime enforcement, selected D75 migration, scientific confirmation or G1.** [Task](wp1-prior2-funded-review.json) committed0a0e28c BEFORE spawn; [contract](wp1-prior2-funded-realization-contract.md) committed4733467 BEFORE [NEW derivation](wp1-prior2-funded-realization.md) at7d61194. [Complete frozen request/execution/original evidence](wp1-prior2-funded-review-results.json) retains all10raw stages and byte/SHA manifests. BACKLOG alone owns work.
+**2026-10-28 · DIAGNOSTIC static mathematical/source support, not executed funding, lifetime runtime enforcement, selected D75 migration, scientific confirmation or G1.** [Task](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior2-funded-review.json) committed0a0e28c BEFORE spawn; [contract](wp1-prior2-funded-realization-contract.md) committed4733467 BEFORE [NEW derivation](wp1-prior2-funded-realization.md) at7d61194. [Complete frozen request/execution/original evidence](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior2-funded-review-results.json) retains all10raw stages and byte/SHA manifests. BACKLOG alone owns work.
 
 ## Finding — sufficient own funding, not a new runtime rule
 

@@ -1,6 +1,6 @@
 # D77 first activity/lifecycle integration — partial executable reference
 
-**2026-10-27 · DIAGNOSTIC software, not an act court, human-defense study or selected default migration.** [Pre-code contract](d77-participation-contract.md) · [bindings/actual checks](d77-participation-results.json). BACKLOG owns the next transition. Source changed legitimately; no original packet/body/confirmation is replayed or relabeled.
+**2026-10-27 · DIAGNOSTIC software, not an act court, human-defense study or selected default migration.** [Pre-code contract](d77-participation-contract.md) · [bindings/actual checks](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/d77-participation-results.json). BACKLOG owns the next transition. Source changed legitimately; no original packet/body/confirmation is replayed or relabeled.
 
 ## Delivered, and why this first caller
 

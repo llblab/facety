@@ -1,6 +1,6 @@
 # Longitudinal capability: real legacy life, selected-chronology boundary, annual timeout
 
-**2026-10-27 · baseaeaca5e · DIAGNOSTIC engineering preflight, NOT human/security/viability evidence.** [Fixed pre-code workload contract](longitudinal-preflight-contract.md), [raw rows/program/bindings](longitudinal-preflight-results.json). No Source/test/default/RNG change. BACKLOG alone owns follow-up. This is not a registered empirical comparison or a tuned strategy search.
+**2026-10-27 · baseaeaca5e · DIAGNOSTIC engineering preflight, NOT human/security/viability evidence.** [Fixed pre-code workload contract](longitudinal-preflight-contract.md), [raw rows/program/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/longitudinal-preflight-results.json). No Source/test/default/RNG change. BACKLOG alone owns follow-up. This is not a registered empirical comparison or a tuned strategy search.
 
 ## Actual results, including non-completion
 

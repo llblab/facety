@@ -18,7 +18,7 @@ Do not move the environment's truth-bearing case record into the shared conseque
 
 ## Observed state and cross-calls
 
-The [inventory](inventory.json) covers nineteen named functions from `challenge` through `investigate`. Its explicit catalog finds **22 experiment bindings** across that set, plus five imported lower-level functions/types. This is a bounded token inventory with comments/string literals removed, corroborated by source inspection—not an AST free-variable analysis, exhaustive dependency proof or numeric rule about acceptable parameter counts.
+The [inventory](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-dispute-boundary/inventory.json) covers nineteen named functions from `challenge` through `investigate`. Its explicit catalog finds **22 experiment bindings** across that set, plus five imported lower-level functions/types. This is a bounded token inventory with comments/string literals removed, corroborated by source inspection—not an AST free-variable analysis, exhaustive dependency proof or numeric rule about acceptable parameter counts.
 
 The local state is not just a list of pending cases:
 
@@ -55,6 +55,6 @@ These are inspected implementation dependencies, not newly selected protocol rul
 
 ## Validation and evidence reuse
 
-No source, test, CLI, example, package, DAG configuration or mechanism-inventory file changes. [validation.json](validation.json) records exact tree identity and the reused [228-test / 27-module, 65-edge result](../2026-10-23-social-graph/validation.json), not a newly executed test suite. The seventeen trajectory/event controls and 215-history-file preservation result stay bound to that earlier checkpoint; this assessment does not rerun them or enlarge their coverage. Source fingerprint and randomness policy stay unchanged. Context links/structure and staged whitespace are checked for this documentation-only checkpoint.
+No source, test, CLI, example, package, DAG configuration or mechanism-inventory file changes. [validation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-dispute-boundary/validation.json) records exact tree identity and the reused [228-test / 27-module, 65-edge result](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-social-graph/validation.json), not a newly executed test suite. The seventeen trajectory/event controls and 215-history-file preservation result stay bound to that earlier checkpoint; this assessment does not rerun them or enlarge their coverage. Source fingerprint and randomness policy stay unchanged. Context links/structure and staged whitespace are checked for this documentation-only checkpoint.
 
 This is coordinator architecture inspection, not independent review, scientific mechanism confirmation, security isolation, attack-cost calibration or evidence of personhood/useful distribution.

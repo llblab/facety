@@ -1,6 +1,6 @@
 # M3-J prefix/segment/load lifecycle — current implementation
 
-**2026-10-26 · implemented diagnostic engineering, not a benchmark or live/funded indexer.** [Frozen contract](m3-segment-workload.md)/[pre-code controls/F1 baseline](m3-segment-workload-contract-validation.json) retain their original NOT IMPLEMENTED checkpoint. This document and [current validation](m3-segment-workload-validation.json) own subsequent delivery. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work.
+**2026-10-26 · implemented diagnostic engineering, not a benchmark or live/funded indexer.** [Frozen contract](m3-segment-workload.md)/[pre-code controls/F1 baseline](m3-segment-workload-contract-validation.json) retain their original NOT IMPLEMENTED checkpoint. This document and [current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-segment-workload-validation.json) own subsequent delivery. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work.
 
 ## Separate owner, complete preflight
 

@@ -29,7 +29,7 @@ The fresh comparison reuses **only the declared configuration inputs** of the ea
 
 Four additional contexts cover honest growth, real-person cartel, combined perturbation/deviant schedules with explicit legacy timing and counterfactual ablations, and action-cap censoring. Each run keeps its supplied seed and existing keyed draw policy. Read-only instrumentation adds the model's ordered event list to the returned control record; it does not perform extra economic transitions or random draws.
 
-For all **16** before/after pairs, deep values and serialized bytes of **every returned field plus 27,381 ordered protocol events** match after removing only the `provenance` field. Both copies run on the same Node runtime. Full configurations, result digests, event counts, observed censorship and source identities are retained in [preservation.json](preservation.json).
+For all **16** before/after pairs, deep values and serialized bytes of **every returned field plus 27,381 ordered protocol events** match after removing only the `provenance` field. Both copies run on the same Node runtime. Full configurations, result digests, event counts, observed censorship and source identities are retained in [preservation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-experiment-config/preservation.json).
 
 This is bounded diagnostic equivalence plus a literal source-move proof, not exhaustive behavioral equivalence over all possible inputs, independent review, performance improvement or a security/emergence result. Inert-inspection and future-intervention-prefix controls also remain in the native tests.
 
@@ -41,7 +41,7 @@ node --test test/experiment.test.mjs test/perturbations.test.mjs test/disputes.t
 npm test
 ```
 
-Observed: **38 focused tests**, then **226 aggregate tests** passed, with overlapping counts. The metadata inventory test is refreshed after its source-location descriptions change. The Domain DAG has **26 source modules / 64 local edges**, with zero errors/warnings. Context, whitespace and validation details are in [validation.json](validation.json); the full native test output is retained in [tests.txt](tests.txt).
+Observed: **38 focused tests**, then **226 aggregate tests** passed, with overlapping counts. The metadata inventory test is refreshed after its source-location descriptions change. The Domain DAG has **26 source modules / 64 local edges**, with zero errors/warnings. Context, whitespace and validation details are in [validation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-experiment-config/validation.json); the full native test output is retained in [tests.txt](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-experiment-config/tests.txt).
 
 All **207** files already tracked under `studies/` at the reference commit remain byte-identical. The source-content digest changes because a source file is added and imports move; `RANDOMNESS_POLICY` and the generator do not change. Historical artifacts retain their original source fingerprints, and no confirmation is automatically transferred or rerun. The previous review's source-fidelity qualification remains unchanged.
 

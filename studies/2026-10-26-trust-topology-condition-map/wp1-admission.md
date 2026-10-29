@@ -28,6 +28,6 @@ node --test test/vouch-admission.test.mjs test/vouch-commitments.test.mjs
 npm test
 ```
 
-All14 focused families and410 current tests pass;21 archived-source compatibility tests pass separately, not as current-source validation. DAG remains32 files/77 edges, acyclic. [Validation binding](wp1-admission-validation.json) records exact code identity; source fingerprint changes and no old guard/packet is overridden.
+All14 focused families and410 current tests pass;21 archived-source compatibility tests pass separately, not as current-source validation. DAG remains32 files/77 edges, acyclic. [Validation binding](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-admission-validation.json) records exact code identity; source fingerprint changes and no old guard/packet is overridden.
 
 **G1 remains open:** [bounded slashing/held collateral](wp1-bond-cases.md) is now implemented as a separate trusted-execution component, not a court. The later [paid native act review](wp1-review.md) is an act-only received-signal/veto reference, not a full CORE Standing/membership window. Full minimal composition/action/resource contract, independent full minimal engine, native-v2 config/metrics and committed prior/range/kill/precision method remain. No WP2+ work, empirical prior verification, research/search/confirmation seed, LLM testbed or pilot ran. BACKLOG alone owns the next cohort.
