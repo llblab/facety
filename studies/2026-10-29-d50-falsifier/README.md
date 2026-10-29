@@ -1,6 +1,6 @@
 # D50 falsifier: honest versus fraudulent yield per unit of effort (D108)
 
-**Status (2026-10-29):** design bound by [D109](../../docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) (all [Q16](../../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108) defaults accepted); one exploratory probe executed. No registration, reserved-seed confirmation or mechanism claim exists yet.
+**Status (2026-10-29):** design bound by [D109](../../docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) (all [Q16](../../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108) defaults accepted); one of four registered balance confirmations executed (weak, sybil-cone: supported); the other three were superseded by [D114](../../docs/facety.protocol.en.md#4618-evidence-core-convergence-d76), which makes dirty-FACY share and attacker share over time the primary outcomes. No mechanism claim exists.
 
 **Authority:** [D108](../../docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) releases the master-programme order lock and the WP1/G1 method precondition for research runs. The evidence contract itself is unchanged: claims still need a committed registration before a reserved-seed confirmation, with presence, necessity and named alternatives where a mechanism is claimed.
 
@@ -59,6 +59,37 @@ Each has 9 contexts (3 defenses × fabrication weight 1/5/20), 30 replicas, α =
 **Encoding note.** Q16's log ratio is undefined when attacker yield is ≤ 0, which is the strongest pro-D50 outcome. The registered statistics are the equivalent sign tests (ratio > 1 ⇔ difference > 0; ratio > 10 ⇔ honest − 10 × attacker > 0 for positive yields), defined for every sign. Log ratios are reported descriptively.
 
 **Known inert context.** `real-cartel` attackers recruit genuine people, so the fabrication weight does not touch them; its three weight contexts are expected replicates, not robustness.
+
+## D109 confirmation result
+
+[`d50-weak-sybil-cone-v2.confirmation.json`](hypotheses/d50-weak-sybil-cone-v2.confirmation.json), implementation matched, v2 `family-contradiction/v1`: **supported** in all 9 contexts, 30/30 replicas each (p ≈ 9.3e-10 per component, max p = analysis p). Holm across the planned four was not computed because the other three were not run.
+
+| Context | Median honest − attacker yield/effort |
+| --- | ---: |
+| no defense, fabrication 1 / 5 / 20 | 0.129 / 0.146 / 0.191 |
+| challenge, fabrication 1 / 5 / 20 | 0.348 / 0.347 / 0.370 |
+| challenge + verification, fabrication 1 / 5 / 20 | 2.262 / 2.091 / 1.649 |
+
+Exact replays of replica 0 per context (descriptive) give honest/attacker ratios of 1.9× / 2.3× / 3.5× without defense and 9.8× with challenge at fabrication weight 1; elsewhere attacker holdings are negative. **Caveat:** negative attacker holdings are mostly uncollected debt on disposable Sybils (challenge + verification, fabrication 1: about 93,600 FACY fined, about 3,500 collected). Flooring each subject's holdings at zero gives 1.9× (no defense), 4.9× (challenge, fabrication 1), 12.8× (challenge, fabrication 20) and 12× (challenge + verification, fabrication 1).
+
+**Not run (superseded by D114):** weak real-cartel and both strong hypotheses. Their registrations stay committed and valid; running them later is a separate decision, not a hidden result.
+
+## D114 trajectories (diagnostic)
+
+[`trajectory-probe.mjs`](trajectory-probe.mjs) on one exploration seed per arm, 90 days, `maxSubjects` 10000, legacy terminal XP; [output](trajectory-probe.txt). New observables: `dirty.heldShare` (FACY held by attacker-cohort subjects as liquid + unspent Emitter rights + reserved stake, over ledger supply) and `dirty.acceptedAttackerShare` (attacker share of accepted, not invalidated, subjects).
+
+| Arm | Attackers d0 → d10 → d30 → d89 | Dirty FACY d0 → d30 → peak → d89 |
+| --- | --- | --- |
+| sybil-cone, no defense | 10% → 45% → 97% → 96% | 14% → 87% → 89% → 72% |
+| sybil-cone, challenge, fab 1 | 10% → 43% → 96% → 95% | 14% → 75% → 83% → 49% |
+| sybil-cone, challenge, fab 20 | 10% → 43% → 96% → 91% | 14% → 75% → 75% → 28% |
+| sybil-cone, challenge + verification | 10% → 45% → 97% → 96% | 14% → 79% → 79% → 45% |
+| real-cartel, all three arms | 10% → 45% → 98% → 96% | 14% → 87% → 89% → 72% |
+
+1. **Population takeover in about 30 days in every arm.** Defense changes the attacker share by at most a few points; invalidations are tens to a few hundred against thousands of attacker subjects.
+2. **Defense lowers dirty FACY late, not early.** The decline after day 45 coincides with attacker budget exhaustion (no new attacker emission) plus collected fines; it is not removal of attackers.
+3. **real-cartel is untouched by defense** because its members are genuine people: identity challenges have nothing to find, and act-level misconduct is not modeled here.
+4. **Cause candidates, not yet separated:** scripted attacker rates (invite 0.4 and guarantee 2 per subject-day versus honest 0.05 and 0.3), equal 100,000-unit budgets, and the absence of the selected D104/D36 path barrier from the legacy cohort engine.
 
 ## Not claimed
 

@@ -35,3 +35,18 @@ test('D50 yield is null, not zero, for a cohort without declared effort', () => 
     assert.equal(point.yield.attackersHoldings, 0);
   }
 });
+
+test('D114 dirty FACY share and accepted attacker share reconcile with terminal holdings', () => {
+  const out = runExperiment({ scenario: 'sybil-cone', seed: 'd114-dirty', days: 12, disputes: { enabled: true, stakeBacking: 'reserved' }, activity: { honest: { challenge: 0.05 } }, includeState: true });
+  const last = out.history.at(-1).dirty;
+  const attackers = new Set(out.state.truth.filter(identity => identity.cohort === 'attackers').map(identity => identity.id));
+  let held = 0;
+  for (const subject of out.state.subjects) if (attackers.has(subject.id)) held += subject.liquidFacy;
+  for (const act of out.state.selfIds) if (act.status === 'unspent' && attackers.has(act.subject)) held++;
+  for (const stake of out.state.disputeStakes) if (stake.status === 'reserved' && attackers.has(stake.owner)) held += stake.amount;
+  assert.equal(last.supply, out.system.supply);
+  assert.ok(Math.abs(last.heldShare - held / out.system.supply) < 1e-12);
+  const accepted = out.state.subjects.filter(subject => subject.identityStatus === 'accepted');
+  assert.equal(last.acceptedAttackerShare, accepted.filter(subject => attackers.has(subject.id)).length / accepted.length);
+  for (const point of metricSeries(out.history, 'dirty.heldShare', { days: 12 })) assert.ok(point.value === null || (point.value >= 0 && point.value <= 1));
+});

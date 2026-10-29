@@ -239,6 +239,14 @@ export function runExperiment(overrides = {}) {
     for (const act of acts) if (act.status === 'unspent') holdings[truth.get(act.subject).cohort]++;
     for (const stake of model.disputeStakes()) if (stake.status === 'reserved') holdings[truth.get(stake.owner).cohort] += stake.amount;
     const perEffort = cohort => costs[cohort].effort > 0 ? holdings[cohort] / costs[cohort].effort : null;
+    // D114: dirty FACY in circulation (held by attacker-cohort subjects) over the audited ledger supply.
+    const supply = model.ledger().supply;
+    let attackerHeld = 0;
+    for (const subject of model.subjects()) if (truth.get(subject.id).cohort === 'attackers') attackerHeld += subject.liquidFacy;
+    for (const act of acts) if (act.status === 'unspent' && truth.get(act.subject).cohort === 'attackers') attackerHeld++;
+    for (const stake of model.disputeStakes()) if (stake.status === 'reserved' && truth.get(stake.owner).cohort === 'attackers') attackerHeld += stake.amount;
+    const acceptedSubjects = model.subjects().filter(subject => subject.identityStatus === 'accepted');
+    const acceptedAttackers = acceptedSubjects.filter(subject => truth.get(subject.id).cohort === 'attackers').length;
     const honestPerEffort = perEffort('honest');
     const attackersPerEffort = perEffort('attackers');
     const network = measureNetwork(model, truth, { previousCouncilIds: daily ? previousDailyCouncilIds : previousCouncilIds });
@@ -250,6 +258,11 @@ export function runExperiment(overrides = {}) {
       yield: {
         honestHoldings: holdings.honest, attackersHoldings: holdings.attackers, honestPerEffort, attackersPerEffort,
         strongTargetGap: honestPerEffort === null || attackersPerEffort === null ? null : honestPerEffort - 10 * attackersPerEffort,
+      },
+      dirty: {
+        supply,
+        heldShare: supply > 0 ? attackerHeld / supply : null,
+        acceptedAttackerShare: acceptedSubjects.length ? acceptedAttackers / acceptedSubjects.length : null,
       },
       effectiveActivity: activity, activePerturbations: [...activePerturbations],
       ...(deviantOperators.size ? { deviantActivity } : {}),
