@@ -453,3 +453,36 @@ Prioritize assumptions whose failure would undermine this core, reuse applicable
 Remove confirmed dead code, redundant context and unnecessary abstractions only after checking their consumers and preservation duties. Do not delete selected protocol rules merely because their empirical benefit is unproved; unsupported proposals remain explicit proposals. Preserve historical packets and reproducibility. Do not optimize or expand a mechanism/harness merely because it is locally implementable: D75/D81 settle current mutual-K meaning and non-destructive parameter changes, not implementation priority or a proved anti-farming effect. Public disputes and real financial custody remain core; auxiliary indexer optimization, rescue and peripheral modules do not acquire priority through availability.
 
 Use one continuing research sequence: select the largest critical uncertainty, state a falsifiable claim, choose the smallest sufficient check, execute only admitted work, retain the result at its actual evidence level, simplify and re-rank. If one branch needs an owner rule or empirical data, pursue another independent useful permitted check without inventing the blocked assumptions or bypassing scientific gates. Stop when all useful admitted work is exhausted; manufacture no scaffolding for continuation. This direction preserves D33–D36/D34/D42/D54–D55/D73–D75, the prior evidence gates and all remaining OPEN contracts; it selects no new personhood oracle, XP reward, hold period, quota, liability remedy, Council rule, default migration or real-data permission.
+
+---
+
+## Historical rule text removed from the protocol
+
+Superseded rule text and dated history that used to sit inside protocol sections. Kept for interpretation of older studies; none of it is a current rule.
+
+**Historical rule superseded by D42:** an unspent Emitter right formerly remained freely cancellable until consumption/conversion. It now loses that free veto when its 24-hour maturation window ends, even if left unused. Later adjudicated consequences remain separate.
+
+**D2 historical rule, superseded:** the 2026-10-22 rule credited XP on terminal consumption/conversion. Its simulator implementation and source-bound studies remain historical references; they do not implement D42.
+
+**Historical/simulator reference, not the current selected count:** the earlier threshold was `decimal_digit_count(N28)` for distinct active accepted subjects, without the new verification/path contract. That reference explains older results and the current simulator; it must not be presented as verified independence or full D33/D35/D36 admission. The decimal bands survive, while their qualifying population and support semantics have changed.
+
+**Dated history:** D84 retained 1 and offered2; D92 selected 2 paid by inviter. D105 now returns to 1 paid by inviter, still recipient0/no debt, with D106 both-side slots and D107 zero Genesis/pre-registration. Preserve each dated record and old data assumptions; neither historical invite1 nor invite2 datasets are automatically evidence for this new lifecycle.
+
+**Dated supersession:** D83 chose fresh-pair own1+own1 cost; D93 resolves immediate per-valence burn and lasting unmatched state. D97's final full-initiator transaction guard replaces the owner's earlier tentative suggestion of accepting full-capacity double valences and activating them on K increase; that tentative branch is not adopted. Old unpaid directed proposals/refundable B-bonds remain legacy; no replay/default migration or new quota.
+
+**Dated history:** the old 1 FACY break fee had source/destination OPEN, not an automatic burn. D85 reopened that treatment and D110 selects free termination; legacy fee code is not a current choice. D75 valid-end immediate capacity release and D34 history remain under either candidate.
+
+**Dated D75/D81 history:** D75 (2026-10-27) counted outgoing distinct supported SubjectIds; D81 (2026-10-28) clarified active mutual bilateral counterparts and non-destructive referendum reductions. D100 now replaces the counted resource with own open valences/invitations. Valid closure releases the relevant counted owned unit, not every surviving authorization at both endpoints. The original decisions remain in Appendix A/Git, not competing current counters.
+
+**Dated history, not the current counted-resource rule above:** D75 (2026-10-27) recorded an active outgoing distinct-SubjectId count, valid-end immediate release and retained D34. D81 (2026-10-28) clarifies/supersedes outgoing-only counting where it includes unmatched unilateral support and qualifies any universal snapshot |S_g|≤K claim after a reduction; it retains valid-end/history protections. The dated D75 record remains in Appendix A and its original main text in Git history; neither historical studies nor their input rules are retroactively changed.
+
+**Historical D31 directed-establishment representation, not sufficient by itself for D82 XP:** for a directed guarantee `A guarantees B`:
+
+```text
+A: proposes responsibility for B
+B: confirms that same proposed relation
+    -> check identities, authority, source operations and validity
+    -> activate directed A -> B guarantee
+```
+
+In that historical representation, matching confirmation does not automatically produce `B guarantees A`; reciprocity requires another explicitly authorized directed relation. D82 now excludes using the directed-only state as an XP-earning substitute for an established mutual guarantee. Do not silently implement this as automatic reverse edges, rewrite old rosters, or relabel the existing directed simulator as current mutual semantics.
