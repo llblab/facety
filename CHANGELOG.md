@@ -6,6 +6,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in [protoco
 
 ### Research-gate release (2026-10-29)
 
+- D121: per-pair invite rights (both sides of every pair, genesis included) replace D120's XP condition. Diagnostic: no honest-growth cost, cone delayed 4–5 days.
 - D120: opt-in owner invite-right rule (`inviteRights: 'higher-xp-pair'`). Diagnostic: delays takeover 8–14 days, costs 35% of honest growth by day 100.
 - D117: topology v3 (§18.5 leaving, public evidence by anyone, escalation to higher-XP sponsors, same-inviter follow-up). Diagnostic: with the gate, 3 infiltrators stay at 1% through day 199 and 10 are delayed 36 days; without the gate leaving does nothing.
 - D116: topology v2 detection (freeze veto, partner inspection, one-step identity cases with D77 holds) and stranger-caution sweep. Diagnostic: no arm stops the cone; gate + no stranger acceptance + detection delays a 3-infiltrator takeover by about 28 days.

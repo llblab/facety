@@ -185,8 +185,9 @@ export class FacetyModel {
     Object.defineProperty(this, 'vouchAdmission', { value: admissionPolicy, enumerable: vouchAdmission !== null });
     const valencePolicy = valencesFrom(valences);
     if (valencePolicy !== null && (vouchPolicy !== null || admissionPolicy !== null)) throw new TypeError('valences cannot combine with the vouching references');
-    // D120 owner rule reference: each established valence pair grants the lower-XP side one right to buy an invitation.
-    if (inviteRights !== null && (inviteRights !== 'higher-xp-pair' || valencePolicy?.reference.invitations !== 'v2-special-link')) throw new TypeError('inviteRights requires higher-xp-pair and valence invitations');
+    // Owner invite-right references: D121 'per-pair' grants both sides of every established valence pair (genesis pairs included) one right to buy
+    // an invitation; superseded D120 'higher-xp-pair' grants only the strictly lower-XP side of a non-genesis pair.
+    if (inviteRights !== null && (!['per-pair', 'higher-xp-pair'].includes(inviteRights) || valencePolicy?.reference.invitations !== 'v2-special-link')) throw new TypeError('inviteRights requires per-pair or higher-xp-pair and valence invitations');
     Object.defineProperty(this, 'inviteRightsMode', { value: inviteRights, enumerable: inviteRights !== null });
     if (inviteRights !== null) this.#inviteRights = new Map();
     Object.defineProperty(this, 'valences', { value: valencePolicy, enumerable: valences !== null });
@@ -278,6 +279,7 @@ export class FacetyModel {
     }
     for (const id of ids) this.#valences.get(id).pairRelations = [...relations];
     this.#event('valence-pair-established', { valences: ids, relations, genesis: true });
+    this.#grantInviteRights(a, b, true);
   }
   #councilPathsActive() { return this.valences !== null && this.valences.reference.eligibility === 'v3-council-paths'; }
   // D91 reference: initial bootstrap lasts until 100 active participants are first observed, then latches off permanently.
@@ -325,6 +327,15 @@ export class FacetyModel {
     const certificate = this.#councilPathCertificate(creatorId, this.requiredGuarantors());
     if (!certificate) throw new ProtocolRejection('insufficient Council paths');
     return certificate;
+  }
+  #grantInviteRights(a, b, genesis = false) {
+    if (this.#inviteRights === null || (genesis && this.inviteRightsMode !== 'per-pair')) return;
+    for (const [holder, partner] of [[a, b], [b, a]]) {
+      const own = this.#subject(holder).xp, partnerXp = this.#subject(partner).xp;
+      if (this.inviteRightsMode === 'higher-xp-pair' && partnerXp <= own) continue;
+      this.#inviteRights.set(holder, (this.#inviteRights.get(holder) ?? 0) + 1);
+      this.#event('invite-right-granted', { subject: holder, partner, xp: own, partnerXp, genesis });
+    }
   }
   inviteRights(id) { this.#subject(id); return this.#inviteRights === null ? null : this.#inviteRights.get(id) ?? 0; }
   #usedSlots(id) { return (this.#ownedValences.get(id)?.size ?? 0) + (this.#invitationUnits.get(id)?.size ?? 0); }
@@ -466,12 +477,7 @@ export class FacetyModel {
       record.pairRelations = relations;
       opposite.pairRelations = [...opposite.pairRelations, ...relations];
       this.#event('valence-pair-established', { valences: [id, oppositeId], relations });
-      if (this.#inviteRights !== null) for (const [holder, partner] of [[owner, counterpart], [counterpart, owner]]) {
-        const own = this.#subject(holder).xp, higher = this.#subject(partner).xp;
-        if (higher <= own) continue;
-        this.#inviteRights.set(holder, (this.#inviteRights.get(holder) ?? 0) + 1);
-        this.#event('invite-right-granted', { subject: holder, partner, xp: own, partnerXp: higher });
-      }
+      this.#grantInviteRights(owner, counterpart);
     }
     return id;
   }

@@ -162,6 +162,23 @@ Model: opt-in `inviteRights: 'higher-xp-pair'` in `FacetyModel` (one right to th
 2. **It also slows honest growth:** 426 honest people on day 100 instead of 660 (−35%). Genesis members start with equal XP and earn no rights until XP diverges, and the honest script does not seek senior partners deliberately, so this cost may be overstated.
 3. **With detection the comparison is confounded:** the smaller honest network (292 instead of 483 on day 100) gave detection fewer observers, and the 3-infiltrator run was not contained, unlike v3.1. One seed cannot separate rule effect from seed luck; the multi-seed sweep must settle it.
 
+## v5: per-pair invite rights (D121), diagnostic
+
+Model: `inviteRights: 'per-pair'` grants each side of every established valence pair one right, genesis pairs included; D120's `'higher-xp-pair'` stays as a labeled historical arm. Runner: `inviteRights: 'per-pair'`; an attacker without a right first pairs with any unlinked cone member. Raw rows: [`runs/v5/`](runs/v5/). Seed `explore-topo-1`, attack on day 100, cap 3000.
+
+| Infiltrators | Arm | Honest on day 100 | Attackers ≥ 50% on day | Without the rule |
+| ---: | --- | ---: | ---: | ---: |
+| 10 | gate + rule | 655 | 123 | 119 (660 honest) |
+| 10 | no gate + rule | 656 | 123 | 119 |
+| 3 | gate + rule | 655 | 132 | 128 |
+| 3 | no gate + rule | 656 | 128 | 123 |
+| 10 | gate + rule + v3 detection | 480 | 139 | 155 (v3.1) |
+| 3 | gate + rule + v3 detection | 480 | never (8 attackers on day 199) | never (v3.1) |
+
+1. **No cost to honest growth:** 655 honest people on day 100 versus 660; genesis pairs give the first participants their rights.
+2. **A small delay for the cone, about 4–5 days.** Each fake needs one more pair before inviting, so a fake costs about 3 FACY instead of 1, but pairs inside the cone are always available.
+3. **With detection, 3 infiltrators are again contained; 10 reach 50% on day 139.** That is earlier than v3.1's day 155 without the rule, which points to seed-level variation rather than a rule effect. Only the multi-seed sweep can separate them.
+
 ## Acceptance before running
 
 - Unit tests: the D33 lookup boundaries (under 100 → no Council, 100 → 11); `'legacy-active-xp-leaderboard'` unchanged; genesis pairs accepted with eligibility off.

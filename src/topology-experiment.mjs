@@ -7,7 +7,7 @@ import { provenance } from './provenance.mjs';
 export const TOPOLOGY_ENGINE = 'topology-takeover/v1';
 export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128starstar-v2', decisions: 'actor-day-stream-v1' });
 export const TOPOLOGY_DEFAULTS = Object.freeze({
-  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: false,
+  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off',
   honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
   detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9,
@@ -42,7 +42,7 @@ export function topologyConfig(overrides = {}) {
   if (typeof config.seed !== 'string' || !config.seed.length) throw new TypeError('seed must be a non-empty string');
   if (typeof config.gate !== 'boolean') throw new TypeError('gate must be boolean');
   if (typeof config.includeState !== 'boolean') throw new TypeError('includeState must be boolean');
-  if (typeof config.inviteRights !== 'boolean') throw new TypeError('inviteRights must be boolean');
+  if (!['off', 'per-pair', 'higher-xp-pair'].includes(config.inviteRights)) throw new TypeError('inviteRights must be off, per-pair or higher-xp-pair');
   integer(config.honestGenesis, 'honestGenesis', 6);
   integer(config.genesisChords, 'genesisChords');
   integer(config.days, 'days', 1);
@@ -77,7 +77,7 @@ export function runTopologyExperiment(overrides = {}) {
     valences: { K: config.K, genesisPairs: genesisPairs(honestIds, config.genesisChords, root.fork('genesis')), reference: {
       source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'v2-special-link',
       eligibility: config.gate ? 'v3-council-paths' : 'off', councilPaths: { ...PATHS } } },
-    inviteRights: config.inviteRights ? 'higher-xp-pair' : null,
+    inviteRights: config.inviteRights === 'off' ? null : config.inviteRights,
   });
   // Evaluator-only labels: never read by any protocol call or honest decision.
   const cohort = new Map(honestIds.map(id => [id, 'honest']));
@@ -322,10 +322,10 @@ export function runTopologyExperiment(overrides = {}) {
         const random = stream(id, 'attack');
         for (const right of rights(id)) {
           if (invite(id, right, 'f' + String(sequence++).padStart(5, '0'), 'attackers')) continue;
-          // D120 adaptation: without an invitation right, pair with a higher-XP cone member to earn one.
-          if (config.inviteRights && model.inviteRights(id) === 0) {
+          // D120/D121 adaptation: without an invitation right, pair with a cone member that qualifies to earn one.
+          if (config.inviteRights !== 'off' && model.inviteRights(id) === 0) {
             const own = model.subject(id).xp;
-            const seniors = rosters.attackers.filter(other => other !== id && accepted(other) && !linked(id, other) && model.subject(other).xp > own);
+            const seniors = rosters.attackers.filter(other => other !== id && accepted(other) && !linked(id, other) && (config.inviteRights === 'per-pair' || model.subject(other).xp > own));
             if (seniors.length && openValence(id, random.pick(seniors), right)) continue;
           }
           const cone = rosters.attackers.filter(other => other !== id && accepted(other) && !linked(id, other) && mutualCount(other) < D);

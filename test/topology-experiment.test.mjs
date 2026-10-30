@@ -65,10 +65,20 @@ test('v3 leaving, public patterns and follow-up stay opt-in, replay exactly and 
   assert.throws(() => runTopologyExperiment({ ...SMALL, detection: { leave: 1 } }), /must be boolean/);
 });
 
-test('D120 invite rights: a pair grants one right to the lower-XP side and each invitation consumes one', async () => {
+test('D120/D121 invite rights: a pair grants one right to the lower-XP side and each invitation consumes one', async () => {
   const { FacetyModel, DAY } = await import('../src/model.mjs');
   const reference = { source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'v2-special-link', eligibility: 'off', councilPaths: null };
   assert.throws(() => new FacetyModel({ genesis: ['a', 'b'], inviteRights: 'higher-xp-pair' }), /inviteRights requires/);
+  // D121 per-pair: genesis pairs and later pairs grant one right to each side, regardless of XP.
+  const perPair = new FacetyModel({ genesis: ['a', 'b', 'c'], policy: { xpFinality: 'immediate' }, valences: { K: 100, genesisPairs: [['a', 'b']], reference: { ...reference, eligibility: 'off', councilPaths: null } }, inviteRights: 'per-pair' });
+  assert.deepEqual(['a', 'b', 'c'].map(id => perPair.inviteRights(id)), [1, 1, 0]);
+  perPair.advanceTo(DAY);
+  for (const id of ['a', 'c']) perPair.createSelfId(id, perPair.registerArtifact(id));
+  perPair.advanceTo(2 * DAY);
+  perPair.openValence('a', 'c', perPair.eligibleEmissions('a')[0]);
+  perPair.openValence('c', 'a', perPair.eligibleEmissions('c')[0]);
+  assert.deepEqual(['a', 'b', 'c'].map(id => perPair.inviteRights(id)), [2, 1, 1]);
+  perPair.audit();
   const model = new FacetyModel({ genesis: ['a', 'b', 'c', 'd'], policy: { xpFinality: 'immediate', guarantorEligibility: 'accepted' }, ablations: { fixedInvitationThreshold: 1 },
     valences: { K: 100, genesisPairs: [], reference }, inviteRights: 'higher-xp-pair' });
   for (const id of ['a', 'a', 'b', 'c', 'd']) { model.advanceTo(model.now + DAY); if (id === 'a' || model.now >= 2 * DAY) model.createSelfId(id, model.registerArtifact(id)); }
