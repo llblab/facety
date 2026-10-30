@@ -175,7 +175,8 @@ export class FacetyModel {
   #preregistrations = new Map();
   #invitationUnits = new Map();
   #bootstrap = true;
-  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null, vouchAdmission = null, valences = null } = {}) {
+  #inviteRights = null;
+  constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null, vouchAdmission = null, valences = null, inviteRights = null } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
     const vouchPolicy = vouchingFrom(vouching), admissionPolicy = vouchAdmissionFrom(vouchAdmission);
     if (admissionPolicy !== null && (vouchPolicy === null || invitationLimit !== null)) throw new TypeError('vouch admission requires funded vouching and no invitation-limit arm');
@@ -184,6 +185,10 @@ export class FacetyModel {
     Object.defineProperty(this, 'vouchAdmission', { value: admissionPolicy, enumerable: vouchAdmission !== null });
     const valencePolicy = valencesFrom(valences);
     if (valencePolicy !== null && (vouchPolicy !== null || admissionPolicy !== null)) throw new TypeError('valences cannot combine with the vouching references');
+    // D120 owner rule reference: each established valence pair grants the lower-XP side one right to buy an invitation.
+    if (inviteRights !== null && (inviteRights !== 'higher-xp-pair' || valencePolicy?.reference.invitations !== 'v2-special-link')) throw new TypeError('inviteRights requires higher-xp-pair and valence invitations');
+    Object.defineProperty(this, 'inviteRightsMode', { value: inviteRights, enumerable: inviteRights !== null });
+    if (inviteRights !== null) this.#inviteRights = new Map();
     Object.defineProperty(this, 'valences', { value: valencePolicy, enumerable: valences !== null });
     this.#valenceCeiling = valencePolicy?.K ?? null;
     Object.defineProperty(this, 'policy', { value: policyFrom(policy), enumerable: true });
@@ -321,6 +326,7 @@ export class FacetyModel {
     if (!certificate) throw new ProtocolRejection('insufficient Council paths');
     return certificate;
   }
+  inviteRights(id) { this.#subject(id); return this.#inviteRights === null ? null : this.#inviteRights.get(id) ?? 0; }
   #usedSlots(id) { return (this.#ownedValences.get(id)?.size ?? 0) + (this.#invitationUnits.get(id)?.size ?? 0); }
   ownedSlots(id) {
     this.#requireValences();
@@ -364,7 +370,9 @@ export class FacetyModel {
     if (guarantors.length < this.requiredGuarantors()) throw new ProtocolRejection('insufficient eligible guarantors');
     if (this.#usedSlots(creatorId) >= this.#valenceCeiling) throw new ProtocolRejection('owned-slot ceiling reached');
     if (this.#usedSlots(target) >= this.#valenceCeiling) throw new ProtocolRejection('recipient owned-slot ceiling reached');
+    if (this.#inviteRights !== null && !(this.#inviteRights.get(creatorId) > 0)) throw new ProtocolRejection('no invitation right');
     const councilPath = this.#requireInvitationPaths(creatorId);
+    if (this.#inviteRights !== null) this.#inviteRights.set(creatorId, this.#inviteRights.get(creatorId) - 1);
     const id = this.#id('invitation');
     this.#dispose(act, 'consumed', 'invitation');
     this.#invitations.set(id, { id, creator: creatorId, sourceSelfId: selfIdId, target, guarantors, createdAt: this.now, acceptedAt: null, endedAt: null,
@@ -458,6 +466,12 @@ export class FacetyModel {
       record.pairRelations = relations;
       opposite.pairRelations = [...opposite.pairRelations, ...relations];
       this.#event('valence-pair-established', { valences: [id, oppositeId], relations });
+      if (this.#inviteRights !== null) for (const [holder, partner] of [[owner, counterpart], [counterpart, owner]]) {
+        const own = this.#subject(holder).xp, higher = this.#subject(partner).xp;
+        if (higher <= own) continue;
+        this.#inviteRights.set(holder, (this.#inviteRights.get(holder) ?? 0) + 1);
+        this.#event('invite-right-granted', { subject: holder, partner, xp: own, partnerXp: higher });
+      }
     }
     return id;
   }

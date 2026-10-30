@@ -64,3 +64,27 @@ test('v3 leaving, public patterns and follow-up stay opt-in, replay exactly and 
   for (const key of ['patternsFound', 'escalations', 'sponsorRefusals', 'followUpCases']) assert.ok(Number.isSafeInteger(run.detection[key]));
   assert.throws(() => runTopologyExperiment({ ...SMALL, detection: { leave: 1 } }), /must be boolean/);
 });
+
+test('D120 invite rights: a pair grants one right to the lower-XP side and each invitation consumes one', async () => {
+  const { FacetyModel, DAY } = await import('../src/model.mjs');
+  const reference = { source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'v2-special-link', eligibility: 'off', councilPaths: null };
+  assert.throws(() => new FacetyModel({ genesis: ['a', 'b'], inviteRights: 'higher-xp-pair' }), /inviteRights requires/);
+  const model = new FacetyModel({ genesis: ['a', 'b', 'c', 'd'], policy: { xpFinality: 'immediate', guarantorEligibility: 'accepted' }, ablations: { fixedInvitationThreshold: 1 },
+    valences: { K: 100, genesisPairs: [], reference }, inviteRights: 'higher-xp-pair' });
+  for (const id of ['a', 'a', 'b', 'c', 'd']) { model.advanceTo(model.now + DAY); if (id === 'a' || model.now >= 2 * DAY) model.createSelfId(id, model.registerArtifact(id)); }
+  model.advanceTo(model.now + DAY);
+  for (const id of ['a', 'b', 'c', 'd']) model.createSelfId(id, model.registerArtifact(id));
+  model.advanceTo(model.now + DAY);
+  assert.ok(model.subject('a').xp > model.subject('b').xp);
+  model.openValence('a', 'b', model.eligibleEmissions('a')[0]);
+  model.openValence('b', 'a', model.eligibleEmissions('b')[0]);
+  assert.equal(model.inviteRights('b'), 1);
+  assert.equal(model.inviteRights('a'), 0);
+  model.preregisterAccount('x');
+  assert.throws(() => model.createInvitation('a', model.eligibleEmissions('a')[0], 'x'), /no invitation right/);
+  model.createInvitation('b', model.eligibleEmissions('b')[0], 'x');
+  assert.equal(model.inviteRights('b'), 0);
+  model.preregisterAccount('y');
+  assert.throws(() => model.createInvitation('b', model.eligibleEmissions('b')[0] ?? 'none', 'y'), /no invitation right|unknown Self-ID/);
+  model.audit();
+});
