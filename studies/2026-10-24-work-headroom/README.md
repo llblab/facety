@@ -68,7 +68,7 @@ Observe-only declared-genuine admissions are **[3,4,4,4]** at every cap/law. Sha
 
 All genuine false-identity zeros are structural; coordination is not misconduct. Lawful free veto is not an adjudicated finding against its guarantor. Lower budgets can suppress sampled false positives alongside useful work/prevention; no welfare or policy ranking follows.
 
-Baseline pending deadlines are **172/180/none/184 h**. Active independent 261 retains deadlines 172/184 in seeds 01/04; 324/reference independent has no pending invitations. Shared-active 261 similarly retains 172/184, 324 retains 184 only, reference none. These are unfinished lifetimes, not completed escapes. Debt, procedural sanctions, fee/stake custody remain zero; work/XР/supply/Collector differences are not token burns or recovered attack costs.
+Baseline pending deadlines are **172/180/none/184 h**. Active independent 261 retains deadlines 172/184 in seeds 01/04; 324/reference independent has no pending invitations. Shared-active 261 similarly retains 172/184, 324 retains 184 only, reference none. These are unfinished lifetimes, not completed escapes. Debt, procedural sanctions, fee/stake custody remain zero; work/XP/supply/Collector differences are not token burns or recovered attack costs.
 
 ### Retained assurance and next boundary
 

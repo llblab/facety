@@ -42,7 +42,7 @@ Fraud pays. In the mixed equilibrium the coalition defends its fakes (83%) and h
 3. **Defending a fake is cheap.** A defender risks a small stake and the XP of a disposable identity. Chain-cut liability does not reach ladder participants.
 4. **Coalition behavior is scripted.** `defend` and `challenge` act regardless of the attention they draw. Attention only prioritizes inspections; it does not sanction.
 
-## What the design must ensure, in the owner's words: easy to follow the rules, costly to break them
+## What the design must ensure: easy to follow the rules, costly to break them
 
 Levers to test next:
 
