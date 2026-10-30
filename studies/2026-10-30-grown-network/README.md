@@ -50,3 +50,19 @@ Same snapshot and seed; detection (freeze veto, partner inspection, leaving, pub
 
 1. **The attacker is contained.** It reached four honest links by day 170 and created 6 invitations; honest guarantors vetoed 5 of them during the 24h freeze and then left the link (§18.5), which kept the attacker below D = 4 links. One fake was admitted; the cone stayed at 2 accounts.
 2. **The cost falls on honest people.** Over 60 days: 58 genuine people invalidated by wrong verdicts, 57 genuine invitations vetoed, 1231 links left, and 2076 honest participants on day 193 against 2525 in the gate arm (−18%). Most of the defense cost comes from the 1% false-positive rate applied to a large honest network, not from the attacker.
+
+### Detect arm, 10 attackers (diagnostic, one seed) — [`runs/detect/a10.json`](runs/detect/a10.json)
+
+| Day | Honest | Attackers | Attacker share | Honest–attacker links | Dirty FACY |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 140 | 1109 | 16 | 1% | 5 | 0.0% |
+| 160 | 1393 | 110 | 7% | 4 | 0.2% |
+| 177 | 1680 | 411 | 20% | 9 | 0.5% |
+| 186 | 1852 | 1720 | 48% | 6 | 2.0% |
+| 193 | 2004 | 2960 | 60% | 8 | 3.1% |
+
+1. **Takeover despite detection:** attackers pass 50% of accepted subjects on day 193, 59 days after entry. No attacker reaches the Council (fakes have low XP), and dirty FACY is 3.1% of supply at the end.
+2. **The cone grows in waves about every 9 days** (25 → 63 → 110 → 181 → 411 → 1720 → 2960): each generation of fakes matures its rights and invites the next one together.
+3. **The cone stays connected to honest people through only 4–9 links.** That is enough for D = 4 vertex-disjoint paths for every cone member (see the 1-attacker gate run), so leaving links did not cut it off: honest people left 1495 links, but the cone kept regaining a handful.
+4. **Detection removed fakes one by one:** 132 fakes invalidated and 24 vetoed, against 3092 admitted. The D77 hold refused attacker actions 14998 times while their cases were open; it slowed the cone but did not stop it.
+5. **Honest cost:** 73 genuine people invalidated, 71 genuine invitations vetoed; honest growth 2004 on day 193 against 2525 in the 1-attacker gate run.
