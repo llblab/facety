@@ -11,7 +11,7 @@ const passive = ['vouch-admitted', 'vouch-exited', 'vouch-bond-released', 'vouch
   'invitation-created', 'invitation-accepted', 'invitation-cancelled', 'collector-converted', 'self-id-frozen', 'self-id-unfrozen',
   'dispute-stake-reserved', 'dispute-stake-settled', 'dispute-participation-started', 'dispute-participation-ended', 'dispute-participant-joined', 'penalty-applied', 'act-penalty-applied', 'self-id-source-recovered', 'self-id-resolved', 'self-id-chain-voided'];
 // Classified but not replayable: the opt-in V1 valence reference creates guarantee edges outside proposal/activation records.
-const unsupported = ['account-preregistered', 'bootstrap-ended', 'invitation-link-ended', 'owned-slot-ceiling-set', 'valence-opened', 'valence-pair-established', 'valence-withdrawn'];
+const unsupported = ['account-preregistered', 'bootstrap-ended', 'invite-right-granted', 'invitation-link-ended', 'owned-slot-ceiling-set', 'valence-opened', 'valence-pair-established', 'valence-withdrawn'];
 export const PATH_REPLAY_EVENT_TYPES = Object.freeze([...structural, ...passive, ...unsupported].sort());
 const allowed = new Set(PATH_REPLAY_EVENT_TYPES), cmp = (a, b) => Buffer.compare(Buffer.from(a), Buffer.from(b));
 const natural = v => Number.isSafeInteger(v) && !Object.is(v, -0) && v >= 0;
