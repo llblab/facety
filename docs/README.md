@@ -35,6 +35,7 @@ Each study page states its evidence level; untested raw outputs are archived at 
 **Other active packets**
 
 - [Topology takeover (D115)](../studies/2026-10-29-topology-takeover/README.md): 100 honest people with a 100-day head start versus an attacker cone, with and without the D104/D36 path gate and the D33 Council size.
+- [Grown network versus 1–10 attackers (D122)](../studies/2026-10-30-grown-network/README.md): one snapshot of an honest network grown to 1000 participants, then 1–10 cooperating attackers, with and without detection.
 - [D50 falsifier (D108)](../studies/2026-10-29-d50-falsifier/README.md): honest versus attacker yield per unit of effort; exploratory probe and D109-bound design.
 
 - [Owned valences V1 (D83–D100)](../studies/2026-10-29-owned-valences/README.md): pre-code contract and [implementation](../studies/2026-10-29-owned-valences/implementation.md) of the opt-in valence/K reference; V2 invitation-side units [contract](../studies/2026-10-29-owned-valences/invitations-contract.md)/[implementation](../studies/2026-10-29-owned-valences/invitations-implementation.md); V3 Council paths [contract](../studies/2026-10-29-owned-valences/council-paths-contract.md)/[implementation](../studies/2026-10-29-owned-valences/council-paths-implementation.md).

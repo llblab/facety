@@ -7,7 +7,7 @@ import { provenance } from './provenance.mjs';
 export const TOPOLOGY_ENGINE = 'topology-takeover/v1';
 export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128starstar-v2', decisions: 'actor-day-stream-v1' });
 export const TOPOLOGY_DEFAULTS = Object.freeze({
-  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off',
+  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off', stopAtHonest: 0, detectionStartDay: 0,
   honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
   detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9,
@@ -50,6 +50,8 @@ export function topologyConfig(overrides = {}) {
   integer(config.attackers, 'attackers');
   integer(config.maxSubjects, 'maxSubjects', config.honestGenesis);
   integer(config.K, 'K', 5);
+  integer(config.stopAtHonest, 'stopAtHonest');
+  integer(config.detectionStartDay, 'detectionStartDay');
   for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar']) probability(config.honest[key], 'honest.' + key);
   integer(config.honest.keepRights, 'honest.keepRights');
   for (const key of ['enabled', 'leave', 'followUp']) if (typeof config.detection[key] !== 'boolean') throw new TypeError('detection.' + key + ' must be boolean');
@@ -334,9 +336,11 @@ export function runTopologyExperiment(overrides = {}) {
           if (honest.length) openValence(id, random.pick(honest), right);
         }
       }
-      if (config.detection.enabled) detect();
+      if (config.detection.enabled && day >= config.detectionStartDay) detect();
       model.audit();
       sample();
+      // Snapshot search: stop once the honest accepted population first reaches the target.
+      if (config.stopAtHonest > 0 && history.at(-1).honest >= config.stopAtHonest) { censoredReason = 'stopAtHonest'; break; }
     }
   } catch (error) {
     if (!(error instanceof ProtocolRejection) || error.message !== 'maxSubjects') throw error;
@@ -345,7 +349,7 @@ export function runTopologyExperiment(overrides = {}) {
   }
   return {
     schema: 'facety-topology-takeover/v1', config, randomness: TOPOLOGY_RANDOMNESS, assumptions: TOPOLOGY_ASSUMPTIONS, provenance: provenance(),
-    outcome: { censored: censoredReason !== null, censoredReason, completedDays: censoredReason ? day : config.days },
+    outcome: { censored: censoredReason !== null && censoredReason !== 'stopAtHonest', censoredReason, completedDays: censoredReason === 'stopAtHonest' ? day + 1 : censoredReason ? day : config.days },
     counts, detection, history,
     ...(config.includeState ? { state: {
       cohort: Object.fromEntries(cohort), status: Object.fromEntries(model.subjects().map(subject => [subject.id, subject.identityStatus])),

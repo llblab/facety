@@ -336,6 +336,8 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 **D120 — [OWNER rule proposal under test], §18.6.** Source: the owner proposed the rule and rejected the assistant's Council-issued alternative. One invitation right per established valence pair with a higher-XP partner, consumed by each invitation, on top of D104; tested as an opt-in reference. Council-issued rights NOT selected.
 
+**D122 — [OWNER research design], research directions, 2026-10-30.** Test 1–10 cooperating attackers against an honest network that first grows by its own rules to 1000 participants with an 11-seat Council; take one snapshot and start every attack run from it. Study: [grown network](../studies/2026-10-30-grown-network/README.md).
+
 **D121 — [OWNER rule revision under test], §18.6.** Source: the owner dropped the XP condition so the first participants are not left without invitations. One invitation right to each side of every established guarantee pair (genesis included), consumed per invitation; supersedes D120's XP condition.
 
 ### Earlier supersessions

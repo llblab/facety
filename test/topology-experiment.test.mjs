@@ -98,3 +98,18 @@ test('D120/D121 invite rights: a pair grants one right to the lower-XP side and 
   assert.throws(() => model.createInvitation('b', model.eligibleEmissions('b')[0] ?? 'none', 'y'), /no invitation right|unknown Self-ID/);
   model.audit();
 });
+
+test('D122 grown-network snapshot: stopAtHonest ends the prefix and an attack run replays it exactly before the attack day', async () => {
+  const { runTopologyExperiment } = await import('../src/topology-experiment.mjs');
+  const base = { seed: 'grown-test', honestGenesis: 20, maxSubjects: 400, gate: false };
+  const prefix = runTopologyExperiment({ ...base, attackers: 0, days: 200, attackStartDay: 199, stopAtHonest: 30 });
+  assert.equal(prefix.outcome.censoredReason, 'stopAtHonest');
+  assert.equal(prefix.outcome.censored, false);
+  assert.ok(prefix.history.at(-1).honest >= 30 && prefix.history.at(-2).honest < 30);
+  const start = prefix.outcome.completedDays;
+  const attack = runTopologyExperiment({ ...base, attackers: 2, attackStartDay: start, days: start + 5, detection: { enabled: true }, detectionStartDay: start });
+  const strip = ({ refusals, detection, ...row }) => JSON.stringify(row);
+  for (let day = 0; day < start; day++) assert.equal(strip(attack.history[day]), strip(prefix.history[day]), 'day ' + day);
+  assert.equal(attack.history[start - 1].detection.casesOpened, 0);
+  assert.throws(() => runTopologyExperiment({ stopAtHonest: -1 }), /stopAtHonest/);
+});
