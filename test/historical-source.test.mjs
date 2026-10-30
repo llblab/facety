@@ -23,6 +23,9 @@ const ARCHIVED = [
   'studies/2026-10-24-work-headroom/window-audit-validation.json',
   'studies/2026-10-24-work-headroom/window-audit.json',
 ];
+const TEXT_REPAIRS = [
+  ['studies/2026-10-24-work-headroom/README.md', 'work/XP/supply', 'work/X\u0420/supply'],
+];
 function packet() {
   const directory = new URL('studies/2026-10-24-sponsor-pipeline/', root);
   return Object.fromEntries(readdirSync(directory).map(file => [file, createHash('sha256').update(readFileSync(new URL(file, directory))).digest('hex')]));
@@ -44,7 +47,9 @@ test('historical study/method/report files are unchanged rather than rebound to 
   for (const path of diff('d').split('\n').filter(Boolean)) {
     assert.ok(path.endsWith('/README.md'), 'only packet READMEs may be relinked: ' + path);
     const prefix = 'https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/' + path.slice(0, path.lastIndexOf('/') + 1);
-    const restored = readFileSync(new URL(path, root), 'utf8').replaceAll('](' + prefix, '](');
+    let restored = readFileSync(new URL(path, root), 'utf8').replaceAll('](' + prefix, '](');
+    // English-only repository rule: declared text repairs (Cyrillic homoglyph typos) are undone before the byte comparison.
+    for (const [file, repaired, original] of TEXT_REPAIRS) if (file === path) restored = restored.replaceAll(repaired, original);
     assert.equal(restored, execFileSync('git', ['show', reference + ':' + path], { cwd: root, encoding: 'utf8' }), path);
   }
   // Consolidation C7 archived these untested outputs; they remain byte-identical at the reference and archive commits.

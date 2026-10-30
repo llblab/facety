@@ -6,6 +6,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in the [dec
 
 ### Research-gate release (2026-10-29)
 
+- Docs: the protocol is now a rule specification without provenance: no Russian, prompt quotes, `Source:` lines, owner attributions, decision dates or supersession narratives; rule paragraphs open with `**[STATUS] (Dnn)**`; superseded text moved to the decision log; §46.12 states the topology rules in force and §46.13 the open topology contracts; lost spaces repaired. The historical-packet byte guard now undoes one declared Cyrillic-homoglyph repair (`XР`→`XP` in the F54 README) before comparing.
 - Docs: protocol §46.18 research directions moved to the decision log; D110–D113 restated as plain rules; D121 invitation rights stated as a proposal under test in protocol §18.6.
 - Docs: the decision log, research decisions (§47–§50) and their history moved from the protocol to [`docs/decisions.en.md`](docs/decisions.en.md), rewritten without Russian text or literal prompt quotes; the protocol keeps a short scope-and-confidence note.
 - D121: per-pair invite rights (both sides of every pair, genesis included) replace D120's XP condition. Diagnostic: no honest-growth cost, cone delayed 4–5 days.
