@@ -12,7 +12,9 @@ This file alone owns open work. Each item states what is missing, its gate and t
   - [x] Convention in AGENTS.md; Cyrillic and quotes outside the protocol.
   - [x] Move Appendix A (decision log), Appendix B (sources) and Appendix C (research decisions §47–§50) to `docs/decisions.en.md`, rewritten without quotes or Russian; repoint links.
   - [x] §46.18 (research directions D76, D80, D108–D121) moved to the decision log; D110–D113 restated as rules in §18.4/§18.5/§19.3/§27.1; D121 stated as a proposal under test in §18.6.
-  - [ ] Rewrite the main sections as current rules without provenance, in chunks: intro–§10, §11–§22, §23–§36, §37–§46. Fix lost spaces around numbers and `D` (for example `at leastDqualifying`, `first100active`).
+  - [x] Intro–§10 rewritten without provenance; rule paragraphs open with `**[STATUS] (Dnn)**`. Lost spaces around numbers, `D` and dates repaired across the protocol and decision log.
+  - [ ] Rewrite §11–§22, then §23–§36, then §37–§46 the same way (drop `documented`, dates, owner attributions and supersession narratives; keep OPEN items as `[OPEN]`).
+  - [ ] Repair the same lost-space corruption in other docs (`docs/simulator.en.md` and about 20 study pages; the `/tmp`-free fixer must skip hashes and identifiers).
 
 ## Trust-topology condition map: master programme
 
