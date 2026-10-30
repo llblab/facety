@@ -36,3 +36,17 @@ Limits: one seed per cell, uncalibrated behavior rates, fakes cost nothing beyon
 3. **After that the cone grows about 30% a day** while honest growth is about 1.5% a day: 304 attackers on day 193, against 17 honest–attacker links in total. The run ends at the 60-day horizon at 10.7% attacker share; on the observed rates the share would pass 50% within roughly a week.
 4. **Why the gate stops holding:** a cone member needs D vertex-disjoint paths to the Council. Once the cone has D links to honest people at distinct cone members and is well connected inside, every member can route through different cone members to different exits. The gate then bounds nothing; only the first D honest links are hard.
 5. **Dirty FACY stays small (0.3% of supply)** because the fakes are new; the attacker head count leads the money.
+
+### Detect arm, 1 attacker (diagnostic, one seed) — [`runs/detect/a1.json`](runs/detect/a1.json)
+
+Same snapshot and seed; detection (freeze veto, partner inspection, leaving, public look with escalation, follow-up) runs from day 134.
+
+| Day | Honest | Attackers | Honest–attacker links |
+| ---: | ---: | ---: | ---: |
+| 140 | 1106 | 1 | 2 |
+| 170 | 1587 | 1 | 4 |
+| 175 | 1691 | 2 | 3 |
+| 193 | 2076 | 2 | 3 |
+
+1. **The attacker is contained.** It reached four honest links by day 170 and created 6 invitations; honest guarantors vetoed 5 of them during the 24h freeze and then left the link (§18.5), which kept the attacker below D = 4 links. One fake was admitted; the cone stayed at 2 accounts.
+2. **The cost falls on honest people.** Over 60 days: 58 genuine people invalidated by wrong verdicts, 57 genuine invitations vetoed, 1231 links left, and 2076 honest participants on day 193 against 2525 in the gate arm (−18%). Most of the defense cost comes from the 1% false-positive rate applied to a large honest network, not from the attacker.
