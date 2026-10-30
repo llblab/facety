@@ -10,7 +10,7 @@ All findings are conditional on the simulator's declared assumptions, horizons a
 
 ## Owner decisions and design insights
 
-Owner decisions are canonical in [protocol Appendix A](facety.protocol.en.md#appendix-a-decision-log-and-supersession-ledger); study pages hold derivations and raw evidence. This section keeps one line per decision or finding with its evidence level and source. The full pre-consolidation entries (sources, commits, counts and qualifications) are preserved at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/docs/insights.en.md).
+Owner decisions are canonical in the [decision log](decisions.en.md#decision-log-and-supersession-ledger); study pages hold derivations and raw evidence. This section keeps one line per decision or finding with its evidence level and source. The full pre-consolidation entries (sources, commits, counts and qualifications) are preserved at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/docs/insights.en.md).
 
 ### Research-gate release D108 (2026-10-29)
 
@@ -67,7 +67,7 @@ Owner decisions are canonical in [protocol Appendix A](facety.protocol.en.md#app
 - **D69 — OWNER correction.** One seven-day last-opposing-entry timer; the Council is its terminal collective entrant, no extra window. [§26.5](facety.protocol.en.md#265-stake-ladder)
 - **D68 — OWNER priority/hypothesis.** Core-first survivability (graph, behavior, incentives, economics, XP before flow detection); human-operated correction with permissioned traceable entry; organized defense tested against organized attack with a conditional head start. >2/3 people and >2/3 XP are distinct targets. [§29.3](facety.protocol.en.md#293-core-first-survivability-and-recovery-frontier-d68)
 - **D64–D67 — OWNER decisions and falsifiable hypothesis.** Public notice, senior contacts and reward-driven Council intervention counter XP-only obstruction (D64); attention-threat brief (D65); anytime voting (D66); common-channel notice (D67). [§26.5](facety.protocol.en.md#265-stake-ladder)
-- **D63 — OWNER direction.** Most obvious evidence-led security slice; the analyst chose fixed-total review allocation. [§49.1](facety.protocol.en.md#491-evidence-led-security-continuation-d63)
+- **D63 — OWNER direction.** Most obvious evidence-led security slice; the analyst chose fixed-total review allocation. [§49.1](decisions.en.md#491-evidence-led-security-continuation-d63)
 - **D62 — OWNER research direction.** 51% / two-thirds rule-following participation is a conditional economic-resilience question, not a threshold or quorum. [§29.2](facety.protocol.en.md#292-majority-conditioned-economic-resilience-d62)
 - **D61 — OWNER direction.** Named opt-in witness-certified epoch/anchor path gate with an untrusted advisory indexer. [§46.16](facety.protocol.en.md#4616-witness-certified-path-reference-and-advisory-indexer-d61)
 - **D60 — OWNER research direction.** Ten A/B/H/0 invitation-limit contrasts and secondary permit flags, not protocol defaults; min(1/P, E/b) is stationary service capacity. [§18.3](facety.protocol.en.md#183-economic-effect)
@@ -87,11 +87,11 @@ Owner decisions are canonical in [protocol Appendix A](facety.protocol.en.md#app
 - **D46 — OWNER direction.** Suspicion around Self-ID/invitation/guarantee acts with a roughly tenfold guarantor advantage; the low-XP noticer can reach seniors and a wider audience. [§18.5](facety.protocol.en.md#185-invitation-freeze)
 - **D45 — OWNER scenario.** Successive eligible participants can take opposite sides four hours apart (`entryTiming: each-tick`). [§26.5](facety.protocol.en.md#265-stake-ladder)
 - **D44 — OWNER direction.** Preventive guarantor responsibility (attention, fallible recognition, authority, funded timely cancellation) is the root question. [§18.5](facety.protocol.en.md#185-invitation-freeze)
-- **D43 — OWNER mandate, implemented opt-in.** Sub-day scheduling: `stepHours: 4`/`6`, daily quotas, keyed placement, no catch-up. [§50](facety.protocol.en.md#50-simulator-time-resolution-and-heterogeneous-opportunities-d43)
+- **D43 — OWNER mandate, implemented opt-in.** Sub-day scheduling: `stepHours: 4`/`6`, daily quotas, keyed placement, no catch-up. [§50](decisions.en.md#50-simulator-time-resolution-and-heterogeneous-opportunities-d43)
 - **D42 — OWNER selected.** An uncancelled ordinary act credits +1 XP to subject and eligible guarantors at 24h even if unused; the free veto expires then; spending counts without a second credit; cancellation and maturity share one condition. [§17.3](facety.protocol.en.md#173-the-one-day-schedule)
 - **D41 — OWNER priority.** At least D guarantors are an authorization precondition before the invitation burn and record (already enforced in `createInvitation`). [§18.2](facety.protocol.en.md#182-dynamic-guarantor-threshold)
 - **D40 — OWNER instruction.** The protocol is a self-contained living manifesto/specification, not a project hub. [D40](facety.protocol.en.md#self-contained-living-protocol-d40)
-- **D39 — OWNER research mandate.** Integrated root/detailed/interaction programme; priority orders work, never excludes branches. [§49](facety.protocol.en.md#49-integrated-research-programme-d39)
+- **D39 — OWNER research mandate.** Integrated root/detailed/interaction programme; priority orders work, never excludes branches. [§49](decisions.en.md#49-integrated-research-programme-d39)
 - **D36 — OWNER selected.** At least D distinct simple paths sharing no intermediate participant; only issuer and center endpoints may be shared; edge-disjoint routes through one intermediary do not suffice. [§46.15](facety.protocol.en.md#4615-internally-vertex-disjoint-invitation-paths-d36)
 - **D35 — OWNER selected.** Invitations need D qualifying guarantees AND D paths toward the XP-ranked core; bootstrap from an already guaranteed genesis group (≈7–12 illustrative); no cluster quotas. [§46.14](facety.protocol.en.md#4614-xp-centered-paths-pre-guaranteed-genesis-and-no-cluster-quotas-d35)
 - **D34 — OWNER selected.** Guarantees at the event determine liability; exit does not erase past responsibility; early self-correction should reverse the affected emission/XP. [§20.6](facety.protocol.en.md#206-historical-event-liability-and-early-self-correction-d34)

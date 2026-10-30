@@ -2,7 +2,7 @@
 
 Scope: a reproducible Node.js / ESM research simulator for [the proposed protocol](docs/facety.protocol.en.md), not a production runtime or proof of personhood.
 
-This file alone owns open work. Each item states what is missing, its gate and the unblocker. Meaning lives in the protocol, decisions in its Appendix A, outcomes in [CHANGELOG](CHANGELOG.md) and study pages. The pre-consolidation backlog (with full narrative) is at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/BACKLOG.md).
+This file alone owns open work. Each item states what is missing, its gate and the unblocker. Meaning lives in the protocol, decisions in the [decision log](docs/decisions.en.md), outcomes in [CHANGELOG](CHANGELOG.md) and study pages. The pre-consolidation backlog (with full narrative) is at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/BACKLOG.md).
 
 **Current owner priority — [D76 Evidence Core Convergence](docs/facety.protocol.en.md#4618-evidence-core-convergence-d76):** minimum causal evidence for genuine growth, honest incentive advantage, accountable XP/guarantees, funded public correction, capture resistance and recovery, preferring critical falsifiers and longitudinal living-network trajectories over static microcases. [Minimum evidence frontier](docs/research.en.md#minimum-evidence-frontier-d76). D73 core-first focus stands. **Parked, no automatic restart:** C3 Council entry, WP-G indexer, old lifetime-K, peripheral rescue/detection modules, stopped studies. Independent useful checks may proceed around a blocked branch, never through a scientific, authority or privacy gate.
 
@@ -10,7 +10,7 @@ This file alone owns open work. Each item states what is missing, its gate and t
 
 - [ ] **Remove Russian text and literal prompt quotes from the repository; make [the protocol](docs/facety.protocol.en.md) a clear rule specification without provenance.** Stop when: no Cyrillic in tracked files; no quoted owner prompts anywhere; the protocol contains no `Source:` lines, owner/voice/Telegram attributions, decision dates or supersession narratives; decision history lives in a separate decision log without quotes; all links resolve and `npm test` passes. Method per slice: rewrite → grep checks (Cyrillic, `Source:`, `owner`, `voice`, quote marks) → `npm test` → commit. Slices:
   - [x] Convention in AGENTS.md; Cyrillic and quotes outside the protocol.
-  - [ ] Move Appendix A (decision log), Appendix B (sources) and Appendix C (research decisions §47–§50) to `docs/decisions.en.md`, rewritten without quotes or Russian; repoint links.
+  - [x] Move Appendix A (decision log), Appendix B (sources) and Appendix C (research decisions §47–§50) to `docs/decisions.en.md`, rewritten without quotes or Russian; repoint links.
   - [ ] §46.18: move research-only entries (D108, D109, D114–D119) to the decision log; restate D110–D113, D120–D121 as rules in their sections.
   - [ ] Rewrite the main sections as current rules without provenance, in chunks: intro–§10, §11–§22, §23–§36, §37–§46. Fix lost spaces around numbers and `D` (for example `at leastDqualifying`, `first100active`).
 
@@ -102,7 +102,7 @@ F48–F55 packets ([F48](studies/2026-10-24-d43-cadence/README.md), [F49/F50](st
 
 ## Integrated research programme (D39)
 
-- [ ] **Whole-programme convergence — paused; resume only on explicit intent.** [§49](docs/facety.protocol.en.md#49-integrated-research-programme-d39), [R1–R7 map](docs/research.en.md#integrated-research-programme-d39-2026-10-24). Next cohort when resumed: P23 guarantee-selection contract (A3) — strategy menu, future opportunities, relation-earned XP, expected-loss/unknown inputs, matched-resource and deviation falsifiers, separated from the OPEN D34 engine. Preparation only.
+- [ ] **Whole-programme convergence — paused; resume only on explicit intent.** [§49](docs/decisions.en.md#49-integrated-research-programme-d39), [R1–R7 map](docs/research.en.md#integrated-research-programme-d39-2026-10-24). Next cohort when resumed: P23 guarantee-selection contract (A3) — strategy menu, future opportunities, relation-earned XP, expected-loss/unknown inputs, matched-resource and deviation falsifiers, separated from the OPEN D34 engine. Preparation only.
 
 <a id="paused-correctness-loop-repeat-verdict-authority-gate"></a>
 <a id="checkpoint-1-accountable-correction-mandate"></a>

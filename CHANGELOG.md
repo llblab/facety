@@ -1,11 +1,12 @@
 # Changelog
 
-Milestone ledger, newest first. Owner decisions and their dates live in [protocol Appendix A](docs/facety.protocol.en.md#appendix-a-decision-log-and-supersession-ledger); study results live in their `studies/` pages; open work lives only in [BACKLOG](BACKLOG.md). The full per-change narrative (274 entries and review provenance) is preserved at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md); `git log` holds every commit.
+Milestone ledger, newest first. Owner decisions and their dates live in the [decision log](docs/decisions.en.md#decision-log-and-supersession-ledger); study results live in their `studies/` pages; open work lives only in [BACKLOG](BACKLOG.md). The full per-change narrative (274 entries and review provenance) is preserved at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md); `git log` holds every commit.
 
 ## Unreleased
 
 ### Research-gate release (2026-10-29)
 
+- Docs: the decision log, research decisions (§47–§50) and their history moved from the protocol to [`docs/decisions.en.md`](docs/decisions.en.md), rewritten without Russian text or literal prompt quotes; the protocol keeps a short scope-and-confidence note.
 - D121: per-pair invite rights (both sides of every pair, genesis included) replace D120's XP condition. Diagnostic: no honest-growth cost, cone delayed 4–5 days.
 - D120: opt-in owner invite-right rule (`inviteRights: 'higher-xp-pair'`). Diagnostic: delays takeover 8–14 days, costs 35% of honest growth by day 100.
 - D117: topology v3 (§18.5 leaving, public evidence by anyone, escalation to higher-XP sponsors, same-inviter follow-up). Diagnostic: with the gate, 3 infiltrators stay at 1% through day 199 and 10 are delayed 36 days; without the gate leaving does nothing.

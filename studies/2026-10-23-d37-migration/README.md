@@ -10,7 +10,7 @@
 - Explicit native/CLI A reanalysis produces `facety-reanalysis/v1`, identifying bound/requested methods, original registration, source-content digest and current implementation. It neither edits registration/inputs nor runs the model. CLI without the flag retains bare computed analysis; method-tagged metadata additions do not rewrite old stored results.
 - Raw component tails/flags remain raw even when the family-controlled verdict is inconclusive. `adjustStudy` remains support-only and carries method/artifact identity; it is not authentication or contradiction control.
 
-See [the API/CLI contract](../../docs/evidence.en.md#versioned-analysis-and-reanalysis-d38), [§47](../../docs/facety.protocol.en.md#47-calibrated-aggregate-contradiction-in-simulator-research-d37) and [§48](../../docs/facety.protocol.en.md#48-versioned-analysis-and-historical-compatibility-d38).
+See [the API/CLI contract](../../docs/evidence.en.md#versioned-analysis-and-reanalysis-d38), [§47](../../docs/decisions.en.md#47-calibrated-aggregate-contradiction-in-simulator-research-d37) and [§48](../../docs/decisions.en.md#48-versioned-analysis-and-historical-compatibility-d38).
 
 ## Validation
 

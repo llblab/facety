@@ -4,7 +4,8 @@ This index owns project navigation. The protocol is independently readable; it d
 
 ## Core documents
 
-- [Facety protocol](facety.protocol.en.md): living manifesto/specification, selected rules, OPEN contracts and the dated decision log (Appendix A).
+- [Facety protocol](facety.protocol.en.md): living manifesto/specification: the rules in force and OPEN contracts, without provenance.
+- [Decision log](decisions.en.md): dated owner decisions, their status and what they superseded; research and development decisions (§47–§50).
 - [Simulator model](simulator.en.md): implemented semantics, [protocol coverage](simulator.en.md#protocol-coverage), research policies and explicit deviations.
 - [Insight register](insights.en.md): every owner decision and finding with its evidence level and source.
 - [Integrated research](research.en.md): D76 [evidence frontier](research.en.md#minimum-evidence-frontier-d76), [longitudinal depth](research.en.md#longitudinal-population-depth-d76), D49 [resilience–growth brief](research.en.md#resilience-growth-frontier-d49), R1–R7 root map; [interaction designs](research-interactions.en.md) appendix.

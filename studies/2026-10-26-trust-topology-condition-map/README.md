@@ -17,7 +17,7 @@ Current status and open work live only in [BACKLOG](../../BACKLOG.md#trust-topol
 | D73 structure | [bridge review](core-bridge-review.md), [T1](t1-reuse-results.md), [T2](t2-support-results.md), [T3/T5](t3-t5-structural-results.md) |
 | D76/D77 longitudinal life | [preflight](longitudinal-preflight-results.md), [profile](longitudinal-profile-results.md), [fast path](longitudinal-fastpath-results.md), [live history](longitudinal-live-case-results.md), [D77 one-step](d77-participation-results.md), [D77 timed ACT](d77-timed-act-results.md), [one-year caller](longitudinal-caller-results.md), [settled history](settled-history-results.md), [support allocation](support-allocation-results.md), [living adapter](living-adapter-results.md), [D79 author cancellation](d79-author-cancel-results.md) |
 
-Selected-rule context (owner decisions D68–D107: core-first defense, D77 holds, D79 cancellation, D81–D107 owned slots/valences/invitations, D73–D75 bridge/K controls) is canonical in the [protocol](../../docs/facety.protocol.en.md#appendix-a-decision-log-and-supersession-ledger); this programme does not restate it.
+Selected-rule context (owner decisions D68–D107: core-first defense, D77 holds, D79 cancellation, D81–D107 owned slots/valences/invitations, D73–D75 bridge/K controls) is canonical in the [protocol](../../docs/decisions.en.md#decision-log-and-supersession-ledger); this programme does not restate it.
 
 
 ## Rules under test and resolved meanings

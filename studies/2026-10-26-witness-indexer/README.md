@@ -6,7 +6,7 @@
 
 Implement an opt-in bounded path witness and deterministic verifier before advisory search. An epoch fixes adopted difficulty and a distinct-anchor target set; current canonical edge liveness and immediate authorized anchor removals still govern acceptance. Search/tree/cache/pool state is untrusted for safety. Anchors grant no Council/governance powers; D33 difficulty, D35 guarantee AND path meaning/no default quotas, D36 internal disjointness and D41 pre-burn guarantee authorization remain unchanged.
 
-[Protocol §46.16/Appendix A](../../docs/facety.protocol.en.md#4616-witness-certified-path-reference-and-advisory-indexer-d61) records D61 and supersession limits. [The owner-readable summary](../../docs/indexer.en.md#owner-readable-summary) and detailed StateAccessor/codec/family, indexer, capacity, threat/privacy/runbook and acceptance contracts are documented **before any WP-G code**. Numeric defaults remain placeholders; no Standing/verified-person process or live epoch adoption is invented.
+[Protocol §46.16](../../docs/facety.protocol.en.md#4616-witness-certified-path-reference-and-advisory-indexer-d61) records D61 and supersession limits. [The owner-readable summary](../../docs/indexer.en.md#owner-readable-summary) and detailed StateAccessor/codec/family, indexer, capacity, threat/privacy/runbook and acceptance contracts are documented **before any WP-G code**. Numeric defaults remain placeholders; no Standing/verified-person process or live epoch adoption is invented.
 
 ## Milestone history
 
