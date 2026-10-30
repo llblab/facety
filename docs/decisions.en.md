@@ -486,3 +486,13 @@ B: confirms that same proposed relation
 ```
 
 In that historical representation, matching confirmation does not automatically produce `B guarantees A`; reciprocity requires another explicitly authorized directed relation. D82 now excludes using the directed-only state as an XP-earning substitute for an established mutual guarantee. Do not silently implement this as automatic reverse edges, rewrite old rosters, or relabel the existing directed simulator as current mutual semantics.
+
+**Historical candidates, superseded by the selected 7-day restart window in §26.5:** the period could become longer as participants enter the sequence. A candidate is to add approximately **one day for each new participant**. Another candidate is to use a function of escalation depth, rounded to whole days.
+
+For example:
+
+```text
+new_deadline = previous_deadline + extension(escalation_depth)
+```
+
+**Historical reference:** the 2026-10-22 top-101 leaderboard among active subjects remains the simulator's fixed-size reference. D33 supersedes that target; old simulations retain their original interpretation, not compliance with the current verified/dynamic design. The full topology and transition obligations are stated in §46, not supplied by a leaderboard implementation.

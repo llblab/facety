@@ -14,7 +14,8 @@ This file alone owns open work. Each item states what is missing, its gate and t
   - [x] §46.18 (research directions D76, D80, D108–D121) moved to the decision log; D110–D113 restated as rules in §18.4/§18.5/§19.3/§27.1; D121 stated as a proposal under test in §18.6.
   - [x] Intro–§10 rewritten without provenance; rule paragraphs open with `**[STATUS] (Dnn)**`. Lost spaces around numbers, `D` and dates repaired across the protocol and decision log.
   - [x] §11–§22 rewritten; their dated history paragraphs moved to the decision log section "Historical rule text removed from the protocol". Rule headers across the whole protocol normalized to `**[STATUS] (Dnn)**`.
-  - [ ] Rewrite §23–§36, then §37–§46 the same way (drop `documented`, dates, owner attributions and supersession narratives; keep OPEN items as `[OPEN]`).
+  - [x] §23–§36 rewritten (§26.2 now "Local finality"; superseded deadline candidates and the fixed-101 reference moved to the decision log).
+  - [ ] Rewrite §37–§46 the same way (drop `documented`, dates, owner attributions and supersession narratives; keep OPEN items as `[OPEN]`).
   - [ ] Repair the same lost-space corruption in other docs (`docs/simulator.en.md` and about 20 study pages; the `/tmp`-free fixer must skip hashes and identifiers).
 
 ## Trust-topology condition map: master programme
