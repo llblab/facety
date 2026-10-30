@@ -70,7 +70,8 @@ function genesisPairs(ids, chords, random) {
   return [...pairs].sort().map(key => key.split('|'));
 }
 
-export function runTopologyExperiment(overrides = {}) {
+// hooks.onDay(row) observes each sampled day (progress/checkpoints); it never alters the run.
+export function runTopologyExperiment(overrides = {}, hooks = {}) {
   const config = topologyConfig(overrides);
   const root = new Random(config.seed);
   const honestIds = Array.from({ length: config.honestGenesis }, (_, i) => 'h' + String(i).padStart(3, '0'));
@@ -339,6 +340,7 @@ export function runTopologyExperiment(overrides = {}) {
       if (config.detection.enabled && day >= config.detectionStartDay) detect();
       model.audit();
       sample();
+      hooks.onDay?.(history.at(-1));
       // Snapshot search: stop once the honest accepted population first reaches the target.
       if (config.stopAtHonest > 0 && history.at(-1).honest >= config.stopAtHonest) { censoredReason = 'stopAtHonest'; break; }
     }
