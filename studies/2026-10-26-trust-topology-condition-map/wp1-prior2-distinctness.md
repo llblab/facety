@@ -21,7 +21,7 @@ This is a maximum over all legal chronological parent assignments, not a claim t
 
 The historical inventory relation remains valid: after n births Q=sK−nd. The newest subject alone retains K, but that ignores the other recent subjects.
 
-If n≥K, consider the LAST K newborns. The oldest of those has only K−1 later births to which it could contribute, and cannot contribute twice to one child. It therefore retains at least1unit. The next retains at least2, and so on; the youngest retains K. These are distinct subjects' residual units, not repeated counting of a shared pool. Consequently
+If n≥K, consider the LAST K newborns. The oldest of those has only K−1 later births to which it could contribute, and cannot contribute twice to one child. It therefore retains at least 1 unit. The next retains at least2, and so on; the youngest retains K. These are distinct subjects' residual units, not repeated counting of a shared pool. Consequently
 
 ```text
 Q >= 1+2+...+K = T_K
@@ -54,7 +54,7 @@ F(t) = s min(K,t) + sum_(h=1..t−1) min(K,h)
 
 For t≤K, s≥c ensures F(t)≥ct. For t≥K, (H)is exactly td≤sK−T_K. Therefore EVERY t≤n satisfies(H)when n≤floor((sK−T_K)/d), proving attainment at n_max.
 
-Finally translate that assignment into the ACTUAL chronological unit process: admit targets j=1,…,n in order. All its assigned parents are seeds or newborns i<j, hence already exist. Edge capacity1 gives c distinct parents. Each parent's total assigned outgoing count≤K; before a currently assigned use it has at least1unit remaining. Consume those c units first, then grant the child's K. The abstract source→newborn capacity was only a certificate; this chronological execution never grants that quota before birth or lets a child fund itself. Unassigned units remain unused. This completes upper bound AND legal attainment under the exact family.
+Finally translate that assignment into the ACTUAL chronological unit process: admit targets j=1,…,n in order. All its assigned parents are seeds or newborns i<j, hence already exist. Edge capacity1 gives c distinct parents. Each parent's total assigned outgoing count≤K; before a currently assigned use it has at least 1 unit remaining. Consume those c units first, then grant the child's K. The abstract source→newborn capacity was only a certificate; this chronological execution never grants that quota before birth or lets a child fund itself. Unassigned units remain unused. This completes upper bound AND legal attainment under the exact family.
 
 ## What is refined, not disproved
 
@@ -74,6 +74,6 @@ Native K/T/V renewal and selected D75 active outgoing guarantees are still diffe
 
 ## Binding and next acceptance
 
-Contract blob1acf0be9d4c3108f76c2423f2c2550f54a2c5a91 at5f82dc847c4aa97bbec65e1335874768ae538ca8; reused historical audit blob4607eea5e6aa00d31f6b53b707e12c32199d1f66 unchanged. No external theorem implementation or registered experiment was invoked. Core39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448/55files/src9d3eb889ad256ceb72cf28abe979752b2e01cc70/test9c0640c84e7f11aa72a912d047320573972a7434/Nodev26.8.1 and separate study69cd10b557879ca490feaad37787e50645a16833c8a3c3455e5126653104ac63 unchanged. Existing778+21/37/DAG55x177 validation reused on exact equality, NOT rerun or promoted to mathematical/scientific proof. Fresh context/link/diff/contract-binding checks only.
+Contract blob1acf0be9d4c3108f76c2423f2c2550f54a2c5a91 at 5f82dc847c4aa97bbec65e1335874768ae538ca8; reused historical audit blob4607eea5e6aa00d31f6b53b707e12c32199d1f66 unchanged. No external theorem implementation or registered experiment was invoked. Core39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448/55files/src9d3eb889ad256ceb72cf28abe979752b2e01cc70/test9c0640c84e7f11aa72a912d047320573972a7434/Nodev26.8.1 and separate study69cd10b557879ca490feaad37787e50645a16833c8a3c3455e5126653104ac63 unchanged. Existing778+21/37/DAG55x177 validation reused on exact equality, NOT rerun or promoted to mathematical/scientific proof. Fresh context/link/diff/contract-binding checks only.
 
 Self-authored exact maximum supported by the argument above; independent NEW-result mathematical/chronological scrutiny remains missing. A cut/integrality/earliest-subset/chronological construction error refutes or narrows the result, never authorizes a rule/code change or numerical search dressed as proof. BACKLOG owns that next bounded acceptance, no new engine/data or stopped-work fallback. Checkpoint prior2SelfProof/exactTriangularResidual+chronologicalMatching/newVsTotal/noData-noG1; continuationWarrantedtrue.

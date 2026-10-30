@@ -4,7 +4,7 @@
 
 ## Master-resolved regimes; detailed profiles still required
 
-The [2026-10-26 master](../2026-10-26-trust-topology-condition-map/README.md) now defines R0 all vouches equal; R1 at least m joint-act-backed of c, m0/1/2/c; R2 lower B(e) and/or higher weight for joint-backed vouches. Joint act is both parties' group Self-ID on one public/checkable artifact registered within24h. Separate R2 bond/weight effects and retain unbound identity/clock/reuse/privacy/reward details. The earlier missing-regime blocker is resolved. Detailed **M2/D1/D4 versus H2/H4** utility/information/role definitions are still absent; do not infer them from names or block unrelated early WPs.
+The [2026-10-26 master](../2026-10-26-trust-topology-condition-map/README.md) now defines R0 all vouches equal; R1 at least m joint-act-backed of c, m0/1/2/c; R2 lower B(e) and/or higher weight for joint-backed vouches. Joint act is both parties' group Self-ID on one public/checkable artifact registered within 24h. Separate R2 bond/weight effects and retain unbound identity/clock/reuse/privacy/reward details. The earlier missing-regime blocker is resolved. Detailed **M2/D1/D4 versus H2/H4** utility/information/role definitions are still absent; do not infer them from names or block unrelated early WPs.
 
 Namespaces matter: `trustRegime.R1` is not the existing reduced incentive ratio R1; `trustRegime.m` is not the secondary invitation-permit accumulation cap; `agentProfile.M2` is not output map M2; D1/D4 here are profile IDs, not edits to protocol decisions; H2/H4 are not inherited confirmation hypotheses. This is not a separate restarted study or permission to reuse old labels/results.
 

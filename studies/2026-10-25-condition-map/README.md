@@ -12,7 +12,7 @@
 - [Source manifest](source-manifest.json): Exact inspected base-commit blobs and prior exposure; no map samples, labels or registration.
 - [Pre-data decision packet](decision-packet.md) lists remaining choices and prospective pilot needs, not a winning rule or empirical sensitivity ranking.
 
-**Registration: not created. Study simulations/search/seed samples:0. No SAFE/MARGINAL/UNSAFE labels or M1–M7 result maps exist.** This draft is not a `facety-hypothesis/v2` artifact. Existing native evidence/experiment integration cannot yet express all arms/adaptive sampling/metrics. The old27 no-claim daily service controls are prior diagnostic exposure, not validation of the new uncancelled-claim4h primary or a population-growth bound.
+**Registration: not created. Study simulations/search/seed samples:0. No SAFE/MARGINAL/UNSAFE labels or M1–M7 result maps exist.** This draft is not a `facety-hypothesis/v2` artifact. Existing native evidence/experiment integration cannot yet express all arms/adaptive sampling/metrics. The old27 no-claim daily service controls are prior diagnostic exposure, not validation of the new uncancelled-claim 4h primary or a population-growth bound.
 
 ## Explicit viability predicate
 
@@ -28,11 +28,11 @@ Threshold grids, aggregation/estimands, common unit, precision and ranges remain
 
 ## Scope retained and extended
 
-Part1 varies invitation cost/limit while keeping the same native legacy guarantee-gate algorithm; its output can change with the population. Part2 varies the CORE bundle versus the actual legacy reference. Preserve the distinction between explicit experimental A=(P1,b1) and the unchanged default's banked-right bursts. Primary remains cooldown-after-use keyed by SubjectId, no permit accumulation, uncancelled Self-ID in a bound window, gates at use,4h opportunities and unchanged24h protocol windows. C1–C7 claim/funding/Standing/jury/remedy/valuation contracts from the prior audit remain candidates, not filled rules.
+Part1 varies invitation cost/limit while keeping the same native legacy guarantee-gate algorithm; its output can change with the population. Part2 varies the CORE bundle versus the actual legacy reference. Preserve the distinction between explicit experimental A=(P1,b1) and the unchanged default's banked-right bursts. Primary remains cooldown-after-use keyed by SubjectId, no permit accumulation, uncancelled Self-ID in a bound window, gates at use,4h opportunities and unchanged 24h protocol windows. C1–C7 claim/funding/Standing/jury/remedy/valuation contracts from the prior audit remain candidates, not filled rules.
 
 Environment axes are ranges with a source or 'no basis': price paths including actually funded demand/buyback feedback; regional wages; kappa1/3/10; vigilance/latency/false suspicion; separate local/global response; vouch sale prices/type mixtures; additive/crowding-out norms; alpha1/1.5/2; real/synthetic topology; enthusiast/ordinary cohort selection. Graph contacts, personhood and ownership truth remain outside defense state. No protected price, free capital, verified independence or automatic acquaintance consent is assumed.
 
-Adaptive classes are self-funded Sybils, exact-D attack-edge attachment, genuine violators, purchased vouches/identities, slot/bond/account rental, jury capture, non-monetary saboteurs and governance capture. Generated policies receive fixed search effort per theta/class; assess the boundary again at2x search effort with unchanged in-world beta. No-found-attack is not safety. Keep search space, failures, resources, observations and best-found traces.
+Adaptive classes are self-funded Sybils, exact-D attack-edge attachment, genuine violators, purchased vouches/identities, slot/bond/account rental, jury capture, non-monetary saboteurs and governance capture. Generated policies receive fixed search effort per theta/class; assess the boundary again at 2x search effort with unchanged in-world beta. No-found-attack is not safety. Keep search space, failures, resources, observations and best-found traces.
 
 ## ARM_PURCHASE governance extension
 

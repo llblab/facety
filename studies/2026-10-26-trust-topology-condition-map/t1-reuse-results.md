@@ -1,6 +1,6 @@
 # T1 finite supplied-graph diagnostic — reused support is not capacity
 
-**2026-10-27 · basef276722 · DIAGNOSTIC native certificate/property evidence, not a scientific T1 parameter screen or an economically executed attack.** [Acceptance written before test code](t1-reuse-contract.md), [test](../../test/core-bridge-reuse.test.mjs), [validation/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/t1-reuse-validation.json), [D73 review](core-bridge-review.md), [sole task owner](../../BACKLOG.md#trust-topology-condition-map-master-programme). Original review/contract facts remain dated; these are separate new verification results.
+**2026-10-27 · base f276722 · DIAGNOSTIC native certificate/property evidence, not a scientific T1 parameter screen or an economically executed attack.** [Acceptance written before test code](t1-reuse-contract.md), [test](../../test/core-bridge-reuse.test.mjs), [validation/bindings](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/t1-reuse-validation.json), [D73 review](core-bridge-review.md), [sole task owner](../../BACKLOG.md#trust-topology-condition-map-master-programme). Original review/contract facts remain dated; these are separate new verification results.
 
 ## Actual observations
 
@@ -29,4 +29,4 @@ The new T1 diagnostic constructs no Model and executes no emissions, funded guar
 
 ## Retained validation
 
-Fresh3 new test families /27 focused /724 current+21 separately compatible-source historical tests pass. The source tree/runtime remains exact91db8605/53 modules, so C1's fresh acyclic DAG53/168 and two fixed trajectories are **reused, not rerun**. Current full native preservation/joint-churn checks pass with unchanged full-current2ec824e7 digest. Old source guards/registrations/C0–C2/D73 review/protocol packets are unchanged. Fresh context0errors/29 reviewed existing warnings. Same-author raw arithmetic/reference separation is not independent authorship, authentication or acceptance of the scientific/economic thesis.
+Fresh3 new test families /27 focused /724 current+21 separately compatible-source historical tests pass. The source tree/runtime remains exact91db8605/53 modules, so C1's fresh acyclic DAG53/168 and two fixed trajectories are **reused, not rerun**. Current full native preservation/joint-churn checks pass with unchanged full-current2ec824e7 digest. Old source guards/registrations/C0–C2/D73 review/protocol packets are unchanged. Fresh context 0 errors/29 reviewed existing warnings. Same-author raw arithmetic/reference separation is not independent authorship, authentication or acceptance of the scientific/economic thesis.

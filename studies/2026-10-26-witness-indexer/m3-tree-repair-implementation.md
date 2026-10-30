@@ -1,6 +1,6 @@
 # M3-E2 bounded within-root path-label repair — implementation checkpoint
 
-**2026-10-26 · D61 supplied-capture reference engineering.** Implements the [frozen pre-code contract](m3-tree-repair.md) after8559ffe; that historical contract and [pre-code evidence](m3-tree-repair-contract-validation.json) remain byte-identical. [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-tree-repair-validation.json) binds source/tests separately. This is bounded local path-label repair, not classical Even–Shiloach amortization, a scalable/full indexer, scientific E1–E8 evidence or live/funded/default authorization. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work.
+**2026-10-26 · D61 supplied-capture reference engineering.** Implements the [frozen pre-code contract](m3-tree-repair.md) after 8559ffe; that historical contract and [pre-code evidence](m3-tree-repair-contract-validation.json) remain byte-identical. [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-tree-repair-validation.json) binds source/tests separately. This is bounded local path-label repair, not classical Even–Shiloach amortization, a scalable/full indexer, scientific E1–E8 evidence or live/funded/default authorization. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work.
 
 ## API and strict inputs
 

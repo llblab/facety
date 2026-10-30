@@ -1,6 +1,6 @@
 # M3-G cache-first union query composition — implementation checkpoint
 
-**2026-10-26 · diagnostic engineering after05441cb.** Implements the [frozen contract](m3-pipeline.md), retaining [pre-code controls/lookup baseline](m3-pipeline-contract-validation.json) unchanged. [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-pipeline-validation.json) separately binds new/modified Source and native test. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) owns remaining work; no scientific/live/funded/default gate changes.
+**2026-10-26 · diagnostic engineering after 05441cb.** Implements the [frozen contract](m3-pipeline.md), retaining [pre-code controls/lookup baseline](m3-pipeline-contract-validation.json) unchanged. [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-pipeline-validation.json) separately binds new/modified Source and native test. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) owns remaining work; no scientific/live/funded/default gate changes.
 
 ## Small bounded ownership
 

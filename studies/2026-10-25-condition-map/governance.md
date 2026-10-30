@@ -1,6 +1,6 @@
 # ARM_PURCHASE: treasury and governance lever — proposal addendum
 
-**Master update2026-10-26:** [the governing programme](../2026-10-26-trust-topology-condition-map/README.md) now specifies PURCHASE as one/24h for b1 own matured emission within F1/3/7 days, all-burn versus80/20. It resolves the broad payment-source direction below, not freshness origin/fractional settlement/refund/authority details. Economics waits for G1/WP5; this document is a retained module, not an alternate work order.
+**Master update 2026-10-26:** [the governing programme](../2026-10-26-trust-topology-condition-map/README.md) now specifies PURCHASE as one/24h for b1 own matured emission within F1/3/7 days, all-burn versus80/20. It resolves the broad payment-source direction below, not freshness origin/fractional settlement/refund/authority details. Economics waits for G1/WP5; this document is a retained module, not an alternate work order.
 
 **Owner-requested condition-map extension, not a selected D-rule or implementation.** No ARM_PURCHASE exists in the native simulator yet. Preserve the twelve isolated A/B/H/BOND/0 arms and CORE/legacy comparison; do not alias PURCHASE to their existing Self-ID burn. Purchase payer, asset/source, eligibility, price b, refund/cancellation, settlement and admission-gate bindings remain explicit prerequisites. All protocol-economic execution must eventually go through FacetyModel.
 
@@ -16,7 +16,7 @@ Report actual treasury stock/inflow/burn/outflow/commitments by asset and time, 
 
 ## Eighth adversary (h): governance capture
 
-Add governance capture to the existing seven classes, with the same declared in-world beta, generated-policy language, search budget, training/validation/reserved points+seeds and2x-search check. Signal manipulation can also be available to the other classes without assuming they control votes.
+Add governance capture to the existing seven classes, with the same declared in-world beta, generated-policy language, search budget, training/validation/reserved points+seeds and 2x-search check. Signal manipulation can also be available to the other classes without assuming they control votes.
 
 Electorates are assumption/model-form variants, not inferred independence or selected governance:
 
@@ -47,7 +47,7 @@ Bind which local/global lambda is measured, the at-risk denominator, observation
 
 Attack both directions: spoof successes, seed cheap/easy cases, suppress/delay adverse reports, contaminate denominators, selectively abstain or flood paid measurement/decision queues. Every action needs available information/resources and a declared effect on received evidence; no free forged oracle. Distinguish manipulation of measured lambda from a real change in effective suppression. Compare fixed-b and feedback candidates under matched funded conditions, including truthful measurement, noisy measurement and budgeted manipulation.
 
-Report b/s/lambda time paths; peak/RMS amplitude, overshoot, settling time and recurrence/period only under registered estimators. Separate noise, delayed-feedback cycles and4h/24h aliasing through controls; a plotted wiggle is not a mechanism finding. Measure signal bias and b/treasury/participation response per real manipulation cost, boundary displacement and robustness to gain/lag/measurement assumptions. Preserve instability, saturation, exhausted budgets and non-settling/censored trajectories. Any mechanism claim needs committed presence, necessity and named-alternative registration before confirmation.
+Report b/s/lambda time paths; peak/RMS amplitude, overshoot, settling time and recurrence/period only under registered estimators. Separate noise, delayed-feedback cycles and 4h/24h aliasing through controls; a plotted wiggle is not a mechanism finding. Measure signal bias and b/treasury/participation response per real manipulation cost, boundary displacement and robustness to gain/lag/measurement assumptions. Preserve instability, saturation, exhausted budgets and non-settling/censored trajectories. Any mechanism claim needs committed presence, necessity and named-alternative registration before confirmation.
 
 ## Treasury benefit and paired asset: demonstrate, do not assume
 

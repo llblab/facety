@@ -1,6 +1,6 @@
 # D68 core prerequisite: coverage and earned-authority denominator contract
 
-**2026-10-27 · base2e029ff · contract written before native tests.** This is the first bounded core-first Grow Loop cohort inside the existing master, not a new programme, named CORE/Standing selection, empirical confirmation or selected-protocol migration. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns remaining work. [The majority inquiry](majority-resilience.md) owns the question; this note binds an actual-source gap and a small falsifiable native/analytic witness. No research labels or v2 registration. [Literal fixtures](core-authority-fixtures.json).
+**2026-10-27 · base 2e029ff · contract written before native tests.** This is the first bounded core-first Grow Loop cohort inside the existing master, not a new programme, named CORE/Standing selection, empirical confirmation or selected-protocol migration. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns remaining work. [The majority inquiry](majority-resilience.md) owns the question; this note binds an actual-source gap and a small falsifiable native/analytic witness. No research labels or v2 registration. [Literal fixtures](core-authority-fixtures.json).
 
 ## Closed test contract
 

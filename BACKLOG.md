@@ -6,18 +6,6 @@ This file alone owns open work. Each item states what is missing, its gate and t
 
 **Current owner priority — [D76 Evidence Core Convergence](docs/decisions.en.md#evidence-core-convergence-d76):** minimum causal evidence for genuine growth, honest incentive advantage, accountable XP/guarantees, funded public correction, capture resistance and recovery, preferring critical falsifiers and longitudinal living-network trajectories over static microcases. [Minimum evidence frontier](docs/research.en.md#minimum-evidence-frontier-d76). D73 core-first focus stands. **Parked, no automatic restart:** C3 Council entry, WP-G indexer, old lifetime-K, peripheral rescue/detection modules, stopped studies. Independent useful checks may proceed around a blocked branch, never through a scientific, authority or privacy gate.
 
-## Protocol as a clean rule specification (owner task, 2026-10-29)
-
-- [ ] **Remove Russian text and literal prompt quotes from the repository; make [the protocol](docs/facety.protocol.en.md) a clear rule specification without provenance.** Stop when: no Cyrillic in tracked files; no quoted owner prompts anywhere; the protocol contains no `Source:` lines, owner/voice/Telegram attributions, decision dates or supersession narratives; decision history lives in a separate decision log without quotes; all links resolve and `npm test` passes. Method per slice: rewrite → grep checks (Cyrillic, `Source:`, `owner`, `voice`, quote marks) → `npm test` → commit. Slices:
-  - [x] Convention in AGENTS.md; Cyrillic and quotes outside the protocol.
-  - [x] Move Appendix A (decision log), Appendix B (sources) and Appendix C (research decisions §47–§50) to `docs/decisions.en.md`, rewritten without quotes or Russian; repoint links.
-  - [x] §46.18 (research directions D76, D80, D108–D121) moved to the decision log; D110–D113 restated as rules in §18.4/§18.5/§19.3/§27.1; D121 stated as a proposal under test in §18.6.
-  - [x] Intro–§10 rewritten without provenance; rule paragraphs open with `**[STATUS] (Dnn)**`. Lost spaces around numbers, `D` and dates repaired across the protocol and decision log.
-  - [x] §11–§22 rewritten; their dated history paragraphs moved to the decision log section "Historical rule text removed from the protocol". Rule headers across the whole protocol normalized to `**[STATUS] (Dnn)**`.
-  - [x] §23–§36 rewritten (§26.2 now "Local finality"; superseded deadline candidates and the fixed-101 reference moved to the decision log).
-  - [x] §37–§46 rewritten: §46.7 "Cluster boundary: no quota", §46.12 "Topology summary" (rules in force), §46.13 "Open topology contracts"; former text, the verbatim D33 summary and EARLIER D96/D101 candidates moved to the decision log. Protocol-wide check: no Cyrillic, `Source:`, owner attributions, decision dates or `Appendix` references remain.
-  - [ ] Repair the same lost-space corruption in other docs (`docs/simulator.en.md` and about 20 study pages; the `/tmp`-free fixer must skip hashes and identifiers).
-
 ## Trust-topology condition map: master programme
 
 [The programme](studies/2026-10-26-trust-topology-condition-map/README.md) (proposal under test) governs scope, order, method and outputs; [G0](studies/2026-10-26-trust-topology-condition-map/checkpoint-g0.md) supplies inventory, [DECISIONS_NEEDED](DECISIONS_NEEDED.md) the assumption register. D62 [majority-resilience framing](studies/2026-10-26-trust-topology-condition-map/majority-resilience.md) and [Q15](DECISIONS_NEEDED.md#q15--majority-conditioned-economic-resilience-d62) separate people, accounts, local power and funded defense; no quorum, price floor or threshold is selected.

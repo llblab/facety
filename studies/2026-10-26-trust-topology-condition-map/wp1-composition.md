@@ -25,7 +25,7 @@ Private facts go only to the existing snapshot observation environment with expl
 
 ## Executed witness and reference acceptance
 
-The fixed timeline earns four founder FACY before admission at48h, exits one original guarantee at49h, preserves its pending XP, and earns four more FACY before a child-backed second admission at96h. A paid native act veto at97h burns one pending emission without removing the member or slashing bonds. A separate explicitly supplied case holds exited collateral through120h while slots expire. Four supplied rejected/partial-burn/partial-payout/full-split outcomes at121h exercise actual residual refunds; all remaining bonds clear at168h.
+The fixed timeline earns four founder FACY before admission at 48h, exits one original guarantee at 49h, preserves its pending XP, and earns four more FACY before a child-backed second admission at 96h. A paid native act veto at 97h burns one pending emission without removing the member or slashing bonds. A separate explicitly supplied case holds exited collateral through 120h while slots expire. Four supplied rejected/partial-burn/partial-payout/full-split outcomes at 121h exercise actual residual refunds; all remaining bonds clear at 168h.
 
 A separately written endpoint recurrence checks minted9, final supply/Collector `8-caseBurn`, zero vault/debt, actual owner/recipient balances and XP `{a:3,b:6,x:2,y:0}`. Work consumed is exactly3 declared units. These are **four fixed software witnesses**, not sampled theta, attacks, probability estimates, prior confirmation or a full independent transition model.
 

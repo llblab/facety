@@ -8,7 +8,7 @@
 
 `review(actorId,selfId,environment,{opportunity})` composes:
 
-1. Validate native public act/environment binding and the explicit opportunity. Closed24h windows, spent/disputed acts and insufficient inspection budget produce an unobserved receipt (`suspicious:null`), not a negative look.
+1. Validate native public act/environment binding and the explicit opportunity. Closed 24h windows, spent/disputed acts and insufficient inspection budget produce an unobserved receipt (`suspicious:null`), not a negative look.
 2. Pay inspection work **before** acquiring the fallible signal from existing `actObservationEnvironment`. Its required supplied valid/invalid/role rates remain uncalibrated. Private personhood/profile/act-validity facts stay in that environment, outside the adapter/Model. The response accepts only a received Boolean suspicion.
 3. A negative signal takes no response action. A suspicious ordinary observer has no veto authority and is not automatically routed to a sponsor/court. A suspicious creation-snapshot guarantor pays separately for a response, if affordable, and calls native `cancelSelfId` using its **SubjectId**, not its custody ID. Native acceptance/state checks remain authoritative; rejected attempts retain their paid cost and failure reason.
 
@@ -22,7 +22,7 @@ Each trial uses exactly the existing ACT key `[selfId,actorId,atHour,opportunity
 
 ## Validation, not research
 
-[Eight families](../../test/vouch-review.test.mjs) cover closed immutable configuration, paid-before-acquisition and separate response costs, missingness/replay, custody/authority separation, snapshot exit, valid-act false suspicion/invalid-act misses, hidden-label controls, exact24h/stale/locked binding, error costs, inert-read/future-prefix controls and256 independent decision-recurrence partitions. Only `vetoed` means the act operation executed; a signal, attempted response or `veto-rejected` does not establish prevention. [Validation identity](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-review-validation.json) records425 current tests and21 separately source-pinned historical passes; none is a sampled theta, full independent dynamics or measured attack probability.
+[Eight families](../../test/vouch-review.test.mjs) cover closed immutable configuration, paid-before-acquisition and separate response costs, missingness/replay, custody/authority separation, snapshot exit, valid-act false suspicion/invalid-act misses, hidden-label controls, exact 24h/stale/locked binding, error costs, inert-read/future-prefix controls and256 independent decision-recurrence partitions. Only `vetoed` means the act operation executed; a signal, attempted response or `veto-rejected` does not establish prevention. [Validation identity](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-review-validation.json) records425 current tests and21 separately source-pinned historical passes; none is a sampled theta, full independent dynamics or measured attack probability.
 
 ```sh
 node --test test/vouch-review.test.mjs test/vouch-bond-cases.test.mjs test/vouch-admission.test.mjs test/vouch-commitments.test.mjs

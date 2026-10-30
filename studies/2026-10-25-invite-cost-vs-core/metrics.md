@@ -24,7 +24,7 @@ A non-growing saboteur can cause large harm with g_a=0 or no meaningful cluster-
 - **Policing:** funded work/time and monetary outflows by actor/cohort, opportunity/availability costs and denied/unfunded demand. No duplicate addition of overlapping work streams or payments already included in net balances.
 - **Wrongful exclusion:** mistaken veto/verdict/exclusion counts, affected people and duration, with recovery/censoring; record admission friction and delay separately from an adjudicated wrong. Do not replace missing observation with zero harm.
 
-**Non-monetary sabotage** is an explicit objective within the existing six structural adversary classes, not a new unrelated sweep. A budgeted attacker may accept negative private money return to maximize wrongful exclusion, policing exhaustion, collapse or failed recovery. Specify that objective and search effort separately from profit-seeking; failure of the10x profit claim to describe sabotage must not be reported as deterrence. Any scalar damage aggregation needs declared weights; preserve component outcomes regardless.
+**Non-monetary sabotage** is an explicit objective within the existing six structural adversary classes, not a new unrelated sweep. A budgeted attacker may accept negative private money return to maximize wrongful exclusion, policing exhaustion, collapse or failed recovery. Specify that objective and search effort separately from profit-seeking; failure of the 10x profit claim to describe sabotage must not be reported as deterrence. Any scalar damage aggregation needs declared weights; preserve component outcomes regardless.
 
 ## Network-effect exponent and robustness gate
 

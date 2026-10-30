@@ -1,6 +1,6 @@
 # WP1 prior7 — passive terminal attribution software acceptance
 
-**2026-10-28 · DIAGNOSTIC engineering only. G1 NOT passed.** [Contract](wp1-prior7-attribution-contract.md) committed atd4e1da5 before code; [readiness reconciliation](wp1-g1-readiness.md) retains the scientific gates. BACKLOG owns remaining work. [Machine packet](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior7-attribution-results.json) retains actual raw input losslessly, exact evaluations/outputs/independent sets, complete reproduction program and source/method/test bindings.
+**2026-10-28 · DIAGNOSTIC engineering only. G1 NOT passed.** [Contract](wp1-prior7-attribution-contract.md) committed at d4e1da5 before code; [readiness reconciliation](wp1-g1-readiness.md) retains the scientific gates. BACKLOG owns remaining work. [Machine packet](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-trust-topology-condition-map/wp1-prior7-attribution-results.json) retains actual raw input losslessly, exact evaluations/outputs/independent sets, complete reproduction program and source/method/test bindings.
 
 ## Delivered owner, not another backend
 
@@ -12,18 +12,18 @@ The result carries the ORIGINAL copied producer provenance, actual counted IDs/c
 
 ## One unchanged SOFTWARE configuration, passive overlays only
 
-Replayed the existing default `config()` from `test/support/vouch-experiment-fixture.mjs` (composition settlementWitnesses[1]), without any event/policy/budget/seed change. Exact complete terminal raw state at192h is23895bytes/SHA256 `493b8f68dfaeead59142a14dd0beb68acdac326752698de49dd3bd26b0bef4a8`, retained as4348-byte gzip/base64. Tests and retained capture replay this SAME input configuration; neither repeated execution nor additional label/denominator choices are independent worlds.
+Replayed the existing default `config()` from `test/support/vouch-experiment-fixture.mjs` (composition settlementWitnesses[1]), without any event/policy/budget/seed change. Exact complete terminal raw state at 192h is 23895 bytes/SHA256 `493b8f68dfaeead59142a14dd0beb68acdac326752698de49dd3bd26b0bef4a8`, retained as4348-byte gzip/base64. Tests and retained capture replay this SAME input configuration; neither repeated execution nor additional label/denominator choices are independent worlds.
 
 **Every person in this raw producer's private environment is declared genuine. No false person/feasible attack was demonstrated.** For software discrimination ONLY, a separate passive overlay assumes x,y controlled by U and false, with a,b outside. Actual admitted records are unchanged. The calculator then gives F2 with:
 
 - **Cumulative activated boundary records3:** a→x,b→x,b→y; internal x→y is not external access.
 - **Active terminal boundary guarantees2:** a's recorded exit ended a→x, not its earlier commitment/history.
-- **Unexpired probation records0:** all original boundary slot periods expired by192h; this does not erase active guarantees or historical access.
+- **Unexpired probation records0:** all original boundary slot periods expired by 192h; this does not erase active guarantees or historical access.
 - **Distinct outside issuer subjects2:** a,b. Distinct outside operator counts depend on the supplied map, not verified independent people.
 
 Thus F/D is2/3,1,null,1 respectively. Undefined probation denominator is NOT infinite/free amplification or safety. Changing only x/y's evaluator genuineness to true gives F0 on IDENTICAL protocol state/decisions/boundary/custody. It says nothing about genuine-person violations/collusion or practical person defense.
 
-Actual boundary payer a committed2, got1refunded and1slashed; b committed4, got4refunded and0slashed. No boundary principal remains at this endpoint. These are actual payer-side nominal custody records, NOT automatically attacker loss, private collection, net utility or burned principal. Producer cases/ledger carry any actual burn/payout separately; the calculator does not rename the slashed field burn. This actual fixture includes exit/refund/settlement, unlike the earlier purely derived no-exit/uncleared illustrative role family; do not relabel either as the other's dataset.
+Actual boundary payer a committed2, got 1 refunded and 1 slashed; b committed4, got 4 refunded and 0 slashed. No boundary principal remains at this endpoint. These are actual payer-side nominal custody records, NOT automatically attacker loss, private collection, net utility or burned principal. Producer cases/ledger carry any actual burn/payout separately; the calculator does not rename the slashed field burn. This actual fixture includes exit/refund/settlement, unlike the earlier purely derived no-exit/uncleared illustrative role family; do not relabel either as the other's dataset.
 
 ## Software controls / evidence ceiling
 
@@ -39,7 +39,7 @@ No model rule/default/RNG/effort semantics, stored evidence, historical test bod
 
 ## Validation and separate code identity
 
-Fresh `npm test`: **778current+21original-compatible isolated historical**; historical referenceaab881f50c3cd2fd2cf76962558b7b71649252d7 is NOT current-source assurance. Focused prior7/vouch-backend/v2/commitment/admission suite: **37passes**, including six new families. DAG55modules/177edges/0errors/0warnings covers the unchanged src graph, not this study-local file. Context/link/diff checks recorded in the packet.
+Fresh `npm test`: **778 current+21original-compatible isolated historical**; historical referenceaab881f50c3cd2fd2cf76962558b7b71649252d7 is NOT current-source assurance. Focused prior7/vouch-backend/v2/commitment/admission suite: **37 passes**, including six new families. DAG55modules/177edges/0errors/0warnings covers the unchanged src graph, not this study-local file. Context/link/diff checks recorded in the packet.
 
 Core Source remains `sha256-src-mjs-v1:39ea08655e0f4c4d92b7df5648850b7ebb12041c9dd77317d3cfcfd92d278448`/55files, src tree9d3eb889ad256ceb72cf28abe979752b2e01cc70, Nodev26.8.1. Current test tree9c0640c84e7f11aa72a912d047320573972a7434; original test tree1f54392c5a4138d4171bade32bc0e6ae231d4931. Independent pre-code archive `/tmp/facety-prior7-reference-qy8Rw6`. Core/old-test bytes and runtime equality justify reusing earlier default/keyed/historical preservation evidence, not rerunning/relabeling annual results. Current new tests ARE freshly run.
 

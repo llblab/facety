@@ -1,6 +1,6 @@
 # M3-K fixed cache/prefix/union/full query coordinator — implemented
 
-**2026-10-26 · D61 bounded supplied-state engineering only.** [Frozen pre-code contract](m3-composite.md)/[native baseline](m3-composite-contract-validation.json) at13b62a5 remain historical NOT IMPLEMENTED checkpoints, not current API status. [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-composite-validation.json) binds current source/test/runtime. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work; M3 stays open, lifetime-K remains parked and scientific/master/live/funded/default/capacity gates persist.
+**2026-10-26 · D61 bounded supplied-state engineering only.** [Frozen pre-code contract](m3-composite.md)/[native baseline](m3-composite-contract-validation.json) at 13b62a5 remain historical NOT IMPLEMENTED checkpoints, not current API status. [Current validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer/m3-composite-validation.json) binds current source/test/runtime. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns remaining work; M3 stays open, lifetime-K remains parked and scientific/master/live/funded/default/capacity gates persist.
 
 ## API and ownership
 
