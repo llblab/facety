@@ -4,7 +4,7 @@ This register owns open questions, candidate trade-offs, placeholder provenance 
 
 ## Evidence core convergence (D76)
 
-- **Direction:** [D76](docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) prioritizes minimum causal evidence and critical falsifiers; the [five-obligation frontier](docs/research.en.md#minimum-evidence-frontier-d76) owns the synthesis. Real-person admission, endogenous honest advantage, effective local authority/correction and network recovery remain unestablished.
+- **Direction:** [D76](docs/decisions.en.md#evidence-core-convergence-d76) prioritizes minimum causal evidence and critical falsifiers; the [five-obligation frontier](docs/research.en.md#minimum-evidence-frontier-d76) owns the synthesis. Real-person admission, endogenous honest advantage, effective local authority/correction and network recovery remain unestablished.
 - **Evidence boundary:** [paid XP/exit](studies/2026-10-26-trust-topology-condition-map/core-xp-exit-results.md) and [authority/collection](studies/2026-10-26-trust-topology-condition-map/core-authority-recovery-results.md) separate retained credit, financial access, act-time liability and collection. P/b capacity runs through v2; missing is incremental payback/population/ownership coverage.
 - **D47 (settled, no new question):** distinct admitted participants are distinct, presumptively rule-following actors; no perfect personhood/non-collusion certificate is required. This is not proven uniqueness, an admission bypass or a ban on evidence-led suspicion. Conditional models declare evaluator truth and observable evidence separately.
 - **D68 (settled):** permissioned traceable entry; people, not the protocol, discover lies; rule-followers must have an actionable correction route. A first test may condition on informed/willing/funded honest actors. Raise a procedural choice only at a concrete failing step.
@@ -144,7 +144,7 @@ Default: licensed public non-face graphs only, otherwise labeled synthetic. WP7 
 
 ### Q16 — D50 falsifier design (D108)
 
-[D108](docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) released the master gates; the [D50 falsifier](studies/2026-10-29-d50-falsifier/README.md) needs these pre-data bindings. **Bound by D109 (2026-10-29): the owner accepted all six defaults.**
+[D108](docs/decisions.en.md#evidence-core-convergence-d76) released the master gates; the [D50 falsifier](studies/2026-10-29-d50-falsifier/README.md) needs these pre-data bindings. **Bound by D109 (2026-10-29): the owner accepted all six defaults.**
 
 1. **Estimand.** Default: FACY-equivalent holdings (liquid + unspent Emitter + reserved stake − debt) per unit of declared effort, honest versus attacker cohort, compared as a log ratio per paired replica; per-operator absolute holdings reported as a secondary. Alternative: per-operator net profit under a declared price `P` and effort cost `c`, swept.
 2. **Kill criterion.** Default: weak D50 is contradicted in the model if, in any context, attacker yield per effort ≥ honest yield (ratio ≤ 1) in a significant share of reserved replicas; strong D50 (10×) is reported as supported only if ratio ≥ 10 holds in every context.

@@ -6,6 +6,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in the [dec
 
 ### Research-gate release (2026-10-29)
 
+- Docs: protocol §46.18 research directions moved to the decision log; D110–D113 restated as plain rules; D121 invitation rights stated as a proposal under test in protocol §18.6.
 - Docs: the decision log, research decisions (§47–§50) and their history moved from the protocol to [`docs/decisions.en.md`](docs/decisions.en.md), rewritten without Russian text or literal prompt quotes; the protocol keeps a short scope-and-confidence note.
 - D121: per-pair invite rights (both sides of every pair, genesis included) replace D120's XP condition. Diagnostic: no honest-growth cost, cone delayed 4–5 days.
 - D120: opt-in owner invite-right rule (`inviteRights: 'higher-xp-pair'`). Diagnostic: delays takeover 8–14 days, costs 35% of honest growth by day 100.

@@ -4,9 +4,9 @@
 
 ## Question
 
-[D115](../../docs/facety.protocol.en.md#4618-evidence-core-convergence-d76) names the D104/D36 invitation gate as the critical defense: a new invitation needs at least D established mutual guarantors **and** D internally vertex-disjoint current mutual paths to one admissible Council member. The [D50 trajectories](../2026-10-29-d50-falsifier/README.md#d114-trajectories-diagnostic) showed attackers reaching about 96% of the legacy network in 30 days, but the legacy engine has no such gate. This study asks: **starting from 100 honest people with a 100-day head start, do attackers take over the network when the selected gate is in force, and how does that compare with the same world without the gate?**
+[D115](../../docs/decisions.en.md#evidence-core-convergence-d76) names the D104/D36 invitation gate as the critical defense: a new invitation needs at least D established mutual guarantors **and** D internally vertex-disjoint current mutual paths to one admissible Council member. The [D50 trajectories](../2026-10-29-d50-falsifier/README.md#d114-trajectories-diagnostic) showed attackers reaching about 96% of the legacy network in 30 days, but the legacy engine has no such gate. This study asks: **starting from 100 honest people with a 100-day head start, do attackers take over the network when the selected gate is in force, and how does that compare with the same world without the gate?**
 
-Outcomes ([D114](../../docs/facety.protocol.en.md#4618-evidence-core-convergence-d76)), all daily trajectories:
+Outcomes ([D114](../../docs/decisions.en.md#evidence-core-convergence-d76)), all daily trajectories:
 
 1. attacker share of accepted subjects;
 2. dirty-FACY share: FACY held by attacker-controlled subjects (liquid + unspent Emitter rights) over ledger supply;
