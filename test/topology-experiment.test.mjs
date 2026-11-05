@@ -208,3 +208,14 @@ test('D127 double life and in-person meetings: opt-in, acquittal spares honest i
   assert.ok(off.detection.honestInviterCascades > 0, 'the old rule must hit some honest inviters in this scenario');
   assert.ok(on.detection.honestInviterAcquitted > 0);
 });
+
+test('D128 supported-first attacker and vetting look quality are opt-in levers', () => {
+  assert.throws(() => runTopologyExperiment({ attackerStrategy: 'x' }), /attackerStrategy/);
+  assert.throws(() => runTopologyExperiment({ honest: { vettingSensitivity: 2 } }), /vettingSensitivity/);
+  const base = { seed: 'sf', days: 40, attackStartDay: 10, attackers: 3, honestGenesis: 20, maxSubjects: 400 };
+  const a = runTopologyExperiment({ ...base, honest: { vetting: 1 } });
+  const b = runTopologyExperiment({ ...base, honest: { vetting: 1, vettingSensitivity: null, vettingFalsePositive: null } });
+  assert.deepEqual(a.history.at(-1), b.history.at(-1));
+  const c = runTopologyExperiment({ ...base, attackerStrategy: 'supported-first', maxPathNodes: 7, pathSupport: 'layered' });
+  assert.ok(c.history.at(-1).attackers >= 0);
+});

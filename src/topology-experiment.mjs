@@ -3,12 +3,13 @@
 import { FacetyModel, DAY, ProtocolRejection } from './model.mjs';
 import { Random } from './random.mjs';
 import { provenance } from './provenance.mjs';
+import { findLayeredSupport } from './proofs.mjs';
 
 export const TOPOLOGY_ENGINE = 'topology-takeover/v1';
 export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128starstar-v2', decisions: 'actor-day-stream-v1' });
 export const TOPOLOGY_DEFAULTS = Object.freeze({
   seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off', stopAtHonest: 0, detectionStartDay: 0, maxPathNodes: null, pathSupport: null, attackerStrategy: 'cone',
-  honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2, vetting: 0, metInPerson: 0, doubleLife: 0 }),
+  honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2, vetting: 0, vettingSensitivity: null, vettingFalsePositive: null, metInPerson: 0, doubleLife: 0 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
   detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9,
     // D117 v3 (off by default): §18.5 leaving, public pattern evidence by anyone, escalation to higher-XP sponsors and same-inviter follow-up.
@@ -53,10 +54,11 @@ export function topologyConfig(overrides = {}) {
   integer(config.stopAtHonest, 'stopAtHonest');
   if (config.maxPathNodes !== null) integer(config.maxPathNodes, 'maxPathNodes', 2);
   if (config.pathSupport !== null && (config.pathSupport !== 'layered' || config.maxPathNodes === null)) throw new TypeError('pathSupport must be null or layered and needs maxPathNodes');
-  if (!['cone', 'honest-first'].includes(config.attackerStrategy)) throw new TypeError('attackerStrategy must be cone or honest-first');
+  if (!['cone', 'honest-first', 'supported-first'].includes(config.attackerStrategy)) throw new TypeError('attackerStrategy must be cone, honest-first or supported-first');
   integer(config.detectionStartDay, 'detectionStartDay');
   for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar', 'vetting', 'metInPerson', 'doubleLife']) probability(config.honest[key], 'honest.' + key);
   integer(config.honest.keepRights, 'honest.keepRights');
+  for (const key of ['vettingSensitivity', 'vettingFalsePositive']) if (config.honest[key] !== null) probability(config.honest[key], 'honest.' + key);
   for (const key of ['enabled', 'leave', 'followUp', 'acquitMet']) if (typeof config.detection[key] !== 'boolean') throw new TypeError('detection.' + key + ' must be boolean');
   for (const key of ['review', 'inspect', 'sensitivity', 'falsePositiveRate', 'accuracy', 'publicLook', 'patternClosure', 'sponsorWillingness']) probability(config.detection[key], 'detection.' + key);
   integer(config.detection.patternMinInvitees, 'detection.patternMinInvitees', 1);
@@ -319,7 +321,9 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
             // D126 vetting (opt-in): with the declared probability the answerer first takes a noisy look at the requester and declines when it looks false.
             if (yes && !met && config.honest.vetting > 0) {
               const careful = root.fork(JSON.stringify(['vet', record.id]));
-              if (careful.chance(config.honest.vetting) && look(careful, record.owner)) yes = false;
+              // Look quality of the vetting step: its own sensitivity/false-positive rate when declared, otherwise the detection looks.
+              const quality = falseIdentity(record.owner) ? (config.honest.vettingSensitivity ?? config.detection.sensitivity) : (config.honest.vettingFalsePositive ?? config.detection.falsePositiveRate);
+              if (careful.chance(config.honest.vetting) && careful.chance(quality)) yes = false;
             }
           }
           decided.set(record.id, yes);
@@ -353,6 +357,10 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
         for (const right of unspent.slice(0, Math.max(0, unspent.length - config.honest.keepRights))) tryAction(id, () => model.convertToCollector(id, right));
       }
       const D = model.requiredGuarantors();
+      // D128 supported-first attacker (opt-in): the attacker reads the public graph, computes which accounts are layered-supported and links fakes to supported cone members.
+      const supported = config.attackerStrategy === 'supported-first' && rosters.attackers.length
+        ? findLayeredSupport(model.guarantees, { seeds: model.council().map(member => member.id), threshold: D, maxLevel: (config.maxPathNodes ?? 7) - 2,
+          blockedNodes: model.subjects().filter(subject => subject.identityStatus !== 'accepted').map(subject => subject.id) }) : null;
       for (const id of rosters.attackers.filter(accepted)) {
         const random = stream(id, 'attack');
         for (const right of rights(id)) {
@@ -364,7 +372,11 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
             if (seniors.length && openValence(id, random.pick(seniors), right)) continue;
           }
           // D125 adaptive attacker (opt-in): first collect D honest partners, asking friends of the honest partners it already has (the 'near' acceptance rate), then pair inside the cone.
-          if (config.attackerStrategy === 'honest-first') {
+          if (supported !== null) {
+            const pool = rosters.attackers.filter(other => other !== id && accepted(other) && supported.has(other) && !linked(id, other));
+            if (pool.length && openValence(id, random.pick(pool), right)) continue;
+          }
+          if (config.attackerStrategy !== 'cone') {
             const honestPartners = mutualPartners(id).filter(other => cohort.get(other) === 'honest');
             if (honestPartners.length < D) {
               const near = [...new Set(honestPartners.flatMap(partner => mutualPartners(partner)))].filter(other => other !== id && cohort.get(other) === 'honest' && !linked(id, other));
