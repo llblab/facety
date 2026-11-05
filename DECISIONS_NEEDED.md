@@ -2,6 +2,13 @@
 
 This register owns open questions, candidate trade-offs, placeholder provenance and defaults taken — not tasks ([BACKLOG](BACKLOG.md#trust-topology-condition-map-master-programme)) and not selected meaning ([protocol](docs/facety.protocol.en.md), Appendix A). Implementation evidence lives in the [WP0 inventory](studies/2026-10-26-trust-topology-condition-map/orientation.md) and study pages. Recording a clarification never authorizes an uncontracted default migration. The pre-consolidation ledger with full narrative is at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/DECISIONS_NEEDED.md).
 
+## Assumptions taken for D123/D124 (2026-11-05)
+
+- **Node count, not hops:** `L = 7` means at most 7 nodes, endpoints included (6 links), following the stated definition. If seven links (8 nodes) was meant, set `maxPathNodes: 8`.
+- **Reading of the D124 rule:** layered support with threshold equal to the adopted difficulty D, Council members at level 0, intermediates only (the issuer needs its own D guarantors separately). Alternatives not run: require every path member, including the issuer, to be supported; thresholds other than D; a non-layered "D guarantors anywhere" reading, which the dense cone satisfies trivially.
+- **Self-ID check:** the bound and the support rule apply to the one path from a mutual guarantor of the subject, so the subject is one node further out.
+- **Lost searches:** a search that exhausts its budget is refused like a missing family and counted in `pathSearchExhausted`.
+
 ## Evidence core convergence (D76)
 
 - **Direction:** [D76](docs/decisions.en.md#evidence-core-convergence-d76) prioritizes minimum causal evidence and critical falsifiers; the [five-obligation frontier](docs/research.en.md#minimum-evidence-frontier-d76) owns the synthesis. Real-person admission, endogenous honest advantage, effective local authority/correction and network recovery remain unestablished.

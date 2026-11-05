@@ -66,3 +66,37 @@ Same snapshot and seed; detection (freeze veto, partner inspection, leaving, pub
 3. **The cone stays connected to honest people through only 4–9 links.** That is enough for D = 4 vertex-disjoint paths for every cone member (see the 1-attacker gate run), so leaving links did not cut it off: honest people left 1495 links, but the cone kept regaining a handful.
 4. **Detection removed fakes one by one:** 132 fakes invalidated and 24 vetoed, against 3092 admitted. The D77 hold refused attacker actions 14998 times while their cases were open; it slowed the cone but did not stop it.
 5. **Honest cost:** 73 genuine people invalidated, 71 genuine invitations vetoed; honest growth 2004 on day 193 against 2525 in the 1-attacker gate run.
+
+## Depth bound (D123) and supported intermediaries (D124) — diagnostic, one seed
+
+**Rules under test** ([protocol §46.15](../../docs/facety.protocol.en.md#4615-internally-vertex-disjoint-invitation-paths-d36)): every counted Council path has at most `L` nodes, endpoints included (`maxPathNodes`); optionally every intermediate must be *supported* (`pathSupport: 'layered'`): at least D current mutual guarantors with a strictly lower level, Council members at level 0, levels up to `L - 2`. The bound is chosen as a cap on on-chain traversal cost; the width threshold D is unchanged. Same snapshot seed `grown-1000-1`; each variant grows its own honest prefix (`prefix.mjs <seed> <L>[L]`), then 60 days of attack from the first day honest accepted subjects reach 1000. Probe: `probe.mjs <attackers> <arm> <seed> 60 10000 <L>[L]`; the suffix `L` means layered support. Runs with `L` in the file name: `runs/gate/a10-L4.json`, `...-L7L.json` and so on (`L7L` = 7 nodes plus layered support).
+
+### Honest cost (growth to 1000 honest participants, no attackers)
+
+| Rule | Days to 1000 honest | Council-path refusals of honest actions |
+| --- | ---: | ---: |
+| no bound | 134 | 9 |
+| 7 nodes | 134 | 9 |
+| 5 nodes | 134 | 9 |
+| 4 nodes | 138 | 30 |
+| 3 nodes | 163 | 326 |
+| 7 nodes + layered support | 137 | 56 |
+
+Seven nodes cost honest growth nothing in this world; the same trajectory as no bound. Four nodes cost 4 days, three nodes 29 days.
+
+### Attack results (60 days after entry; share = attackers among accepted subjects)
+
+| Rule | 1 attacker, gate | 10 attackers, gate | 1 attacker, detect | 10 attackers, detect |
+| --- | --- | --- | --- | --- |
+| no bound | 10.7% (304) | not run here | 0.1% (2) | 59.6% (2960) |
+| 7 nodes | 7.4% (202) | **70.5% by day 160** (50% on day 157, 23 days after entry; run stopped by hand) | 0.1% (2) | 29.2% (833) |
+| 5 nodes | not run | 40.7% at day 180, 45.4% at day 184 of 193 (run stopped by hand, still growing) | not run | not run |
+| 4 nodes | not run | 13.8% (402) | not run | not run |
+| 7 nodes + layered | **0.04% (1)** | **12.1% (337)** | **0% (0)** | **0.5% (9)** |
+
+1. **The depth bound alone does not stop a cluster that is already inside the radius.** With 7 nodes the 10-attacker cone passes 50% 23 days after entry. A cone member needs D disjoint paths of at most 6 links; three or four links through the cone plus two or three through the honest side fit easily. Cutting to 5 nodes slows it (50% not reached by day 184, at least 27 days later than with 7 nodes) and 4 nodes cuts it to 13.8% by day 197, at the price of 4 days of honest growth; 3 nodes cost 29 days. So length alone trades honest growth for attacker growth along one curve.
+2. **Supported intermediaries break the cone without a large honest cost.** A cone member cannot serve as a path intermediate until it has D guarantors that are themselves supported, so the first supported cone member needs D links into the supported honest core. With 10 attackers the cone stayed at 10 accounts for about 20 days and then grew slowly: 14, 59, 146, 244, 337 attackers on days 156, 166, 176, 186, 196. Attack-edge count rises at the same time (14 → 104 links to honest accounts between days 146 and 196), because attackers keep buying honest links from strangers (5% acceptance): the rule raises the price of each cone member, it does not remove the bridge. With detection the 10-attacker cone ends at 9 accounts and one lone attacker is removed.
+3. **Honest cost of layered support:** 3 more days to 1000 honest (137 versus 134), 56 versus 9 path refusals in the prefix, and about 3% fewer honest participants 60 days after entry in the 1-attacker gate arm (2441 versus 2525). In the detect arms the honest counts are 1896 and 1822 against 2076 and 2004 without the rule (single seed; the size of seed-to-seed noise is unknown, so a few percent is not a measured cost). False verdicts against genuine people are similar (61–71 versus 61–73).
+4. **The depth bound also keeps the search honest-cheap but not free:** the exact bounded search ran out of its work budget 22 times in the 1-attacker gate run and 93 times in the 10-attacker detect run with the 7-node bound (a lost search is refused like a missing family), and never with layered support or 4 nodes. The plain 7-node attacker results are therefore slightly understated.
+
+Limits: one seed per cell; the "no bound" 10-attacker gate cell was not run in this snapshot (the [topology study](../2026-10-29-topology-takeover/README.md) is the no-snapshot comparison); two runs were stopped by hand after the takeover threshold or when the cone dominated cost; cap of 10000 subjects; attackers use the old strategy, with no adaptation to the supported-intermediary rule, so the rule is a diagnostic, not a security claim.
