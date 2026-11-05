@@ -178,3 +178,15 @@ Options, not selections:
 3. **Liability of entry points and act-time guarantors (D34/D55).** Infiltrators are real people: their identity stays, but each invitation of a fake is a losing invitation act (XP halving for creator and act-time guarantors) with fines collected from liquid FACY and future emission (debt). Honest inviters who brought them in carry D34 responsibility for that one invitation.
 4. **Economic recovery.** Burn unspent rights and liquid FACY on invalidated accounts; FACY already transferred out cannot be un-minted (D53). Recovered value can be burned (benefits all holders), paid as a bounty to the discoverers/sponsors, or used to compensate wrongly harmed honest people.
 5. **Repair for honest people.** An appeal path for wrongful invalidation, and fee-free restoration of honest-honest links cut by false positives.
+
+### Q19 — Second accounts and the unwitting inviter (D127)
+
+A real person who already has an account can ask someone they know in person for an invitation and register again. The inviter acted in good faith: the invitee is a real person, and only the invitee knows the second account is a duplicate. §19.1 says a guarantee covers the invitee's real and *unique* identity, so today nothing separates this inviter from one who vouched for a fake. The owner's direction: punish the person who leads the double life, not the inviter who could not know. Open design points (options, not selections):
+
+1. **Proof of who is at fault.** A duplicate case names both accounts; the verdict that they belong to one person invalidates the second account and reaches the holder (the original account, its chain, new invitations). The model does this on a correct verdict at declared accuracy.
+2. **Defense of the inviter.** Candidate: a jointly signed co-presence artifact with the invitee made before the invitation (the shared-meeting evidence of §7). With it the inviter is acquitted; without it the ordinary chain liability stands. Risk to test: a colluding member can claim to have met anyone, so the artifact must be checkable by third parties and the acquittal must not be free to farm.
+3. **What the acquittal covers.** Only the loss of reputation and partners (the `leave` cascade in the runner), or also act-time XP penalties of D34/D55?
+4. **Cheater's gain.** Which rewards from the second account (Self-ID emission, invitations, links) are recovered when the holder is found out? Compare with Q18 option 3.
+
+Runner status: `honest.doubleLife`, `honest.metInPerson` and `detection.acquitMet` are opt-in reference levers (D127); the acquittal there is unconditional for honest inviters and ignores the collusion risk.
+

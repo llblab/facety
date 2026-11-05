@@ -191,3 +191,20 @@ test('D126 vetting is opt-in: vetting 0 is unchanged, an invalid value is refuse
   const c = runTopologyExperiment({ ...base, honest: { vetting: 1 } });
   assert.ok(c.history.at(-1).attackEdges <= a.history.at(-1).attackEdges);
 });
+
+test('D127 double life and in-person meetings: opt-in, acquittal spares honest inviters and the holder is reached', () => {
+  assert.throws(() => runTopologyExperiment({ honest: { doubleLife: 2 } }), /doubleLife/);
+  assert.throws(() => runTopologyExperiment({ detection: { acquitMet: 1 } }), /acquitMet/);
+  const base = { seed: 'dl', days: 70, attackStartDay: 69, attackers: 0, honestGenesis: 30, maxSubjects: 500,
+    honest: { doubleLife: 0.4, metInPerson: 0.3, invite: 0.05 }, detection: { enabled: true, leave: true, followUp: true, inspect: 0.3 } };
+  const zero = runTopologyExperiment({ ...base, honest: { invite: 0.05 } });
+  const zeroSame = runTopologyExperiment({ ...base, honest: { invite: 0.05, doubleLife: 0, metInPerson: 0 } });
+  assert.deepEqual(zero.history.at(-1), zeroSame.history.at(-1));
+  const off = runTopologyExperiment(base);
+  const on = runTopologyExperiment({ ...base, detection: { ...base.detection, acquitMet: true } });
+  assert.ok(off.history.some(row => row.subjects > 0) && off.detection.holdersInvalidated >= 0);
+  assert.equal(off.detection.honestInviterAcquitted, 0);
+  assert.equal(on.detection.honestInviterCascades, 0);
+  assert.ok(off.detection.honestInviterCascades > 0, 'the old rule must hit some honest inviters in this scenario');
+  assert.ok(on.detection.honestInviterAcquitted > 0);
+});

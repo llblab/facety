@@ -8,11 +8,11 @@ export const TOPOLOGY_ENGINE = 'topology-takeover/v1';
 export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128starstar-v2', decisions: 'actor-day-stream-v1' });
 export const TOPOLOGY_DEFAULTS = Object.freeze({
   seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off', stopAtHonest: 0, detectionStartDay: 0, maxPathNodes: null, pathSupport: null, attackerStrategy: 'cone',
-  honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2, vetting: 0 }),
+  honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2, vetting: 0, metInPerson: 0, doubleLife: 0 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
   detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9,
     // D117 v3 (off by default): §18.5 leaving, public pattern evidence by anyone, escalation to higher-XP sponsors and same-inviter follow-up.
-    leave: false, publicLook: 0, patternMinInvitees: 5, patternClosure: 0.8, sponsorWillingness: 0.5, followUp: false }),
+    leave: false, publicLook: 0, patternMinInvitees: 5, patternClosure: 0.8, sponsorWillingness: 0.5, followUp: false, acquitMet: false }),
 });
 export const TOPOLOGY_ASSUMPTIONS = Object.freeze([
   'Behavior rates are scenario assumptions, not calibrated human behavior.',
@@ -55,9 +55,9 @@ export function topologyConfig(overrides = {}) {
   if (config.pathSupport !== null && (config.pathSupport !== 'layered' || config.maxPathNodes === null)) throw new TypeError('pathSupport must be null or layered and needs maxPathNodes');
   if (!['cone', 'honest-first'].includes(config.attackerStrategy)) throw new TypeError('attackerStrategy must be cone or honest-first');
   integer(config.detectionStartDay, 'detectionStartDay');
-  for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar', 'vetting']) probability(config.honest[key], 'honest.' + key);
+  for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar', 'vetting', 'metInPerson', 'doubleLife']) probability(config.honest[key], 'honest.' + key);
   integer(config.honest.keepRights, 'honest.keepRights');
-  for (const key of ['enabled', 'leave', 'followUp']) if (typeof config.detection[key] !== 'boolean') throw new TypeError('detection.' + key + ' must be boolean');
+  for (const key of ['enabled', 'leave', 'followUp', 'acquitMet']) if (typeof config.detection[key] !== 'boolean') throw new TypeError('detection.' + key + ' must be boolean');
   for (const key of ['review', 'inspect', 'sensitivity', 'falsePositiveRate', 'accuracy', 'publicLook', 'patternClosure', 'sponsorWillingness']) probability(config.detection[key], 'detection.' + key);
   integer(config.detection.patternMinInvitees, 'detection.patternMinInvitees', 1);
   integer(config.detection.windowDays, 'detection.windowDays', 1);
@@ -87,8 +87,11 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
   });
   // Evaluator-only labels: never read by any protocol call or honest decision.
   const cohort = new Map(honestIds.map(id => [id, 'honest']));
-  const falseIdentity = id => id.startsWith('f');
+  // 'f' = cone fake with no body; 'd' = a real member's second account (D127 double life). Both are duplicate or invented identities for the evaluator only.
+  const falseIdentity = id => id.startsWith('f') || id.startsWith('d');
+  const ownerOf = new Map();
   const detection = { casesOpened: 0, falseInvalidated: 0, genuineInvalidated: 0, vetoedFalse: 0, vetoedGenuine: 0, casesDismissed: 0,
+    ...(config.detection.acquitMet || config.honest.doubleLife > 0 ? { honestInviterCascades: 0, honestInviterAcquitted: 0, holdersInvalidated: 0 } : {}),
     ...(config.detection.leave || config.detection.publicLook > 0 || config.detection.followUp ? { linksLeft: 0, patternsFound: 0, escalations: 0, sponsorRefusals: 0, followUpCases: 0 } : {}) };
   const openCases = new Map();
   const rosters = { honest: [...honestIds], attackers: [] };
@@ -206,8 +209,18 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
       model.invalidateIdentity(record.target);
       model.voidSelfIdChain(record.target);
       detection[falseIdentity(record.target) ? 'falseInvalidated' : 'genuineInvalidated']++;
+      // D127: a true duplicate verdict also reaches the holder of the second account.
+      const holder = ownerOf.get(record.target);
+      if (holder !== undefined && accepted(holder) && falseIdentity(record.target)) {
+        if (tryAction(holder, () => { model.invalidateIdentity(holder); model.voidSelfIdChain(holder); }).ok) detection.holdersInvalidated++;
+      }
       const inviter = [...model.lineage.inEdges(record.target)][0]?.from;
       if (inviter === undefined || !accepted(inviter)) continue;
+      // D127 acquittal (opt-in): an honest inviter who met the invitee in person is not blamed for the invitee's second account.
+      if (cohort.get(inviter) === 'honest' && (settings.acquitMet || config.honest.doubleLife > 0)) {
+        if (settings.acquitMet) { detection.honestInviterAcquitted++; continue; }
+        detection.honestInviterCascades++;
+      }
       if (settings.leave) for (const partner of mutualPartners(inviter)) if (cohort.get(partner) === 'honest') leave(partner, inviter);
       if (settings.followUp && accepted(record.challenger)) {
         const random = root.fork(JSON.stringify(['follow-up', caseId]));
@@ -300,9 +313,11 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
           if (cohort.get(answerer) === 'attackers') yes = true;
           else {
             const near = [...model.guarantees.outEdges(answerer)].some(edge => edge.to === record.owner || model.guarantees.edge(edge.to, record.owner));
-            yes = root.fork(JSON.stringify(['answer', record.id])).chance(near ? config.honest.acceptNear : config.honest.acceptFar);
+            // D127: a requester the answerer has met in person is known as a real person (no doubt, no vetting); a cone fake has no body to meet.
+            const met = config.honest.metInPerson > 0 && !record.owner.startsWith('f') && root.fork(JSON.stringify(['met', record.id])).chance(config.honest.metInPerson);
+            yes = root.fork(JSON.stringify(['answer', record.id])).chance(near || met ? config.honest.acceptNear : config.honest.acceptFar);
             // D126 vetting (opt-in): with the declared probability the answerer first takes a noisy look at the requester and declines when it looks false.
-            if (yes && config.honest.vetting > 0) {
+            if (yes && !met && config.honest.vetting > 0) {
               const careful = root.fork(JSON.stringify(['vet', record.id]));
               if (careful.chance(config.honest.vetting) && look(careful, record.owner)) yes = false;
             }
@@ -317,7 +332,16 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
         const random = stream(id, 'spend');
         const available = rights(id);
         for (const right of available) {
-          if (random.chance(config.honest.invite)) { invite(id, right, 'r' + String(sequence++).padStart(5, '0'), 'honest'); continue; }
+          if (random.chance(config.honest.invite)) {
+            // D127: some invitees are a member's second account, invited in good faith by someone who met them in person.
+            const dual = config.honest.doubleLife > 0 && random.chance(config.honest.doubleLife);
+            const target = (dual ? 'd' : 'r') + String(sequence++).padStart(5, '0');
+            if (invite(id, right, target, 'honest') && dual) {
+              const owners = rosters.honest.filter(other => accepted(other) && other !== id && !other.startsWith('d'));
+              if (owners.length) ownerOf.set(target, random.pick(owners));
+            }
+            continue;
+          }
           if (random.chance(config.honest.befriend)) {
             const friends = [...model.guarantees.outEdges(id)].map(edge => edge.to);
             const candidates = [...new Set(friends.flatMap(friend => [...model.guarantees.outEdges(friend)].map(edge => edge.to)))]
