@@ -102,3 +102,49 @@ Seven nodes cost honest growth nothing in this world; the same trajectory as no 
 4. **The depth bound also keeps the search honest-cheap but not free:** the exact bounded search ran out of its work budget 22 times in the 1-attacker gate run and 93 times in the 10-attacker detect run with the 7-node bound (a lost search is refused like a missing family), and never with layered support or 4 nodes. The plain 7-node attacker results are therefore slightly understated.
 
 Limits: one seed per cell; the "no bound" 10-attacker gate cell was not run in this snapshot (the [topology study](../2026-10-29-topology-takeover/README.md) is the no-snapshot comparison); two runs were stopped by hand after the takeover threshold or when the cone dominated cost; cap of 10000 subjects; attackers use the old strategy, with no adaptation to the supported-intermediary rule, so the rule is a diagnostic, not a security claim.
+
+## Seeds, caution, adaptive attacker, double life (D125–D127) — diagnostic, detection always on
+
+All runs here use the detect arm (public look 0.02, leaving, follow-up, veto) with 10 attackers, 7-node paths and 60 days after entry. `7` = 7 nodes; `7L` = 7 nodes plus layered support. Three snapshot seeds (`grown-1000-1/2/3`); other levers on seed 1 only.
+
+### More seeds (D125)
+
+| Rule | Seed 1 | Seed 2 | Seed 3 |
+| --- | ---: | ---: | ---: |
+| 7 nodes | 29.2% (833) | 45.3% (1702) | 19.5% (475) |
+| 7 nodes + layered | 0.5% (9) | 0.4% (8) | 0.6% (12) |
+
+The plain bound leaves a cone that grows 5–8% a day against about 1.1% for honest participants; the spread across seeds (20–45%) shows how much one seed misleads. Layered support kept the cone at 8–12 accounts on all three seeds. Seed 2 and 3 plain runs lost searches to the work budget 495 and 236 times, so those cones are slightly understated.
+
+### Caution toward strangers (D126, `honest.vetting`)
+
+An answerer takes a noisy look (sensitivity 0.8, false positive 0.01, the same as detection looks, an optimistic assumption) at a requester with the given probability and declines if it looks false. Seed 1:
+
+| Rule | vetting 0 | 0.5 | 1.0 |
+| --- | ---: | ---: | ---: |
+| 7 nodes, attacker share | 29.2% | 10.5% | 9.2% |
+| 7 nodes, cone growth (last 30 days) | 5.4%/day | 4.7%/day | 4.3%/day |
+| 7 nodes + layered, attacker share | 0.5% | 0.5% | 0.4% |
+| honest growth (last 30 days) | 1.10%/day | 1.09%/day | 1.10%/day |
+
+Caution cut the plain-bound cone to a third and did not slow honest growth in this model: the look declines only 1% of genuine requesters, so the price is small by construction. The honest cost of caution is therefore an assumption about look quality, not a finding; the next sweep should lower sensitivity and raise the false-positive rate. With layered support the cone is already contained and caution adds little.
+
+### Adaptive attacker (D125, `attackerStrategy: 'honest-first'`)
+
+Every cone member first collects D honest partners, asking friends of its honest partners (the 'near' acceptance rate). Against 7 nodes + layered support: 8 accounts (0.4%) at the end; 75 links to honest accounts; 3 fakes invalidated and 39 invitations vetoed. The supported-intermediary rule held against this strategy on this seed; stronger strategies (fewer, better-placed honest links; patience) are untested.
+
+### Double life and in-person meetings (D127)
+
+2% of honest invitations go to a member's second account ('d'), invited in good faith by someone who met them; 30% of honest answers to a valence request are from people they know in person (no look, near acceptance). 7 nodes + layered, seed 1, snapshot with these levers on:
+
+| Acquittal of honest inviters | off | on |
+| --- | ---: | ---: |
+| honest inviters hit by the leaving cascade | 43 | 0 (52 acquitted) |
+| links left | 1100 | 137 |
+| honest participants (day 196) | 1772 | 1886 |
+| holders of second accounts invalidated | 17 | 18 |
+| attackers at the end | 9 | 12 |
+
+Spare the unwitting inviter and the honest network keeps about 6% more participants, with no visible gain for the attacker. The result is conditional on the model: honest inviters here are never careless or colluding, so acquittal costs nothing; with a colluding inviter who simply claims to have met anyone it would be a loophole. The open design question is in [Q19](../../DECISIONS_NEEDED.md#q19--second-accounts-and-the-unwitting-inviter-d127).
+
+Limits: one seed except the seeds table; levers on seed 1; plain 7-node runs under-count because of lost searches; the look quality used by caution is a declared assumption.

@@ -9,6 +9,8 @@ Milestone ledger, newest first. Owner decisions and their dates live in the [dec
 - D123: opt-in depth bound on Council paths (`maxNodes`, endpoints included; `maxPathNodes` in the topology runner), exact lazy bounded search with a work budget and `pathSearchExhausted` counter. Diagnostic: 7 nodes cost honest growth nothing and do not stop 10 attackers; 4 nodes cost 4 days.
 - D124: opt-in layered support for path intermediates (`pathSupport: 'layered'`). Diagnostic (one seed): with 7 nodes it holds 10 attackers at 12.1% without detection and 0.5% with detection, for 3 extra days of honest growth.
 
+- D126/D127: opt-in honest vetting, adaptive attacker, in-person meetings, double-life invitees and inviter acquittal in the topology runner (all off by default, default output bit-identical). Diagnostics with detection always on: layered support held 10 attackers at 0.4–0.6% on three seeds; caution cut the plain 7-node cone to a third; acquitting unwitting inviters kept about 6% more honest participants. Standing rule D125: attack runs always have detection on.
+
 ### Research-gate release (2026-10-29)
 
 - Docs: lost spaces around numbers, units, `D`, dates and commit hashes repaired in 93 further Markdown files (byte-guarded historical packets untouched). The owner task "English only, no prompt quotes, protocol without provenance" is complete.
