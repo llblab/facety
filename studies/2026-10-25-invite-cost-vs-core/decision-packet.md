@@ -1,6 +1,6 @@
 # Pre-data decision packet — CORE v2 study
 
-**Status: candidates only; no protocol selection, empirical recommendation or sensitivity ranking.** No study run or registration exists. Default rules remain unchanged. [Audit C1–C7](audit.md) gives the source evidence; [BACKLOG](../../BACKLOG.md#core-v2-study-invitation-cost-versus-core) alone owns work.
+**Status: candidates only; no protocol selection, empirical recommendation or sensitivity ranking.** No study run or registration exists. Default rules remain unchanged. [Audit C1–C7](audit.md) gives the source evidence; [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#core-v2-study-invitation-cost-versus-core) alone owns work.
 
 ## Decisions needed before a faithful runnable registration
 

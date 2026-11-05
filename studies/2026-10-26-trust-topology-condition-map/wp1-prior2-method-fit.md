@@ -1,6 +1,6 @@
 # Prior2 — acceptance, observation and next-validation fit
 
-**2026-10-28 · DIAGNOSTIC source/method disposition, NOT new mathematics, an execution contract, scientific registration or G1.** Base63c821b6cb566043c4153718afebe191190a57d7; [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns tasks. D80 resumes prior2 counterfactual checking, not lifetime/default implementation or master/privacy waiver. This assessment invokes no Model/config/reference/test/registration/RNG/namespace/solver/data path and changes no runtime or old evidence.
+**2026-10-28 · DIAGNOSTIC source/method disposition, NOT new mathematics, an execution contract, scientific registration or G1.** Base63c821b6cb566043c4153718afebe191190a57d7; [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#trust-topology-condition-map-master-programme) alone owns tasks. D80 resumes prior2 counterfactual checking, not lifetime/default implementation or master/privacy waiver. This assessment invokes no Model/config/reference/test/registration/RNG/namespace/solver/data path and changes no runtime or old evidence.
 
 ## Decision
 

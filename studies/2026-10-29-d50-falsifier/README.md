@@ -15,7 +15,7 @@ Yield is FACY-equivalent holdings (liquid + unspent Emitter rights + reserved st
 
 ## Exploratory probe (diagnostic, exploration seeds)
 
-[`probe.mjs`](probe.mjs) runs the legacy cohort engine at commit `1990040` defaults for 60 days on three exploration labels per arm; [raw rows](probe-results.json).
+[`probe.mjs`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/probe.mjs) runs the legacy cohort engine at commit `1990040` defaults for 60 days on three exploration labels per arm; [raw rows](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/probe-results.json).
 
 | Scenario | Arm | Honest yield/effort | Attacker yield/effort | Ratio | Attacker subjects (of 2000 cap) | Invalidated |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
@@ -43,14 +43,14 @@ These numbers are not evidence for or against D50; they show which assumptions d
 
 ## Registration (committed before confirmation)
 
-[`build-hypotheses.mjs`](build-hypotheses.mjs) writes four `association` hypotheses; each was registered with `node bin/facety.mjs register` and committed before any reserved-seed run:
+[`build-hypotheses.mjs`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/build-hypotheses.mjs) writes four `association` hypotheses; each was registered with `node bin/facety.mjs register` and committed before any reserved-seed run:
 
 | Hypothesis | Statistic (day-90 endpoint) | Claim | Registration |
 | --- | --- | --- | --- |
-| [weak, sybil-cone](hypotheses/d50-weak-sybil-cone-v2.json) | `yield.honestPerEffort` − `yield.attackersPerEffort` | > 0, median (p = 0.5) | [reg](hypotheses/d50-weak-sybil-cone-v2.registration.json) |
-| [weak, real-cartel](hypotheses/d50-weak-real-cartel-v2.json) | same | same | [reg](hypotheses/d50-weak-real-cartel-v2.registration.json) |
-| [strong, sybil-cone](hypotheses/d50-strong-sybil-cone-v2.json) | `yield.strongTargetGap` = honest − 10 × attacker | > 0, median | [reg](hypotheses/d50-strong-sybil-cone-v2.registration.json) |
-| [strong, real-cartel](hypotheses/d50-strong-real-cartel-v2.json) | same | same | [reg](hypotheses/d50-strong-real-cartel-v2.registration.json) |
+| [weak, sybil-cone](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-weak-sybil-cone-v2.json) | `yield.honestPerEffort` − `yield.attackersPerEffort` | > 0, median (p = 0.5) | [reg](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-weak-sybil-cone-v2.registration.json) |
+| [weak, real-cartel](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-weak-real-cartel-v2.json) | same | same | [reg](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-weak-real-cartel-v2.registration.json) |
+| [strong, sybil-cone](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-strong-sybil-cone-v2.json) | `yield.strongTargetGap` = honest − 10 × attacker | > 0, median | [reg](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-strong-sybil-cone-v2.registration.json) |
+| [strong, real-cartel](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-strong-real-cartel-v2.json) | same | same | [reg](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-strong-real-cartel-v2.registration.json) |
 
 Each has 9 contexts (3 defenses × fabrication weight 1/5/20), 30 replicas, α = 0.05 and the v2 `family-contradiction/v1` analysis; Holm adjustment across the four via `study`. Base: 90 days, `maxSubjects` 10000, `maxActions` 5,000,000 (raised from 500,000 because the action cap, not the design, censored runtime probes), legacy terminal XP.
 
@@ -62,7 +62,7 @@ Each has 9 contexts (3 defenses × fabrication weight 1/5/20), 30 replicas, α =
 
 ## D109 confirmation result
 
-[`d50-weak-sybil-cone-v2.confirmation.json`](hypotheses/d50-weak-sybil-cone-v2.confirmation.json), implementation matched, v2 `family-contradiction/v1`: **supported** in all 9 contexts, 30/30 replicas each (p ≈ 9.3e-10 per component, max p = analysis p). Holm across the planned four was not computed because the other three were not run.
+[`d50-weak-sybil-cone-v2.confirmation.json`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/hypotheses/d50-weak-sybil-cone-v2.confirmation.json), implementation matched, v2 `family-contradiction/v1`: **supported** in all 9 contexts, 30/30 replicas each (p ≈ 9.3e-10 per component, max p = analysis p). Holm across the planned four was not computed because the other three were not run.
 
 | Context | Median honest − attacker yield/effort |
 | --- | ---: |
@@ -76,7 +76,7 @@ Exact replays of replica 0 per context (descriptive) give honest/attacker ratios
 
 ## D114 trajectories (diagnostic)
 
-[`trajectory-probe.mjs`](trajectory-probe.mjs) on one exploration seed per arm, 90 days, `maxSubjects` 10000, legacy terminal XP; [output](trajectory-probe.txt). New observables: `dirty.heldShare` (FACY held by attacker-cohort subjects as liquid + unspent Emitter rights + reserved stake, over ledger supply) and `dirty.acceptedAttackerShare` (attacker share of accepted, not invalidated, subjects).
+[`trajectory-probe.mjs`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/trajectory-probe.mjs) on one exploration seed per arm, 90 days, `maxSubjects` 10000, legacy terminal XP; [output](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/trajectory-probe.txt). New observables: `dirty.heldShare` (FACY held by attacker-cohort subjects as liquid + unspent Emitter rights + reserved stake, over ledger supply) and `dirty.acceptedAttackerShare` (attacker share of accepted, not invalidated, subjects).
 
 | Arm | Attackers d0 → d10 → d30 → d89 | Dirty FACY d0 → d30 → peak → d89 |
 | --- | --- | --- |

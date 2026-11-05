@@ -21,7 +21,7 @@ Both parties can freely exit an admitted backed link through `exitVouch(actor,id
 
 ## Software validation and remaining G1
 
-[Seven new families](../../test/vouch-admission.test.mjs) cover closed immutable configuration/bypass guards; no second charge/free capital; canonical ordering/receipts; failed-call/future-ID/read atomicity; aggregate graph limits; both-party exit and retained snapshot veto; and a funded child becoming a voucher only after obtaining collateral. A3072-partition independent subset/status feasibility oracle checks cardinality, protocol eligibility, exits and expiry. These are deterministic software fixtures, not attack samples, calibrated rates or independent full dynamics.
+[Seven new families](https://github.com/llblab/facety/blob/legacy-node/test/vouch-admission.test.mjs) cover closed immutable configuration/bypass guards; no second charge/free capital; canonical ordering/receipts; failed-call/future-ID/read atomicity; aggregate graph limits; both-party exit and retained snapshot veto; and a funded child becoming a voucher only after obtaining collateral. A3072-partition independent subset/status feasibility oracle checks cardinality, protocol eligibility, exits and expiry. These are deterministic software fixtures, not attack samples, calibrated rates or independent full dynamics.
 
 ```sh
 node --test test/vouch-admission.test.mjs test/vouch-commitments.test.mjs

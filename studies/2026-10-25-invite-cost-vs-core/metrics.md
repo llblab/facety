@@ -1,6 +1,6 @@
 # Added headline metrics — owner study addendum
 
-**Required study panels, not protocol rules, fitted laws or measured findings.** [The draft](design.json) records the additions; [BACKLOG](../../BACKLOG.md#core-v2-study-invitation-cost-versus-core) remains the only task owner. These panels must enter the committed metric/selection/correction contract before research runs. They do not remove the existing readiness gates.
+**Required study panels, not protocol rules, fitted laws or measured findings.** [The draft](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-25-invite-cost-vs-core/design.json) records the additions; [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#core-v2-study-invitation-cost-versus-core) remains the only task owner. These panels must enter the committed metric/selection/correction contract before research runs. They do not remove the existing readiness gates.
 
 ## Race: attacker growth versus effective response
 

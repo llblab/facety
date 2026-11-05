@@ -1,6 +1,6 @@
 # Seven existing review/allocation scalars — C3 implemented
 
-**2026-10-27 · C3 after 988c013.** [C2 measurement contract](measurement-contract.md)/[validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/measurement-validation.json) stay unchanged historical NOT IMPLEMENTED records. [C3 validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/measurement-implementation-validation.json) binds current source/tests/results. [C1 reservation](implementation.md) and [C0 contract](README.md) retain their separate scopes. [BACKLOG](../../BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns open work. This closes scalar admission, not an empirical security/growth/welfare result, research registration, raw-data method or G1.
+**2026-10-27 · C3 after 988c013.** [C2 measurement contract](measurement-contract.md)/[validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/measurement-validation.json) stay unchanged historical NOT IMPLEMENTED records. [C3 validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/measurement-implementation-validation.json) binds current source/tests/results. [C1 reservation](implementation.md) and [C0 contract](README.md) retain their separate scopes. [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns open work. This closes scalar admission, not an empirical security/growth/welfare result, research registration, raw-data method or G1.
 
 ## Minimal retained implementation
 
@@ -12,7 +12,7 @@ The namespace predicate and raw metricSeries table parser remain unchanged; they
 
 ## Native/software acceptance
 
-The initial new regression is red on old Source (OBSERVABLES falseSubjects is undefined rather than1); it is green after the two-owner change, with no fixture/contract/cap tuning. Seven new families in [test/review-measurement.test.mjs](../../test/review-measurement.test.mjs) cover:
+The initial new regression is red on old Source (OBSERVABLES falseSubjects is undefined rather than1); it is green after the two-owner change, with no fixture/contract/cap tuning. Seven new families in [test/review-measurement.test.mjs](https://github.com/llblab/facety/blob/legacy-node/test/review-measurement.test.mjs) cover:
 
 - **42 literal scalar expectations:** seven independent synthetic3-day columns ×six existing summaries, cumulative endpoint/change versus daily work means, subtraction/window math and the exact unchanged default observable list.
 - **Missingness:** missing endpoint/interior, explicit null/zero, absent in-row path, nonfinite/undefined, empty/censored series, incomplete full-window means and boundary-only endpoint/change behavior, declared offset/horizon/window guards.

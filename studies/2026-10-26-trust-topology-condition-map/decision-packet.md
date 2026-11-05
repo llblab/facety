@@ -1,6 +1,6 @@
 # Trust-topology master — pre-data decision packet
 
-**2026-10-26 · At most2 pages · DIAGNOSTIC orientation, not a winning rule or SAFE-region recommendation.** [G0](checkpoint-g0.md) closes inventory/ledger only. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) owns work; [DECISIONS_NEEDED](../../DECISIONS_NEEDED.md) owns candidates/defaults. No selected protocol rule is changed.
+**2026-10-26 · At most2 pages · DIAGNOSTIC orientation, not a winning rule or SAFE-region recommendation.** [G0](checkpoint-g0.md) closes inventory/ledger only. [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#trust-topology-condition-map-master-programme) owns work; [DECISIONS_NEEDED](../../DECISIONS_NEEDED.md) owns candidates/defaults. No selected protocol rule is changed.
 
 ## Decision supported now
 

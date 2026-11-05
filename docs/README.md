@@ -6,11 +6,11 @@ This index owns project navigation. The protocol is independently readable; it d
 
 - [Facety protocol](facety.protocol.en.md): living manifesto/specification: the rules in force and OPEN contracts, without provenance.
 - [Decision log](decisions.en.md): dated owner decisions, their status and what they superseded; research and development decisions (§47–§50).
-- [Simulator model](simulator.en.md): implemented semantics, [protocol coverage](simulator.en.md#protocol-coverage), research policies and explicit deviations.
+- [Simulator contract](simulator.en.md): the Rust simulator's implemented rules, levers, assumptions, deviations and statistical validation.
 - [Insight register](insights.en.md): every owner decision and finding with its evidence level and source.
 - [Integrated research](research.en.md): D76 [evidence frontier](research.en.md#minimum-evidence-frontier-d76), [longitudinal depth](research.en.md#longitudinal-population-depth-d76), D49 [resilience–growth brief](research.en.md#resilience-growth-frontier-d49), R1–R7 root map; [interaction designs](research-interactions.en.md) appendix.
 - [Witness-certified path gate/indexer (D61)](indexer.en.md): StateAccessor/witness/ref2 contracts, trust/privacy model and acceptance criteria.
-- [Mechanism register](mechanisms.json): structured causal links and open hypotheses.
+- [Mechanism register](https://github.com/llblab/facety/blob/legacy-node/docs/mechanisms.json): retired with the Node simulator (structured causal links and hypotheses; consolidated findings replace it).
 
 ## Method references
 

@@ -2,7 +2,7 @@
 
 ## Classification and execution boundary
 
-**EXPLORATORY — all 432 predeclared runs completed, no registered mechanism confirmation.** This is a D39/R1–R6 follow-up to F26's unresolved target-priority alternative, not a confirmation or a new Facety rule. The [design brief](../../docs/research-interactions.en.md#bounded-discriminator-service-order-sensitivity-p16) owns the causal question; [BACKLOG.md](../../BACKLOG.md#integrated-research-programme-d39) owns execution.
+**EXPLORATORY — all 432 predeclared runs completed, no registered mechanism confirmation.** This is a D39/R1–R6 follow-up to F26's unresolved target-priority alternative, not a confirmation or a new Facety rule. The [design brief](../../docs/research-interactions.en.md#bounded-discriminator-service-order-sensitivity-p16) owns the causal question; [BACKLOG.md](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#integrated-research-programme-d39) owns execution.
 
 Only package service priority changes. Discovery/package creation and settlement stay in Mira/Aster order. Both valid permutations retain the same funded prefix, latent subject/stage draws, sponsor wallet/individual XP, two opportunities, 10 work units and 72–96-hour window. The relay stays a one-step reserved-stake reference, not the full cohort/Council pipeline or D33/D34 implementation.
 

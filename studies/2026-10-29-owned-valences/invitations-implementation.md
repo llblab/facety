@@ -1,6 +1,6 @@
 # Owned valences V2 — invitation-side units implementation checkpoint
 
-**2026-10-29 · opt-in reference engineering after the [pre-code contract](invitations-contract.md) (`a7188b8`); not a default, migration or empirical result.** [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) owns V3.
+**2026-10-29 · opt-in reference engineering after the [pre-code contract](invitations-contract.md) (`a7188b8`); not a default, migration or empirical result.** [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#trust-topology-condition-map-master-programme) owns V3.
 
 ## What exists
 

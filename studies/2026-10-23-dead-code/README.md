@@ -6,7 +6,7 @@ Removed the disconnected `src/relay.mjs`, `src/trace.mjs`, `src/walkthroughs.mjs
 
 ## Preservation boundary
 
-[preservation.mjs](preservation.mjs) extracts the previous committed source into an isolated temporary directory and compares it with the current checkout. It asserts that the only source differences are the three deletions, then compares every retained field except provenance in all **10 named walkthroughs and 288 paired runs**, including the retained historical raw outputs. It also verifies all **116 pre-existing study files** byte-for-byte against that commit.
+[preservation.mjs](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-23-dead-code/preservation.mjs) extracts the previous committed source into an isolated temporary directory and compares it with the current checkout. It asserts that the only source differences are the three deletions, then compares every retained field except provenance in all **10 named walkthroughs and 288 paired runs**, including the retained historical raw outputs. It also verifies all **116 pre-existing study files** byte-for-byte against that commit.
 
 The source digest changes from `1338b35c06a19c668b833b84fa6f15f9152c98082e811efee672ab64f421d3fb` (28 modules) to `5affbad3eda494794d9aea8308cccaaca6a8c14bf43229cf76a8bf94afb556b5` (25). No remaining source module, protocol default, random generator, logical random-key layout, or behavioral policy changed. [preservation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-dead-code/preservation.json) retains the measured identities and output digests.
 

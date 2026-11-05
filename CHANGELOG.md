@@ -4,6 +4,13 @@ Milestone ledger, newest first. Owner decisions and their dates live in the [dec
 
 ## Unreleased
 
+### Consolidation and the Rust simulator (2026-11-05)
+
+- Milestone: the Node.js simulator, its 113 test files, the CLI, examples, the mechanism register and all raw study artifacts are deleted; the last version is the git tag `legacy-node` (D130, D132). Links into deleted files and retired pages were rewritten to permanent links at the tag; method pages of the retired machinery became stubs.
+- The Rust simulator (`simulator/`, standard library only) replaces it: world rules, runner, three attacker strategies, always-on detection, snapshot cloning, 24 tests including a documentation integrity guard (links, anchors, English-only). Statistical validation against the retired simulator is in the [simulator contract](docs/simulator.en.md#baseline-validation-statistical); the speed gain is about 300 times for growing to 1000 accounts.
+- D131: accounts in an open dispute are not path intermediaries (default). D129: dirty-FACY share at most 10% and clean share at least two thirds.
+- The insight register gained a [consolidated findings](docs/insights.en.md#consolidated-findings) section; the exploratory topology entries were folded into it; BACKLOG, README, AGENTS and the grown-network study were rewritten compactly.
+
 ### Path depth and supported intermediaries (2026-11-05)
 
 - Milestone: attack simulations run only with detection on (D125); no-detection arms are retired as self-evident. Milestone: the simulator moves from Node to one Rust crate (`simulator/`, D130; tag `legacy-node` at cutover); the ignored `results/` artifact directory was deleted, conclusions stay in the study pages.

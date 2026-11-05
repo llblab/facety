@@ -1,6 +1,6 @@
 # Support-allocation control fixed; actual scientific admission is absent
 
-**2026-10-27 · DIAGNOSTIC pre-data arithmetic/API evidence only.** [Contract before probes](support-allocation-contract.md) · [two-arm design](support-allocation-design.json) · [executable no-outcome check](support-allocation-admission.mjs) · [raw/bindings](support-allocation-results.json). Source07389324/test/runtime unchanged fromf5bc841; no new network run/registration/reserved seed or scientific world. BACKLOG alone owns next work.
+**2026-10-27 · DIAGNOSTIC pre-data arithmetic/API evidence only.** [Contract before probes](support-allocation-contract.md) · [two-arm design](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-trust-topology-condition-map/support-allocation-design.json) · [executable no-outcome check](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-trust-topology-condition-map/support-allocation-admission.mjs) · [raw/bindings](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-trust-topology-condition-map/support-allocation-results.json). Source07389324/test/runtime unchanged fromf5bc841; no new network run/registration/reserved seed or scientific world. BACKLOG alone owns next work.
 
 ## A genuinely matched question, not a favorable historical comparison
 

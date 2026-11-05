@@ -2,15 +2,15 @@
 
 **Objective/deliverables superseded:** the owner's [condition-map study](../2026-10-25-condition-map/README.md) now owns the single active scope. CORE rules/arms/primary and this source/audit history are retained; the former 10x headline, mandatory single-alpha headline gate and one-page final deliverables below are historical preparation, not a second study. No outcomes or registration have been upgraded or replayed.
 
-**Preparation only; proposal under test, not selected protocol.** The owner supplied CORE v2 after the earlier P/b engineering checkpoint. Protocol meaning stays with [the living specification](../../docs/facety.protocol.en.md); this study's scope/arms follow the new direction. No D-decision or OPEN contract is filled. [BACKLOG](../../BACKLOG.md#core-v2-study-invitation-cost-versus-core) is the only task owner. The spreadsheet is optional background, not authority to change rules.
+**Preparation only; proposal under test, not selected protocol.** The owner supplied CORE v2 after the earlier P/b engineering checkpoint. Protocol meaning stays with [the living specification](../../docs/facety.protocol.en.md); this study's scope/arms follow the new direction. No D-decision or OPEN contract is filled. [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#core-v2-study-invitation-cost-versus-core) is the only task owner. The spreadsheet is optional background, not authority to change rules.
 
 ## Status and artifacts
 
-- [Design draft](design.json):12 Part1 arms, CORE/legacy bundle, new primary, hypothesis ledger and unbound registration fields. It is explicitly NOT `facety-hypothesis/v2` and cannot be represented as a successful preregistration.
+- [Design draft](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-25-invite-cost-vs-core/design.json):12 Part1 arms, CORE/legacy bundle, new primary, hypothesis ledger and unbound registration fields. It is explicitly NOT `facety-hypothesis/v2` and cannot be represented as a successful preregistration.
 - [Headline metric contract](metrics.md): Growth/response race and N* exposure, separate attacker profit/honest harm, sabotage objectives and mandatory network-effect alpha1.5 gate; estimators and response-law bindings remain explicit before registration.
 - [Reuse/assumption audit](audit.md): the three requested source studies, their actual configs/assumption audit, native capabilities, failure modes and candidate contract trade-offs.
 - [One-page pre-data decision packet](decision-packet.md): no inferred winning rule or fabricated sensitivity ranking.
-- [Source manifest](source-manifest.json):23 source blobs at `6c3976e`, prior deterministic exposure, zero new study simulations/search evaluations and no allocated confirmation labels.
+- [Source manifest](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-25-invite-cost-vs-core/source-manifest.json):23 source blobs at `6c3976e`, prior deterministic exposure, zero new study simulations/search evaluations and no allocated confirmation labels.
 
 **Registration: not created. Research runs:0. Results: none.** The source implementation supports the old P/b constructor only; it does not execute this new primary, BOND, CORE, adaptive search or the requested headline through native v2 registration. No historical trajectory, study or confirmation was rerun. Existing raw artifacts/guards are unchanged. Registration/capture stop at the listed gates rather than inventing outcomes or protocols. Contract-independent engineering may still prepare a mandatory-parameter claim guard and its software tests; no missing window/maturity/lapse rule may acquire a default or be reported as a chosen primary.
 

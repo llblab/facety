@@ -4,7 +4,7 @@
 
 Does the encoded invitation-veto benefit survive explicit scarce, heterogeneous attention windows, without increasing daily quotas or resetting budgets? This is the next D44 boundary control authorized by the owner's backlog-continuation request on 2026-10-24, not a restart of the whole D39 programme or a migration of D33/D34/D42.
 
-The [fixed design](design.json), [executable capture](run.mjs), [offline analyzer](analyze.mjs) and synthetic contract tests were committed/pushed as `d295092` before collecting this cohort. Four exclusive attempts captured all 24 cases once; all completed seven days without run-level censoring. F48's packet stays closed and unchanged.
+The [fixed design](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/design.json), [executable capture](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/run.mjs), [offline analyzer](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/analyze.mjs) and synthetic contract tests were committed/pushed as `d295092` before collecting this cohort. Four exclusive attempts captured all 24 cases once; all completed seven days without run-level censoring. F48's packet stays closed and unchanged.
 
 ## Fixed control
 
@@ -26,7 +26,7 @@ Values below preserve seed order 01…04. All three observe-only contexts have f
 | One tick/day, phase 0 | 3, 1, 6, 0 | 4, 0, 3, 0 | 12, 0, 18, 0 |
 | One tick/day, phase +4 h | 2, 0, 4, 1 | 1, 0, 1, 0 | 7, 0, 12, 0 |
 
-Scarce-calendar active means are 2.5 / 1.75 false admissions, 1.75 / 0.5 conversions and 7.5 / 4.75 false XP; ranges remain in the [report](report.json). These are four supplied worlds per cell, not calibrated human reaction or attack probabilities. A four-hour opportunity grid alone does not preserve the all-available result under the encoded quota/calendar intersection.
+Scarce-calendar active means are 2.5 / 1.75 false admissions, 1.75 / 0.5 conversions and 7.5 / 4.75 false XP; ranges remain in the [report](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/report.json). These are four supplied worlds per cell, not calibrated human reaction or attack probabilities. A four-hour opportunity grid alone does not preserve the all-available result under the encoded quota/calendar intersection.
 
 Across four active worlds, all-ticks records **20 paid reviews / 13 positive signals and cancellations**; scarce phase 0 records **7 / 6**, phase +4 h **12 / 9**. Cancellation ages are respectively 4–16, 4–16 and 4–20 h. Inspection and cancellation budget denials are zero throughout: this packet demonstrates a calendar/timing boundary, not funding exhaustion. Every inspected invitation target is false by the fixed script. Genuine-harm coverage was disabled, so zero genuine cancellations is not evidence of safety.
 
@@ -36,11 +36,11 @@ Gross active review/response work is **33 / 13 / 21** unit-weight work across fo
 
 **Horizon boundary:** run-level completion does not complete every invitation's lifetime. Active worlds retain open-invitation counts `[0,0,1,0]` / `[1,0,1,0]` / `[1,0,1,0]`; late pending invitations do not establish prevention beyond hour 168. No endogenous vigilance, useful retention, universal cadence superiority, correlated/adversarial evidence resistance, sparse-support robustness or selected D34/D42 implementation follows.
 
-The [post-data author audit](audit.mjs)/[output](audit.json) separately records unchanged observe-only states, open invitations, cancellation ages and gross costs; it is not a pre-data-registered confirmation or independent review. Four software test families validate calendars/units, malformed inputs, journal/deadline accounting and offline byte-identical reanalysis; `npm test`: **295 passed**. Native source, pre-data capture/analyzer/design and historical studies are unchanged.
+The [post-data author audit](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/audit.mjs)/[output](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/audit.json) separately records unchanged observe-only states, open invitations, cancellation ages and gross costs; it is not a pre-data-registered confirmation or independent review. Four software test families validate calendars/units, malformed inputs, journal/deadline accounting and offline byte-identical reanalysis; `npm test`: **295 passed**. Native source, pre-data capture/analyzer/design and historical studies are unchanged.
 
 ## Slot/window reconstruction (F50, diagnostic)
 
-The separate post-data [auditor](slot-audit.mjs), [report](slot-audit.json) and [artifact manifest](slot-audit-manifest.json) reconstruct **all 24 stage-counter vectors, evaluator signal counts and actual cancellation witnesses**. It imports no `FacetyModel`, experiment runner or admission/enforcement code. It reads the sealed F49 manifest/inputs, checks exact random/placement-kernel hashes, derives the original keyed slots/signals, and orders incoming links from proposal/activation events rather than inferring historical support from a terminal graph. Only the fixed no-exit/no-adjudication/no-verification/unstrained-review contract is supported; unimplemented chronology is not invented.
+The separate post-data [auditor](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/slot-audit.mjs), [report](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/slot-audit.json) and [artifact manifest](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-guardian-availability/slot-audit-manifest.json) reconstruct **all 24 stage-counter vectors, evaluator signal counts and actual cancellation witnesses**. It imports no `FacetyModel`, experiment runner or admission/enforcement code. It reads the sealed F49 manifest/inputs, checks exact random/placement-kernel hashes, derives the original keyed slots/signals, and orders incoming links from proposal/activation events rather than inferring historical support from a terminal graph. Only the fixed no-exit/no-adjudication/no-verification/unstrained-review contract is supported; unimplemented chronology is not invented.
 
 Across four seeds per active context:
 

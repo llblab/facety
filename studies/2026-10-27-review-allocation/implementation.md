@@ -1,6 +1,6 @@
 # Opt-in review-work reservation — implemented engineering checkpoint
 
-**2026-10-27 · D63 · C1 implementation after the committed dc97602 contract.** [The C0 contract](README.md)/[pre-code validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/contract-validation.json) remain unchanged historical NOT IMPLEMENTED/NOT RUN records. This document and [implementation validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/implementation-validation.json) describe current code. [BACKLOG](../../BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns remaining work. This is an allocator/config/software-API result, **not new empirical fraud prevention, emergence, human behavior, welfare, G1 or a selected protocol rule**.
+**2026-10-27 · D63 · C1 implementation after the committed dc97602 contract.** [The C0 contract](README.md)/[pre-code validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/contract-validation.json) remain unchanged historical NOT IMPLEMENTED/NOT RUN records. This document and [implementation validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-27-review-allocation/implementation-validation.json) describe current code. [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#d44-guarantor-prevention-boundaries) alone owns remaining work. This is an allocator/config/software-API result, **not new empirical fraud prevention, emergence, human behavior, welfare, G1 or a selected protocol rule**.
 
 ## What actually changed
 
@@ -16,7 +16,7 @@ A named assumption is emitted only on nonzero experiment reports, alongside any 
 
 The first missing-feature regression was red on old source: B4/R2 still paid [1,1,1,1,0,0] rather than [1,1,0,0,1,1]. It is green on implemented source: setup remains paid, two ordinary actions are denied, inspect/respond are paid, **same4 effort/6 calls**. This is intentionally encoded resource displacement, not an emergent benefit.
 
-Seven new families in [test/review-reserve.test.mjs](../../test/review-reserve.test.mjs) cover:
+Seven new families in [test/review-reserve.test.mjs](https://github.com/llblab/facety/blob/legacy-node/test/review-reserve.test.mjs) cover:
 
 - **Independent cumulative BigInt reference:**1080 deterministic two-cohort/phase/weighted traces/19440 calls, current exact ticket and full audited snapshot equality after each call. The reference computes general use from all paid cost minus min(R,eligible paid cost), not production per-ticket split logic. Micro/0.1/unit quanta, zero weights, general/reserve/combined exhaustion, accepted/rejected work and maxActions are partitioned; pooled cases also check serialized summary bytes.
 - **Input/ownership:** malformed/null/array/nonfinite/negative/over-budget/unsafe precision, copied reservation values, immutable normalized config and nonmutating returned summary/audit snapshots. No private-state injection/host sandbox claim.

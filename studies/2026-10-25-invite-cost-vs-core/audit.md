@@ -1,6 +1,6 @@
 # Reuse and assumption audit
 
-**Source inspection, not a study result or implementation approval.** The base is `6c3976e`; [the source manifest](source-manifest.json) binds23 existing source/document blobs. No old study, model trajectory, search or seed was executed to produce this audit.
+**Source inspection, not a study result or implementation approval.** The base is `6c3976e`; [the source manifest](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-25-invite-cost-vs-core/source-manifest.json) binds23 existing source/document blobs. No old study, model trajectory, search or seed was executed to produce this audit.
 
 ## Reusable evidence and code
 

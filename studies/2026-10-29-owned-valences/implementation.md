@@ -1,6 +1,6 @@
 # Owned valences V1 — implementation checkpoint
 
-**2026-10-29 · opt-in reference engineering after the [pre-code contract](README.md) (`b6e01ae`); not a default, migration or empirical result.** [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) owns the remaining V2/V3 slices.
+**2026-10-29 · opt-in reference engineering after the [pre-code contract](README.md) (`b6e01ae`); not a default, migration or empirical result.** [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#trust-topology-condition-map-master-programme) owns the remaining V2/V3 slices.
 
 ## What exists
 

@@ -1,6 +1,6 @@
 # WP1 closed native composition contract
 
-**DIAGNOSTIC preparation, not G1 or a complete CORE/population engine.** This scopes `native-funded-composition-reference/v1` for the next genuinely independent reference. [The executable fixture](wp1-composition-fixture.json) binds one concrete instance; [integration tests](../../test/vouch-composition.test.mjs) exercise all four existing components together. Neither artifact is a hypothesis registration or research run. The test-local role/action guard is not authentication, an agent sandbox or a production permission port.
+**DIAGNOSTIC preparation, not G1 or a complete CORE/population engine.** This scopes `native-funded-composition-reference/v1` for the next genuinely independent reference. [The executable fixture](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-trust-topology-condition-map/wp1-composition-fixture.json) binds one concrete instance; [integration tests](https://github.com/llblab/facety/blob/legacy-node/test/vouch-composition.test.mjs) exercise all four existing components together. Neither artifact is a hypothesis registration or research run. The test-local role/action guard is not authentication, an agent sandbox or a production permission port.
 
 ## Action and authority closure
 

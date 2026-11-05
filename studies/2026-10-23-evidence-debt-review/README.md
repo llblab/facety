@@ -23,7 +23,7 @@ The four startup stages exited successfully and substantive tool access was subs
 
 ## E1 — Medium: Aggregate contradiction multiplicity
 
-Original finding: evidence reviewer; independently reproduced by the verifier and then by the coordinator's [witness.mjs](witness.mjs).
+Original finding: evidence reviewer; independently reproduced by the verifier and then by the coordinator's [witness.mjs](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-23-evidence-debt-review/witness.mjs).
 
 Each claim/context has an unadjusted lower-tail contradiction test, but any such flag makes the whole hypothesis `contradicted`. This is not the support-side intersection-union test. In a synthetic 32-claim registration with five replicas, one claim receives five low values while the others receive high values. The native aggregate verdict is `contradicted`; the flagged raw p-value is `0.03125`, whereas the Holm comparison is `1`.
 
@@ -60,6 +60,6 @@ The detailed existing reservation regression uses legacy timing, while the selec
 node studies/2026-10-23-evidence-debt-review/witness.mjs
 ```
 
-[witness.json](witness.json) retains the synthetic inputs, registrations, outputs and source/runtime identity. It demonstrates the reviewed implementation's current defects, so replay requires that implementation; a future integrity repair is expected to reject the E2 construction instead. The script does not simulate, confirm a hypothesis or overwrite its output file.
+[witness.json](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-23-evidence-debt-review/witness.json) retains the synthetic inputs, registrations, outputs and source/runtime identity. It demonstrates the reviewed implementation's current defects, so replay requires that implementation; a future integrity repair is expected to reject the E2 construction instead. The script does not simulate, confirm a hypothesis or overwrite its output file.
 
 Fresh coordinator checks: E1/E2 and retained-input observation reproduced, exact six-report retention and execution mappings checked, runtime source/tests/examples/CLI/package and all prior study artifacts compared to the target, context validator and whitespace check. [validation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/validation.json) records this evidence. Prior 221-test/DAG evidence from the unchanged target is reused, not relabeled as a fresh test run. Findings remain unresolved; Checkpoint 3 is narrowed to their remediation and remaining scientific/input-boundary decisions, not declared fully accepted.

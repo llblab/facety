@@ -1,6 +1,6 @@
 # WP1 fixed-prefix continuation sensitivity — full prospective prespec
 
-**2026-10-28 · frozen pre-data design, NOT a native registration, executed study, scientific result or G1.** [Numeric design](wp1-continuation-design.json) is the sole parameter/decision record; it is explicitly NOT `facety-hypothesis/v2`. [Method-fit](wp1-continuation-method-fit.md) established a conditional existing-API route. BACKLOG owns work. No Model/config/registration constructor, reference/test/experiment/world/seed call occurs in this cohort; the only executable planning check is arithmetic on these fixed numbers.
+**2026-10-28 · frozen pre-data design, NOT a native registration, executed study, scientific result or G1.** [Numeric design](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-trust-topology-condition-map/wp1-continuation-design.json) is the sole parameter/decision record; it is explicitly NOT `facety-hypothesis/v2`. [Method-fit](wp1-continuation-method-fit.md) established a conditional existing-API route. BACKLOG owns work. No Model/config/registration constructor, reference/test/experiment/world/seed call occurs in this cohort; the only executable planning check is arithmetic on these fixed numbers.
 
 ## Claim and scenario, not a new mechanism
 

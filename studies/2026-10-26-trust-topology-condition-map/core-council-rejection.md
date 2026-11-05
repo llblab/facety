@@ -1,6 +1,6 @@
 # Core C1: Council-reference rejection without a winning ordinary entrant
 
-**2026-10-27 · base f9fe4c0 · narrow corrective contract written before code.** During the existing-owner D72 contract probe, fixed software input—not research labels—found a current runtime crash. This retargets the one bounded C1 cohort to a correctness prerequisite, not a second cohort, new Council design or permission to capture post-G1 data. [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) alone owns remaining work.
+**2026-10-27 · base f9fe4c0 · narrow corrective contract written before code.** During the existing-owner D72 contract probe, fixed software input—not research labels—found a current runtime crash. This retargets the one bounded C1 cohort to a correctness prerequisite, not a second cohort, new Council design or permission to capture post-G1 data. [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#trust-topology-condition-map-master-programme) alone owns remaining work.
 
 ## Actual failure and retained input
 

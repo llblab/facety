@@ -1,6 +1,6 @@
 # Causal core: preservation, visible paths and matched relay
 
-**Documented 2026-10-23. Evidence: diagnostic and exploratory, not a registered confirmation or real-world reliability result.** This is the bounded causal-clarity iteration, not execution of every item in the broader mandate. Canonical meaning and designs live in the [mechanism chapter](../../docs/research.en.md#executable-causal-core) and [structured register](../../docs/mechanisms.json); this folder owns checkpoint evidence.
+**Documented 2026-10-23. Evidence: diagnostic and exploratory, not a registered confirmation or real-world reliability result.** This is the bounded causal-clarity iteration, not execution of every item in the broader mandate. Canonical meaning and designs live in the [mechanism chapter](../../docs/research.en.md#executable-causal-core) and [structured register](https://github.com/llblab/facety/blob/legacy-node/docs/mechanisms.json); this folder owns checkpoint evidence.
 
 ## Starting and retained state
 
@@ -23,7 +23,7 @@ No commit, push, publication, human recruitment, reserved-seed confirmation or h
 
 ### Preservation boundary
 
-[preservation.mjs](preservation.mjs) captured [preservation-baseline.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-causal-core/preservation-baseline.json) before the extraction. It temporarily instruments the scheduler in memory to expose the complete ordered native event log. Twelve declared contexts cross one-step/instant/timed procedures, unsecured/reserved backing and social hooks off/on. All returned fields plus ordered events, excluding implementation provenance, match exactly.
+[preservation.mjs](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-23-causal-core/preservation.mjs) captured [preservation-baseline.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-causal-core/preservation-baseline.json) before the extraction. It temporarily instruments the scheduler in memory to expose the complete ordered native event log. Twelve declared contexts cross one-step/instant/timed procedures, unsecured/reserved backing and social hooks off/on. All returned fields plus ordered events, excluding implementation provenance, match exactly.
 
 [preservation-current.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-causal-core/preservation-current.json) binds the current result. [preservation.json](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-causal-core/preservation.json) is an earlier intermediate result and is intentionally retained separately. This does not prove universal equivalence or replay a historical full implementation. Numeric failure hardening below is an intentional correctness change, not an equivalence claim for previously partial failures.
 

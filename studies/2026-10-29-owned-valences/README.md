@@ -1,6 +1,6 @@
 # Owned valences and K counting (D83/D93/D94/D97/D100) — V1 pre-code contract
 
-**2026-10-29 · opt-in reference engineering, NOT IMPLEMENTED at this commit.** Owner semantics live in [§19.4](../../docs/facety.protocol.en.md#194-active-mutual-guarantee-links-and-a-variable-ceiling-d75d81) and [§19](../../docs/facety.protocol.en.md#19-two-sided-guarantee-establishment); [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme) owns the work. This contract is committed before code. It selects no OPEN rule: every unresolved choice below is a required explicit binding with no default. No default, legacy behavior, RNG, experiment engine or historical study changes.
+**2026-10-29 · opt-in reference engineering, NOT IMPLEMENTED at this commit.** Owner semantics live in [§19.4](../../docs/facety.protocol.en.md#194-active-mutual-guarantee-links-and-a-variable-ceiling-d75d81) and [§19](../../docs/facety.protocol.en.md#19-two-sided-guarantee-establishment); [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#trust-topology-condition-map-master-programme) owns the work. This contract is committed before code. It selects no OPEN rule: every unresolved choice below is a required explicit binding with no default. No default, legacy behavior, RNG, experiment engine or historical study changes.
 
 ## Scope
 

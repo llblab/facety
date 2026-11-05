@@ -41,7 +41,7 @@ No runtime source is changed to choose that contract. Repeated `+voided` metadat
 
 ## Stop and exact unblocker
 
-The canonical [BACKLOG](../../BACKLOG.md#paused-correctness-loop-repeat-verdict-authority-gate) is paused at the selected stop condition. No Grow Loop continuation is scheduled. D33 implementation remains separately gated.
+The canonical [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#paused-correctness-loop-repeat-verdict-authority-gate) is paused at the selected stop condition. No Grow Loop continuation is scheduled. D33 implementation remains separately gated.
 
 **Smallest owner question:** may a separately admitted case impose a new penalty on a guarantor for already voided acts, or only for newly adjudicated acts/duties?
 

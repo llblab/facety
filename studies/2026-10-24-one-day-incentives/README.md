@@ -1,6 +1,6 @@
 # P23 one-day incentive fixture: software checkpoint
 
-Date: 2026-10-24. Owner: [the existing one-day port item](../../BACKLOG.md). Contract: [incentive direction](../../docs/incentives.en.md#one-day-counterpart-contract-p23). This directory retains implementation/compatibility validation and the source-bound **diagnostic** results below, not a mechanism confirmation or calibrated participation finding.
+Date: 2026-10-24. Owner: [the existing one-day port item](../../BACKLOG.md). Contract: [incentive direction](https://github.com/llblab/facety/blob/legacy-node/docs/incentives.en.md#one-day-counterpart-contract-p23). This directory retains implementation/compatibility validation and the source-bound **diagnostic** results below, not a mechanism confirmation or calibrated participation finding.
 
 ## Implemented boundary
 
@@ -33,7 +33,7 @@ bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root .
 
 ## Pre-execution report design
 
-**Prepared 2026-10-24 and committed as `5f4ec1b` before the recorded execution below.** [`run.mjs`](run.mjs) owns the closed machine-readable `reportDesign()` and pure `analyzeRaw()` transformation. This is a diagnostic execution of an encoded reference plus conditional terminal arithmetic, not a registered emergent-mechanism confirmation or an inferential sample. No study results were collected in the preparation pass; its constructed test inputs are software validation, not historical science or authenticated provenance.
+**Prepared 2026-10-24 and committed as `5f4ec1b` before the recorded execution below.** [`run.mjs`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-one-day-incentives/run.mjs) owns the closed machine-readable `reportDesign()` and pure `analyzeRaw()` transformation. This is a diagnostic execution of an encoded reference plus conditional terminal arithmetic, not a registered emergent-mechanism confirmation or an inferential sample. No study results were collected in the preparation pass; its constructed test inputs are software validation, not historical science or authenticated provenance.
 
 ### Bound and source
 
@@ -71,7 +71,7 @@ All raw adverse, null and positive comparisons remain. There are no p-values, co
 
 ## Executed diagnostic results (F45)
 
-**Executed once, 2026-10-24**, from committed runner/design `5f4ec1b014a49ba062bd68f4a749c961109d9e8e`, with the pinned native digest/runtime above. The [completion manifest](results/manifest.json), [complete raw inputs](results/raw.json) and [full report](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-24-one-day-incentives/results/report.json) retain exactly the declared bound. These are encoded-rule accounting and conditional arithmetic, not emergent discovery, a statistical sample or human observations. No cases were added after inspecting output.
+**Executed once, 2026-10-24**, from committed runner/design `5f4ec1b014a49ba062bd68f4a749c961109d9e8e`, with the pinned native digest/runtime above. The [completion manifest](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-one-day-incentives/results/manifest.json), [complete raw inputs](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-one-day-incentives/results/raw.json) and [full report](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-24-one-day-incentives/results/report.json) retain exactly the declared bound. These are encoded-rule accounting and conditional arithmetic, not emergent discovery, a statistical sample or human observations. No cases were added after inspecting output.
 
 ### Funded protocol accounting
 
@@ -134,7 +134,7 @@ These are sponsor-**operator** totals. The controlled overlay counts newcomer-wa
 
 ### Retained-data audit and assurance
 
-[`audit.mjs`](audit.mjs) is a **post-data author audit**, not a preregistered test or independent reviewer. Without calling the model or either payoff/ownership analyzer it reconstructs raw sponsor deltas, micro-unit work, all 56 scores/components/thresholds/choice summaries, 30 checkpoint accounts/credit views, 12 evaluator branch outcomes and eight operator comparisons. It verifies completion/file/code hashes against the recorded Git source and retains [its full result](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-24-one-day-incentives/execution-audit.json). It shares only standard hashing/identity support, not the economic analyzers being checked. This is bounded software/data consistency, not input authentication or proof of every protocol event.
+[`audit.mjs`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-24-one-day-incentives/audit.mjs) is a **post-data author audit**, not a preregistered test or independent reviewer. Without calling the model or either payoff/ownership analyzer it reconstructs raw sponsor deltas, micro-unit work, all 56 scores/components/thresholds/choice summaries, 30 checkpoint accounts/credit views, 12 evaluator branch outcomes and eight operator comparisons. It verifies completion/file/code hashes against the recorded Git source and retains [its full result](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-24-one-day-incentives/execution-audit.json). It shares only standard hashing/identity support, not the economic analyzers being checked. This is bounded software/data consistency, not input authentication or proof of every protocol event.
 
 The manifest records raw JSON **244,549 bytes**, SHA-256 `c77ecd596e3478596336bf7bfb01328f0b47bb15ac52f2a2de41ebb61595aabc`, and report JSON **556,966 bytes**, SHA-256 `38024006fcae97e8eecd8acc43770384e6809b592ba3b6a142942477f00726c9`. Source/design/code/raw bindings and every case passed the retained-data audit. The repository's generic `results/` ignore rule is unchanged; these three exact dated study artifacts are intentionally force-tracked, not transient output. Native source, frozen runner and prior controls are unchanged; the 252-test and 27-module/66-edge DAG evidence is reused under exact source identity, not rerun for new confidence. See `execution-validation.json` for the final evidence boundary.
 

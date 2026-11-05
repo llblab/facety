@@ -1,6 +1,6 @@
 # Owned valences V3 — Council paths and bootstrap implementation checkpoint
 
-**2026-10-29 · opt-in reference engineering after the [pre-code contract](council-paths-contract.md) (`702466c`); not a default, migration or empirical result.** The remaining OPEN contracts (mixed terminals, D33 Council, verified independence, mature decline below 100, D95 re-entry) stay in [BACKLOG](../../BACKLOG.md#trust-topology-condition-map-master-programme).
+**2026-10-29 · opt-in reference engineering after the [pre-code contract](council-paths-contract.md) (`702466c`); not a default, migration or empirical result.** The remaining OPEN contracts (mixed terminals, D33 Council, verified independence, mature decline below 100, D95 re-entry) stay in [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#trust-topology-condition-map-master-programme).
 
 ## What exists
 

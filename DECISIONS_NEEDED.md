@@ -1,6 +1,6 @@
 # Research decisions and assumption ledger
 
-This register owns open questions, candidate trade-offs, placeholder provenance and defaults taken — not tasks ([BACKLOG](BACKLOG.md#trust-topology-condition-map-master-programme)) and not selected meaning ([protocol](docs/facety.protocol.en.md), Appendix A). Implementation evidence lives in the [WP0 inventory](studies/2026-10-26-trust-topology-condition-map/orientation.md) and study pages. Recording a clarification never authorizes an uncontracted default migration. The pre-consolidation ledger with full narrative is at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/DECISIONS_NEEDED.md).
+This register owns open questions, candidate trade-offs, placeholder provenance and defaults taken — not tasks ([BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#trust-topology-condition-map-master-programme)) and not selected meaning ([protocol](docs/facety.protocol.en.md), Appendix A). Implementation evidence lives in the [WP0 inventory](studies/2026-10-26-trust-topology-condition-map/orientation.md) and study pages. Recording a clarification never authorizes an uncontracted default migration. The pre-consolidation ledger with full narrative is at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/DECISIONS_NEEDED.md).
 
 ## Assumptions taken for D123/D124 (2026-11-05)
 

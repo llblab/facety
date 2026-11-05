@@ -1,6 +1,6 @@
 # Witness-certified path gate and indexer — WP-G
 
-**2026-10-26 · D61 [DIRECTION] · M0 charter with later engineering checkpoints, not a research result.** Source: the owner's full witness/indexer implementation-track instruction. This is an implementation track inside the master condition-map research/evidence envelope, not a second research programme. [BACKLOG](../../BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns executable tasks; [DECISIONS_NEEDED](../../DECISIONS_NEEDED.md#wp-g-owner-questions-and-reference-contracts-d61) owns unresolved choices.
+**2026-10-26 · D61 [DIRECTION] · M0 charter with later engineering checkpoints, not a research result.** Source: the owner's full witness/indexer implementation-track instruction. This is an implementation track inside the master condition-map research/evidence envelope, not a second research programme. [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#wp-g-witness-certified-path-gate-and-indexer-d61) alone owns executable tasks; [DECISIONS_NEEDED](../../DECISIONS_NEEDED.md#wp-g-owner-questions-and-reference-contracts-d61) owns unresolved choices.
 
 ## Direction and present decision
 
@@ -10,19 +10,19 @@ Implement an opt-in bounded path witness and deterministic verifier before advis
 
 ## Milestone history
 
-Each milestone page holds its contract, API, validation links and limits; pre-code contracts were committed before code (frozen-contract commits listed) and survive verbatim at [`8b77cd8`](https://github.com/llblab/facety/tree/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer). All results are DIAGNOSTIC software/algorithm evidence on tiny supplied domains; the module/export table is in the [model contract](../../docs/simulator.en.md#witness-certified-path-gate-and-indexer-d61) and one-line findings in the [insight register](../../docs/insights.en.md#findings-d61-witness-indexer-2026-10-26).
+Each milestone page holds its contract, API, validation links and limits; pre-code contracts were committed before code (frozen-contract commits listed) and survive verbatim at [`8b77cd8`](https://github.com/llblab/facety/tree/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-26-witness-indexer). All results are DIAGNOSTIC software/algorithm evidence on tiny supplied domains; the module/export table is in the [model contract](https://github.com/llblab/facety/blob/legacy-node/docs/simulator.en.md#witness-certified-path-gate-and-indexer-d61) and one-line findings in the [insight register](../../docs/insights.en.md#findings-d61-witness-indexer-2026-10-26).
 
 | Milestone | Pages (pre-code contract → implementation) | Outcome |
 | --- | --- | --- |
-| M1-A codec/policy | [m1-wire](m1-wire.md), [wire vectors](wire-vectors.json) | Canonical bounded wire bound to domain/subject/epoch/policy. |
-| M1-B verifier | [m1-verifier](m1-verifier.md), [verifier vectors](verifier-vectors.json) | Primary + dependency-separated ref2; exact compatible D-family for slack 0–1. |
+| M1-A codec/policy | [m1-wire](m1-wire.md), [wire vectors](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-witness-indexer/wire-vectors.json) | Canonical bounded wire bound to domain/subject/epoch/policy. |
+| M1-B verifier | [m1-verifier](m1-verifier.md), [verifier vectors](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-witness-indexer/verifier-vectors.json) | Primary + dependency-separated ref2; exact compatible D-family for slack 0–1. |
 | M2-A views | [m2-view](m2-view.md) | Immutable graph/Native public-state captures. |
-| M2-B oracle | [m2-oracle](m2-oracle.md), [oracle vectors](oracle-vectors.json) | Exact bounded-hop search; found/infeasible/censored/unavailable. |
+| M2-B oracle | [m2-oracle](m2-oracle.md), [oracle vectors](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-witness-indexer/oracle-vectors.json) | Exact bounded-hop search; found/infeasible/censored/unavailable. |
 | M2-C replay | [m2-replay](m2-replay.md) | Native structural journal/version audit; not economic replay. |
 | M3-A cache | [m3-cache](m3-cache.md), [epoch fix](m3-cache-epoch.md) | Advisory whole-witness cache; every hit re-verified; requested-epoch binding corrected. |
-| M3-B trees | [m3-trees](m3-trees.md), [single-tree miss](single-tree-miss.json) | Single-parent trees expose explicit misses vs the oracle. |
+| M3-B trees | [m3-trees](m3-trees.md), [single-tree miss](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-witness-indexer/single-tree-miss.json) | Single-parent trees expose explicit misses vs the oracle. |
 | M3-C1 pools | [m3-pool](m3-pool.md) | Supplied-score pools and keyed uniform/best-of-two routing. |
-| M3-C2 branches | [m3-branches](m3-branches.md), [five-node miss](branch-tree-miss.json) | One-hop branches repair old misses; five-node deeper miss retained. |
+| M3-C2 branches | [m3-branches](m3-branches.md), [five-node miss](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-witness-indexer/branch-tree-miss.json) | One-hop branches repair old misses; five-node deeper miss retained. |
 | M3-C3 prefixes | [contract](m3-prefix.md) (`486713c`) → [implementation](m3-prefix-implementation.md) | Bounded prefix/tree joins repair the five-node detour. |
 | M3-D1 segments | [contract](m3-segments.md) (`49d7449`) → [implementation](m3-segments-implementation.md) | Bounded hot-segment store, relation identity, TTL/use. |
 | M3-D2 segment joins | [contract](m3-segment-joins.md) (`f405b92`) → [implementation](m3-segment-joins-implementation.md) | Cached-tail assembly with full-family verification. |

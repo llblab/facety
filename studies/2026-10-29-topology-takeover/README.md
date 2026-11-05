@@ -46,13 +46,13 @@ No disputes, challenges, verification or penalties; no fabrication cost; no hone
 
 ## Implementation
 
-`src/topology-experiment.mjs` (`runTopologyExperiment`, `topologyConfig`) and the two `src/model.mjs` changes exist as contracted; [`probe.mjs`](probe.mjs) runs one arm. Tests: `test/d33-council.test.mjs` (lookup boundaries, active-only count, legacy binding unchanged), `test/topology-experiment.test.mjs` (config validation, exact replay, head start, 11-seat Council after bootstrap, no path refusals in the no-gate arm) and the updated `test/valence-council-paths.test.mjs` binding test.
+`src/topology-experiment.mjs` (`runTopologyExperiment`, `topologyConfig`) and the two `src/model.mjs` changes exist as contracted; [`probe.mjs`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-topology-takeover/probe.mjs) runs one arm. Tests: `test/d33-council.test.mjs` (lookup boundaries, active-only count, legacy binding unchanged), `test/topology-experiment.test.mjs` (config validation, exact replay, head start, 11-seat Council after bootstrap, no path refusals in the no-gate arm) and the updated `test/valence-council-paths.test.mjs` binding test.
 
 **Correction at implementation.** The contract's first boundary list (10 → 11 seats) was arithmetically wrong: `round(sqrt(2)) = 1`, so the formal Council starts at 100 active participants, as the protocol states. The tests use the correct boundaries.
 
 ## Exploratory results (diagnostic, one seed per arm)
 
-Seed `explore-topo-1`; 100 honest genesis; attack on day 100; `maxSubjects` 5000 (A = 10) or 3000 (A = 1–3), whose hit censors the run. Raw rows: [`runs/`](runs/). By day 100 the honest network has grown from 100 to about 660 people; the Council has 11 seats from day 1.
+Seed `explore-topo-1`; 100 honest genesis; attack on day 100; `maxSubjects` 5000 (A = 10) or 3000 (A = 1–3), whose hit censors the run. Raw rows: [`runs/`](https://github.com/llblab/facety/tree/legacy-node/studies/2026-10-29-topology-takeover/runs). By day 100 the honest network has grown from 100 to about 660 people; the Council has 11 seats from day 1.
 
 | Infiltrators | Arm | ≥ 50 attackers on day | Attackers ≥ 50% on day | Last day: attackers / honest | Path refusals |
 | ---: | --- | ---: | ---: | --- | ---: |
@@ -90,7 +90,7 @@ Runs: gate arm, 3 and 10 infiltrators, `acceptFar` ∈ {0.05, 0.01, 0} × detect
 
 ## v2 exploratory results (diagnostic, seed `explore-topo-1`)
 
-Implemented as contracted (`detection` block, freeze veto, partner inspection, one-step identity cases with D77 holds). Implementation note: voiding the chain of an invalidated account marks rights that paid valences `valence-burn+voided`; the valence audit now accepts that disposition (`test/d33-council.test.mjs`). Raw rows: [`runs/v2/`](runs/v2/). Attack on day 100, `maxSubjects` 3000.
+Implemented as contracted (`detection` block, freeze veto, partner inspection, one-step identity cases with D77 holds). Implementation note: voiding the chain of an invalidated account marks rights that paid valences `valence-burn+voided`; the valence audit now accepts that disposition (`test/d33-council.test.mjs`). Raw rows: [`runs/v2/`](https://github.com/llblab/facety/tree/legacy-node/studies/2026-10-29-topology-takeover/runs/v2). Attack on day 100, `maxSubjects` 3000.
 
 | Infiltrators | Arm | Stranger acceptance | Detection | Attackers ≥ 50% on day | Fakes invalidated | Genuine invalidated | Fake invitations vetoed |
 | ---: | --- | --- | --- | ---: | ---: | ---: | ---: |
@@ -120,13 +120,13 @@ v3 adds to the opt-in `detection` block (new keys default off, so v2 runs are un
 - **Escalation (D46).** For a suspicious invitee, the observer asks the highest-XP accepted subject within two mutual hops (itself included) whose XP exceeds the target's. Honest sponsors accept with `sponsorWillingness` (0.5); attackers never sponsor against the cone. The sponsor opens the identity case (D77 hold on sponsor and target).
 - **`followUp`.** When a case rules an account false, its sponsor looks at every other admitted invitee of the same inviter and opens cases on suspicious ones; honest partners of that inviter leave (`leave`).
 - Truth labels feed only the noisy look and the verdict; the pattern itself is computed from public graph and lineage data.
-- **v3.1 amendment (after the first v3 runs, before rerunning).** The pattern-gated public look almost never fired (0–1 patterns in four runs): random looks rarely hit one of the ten infiltrators, and a fake's invitees partner across the whole cone rather than inside the fake's own subtree. A public look now first examines the chosen subject's own identity evidence (same noisy look) and escalates if suspicious; the pattern step stays as an addition. The four first v3 runs are retained in [`runs/v3/`](runs/v3/) as v3.0.
+- **v3.1 amendment (after the first v3 runs, before rerunning).** The pattern-gated public look almost never fired (0–1 patterns in four runs): random looks rarely hit one of the ten infiltrators, and a fake's invitees partner across the whole cone rather than inside the fake's own subtree. A public look now first examines the chosen subject's own identity evidence (same noisy look) and escalates if suspicious; the pattern step stays as an addition. The four first v3 runs are retained in [`runs/v3/`](https://github.com/llblab/facety/tree/legacy-node/studies/2026-10-29-topology-takeover/runs/v3) as v3.0.
 
 Runs: gate arm and no-gate reference, 3 and 10 infiltrators, stranger acceptance 0.05; v2 detection plus `leave`, `publicLook` 0.02 and `followUp` on.
 
 ## v3 exploratory results (diagnostic, seed `explore-topo-1`)
 
-Attack on day 100, stranger acceptance 0.05, `maxSubjects` 3000; v2 detection plus `leave`, `publicLook` 0.02 and `followUp`. Raw rows: [`runs/v3/`](runs/v3/) (v3.0) and [`runs/v3.1/`](runs/v3.1/).
+Attack on day 100, stranger acceptance 0.05, `maxSubjects` 3000; v2 detection plus `leave`, `publicLook` 0.02 and `followUp`. Raw rows: [`runs/v3/`](https://github.com/llblab/facety/tree/legacy-node/studies/2026-10-29-topology-takeover/runs/v3) (v3.0) and [`runs/v3.1/`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-topology-takeover/runs/v3.1).
 
 | Infiltrators | Arm | Version | Attackers ≥ 50% on day | Last day: attackers / honest | Fakes invalidated | Genuine invalidated | Genuine invitations vetoed | Links left |
 | ---: | --- | --- | ---: | --- | ---: | ---: | ---: | ---: |
@@ -147,7 +147,7 @@ Single-seed runs: whether 3 infiltrators are reliably contained, and where the i
 
 ## v4: owner invite-right rule (D120), diagnostic
 
-Model: opt-in `inviteRights: 'higher-xp-pair'` in `FacetyModel` (one right to the lower-XP side of each newly established valence pair, XP compared at establishment, strict; invitation consumes one right; checked before the path search). Runner: `inviteRights: true`; an attacker without a right first pairs with a higher-XP cone member (adaptive), honest people keep their unchanged friend-of-friend script. Test: `test/topology-experiment.test.mjs`. Raw rows: [`runs/v4/`](runs/v4/). Seed `explore-topo-1`, attack on day 100, cap 3000.
+Model: opt-in `inviteRights: 'higher-xp-pair'` in `FacetyModel` (one right to the lower-XP side of each newly established valence pair, XP compared at establishment, strict; invitation consumes one right; checked before the path search). Runner: `inviteRights: true`; an attacker without a right first pairs with a higher-XP cone member (adaptive), honest people keep their unchanged friend-of-friend script. Test: `test/topology-experiment.test.mjs`. Raw rows: [`runs/v4/`](https://github.com/llblab/facety/tree/legacy-node/studies/2026-10-29-topology-takeover/runs/v4). Seed `explore-topo-1`, attack on day 100, cap 3000.
 
 | Infiltrators | Arm | Honest on day 100 | Attackers ≥ 50% on day | Without the rule (same arm) |
 | ---: | --- | ---: | ---: | ---: |
@@ -164,7 +164,7 @@ Model: opt-in `inviteRights: 'higher-xp-pair'` in `FacetyModel` (one right to th
 
 ## v5: per-pair invite rights (D121), diagnostic
 
-Model: `inviteRights: 'per-pair'` grants each side of every established valence pair one right, genesis pairs included; D120's `'higher-xp-pair'` stays as a labeled historical arm. Runner: `inviteRights: 'per-pair'`; an attacker without a right first pairs with any unlinked cone member. Raw rows: [`runs/v5/`](runs/v5/). Seed `explore-topo-1`, attack on day 100, cap 3000.
+Model: `inviteRights: 'per-pair'` grants each side of every established valence pair one right, genesis pairs included; D120's `'higher-xp-pair'` stays as a labeled historical arm. Runner: `inviteRights: 'per-pair'`; an attacker without a right first pairs with any unlinked cone member. Raw rows: [`runs/v5/`](https://github.com/llblab/facety/tree/legacy-node/studies/2026-10-29-topology-takeover/runs/v5). Seed `explore-topo-1`, attack on day 100, cap 3000.
 
 | Infiltrators | Arm | Honest on day 100 | Attackers ≥ 50% on day | Without the rule |
 | ---: | --- | ---: | ---: | ---: |

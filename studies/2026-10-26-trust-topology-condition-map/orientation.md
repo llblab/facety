@@ -1,6 +1,6 @@
 # WP0 inventory and evidence boundary
 
-**2026-10-26; diagnostic source inspection, not a simulation result.** Base499b069; [exact source inventory](source-manifest.json). Protocol/evidence/required historical packet blobs match prior complete reads; changed simulator/research/insight/backlog surfaces were inspected by their deltas/current entrypoints. The three required study READMEs and relevant native implementations were also inspected. No historical experiment was replayed.
+**2026-10-26; diagnostic source inspection, not a simulation result.** Base499b069; [exact source inventory](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-26-trust-topology-condition-map/source-manifest.json). Protocol/evidence/required historical packet blobs match prior complete reads; changed simulator/research/insight/backlog surfaces were inspected by their deltas/current entrypoints. The three required study READMEs and relevant native implementations were also inspected. No historical experiment was replayed.
 
 ## Existing modules and required studies
 

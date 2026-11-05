@@ -46,7 +46,7 @@ In every arm the ordinary self-challenge fails the strict greater-XP gate, and t
 
 ## Required contract decisions and stop
 
-Useful preparation of this selected cohort is complete. [BACKLOG](../../BACKLOG.md#paused-correctness-loop-repeat-verdict-authority-gate) is paused again; no further automatic continuation is selected.
+Useful preparation of this selected cohort is complete. [BACKLOG](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#paused-correctness-loop-repeat-verdict-authority-gate) is paused again; no further automatic continuation is selected.
 
 1. **Legal event and order:** which event creates each guarantee duty—Self-ID recording, terminal disposition or another defined operation—and what canonical order resolves same-time changes?
 2. **Historical role/credit basis:** which relationship instance/qualification covers that event, and how are potential XP recipients, actual credited parties and liable parties kept distinct across exit/re-link?
