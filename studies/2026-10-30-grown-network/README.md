@@ -148,3 +148,7 @@ Every cone member first collects D honest partners, asking friends of its honest
 Spare the unwitting inviter and the honest network keeps about 6% more participants, with no visible gain for the attacker. The result is conditional on the model: honest inviters here are never careless or colluding, so acquittal costs nothing; with a colluding inviter who simply claims to have met anyone it would be a loophole. The open design question is in [Q19](../../DECISIONS_NEEDED.md#q19--second-accounts-and-the-unwitting-inviter-d127).
 
 Limits: one seed except the seeds table; levers on seed 1; plain 7-node runs under-count because of lost searches; the look quality used by caution is a declared assumption.
+
+### Success criterion (D129)
+
+Primary outcome: dirty-FACY share of total supply. The defense passes a scenario if the share stays at or below 10% on its longest declared horizon, and fails above 10% (account share is secondary because young fake accounts hold little money). Against this criterion every cell above passes at 60 days (largest 3.1% for the legacy no-bound arm, 1.8% for 7 nodes on seed 2, about 0.01% with layered support), so 60 days cannot discriminate between rules: money lags accounts and catches up as rights mature. The discriminating tests are the long horizon (120 days running for the supported-first attacker; a year for the key cells next) and the number of operators (10, 30, 100).
