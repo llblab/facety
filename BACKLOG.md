@@ -20,7 +20,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 | Honest behavior rates | uniform acceptance rates | open: realism (deliberate and careless acceptance) |
 | Attacker model | cone, honest-first, supported-first; operators 10-100 | open: stronger attackers |
 | Snapshot and horizon | 1000 accounts, 60 days to one year | open: horizon for the criterion |
-| Social recovery (D135), identification reputation (D137) | not modeled | open: model |
+| Social recovery (D135), identification reputation (D137) | recovery operations in the world, no scenarios; reputation not modeled | open: scenarios and model |
 
 ## Rust simulator
 
@@ -38,8 +38,8 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 - [ ] **Honest behavior realism.** Replace uniform acceptance rates with deliberate and careless acceptance, correlated friendships and cautious strangers' vetting with calibrated look quality.
 - [ ] **Second accounts and the unwitting inviter (Q19).** Proof of fault, acquittal evidence (joint co-presence artifact), collusion risk, what the acquittal covers.
 - [ ] **Remedy for a detected cluster (Q18, D119).** Quarantine, burden of proof, liability, recovery, repair for honest people.
-- [ ] **Protocol text.** D123, D131, D133 and D134 are written in §46.14-§46.15; D124 stays a proposal until adopted. Remaining mentions of the retired first-100 bootstrap exception (D91) elsewhere in the protocol (summary tables at the top, §18, §20, §34 pseudo-code) must be rewritten to the Council-of-three rule.
-- [ ] **Model the new concepts.** Social recovery (D135) and identification reputation (D137) as attestations weighted by closeness and independence.
+- [ ] **Protocol text.** D123, D131, D133 and D134 are written in §46.14-§46.15; D124 stays a proposal until adopted. The retired first-100 exception (D91) was removed from the summary tables, §18, §20, §34 and §46; D89 is marked superseded.
+- [ ] **Model the new concepts.** Social recovery (D135): the world-level operations and tests exist; still to do are runner scenarios (key-loss rate, recovery success and time, abuse by colluding former guarantors) and design variants. Identification reputation (D137): attestations weighted by closeness and independence, not modeled.
 
 ## Owner-gated protocol work (carried over, not active)
 

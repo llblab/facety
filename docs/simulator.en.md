@@ -42,6 +42,7 @@ The accepted rules are fixed in the code; they are not options.
 | D131 accounts in an open dispute are not path intermediaries (lever `exclude_disputed`, default on) | `begin_case`, `end_case` |
 | D77 open-dispute parties cannot create Self-IDs, invitations or valences | `require_free` |
 | D33 Council lookup: 100 to 999,999 active accounts 11 seats, then 101, ... (three below 100, D133); D = digits of the active count stands in for N_verified | `council_target` |
+| D135 key loss and social recovery: `lose_key`, `begin_recovery` (the new account is invited by a previous guarantor), `recovery_progress`, `complete_recovery` (at least half of the previous guarantors and at least D vouch by mutual guarantee, the earned XP returns, the old account retires, relations are rebuilt, not restored); world-level only, the runner does not use it yet | `World` |
 | D136 an accused genuine account proves reality with a declared probability and the case ends after a few days; fakes and second accounts cannot | `detect` (runner) |
 | D82 guarantor XP only for guarantees established when the right is used; XP revoked when a guarantee ends (the ending party's guarantor role) or a veto or chain cut revokes the source | `credit`, `deactivate` |
 | D111 one equal Council vote (not exercised by the runner) | n/a |

@@ -78,10 +78,10 @@ The final trust boundary is human collective judgment. Equal votes limit individ
 
 | Event | Human and economic rule |
 | --- | --- |
-| Ordinary rewarded Self-ID | At least 1 mutual guarantor; outside initial D91 bootstrap also Council reachability. Signed act creates 1 FACY entitlement, ordinary XP at 24h (D42); no automatic withdrawal. |
+| Ordinary rewarded Self-ID | At least 1 mutual guarantor that reaches a Council member (D84, D133). Signed act creates 1 FACY entitlement, ordinary XP at 24h (D42); no automatic withdrawal. |
 | First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel it for free during this window. A cancelled act earns no ordinary XP. |
 | From 24 hours | The uncancelled act earns the subject and each eligible guarantor 1 XP even if unused. The original free veto ends. Invitation use also retains that credit and creates no second XP reward. The matured own right stays in place until its holder chooses withdrawal or invitation use; no automatic Collector movement. |
-| Invitation | D105 inviter burns 1 own FACY, recipient0/no debt. D106 counts 1 slot at EACH endpoint from issuance; D107 pre-registered recipient has a zero Genesis Self-ID, no mint/burn. Issuance checks once, no acceptance recheck; special mutual link follows the selected pending/admission transition.≥D mutual guarantors; outside initial D91 startup also D internally vertex-disjoint paths on the current mutual Council graph (D104), no mandatory invitation ancestry or cascade.24h freeze/no cluster quota retained. |
+| Invitation | D105 inviter burns 1 own FACY, recipient0/no debt. D106 counts 1 slot at EACH endpoint from issuance; D107 pre-registered recipient has a zero Genesis Self-ID, no mint/burn. Issuance checks once, no acceptance recheck; special mutual link follows the selected pending/admission transition.≥D mutual guarantors and D internally vertex-disjoint paths to D different Council members on the current mutual graph (D104, D134), no mandatory invitation ancestry or cascade.24h freeze/no cluster quota retained. |
 | Liability | A proven false identity voids its whole Self-ID chain. Its inviter and the guarantors liable at the relevant historical events owe the defined per-act sanction; under D34, later link termination does not erase past responsibility. Timely cancellation can prevent the defined act/invitation liability; exit limits future exposure, not past responsibility. Exact event/duty, overlap and recovery contracts remain OPEN. |
 | Guarantee / valence | D93 creates a one-sided valence for immediate 1 own-FACY burn, even unanswered; only valid opposite valences establish ordinary mutual XP/liability. D94 own withdrawal leaves opposite open; recreate own for NEW 1 burn/current K, not a fresh opposite charge. |
 | Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
@@ -383,7 +383,7 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Guarantee relation** — Established mutual responsibility from two valid opposite valences, or an accepted special invitation (§18). Ordinary matching/current-K checks and canonical signed records are required, not raw legacy reciprocal graph edges. D94 withdrawal removes only one's valence and preserves the opposite; history survives. The earlier directed-only model is dated history, not the current XP/liability rule.
 
-**Invitation** — D105 special admission paid by 1 eligible own-issued FACY from the inviter, recipient0/no debt. D106 occupies 1 slot at each endpoint on issuance; D107 requires the target's completed pre-registration and zero Genesis Self-ID, with issuance-only eligibility validation. Acceptance establishes a first mutual inviter–newcomer link with distinct inviter provenance/responsibility. Initial D91 bootstrap requires ≥D mutual guarantors; outside startup also D internally vertex-disjoint current mutual Council paths (D104), with no mandatory invitation-chain member or long-ancestry check. Pending invitation, lineage and established mutuality remain distinct canonical records.
+**Invitation** — D105 special admission paid by 1 eligible own-issued FACY from the inviter, recipient0/no debt. D106 occupies 1 slot at each endpoint on issuance; D107 requires the target's completed pre-registration and zero Genesis Self-ID, with issuance-only eligibility validation. Acceptance establishes a first mutual inviter–newcomer link with distinct inviter provenance/responsibility. It requires ≥D mutual guarantors and D internally vertex-disjoint current mutual paths to D different Council members (D104, D134), with no mandatory invitation-chain member or long-ancestry check. Pending invitation, lineage and established mutuality remain distinct canonical records.
 
 **Active subject** — A distinct subject with a qualifying Self-ID during the previous 28 days. Counting a subject once does not establish a unique human. The exact treatment of disputed or cancelled acts is OPEN.
 
@@ -554,7 +554,7 @@ The runtime or an authorized index should support efficient lookup of other clai
 
 **[SELECTED pre-registration/zero Genesis act] (D107)** Before receiving an invitation the account is ALREADY pre-registered, has completed the required fields and published its zero Genesis Self-ID. The invitation is addressed to this existing account/address, not issued into an unbound pool for a later arbitrary person. The zero act does NOT print FACY, burn FACY, create a spendable Emitter entitlement or incur invitation debt. Its conceptual use as the recipient-side channel opening is not a monetary transaction or an ordinary paid valence. D84 below concerns ordinary REWARDED Self-ID, not a circular requirement to obtain a mutual guarantor before publishing this zero act. Canonical fields/signatures/address binding and zero-act XP/chain-N/ordinary rate-slot semantics need an implementation contract; no arbitrary field list, extra subsidy, personal-data collection authority or default migration follows.
 
-**[SELECTED eligibility distinction, with the D91 bootstrap exception] (D84)** A new rewarded Self-ID needs at least ONE established mutual guarantor. Outside D91's INITIAL bootstrap, that guarantor must have a mutual-guarantee path to an admissible Council member. D guarantors AND independent paths are instead required for invitations (§18.2). Prior admission is not a permanent support exemption; unilateral offers do not qualify. D91 selects the initial no-Council path waiver (§46.14); exact phase/count snapshots, first100 activation, bounded verification and same-time changes still need contracts. This conditions NEW acts, not retroactive erasure of identity/XP/sources; D77 and evidence/24h rules remain.
+**[SELECTED eligibility distinction] (D84, D133)** A new rewarded Self-ID needs at least ONE established mutual guarantor, and that guarantor must have a mutual-guarantee path to an admissible Council member (below 100 active participants the Council has three seats, D133). D guarantors AND independent paths are instead required for invitations (§18.2). Prior admission is not a permanent support exemption; unilateral offers do not qualify. D91 selects the initial no-Council path waiver (§46.14); exact phase/count snapshots, first100 activation, bounded verification and same-time changes still need contracts. This conditions NEW acts, not retroactive erasure of identity/XP/sources; D77 and evidence/24h rules remain.
 
 **[DIRECTION]** Each Self-ID is a unique, individually addressable, non-transferable object with immutable evidence fields and a controlled state for its emission right. Calling it an *NFT-like Self-ID* describes uniqueness and one-time disposition. It does not imply that it must use an NFT marketplace or `pallet_nfts`.
 
@@ -699,7 +699,7 @@ The system MUST record a terminal emission disposition exactly once.
 The creator MUST:
 
 1. Have a valid Facety subject with the right to create invitations.
-2. Have at least D qualifying established mutual guarantors. Outside initial D91 bootstrap, ALSO satisfy the independent mutual-path/Council threshold (§18.2); verification/snapshots remain explicit.
+2. Have at least D qualifying established mutual guarantors AND satisfy the independent mutual-path/Council threshold (§18.2; D paths to D different Council members); verification/snapshots remain explicit.
 3. Control **one unspent eligible Self-ID emission earned by that subject**, aged at least 24 hours (D105).
 4. Address an ALREADY pre-registered account with completed required fields and its published zero Genesis Self-ID (D107).
 5. Fit the new invitation-side increment into BOTH endpoints' current K and allocate 1 slot to each on issuance (D106), not only to the sender or on later acceptance.
@@ -720,15 +720,14 @@ The restriction applies to the **origin of the emission right**, not merely the 
 D_target = floor(log10(max(1, N_verified))) + 1
 D = the applicable adopted difficulty under the declared transition policy
 qualifying_independent_guarantees(creator) >= D
-if outside_initial_D91_bootstrap:
-    qualifying_mutual_internally_vertex_disjoint_paths(creator, Council_anchor) >= D
+qualifying_mutual_internally_vertex_disjoint_paths(creator, D_different_Council_members) >= D
 ```
 
 **[SELECTED simplified invitation gate] (D104)** At NEW invitation issuance, require at least D qualifying established mutual guarantors AND D qualifying internally vertex-disjoint paths to admissible Council membership through the CURRENT mutual-guarantee graph. NO path is required to follow invitation ancestry or have an invitation-kind witness. D103's current-valid-graph-only rule applies. Invitation-origin mutual links may qualify like other current mutual links, but old invitation records, unanswered offers and bare stored reciprocal edges do not supply authorization.
 
-Keep D36 independence across the whole family, D91 initial-bootstrap path waiver and D84 Self-ID support/reachability. No long invitation-ancestry check is required for invitations or Self-ID, and no downstream cascade or general inviter-replacement operation is introduced. Original inviter/provenance, inviter-paid 1 FACY admission (D105), paid valences/K, pending rights/history/liability remain unchanged. Seek short compatible witnesses as an optimization preference, NOT a selected hop cap or CPU/search guarantee. Exact canonical mutual state, episode/status/direction, Council snapshots/self/mixed terminals/bounds and independently fresh verification remain contracts before code/data; no default migration, indexer restart, empirical equivalence/security proof or historical evidence replay follows.
+Keep D36 independence across the whole family and D84 Self-ID support/reachability. No long invitation-ancestry check is required for invitations or Self-ID, and no downstream cascade or general inviter-replacement operation is introduced. Original inviter/provenance, inviter-paid 1 FACY admission (D105), paid valences/K, pending rights/history/liability remain unchanged. Seek short compatible witnesses as an optimization preference, NOT a selected hop cap or CPU/search guarantee. Exact canonical mutual state, episode/status/direction, Council snapshots/self/mixed terminals/bounds and independently fresh verification remain contracts before code/data; no default migration, indexer restart, empirical equivalence/security proof or historical evidence replay follows.
 
-**The invitation tests apply to the creator, not the recipient.** D91 waives Council-path checks ONLY during initial bootstrap before the first 100 active participants; at least D mutual guarantors remain required. Outside that phase both tests apply, neither substituting for the other. Each path is simple and distinct. Counted paths toward a single center may share the creator and final center, but no intermediary. Edge-disjoint routes through the same intermediary do not supply separate paths. D104 retains D84's qualifying mutual graph/Council endpoint without a mandatory invitation-chain member. Paths reach any admissible Council member, not all members or an arbitrary highest-XP/healthy seed. Canonical mutual records, independent-support qualification, Council snapshots, mixed-terminal/self/zero-hop and small-network startup remain contracts (§46.14–§46.15). D61 remains a research reference, not a default migration, capacity quota or Standing-to-XP conversion.
+**The invitation tests apply to the creator, not the recipient.** Both tests apply at every network size (below 100 active participants the Council has three seats, D133), neither substituting for the other. Each path is simple and distinct. Counted paths share only the creator: their endpoints are different Council members and no intermediary is shared. Edge-disjoint routes through the same intermediary do not supply separate paths. D104 retains D84's qualifying mutual graph/Council endpoint without a mandatory invitation-chain member. Paths reach D different admissible Council members, any members of the Council at confirmation time, not all members or an arbitrary highest-XP/healthy seed. Canonical mutual records, independent-support qualification, Council snapshots, mixed-terminal/self/zero-hop and small-network startup remain contracts (§46.14–§46.15). D61 remains a research reference, not a default migration, capacity quota or Standing-to-XP conversion.
 
 | Active verified participants | Direct difficulty target / minimum qualifying guarantees and paths |
 | ---: | ---: |
@@ -758,7 +757,7 @@ Under minted escrow, a D105 invitation destroys ONE existing personally earned b
 ```text
 1 own Self-ID -> 1 eligible Emitter right aged at least 24 hours
     + target account already pre-registered with required fields and zero Genesis Self-ID
-    -> D mutual guarantors; outside initial D91 bootstrap ALSO D independent Council paths
+    -> D mutual guarantors AND D independent paths to D different Council members
    on the CURRENT mutual graph (D104), no mandatory invitation ancestry; disjoint across the WHOLE family
     -> validate issuance once; allocate 1 K slot to EACH endpoint
     -> burn 1 personally earned FACY (D105); recipient mint/burn/debt = 0
@@ -1154,7 +1153,7 @@ Some such chains are expected to be very rare; this is **[HYPOTHESIS / SCENARIO 
 
 **[SELECTED] (D133) Small-network Council.** Below 100 active participants the Council has three equal-vote seats (§46.14); it deliberates and is not subject to the Chekharda ladder. The former D91 startup exception, which switched Chekharda off before the first 100 active participants, is replaced by this Council and the rule that Council paths are always checked.
 
-**[PROPOSAL, not a completed activation contract] (D89)** While no Council has formed (fewer than 100 active participants), Chekharda may be disabled as a startup mode. This does not create a Council/path anchor, waive D84's Self-ID/invitation reachability gates, disable preventive Self-ID/invitation vetoes, erase liability/history or close existing cases. Bind canonical active-count/phase snapshots, enablement at the boundary, downward crossings/adoption, existing cases/D77 holds/pending rights and access to later correction before implementation. Do not substitute raw legacy counts, evaluator labels or a static `disputes.enabled` arm for that chronology. The D84 no-Council eligibility/startup contract remains OPEN; no runtime/default change or scientific conclusion is selected by this proposal.
+**[SUPERSEDED by D133] (D89)** The idea of disabling Chekharda as a startup mode while no Council has formed is withdrawn: below 100 active participants the Council has three seats, every dispute and path rule holds at every size, and no special activation, downward-crossing or adoption contract is needed. The remaining open point is the interaction of open cases and D77 holds when the Council changes size at the 100 boundary.
 
 ### 26.1 Alternating positions
 
@@ -1764,11 +1763,10 @@ There is no cancellation fee for the author or an authorized guarantor within th
 ```text
 create_invitation(creator, registered_target, source_self_id):
     require active and authorized creator
-    require declared bootstrap/Council/verification/graph/difficulty and K-activation contracts
+    require declared Council/verification/graph/difficulty and K-activation contracts
     D = applicable_network_difficulty(canonical_snapshot)
     require qualifying_mutual_guarantors(creator) >= D
-    if outside_initial_D91_bootstrap:
-        require qualifying_mutual_internally_vertex_disjoint_paths(creator, Council_anchor) >= D
+    require qualifying_mutual_internally_vertex_disjoint_paths(creator, D_different_Council_members) >= D
     require target pre-registration fields and published zero Genesis Self-ID (D107)
     require new 1-unit invitation opening fits current K at EACH endpoint (D106)
     require own source right unspent, eligible, not disputed and age >= 24 hours
@@ -2082,7 +2080,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 ### C. Entry, guarantees, and graph
 
 15. Actual pre-guaranteed genesis membership, verification/activity, financing and activation; the numeric zero clamp and already-guaranteed starting route are selected, not open alternatives.
-16. D100 resolves K's OWN OPEN valence/invitation resource (unanswered included, retained matching not charged again), replacing mutual-only degree. D99 one original creation inviter is not an invitation quota; D current mutually qualifying Council paths with D36 whole-family independence apply, with no ancestry prerequisite or cascade (D104). D105–D107 select the 1-FACY invitation, both-side slots, a pre-registered zero Genesis and issuance-only validation; startup/paid valence/same-ID re-entry/closed-record rules remain. Bind owned-unit duplicates/pending/accepted/recipient-side mapping, canonical ordinary/special records, source/failure/D77/cutover, first100/Council activation, mature downturns and path/member snapshots/bounds/self cases; no raw legacy counter/graph or lifetime quota.
+16. D100 resolves K's OWN OPEN valence/invitation resource (unanswered included, retained matching not charged again), replacing mutual-only degree. D99 one original creation inviter is not an invitation quota; D current mutually qualifying Council paths with D36 whole-family independence apply, with no ancestry prerequisite or cascade (D104). D105–D107 select the 1-FACY invitation, both-side slots, a pre-registered zero Genesis and issuance-only validation; paid valence/same-ID re-entry/closed-record rules remain. Bind owned-unit duplicates/pending/accepted/recipient-side mapping, canonical ordinary/special records, source/failure/D77/cutover, first100/Council activation, mature downturns and path/member snapshots/bounds/self cases; no raw legacy counter/graph or lifetime quota.
 17. How disputed or cancelled acts affect the rolling active-subject count.
 18. Invitation target binding, expiration, acceptance, replay protection, and any cancellation remedy.
 19. D105–D107 settle inviter1/recipient0,1slot at each endpoint at issuance, existing pre-registration/zero Genesis with no recipient mint/burn and no repeated acceptance gate. D93/D94 ordinary paid valence/opposite persistence remain. Bind canonical ordinary/special/zero-act records, duplicates/K/pending/failure/D77/source chronology, not a reopening of those choices.
@@ -2385,8 +2383,8 @@ This applies **to the external application interface** only. It does not select 
 Rules in force for network topology:
 
 1. **Difficulty.** `D = floor(log10(max(1, N_verified))) + 1`, where `N_verified` counts active verified participants over 28 days (§46.1).
-2. **Self-ID.** A rewarded Self-ID needs at least 1 established mutual guarantor. Outside the initial bootstrap, that guarantor needs a mutual-guarantee path to a Council member (D84).
-3. **Invitation.** The creator needs at least D established mutual guarantors AND, outside the initial bootstrap, D internally vertex-disjoint paths through the current mutual-guarantee graph to Council members (D104, D36). Eligibility is checked once, at issuance (D107).
+2. **Self-ID.** A rewarded Self-ID needs at least 1 established mutual guarantor, and that guarantor needs a mutual-guarantee path to a Council member (D84).
+3. **Invitation.** The creator needs at least D established mutual guarantors AND D internally vertex-disjoint paths through the current mutual-guarantee graph to D different Council members (D104, D134, D36). Eligibility is checked once, at issuance (D107).
 4. **Small-network Council (D133).** Below 100 active participants the Council has three equal-vote seats, and Council paths are checked from the first act; there is no initial exception.
 5. **Genesis.** The network starts from a recorded group whose members already guarantee one another (D35).
 6. **Council.** Its size follows the D33 lookup `1, 11, 101, 1001, …`; target 1 means no formal Council. Each consul has one vote (D111).
@@ -2435,7 +2433,7 @@ The genesis record MUST identify members and established mutual guarantees under
 
 **[SELECTED current graph only] (D103)** Only currently valid relations in the actual protocol graph count for this path gate, NOT historical invitation records or immutable creation ancestry after the relevant link has ended. Preserve original inviter/provenance, past act-time rosters, pending rights and D34/D54/separate D9 history: excluding an old edge from a current path is not erasing its records/duties. “Actual graph” means canonical currently valid relations, not raw stored reciprocal edges, unanswered paid offers or an indexer's assertion. Exact invitation-kind/episode/direction/termination/member snapshots still need a contract.
 
-**A broken Council path is not automatic downstream deletion.** Under D104 the absence of a compatible D-path current mutual family blocks new invitations outside D91 startup; the break of a particular old invitation chain is no longer an additional veto. Neither failure itself expels people, terminates remaining links, rewrites provenance or annuls historical/pending rights. Self-ID keeps its own D84 support/reachability, so emission is conditional, not guaranteed. D104 chooses removal of the special path, NOT D103's candidate cascade or general current-inviter replacement. D95 bounded unsupported-person re-entry and D99 original creation provenance remain separate.
+**A broken Council path is not automatic downstream deletion.** Under D104 the absence of a compatible D-path current mutual family blocks new invitations; the break of a particular old invitation chain is no longer an additional veto. Neither failure itself expels people, terminates remaining links, rewrites provenance or annuls historical/pending rights. Self-ID keeps its own D84 support/reachability, so emission is conditional, not guaranteed. D104 chooses removal of the special path, NOT D103's candidate cascade or general current-inviter replacement. D95 bounded unsupported-person re-entry and D99 original creation provenance remain separate.
 
 **[SELECTED] (D104/D134)** Require ≥D qualifying mutual guarantors AND D qualifying internally vertex-disjoint current mutual paths to D different Council members, with no distinguished invitation-chain member. No compulsory long ancestry, cascade or general reparenting. All D paths satisfy D36 together. At D = 1 one qualifying mutual Council path suffices for the path component, not necessarily an invitation path; the separate guarantor requirement remains. Short compatible-path search is a preference, not a hop limit, fixed-cost guarantee, proof from heuristic failure or authorization to trust an indexer.
 

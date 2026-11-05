@@ -83,6 +83,10 @@ struct Subject {
     acts: Vec<u32>,
     first_unspent: usize,
     inviter: Option<Id>,
+    /// Social recovery (D135): the account whose key was lost, and the XP restored from it once the recovery is complete.
+    recovers: Option<Id>,
+    restored_xp: i32,
+    lost_key: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -141,6 +145,7 @@ pub struct World {
     active_count: usize,
     council: Vec<Id>,
     council_mask: Vec<bool>,
+    previous_guarantors: HashMap<Id, Vec<Id>>,
     member_ok: Vec<bool>,
     blocked: Vec<bool>,
     level: Vec<u8>,
@@ -179,6 +184,7 @@ impl World {
             active_count: 0,
             council: Vec::new(),
             council_mask: Vec::new(),
+            previous_guarantors: HashMap::new(),
             member_ok: Vec::new(),
             blocked: Vec::new(),
             level: Vec::new(),
@@ -203,7 +209,7 @@ impl World {
 
     fn add_account(&mut self, inviter: Option<Id>) -> Id {
         let id = self.graph.add_node();
-        self.subjects.push(Subject { status: Status::Accepted, xp: 0, liquid: 0, last_reward: None, acts: Vec::new(), first_unspent: 0, inviter });
+        self.subjects.push(Subject { status: Status::Accepted, xp: 0, liquid: 0, last_reward: None, acts: Vec::new(), first_unspent: 0, inviter, recovers: None, restored_xp: 0, lost_key: false });
         self.owned_open.push(0);
         self.inv_units.push(0);
         self.hold.push(0);
@@ -536,10 +542,12 @@ impl World {
     }
 
     fn require_account(&self, id: Id) -> Result<(), Reject> {
-        if self.accepted(id) {
-            Ok(())
-        } else {
+        if !self.accepted(id) {
             Err(Reject("subject identity is not accepted"))
+        } else if self.subjects[id as usize].lost_key {
+            Err(Reject("the private key is lost"))
+        } else {
+            Ok(())
         }
     }
 
@@ -845,6 +853,58 @@ impl World {
         }
     }
 
+    // ---- key loss and social recovery (D135, a customizable starting point) -----------------------------------------
+
+    /// The holder loses the private key: the account can no longer act, and its current mutual guarantors are recorded as the
+    /// previous guarantors of the NFT chain.
+    pub fn lose_key(&mut self, old: Id) -> Result<(), Reject> {
+        self.require_account(old)?;
+        let guarantors = self.mutual_partners(old);
+        self.previous_guarantors.insert(old, guarantors);
+        self.subjects[old as usize].lost_key = true;
+        Ok(())
+    }
+
+    /// The new account (already admitted by an invitation from one of the previous guarantors) declares that it continues `old`. It
+    /// starts a separate history from zero.
+    pub fn begin_recovery(&mut self, new: Id, old: Id) -> Result<(), Reject> {
+        self.require_account(new)?;
+        let Some(previous) = self.previous_guarantors.get(&old) else { return Err(Reject("the referenced account did not lose its key")) };
+        let inviter = self.subjects[new as usize].inviter;
+        if !inviter.is_some_and(|i| previous.contains(&i)) {
+            return Err(Reject("a recovery invitation must come from a previous guarantor"));
+        }
+        if self.subjects[new as usize].recovers.is_some() || !self.subjects[new as usize].acts.is_empty() {
+            return Err(Reject("recovery must start before any act of the new account"));
+        }
+        self.subjects[new as usize].recovers = Some(old);
+        Ok(())
+    }
+
+    /// (previous guarantors that currently guarantee the new account mutually, needed): at least half of the previous
+    /// guarantors and not fewer than D.
+    pub fn recovery_progress(&self, new: Id) -> Option<(usize, usize)> {
+        let old = self.subjects[new as usize].recovers?;
+        let previous = self.previous_guarantors.get(&old)?;
+        let vouched = previous.iter().filter(|&&p| self.accepted(p) && self.graph.is_mutual(p, new)).count();
+        Some((vouched, previous.len().div_ceil(2).max(self.required_guarantors())))
+    }
+
+    /// With enough vouching the new account is merged into the old chain for good: the earned XP returns and the old account is
+    /// retired. Invitations and guarantee relations are not restored; they must be built again.
+    pub fn complete_recovery(&mut self, new: Id) -> Result<(), Reject> {
+        let Some((vouched, needed)) = self.recovery_progress(new) else { return Err(Reject("no recovery in progress")) };
+        if vouched < needed {
+            return Err(Reject("not enough previous guarantors vouch for the new account"));
+        }
+        let old = self.subjects[new as usize].recovers.take().unwrap();
+        let xp = self.subjects[old as usize].xp;
+        self.subjects[new as usize].restored_xp += xp;
+        self.subjects[new as usize].xp += xp;
+        self.subjects[old as usize].status = Status::False;
+        Ok(())
+    }
+
     // ---- invariants ------------------------------------------------------------------------------------------------
 
     pub fn audit(&self) -> Result<(), String> {
@@ -882,7 +942,7 @@ impl World {
                     }
                 }
             }
-            if xp != s.xp {
+            if xp + s.restored_xp != s.xp {
                 return Err(format!("xp of {i}: stored {} recomputed {}", s.xp, xp));
             }
             let units = self.invitations.iter().filter(|v| matches!(v.status, InvStatus::Pending | InvStatus::Active) && (v.creator == i as Id || v.target == Some(i as Id))).count() as u32;
@@ -1235,5 +1295,83 @@ mod tests {
         w.void_chain(0);
         w.audit().unwrap();
         assert!(w.valence_info(0).0 || !w.valence_info(0).0);
+    }
+}
+
+#[cfg(test)]
+mod recovery_tests {
+    use super::*;
+
+    fn ring(n: usize) -> Vec<(Id, Id)> {
+        let mut pairs = Vec::new();
+        for i in 0..n {
+            for off in [1usize, 2] {
+                let j = (i + off) % n;
+                let (a, b) = (i.min(j) as Id, i.max(j) as Id);
+                if !pairs.contains(&(a, b)) {
+                    pairs.push((a, b));
+                }
+            }
+        }
+        pairs
+    }
+
+    #[test]
+    fn a_lost_key_is_recovered_when_enough_previous_guarantors_vouch_and_the_xp_returns() {
+        let mut w = World::new(Config::default(), 12, &ring(12));
+        for i in 0..12 {
+            w.create_self_id(i).unwrap();
+        }
+        w.tick(24);
+        // Account 5 earns XP, then loses its key.
+        let act = w.eligible_emission(5).unwrap();
+        w.convert_to_collector(5, act).unwrap();
+        let earned = w.xp(5);
+        assert!(earned >= 1);
+        w.lose_key(5).unwrap();
+        assert_eq!(w.create_self_id(5), Err(Reject("the private key is lost")));
+        let previous = w.previous_guarantors.get(&5).unwrap().clone();
+        assert_eq!(previous, vec![3, 4, 6, 7]);
+        // A previous guarantor invites the new account; a stranger's invitation does not qualify.
+        let inv = w.create_invitation(3, w.eligible_emission(3).unwrap()).unwrap();
+        w.tick(48);
+        let new = w.accept_invitation(inv).unwrap();
+        w.begin_recovery(new, 5).unwrap();
+        assert_eq!(w.recovery_progress(new), Some((1, 2)), "the inviter vouches by the link; at least half of four and not fewer than D = 1");
+        // Two previous guarantors are enough for a half of four; the XP returns and the old account is retired.
+        w.create_self_id(new).unwrap();
+        w.create_self_id(4).unwrap();
+        w.tick(72);
+        w.open_valence(new, 4, w.eligible_emission(new).unwrap()).unwrap();
+        w.open_valence(4, new, w.eligible_emission(4).unwrap()).unwrap();
+        assert_eq!(w.recovery_progress(new), Some((2, 2)));
+        let before = w.xp(new);
+        w.complete_recovery(new).unwrap();
+        assert_eq!(w.xp(new), before + earned, "the earned XP returns");
+        assert!(!w.accepted(5), "the old account is retired");
+        assert_eq!(w.complete_recovery(new), Err(Reject("no recovery in progress")));
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn recovery_needs_a_previous_guarantor_as_inviter_and_enough_vouching() {
+        let mut w = World::new(Config::default(), 12, &ring(12));
+        for i in 0..12 {
+            w.create_self_id(i).unwrap();
+        }
+        w.tick(24);
+        w.lose_key(5).unwrap();
+        // Account 9 is not a previous guarantor of 5.
+        let inv = w.create_invitation(9, w.eligible_emission(9).unwrap()).unwrap();
+        w.tick(48);
+        let stranger_invited = w.accept_invitation(inv).unwrap();
+        assert_eq!(w.begin_recovery(stranger_invited, 5), Err(Reject("a recovery invitation must come from a previous guarantor")));
+        assert_eq!(w.begin_recovery(stranger_invited, 6), Err(Reject("the referenced account did not lose its key")));
+        // With one vouching of four, the recovery is refused.
+        let inv = w.create_invitation(3, w.eligible_emission(3).unwrap()).unwrap();
+        w.tick(72);
+        let new = w.accept_invitation(inv).unwrap();
+        w.begin_recovery(new, 5).unwrap();
+        assert_eq!(w.complete_recovery(new), Err(Reject("not enough previous guarantors vouch for the new account")));
     }
 }
