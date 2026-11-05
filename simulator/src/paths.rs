@@ -79,7 +79,7 @@ pub enum Search {
 /// Checks a family: simple paths along existing edges from `s` to `t`, distinct routes, no shared or blocked intermediate,
 /// at most `max_nodes` nodes each, at least `k` paths (a direct link can appear only once as a distinct route).
 pub fn verify_family(g: &Graph, paths: &[Vec<u32>], s: u32, t: u32, k: usize, max_nodes: usize, blocked: &[bool]) -> bool {
-    if paths.len() < k || s == t || blocked[s as usize] || blocked[t as usize] {
+    if paths.len() < k || s == t || blocked[t as usize] {
         return false;
     }
     let mut internal = HashSet::new();
@@ -111,6 +111,7 @@ struct Run<'a> {
     target: u32,
     limit: usize,
     dist: &'a [u8],
+    blocked: &'a [bool],
     used: &'a mut [bool],
     on_walk: &'a mut [bool],
     steps: u64,
@@ -120,7 +121,7 @@ struct Run<'a> {
 
 impl Run<'_> {
     fn within(&self, v: u32, nodes_before: usize) -> bool {
-        let d = self.dist[v as usize];
+        let d = self.dist.get(v as usize).copied().unwrap_or(NO_LEVEL);
         d != NO_LEVEL && nodes_before + d as usize <= self.limit
     }
 
@@ -136,7 +137,7 @@ impl Run<'_> {
             if to == self.source || after.is_some_and(|a| to <= a) {
                 continue;
             }
-            if to != self.target && (self.used[to as usize] || !self.within(to, 1)) {
+            if to != self.target && (self.used[to as usize] || self.blocked[to as usize] || !self.within(to, 1)) {
                 continue;
             }
             hops.push(to);
@@ -201,12 +202,12 @@ impl Run<'_> {
         }
         let mut options: Vec<u32> = Vec::new();
         for &to in self.g.out(at) {
-            if self.on_walk[to as usize] || (to != self.target && self.used[to as usize]) || !self.within(to, walk.len()) {
+            if self.on_walk[to as usize] || (to != self.target && (self.used[to as usize] || self.blocked[to as usize])) || !self.within(to, walk.len()) {
                 continue;
             }
             options.push(to);
         }
-        options.sort_by_key(|&v| (self.dist[v as usize], v));
+        options.sort_by_key(|&v| (self.dist.get(v as usize).copied().unwrap_or(NO_LEVEL), v));
         for to in options {
             walk.push(to);
             self.on_walk[to as usize] = true;
@@ -225,7 +226,7 @@ impl Run<'_> {
 }
 
 /// Reusable search state: scratch buffers and a shared distance cache keyed by graph revision and blocked-set epoch.
-#[derive(Default)]
+#[derive(Default, Clone)]
 pub struct PathFinder {
     cache_key: (u64, u64),
     dist_cache: HashMap<(u32, usize), Rc<Vec<u8>>>,
@@ -258,7 +259,7 @@ impl PathFinder {
     pub fn disjoint_count(&mut self, g: &Graph, blocked: &[bool], s: u32, t: u32, k: usize) -> usize {
         assert!(s != t, "distinct endpoints required");
         self.ensure(g.len());
-        if blocked[s as usize] || blocked[t as usize] {
+        if blocked[t as usize] {
             return 0;
         }
         let mut flow: HashSet<(u32, u32)> = HashSet::new();
@@ -350,8 +351,8 @@ impl PathFinder {
         count
     }
 
-    fn distances(&mut self, g: &Graph, blocked: &[bool], blocked_epoch: u64, target: u32, limit: usize) -> Rc<Vec<u8>> {
-        let key = (g.revision(), blocked_epoch);
+    fn distances(&mut self, g: &Graph, blocked: &[bool], cache_key: u64, target: u32, limit: usize) -> Rc<Vec<u8>> {
+        let key = (0, cache_key);
         if self.cache_key != key {
             self.dist_cache.clear();
             self.cache_key = key;
@@ -384,23 +385,27 @@ impl PathFinder {
     }
 
     /// Exact search for `k` internally vertex-disjoint paths of at most `max_nodes` nodes (endpoints included).
-    /// `blocked_epoch` must change whenever the `blocked` set changes (it keys the shared distance cache).
+    /// `cache_key` keys the shared distance cache: change it whenever the graph or `blocked` set changes enough to matter
+    /// (the world passes a daily epoch, so new edges added within the day are not seen by the distance pruning).
+    /// The source may itself be blocked: only intermediates and the target are filtered.
     #[allow(clippy::too_many_arguments)]
-    pub fn bounded(&mut self, g: &Graph, blocked: &[bool], blocked_epoch: u64, s: u32, t: u32, k: usize, max_nodes: usize, budget: u64) -> Search {
+    pub fn bounded(&mut self, g: &Graph, blocked: &[bool], cache_key: u64, s: u32, t: u32, k: usize, max_nodes: usize, budget: u64) -> Search {
         assert!(s != t && k >= 1 && max_nodes >= 2);
         self.ensure(g.len());
-        if blocked[s as usize] || blocked[t as usize] {
+        if blocked[t as usize] {
             return Search::Insufficient;
         }
         let limit = max_nodes - 1;
-        let dist = self.distances(g, blocked, blocked_epoch, t, limit);
-        if dist[s as usize] == NO_LEVEL {
+        let dist = self.distances(g, blocked, cache_key, t, limit);
+        // The source needs no distance of its own: it must reach some neighbor within the bound.
+        let source_reach = g.out(s).iter().filter_map(|&w| if w == t { Some(1usize) } else { dist.get(w as usize).filter(|&&d| d != NO_LEVEL).map(|&d| d as usize + 1) }).min();
+        if source_reach.is_none_or(|d| d > limit) {
             return Search::Insufficient;
         }
         if self.disjoint_count(g, blocked, s, t, k) < k {
             return Search::Insufficient;
         }
-        let mut run = Run { g, source: s, target: t, limit, dist: &dist, used: &mut self.used, on_walk: &mut self.on_walk, steps: 0, budget, exhausted: false };
+        let mut run = Run { g, source: s, target: t, limit, dist: &dist, blocked, used: &mut self.used, on_walk: &mut self.on_walk, steps: 0, budget, exhausted: false };
         let mut chosen = Vec::new();
         let found = run.solve(k, None, &mut chosen);
         let exhausted = run.exhausted;

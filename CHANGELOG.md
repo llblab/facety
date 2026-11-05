@@ -6,7 +6,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in the [dec
 
 ### Path depth and supported intermediaries (2026-11-05)
 
-- Milestone: attack simulations run only with detection on (D125); no-detection arms are retired as self-evident. Milestone: the simulator moves from Node to one Rust crate (`sim/`, D130; tag `legacy-node` at cutover); the ignored `results/` artifact directory was deleted, conclusions stay in the study pages.
+- Milestone: attack simulations run only with detection on (D125); no-detection arms are retired as self-evident. Milestone: the simulator moves from Node to one Rust crate (`simulator/`, D130; tag `legacy-node` at cutover); the ignored `results/` artifact directory was deleted, conclusions stay in the study pages.
 
 - D123: opt-in depth bound on Council paths (`maxNodes`, endpoints included; `maxPathNodes` in the topology runner), exact lazy bounded search with a work budget and `pathSearchExhausted` counter. Diagnostic: 7 nodes cost honest growth nothing and do not stop 10 attackers; 4 nodes cost 4 days.
 - D124: opt-in layered support for path intermediates (`pathSupport: 'layered'`). Diagnostic (one seed): with 7 nodes it holds 10 attackers at 12.1% without detection and 0.5% with detection, for 3 extra days of honest growth.
