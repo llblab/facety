@@ -165,8 +165,8 @@ Default: licensed public non-face graphs only, otherwise labeled synthetic. WP7 
 Answered 2026-10-29: D85 → **D110** free termination cancelling the terminating party's valence; Council vote → **D111** one equal vote regardless of XP; D95 → **D112** re-entry by ordinary mutual guarantee, Self-ID/emission need ≥1 current mutual guarantee of any origin. Still open:
 
 - **Per-invite 24h freeze versus referendum pause (§18.5)** — answered by **D113**: K referendums pause nothing; the per-invitation 24h veto freeze stays.
-- **K-referendum weights (D87–D90).** D111 settles the Council. Does a network-wide K referendum also use one participant one vote, dropping the FACY×XP (D88) and sqrt (D90) candidates?
-- **D112 bindings.** Who pays the re-entrant's valence when they hold no eligible own FACY (D93 prices it in self-issued FACY)? Does D84's outside-bootstrap path-to-Council condition still apply to the re-entrant's guarantor?
+- **K-referendum weights (D87–D90)** — answered by **D149**: the weight is the voter's XP; D88 superseded, D90 retired.
+- **D112 bindings** — the payer is answered by **D150** (the establishing guarantor pays when the re-entrant has no eligible own FACY). Still open: does D84's outside-bootstrap path-to-Council condition apply to that guarantor?
 - Mixed terminals, invitations to admitted accounts, mature decline below 100 [defer; first test whether the simpler rules fail].
 
 ### Q18 — Remedy for a detected fake cluster (D119)
