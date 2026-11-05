@@ -85,6 +85,10 @@ Double life (2% of honest invitations go to a member's second account; 30% of an
 
 Acquittal keeps about 6% more honest accounts without visible gain to the attacker, under the assumption that honest inviters are never careless or colluding (the proof question is [Q19](../../DECISIONS_NEEDED.md)).
 
+### Baseline under the current rules (D142, D143)
+
+Rust, current rules: Council of three below 100 active accounts, paths to different Council members, paths avoiding disputes, layered support, false-positive rate 0.3%, inspection of 3% of partners per day, cheap proof of reality (success 0.95, seven days), XP gate for formal cases, 20% careless honest accounts, one-year horizon. The full table (10, 30 and 100 operators, patient and honest-first operators, two years, the ablation without layered support) is in the [simulator contract](../../docs/simulator.en.md#baseline-validation-statistical). In short, after a year 10, 30 and 100 operators hold 0.09%, 0.29% and 0.95% of accounts and at most 1.5% of FACY; the cone never forms; the honest community grows about ten times and then stalls near 10,000 accounts (open question in [BACKLOG](../../BACKLOG.md)). Without layered support the 10-operator scenario leaves 31.7% of accounts at 60 days. Diagnostic: 3 to 20 seeds of one scenario family; honest-behavior, attacker and horizon values are the builder's proposals (D143).
+
 ## Limits
 
 One snapshot family; honest behavior rates, detection quality and the 28-day activity window are assumptions; attackers do not adapt to detection beyond the three pairing strategies; fakes are free; the Rust runner refreshes the Council, difficulty, support levels and distance pruning once per day. Year-long runs at false-positive rates of 0.1%-0.3% and 100 operators against 7 nodes without layered support are pending ([BACKLOG](../../BACKLOG.md)).

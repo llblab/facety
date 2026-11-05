@@ -127,6 +127,8 @@ struct Run<'a> {
     steps: u64,
     budget: u64,
     exhausted: bool,
+    /// Optional tie-break for the order in which neighbors are tried: higher priority (XP) first among equal distances.
+    priority: Option<&'a [i32]>,
 }
 
 impl Run<'_> {
@@ -164,8 +166,7 @@ impl Run<'_> {
         if hops.len() < need {
             return false;
         }
-        for i in 0..=(hops.len() - need) {
-            let first = hops[i];
+        for &first in hops.iter().take(hops.len() - need + 1) {
             if self.is_term(first) {
                 self.used[first as usize] = true;
                 chosen.push(vec![self.source, first]);
@@ -212,7 +213,8 @@ impl Run<'_> {
                 options.push(to);
             }
         }
-        options.sort_by_key(|&v| (self.dist.get(v as usize).copied().unwrap_or(NO_LEVEL), v));
+        let prio = |v: u32| self.priority.map_or(0, |p| p.get(v as usize).copied().unwrap_or(0));
+        options.sort_by_key(|&v| (self.dist.get(v as usize).copied().unwrap_or(NO_LEVEL), std::cmp::Reverse(prio(v)), v));
         for to in options {
             if self.is_term(to) {
                 walk.push(to);
@@ -258,18 +260,26 @@ impl Run<'_> {
     }
 }
 
+/// (source, graph revision, bound) of a cached source-distance table.
+type SourceKey = (u32, u64, usize);
+
 /// Reusable search state: scratch buffers and shared distance caches. The Council (terminals) is fixed per `cache_key` epoch.
 #[derive(Default, Clone)]
 pub struct PathFinder {
     cache_key: u64,
     dist_cache: HashMap<usize, Rc<Vec<u8>>>,
-    src_cache: Option<((u32, u64, usize), Rc<Vec<u8>>)>,
+    src_cache: Option<(SourceKey, Rc<Vec<u8>>)>,
     stamp: Vec<u32>,
     parent: Vec<u32>,
     epoch: u32,
     used: Vec<bool>,
     on_walk: Vec<bool>,
     pub exhausted_searches: u64,
+    /// Total work (search steps) of all exact searches, to compare orderings.
+    pub steps_total: u64,
+    /// Research lever: try neighbors with more XP first among equal distances (the hypothesis that XP is a gradient toward the Council).
+    pub use_priority: bool,
+    pub priority: Vec<i32>,
 }
 
 const SINK: u32 = u32::MAX;
@@ -463,7 +473,18 @@ impl PathFinder {
     /// `cache_key` keys the shared distance cache: change it whenever the Council, the graph or the `blocked` set changes enough
     /// to matter (the world passes a daily epoch, so edges added within the day are not seen by the distance pruning).
     #[allow(clippy::too_many_arguments)]
-    pub fn bounded(&mut self, g: &Graph, blocked: &[bool], mask: &[bool], terminals: &[u32], cache_key: u64, s: u32, k: usize, max_nodes: usize, budget: u64) -> Search {
+    pub fn bounded(
+        &mut self,
+        g: &Graph,
+        blocked: &[bool],
+        mask: &[bool],
+        terminals: &[u32],
+        cache_key: u64,
+        s: u32,
+        k: usize,
+        max_nodes: usize,
+        budget: u64,
+    ) -> Search {
         assert!(k >= 1 && max_nodes >= 2);
         self.ensure(g.len());
         let limit = max_nodes - 1;
@@ -473,7 +494,11 @@ impl PathFinder {
         }
         let dist = self.distances(g, blocked, cache_key, terminals, limit);
         // The source needs no distance of its own: it must reach some neighbor within the bound.
-        let reach = g.out(s).iter().filter_map(|&w| if usable(mask, blocked, s, w) { Some(1usize) } else { dist.get(w as usize).filter(|&&d| d != NO_LEVEL).map(|&d| d as usize + 1) }).min();
+        let reach = g
+            .out(s)
+            .iter()
+            .filter_map(|&w| if usable(mask, blocked, s, w) { Some(1usize) } else { dist.get(w as usize).filter(|&&d| d != NO_LEVEL).map(|&d| d as usize + 1) })
+            .min();
         if reach.is_none_or(|d| d > limit) {
             return Search::Insufficient;
         }
@@ -481,10 +506,25 @@ impl PathFinder {
             return Search::Insufficient;
         }
         let src = self.source_distances(g, blocked, s, limit);
-        let mut run = Run { g, source: s, mask, limit, dist: &dist, src: &src, blocked, used: &mut self.used, on_walk: &mut self.on_walk, steps: 0, budget, exhausted: false };
+        let mut run = Run {
+            g,
+            source: s,
+            mask,
+            limit,
+            dist: &dist,
+            src: &src,
+            blocked,
+            used: &mut self.used,
+            on_walk: &mut self.on_walk,
+            steps: 0,
+            budget,
+            exhausted: false,
+            priority: if self.use_priority { Some(&self.priority) } else { None },
+        };
         let mut chosen = Vec::new();
         let found = run.solve(k, None, &mut chosen);
         let exhausted = run.exhausted;
+        self.steps_total += run.steps;
         if found {
             for p in &chosen {
                 for &v in &p[1..] {
@@ -570,10 +610,13 @@ mod tests {
         false
     }
 
-    #[test]
-    fn multi_terminal_search_matches_brute_force_and_certifies() {
+    fn brute_force_agreement(priority: bool) {
         let mut rng = Lcg(987);
         let mut finder = PathFinder::new();
+        if priority {
+            finder.use_priority = true;
+            finder.priority = (0..11).map(|v| (v * 7919) % 13).collect();
+        }
         let (mut checks, mut feasible) = (0, 0);
         for trial in 0..300 {
             let n = 11;
@@ -621,6 +664,16 @@ mod tests {
     }
 
     #[test]
+    fn multi_terminal_search_matches_brute_force_and_certifies() {
+        brute_force_agreement(false);
+    }
+
+    #[test]
+    fn the_xp_priority_ordering_changes_the_work_not_the_answer() {
+        brute_force_agreement(true);
+    }
+
+    #[test]
     fn layered_support_matches_naive_fixed_point() {
         let mut rng = Lcg(4242);
         for trial in 0..120 {
@@ -641,7 +694,9 @@ mod tests {
                     for round in 1..=max_level {
                         let add: Vec<usize> = (0..n)
                             .filter(|&i| want[i] == NO_LEVEL && !blocked[i])
-                            .filter(|&i| (0..n).filter(|&j| want[j] != NO_LEVEL && want[j] < round && g.is_mutual(i as u32, j as u32)).count() as u32 >= threshold)
+                            .filter(|&i| {
+                                (0..n).filter(|&j| want[j] != NO_LEVEL && want[j] < round && g.is_mutual(i as u32, j as u32)).count() as u32 >= threshold
+                            })
                             .collect();
                         for i in add {
                             want[i] = round;
@@ -654,4 +709,3 @@ mod tests {
         }
     }
 }
-

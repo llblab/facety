@@ -9,7 +9,7 @@
 //! - legacy policy options (immediate/maturity XP, guarantee fees, vouching, limits) do not exist.
 use crate::graph::Graph;
 use crate::paths::{layered_support, PathFinder, Search, NO_LEVEL};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 pub const DAY: i64 = 24;
 pub type Id = u32;
@@ -29,13 +29,30 @@ pub struct Config {
     pub layered: bool,
     /// Work budget of one exact path search; running out is counted and refused like a missing family.
     pub search_budget: u64,
+    /// Research levers for the large-network question (open): fix the number of Council seats, or cap the difficulty D. `None` keeps the D33
+    /// lookup and D = digits of the active count.
+    pub council_seats: Option<usize>,
+    pub max_difficulty: Option<usize>,
+    /// Path-search ordering lever: try accounts with more XP first among equal distances to the Council.
+    pub xp_priority: bool,
     /// D131: accounts in an open dispute are not path intermediaries (default). `false` is the ablation used to price the rule.
     pub exclude_disputed: bool,
 }
 
 impl Default for Config {
     fn default() -> Config {
-        Config { k: 100, freeze_hours: 24, spend_hours: 24, max_nodes: Some(7), layered: false, search_budget: 300_000, exclude_disputed: true }
+        Config {
+            k: 100,
+            freeze_hours: 24,
+            spend_hours: 24,
+            max_nodes: Some(7),
+            layered: false,
+            search_budget: 300_000,
+            council_seats: None,
+            max_difficulty: None,
+            xp_priority: false,
+            exclude_disputed: true,
+        }
     }
 }
 
@@ -146,6 +163,8 @@ pub struct World {
     council: Vec<Id>,
     council_mask: Vec<bool>,
     previous_guarantors: HashMap<Id, Vec<Id>>,
+    /// Single-use recovery: (successor, source, XP moved) for every completed recovery; a source appears at most once.
+    recovery_log: Vec<(Id, Id, i32)>,
     member_ok: Vec<bool>,
     blocked: Vec<bool>,
     level: Vec<u8>,
@@ -185,6 +204,7 @@ impl World {
             council: Vec::new(),
             council_mask: Vec::new(),
             previous_guarantors: HashMap::new(),
+            recovery_log: Vec::new(),
             member_ok: Vec::new(),
             blocked: Vec::new(),
             level: Vec::new(),
@@ -209,7 +229,18 @@ impl World {
 
     fn add_account(&mut self, inviter: Option<Id>) -> Id {
         let id = self.graph.add_node();
-        self.subjects.push(Subject { status: Status::Accepted, xp: 0, liquid: 0, last_reward: None, acts: Vec::new(), first_unspent: 0, inviter, recovers: None, restored_xp: 0, lost_key: false });
+        self.subjects.push(Subject {
+            status: Status::Accepted,
+            xp: 0,
+            liquid: 0,
+            last_reward: None,
+            acts: Vec::new(),
+            first_unspent: 0,
+            inviter,
+            recovers: None,
+            restored_xp: 0,
+            lost_key: false,
+        });
         self.owned_open.push(0);
         self.inv_units.push(0);
         self.hold.push(0);
@@ -273,7 +304,8 @@ impl World {
     }
     /// D: the number of digits of the active count (the stand-in for N_verified).
     pub fn required_guarantors(&self) -> usize {
-        digits(self.active_count)
+        let d = digits(self.active_count);
+        self.cfg.max_difficulty.map_or(d, |cap| d.min(cap))
     }
     pub fn burned(&self) -> i64 {
         self.burned
@@ -299,6 +331,9 @@ impl World {
     pub fn minted(&self) -> i64 {
         self.minted
     }
+    pub fn path_search_steps(&self) -> u64 {
+        self.finder.steps_total
+    }
     pub fn path_searches_exhausted(&self) -> u64 {
         self.finder.exhausted_searches
     }
@@ -315,10 +350,14 @@ impl World {
     /// All mature unspent emission rights of an account, oldest first.
     pub fn eligible_emissions(&self, id: Id, min_age: i64) -> Vec<u32> {
         let s = &self.subjects[id as usize];
-        s.acts[s.first_unspent..].iter().copied().filter(|&a| {
-            let act = &self.acts[a as usize];
-            act.status == ActStatus::Unspent && self.now - act.recorded_at >= min_age
-        }).collect()
+        s.acts[s.first_unspent..]
+            .iter()
+            .copied()
+            .filter(|&a| {
+                let act = &self.acts[a as usize];
+                act.status == ActStatus::Unspent && self.now - act.recorded_at >= min_age
+            })
+            .collect()
     }
     /// (open, owner, counterpart, ever matched) of a valence.
     pub fn valence_info(&self, v: u32) -> (bool, Id, Id, bool) {
@@ -330,7 +369,10 @@ impl World {
     }
     /// Unspent emission rights of an account (money not yet liquid).
     pub fn unspent_rights(&self, id: Id) -> usize {
-        self.subjects[id as usize].acts[self.subjects[id as usize].first_unspent..].iter().filter(|&&a| self.acts[a as usize].status == ActStatus::Unspent).count()
+        self.subjects[id as usize].acts[self.subjects[id as usize].first_unspent..]
+            .iter()
+            .filter(|&&a| self.acts[a as usize].status == ActStatus::Unspent)
+            .count()
     }
 
     pub fn is_active(&self, id: Id) -> bool {
@@ -374,7 +416,12 @@ impl World {
         let r = (digits(self.active_count) as f64).sqrt().round() as usize;
         assert!(r <= 6, "D33 Council lookup is OPEN beyond r = 6");
         // D33 lookup; below 100 active accounts the Council has three equal-vote seats, the smallest body that can form a majority.
-        [3usize, 11, 101, 1001, 10001, 100001][r.max(1) - 1]
+        let lookup = [3usize, 11, 101, 1001, 10001, 100001][r.max(1) - 1];
+        // The seat override applies from 100 active accounts on; below that the Council of three is an invariant (D133).
+        match self.cfg.council_seats {
+            Some(seats) if self.active_count >= 100 => seats,
+            _ => lookup,
+        }
     }
 
     /// Advance to `hour` and refresh the daily snapshot (activity, difficulty, Council, support levels, distances).
@@ -393,6 +440,10 @@ impl World {
             .collect();
         candidates.sort_by(|a, b| b.0.cmp(&a.0).then(b.1.cmp(&a.1)).then(a.2.cmp(&b.2)));
         self.council = candidates.into_iter().take(size).map(|(_, _, i)| i).collect();
+        if self.cfg.xp_priority {
+            self.finder.use_priority = true;
+            self.finder.priority = self.subjects.iter().map(|s| s.xp).collect();
+        }
         self.council_mask = vec![false; n];
         for &m in &self.council {
             self.council_mask[m as usize] = true;
@@ -790,7 +841,10 @@ impl World {
 
     /// Active invitation links of an account (as creator or as invited), for leaving.
     pub fn active_link_with(&self, a: Id, b: Id) -> Option<u32> {
-        self.invitations.iter().position(|i| i.status == InvStatus::Active && ((i.creator == a && i.target == Some(b)) || (i.creator == b && i.target == Some(a)))).map(|p| p as u32)
+        self.invitations
+            .iter()
+            .position(|i| i.status == InvStatus::Active && ((i.creator == a && i.target == Some(b)) || (i.creator == b && i.target == Some(a))))
+            .map(|p| p as u32)
     }
 
     // ---- disputes as activity holds, identity verdicts -------------------------------------------------------------
@@ -865,17 +919,38 @@ impl World {
         Ok(())
     }
 
+    /// A source can still be recovered: it lost its key, is a valid account and was not consumed by an earlier recovery.
+    fn check_source(&self, old: Id) -> Result<(), Reject> {
+        if (old as usize) >= self.subjects.len() || !self.previous_guarantors.contains_key(&old) || !self.subjects[old as usize].lost_key {
+            return Err(Reject("the referenced account did not lose its key"));
+        }
+        if self.recovery_log.iter().any(|&(_, source, _)| source == old) {
+            return Err(Reject("the lost account was already recovered"));
+        }
+        if self.subjects[old as usize].status != Status::Accepted {
+            return Err(Reject("the lost account is no longer valid"));
+        }
+        Ok(())
+    }
+
     /// The new account (already admitted by an invitation from one of the previous guarantors) declares that it continues `old`. It
-    /// starts a separate history from zero.
+    /// starts a separate history from zero. Several successors may prepare to recover one lost account, but only one can complete.
     pub fn begin_recovery(&mut self, new: Id, old: Id) -> Result<(), Reject> {
         self.require_account(new)?;
-        let Some(previous) = self.previous_guarantors.get(&old) else { return Err(Reject("the referenced account did not lose its key")) };
+        if new == old {
+            return Err(Reject("an account cannot recover itself"));
+        }
+        self.check_source(old)?;
+        let previous = &self.previous_guarantors[&old];
         let inviter = self.subjects[new as usize].inviter;
         if !inviter.is_some_and(|i| previous.contains(&i)) {
             return Err(Reject("a recovery invitation must come from a previous guarantor"));
         }
         if self.subjects[new as usize].recovers.is_some() || !self.subjects[new as usize].acts.is_empty() {
             return Err(Reject("recovery must start before any act of the new account"));
+        }
+        if self.recovery_log.iter().any(|&(successor, _, _)| successor == new) {
+            return Err(Reject("this account already completed a recovery"));
         }
         self.subjects[new as usize].recovers = Some(old);
         Ok(())
@@ -891,16 +966,22 @@ impl World {
     }
 
     /// With enough vouching the new account is merged into the old chain for good: the earned XP returns and the old account is
-    /// retired. Invitations and guarantee relations are not restored; they must be built again.
+    /// retired. Invitations and guarantee relations are not restored; they must be built again. The right to recover a source is
+    /// consumed exactly once: validity and availability are checked immediately before the transfer, and the consumption, the
+    /// transfer and the retirement happen together or not at all.
     pub fn complete_recovery(&mut self, new: Id) -> Result<(), Reject> {
         let Some((vouched, needed)) = self.recovery_progress(new) else { return Err(Reject("no recovery in progress")) };
+        self.require_account(new)?;
+        let old = self.subjects[new as usize].recovers.unwrap();
+        self.check_source(old)?;
         if vouched < needed {
             return Err(Reject("not enough previous guarantors vouch for the new account"));
         }
-        let old = self.subjects[new as usize].recovers.take().unwrap();
-        let xp = self.subjects[old as usize].xp;
-        self.subjects[new as usize].restored_xp += xp;
-        self.subjects[new as usize].xp += xp;
+        let amount = self.subjects[old as usize].xp;
+        self.recovery_log.push((new, old, amount));
+        self.subjects[new as usize].recovers = None;
+        self.subjects[new as usize].restored_xp += amount;
+        self.subjects[new as usize].xp += amount;
         self.subjects[old as usize].status = Status::False;
         Ok(())
     }
@@ -929,25 +1010,63 @@ impl World {
                 return Err("active relation without edge".into());
             }
         }
-        for (i, s) in self.subjects.iter().enumerate() {
-            let owned = self.valences.iter().filter(|v| v.open && v.owner == i as Id).count() as u32;
-            if owned != self.owned_open[i] {
-                return Err(format!("owned valences of {i}"));
-            }
-            let mut xp = 0;
-            for act in &self.acts {
-                if let Some(c) = &act.credit {
-                    if !c.revoked {
-                        xp += c.receipts.iter().filter(|r| r.recipient == i as Id && !r.revoked).count() as i32;
+        // One pass over each table instead of one pass per account (the audit stays linear in the size of the world).
+        let n = self.subjects.len();
+        let mut owned = vec![0u32; n];
+        for v in self.valences.iter().filter(|v| v.open) {
+            owned[v.owner as usize] += 1;
+        }
+        let mut xp = vec![0i32; n];
+        let mut ever = vec![0i32; n];
+        for act in &self.acts {
+            if let Some(c) = &act.credit {
+                for r in &c.receipts {
+                    ever[r.recipient as usize] += 1;
+                    if !c.revoked && !r.revoked {
+                        xp[r.recipient as usize] += 1;
                     }
                 }
             }
-            if xp + s.restored_xp != s.xp {
-                return Err(format!("xp of {i}: stored {} recomputed {}", s.xp, xp));
+        }
+        let mut units = vec![0u32; n];
+        for v in self.invitations.iter().filter(|v| matches!(v.status, InvStatus::Pending | InvStatus::Active)) {
+            units[v.creator as usize] += 1;
+            if let Some(t) = v.target {
+                units[t as usize] += 1;
             }
-            let units = self.invitations.iter().filter(|v| matches!(v.status, InvStatus::Pending | InvStatus::Active) && (v.creator == i as Id || v.target == Some(i as Id))).count() as u32;
-            if units != self.inv_units[i] {
-                return Err(format!("invitation units of {i}: stored {} recomputed {units}", self.inv_units[i]));
+        }
+        for (i, s) in self.subjects.iter().enumerate() {
+            if owned[i] != self.owned_open[i] {
+                return Err(format!("owned valences of {i}"));
+            }
+            if xp[i] + s.restored_xp != s.xp {
+                return Err(format!("xp of {i}: stored {} recomputed {}", s.xp, xp[i]));
+            }
+            if units[i] != self.inv_units[i] {
+                return Err(format!("invitation units of {i}: stored {} recomputed {}", self.inv_units[i], units[i]));
+            }
+        }
+        // Recovered XP has an origin: every completed recovery consumed a distinct, retired, lost source, and a successor's restored XP is
+        // exactly the sum of what its recoveries moved, never more than the source could have held.
+        let mut sources = HashSet::new();
+        let mut moved: HashMap<Id, i32> = HashMap::new();
+        for &(new, old, amount) in &self.recovery_log {
+            if new == old || !sources.insert(old) {
+                return Err(format!("recovery source {old} used more than once or recovered by itself"));
+            }
+            if !self.subjects[old as usize].lost_key || self.subjects[old as usize].status != Status::False || !self.previous_guarantors.contains_key(&old) {
+                return Err(format!("recovery source {old} is not a retired lost account"));
+            }
+            let source = &self.subjects[old as usize];
+            let at_most = ever[old as usize] + source.restored_xp;
+            if amount < 0 || amount > at_most {
+                return Err(format!("recovery of {old} moved {amount} XP but it could hold at most {at_most}"));
+            }
+            *moved.entry(new).or_insert(0) += amount;
+        }
+        for (i, s) in self.subjects.iter().enumerate() {
+            if s.restored_xp != moved.get(&(i as Id)).copied().unwrap_or(0) {
+                return Err(format!("restored XP of {i} does not match its recovery log"));
             }
         }
         Ok(())
@@ -1373,5 +1492,174 @@ mod recovery_tests {
         let new = w.accept_invitation(inv).unwrap();
         w.begin_recovery(new, 5).unwrap();
         assert_eq!(w.complete_recovery(new), Err(Reject("not enough previous guarantors vouch for the new account")));
+    }
+
+    /// Two successors prepared for one lost account; each is vouched by two previous guarantors. A test helper makes a mutual
+    /// guarantee between a new account and one voucher through two matching paid valences.
+    fn vouch(w: &mut World, new: Id, voucher: Id) {
+        for _ in 0..6 {
+            let _ = w.create_self_id(new);
+            let _ = w.create_self_id(voucher);
+            w.tick(w.now() + 24);
+            if let (Some(a), Some(b)) = (w.eligible_emission(new), w.eligible_emission(voucher)) {
+                w.open_valence(new, voucher, a).unwrap();
+                w.open_valence(voucher, new, b).unwrap();
+                return;
+            }
+        }
+        panic!("could not make the vouching guarantee");
+    }
+
+    fn recovery_world() -> (World, Id, i32) {
+        let mut w = World::new(Config::default(), 12, &ring(12));
+        for i in 0..12 {
+            w.create_self_id(i).unwrap();
+        }
+        w.tick(24);
+        let act = w.eligible_emission(5).unwrap();
+        w.convert_to_collector(5, act).unwrap();
+        let earned = w.xp(5);
+        assert!(earned >= 1);
+        w.lose_key(5).unwrap();
+        (w, 5, earned)
+    }
+
+    /// A mature right of `who`, making a Self-ID and waiting a day when needed.
+    fn right_of(w: &mut World, who: Id) -> u32 {
+        for _ in 0..4 {
+            if let Some(r) = w.eligible_emission(who) {
+                return r;
+            }
+            let _ = w.create_self_id(who);
+            w.tick(w.now() + 24);
+        }
+        panic!("no mature right");
+    }
+
+    fn successor(w: &mut World, old: Id, inviter: Id) -> Id {
+        let right = right_of(w, inviter);
+        let inv = w.create_invitation(inviter, right).unwrap();
+        w.tick(w.now() + 24);
+        let new = w.accept_invitation(inv).unwrap();
+        w.begin_recovery(new, old).unwrap();
+        new
+    }
+
+    #[test]
+    fn one_lost_account_restores_xp_to_exactly_one_successor() {
+        let (mut w, old, earned) = recovery_world();
+        let first = successor(&mut w, old, 3);
+        let second = successor(&mut w, old, 6);
+        vouch(&mut w, first, 4);
+        vouch(&mut w, second, 7);
+        assert_eq!(w.recovery_progress(first).map(|p| p.0 >= p.1), Some(true));
+        assert_eq!(w.recovery_progress(second).map(|p| p.0 >= p.1), Some(true));
+        w.audit().unwrap();
+        let xp_first_before = w.xp(first);
+        let carried = w.xp(old);
+        assert!(carried >= earned, "the lost account keeps what it earned (and may still earn guarantor XP while its links stand)");
+        w.complete_recovery(first).unwrap();
+        assert_eq!(w.xp(first), xp_first_before + carried);
+        w.audit().unwrap();
+        // The competing successor is refused and nothing moves.
+        let (xp_second, xp_old, edges) = (w.xp(second), w.xp(old), w.graph().edge_count());
+        let supply = w.supply();
+        assert_eq!(w.complete_recovery(second), Err(Reject("the lost account was already recovered")));
+        assert_eq!((w.xp(second), w.xp(old), w.graph().edge_count(), w.supply()), (xp_second, xp_old, edges, supply));
+        assert!(w.accepted(second) && !w.accepted(old));
+        w.audit().unwrap();
+        // The consumed source cannot be claimed again, completion cannot repeat, and a retired account cannot recover itself.
+        assert_eq!(w.complete_recovery(first), Err(Reject("no recovery in progress")));
+        let third = {
+            let right = right_of(&mut w, 3);
+            let inv = w.create_invitation(3, right).unwrap();
+            w.tick(w.now() + 24);
+            w.accept_invitation(inv).unwrap()
+        };
+        assert_eq!(w.begin_recovery(third, old), Err(Reject("the lost account was already recovered")));
+        assert_eq!(w.begin_recovery(first, first), Err(Reject("an account cannot recover itself")));
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn recovery_refuses_an_invalid_source_and_a_second_recovery_by_the_same_successor() {
+        let (mut w, old, _) = recovery_world();
+        let new = successor(&mut w, old, 3);
+        vouch(&mut w, new, 4);
+        // The source was invalidated by a verdict before the recovery completed: no XP moves.
+        w.invalidate_identity(old);
+        let xp = w.xp(new);
+        assert_eq!(w.complete_recovery(new), Err(Reject("the lost account is no longer valid")));
+        assert_eq!(w.xp(new), xp);
+        w.audit().unwrap();
+        assert_eq!(w.begin_recovery(new, 99 % 12), Err(Reject("the referenced account did not lose its key")));
+    }
+
+    #[test]
+    fn a_recovered_account_that_loses_its_key_can_itself_be_recovered_with_the_inherited_xp() {
+        let (mut w, old, earned) = recovery_world();
+        let b = successor(&mut w, old, 3);
+        vouch(&mut w, b, 4);
+        w.complete_recovery(b).unwrap();
+        assert!(w.xp(b) >= earned);
+        // b loses its key; its guarantors now are the previous guarantors it re-established.
+        w.lose_key(b).unwrap();
+        let c = successor(&mut w, b, 3);
+        vouch(&mut w, c, 4);
+        let before = w.xp(c);
+        let carried = w.xp(b);
+        assert!(carried >= earned, "the inherited XP is part of what b holds");
+        w.complete_recovery(c).unwrap();
+        assert_eq!(w.xp(c), before + carried, "the whole inherited XP moves once");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn the_linear_audit_still_catches_every_kind_of_corruption() {
+        let build = || {
+            let mut w = World::new(Config::default(), 12, &ring(12));
+            for i in 0..12 {
+                w.create_self_id(i).unwrap();
+            }
+            w.tick(24);
+            let act = w.eligible_emission(5).unwrap();
+            w.convert_to_collector(5, act).unwrap();
+            let right = w.eligible_emission(3).unwrap();
+            w.create_invitation(3, right).unwrap();
+            w.audit().unwrap();
+            w
+        };
+        let mut w = build();
+        w.subjects[5].xp += 1;
+        assert!(w.audit().unwrap_err().contains("xp of 5"));
+        let mut w = build();
+        w.owned_open[2] += 1;
+        assert!(w.audit().unwrap_err().contains("owned valences of 2"));
+        let mut w = build();
+        w.inv_units[3] += 1;
+        assert!(w.audit().unwrap_err().contains("invitation units of 3"));
+        let mut w = build();
+        w.vault += 1;
+        assert!(w.audit().unwrap_err().contains("vault"));
+        let mut w = build();
+        w.subjects[0].liquid += 1;
+        assert!(w.audit().is_err());
+        let mut w = build();
+        w.recovery_log.push((1, 2, 5));
+        assert!(w.audit().is_err(), "a recovery without a lost, retired source is not a valid history");
+    }
+
+    #[test]
+    fn research_levers_cap_the_difficulty_and_override_the_council_size_only_from_100_active() {
+        let mut w = World::new(Config { max_difficulty: Some(1), council_seats: Some(21), ..Config::default() }, 120, &ring(120));
+        assert_eq!(w.council().len(), 3, "the Council of three below 100 active accounts is an invariant");
+        for i in 0..120 {
+            let _ = w.create_self_id(i);
+        }
+        w.tick(24);
+        assert!(w.active_count() < 100 || w.council().len() == 21 || w.council().len() == 3);
+        assert_eq!(w.required_guarantors(), 1, "the cap holds D at one");
+        let plain = World::new(Config::default(), 120, &ring(120));
+        assert_eq!(plain.council().len(), 3);
     }
 }

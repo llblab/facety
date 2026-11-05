@@ -100,9 +100,18 @@ mod tests {
     #[test]
     fn same_key_same_stream_and_distinct_keys_differ() {
         let seed = hash_seed("test");
-        let a: Vec<u64> = { let mut r = Rng::keyed(seed, 1, 2, 3); (0..4).map(|_| r.next_u64()).collect() };
-        let b: Vec<u64> = { let mut r = Rng::keyed(seed, 1, 2, 3); (0..4).map(|_| r.next_u64()).collect() };
-        let c: Vec<u64> = { let mut r = Rng::keyed(seed, 1, 2, 4); (0..4).map(|_| r.next_u64()).collect() };
+        let a: Vec<u64> = {
+            let mut r = Rng::keyed(seed, 1, 2, 3);
+            (0..4).map(|_| r.next_u64()).collect()
+        };
+        let b: Vec<u64> = {
+            let mut r = Rng::keyed(seed, 1, 2, 3);
+            (0..4).map(|_| r.next_u64()).collect()
+        };
+        let c: Vec<u64> = {
+            let mut r = Rng::keyed(seed, 1, 2, 4);
+            (0..4).map(|_| r.next_u64()).collect()
+        };
         assert_eq!(a, b);
         assert_ne!(a, c);
     }

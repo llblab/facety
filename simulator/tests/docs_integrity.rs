@@ -9,7 +9,8 @@ fn repo_root() -> PathBuf {
 }
 
 fn tracked() -> Vec<String> {
-    let out = Command::new("git").args(["ls-files", "-z", "--cached", "--others", "--exclude-standard"]).current_dir(repo_root()).output().expect("git ls-files");
+    let out =
+        Command::new("git").args(["ls-files", "-z", "--cached", "--others", "--exclude-standard"]).current_dir(repo_root()).output().expect("git ls-files");
     assert!(out.status.success(), "git ls-files failed");
     String::from_utf8_lossy(&out.stdout).split('\0').filter(|s| !s.is_empty()).map(str::to_string).filter(|f| repo_root().join(f).is_file()).collect()
 }
