@@ -1,6 +1,6 @@
 // Owns: Deterministic Facety transitions; excludes attacker truth and adjudication.
 import { DirectedGraph } from './graph.mjs';
-import { findInternallyDisjointPaths, findLengthBoundedDisjointPaths, verifyInternallyDisjointPaths } from './proofs.mjs';
+import { findInternallyDisjointPaths, findLayeredSupport, findLengthBoundedDisjointPaths, verifyInternallyDisjointPaths } from './proofs.mjs';
 
 export const DAY = 24;
 export const DEFAULT_POLICY = Object.freeze({
@@ -108,11 +108,13 @@ function valencesFrom(value) {
   // With eligibility off, a supplied councilPaths binding only sets the Council reference (no path gate).
   if (reference.eligibility !== 'off' || reference.councilPaths !== null) {
     const supplied = reference.councilPaths;
-    // maxNodes is optional (D122 length bound): null/absent means unbounded; otherwise the most nodes, endpoints included, a certifying path may have.
-    const { maxNodes = null, ...fixed } = supplied && typeof supplied === 'object' && !Array.isArray(supplied) ? supplied : {};
+    // maxNodes is optional (D123 length bound): null/absent means unbounded; otherwise the most nodes, endpoints included, a certifying path may have.
+    // support is optional (D124): 'layered' lets only layered-supported accounts serve as path intermediates (needs maxNodes).
+    const { maxNodes = null, support = null, ...fixed } = supplied && typeof supplied === 'object' && !Array.isArray(supplied) ? supplied : {};
     if (!supplied || typeof supplied !== 'object' || Array.isArray(supplied) || Object.keys(fixed).sort().join() !== Object.keys(paths).sort().join()
-      || Object.entries(paths).some(([key, allowed]) => !allowed.includes(fixed[key])) || (maxNodes !== null && (!Number.isSafeInteger(maxNodes) || maxNodes < 2))) throw new TypeError('unsupported councilPaths binding');
-    councilPaths = Object.freeze({ ...fixed, maxNodes });
+      || Object.entries(paths).some(([key, allowed]) => !allowed.includes(fixed[key])) || (maxNodes !== null && (!Number.isSafeInteger(maxNodes) || maxNodes < 2))
+      || (support !== null && (support !== 'layered' || maxNodes === null))) throw new TypeError('unsupported councilPaths binding');
+    councilPaths = Object.freeze({ ...fixed, maxNodes, support });
   }
   if (!Array.isArray(genesisPairs) || genesisPairs.some(pair => !Array.isArray(pair) || pair.length !== 2)) throw new TypeError('genesisPairs must be an array of pairs');
   return Object.freeze({ K, genesisPairs: Object.freeze(genesisPairs.map(pair => Object.freeze([...pair]))),
@@ -304,9 +306,15 @@ export class FacetyModel {
   // D84/D104 reference: exact internally vertex-disjoint paths over current mutual links to one admissible Council member other than the source.
   #councilPathCertificate(source, minimumPaths) {
     const blockedNodes = [...this.#subjects.values()].filter(subject => subject.identityStatus !== 'accepted').map(subject => subject.id);
-    for (const { id: target } of this.council()) {
+    const council = this.council();
+    const { maxNodes = null, support = null } = this.valences.reference.councilPaths;
+    if (support === 'layered') {
+      // D124: every intermediate must itself have D mutual guarantors that are strictly closer to the Council; the source and the Council member need no level.
+      const level = findLayeredSupport(this.guarantees, { seeds: council.map(member => member.id), threshold: this.requiredGuarantors(), maxLevel: maxNodes - 2, blockedNodes });
+      for (const id of this.guarantees.nodeIds()) if (!level.has(id) && id !== source) blockedNodes.push(id);
+    }
+    for (const { id: target } of council) {
       if (target === source) continue;
-      const maxNodes = this.valences.reference.councilPaths.maxNodes ?? null;
       const result = maxNodes === null ? findInternallyDisjointPaths(this.guarantees, { source, target, minimumPaths, blockedNodes })
         : findLengthBoundedDisjointPaths(this.guarantees, { source, target, minimumPaths, maxNodes, blockedNodes });
       if (result.status === 'budget-exhausted') this.#pathSearchExhausted++;

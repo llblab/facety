@@ -314,6 +314,45 @@ export function findLengthBoundedDisjointPaths(graph, { source, target, minimumP
   return finish(exhausted ? 'budget-exhausted' : 'insufficient');
 }
 
+// Layered support (D124): seeds sit at level 0; a node gets level k when, after round k - 1, at least `threshold` of its mutual,
+// unblocked neighbors already have a level (all strictly lower). Rounds stop at maxLevel. Unleveled nodes are absent from the map.
+export function findLayeredSupport(graph, { seeds, threshold, maxLevel, blockedNodes = [] }) {
+  if (!Array.isArray(seeds) || !Array.isArray(blockedNodes)) throw new TypeError('seeds and blockedNodes must be arrays');
+  if (!Number.isSafeInteger(threshold) || threshold < 1) throw new RangeError('threshold must be a positive safe integer');
+  if (!Number.isSafeInteger(maxLevel) || maxLevel < 0) throw new RangeError('maxLevel must be a non-negative safe integer');
+  const blocked = new Set(blockedNodes);
+  const level = new Map();
+  let frontier = [];
+  for (const id of seeds) if (graph.hasNode(id) && !blocked.has(id) && !level.has(id)) { level.set(id, 0); frontier.push(id); }
+  const support = new Map();
+  for (let round = 1; round <= maxLevel && frontier.length; round++) {
+    const reached = [];
+    for (const id of frontier) for (const edge of graph.inEdges(id)) {
+      const other = edge.from;
+      if (level.has(other) || blocked.has(other) || !graph.edge(id, other)) continue;
+      const count = (support.get(other) ?? 0) + 1;
+      support.set(other, count);
+      if (count === threshold) reached.push(other);
+    }
+    for (const id of reached) level.set(id, round);
+    frontier = reached;
+  }
+  return level;
+}
+
+// Independent soundness check: every claimed level is justified by `threshold` mutual neighbors with a strictly lower level.
+export function verifyLayeredSupport(graph, level, { seeds, threshold, maxLevel, blockedNodes = [] }) {
+  const blocked = new Set(blockedNodes), seedSet = new Set(seeds);
+  for (const [id, value] of level) {
+    if (!graph.hasNode(id) || blocked.has(id) || !Number.isSafeInteger(value) || value < 0 || value > maxLevel) return false;
+    if (value === 0) { if (!seedSet.has(id)) return false; continue; }
+    let lower = 0;
+    for (const edge of graph.inEdges(id)) if (graph.edge(id, edge.from) && level.has(edge.from) && level.get(edge.from) < value) lower++;
+    if (lower < threshold) return false;
+  }
+  return true;
+}
+
 // A family certifies a lower bound only; this verifier does not trust solver counts or prove a maximum.
 export function verifyInternallyDisjointPaths(graph, proof, { source, target, minimumPaths, blockedNodes = [], requireRevision = true, maxNodes = Infinity }) {
   if (maxNodes !== Infinity && (!Number.isSafeInteger(maxNodes) || maxNodes < 2)) return false;

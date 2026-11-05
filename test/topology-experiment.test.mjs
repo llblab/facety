@@ -138,3 +138,38 @@ test('D122 length-bounded disjoint paths: exact against brute force, certified, 
   }
   assert.throws(() => runTopologyExperiment({ maxPathNodes: 1 }), /maxPathNodes/);
 });
+
+test('D124 layered support: levels match a naive fixed point, verify independently and gate path intermediates', async () => {
+  const { DirectedGraph } = await import('../src/graph.mjs');
+  const { findLayeredSupport, verifyLayeredSupport } = await import('../src/proofs.mjs');
+  let state = 4242; const rnd = () => (state = (state * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+  for (let trial = 0; trial < 120; trial++) {
+    const n = 14, graph = new DirectedGraph('s' + trial);
+    for (let i = 0; i < n; i++) graph.addNode('n' + i);
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) {
+      const r = rnd();
+      if (r < 0.3) { graph.addEdge('n' + i, 'n' + j); graph.addEdge('n' + j, 'n' + i); } else if (r < 0.4) graph.addEdge('n' + i, 'n' + j);
+    }
+    const seeds = ['n0', 'n1'], blockedNodes = trial % 4 === 0 ? ['n5'] : [];
+    for (const threshold of [1, 2, 3]) for (const maxLevel of [0, 1, 2, 5]) {
+      const got = findLayeredSupport(graph, { seeds, threshold, maxLevel, blockedNodes });
+      // Naive reference: repeat full passes, a node joins the round after threshold lower-level mutual neighbors exist.
+      const want = new Map(seeds.map(id => [id, 0]));
+      for (let round = 1; round <= maxLevel; round++) {
+        const add = [];
+        for (let i = 0; i < n; i++) {
+          const id = 'n' + i;
+          if (want.has(id) || blockedNodes.includes(id)) continue;
+          let lower = 0;
+          for (let j = 0; j < n; j++) { const other = 'n' + j; if (want.has(other) && want.get(other) < round && graph.edge(id, other) && graph.edge(other, id)) lower++; }
+          if (lower >= threshold) add.push(id);
+        }
+        for (const id of add) want.set(id, round);
+      }
+      assert.deepEqual([...got].sort(), [...want].sort(), `trial ${trial} t${threshold} L${maxLevel}`);
+      assert.equal(verifyLayeredSupport(graph, got, { seeds, threshold, maxLevel, blockedNodes }), true);
+    }
+  }
+  assert.throws(() => runTopologyExperiment({ pathSupport: 'layered' }), /pathSupport/);
+  assert.throws(() => runTopologyExperiment({ pathSupport: 'other', maxPathNodes: 7 }), /pathSupport/);
+});
