@@ -182,3 +182,12 @@ test('D125 adaptive attacker is opt-in: the default strategy is unchanged and an
   const c = runTopologyExperiment({ ...base, attackerStrategy: 'honest-first' });
   assert.ok(c.history.at(-1).attackEdges >= a.history.at(-1).attackEdges);
 });
+
+test('D126 vetting is opt-in: vetting 0 is unchanged, an invalid value is refused and vetting lowers stranger acceptance', () => {
+  assert.throws(() => runTopologyExperiment({ honest: { vetting: 2 } }), /vetting/);
+  const base = { seed: 'vet', days: 40, attackStartDay: 10, attackers: 3, honestGenesis: 20, maxSubjects: 500 };
+  const a = runTopologyExperiment(base), b = runTopologyExperiment({ ...base, honest: { vetting: 0 } });
+  assert.deepEqual(a.history.at(-1), b.history.at(-1));
+  const c = runTopologyExperiment({ ...base, honest: { vetting: 1 } });
+  assert.ok(c.history.at(-1).attackEdges <= a.history.at(-1).attackEdges);
+});

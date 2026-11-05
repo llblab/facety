@@ -8,7 +8,7 @@ export const TOPOLOGY_ENGINE = 'topology-takeover/v1';
 export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128starstar-v2', decisions: 'actor-day-stream-v1' });
 export const TOPOLOGY_DEFAULTS = Object.freeze({
   seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off', stopAtHonest: 0, detectionStartDay: 0, maxPathNodes: null, pathSupport: null, attackerStrategy: 'cone',
-  honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2 }),
+  honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2, vetting: 0 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
   detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9,
     // D117 v3 (off by default): §18.5 leaving, public pattern evidence by anyone, escalation to higher-XP sponsors and same-inviter follow-up.
@@ -55,7 +55,7 @@ export function topologyConfig(overrides = {}) {
   if (config.pathSupport !== null && (config.pathSupport !== 'layered' || config.maxPathNodes === null)) throw new TypeError('pathSupport must be null or layered and needs maxPathNodes');
   if (!['cone', 'honest-first'].includes(config.attackerStrategy)) throw new TypeError('attackerStrategy must be cone or honest-first');
   integer(config.detectionStartDay, 'detectionStartDay');
-  for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar']) probability(config.honest[key], 'honest.' + key);
+  for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar', 'vetting']) probability(config.honest[key], 'honest.' + key);
   integer(config.honest.keepRights, 'honest.keepRights');
   for (const key of ['enabled', 'leave', 'followUp']) if (typeof config.detection[key] !== 'boolean') throw new TypeError('detection.' + key + ' must be boolean');
   for (const key of ['review', 'inspect', 'sensitivity', 'falsePositiveRate', 'accuracy', 'publicLook', 'patternClosure', 'sponsorWillingness']) probability(config.detection[key], 'detection.' + key);
@@ -301,6 +301,11 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
           else {
             const near = [...model.guarantees.outEdges(answerer)].some(edge => edge.to === record.owner || model.guarantees.edge(edge.to, record.owner));
             yes = root.fork(JSON.stringify(['answer', record.id])).chance(near ? config.honest.acceptNear : config.honest.acceptFar);
+            // D126 vetting (opt-in): with the declared probability the answerer first takes a noisy look at the requester and declines when it looks false.
+            if (yes && config.honest.vetting > 0) {
+              const careful = root.fork(JSON.stringify(['vet', record.id]));
+              if (careful.chance(config.honest.vetting) && look(careful, record.owner)) yes = false;
+            }
           }
           decided.set(record.id, yes);
         }
