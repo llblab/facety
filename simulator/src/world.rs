@@ -9,7 +9,7 @@
 //! - legacy policy options (immediate/maturity XP, guarantee fees, vouching, limits) do not exist.
 use crate::graph::Graph;
 use crate::hash::FastMap;
-use crate::paths::{layered_support, PathFinder, Search, NO_LEVEL};
+use crate::paths::{layered_support, verify_family, PathFinder, Search, NO_LEVEL};
 use std::collections::{HashMap, HashSet};
 
 pub const DAY: i64 = 24;
@@ -19,7 +19,7 @@ pub type Id = u32;
 pub struct Reject(pub &'static str);
 
 /// Tie-break of the path search among neighbors at equal distance to the Council: nothing, more XP first, more guarantors first (hubs
-/// have several routes), or both (XP plus guarantors).
+/// have several routes), or both (the product of XP and the number of guarantors).
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SearchOrder {
     None,
@@ -29,13 +29,9 @@ pub enum SearchOrder {
 }
 
 impl SearchOrder {
-    /// The measured default; see the simulator contract.
-    pub fn auto(layered: bool) -> SearchOrder {
-        if layered {
-            SearchOrder::None
-        } else {
-            SearchOrder::Xp
-        }
+    /// The default (owner decision): more mutual guarantors first, for every rule set; the measured alternatives are in the simulator contract.
+    pub fn auto(_layered: bool) -> SearchOrder {
+        SearchOrder::Degree
     }
 }
 
@@ -43,6 +39,10 @@ impl SearchOrder {
 pub struct Config {
     /// Owned-slot ceiling K (own open valences plus invitation units).
     pub k: u32,
+    /// Slot progression (a referendum parameter, D147): each level of XP adds this many slots to the account's ceiling. `None` is a flat K.
+    pub k_step: Option<u32>,
+    /// XP per level of the slot progression.
+    pub k_xp_per_level: i32,
     pub freeze_hours: i64,
     pub spend_hours: i64,
     /// Most nodes a certifying Council path may have, endpoints included (D123). `None` is unbounded.
@@ -57,6 +57,8 @@ pub struct Config {
     /// Council size rule that scales with the difficulty: at least this many seats per unit of D from 100 active accounts on (the D33 lookup
     /// remains the floor).
     pub council_seats_per_d: Option<usize>,
+    /// Council size proportional to the network: at least this many seats per thousand active accounts from 100 active accounts on.
+    pub council_seats_per_thousand: Option<usize>,
     pub max_difficulty: Option<usize>,
     /// Efficiency setting (does not change the rules): the order in which the path search tries neighbors at equal distance to the Council.
     /// `None` chooses automatically (see `SearchOrder::auto`).
@@ -69,6 +71,8 @@ impl Default for Config {
     fn default() -> Config {
         Config {
             k: 100,
+            k_step: None,
+            k_xp_per_level: 100,
             freeze_hours: 24,
             spend_hours: 24,
             max_nodes: Some(7),
@@ -76,6 +80,7 @@ impl Default for Config {
             search_budget: 300_000,
             council_seats: None,
             council_seats_per_d: None,
+            council_seats_per_thousand: None,
             max_difficulty: None,
             search_order: None,
             exclude_disputed: true,
@@ -164,6 +169,28 @@ pub struct Invitation {
     pub target: Option<Id>,
     act: u32,
     rels: Vec<u32>,
+}
+
+/// How the invitation path question is answered (research probe, H1 and H2 of the path-discovery study).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum PathMethod {
+    /// The exact search as the simulator runs it.
+    Exact,
+    /// The exact search with the bounded-flow relaxation as a proof-of-impossibility prefilter.
+    Relaxed,
+    /// A certificate built from the layered-support levels (with live verification), falling back to the exact search.
+    Shortcut,
+}
+
+/// What a probe found: the answer, the work, and how the answer was reached.
+#[derive(Clone, Debug)]
+pub struct Probe {
+    pub accepted: bool,
+    pub steps: u64,
+    pub exhausted: bool,
+    /// `Some(valid)` when a certificate was produced, checked independently against the live graph.
+    pub certificate_valid: Option<bool>,
+    pub resolved_by: &'static str,
 }
 
 #[derive(Clone)]
@@ -349,6 +376,16 @@ impl World {
         assert!(k >= 1);
         self.cfg.k = k;
     }
+    /// The owned-slot ceiling of an account: the base K plus the progression step for every level of XP reached.
+    pub fn slot_ceiling(&self, id: Id) -> u32 {
+        match self.cfg.k_step {
+            Some(step) if self.cfg.k_xp_per_level > 0 => self.cfg.k + step * (self.subjects[id as usize].xp.max(0) / self.cfg.k_xp_per_level) as u32,
+            _ => self.cfg.k,
+        }
+    }
+    pub fn xp_of(&self, id: Id) -> i32 {
+        self.subjects[id as usize].xp
+    }
     pub fn used_slots_of(&self, id: Id) -> u32 {
         self.used_slots(id)
     }
@@ -357,6 +394,12 @@ impl World {
     }
     pub fn minted(&self) -> i64 {
         self.minted
+    }
+    pub fn set_relaxation(&mut self, on: bool) {
+        self.finder.use_relaxation = on;
+    }
+    pub fn relaxation_refusals(&self) -> u64 {
+        self.finder.relaxation_refusals
     }
     pub fn path_search_steps(&self) -> u64 {
         self.finder.steps_total
@@ -445,9 +488,13 @@ impl World {
         // D33 lookup; below 100 active accounts the Council has three equal-vote seats, the smallest body that can form a majority.
         let lookup = [3usize, 11, 101, 1001, 10001, 100001][r.max(1) - 1];
         // The seat override applies from 100 active accounts on; below that the Council of three is an invariant (D133).
-        match (self.cfg.council_seats, self.cfg.council_seats_per_d) {
-            (Some(seats), _) if self.active_count >= 100 => seats,
-            (None, Some(per_d)) if self.active_count >= 100 => lookup.max(per_d * self.required_guarantors()),
+        if self.active_count < 100 {
+            return lookup;
+        }
+        match (self.cfg.council_seats, self.cfg.council_seats_per_d, self.cfg.council_seats_per_thousand) {
+            (Some(seats), _, _) => seats,
+            (None, Some(per_d), _) => lookup.max(per_d * self.required_guarantors()),
+            (None, None, Some(per_thousand)) => lookup.max((self.active_count * per_thousand).div_ceil(1000)),
             _ => lookup,
         }
     }
@@ -480,7 +527,8 @@ impl World {
             }
             SearchOrder::Both => {
                 self.finder.use_priority = true;
-                self.finder.priority = self.subjects.iter().enumerate().map(|(v, s)| s.xp + self.graph.inn(v as Id).len() as i32).collect();
+                self.finder.priority =
+                    self.subjects.iter().enumerate().map(|(v, s)| s.xp.max(0).saturating_mul(self.graph.inn(v as Id).len() as i32)).collect();
             }
         }
         self.council_mask = vec![false; n];
@@ -733,7 +781,7 @@ impl World {
         if self.open_val.contains_key(&(owner, counterpart)) {
             return Err(Reject("owner already holds an open valence toward counterpart"));
         }
-        if self.used_slots(owner) >= self.cfg.k {
+        if self.used_slots(owner) >= self.slot_ceiling(owner) {
             return Err(Reject("owned-slot ceiling reached"));
         }
         self.require_mature_own(owner, act, self.cfg.spend_hours, "valence requires own mature Emitter right")?;
@@ -779,9 +827,127 @@ impl World {
 
     // ---- invitations -----------------------------------------------------------------------------------------------
 
+    /// H1: a certificate for the invitation question built from the layered-support levels. Every supported account has at least D mutual
+    /// neighbors of strictly lower level, so descending chains exist; the family is read off those chains and then verified against the live graph
+    /// (the levels are a daily snapshot), so an accepted answer is always a valid certificate. `Err(true)` is a proof of impossibility (fewer
+    /// than D usable first hops), `Err(false)` means the construction did not settle the question.
+    fn structural_family(&mut self, u: Id, d: usize) -> Result<Vec<Vec<Id>>, bool> {
+        let Some(max_nodes) = self.cfg.max_nodes else { return Err(false) };
+        if !self.cfg.layered || self.council_mask.get(u as usize).copied().unwrap_or(false) {
+            return Err(false);
+        }
+        let max_level = (max_nodes - 2) as u8;
+        // Every path starts with a usable first hop: an unblocked neighbor (supported, or a Council member).
+        let mut firsts: Vec<Id> = self.graph.out(u).iter().copied().filter(|&w| !self.blocked[w as usize]).collect();
+        if firsts.len() < d {
+            return Err(true);
+        }
+        firsts.sort_by_key(|&w| (self.level.get(w as usize).copied().unwrap_or(NO_LEVEL), w));
+        let mut used: HashSet<Id> = HashSet::from([u]);
+        let mut family: Vec<Vec<Id>> = Vec::new();
+        let mut budget = 40 * d as u64 * max_nodes as u64;
+        for &first in &firsts {
+            if family.len() == d {
+                break;
+            }
+            if used.contains(&first) || self.level.get(first as usize).copied().unwrap_or(NO_LEVEL) > max_level {
+                continue;
+            }
+            let mut walk = vec![u, first];
+            used.insert(first);
+            if self.descend(first, &mut walk, &mut used, &mut budget) {
+                family.push(walk);
+            } else {
+                used.remove(&first);
+            }
+        }
+        if family.len() == d && verify_family(&self.graph, &family, u, &self.council_mask, d, max_nodes, &self.blocked) {
+            Ok(family)
+        } else {
+            Err(false)
+        }
+    }
+
+    /// Follow strictly descending levels from `x` to an unused Council member, backtracking within the chain only.
+    fn descend(&self, x: Id, walk: &mut Vec<Id>, used: &mut HashSet<Id>, budget: &mut u64) -> bool {
+        let lx = self.level.get(x as usize).copied().unwrap_or(NO_LEVEL);
+        if lx == 0 {
+            return self.council_mask[x as usize] && !self.blocked[x as usize];
+        }
+        if *budget == 0 || lx == NO_LEVEL {
+            return false;
+        }
+        *budget -= 1;
+        let mut options: Vec<Id> = self
+            .graph
+            .out(x)
+            .iter()
+            .copied()
+            .filter(|&y| !self.blocked[y as usize] && !used.contains(&y) && self.level.get(y as usize).copied().unwrap_or(NO_LEVEL) < lx)
+            .collect();
+        options.sort_by_key(|&y| (self.level[y as usize], y));
+        for y in options {
+            walk.push(y);
+            used.insert(y);
+            if self.descend(y, walk, used, budget) {
+                return true;
+            }
+            used.remove(&y);
+            walk.pop();
+        }
+        false
+    }
+
+    /// Research probe: answer the invitation path question for `creator` by the named method on the current snapshot, without changing the
+    /// world. Used to compare methods on identical graph snapshots.
+    pub fn probe_invitation_paths(&mut self, creator: Id, method: PathMethod) -> Probe {
+        let d = self.required_guarantors();
+        let Some(max_nodes) = self.cfg.max_nodes else {
+            let ok = self.finder.disjoint_count(&self.graph, &self.blocked, &self.council_mask, creator, d) >= d;
+            return Probe { accepted: ok, steps: 0, exhausted: false, certificate_valid: None, resolved_by: "unbounded flow" };
+        };
+        let (steps0, exhausted0, refusals0) = (self.finder.steps_total, self.finder.exhausted_searches, self.finder.relaxation_refusals);
+        if method == PathMethod::Shortcut {
+            match self.structural_family(creator, d) {
+                Ok(family) => {
+                    let valid = verify_family(&self.graph, &family, creator, &self.council_mask, d, max_nodes, &self.blocked);
+                    return Probe { accepted: true, steps: 0, exhausted: false, certificate_valid: Some(valid), resolved_by: "structural certificate" };
+                }
+                Err(true) => return Probe { accepted: false, steps: 0, exhausted: false, certificate_valid: None, resolved_by: "too few first hops" },
+                Err(false) => {}
+            }
+        }
+        let relaxed = method == PathMethod::Relaxed;
+        let before = self.finder.use_relaxation;
+        self.finder.use_relaxation = relaxed;
+        let result =
+            self.finder.bounded(&self.graph, &self.blocked, &self.council_mask, &self.council, self.epoch, creator, d, max_nodes, self.cfg.search_budget);
+        self.finder.use_relaxation = before;
+        let exhausted = self.finder.exhausted_searches > exhausted0;
+        let (accepted, valid) = match &result {
+            Search::Found(family) => (true, Some(verify_family(&self.graph, family, creator, &self.council_mask, d, max_nodes, &self.blocked))),
+            _ => (false, None),
+        };
+        let resolved_by = if self.finder.relaxation_refusals > refusals0 {
+            "relaxation proof"
+        } else if method == PathMethod::Shortcut {
+            "shortcut fallback to the exact search"
+        } else {
+            "exact search"
+        };
+        Probe { accepted, steps: self.finder.steps_total - steps0, exhausted, certificate_valid: valid, resolved_by }
+    }
+
     /// D104/D134: D internally vertex-disjoint current paths from the creator to D different Council members (any members that
     /// sit in the Council at confirmation time), each path within the node bound.
     fn invitation_paths_ok(&mut self, creator: Id, d: usize) -> bool {
+        // Efficiency (D145, no change of answers): with layered support the supported-account levels give a verified certificate, or a proof
+        // that too few first hops exist, for almost every question; the exact search runs only for the rest.
+        match self.structural_family(creator, d) {
+            Ok(_) => return true,
+            Err(true) => return false,
+            Err(false) => {}
+        }
         let Some(max_nodes) = self.cfg.max_nodes else {
             return self.finder.disjoint_count(&self.graph, &self.blocked, &self.council_mask, creator, d) >= d;
         };
@@ -801,7 +967,7 @@ impl World {
         if self.eligible_guarantors(creator).len() < d {
             return Err(Reject("insufficient eligible guarantors"));
         }
-        if self.used_slots(creator) >= self.cfg.k {
+        if self.used_slots(creator) >= self.slot_ceiling(creator) {
             return Err(Reject("owned-slot ceiling reached"));
         }
         if !self.invitation_paths_ok(creator, d) {
@@ -1723,5 +1889,34 @@ mod recovery_tests {
             p
         };
         assert_eq!(plain.council().len(), 11);
+    }
+
+    #[test]
+    fn the_council_size_can_be_proportional_to_the_network() {
+        // 120 active accounts at 200 seats per thousand: ceil(120 * 200 / 1000) = 24 seats, never fewer than the lookup, and three below 100 active.
+        let mut w = World::new(Config { council_seats_per_thousand: Some(200), max_nodes: None, ..Config::default() }, 120, &ring(120));
+        assert_eq!(w.council().len(), 3);
+        for i in 0..120 {
+            let _ = w.create_self_id(i);
+        }
+        w.tick(24);
+        assert_eq!(w.council().len(), 24);
+    }
+
+    #[test]
+    fn the_slot_ceiling_can_grow_with_levels_of_xp() {
+        let mut w = World::new(Config { k: 5, k_step: Some(50), k_xp_per_level: 100, ..Config::default() }, 12, &ring(12));
+        assert_eq!(w.slot_ceiling(3), 5);
+        w.subjects[3].xp = 99;
+        assert_eq!(w.slot_ceiling(3), 5);
+        w.subjects[3].xp = 100;
+        assert_eq!(w.slot_ceiling(3), 55);
+        w.subjects[3].xp = 350;
+        assert_eq!(w.slot_ceiling(3), 155);
+        let flat = World::new(Config { k: 5, ..Config::default() }, 12, &ring(12));
+        assert_eq!(flat.slot_ceiling(3), 5);
+        // Lowering the ceiling never cuts existing valences (set_k), and the progression keeps counting from the new base.
+        w.set_k(3);
+        assert_eq!(w.slot_ceiling(3), 153);
     }
 }

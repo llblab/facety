@@ -281,6 +281,10 @@ pub struct PathFinder {
     /// Research lever: try neighbors with more XP first among equal distances (the hypothesis that XP is a gradient toward the Council).
     pub use_priority: bool,
     pub priority: Vec<i32>,
+    /// Research setting (H2): refuse early when a time-expanded flow relaxation already proves that no family of bounded paths exists.
+    pub use_relaxation: bool,
+    /// Searches the relaxation settled (a proof of impossibility, never a budget exhaustion).
+    pub relaxation_refusals: u64,
 }
 
 const SINK: u32 = u32::MAX;
@@ -403,6 +407,100 @@ impl PathFinder {
         count
     }
 
+    /// Necessary condition for `k` vertex-disjoint paths of at most `limit` links: the same flow on the time-expanded graph, where an
+    /// account may be used once per step count (a relaxation, so its value is at least the true maximum). Fewer than `k` units of
+    /// flow therefore PROVE that no family exists; enough flow proves nothing.
+    #[allow(clippy::too_many_arguments)]
+    fn relaxed_count(&mut self, g: &Graph, blocked: &[bool], mask: &[bool], dist: &[u8], s: u32, k: usize, limit: usize) -> usize {
+        let layers = (limit + 1) as u64;
+        let id = |v: u32, h: usize| u64::from(v) * layers + h as u64;
+        let node = |nl: u64| ((nl / layers) as u32, (nl % layers) as usize);
+        let sink: u64 = u64::MAX;
+        let mut flow: FastSet<(u64, u64)> = FastSet::default();
+        let mut pred: FastMap<u64, u64> = FastMap::default();
+        let mut succ: FastMap<u64, u64> = FastMap::default();
+        let mut count = 0;
+        while count < k {
+            let start = id(s, 0) * 2 + 1;
+            let mut parent: FastMap<u64, u64> = FastMap::default();
+            parent.insert(start, start);
+            let mut queue = vec![start];
+            let mut head = 0;
+            let mut found: Option<u64> = None;
+            'bfs: while head < queue.len() {
+                let state = queue[head];
+                head += 1;
+                let nl = state / 2;
+                let (v, h) = node(nl);
+                let mut visit = |next: u64, queue: &mut Vec<u64>| {
+                    if let std::collections::hash_map::Entry::Vacant(e) = parent.entry(next) {
+                        e.insert(state);
+                        queue.push(next);
+                    }
+                };
+                if state % 2 == 0 {
+                    match pred.get(&nl) {
+                        None => visit(nl * 2 + 1, &mut queue),
+                        Some(&u) => visit(u * 2 + 1, &mut queue),
+                    }
+                } else {
+                    if usable(mask, blocked, s, v) && h > 0 && succ.get(&nl) != Some(&sink) {
+                        found = Some(state);
+                        break 'bfs;
+                    }
+                    if h < limit {
+                        for &w in g.out(v) {
+                            let d = dist.get(w as usize).copied().unwrap_or(NO_LEVEL);
+                            if w == s || blocked[w as usize] || d == NO_LEVEL || h + 1 + d as usize > limit || flow.contains(&(nl, id(w, h + 1))) {
+                                continue;
+                            }
+                            visit(id(w, h + 1) * 2, &mut queue);
+                        }
+                    }
+                    if nl != id(s, 0) && pred.contains_key(&nl) {
+                        visit(nl * 2, &mut queue);
+                    }
+                }
+            }
+            let Some(last_out) = found else { break };
+            let mut states = vec![sink, last_out];
+            while *states.last().unwrap() != start {
+                let last = *states.last().unwrap();
+                states.push(parent[&last]);
+            }
+            states.reverse();
+            for pair in states.windows(2) {
+                let (a, b) = (pair[0], pair[1]);
+                if b == sink {
+                    succ.insert(a / 2, sink);
+                    continue;
+                }
+                let (na, nb) = (a / 2, b / 2);
+                match (a % 2, b % 2) {
+                    (1, 0) if na != nb => {
+                        flow.insert((na, nb));
+                        if na != id(s, 0) {
+                            succ.insert(na, nb);
+                        }
+                        pred.insert(nb, na);
+                    }
+                    (0, 1) if na != nb => {
+                        flow.remove(&(nb, na));
+                        if succ.get(&nb) == Some(&na) {
+                            succ.remove(&nb);
+                        }
+                        if pred.get(&na) == Some(&nb) {
+                            pred.remove(&na);
+                        }
+                    }
+                    _ => {}
+                }
+            }
+            count += 1;
+        }
+        count
+    }
+
     /// Breadth-first distances from the source over allowed intermediates, shared by the searches of one issuer while the graph
     /// does not change.
     fn source_distances(&mut self, g: &Graph, blocked: &[bool], s: u32, limit: usize) -> Rc<Vec<u8>> {
@@ -513,6 +611,10 @@ impl PathFinder {
         if self.disjoint_count(g, blocked, mask, s, k) < k {
             return Search::Insufficient;
         }
+        if self.use_relaxation && self.relaxed_count(g, blocked, mask, &dist, s, k, limit) < k {
+            self.relaxation_refusals += 1;
+            return Search::Insufficient;
+        }
         let src = self.source_distances(g, blocked, s, limit);
         let mut run = Run {
             g,
@@ -618,9 +720,10 @@ mod tests {
         false
     }
 
-    fn brute_force_agreement(priority: bool) {
+    fn brute_force_agreement(priority: bool, relaxation: bool) {
         let mut rng = Lcg(987);
         let mut finder = PathFinder::new();
+        finder.use_relaxation = relaxation;
         if priority {
             finder.use_priority = true;
             finder.priority = (0..11).map(|v| (v * 7919) % 13).collect();
@@ -673,12 +776,30 @@ mod tests {
 
     #[test]
     fn multi_terminal_search_matches_brute_force_and_certifies() {
-        brute_force_agreement(false);
+        brute_force_agreement(false, false);
     }
 
     #[test]
     fn the_xp_priority_ordering_changes_the_work_not_the_answer() {
-        brute_force_agreement(true);
+        brute_force_agreement(true, false);
+    }
+
+    #[test]
+    fn the_bounded_flow_relaxation_only_refuses_what_is_truly_impossible() {
+        // Exactness: agreement with brute force on every case, with the relaxation switched on; it must also settle some cases on its own.
+        brute_force_agreement(false, true);
+        let mut rng = Lcg(55);
+        let mut finder = PathFinder::new();
+        finder.use_relaxation = true;
+        for trial in 0..200u64 {
+            let g = random_graph(12, 0.18, 0.1, &mut rng);
+            let blocked = vec![false; 12];
+            let mut mask = vec![false; 12];
+            mask[11] = true;
+            mask[10] = true;
+            let _ = finder.bounded(&g, &blocked, &mask, &[10, 11], trial * 7 + 1, 0, 2, 4, 1_000_000);
+        }
+        assert!(finder.relaxation_refusals > 0, "the relaxation settles part of the impossible cases without a search");
     }
 
     #[test]

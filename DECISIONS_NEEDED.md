@@ -189,4 +189,3 @@ A real person who already has an account can ask someone they know in person for
 4. **Cheater's gain.** Which rewards from the second account (Self-ID emission, invitations, links) are recovered when the holder is found out? Compare with Q18 option 3.
 
 Runner status: `honest.doubleLife`, `honest.metInPerson` and `detection.acquitMet` are opt-in reference levers (D127); the acquittal there is unconditional for honest inviters and ignores the collusion risk.
-

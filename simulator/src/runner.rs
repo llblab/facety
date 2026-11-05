@@ -135,12 +135,25 @@ impl RunConfig {
         }
         let w = &self.world;
         at_least("world.k", i64::from(w.k), 1)?;
+        if let Some(step) = w.k_step {
+            at_least("world.k_step", i64::from(step), 1)?;
+            at_least("world.k_xp_per_level", i64::from(w.k_xp_per_level), 1)?;
+        }
         at_least("world.freeze_hours", w.freeze_hours, 0)?;
         at_least("world.spend_hours", w.spend_hours, 0)?;
         at_least("world.search_budget", w.search_budget as i64, 1)?;
         if let Some(seats) = w.council_seats {
             if !(3..=100_001).contains(&seats) {
                 return Err(format!("world.council_seats must be between 3 and 100001, got {seats}"));
+            }
+        }
+        let sizing = [w.council_seats.is_some(), w.council_seats_per_d.is_some(), w.council_seats_per_thousand.is_some()].iter().filter(|&&x| x).count();
+        if sizing > 1 {
+            return Err("council_seats, council_seats_per_d and council_seats_per_thousand are alternatives; give at most one".into());
+        }
+        if let Some(m) = w.council_seats_per_thousand {
+            if !(1..=1000).contains(&m) {
+                return Err(format!("world.council_seats_per_thousand must be between 1 and 1000, got {m}"));
             }
         }
         if let Some(per_d) = w.council_seats_per_d {
@@ -209,11 +222,11 @@ impl RunConfig {
         let d = &self.detection;
         format!(
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"stopAtHonest\":{},\
-\"world\":{{\"k\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"searchOrder\":{}}},\
+\"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{}}},\
 \"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, self.stop_at_honest,
-            w.k, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
+            w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far),
             json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
@@ -355,6 +368,10 @@ pub struct Row {
     pub council: usize,
     pub council_attackers: usize,
     pub attack_edges: usize,
+    /// XP of accepted accounts: median, 90th percentile and maximum.
+    pub xp_p50: i32,
+    pub xp_p90: i32,
+    pub xp_max: i32,
 }
 
 impl Row {
@@ -1174,6 +1191,10 @@ impl Sim {
             }
         }
         let council_attackers = w.council().iter().filter(|&&m| self.cohort[m as usize] == Cohort::Attacker).count();
+        let mut xps: Vec<i32> = accepted.iter().map(|&i| w.xp_of(i)).collect();
+        xps.sort_unstable();
+        let pick = |q: usize| if xps.is_empty() { 0 } else { xps[(xps.len() - 1) * q / 100] };
+        let (xp_p50, xp_p90, xp_max) = (pick(50), pick(90), xps.last().copied().unwrap_or(0));
         self.history.push(Row {
             day: self.day,
             subjects: accepted.len(),
@@ -1186,6 +1207,9 @@ impl Sim {
             council: w.council().len(),
             council_attackers,
             attack_edges,
+            xp_p50,
+            xp_p90,
+            xp_max,
         });
     }
 
@@ -1244,8 +1268,8 @@ impl Sim {
                 s.push(',');
             }
             let f = |x: Option<f64>| x.map_or("null".to_string(), |v| format!("{v:.6}"));
-            let _ = write!(s, "{{\"day\":{},\"subjects\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"supply\":{},\"dirty\":{},\"dirtyShare\":{},\"active\":{},\"D\":{},\"councilSize\":{},\"councilAttackers\":{},\"attackEdges\":{}}}",
-                r.day, r.subjects, r.honest, r.attackers, f(r.attacker_share()), r.supply, r.dirty, f(r.dirty_share()), r.active, r.d, r.council, r.council_attackers, r.attack_edges);
+            let _ = write!(s, "{{\"day\":{},\"subjects\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"supply\":{},\"dirty\":{},\"dirtyShare\":{},\"active\":{},\"D\":{},\"councilSize\":{},\"councilAttackers\":{},\"attackEdges\":{},\"xpP50\":{},\"xpP90\":{},\"xpMax\":{}}}",
+                r.day, r.subjects, r.honest, r.attackers, f(r.attacker_share()), r.supply, r.dirty, f(r.dirty_share()), r.active, r.d, r.council, r.council_attackers, r.attack_edges, r.xp_p50, r.xp_p90, r.xp_max);
         }
         s.push_str("],\"refusals\":{");
         for (k, name) in ["honest", "attackers"].iter().enumerate() {
@@ -1500,6 +1524,22 @@ mod tests {
                 }),
             ),
             ("world.max_difficulty", Box::new(|c| c.world.max_difficulty = Some(0))),
+            ("world.k_step", Box::new(|c| c.world.k_step = Some(0))),
+            (
+                "world.k_xp_per_level",
+                Box::new(|c| {
+                    c.world.k_step = Some(50);
+                    c.world.k_xp_per_level = 0;
+                }),
+            ),
+            ("council_seats_per_thousand", Box::new(|c| c.world.council_seats_per_thousand = Some(0))),
+            (
+                "alternatives",
+                Box::new(|c| {
+                    c.world.council_seats_per_thousand = Some(2);
+                    c.world.council_seats_per_d = Some(5);
+                }),
+            ),
             ("world.council_seats", Box::new(|c| c.world.council_seats = Some(2))),
             ("max_subjects", Box::new(|c| c.max_subjects = 5)),
             ("honest_genesis", Box::new(|c| c.honest_genesis = 3)),
