@@ -143,6 +143,11 @@ impl RunConfig {
                 return Err(format!("world.council_seats must be between 3 and 100001, got {seats}"));
             }
         }
+        if let Some(per_d) = w.council_seats_per_d {
+            if !(1..=100).contains(&per_d) || w.council_seats.is_some() {
+                return Err(format!("world.council_seats_per_d must be between 1 and 100 and cannot be combined with council_seats, got {per_d}"));
+            }
+        }
         if let Some(cap) = w.max_difficulty {
             if !(1..=8).contains(&cap) {
                 return Err(format!("world.max_difficulty must be between 1 and 8, got {cap}"));
@@ -204,11 +209,11 @@ impl RunConfig {
         let d = &self.detection;
         format!(
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"stopAtHonest\":{},\
-\"world\":{{\"k\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"xpPriority\":{}}},\
+\"world\":{{\"k\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"xpPriority\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{}}},\
 \"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, self.stop_at_honest,
-            w.k, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.xp_priority,
+            w.k, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.xp_priority.map_or("null".to_string(), |b| b.to_string()),
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far),
             json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
@@ -1457,6 +1462,16 @@ mod tests {
                     c.world.layered = true;
                 }),
             ),
+            ("council_seats_per_d", Box::new(|c| c.world.council_seats_per_d = Some(0))),
+            (
+                "council_seats_per_d",
+                Box::new(|c| {
+                    c.world.council_seats = Some(21);
+                    c.world.council_seats_per_d = Some(3);
+                }),
+            ),
+            ("world.max_difficulty", Box::new(|c| c.world.max_difficulty = Some(0))),
+            ("world.council_seats", Box::new(|c| c.world.council_seats = Some(2))),
             ("max_subjects", Box::new(|c| c.max_subjects = 5)),
             ("honest_genesis", Box::new(|c| c.honest_genesis = 3)),
             ("days", Box::new(|c| c.days = 0)),
@@ -1592,5 +1607,29 @@ mod tests {
         let mut bad = RunConfig::default();
         bad.honest.careless_share = 1.5;
         assert!(bad.validate().is_err());
+    }
+
+    #[test]
+    fn the_efficiency_setting_for_the_search_order_does_not_change_the_outcome() {
+        // With layered support (the baseline) no search runs out of budget, so the search order only changes the work.
+        let run = |priority: Option<bool>| {
+            let mut sim = Sim::new(RunConfig {
+                seed: "efficiency".into(),
+                honest_genesis: 30,
+                attack_start_day: 30,
+                days: 90,
+                attackers: 4,
+                max_subjects: 3000,
+                ..RunConfig::default()
+            });
+            sim.cfg.world.xp_priority = priority;
+            sim.run();
+            sim
+        };
+        let (on, off) = (run(Some(true)), run(Some(false)));
+        assert_eq!(on.world.path_searches_exhausted(), 0);
+        let key = |s: &Sim| s.history.iter().map(|r| (r.day, r.honest, r.attackers, r.supply, r.dirty, r.attack_edges)).collect::<Vec<_>>();
+        assert_eq!(key(&on), key(&off));
+        assert_eq!((on.det.cases_opened, on.det.genuine_invalidated), (off.det.cases_opened, off.det.genuine_invalidated));
     }
 }

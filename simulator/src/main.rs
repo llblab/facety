@@ -34,18 +34,20 @@ const VALUE_KEYS: &[&str] = &[
     "--disputes-from",
     "--honest-genesis",
     "--council-seats",
+    "--council-seats-per-d",
     "--max-d",
     "--k",
     "--patience",
     "--careless",
     "--careless-accept",
 ];
-const FLAG_KEYS: &[&str] = &["--xp-priority", "--no-layered", "--acquit", "--prefix-only", "--detect-prefix", "--allow-disputed", "--overwrite"];
+const FLAG_KEYS: &[&str] =
+    &["--xp-priority", "--no-xp-priority", "--no-layered", "--acquit", "--prefix-only", "--detect-prefix", "--allow-disputed", "--overwrite"];
 
-const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--xp-priority] [--attackers N] [--horizon DAYS]
+const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--xp-priority|--no-xp-priority] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
   [--met P] [--double P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
-  [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--max-d N] [--k N] [--patience DAYS] [--careless P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
+  [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--max-d N] [--k N] [--patience DAYS] [--careless P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
     eprintln!("error: {message}\n{USAGE}");
@@ -153,8 +155,15 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.honest.vetting_false_positive = opt_num(&opts, "--vet-fpr")?;
     base.honest.met_in_person = num(&opts, "--met", 0.0)?;
     base.honest.double_life = num(&opts, "--double", 0.0)?;
-    base.world.xp_priority = flags.contains("--xp-priority");
+    base.world.xp_priority = if flags.contains("--xp-priority") {
+        Some(true)
+    } else if flags.contains("--no-xp-priority") {
+        Some(false)
+    } else {
+        None
+    };
     base.world.council_seats = opt_usize(&opts, "--council-seats")?;
+    base.world.council_seats_per_d = opt_usize(&opts, "--council-seats-per-d")?;
     base.world.max_difficulty = opt_usize(&opts, "--max-d")?;
     base.world.k = num(&opts, "--k", base.world.k)?;
     base.honest.careless_share = num(&opts, "--careless", base.honest.careless_share)?;

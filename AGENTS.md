@@ -48,6 +48,7 @@ Rust research simulator in [`simulator/`](simulator): standard library only, `ca
 ## Engineering
 
 - Reproducibility: seeds and the randomness policy identifier (`facety-sim-rng/v1`) are part of every result; a new key layout or generator needs a new identifier. Randomness is decision-keyed: unrelated actions never couple through stream offsets. Scheduler or data-structure optimizations must not change outcomes for a given seed unless declared as a deviation in the [simulator contract](docs/simulator.en.md).
+- **Two baselines (D145).** The mechanics baseline (rules and baseline axes) defines results. The efficiency baseline (search order, caches, data layout, scheduling) must not change outcomes for a given seed: a mechanism that is faster simply becomes the efficiency default, and the change is checked by identical saved results before and after. When an optimization can change outcomes only through a declared channel (a search that runs out of its work budget), declare that channel in the simulator contract and report the counter. Results record the efficiency settings in force.
 - Compare optimized path algorithms with the brute-force reference and the independent verifier before measuring performance (`paths.rs` tests).
 - Delete verified dead code without asking; check consumers first.
 - Success criterion for the topology defense (D129): dirty-FACY share at most 10% on the longest declared horizon; a clean share below two thirds fails the scenario.

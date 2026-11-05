@@ -89,6 +89,22 @@ Acquittal keeps about 6% more honest accounts without visible gain to the attack
 
 Rust, current rules: Council of three below 100 active accounts, paths to different Council members, paths avoiding disputes, layered support, false-positive rate 0.3%, inspection of 3% of partners per day, cheap proof of reality (success 0.95, seven days), XP gate for formal cases, 20% careless honest accounts, one-year horizon. The full table (10, 30 and 100 operators, patient and honest-first operators, two years, the ablation without layered support) is in the [simulator contract](../../docs/simulator.en.md#baseline-validation-statistical). In short, after a year 10, 30 and 100 operators hold 0.09%, 0.29% and 0.95% of accounts and at most 1.5% of FACY; the cone never forms; the honest community grows about ten times and then stalls near 10,000 accounts (open question in [BACKLOG](../../BACKLOG.md)). Without layered support the 10-operator scenario leaves 31.7% of accounts at 60 days. Diagnostic: 3 to 20 seeds of one scenario family; honest-behavior, attacker and horizon values are the builder's proposals (D143).
 
+### Growth against security: Council size (D144, diagnostic)
+
+Honest growth stops near 10,000 accounts under the baseline because the difficulty reaches D = 5 and an 11-seat Council cannot supply five disjoint short paths. Council size against 100 operators, 500 days, 4 seeds, baseline otherwise:
+
+| Council seats from 100 active accounts | Honest accounts | Attacker accounts | Attacker share | Dirty-FACY share (mean, max) | Genuine invalidated |
+| --- | ---: | ---: | ---: | --- | ---: |
+| 11 (the D33 lookup, baseline) | 10,324 | 98 | 0.95% | 0.92%, 1.11% | 30 |
+| 21 | 16,724 | 100 | 0.60% | 0.59%, 0.69% | 42 |
+| 31 | 33,134 | 100 | 0.30% | 0.43%, 0.46% | 60 |
+| 51 | 66,592 | 98 | 0.15% | 0.31%, 0.32% | 88 |
+| at least 3 seats per unit of D (15 at D = 5) | 11,082 | 99 | 0.89% | 0.89%, 0.92% | 32 |
+| at least 4 seats per unit of D (20 at D = 5) | 16,951 | 98 | 0.58% | 0.62%, 0.77% | 42 |
+| at least 5 seats per unit of D (25 at D = 5, 30 at D = 6) | 24,917 | 98 | 0.40% | 0.55%, 0.57% | 49 |
+
+More seats let the honest network grow several times larger and lower the attacker and dirty-FACY shares at the same time (the operators stay at 100 accounts), so no security cost shows up in this scenario; the price is computation and a larger body to maintain. Other levers at 500 days, 10 operators: path bound 9 instead of 7 gives 12,018 honest accounts, difficulty capped at 4 gives 12,422, slot ceiling 300 gives 10,673 (baseline 10,482). The plateau moves with the number of Council seats against D, not with K.
+
 ## Limits
 
 One snapshot family; honest behavior rates, detection quality and the 28-day activity window are assumptions; attackers do not adapt to detection beyond the three pairing strategies; fakes are free; the Rust runner refreshes the Council, difficulty, support levels and distance pruning once per day. Year-long runs at false-positive rates of 0.1%-0.3% and 100 operators against 7 nodes without layered support are pending ([BACKLOG](../../BACKLOG.md)).

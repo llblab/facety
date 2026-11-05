@@ -11,6 +11,12 @@ Milestone ledger, newest first. Owner decisions and their dates live in the [dec
 - Baseline results (diagnostic): the cone never forms with 10, 30 or 100 operators, patient or honest-first operators over a year or two (0.09% to 0.95% of accounts, at most 1.5% of FACY); without layered support the 10-operator scenario leaves 31.7% of accounts at 60 days. Honest growth stalls near 10,000 accounts; the Council size against D is the main lever (21 seats: 17,715 accounts against 10,482), then the difficulty cap and the path bound, not the slot ceiling.
 - Documents: the first-100 exception removed from the protocol and D89 marked superseded; the simulator contract rewritten for the Rust simulator; consolidated findings 9 and 10; the consolidation protocol and the baseline phases in AGENTS; the study page of the grown network refreshed.
 
+### Growth against security: Council size (2026-11-06)
+
+- D145: two baselines. The mechanics baseline (rules and axes) defines results; the efficiency baseline (search order, caches, data layout) must not change outcomes and is updated whenever something is faster. The XP-first search order is on automatically without layered support (17% fewer steps, 20% fewer lost searches) and off under the baseline.
+- Simulator: lever for a Council size that scales with the difficulty (`--council-seats-per-d`), validation and tests; efficiency setting `xp_priority` is now automatic.
+- Council-size map (diagnostic, 500 days, 100 operators, 4 seeds): 11 seats 10,324 honest accounts (attacker share 0.95%), 21 seats 16,724, 31 seats 33,134, 51 seats 66,592 (0.15%); seats of 3, 4 and 5 per unit of D give 11,082, 16,951 and 24,917. A larger Council moves the growth plateau up and lowers the attacker share; the slot ceiling is not the cause. Study page, consolidated finding 10 and BACKLOG updated.
+
 ### Consolidation and the Rust simulator (2026-11-05)
 
 - Milestone: the Node.js simulator, its 113 test files, the CLI, examples, the mechanism register and all raw study artifacts are deleted; the last version is the git tag `legacy-node` (D130, D132). Links into deleted files and retired pages were rewritten to permanent links at the tag; method pages of the retired machinery became stubs.

@@ -32,9 +32,13 @@ pub struct Config {
     /// Research levers for the large-network question (open): fix the number of Council seats, or cap the difficulty D. `None` keeps the D33
     /// lookup and D = digits of the active count.
     pub council_seats: Option<usize>,
+    /// Council size rule that scales with the difficulty: at least this many seats per unit of D from 100 active accounts on (the D33 lookup
+    /// remains the floor).
+    pub council_seats_per_d: Option<usize>,
     pub max_difficulty: Option<usize>,
-    /// Path-search ordering lever: try accounts with more XP first among equal distances to the Council.
-    pub xp_priority: bool,
+    /// Efficiency setting (does not change the rules): try accounts with more XP first among equal distances to the Council. `None` chooses
+    /// automatically: on where it was measured to save work (without layered support, the heavy search), off otherwise.
+    pub xp_priority: Option<bool>,
     /// D131: accounts in an open dispute are not path intermediaries (default). `false` is the ablation used to price the rule.
     pub exclude_disputed: bool,
 }
@@ -49,8 +53,9 @@ impl Default for Config {
             layered: false,
             search_budget: 300_000,
             council_seats: None,
+            council_seats_per_d: None,
             max_difficulty: None,
-            xp_priority: false,
+            xp_priority: None,
             exclude_disputed: true,
         }
     }
@@ -418,8 +423,9 @@ impl World {
         // D33 lookup; below 100 active accounts the Council has three equal-vote seats, the smallest body that can form a majority.
         let lookup = [3usize, 11, 101, 1001, 10001, 100001][r.max(1) - 1];
         // The seat override applies from 100 active accounts on; below that the Council of three is an invariant (D133).
-        match self.cfg.council_seats {
-            Some(seats) if self.active_count >= 100 => seats,
+        match (self.cfg.council_seats, self.cfg.council_seats_per_d) {
+            (Some(seats), _) if self.active_count >= 100 => seats,
+            (None, Some(per_d)) if self.active_count >= 100 => lookup.max(per_d * self.required_guarantors()),
             _ => lookup,
         }
     }
@@ -440,7 +446,7 @@ impl World {
             .collect();
         candidates.sort_by(|a, b| b.0.cmp(&a.0).then(b.1.cmp(&a.1)).then(a.2.cmp(&b.2)));
         self.council = candidates.into_iter().take(size).map(|(_, _, i)| i).collect();
-        if self.cfg.xp_priority {
+        if self.cfg.xp_priority.unwrap_or(!self.cfg.layered) {
             self.finder.use_priority = true;
             self.finder.priority = self.subjects.iter().map(|s| s.xp).collect();
         }
@@ -1661,5 +1667,28 @@ mod recovery_tests {
         assert_eq!(w.required_guarantors(), 1, "the cap holds D at one");
         let plain = World::new(Config::default(), 120, &ring(120));
         assert_eq!(plain.council().len(), 3);
+    }
+
+    #[test]
+    fn the_council_size_can_scale_with_the_difficulty_from_100_active_accounts() {
+        // Below 100 active accounts the Council of three is an invariant whatever the rule; from 100 on, seats = max(lookup, per_d * D).
+        let mut w = World::new(Config { council_seats_per_d: Some(5), max_nodes: None, ..Config::default() }, 120, &ring(120));
+        assert_eq!(w.council().len(), 3);
+        for i in 0..120 {
+            let _ = w.create_self_id(i);
+        }
+        w.tick(24);
+        let d = w.required_guarantors();
+        assert!(d >= 3 && w.active_count() >= 100);
+        assert_eq!(w.council().len(), 11usize.max(5 * d));
+        let plain = {
+            let mut p = World::new(Config { max_nodes: None, ..Config::default() }, 120, &ring(120));
+            for i in 0..120 {
+                let _ = p.create_self_id(i);
+            }
+            p.tick(24);
+            p
+        };
+        assert_eq!(plain.council().len(), 11);
     }
 }
