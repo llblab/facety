@@ -7,7 +7,7 @@ import { provenance } from './provenance.mjs';
 export const TOPOLOGY_ENGINE = 'topology-takeover/v1';
 export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128starstar-v2', decisions: 'actor-day-stream-v1' });
 export const TOPOLOGY_DEFAULTS = Object.freeze({
-  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off', stopAtHonest: 0, detectionStartDay: 0, maxPathNodes: null, pathSupport: null,
+  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off', stopAtHonest: 0, detectionStartDay: 0, maxPathNodes: null, pathSupport: null, attackerStrategy: 'cone',
   honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
   detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9,
@@ -53,6 +53,7 @@ export function topologyConfig(overrides = {}) {
   integer(config.stopAtHonest, 'stopAtHonest');
   if (config.maxPathNodes !== null) integer(config.maxPathNodes, 'maxPathNodes', 2);
   if (config.pathSupport !== null && (config.pathSupport !== 'layered' || config.maxPathNodes === null)) throw new TypeError('pathSupport must be null or layered and needs maxPathNodes');
+  if (!['cone', 'honest-first'].includes(config.attackerStrategy)) throw new TypeError('attackerStrategy must be cone or honest-first');
   integer(config.detectionStartDay, 'detectionStartDay');
   for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar']) probability(config.honest[key], 'honest.' + key);
   integer(config.honest.keepRights, 'honest.keepRights');
@@ -332,6 +333,15 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
             const own = model.subject(id).xp;
             const seniors = rosters.attackers.filter(other => other !== id && accepted(other) && !linked(id, other) && (config.inviteRights === 'per-pair' || model.subject(other).xp > own));
             if (seniors.length && openValence(id, random.pick(seniors), right)) continue;
+          }
+          // D125 adaptive attacker (opt-in): first collect D honest partners, asking friends of the honest partners it already has (the 'near' acceptance rate), then pair inside the cone.
+          if (config.attackerStrategy === 'honest-first') {
+            const honestPartners = mutualPartners(id).filter(other => cohort.get(other) === 'honest');
+            if (honestPartners.length < D) {
+              const near = [...new Set(honestPartners.flatMap(partner => mutualPartners(partner)))].filter(other => other !== id && cohort.get(other) === 'honest' && !linked(id, other));
+              const pool = near.length ? near : rosters.honest.filter(other => accepted(other) && !linked(id, other));
+              if (pool.length && openValence(id, random.pick(pool), right)) continue;
+            }
           }
           const cone = rosters.attackers.filter(other => other !== id && accepted(other) && !linked(id, other) && mutualCount(other) < D);
           if (cone.length && openValence(id, random.pick(cone), right)) continue;

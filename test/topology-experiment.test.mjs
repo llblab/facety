@@ -173,3 +173,12 @@ test('D124 layered support: levels match a naive fixed point, verify independent
   assert.throws(() => runTopologyExperiment({ pathSupport: 'layered' }), /pathSupport/);
   assert.throws(() => runTopologyExperiment({ pathSupport: 'other', maxPathNodes: 7 }), /pathSupport/);
 });
+
+test('D125 adaptive attacker is opt-in: the default strategy is unchanged and an unknown strategy is refused', () => {
+  assert.throws(() => runTopologyExperiment({ attackerStrategy: 'other' }), /attackerStrategy/);
+  const base = { seed: 'adapt', days: 30, attackStartDay: 10, attackers: 3, honestGenesis: 20, maxSubjects: 400 };
+  const a = runTopologyExperiment(base), b = runTopologyExperiment({ ...base, attackerStrategy: 'cone' });
+  assert.deepEqual(a.history.at(-1), b.history.at(-1));
+  const c = runTopologyExperiment({ ...base, attackerStrategy: 'honest-first' });
+  assert.ok(c.history.at(-1).attackEdges >= a.history.at(-1).attackEdges);
+});
