@@ -113,3 +113,28 @@ test('D122 grown-network snapshot: stopAtHonest ends the prefix and an attack ru
   assert.equal(attack.history[start - 1].detection.casesOpened, 0);
   assert.throws(() => runTopologyExperiment({ stopAtHonest: -1 }), /stopAtHonest/);
 });
+
+test('D122 length-bounded disjoint paths: exact against brute force, certified, and refusing in the model gate', async () => {
+  const { DirectedGraph } = await import('../src/graph.mjs');
+  const { findLengthBoundedDisjointPaths, findInternallyDisjointPaths, verifyInternallyDisjointPaths } = await import('../src/proofs.mjs');
+  // Deterministic pseudo-random graphs: compare with brute-force subsets of all bounded simple paths.
+  let state = 12345; const rnd = () => (state = (state * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff;
+  for (let trial = 0; trial < 90; trial++) {
+    const n = 10, p = [0.15, 0.2, 0.3][trial % 3], graph = new DirectedGraph('t' + trial);
+    for (let i = 0; i < n; i++) graph.addNode('n' + i);
+    for (let i = 0; i < n; i++) for (let j = i + 1; j < n; j++) if (rnd() < p) { graph.addEdge('n' + i, 'n' + j); graph.addEdge('n' + j, 'n' + i); }
+    for (const maxNodes of [2, 3, 4, 5, 6, 7, 8]) for (const need of [1, 2, 3, 4]) {
+      const got = findLengthBoundedDisjointPaths(graph, { source: 'n0', target: 'n9', minimumPaths: need, maxNodes });
+      const routes = [];
+      const walk = ['n0'];
+      (function go(at) { if (at === 'n9') { routes.push([...walk]); return; } for (const e of graph.outEdges(at)) if (!walk.includes(e.to) && walk.length < maxNodes) { walk.push(e.to); go(e.to); walk.pop(); } })('n0');
+      const best = (list, k, used, direct) => k === 0 || list.some((r, i) => (r.length === 2 ? !direct : !r.slice(1, -1).some(x => used.has(x))) && best(list.slice(i + 1), k - 1, new Set([...used, ...r.slice(1, -1)]), direct || r.length === 2));
+      const expected = best(routes, need, new Set(), false);
+      assert.equal(got.status === 'found', expected, `trial ${trial} L${maxNodes} D${need}`);
+      if (got.status === 'found') assert.equal(verifyInternallyDisjointPaths(graph, got.proof, { source: 'n0', target: 'n9', minimumPaths: need, maxNodes }), true);
+      const unbounded = findInternallyDisjointPaths(graph, { source: 'n0', target: 'n9', minimumPaths: need });
+      if (got.status === 'found') assert.equal(unbounded.status, 'found');
+    }
+  }
+  assert.throws(() => runTopologyExperiment({ maxPathNodes: 1 }), /maxPathNodes/);
+});

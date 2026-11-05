@@ -217,8 +217,106 @@ export function findInternallyDisjointPaths(graph, { source, target, minimumPath
   return finish();
 }
 
+const distanceCache = new WeakMap();
+function distancesToTarget(graph, target, limit, blocked) {
+  const key = [...blocked].sort().join('\0');
+  let entry = distanceCache.get(graph);
+  if (!entry || entry.revision !== graph.revision || entry.key !== key) distanceCache.set(graph, entry = { revision: graph.revision, key, byTarget: new Map() });
+  const cacheKey = target + '\0' + limit;
+  let dist = entry.byTarget.get(cacheKey);
+  if (dist) return dist;
+  dist = new Map([[target, 0]]);
+  for (let frontier = [target], d = 1; frontier.length && d <= limit; d++) {
+    const next = [];
+    for (const id of frontier) for (const edge of graph.inEdges(id)) {
+      const from = edge.from;
+      if (blocked.has(from) || dist.has(from) || from === target) continue;
+      dist.set(from, d);
+      next.push(from);
+    }
+    frontier = next;
+  }
+  entry.byTarget.set(cacheKey, dist);
+  return dist;
+}
+
+// Exact length-bounded search: internally vertex-disjoint paths of at most maxNodes nodes each (both endpoints counted).
+// The unbounded flow is a polynomial necessary check. Paths are then built lazily, shortest-first, by backtracking: every
+// chosen path blocks its internal nodes, distances to the target are recomputed on what remains, and cheap counting bounds
+// prune hopeless branches. Complete families are tried in ascending first-hop order, so no family is searched twice. A work
+// budget turns pathological inputs into an explicit 'budget-exhausted' status, never a silent answer.
+export function findLengthBoundedDisjointPaths(graph, { source, target, minimumPaths, maxNodes, blockedNodes = [], budget = 2_000_000 }) {
+  if (!Number.isSafeInteger(minimumPaths) || minimumPaths < 1) throw new RangeError('minimumPaths must be a positive safe integer');
+  if (!Number.isSafeInteger(maxNodes) || maxNodes < 2) throw new RangeError('maxNodes must be a safe integer of at least 2');
+  if (!Array.isArray(blockedNodes)) throw new TypeError('blockedNodes must be an array');
+  const { blocked } = prepare(graph, { roots: [source], target, blockedNodes });
+  if (source === target) throw new Error('distinct source and target required; apex policy is not supplied');
+  const stats = { steps: 0, flowChecked: false };
+  const finish = (status, paths = []) => ({ status, count: paths.length, required: minimumPaths, stats,
+    proof: { version: 1, kind: 'internally-vertex-disjoint-paths', graph: graph.name, revision: graph.revision, source, target, paths: paths.map(route => certificate(graph, route)) } });
+  if (blocked.has(source) || blocked.has(target)) return finish('insufficient');
+  const flow = findInternallyDisjointPaths(graph, { source, target, minimumPaths, blockedNodes });
+  stats.flowChecked = true;
+  if (flow.status !== 'found') return finish('insufficient');
+  const limit = maxNodes - 1;
+  let exhausted = false;
+  // Distances to the target ignore the paths chosen so far, so they are lower bounds (sound for pruning) and are shared
+  // between calls on the same graph revision, blocked set and target.
+  const dist = distancesToTarget(graph, target, limit, blocked);
+  // Choose `need` more paths whose first hops all sort after `after`; `used` holds the internal nodes of the paths chosen so far.
+  const solve = (need, used, after, chosen) => {
+    if (need === 0) return chosen;
+    if (exhausted) return null;
+    const hops = [];
+    for (const edge of graph.outEdges(source)) {
+      const to = edge.to;
+      if (to === source || (to !== target && (used.has(to) || !dist.has(to))) || (to !== target && 1 + dist.get(to) > limit) || (after !== null && !(to > after))) continue;
+      hops.push(to);
+    }
+    hops.sort((x, y) => (x === target ? 0 : dist.get(x)) - (y === target ? 0 : dist.get(y)) || (x < y ? -1 : 1));
+    if (hops.length < need) return null;
+    // Candidates are tried in ascending distance, but the family must use ascending first hops: pick the first hop of THIS path
+    // among all hops, then require later paths to start strictly after the smallest first hop of the whole family.
+    const ascending = [...hops].sort((x, y) => (x < y ? -1 : 1));
+    for (let i = 0; i + need <= ascending.length && !exhausted; i++) {
+      const first = ascending[i];
+      const walk = [source, first], onWalk = new Set(walk);
+      const extend = at => {
+        if (exhausted) return null;
+        if (++stats.steps > budget) { exhausted = true; return null; }
+        if (at === target) {
+          const internals = walk.slice(1, -1);
+          return solve(need - 1, new Set([...used, ...internals]), first, [...chosen, [...walk]]);
+        }
+        const options = [];
+        for (const edge of graph.outEdges(at)) {
+          const to = edge.to;
+          if (onWalk.has(to) || (to !== target && used.has(to)) || !dist.has(to) || walk.length + dist.get(to) > limit) continue;
+          options.push(to);
+        }
+        options.sort((x, y) => dist.get(x) - dist.get(y) || (x < y ? -1 : 1));
+        for (const to of options) {
+          walk.push(to); onWalk.add(to);
+          const found = extend(to);
+          walk.pop(); onWalk.delete(to);
+          if (found) return found;
+        }
+        return null;
+      };
+      const found = first === target ? solve(need - 1, used, first, [...chosen, [source, target]]) : (dist.has(first) ? extend(first) : null);
+      if (found) return found;
+    }
+    return null;
+  };
+  if (!dist.has(source)) return finish("insufficient");
+  const packed = solve(minimumPaths, new Set(), null, []);
+  if (packed) return finish('found', packed);
+  return finish(exhausted ? 'budget-exhausted' : 'insufficient');
+}
+
 // A family certifies a lower bound only; this verifier does not trust solver counts or prove a maximum.
-export function verifyInternallyDisjointPaths(graph, proof, { source, target, minimumPaths, blockedNodes = [], requireRevision = true }) {
+export function verifyInternallyDisjointPaths(graph, proof, { source, target, minimumPaths, blockedNodes = [], requireRevision = true, maxNodes = Infinity }) {
+  if (maxNodes !== Infinity && (!Number.isSafeInteger(maxNodes) || maxNodes < 2)) return false;
   if (!Number.isSafeInteger(minimumPaths) || minimumPaths < 1 || !Array.isArray(blockedNodes) || typeof requireRevision !== 'boolean') return false;
   if (!graph.hasNode(source) || !graph.hasNode(target) || source === target) return false;
   if (!proof || proof.version !== 1 || proof.kind !== 'internally-vertex-disjoint-paths' || proof.graph !== graph.name) return false;
@@ -227,7 +325,7 @@ export function verifyInternallyDisjointPaths(graph, proof, { source, target, mi
   const routes = new Set();
   const internal = new Set();
   for (const path of proof.paths) {
-    if (!verifyPath(graph, path, { roots: [source], target, blockedNodes, requireRevision }) || path.nodes.length < 2) return false;
+    if (!verifyPath(graph, path, { roots: [source], target, blockedNodes, requireRevision }) || path.nodes.length < 2 || path.nodes.length > maxNodes) return false;
     const key = JSON.stringify(path.nodes);
     if (routes.has(key)) return false;
     routes.add(key);

@@ -7,7 +7,7 @@ import { provenance } from './provenance.mjs';
 export const TOPOLOGY_ENGINE = 'topology-takeover/v1';
 export const TOPOLOGY_RANDOMNESS = Object.freeze({ generator: 'sha256-xoshiro128starstar-v2', decisions: 'actor-day-stream-v1' });
 export const TOPOLOGY_DEFAULTS = Object.freeze({
-  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off', stopAtHonest: 0, detectionStartDay: 0,
+  seed: 'topology', gate: true, honestGenesis: 100, genesisChords: 1, attackStartDay: 100, days: 200, attackers: 10, maxSubjects: 20000, K: 100, includeState: false, inviteRights: 'off', stopAtHonest: 0, detectionStartDay: 0, maxPathNodes: null,
   honest: Object.freeze({ selfId: 0.9, invite: 0.01, befriend: 0.05, acceptNear: 0.5, acceptFar: 0.05, keepRights: 2 }),
   // D116 v2: opt-in noisy detection, freeze veto and one-step identity cases with D77 holds.
   detection: Object.freeze({ enabled: false, review: 0.5, inspect: 0.1, sensitivity: 0.8, falsePositiveRate: 0.01, windowDays: 7, accuracy: 0.9,
@@ -51,6 +51,7 @@ export function topologyConfig(overrides = {}) {
   integer(config.maxSubjects, 'maxSubjects', config.honestGenesis);
   integer(config.K, 'K', 5);
   integer(config.stopAtHonest, 'stopAtHonest');
+  if (config.maxPathNodes !== null) integer(config.maxPathNodes, 'maxPathNodes', 2);
   integer(config.detectionStartDay, 'detectionStartDay');
   for (const key of ['selfId', 'invite', 'befriend', 'acceptNear', 'acceptFar']) probability(config.honest[key], 'honest.' + key);
   integer(config.honest.keepRights, 'honest.keepRights');
@@ -79,7 +80,7 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
     genesis: honestIds, policy: {},
     valences: { K: config.K, genesisPairs: genesisPairs(honestIds, config.genesisChords, root.fork('genesis')), reference: {
       source: 'own-mature-right', withdrawal: 'free', pairEndXp: 'withdrawer-only', withdrawDuringHold: 'allow', invitations: 'v2-special-link',
-      eligibility: config.gate ? 'v3-council-paths' : 'off', councilPaths: { ...PATHS } } },
+      eligibility: config.gate ? 'v3-council-paths' : 'off', councilPaths: { ...PATHS, maxNodes: config.maxPathNodes } } },
     inviteRights: config.inviteRights === 'off' ? null : config.inviteRights,
   });
   // Evaluator-only labels: never read by any protocol call or honest decision.
@@ -352,7 +353,7 @@ export function runTopologyExperiment(overrides = {}, hooks = {}) {
   return {
     schema: 'facety-topology-takeover/v1', config, randomness: TOPOLOGY_RANDOMNESS, assumptions: TOPOLOGY_ASSUMPTIONS, provenance: provenance(),
     outcome: { censored: censoredReason !== null && censoredReason !== 'stopAtHonest', censoredReason, completedDays: censoredReason === 'stopAtHonest' ? day + 1 : censoredReason ? day : config.days },
-    counts, detection, history,
+    counts: { ...counts, pathSearchExhausted: model.pathSearchExhausted }, detection, history,
     ...(config.includeState ? { state: {
       cohort: Object.fromEntries(cohort), status: Object.fromEntries(model.subjects().map(subject => [subject.id, subject.identityStatus])),
       guarantees: [...model.guarantees.edges()].map(edge => [edge.from, edge.to]), lineage: [...model.lineage.edges()].map(edge => [edge.from, edge.to]),

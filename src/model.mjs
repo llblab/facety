@@ -1,6 +1,6 @@
 // Owns: Deterministic Facety transitions; excludes attacker truth and adjudication.
 import { DirectedGraph } from './graph.mjs';
-import { findInternallyDisjointPaths, verifyInternallyDisjointPaths } from './proofs.mjs';
+import { findInternallyDisjointPaths, findLengthBoundedDisjointPaths, verifyInternallyDisjointPaths } from './proofs.mjs';
 
 export const DAY = 24;
 export const DEFAULT_POLICY = Object.freeze({
@@ -108,9 +108,11 @@ function valencesFrom(value) {
   // With eligibility off, a supplied councilPaths binding only sets the Council reference (no path gate).
   if (reference.eligibility !== 'off' || reference.councilPaths !== null) {
     const supplied = reference.councilPaths;
-    if (!supplied || typeof supplied !== 'object' || Array.isArray(supplied) || Object.keys(supplied).sort().join() !== Object.keys(paths).sort().join()
-      || Object.entries(paths).some(([key, allowed]) => !allowed.includes(supplied[key]))) throw new TypeError('unsupported councilPaths binding');
-    councilPaths = Object.freeze({ ...supplied });
+    // maxNodes is optional (D122 length bound): null/absent means unbounded; otherwise the most nodes, endpoints included, a certifying path may have.
+    const { maxNodes = null, ...fixed } = supplied && typeof supplied === 'object' && !Array.isArray(supplied) ? supplied : {};
+    if (!supplied || typeof supplied !== 'object' || Array.isArray(supplied) || Object.keys(fixed).sort().join() !== Object.keys(paths).sort().join()
+      || Object.entries(paths).some(([key, allowed]) => !allowed.includes(fixed[key])) || (maxNodes !== null && (!Number.isSafeInteger(maxNodes) || maxNodes < 2))) throw new TypeError('unsupported councilPaths binding');
+    councilPaths = Object.freeze({ ...fixed, maxNodes });
   }
   if (!Array.isArray(genesisPairs) || genesisPairs.some(pair => !Array.isArray(pair) || pair.length !== 2)) throw new TypeError('genesisPairs must be an array of pairs');
   return Object.freeze({ K, genesisPairs: Object.freeze(genesisPairs.map(pair => Object.freeze([...pair]))),
@@ -175,6 +177,7 @@ export class FacetyModel {
   #preregistrations = new Map();
   #invitationUnits = new Map();
   #bootstrap = true;
+  #pathSearchExhausted = 0;
   #inviteRights = null;
   constructor({ genesis = ['root'], policy = {}, ablations = {}, invitationLimit = null, vouching = null, vouchAdmission = null, valences = null, inviteRights = null } = {}) {
     if (!Array.isArray(genesis) || !genesis.length || new Set(genesis).size !== genesis.length) throw new ProtocolRejection('genesis must contain distinct subject IDs');
@@ -288,6 +291,8 @@ export class FacetyModel {
     this.#bootstrap = false;
     this.#event('bootstrap-ended', { active: this.activeCount() });
   }
+  // D123: Council-path searches that ran out of budget (refused like a missing family, but not proof of one).
+  get pathSearchExhausted() { return this.#pathSearchExhausted; }
   get initialBootstrap() {
     if (!this.#councilPathsActive()) return null;
     this.#observeBootstrap();
@@ -301,9 +306,12 @@ export class FacetyModel {
     const blockedNodes = [...this.#subjects.values()].filter(subject => subject.identityStatus !== 'accepted').map(subject => subject.id);
     for (const { id: target } of this.council()) {
       if (target === source) continue;
-      const result = findInternallyDisjointPaths(this.guarantees, { source, target, minimumPaths, blockedNodes });
+      const maxNodes = this.valences.reference.councilPaths.maxNodes ?? null;
+      const result = maxNodes === null ? findInternallyDisjointPaths(this.guarantees, { source, target, minimumPaths, blockedNodes })
+        : findLengthBoundedDisjointPaths(this.guarantees, { source, target, minimumPaths, maxNodes, blockedNodes });
+      if (result.status === 'budget-exhausted') this.#pathSearchExhausted++;
       if (result.status !== 'found') continue;
-      if (!verifyInternallyDisjointPaths(this.guarantees, result.proof, { source, target, minimumPaths, blockedNodes })) throw new Error('Council path certificate failed independent verification');
+      if (!verifyInternallyDisjointPaths(this.guarantees, result.proof, { source, target, minimumPaths, blockedNodes, ...(maxNodes === null ? {} : { maxNodes }) })) throw new Error('Council path certificate failed independent verification');
       return Object.freeze({ target, minimumPaths, proof: result.proof });
     }
     return null;

@@ -1,13 +1,14 @@
 // Grown-network attack series (D122): one honest network grows from the 100-person genesis to 1000 honest participants,
-// then cooperating attackers (1..10) enter from that same state. Usage: node probe.mjs <attackers> <arm: gate|detect> [seed] [horizonDays] [maxSubjects]
+// then cooperating attackers (1..10) enter from that same state. Usage: node probe.mjs <attackers> <arm: gate|detect> [seed] [horizonDays] [maxSubjects] [pathCap: none|nodes]
 import { readFileSync, writeFileSync } from 'node:fs';
 import { runTopologyExperiment } from '../../src/topology-experiment.mjs';
-const [attackers, arm, seed = 'grown-1000-1', horizon = '100', maxSubjects = '10000'] = process.argv.slice(2);
-const prefix = JSON.parse(readFileSync(new URL('runs/prefix-' + seed + '.json', import.meta.url), 'utf8'));
+const [attackers, arm, seed = 'grown-1000-1', horizon = '100', maxSubjects = '10000', cap = 'none'] = process.argv.slice(2);
+const maxPathNodes = cap === 'none' ? null : Number(cap), suffix = cap === 'none' ? '' : '-L' + cap;
+const prefix = JSON.parse(readFileSync(new URL('runs/prefix-' + seed + suffix + '.json', import.meta.url), 'utf8'));
 const start = prefix.outcome.completedDays; // first day after the snapshot
 const progress = [];
-const checkpoint = new URL('runs/' + arm + '/a' + attackers + '.partial.json', import.meta.url);
-const out = runTopologyExperiment({ seed, attackers: Number(attackers), attackStartDay: start, days: start + Number(horizon), maxSubjects: Number(maxSubjects),
+const checkpoint = new URL('runs/' + arm + '/a' + attackers + suffix + '.partial.json', import.meta.url);
+const out = runTopologyExperiment({ seed, maxPathNodes, attackers: Number(attackers), attackStartDay: start, days: start + Number(horizon), maxSubjects: Number(maxSubjects),
   detection: arm === 'detect' ? { enabled: true, leave: true, publicLook: 0.02, followUp: true } : {}, detectionStartDay: start },
   { onDay(row) {
     if (row.day < start - 1) return;
