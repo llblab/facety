@@ -102,8 +102,11 @@ Honest growth stops near 10,000 accounts under the baseline because the difficul
 | at least 3 seats per unit of D (15 at D = 5) | 11,082 | 99 | 0.89% | 0.89%, 0.92% | 32 |
 | at least 4 seats per unit of D (20 at D = 5) | 16,951 | 98 | 0.58% | 0.62%, 0.77% | 42 |
 | at least 5 seats per unit of D (25 at D = 5, 30 at D = 6) | 24,917 | 98 | 0.40% | 0.55%, 0.57% | 49 |
+| at least 6 seats per unit of D (3 seeds) | 32,491 | 99 | 0.31% | 0.49%, 0.51% | 61 |
+| at least 8 seats per unit of D (3 seeds) | 49,887 | 101 | 0.20% | 0.40%, 0.42% | 77 |
+| at least 5 seats per unit of D, two years (3 seeds) | 23,843 | 98 | 0.41% | 0.45%, 0.46% | 121 |
 
-More seats let the honest network grow several times larger and lower the attacker and dirty-FACY shares at the same time (the operators stay at 100 accounts), so no security cost shows up in this scenario; the price is computation and a larger body to maintain. Other levers at 500 days, 10 operators: path bound 9 instead of 7 gives 12,018 honest accounts, difficulty capped at 4 gives 12,422, slot ceiling 300 gives 10,673 (baseline 10,482). The plateau moves with the number of Council seats against D, not with K.
+More seats let the honest network grow several times larger and lower the attacker and dirty-FACY shares at the same time (the operators stay at 100 accounts), so no security cost shows up in this scenario; the price is computation and a larger body to maintain. Other levers at 500 days, 10 operators: path bound 9 instead of 7 gives 12,018 honest accounts, difficulty capped at 4 gives 12,422, slot ceiling 300 gives 10,673 (baseline 10,482). The plateau moves with the number of Council seats against D, not with K. It also holds: with 5 seats per unit of D two years give 23,843 accounts against 24,917 at 500 days, so a fixed rule has a plateau of its own. Roughly 1,000 honest accounts per seat at D = 5.
 
 ## Limits
 

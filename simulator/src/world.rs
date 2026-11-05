@@ -8,6 +8,7 @@
 //! - Council ties break by account index (older first), not by id string;
 //! - legacy policy options (immediate/maturity XP, guarantee fees, vouching, limits) do not exist.
 use crate::graph::Graph;
+use crate::hash::FastMap;
 use crate::paths::{layered_support, PathFinder, Search, NO_LEVEL};
 use std::collections::{HashMap, HashSet};
 
@@ -16,6 +17,27 @@ pub type Id = u32;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Reject(pub &'static str);
+
+/// Tie-break of the path search among neighbors at equal distance to the Council: nothing, more XP first, more guarantors first (hubs
+/// have several routes), or both (XP plus guarantors).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SearchOrder {
+    None,
+    Xp,
+    Degree,
+    Both,
+}
+
+impl SearchOrder {
+    /// The measured default; see the simulator contract.
+    pub fn auto(layered: bool) -> SearchOrder {
+        if layered {
+            SearchOrder::None
+        } else {
+            SearchOrder::Xp
+        }
+    }
+}
 
 #[derive(Clone, Debug)]
 pub struct Config {
@@ -36,9 +58,9 @@ pub struct Config {
     /// remains the floor).
     pub council_seats_per_d: Option<usize>,
     pub max_difficulty: Option<usize>,
-    /// Efficiency setting (does not change the rules): try accounts with more XP first among equal distances to the Council. `None` chooses
-    /// automatically: on where it was measured to save work (without layered support, the heavy search), off otherwise.
-    pub xp_priority: Option<bool>,
+    /// Efficiency setting (does not change the rules): the order in which the path search tries neighbors at equal distance to the Council.
+    /// `None` chooses automatically (see `SearchOrder::auto`).
+    pub search_order: Option<SearchOrder>,
     /// D131: accounts in an open dispute are not path intermediaries (default). `false` is the ablation used to price the rule.
     pub exclude_disputed: bool,
 }
@@ -55,7 +77,7 @@ impl Default for Config {
             council_seats: None,
             council_seats_per_d: None,
             max_difficulty: None,
-            xp_priority: None,
+            search_order: None,
             exclude_disputed: true,
         }
     }
@@ -153,13 +175,13 @@ pub struct World {
     graph: Graph,
     rels: Vec<Rel>,
     valences: Vec<Valence>,
-    open_val: HashMap<(Id, Id), u32>,
+    open_val: FastMap<(Id, Id), u32>,
     owned_open: Vec<u32>,
     inv_units: Vec<u32>,
     invitations: Vec<Invitation>,
     hold: Vec<u32>,
     cases: Vec<Option<Vec<Id>>>,
-    xp_by_pair: HashMap<(Id, Id), Vec<(u32, u32)>>,
+    xp_by_pair: FastMap<(Id, Id), Vec<(u32, u32)>>,
     minted: i64,
     burned: i64,
     vault: i64,
@@ -195,13 +217,13 @@ impl World {
             graph: Graph::new(),
             rels: Vec::new(),
             valences: Vec::new(),
-            open_val: HashMap::new(),
+            open_val: FastMap::default(),
             owned_open: Vec::new(),
             inv_units: Vec::new(),
             invitations: Vec::new(),
             hold: Vec::new(),
             cases: Vec::new(),
-            xp_by_pair: HashMap::new(),
+            xp_by_pair: FastMap::default(),
             minted: 0,
             burned: 0,
             vault: 0,
@@ -446,9 +468,20 @@ impl World {
             .collect();
         candidates.sort_by(|a, b| b.0.cmp(&a.0).then(b.1.cmp(&a.1)).then(a.2.cmp(&b.2)));
         self.council = candidates.into_iter().take(size).map(|(_, _, i)| i).collect();
-        if self.cfg.xp_priority.unwrap_or(!self.cfg.layered) {
-            self.finder.use_priority = true;
-            self.finder.priority = self.subjects.iter().map(|s| s.xp).collect();
+        match self.cfg.search_order.unwrap_or(SearchOrder::auto(self.cfg.layered)) {
+            SearchOrder::None => self.finder.use_priority = false,
+            SearchOrder::Xp => {
+                self.finder.use_priority = true;
+                self.finder.priority = self.subjects.iter().map(|s| s.xp).collect();
+            }
+            SearchOrder::Degree => {
+                self.finder.use_priority = true;
+                self.finder.priority = (0..n).map(|v| self.graph.inn(v as Id).len() as i32).collect();
+            }
+            SearchOrder::Both => {
+                self.finder.use_priority = true;
+                self.finder.priority = self.subjects.iter().enumerate().map(|(v, s)| s.xp + self.graph.inn(v as Id).len() as i32).collect();
+            }
         }
         self.council_mask = vec![false; n];
         for &m in &self.council {

@@ -3,6 +3,7 @@
 //! overwritten silently (exit code 3).
 use facety_sim::json;
 use facety_sim::runner::{RunConfig, Sim, Strategy};
+use facety_sim::world::SearchOrder;
 use std::collections::{HashMap, HashSet};
 use std::io::Write as _;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
@@ -33,6 +34,7 @@ const VALUE_KEYS: &[&str] = &[
     "--defense-days",
     "--disputes-from",
     "--honest-genesis",
+    "--search-order",
     "--council-seats",
     "--council-seats-per-d",
     "--max-d",
@@ -41,10 +43,9 @@ const VALUE_KEYS: &[&str] = &[
     "--careless",
     "--careless-accept",
 ];
-const FLAG_KEYS: &[&str] =
-    &["--xp-priority", "--no-xp-priority", "--no-layered", "--acquit", "--prefix-only", "--detect-prefix", "--allow-disputed", "--overwrite"];
+const FLAG_KEYS: &[&str] = &["--no-layered", "--acquit", "--prefix-only", "--detect-prefix", "--allow-disputed", "--overwrite"];
 
-const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--xp-priority|--no-xp-priority] [--attackers N] [--horizon DAYS]
+const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
   [--met P] [--double P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
   [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--max-d N] [--k N] [--patience DAYS] [--careless P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
@@ -155,12 +156,13 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.honest.vetting_false_positive = opt_num(&opts, "--vet-fpr")?;
     base.honest.met_in_person = num(&opts, "--met", 0.0)?;
     base.honest.double_life = num(&opts, "--double", 0.0)?;
-    base.world.xp_priority = if flags.contains("--xp-priority") {
-        Some(true)
-    } else if flags.contains("--no-xp-priority") {
-        Some(false)
-    } else {
-        None
+    base.world.search_order = match opts.get("--search-order").map(String::as_str) {
+        None => None,
+        Some("none") => Some(SearchOrder::None),
+        Some("xp") => Some(SearchOrder::Xp),
+        Some("degree") => Some(SearchOrder::Degree),
+        Some("both") => Some(SearchOrder::Both),
+        Some(other) => return Err(format!("--search-order: unknown order {other:?}")),
     };
     base.world.council_seats = opt_usize(&opts, "--council-seats")?;
     base.world.council_seats_per_d = opt_usize(&opts, "--council-seats-per-d")?;

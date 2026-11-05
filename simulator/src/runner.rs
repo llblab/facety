@@ -209,11 +209,11 @@ impl RunConfig {
         let d = &self.detection;
         format!(
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"stopAtHonest\":{},\
-\"world\":{{\"k\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"xpPriority\":{}}},\
+\"world\":{{\"k\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"searchOrder\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{}}},\
 \"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, self.stop_at_honest,
-            w.k, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.xp_priority.map_or("null".to_string(), |b| b.to_string()),
+            w.k, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far),
             json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
@@ -390,6 +390,9 @@ pub struct Sim {
     pending: Vec<Pending>,
     answers: Vec<u32>,
     decided: HashMap<u32, bool>,
+    mark: Vec<u32>,
+    mark_epoch: u32,
+    scratch: Vec<Id>,
     open_cases: Vec<CaseRec>,
     pub det: DetectionCounters,
     pub invitations: [u64; 2],
@@ -470,6 +473,9 @@ impl Sim {
             pending: Vec::new(),
             answers: Vec::new(),
             decided: HashMap::new(),
+            mark: Vec::new(),
+            mark_epoch: 0,
+            scratch: Vec::new(),
             open_cases: Vec::new(),
             det: DetectionCounters::default(),
             invitations: [0; 2],
@@ -732,20 +738,42 @@ impl Sim {
                     continue;
                 }
                 if rng.chance(self.cfg.honest.befriend) {
-                    let g = self.world.graph();
-                    let mut candidates: Vec<Id> = Vec::new();
-                    for &friend in g.out(id) {
-                        for &other in g.out(friend) {
-                            if other != id && self.world.accepted(other) && !self.linked(id, other) {
-                                candidates.push(other);
+                    // Friends of friends who are accepted and not yet linked, each counted once. A stamp array replaces sorting and
+                    // deduplicating the whole list, and selecting the k-th smallest replaces the full sort; the pick is the same one.
+                    if self.mark.len() < self.world.len() {
+                        self.mark.resize(self.world.len(), 0);
+                    }
+                    self.mark_epoch = self.mark_epoch.wrapping_add(1);
+                    if self.mark_epoch == 0 {
+                        self.mark.iter_mut().for_each(|m| *m = 0);
+                        self.mark_epoch = 1;
+                    }
+                    let epoch = self.mark_epoch;
+                    let mut candidates = std::mem::take(&mut self.scratch);
+                    candidates.clear();
+                    {
+                        let g = self.world.graph();
+                        let world = &self.world;
+                        let mark = &mut self.mark;
+                        for &friend in g.out(id) {
+                            for &other in g.out(friend) {
+                                if mark[other as usize] == epoch {
+                                    continue;
+                                }
+                                mark[other as usize] = epoch;
+                                if other != id && world.accepted(other) && !g.has_edge(id, other) && !g.has_edge(other, id) {
+                                    candidates.push(other);
+                                }
                             }
                         }
                     }
-                    candidates.sort_unstable();
-                    candidates.dedup();
-                    if let Some(&c) = rng.pick(&candidates) {
+                    if !candidates.is_empty() {
+                        let k = rng.below(candidates.len() as u64) as usize;
+                        candidates.select_nth_unstable(k);
+                        let c = candidates[k];
                         self.open_valence(id, c, right);
                     }
+                    self.scratch = candidates;
                 }
             }
             // Keep a reserve of mature rights; convert the rest to Collector money.
@@ -1243,6 +1271,7 @@ impl Sim {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::world::SearchOrder;
 
     fn small(seed: &str, attackers: usize, layered: bool) -> RunConfig {
         let mut c = RunConfig { seed: seed.into(), honest_genesis: 30, attack_start_day: 60, days: 100, attackers, max_subjects: 3000, ..RunConfig::default() };
@@ -1612,7 +1641,7 @@ mod tests {
     #[test]
     fn the_efficiency_setting_for_the_search_order_does_not_change_the_outcome() {
         // With layered support (the baseline) no search runs out of budget, so the search order only changes the work.
-        let run = |priority: Option<bool>| {
+        let run = |priority: Option<SearchOrder>| {
             let mut sim = Sim::new(RunConfig {
                 seed: "efficiency".into(),
                 honest_genesis: 30,
@@ -1622,11 +1651,11 @@ mod tests {
                 max_subjects: 3000,
                 ..RunConfig::default()
             });
-            sim.cfg.world.xp_priority = priority;
+            sim.cfg.world.search_order = priority;
             sim.run();
             sim
         };
-        let (on, off) = (run(Some(true)), run(Some(false)));
+        let (on, off) = (run(Some(SearchOrder::Both)), run(Some(SearchOrder::None)));
         assert_eq!(on.world.path_searches_exhausted(), 0);
         let key = |s: &Sim| s.history.iter().map(|r| (r.day, r.honest, r.attackers, r.supply, r.dirty, r.attack_edges)).collect::<Vec<_>>();
         assert_eq!(key(&on), key(&off));

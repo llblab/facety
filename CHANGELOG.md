@@ -15,6 +15,7 @@ Milestone ledger, newest first. Owner decisions and their dates live in the [dec
 
 - D145: two baselines. The mechanics baseline (rules and axes) defines results; the efficiency baseline (search order, caches, data layout) must not change outcomes and is updated whenever something is faster. The XP-first search order is on automatically without layered support (17% fewer steps, 20% fewer lost searches) and off under the baseline.
 - Simulator: lever for a Council size that scales with the difficulty (`--council-seats-per-d`), validation and tests; efficiency setting `xp_priority` is now automatic.
+- Efficiency (D145): the search order has four values (none, XP, guarantors, both) and is chosen automatically by measurement; friend-of-friend selection and integer-keyed tables rewritten without changing a single result (about three times faster per seed). Search-order measurements and the finding that the search is not the cost at scale are in the BACKLOG.
 - Council-size map (diagnostic, 500 days, 100 operators, 4 seeds): 11 seats 10,324 honest accounts (attacker share 0.95%), 21 seats 16,724, 31 seats 33,134, 51 seats 66,592 (0.15%); seats of 3, 4 and 5 per unit of D give 11,082, 16,951 and 24,917. A larger Council moves the growth plateau up and lowers the attacker share; the slot ceiling is not the cause. Study page, consolidated finding 10 and BACKLOG updated.
 
 ### Consolidation and the Rust simulator (2026-11-05)

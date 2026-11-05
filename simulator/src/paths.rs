@@ -2,6 +2,7 @@
 //! and an independent certificate verifier. The search is exact up to an explicit work budget; running out of budget is
 //! reported as `Exhausted`, never as a proof that no family exists.
 use crate::graph::Graph;
+use crate::hash::{FastMap, FastSet};
 use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 
@@ -305,9 +306,10 @@ impl PathFinder {
     /// for the out-copy; a usable terminal's out-copy leads to the sink).
     pub fn disjoint_count(&mut self, g: &Graph, blocked: &[bool], mask: &[bool], s: u32, k: usize) -> usize {
         self.ensure(g.len());
-        let mut flow: HashSet<(u32, u32)> = HashSet::new();
-        let mut pred: HashMap<u32, u32> = HashMap::new();
-        let mut succ: HashMap<u32, u32> = HashMap::new();
+        let mut flow: FastSet<(u32, u32)> = FastSet::default();
+        let mut flow_nodes: FastSet<u32> = FastSet::default();
+        let mut pred: FastMap<u32, u32> = FastMap::default();
+        let mut succ: FastMap<u32, u32> = FastMap::default();
         let mut count = 0;
         while count < k {
             self.epoch = self.epoch.wrapping_add(1);
@@ -325,33 +327,38 @@ impl PathFinder {
                 let state = queue[head];
                 head += 1;
                 let v = state / 2;
-                let mut next_states: Vec<u32> = Vec::new();
+                // Neighbors are queued in place (no per-state allocation); `flow_nodes` is a cheap filter so the exact flow set is probed only
+                // for nodes that carry flow.
+                macro_rules! visit {
+                    ($next:expr) => {{
+                        let next: u32 = $next;
+                        if self.stamp[next as usize] != epoch {
+                            self.stamp[next as usize] = epoch;
+                            self.parent[next as usize] = state;
+                            queue.push(next);
+                        }
+                    }};
+                }
                 if state % 2 == 0 {
                     match pred.get(&v) {
-                        None => next_states.push(v * 2 + 1),
-                        Some(&u) => next_states.push(u * 2 + 1),
+                        None => visit!(v * 2 + 1),
+                        Some(&u) => visit!(u * 2 + 1),
                     }
                 } else {
                     if usable(mask, blocked, s, v) && succ.get(&v) != Some(&SINK) {
                         sink_from = Some(state);
                         break 'bfs;
                     }
+                    let carries = flow_nodes.contains(&v);
                     for &w in g.out(v) {
                         // Blocked accounts are never entered (a blocked Council member is not a usable terminal either).
-                        if w == s || blocked[w as usize] || flow.contains(&(v, w)) {
+                        if w == s || blocked[w as usize] || (carries && flow.contains(&(v, w))) {
                             continue;
                         }
-                        next_states.push(w * 2);
+                        visit!(w * 2);
                     }
                     if v != s && pred.contains_key(&v) {
-                        next_states.push(v * 2);
-                    }
-                }
-                for next in next_states {
-                    if self.stamp[next as usize] != epoch {
-                        self.stamp[next as usize] = epoch;
-                        self.parent[next as usize] = state;
-                        queue.push(next);
+                        visit!(v * 2);
                     }
                 }
             }
@@ -372,6 +379,7 @@ impl PathFinder {
                 match (a % 2, b % 2) {
                     (1, 0) if va != vb => {
                         flow.insert((va, vb));
+                        flow_nodes.insert(va);
                         if va != s {
                             succ.insert(va, vb);
                         }
