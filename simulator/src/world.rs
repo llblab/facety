@@ -139,8 +139,8 @@ pub struct World {
     vault: i64,
     // Daily snapshot.
     active_count: usize,
-    bootstrap: bool,
     council: Vec<Id>,
+    council_mask: Vec<bool>,
     member_ok: Vec<bool>,
     blocked: Vec<bool>,
     level: Vec<u8>,
@@ -177,8 +177,8 @@ impl World {
             burned: 0,
             vault: 0,
             active_count: 0,
-            bootstrap: true,
             council: Vec::new(),
+            council_mask: Vec::new(),
             member_ok: Vec::new(),
             blocked: Vec::new(),
             level: Vec::new(),
@@ -208,6 +208,7 @@ impl World {
         self.inv_units.push(0);
         self.hold.push(0);
         self.blocked.push(self.cfg.layered);
+        self.council_mask.push(false);
         self.level.push(NO_LEVEL);
         self.dist_any.push(NO_LEVEL);
         id
@@ -257,9 +258,6 @@ impl World {
     }
     pub fn inviter(&self, id: Id) -> Option<Id> {
         self.subjects[id as usize].inviter
-    }
-    pub fn bootstrap(&self) -> bool {
-        self.bootstrap
     }
     pub fn council(&self) -> &[Id] {
         &self.council
@@ -369,7 +367,8 @@ impl World {
     fn council_target(&self) -> usize {
         let r = (digits(self.active_count) as f64).sqrt().round() as usize;
         assert!(r <= 6, "D33 Council lookup is OPEN beyond r = 6");
-        [1usize, 11, 101, 1001, 10001, 100001][r.max(1) - 1]
+        // D33 lookup; below 100 active accounts the Council has three equal-vote seats, the smallest body that can form a majority.
+        [3usize, 11, 101, 1001, 10001, 100001][r.max(1) - 1]
     }
 
     /// Advance to `hour` and refresh the daily snapshot (activity, difficulty, Council, support levels, distances).
@@ -378,15 +377,19 @@ impl World {
         self.now = hour;
         let n = self.subjects.len();
         self.active_count = (0..n as Id).filter(|&i| self.is_active(i)).count();
-        if self.bootstrap && self.active_count >= 100 {
-            self.bootstrap = false;
-        }
         let size = self.council_target();
-        self.council.clear();
-        if size > 1 {
-            let mut candidates: Vec<(i32, Id)> = (0..n as Id).filter(|&i| self.accepted(i) && self.is_active(i)).map(|i| (self.subjects[i as usize].xp, i)).collect();
-            candidates.sort_by(|a, b| b.0.cmp(&a.0).then(a.1.cmp(&b.1)));
-            self.council = candidates.into_iter().take(size).map(|(_, i)| i).collect();
+        // Active accounts first, then by XP, then older accounts; below 100 active the seats may go to inactive genesis accounts until enough are active.
+        let early = self.active_count < 100;
+        let mut candidates: Vec<(bool, i32, Id)> = (0..n as Id)
+            .filter(|&i| self.accepted(i))
+            .map(|i| (self.is_active(i), self.subjects[i as usize].xp, i))
+            .filter(|&(active, _, _)| active || early)
+            .collect();
+        candidates.sort_by(|a, b| b.0.cmp(&a.0).then(b.1.cmp(&a.1)).then(a.2.cmp(&b.2)));
+        self.council = candidates.into_iter().take(size).map(|(_, _, i)| i).collect();
+        self.council_mask = vec![false; n];
+        for &m in &self.council {
+            self.council_mask[m as usize] = true;
         }
         // Accounts in an open dispute count as unusable for support levels and paths (D131).
         let nonaccepted: Vec<bool> = (0..n as Id).map(|i| !self.accepted(i) || (self.cfg.exclude_disputed && self.hold[i as usize] > 0)).collect();
@@ -548,12 +551,12 @@ impl World {
                 return Err(Reject("rolling 24-hour reward limit"));
             }
         }
-        // D84/D91: one established mutual guarantor; outside the first-100 bootstrap that guarantor must reach the Council.
+        // D84: one established mutual guarantor that reaches a Council member within the path bound.
         let partners = self.mutual_partners(who);
         if partners.is_empty() {
             return Err(Reject("Self-ID requires an established mutual guarantor"));
         }
-        if !self.bootstrap && !partners.iter().any(|&p| self.self_gate(p)) {
+        if !partners.iter().any(|&p| self.self_gate(p)) {
             return Err(Reject("insufficient Council paths"));
         }
         let guarantors = self.eligible_guarantors(who);
@@ -678,31 +681,16 @@ impl World {
 
     // ---- invitations -----------------------------------------------------------------------------------------------
 
-    /// D104: D internally vertex-disjoint current paths (length bounded, optionally through supported intermediaries) to a
-    /// single Council member other than the creator. During the first-100 bootstrap nothing is checked.
+    /// D104/D134: D internally vertex-disjoint current paths from the creator to D different Council members (any members that
+    /// sit in the Council at confirmation time), each path within the node bound.
     fn invitation_paths_ok(&mut self, creator: Id, d: usize) -> bool {
-        if self.bootstrap {
-            return true;
-        }
         let Some(max_nodes) = self.cfg.max_nodes else {
-            // Unbounded: the flow value alone decides.
-            for t in self.council.clone() {
-                if t != creator && self.finder.disjoint_count(&self.graph, &self.blocked, creator, t, d) >= d {
-                    return true;
-                }
-            }
-            return false;
+            return self.finder.disjoint_count(&self.graph, &self.blocked, &self.council_mask, creator, d) >= d;
         };
-        for t in self.council.clone() {
-            if t == creator {
-                continue;
-            }
-            match self.finder.bounded(&self.graph, &self.blocked, self.epoch, creator, t, d, max_nodes, self.cfg.search_budget) {
-                Search::Found(_) => return true,
-                Search::Insufficient | Search::Exhausted => {}
-            }
-        }
-        false
+        matches!(
+            self.finder.bounded(&self.graph, &self.blocked, &self.council_mask, &self.council, self.epoch, creator, d, max_nodes, self.cfg.search_budget),
+            Search::Found(_)
+        )
     }
 
     /// Create a special invitation to a pre-registered new account (D105-D107): the creator burns an own mature right,
@@ -1095,34 +1083,37 @@ mod tests {
     }
 
     #[test]
-    fn genesis_and_bootstrap_follow_d91_and_the_council_lookup_follows_d33() {
+    fn genesis_mints_nothing_and_the_council_has_three_seats_below_100_active_and_eleven_from_100() {
         let w = world(50);
-        assert!(w.bootstrap() && w.council().is_empty(), "under 100 active there is no formal Council");
+        assert_eq!(w.council().len(), 3, "three equal-vote seats below 100 active accounts, from the start");
         assert_eq!(w.minted(), 0, "genesis pairs mint and burn nothing");
         assert_eq!(w.graph().edge_count(), ring(50).len() * 2);
-        // Bootstrap Self-ID needs exactly one mutual guarantor.
+        // A Self-ID needs one mutual guarantor that reaches the Council.
         let mut pairs = ring(50);
         pairs.retain(|&(a, b)| a != 7 && b != 7);
         let mut lonely = World::new(Config::default(), 50, &pairs);
         assert_eq!(lonely.create_self_id(7), Err(Reject("Self-ID requires an established mutual guarantor")));
-        // 120 participants: the latch ends at the first 100 active and never returns; the Council has 11 seats.
+        // 120 participants: all near enough to the seats to make Self-IDs on day one; 11 seats from 100 active; three again below it.
         let mut big = world(120);
-        for i in 0..120 {
+        for i in 0..12 {
             big.create_self_id(i).unwrap();
         }
         big.tick(24);
-        assert!(!big.bootstrap());
-        assert_eq!(big.council().len(), 11);
-        big.tick(24 + 29 * 24);
+        assert_eq!(big.council().len(), 3);
+        for i in 12..120 {
+            let _ = big.create_self_id(i);
+        }
+        big.tick(48);
+        big.tick(48 + 29 * 24);
         assert_eq!(big.active_count(), 0);
-        assert!(!big.bootstrap(), "no re-entry when the network later falls below 100");
+        assert_eq!(big.council().len(), 3, "the Council shrinks back to three when activity falls below 100");
     }
 
     /// 120 ring members plus three satellites {120, 121, 122} that guarantee a newcomer 123 but reach the ring only through one cut vertex.
     fn gated_world() -> World {
         let mut pairs = ring(120);
         pairs.extend([(120, 121), (120, 122), (121, 122), (120, 5), (123, 120), (123, 121), (123, 122)]);
-        let mut w = World::new(Config { layered: false, ..Config::default() }, 124, &pairs);
+        let mut w = World::new(Config { max_nodes: None, ..Config::default() }, 124, &pairs);
         for i in 0..124 {
             w.create_self_id(i).unwrap();
         }
@@ -1131,10 +1122,13 @@ mod tests {
     }
 
     #[test]
-    fn outside_bootstrap_self_ids_and_invitations_need_council_paths_independent_of_the_guarantor_count() {
+    fn self_ids_and_invitations_need_council_paths_independent_of_the_guarantor_count() {
         let mut w = gated_world();
-        assert!(!w.bootstrap() && w.required_guarantors() == 3);
+        assert_eq!(w.required_guarantors(), 3);
         w.tick(48);
+        // The ring is long: everyone made a Self-ID unbounded on day one; from now on the seven-node bound applies.
+        w.cfg.max_nodes = Some(7);
+        w.tick(49);
         // Ring member 12 is near the Council and certifies; far members of the ring cannot, within seven nodes.
         w.create_self_id(12).unwrap();
         // The newcomer has D = 3 eligible guarantors but only one internally disjoint path (the cut vertex 120 or 5).
@@ -1156,17 +1150,40 @@ mod tests {
     }
 
     #[test]
-    fn an_isolated_pair_cannot_reach_the_council_so_its_members_cannot_make_self_ids_outside_bootstrap() {
+    fn an_isolated_pair_cannot_reach_the_council_so_its_members_cannot_make_self_ids() {
         let mut pairs = ring(120);
         pairs.push((120, 121));
-        let mut w = World::new(Config::default(), 122, &pairs);
+        let mut w = World::new(Config { max_nodes: None, ..Config::default() }, 122, &pairs);
         for i in 0..120 {
             w.create_self_id(i).unwrap();
         }
         w.tick(24);
-        assert!(!w.bootstrap());
         assert_eq!(w.create_self_id(121), Err(Reject("insufficient Council paths")));
         assert!(w.create_self_id(12).is_ok());
+    }
+
+    #[test]
+    fn paths_may_end_at_any_different_council_members() {
+        // Account 5 sits between members 3, 4 and 6 of an 11-seat Council and reaches three different members; each member is used once.
+        let mut w = World::new(Config { max_nodes: None, ..Config::default() }, 120, &ring(120));
+        for i in 0..120 {
+            let _ = w.create_self_id(i);
+        }
+        w.tick(24);
+        assert_eq!(w.council().len(), 11);
+        let right = w.eligible_emission(5).unwrap();
+        assert!(w.create_invitation(5, right).is_ok(), "three paths to three different members");
+        // A single member reachable from five directions still counts once: a satellite behind one member cannot invite.
+        let mut pairs = ring(120);
+        pairs.extend([(120, 4), (121, 4), (122, 4), (123, 4), (120, 121), (121, 122), (122, 123)]);
+        let mut w2 = World::new(Config { max_nodes: None, ..Config::default() }, 124, &pairs);
+        for i in 0..124 {
+            let _ = w2.create_self_id(i);
+        }
+        w2.tick(24);
+        let right = w2.eligible_emission(122).unwrap();
+        assert!(w2.eligible_guarantors(122).len() >= 3);
+        assert_eq!(w2.create_invitation(122, right), Err(Reject("insufficient Council paths")), "every path ends at member 4 or runs through it");
     }
 
     #[test]
@@ -1180,7 +1197,7 @@ mod tests {
         }
         let mut w = World::new(Config { max_nodes: Some(4), ..Config::default() }, 128, &pairs);
         for i in 0..120 {
-            w.create_self_id(i).unwrap();
+            let _ = w.create_self_id(i);
         }
         w.tick(24);
         // Far members of the tail are more than four nodes from every Council member.

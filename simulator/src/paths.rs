@@ -76,16 +76,25 @@ pub enum Search {
     Exhausted,
 }
 
-/// Checks a family: simple paths along existing edges from `s` to `t`, distinct routes, no shared or blocked intermediate,
-/// at most `max_nodes` nodes each, at least `k` paths (a direct link can appear only once as a distinct route).
-pub fn verify_family(g: &Graph, paths: &[Vec<u32>], s: u32, t: u32, k: usize, max_nodes: usize, blocked: &[bool]) -> bool {
-    if paths.len() < k || s == t || blocked[t as usize] {
+/// Terminals are the Council members. A usable terminal is a member that is not the source and not blocked.
+fn usable(mask: &[bool], blocked: &[bool], source: u32, v: u32) -> bool {
+    v != source && mask.get(v as usize).copied().unwrap_or(false) && !blocked[v as usize]
+}
+
+/// Checks a family: simple paths along existing edges from `s`, each ending at a different usable terminal, sharing no vertex
+/// other than `s`, with no blocked intermediate, at most `max_nodes` nodes each, at least `k` paths.
+pub fn verify_family(g: &Graph, paths: &[Vec<u32>], s: u32, mask: &[bool], k: usize, max_nodes: usize, blocked: &[bool]) -> bool {
+    if paths.len() < k {
         return false;
     }
-    let mut internal = HashSet::new();
+    let mut vertices = HashSet::new();
     let mut routes = HashSet::new();
     for p in paths {
-        if p.len() < 2 || p.len() > max_nodes || p[0] != s || *p.last().unwrap() != t || !routes.insert(p.clone()) {
+        if p.len() < 2 || p.len() > max_nodes || p[0] != s || !routes.insert(p.clone()) {
+            return false;
+        }
+        let end = *p.last().unwrap();
+        if !usable(mask, blocked, s, end) {
             return false;
         }
         let mut seen = HashSet::new();
@@ -97,7 +106,7 @@ pub fn verify_family(g: &Graph, paths: &[Vec<u32>], s: u32, t: u32, k: usize, ma
             if i + 1 < p.len() && !g.has_edge(v, p[i + 1]) {
                 return false;
             }
-            if inner && !internal.insert(v) {
+            if i != 0 && !vertices.insert(v) {
                 return false;
             }
         }
@@ -108,9 +117,10 @@ pub fn verify_family(g: &Graph, paths: &[Vec<u32>], s: u32, t: u32, k: usize, ma
 struct Run<'a> {
     g: &'a Graph,
     source: u32,
-    target: u32,
+    mask: &'a [bool],
     limit: usize,
     dist: &'a [u8],
+    src: &'a [u8],
     blocked: &'a [bool],
     used: &'a mut [bool],
     on_walk: &'a mut [bool],
@@ -120,9 +130,19 @@ struct Run<'a> {
 }
 
 impl Run<'_> {
+    fn is_term(&self, v: u32) -> bool {
+        usable(self.mask, self.blocked, self.source, v)
+    }
+
+    /// Whether a non-terminal can still lie on a path of at most `limit` links, having `nodes_before` nodes already on the walk.
     fn within(&self, v: u32, nodes_before: usize) -> bool {
         let d = self.dist.get(v as usize).copied().unwrap_or(NO_LEVEL);
-        d != NO_LEVEL && nodes_before + d as usize <= self.limit
+        if d == NO_LEVEL || nodes_before + d as usize > self.limit {
+            return false;
+        }
+        // Exact two-sided pruning: the node must fit between the source and the nearest terminal.
+        let a = self.src.get(v as usize).copied().unwrap_or(NO_LEVEL);
+        a != NO_LEVEL && a as usize + d as usize <= self.limit
     }
 
     fn solve(&mut self, need: usize, after: Option<u32>, chosen: &mut Vec<Vec<u32>>) -> bool {
@@ -134,25 +154,26 @@ impl Run<'_> {
         }
         let mut hops: Vec<u32> = Vec::new();
         for &to in self.g.out(self.source) {
-            if to == self.source || after.is_some_and(|a| to <= a) {
+            if to == self.source || after.is_some_and(|a| to <= a) || self.used[to as usize] {
                 continue;
             }
-            if to != self.target && (self.used[to as usize] || self.blocked[to as usize] || !self.within(to, 1)) {
-                continue;
+            if self.is_term(to) || (!self.blocked[to as usize] && self.within(to, 1)) {
+                hops.push(to);
             }
-            hops.push(to);
         }
         if hops.len() < need {
             return false;
         }
         for i in 0..=(hops.len() - need) {
             let first = hops[i];
-            if first == self.target {
-                chosen.push(vec![self.source, self.target]);
+            if self.is_term(first) {
+                self.used[first as usize] = true;
+                chosen.push(vec![self.source, first]);
                 if self.solve(need - 1, Some(first), chosen) {
                     return true;
                 }
                 chosen.pop();
+                self.used[first as usize] = false;
                 continue;
             }
             let mut walk = vec![self.source, first];
@@ -177,45 +198,57 @@ impl Run<'_> {
             self.exhausted = true;
             return false;
         }
-        if at == self.target {
-            let internals: Vec<u32> = walk[1..walk.len() - 1].to_vec();
-            for &v in &internals {
-                self.used[v as usize] = true;
-            }
-            chosen.push(walk.clone());
-            // The next path of the family walks on its own: release this walk's markers while it is searched.
-            for &v in walk.iter() {
-                self.on_walk[v as usize] = false;
-            }
-            let found = self.solve(need - 1, Some(first), chosen);
-            for &v in walk.iter() {
-                self.on_walk[v as usize] = true;
-            }
-            if found {
-                return true;
-            }
-            chosen.pop();
-            for &v in &internals {
-                self.used[v as usize] = false;
-            }
-            return false;
-        }
         let mut options: Vec<u32> = Vec::new();
         for &to in self.g.out(at) {
-            if self.on_walk[to as usize] || (to != self.target && (self.used[to as usize] || self.blocked[to as usize])) || !self.within(to, walk.len()) {
+            if self.on_walk[to as usize] || self.used[to as usize] {
                 continue;
             }
-            options.push(to);
+            // A path ends at the first Council member it meets; terminals fit whenever the node count allows.
+            if self.is_term(to) {
+                if walk.len() <= self.limit {
+                    options.push(to);
+                }
+            } else if !self.blocked[to as usize] && self.within(to, walk.len()) {
+                options.push(to);
+            }
         }
         options.sort_by_key(|&v| (self.dist.get(v as usize).copied().unwrap_or(NO_LEVEL), v));
         for to in options {
-            walk.push(to);
-            self.on_walk[to as usize] = true;
-            let found = self.extend(to, walk, need, first, chosen);
-            walk.pop();
-            self.on_walk[to as usize] = false;
-            if found {
-                return true;
+            if self.is_term(to) {
+                walk.push(to);
+                let internals: Vec<u32> = walk[1..].to_vec(); // internal nodes and the terminal are all taken
+                for &v in &internals {
+                    self.used[v as usize] = true;
+                }
+                chosen.push(walk.clone());
+                // The next path of the family walks on its own: release this walk's markers while it is searched.
+                for &v in walk.iter() {
+                    self.on_walk[v as usize] = false;
+                }
+                let found = self.solve(need - 1, Some(first), chosen);
+                for &v in walk.iter() {
+                    self.on_walk[v as usize] = true;
+                }
+                // The terminal is not part of the walk any more once this branch is left.
+                self.on_walk[to as usize] = false;
+                if found {
+                    walk.pop();
+                    return true;
+                }
+                chosen.pop();
+                for &v in &internals {
+                    self.used[v as usize] = false;
+                }
+                walk.pop();
+            } else {
+                walk.push(to);
+                self.on_walk[to as usize] = true;
+                let found = self.extend(to, walk, need, first, chosen);
+                walk.pop();
+                self.on_walk[to as usize] = false;
+                if found {
+                    return true;
+                }
             }
             if self.exhausted {
                 return false;
@@ -225,11 +258,12 @@ impl Run<'_> {
     }
 }
 
-/// Reusable search state: scratch buffers and a shared distance cache keyed by graph revision and blocked-set epoch.
+/// Reusable search state: scratch buffers and shared distance caches. The Council (terminals) is fixed per `cache_key` epoch.
 #[derive(Default, Clone)]
 pub struct PathFinder {
-    cache_key: (u64, u64),
-    dist_cache: HashMap<(u32, usize), Rc<Vec<u8>>>,
+    cache_key: u64,
+    dist_cache: HashMap<usize, Rc<Vec<u8>>>,
+    src_cache: Option<((u32, u64, usize), Rc<Vec<u8>>)>,
     stamp: Vec<u32>,
     parent: Vec<u32>,
     epoch: u32,
@@ -237,6 +271,8 @@ pub struct PathFinder {
     on_walk: Vec<bool>,
     pub exhausted_searches: u64,
 }
+
+const SINK: u32 = u32::MAX;
 
 impl PathFinder {
     pub fn new() -> PathFinder {
@@ -254,14 +290,11 @@ impl PathFinder {
         }
     }
 
-    /// Maximum number (capped at `k`) of internally vertex-disjoint paths, no length bound (unit-capacity flow on the
-    /// implicit vertex-split graph; states are `2v` for the in-copy and `2v + 1` for the out-copy).
-    pub fn disjoint_count(&mut self, g: &Graph, blocked: &[bool], s: u32, t: u32, k: usize) -> usize {
-        assert!(s != t, "distinct endpoints required");
+    /// Maximum number (capped at `k`) of internally vertex-disjoint paths from `s` to distinct Council members, no length bound:
+    /// unit-capacity flow on the implicit vertex-split graph with a common sink (states are `2v` for the in-copy and `2v + 1`
+    /// for the out-copy; a usable terminal's out-copy leads to the sink).
+    pub fn disjoint_count(&mut self, g: &Graph, blocked: &[bool], mask: &[bool], s: u32, k: usize) -> usize {
         self.ensure(g.len());
-        if blocked[t as usize] {
-            return 0;
-        }
         let mut flow: HashSet<(u32, u32)> = HashSet::new();
         let mut pred: HashMap<u32, u32> = HashMap::new();
         let mut succ: HashMap<u32, u32> = HashMap::new();
@@ -276,25 +309,26 @@ impl PathFinder {
             let start = s * 2 + 1;
             let mut queue = vec![start];
             self.stamp[start as usize] = epoch;
-            let mut reached = false;
+            let mut sink_from: Option<u32> = None;
             let mut head = 0;
-            while head < queue.len() {
+            'bfs: while head < queue.len() {
                 let state = queue[head];
                 head += 1;
                 let v = state / 2;
                 let mut next_states: Vec<u32> = Vec::new();
                 if state % 2 == 0 {
-                    if v == t {
-                        reached = true;
-                        break;
-                    }
                     match pred.get(&v) {
                         None => next_states.push(v * 2 + 1),
                         Some(&u) => next_states.push(u * 2 + 1),
                     }
                 } else {
+                    if usable(mask, blocked, s, v) && succ.get(&v) != Some(&SINK) {
+                        sink_from = Some(state);
+                        break 'bfs;
+                    }
                     for &w in g.out(v) {
-                        if blocked[w as usize] || w == s || flow.contains(&(v, w)) {
+                        // Blocked accounts are never entered (a blocked Council member is not a usable terminal either).
+                        if w == s || blocked[w as usize] || flow.contains(&(v, w)) {
                             continue;
                         }
                         next_states.push(w * 2);
@@ -311,10 +345,8 @@ impl PathFinder {
                     }
                 }
             }
-            if !reached {
-                break;
-            }
-            let mut states = vec![t * 2];
+            let Some(last_out) = sink_from else { break };
+            let mut states = vec![SINK, last_out];
             while *states.last().unwrap() != start {
                 let last = *states.last().unwrap();
                 states.push(self.parent[last as usize]);
@@ -322,6 +354,10 @@ impl PathFinder {
             states.reverse();
             for pair in states.windows(2) {
                 let (a, b) = (pair[0], pair[1]);
+                if b == SINK {
+                    succ.insert(a / 2, SINK);
+                    continue;
+                }
                 let (va, vb) = (a / 2, b / 2);
                 match (a % 2, b % 2) {
                     (1, 0) if va != vb => {
@@ -329,9 +365,7 @@ impl PathFinder {
                         if va != s {
                             succ.insert(va, vb);
                         }
-                        if vb != t {
-                            pred.insert(vb, va);
-                        }
+                        pred.insert(vb, va);
                     }
                     (0, 1) if va != vb => {
                         // Cancel the flow on the edge vb -> va.
@@ -351,25 +385,64 @@ impl PathFinder {
         count
     }
 
-    fn distances(&mut self, g: &Graph, blocked: &[bool], cache_key: u64, target: u32, limit: usize) -> Rc<Vec<u8>> {
-        let key = (0, cache_key);
-        if self.cache_key != key {
-            self.dist_cache.clear();
-            self.cache_key = key;
+    /// Breadth-first distances from the source over allowed intermediates, shared by the searches of one issuer while the graph
+    /// does not change.
+    fn source_distances(&mut self, g: &Graph, blocked: &[bool], s: u32, limit: usize) -> Rc<Vec<u8>> {
+        let key = (s, g.revision(), limit);
+        if let Some((k, d)) = &self.src_cache {
+            if *k == key && d.len() == g.len() {
+                return Rc::clone(d);
+            }
         }
-        if let Some(d) = self.dist_cache.get(&(target, limit)) {
+        let mut dist = vec![NO_LEVEL; g.len()];
+        dist[s as usize] = 0;
+        let mut frontier = vec![s];
+        let mut d = 1usize;
+        while !frontier.is_empty() && d <= limit {
+            let mut next = Vec::new();
+            for &u in &frontier {
+                for &to in g.out(u) {
+                    let t = to as usize;
+                    if dist[t] != NO_LEVEL {
+                        continue;
+                    }
+                    dist[t] = d as u8;
+                    // Blocked accounts are never expanded (they can still be an endpoint).
+                    if !blocked[t] {
+                        next.push(to);
+                    }
+                }
+            }
+            frontier = next;
+            d += 1;
+        }
+        let rc = Rc::new(dist);
+        self.src_cache = Some((key, Rc::clone(&rc)));
+        rc
+    }
+
+    /// Distances to the nearest Council member over allowed intermediates (daily snapshot, shared by all issuers).
+    fn distances(&mut self, g: &Graph, blocked: &[bool], cache_key: u64, terminals: &[u32], limit: usize) -> Rc<Vec<u8>> {
+        if self.cache_key != cache_key {
+            self.dist_cache.clear();
+            self.cache_key = cache_key;
+        }
+        if let Some(d) = self.dist_cache.get(&limit) {
             return Rc::clone(d);
         }
         let mut dist = vec![NO_LEVEL; g.len()];
-        dist[target as usize] = 0;
-        let mut frontier = vec![target];
+        let mut frontier: Vec<u32> = Vec::new();
+        for &t in terminals {
+            dist[t as usize] = 0;
+            frontier.push(t);
+        }
         let mut d = 1usize;
         while !frontier.is_empty() && d <= limit {
             let mut next = Vec::new();
             for &id in &frontier {
                 for &from in g.inn(id) {
                     let f = from as usize;
-                    if blocked[f] || dist[f] != NO_LEVEL || from == target {
+                    if blocked[f] || dist[f] != NO_LEVEL {
                         continue;
                     }
                     dist[f] = d as u8;
@@ -380,38 +453,41 @@ impl PathFinder {
             d += 1;
         }
         let rc = Rc::new(dist);
-        self.dist_cache.insert((target, limit), Rc::clone(&rc));
+        self.dist_cache.insert(limit, Rc::clone(&rc));
         rc
     }
 
-    /// Exact search for `k` internally vertex-disjoint paths of at most `max_nodes` nodes (endpoints included).
-    /// `cache_key` keys the shared distance cache: change it whenever the graph or `blocked` set changes enough to matter
-    /// (the world passes a daily epoch, so new edges added within the day are not seen by the distance pruning).
-    /// The source may itself be blocked: only intermediates and the target are filtered.
+    /// Exact search for `k` internally vertex-disjoint paths of at most `max_nodes` nodes (endpoints included) from `s` to `k`
+    /// different Council members (any members; the family is free to choose them). `terminals`/`mask` list the Council; the
+    /// source may be a member (it is excluded) or blocked (only intermediates and terminals are filtered).
+    /// `cache_key` keys the shared distance cache: change it whenever the Council, the graph or the `blocked` set changes enough
+    /// to matter (the world passes a daily epoch, so edges added within the day are not seen by the distance pruning).
     #[allow(clippy::too_many_arguments)]
-    pub fn bounded(&mut self, g: &Graph, blocked: &[bool], cache_key: u64, s: u32, t: u32, k: usize, max_nodes: usize, budget: u64) -> Search {
-        assert!(s != t && k >= 1 && max_nodes >= 2);
+    pub fn bounded(&mut self, g: &Graph, blocked: &[bool], mask: &[bool], terminals: &[u32], cache_key: u64, s: u32, k: usize, max_nodes: usize, budget: u64) -> Search {
+        assert!(k >= 1 && max_nodes >= 2);
         self.ensure(g.len());
-        if blocked[t as usize] {
-            return Search::Insufficient;
-        }
         let limit = max_nodes - 1;
-        let dist = self.distances(g, blocked, cache_key, t, limit);
+        let usable_count = terminals.iter().filter(|&&t| usable(mask, blocked, s, t)).count();
+        if usable_count < k {
+            return Search::Insufficient;
+        }
+        let dist = self.distances(g, blocked, cache_key, terminals, limit);
         // The source needs no distance of its own: it must reach some neighbor within the bound.
-        let source_reach = g.out(s).iter().filter_map(|&w| if w == t { Some(1usize) } else { dist.get(w as usize).filter(|&&d| d != NO_LEVEL).map(|&d| d as usize + 1) }).min();
-        if source_reach.is_none_or(|d| d > limit) {
+        let reach = g.out(s).iter().filter_map(|&w| if usable(mask, blocked, s, w) { Some(1usize) } else { dist.get(w as usize).filter(|&&d| d != NO_LEVEL).map(|&d| d as usize + 1) }).min();
+        if reach.is_none_or(|d| d > limit) {
             return Search::Insufficient;
         }
-        if self.disjoint_count(g, blocked, s, t, k) < k {
+        if self.disjoint_count(g, blocked, mask, s, k) < k {
             return Search::Insufficient;
         }
-        let mut run = Run { g, source: s, target: t, limit, dist: &dist, blocked, used: &mut self.used, on_walk: &mut self.on_walk, steps: 0, budget, exhausted: false };
+        let src = self.source_distances(g, blocked, s, limit);
+        let mut run = Run { g, source: s, mask, limit, dist: &dist, src: &src, blocked, used: &mut self.used, on_walk: &mut self.on_walk, steps: 0, budget, exhausted: false };
         let mut chosen = Vec::new();
         let found = run.solve(k, None, &mut chosen);
         let exhausted = run.exhausted;
         if found {
             for p in &chosen {
-                for &v in &p[1..p.len() - 1] {
+                for &v in &p[1..] {
                     self.used[v as usize] = false;
                 }
             }
@@ -452,23 +528,24 @@ mod tests {
         g
     }
 
-    fn all_simple_routes(g: &Graph, s: u32, t: u32, max_nodes: usize, blocked: &[bool]) -> Vec<Vec<u32>> {
-        fn go(g: &Graph, at: u32, t: u32, max_nodes: usize, blocked: &[bool], walk: &mut Vec<u32>, out: &mut Vec<Vec<u32>>) {
-            if at == t {
+    /// All simple routes from `s` ending at any usable terminal, in full generality (routes may pass through terminals).
+    fn all_routes(g: &Graph, s: u32, mask: &[bool], max_nodes: usize, blocked: &[bool]) -> Vec<Vec<u32>> {
+        #[allow(clippy::too_many_arguments)]
+        fn go(g: &Graph, s: u32, at: u32, mask: &[bool], max_nodes: usize, blocked: &[bool], walk: &mut Vec<u32>, out: &mut Vec<Vec<u32>>) {
+            if at != s && usable(mask, blocked, s, at) {
                 out.push(walk.clone());
-                return;
             }
             for &to in g.out(at) {
-                if walk.contains(&to) || (blocked[to as usize] && to != t) || walk.len() >= max_nodes {
+                if walk.contains(&to) || blocked[to as usize] || walk.len() >= max_nodes {
                     continue;
                 }
                 walk.push(to);
-                go(g, to, t, max_nodes, blocked, walk, out);
+                go(g, s, to, mask, max_nodes, blocked, walk, out);
                 walk.pop();
             }
         }
         let mut out = Vec::new();
-        go(g, s, t, max_nodes, blocked, &mut vec![s], &mut out);
+        go(g, s, s, mask, max_nodes, blocked, &mut vec![s], &mut out);
         out
     }
 
@@ -477,10 +554,10 @@ mod tests {
             return true;
         }
         for (i, r) in routes.iter().enumerate() {
-            if r[1..r.len() - 1].iter().any(|v| used.contains(v)) {
+            if r[1..].iter().any(|v| used.contains(v)) {
                 continue;
             }
-            let added: Vec<u32> = r[1..r.len() - 1].to_vec();
+            let added: Vec<u32> = r[1..].to_vec();
             used.extend(added.iter().copied());
             let ok = pack(&routes[i + 1..], need - 1, used);
             for v in &added {
@@ -494,7 +571,7 @@ mod tests {
     }
 
     #[test]
-    fn bounded_search_matches_brute_force_and_certifies() {
+    fn multi_terminal_search_matches_brute_force_and_certifies() {
         let mut rng = Lcg(987);
         let mut finder = PathFinder::new();
         let (mut checks, mut feasible) = (0, 0);
@@ -506,12 +583,20 @@ mod tests {
             if rng.next() < 0.3 {
                 blocked[3] = true;
             }
-            let (s, t) = (0u32, 10u32);
+            // Council of one to four members; the source may itself be a member.
+            let mut mask = vec![false; n];
+            let mut terminals = Vec::new();
+            for v in [10usize, 9, 8, 0] {
+                if terminals.len() < 1 + trial % 4 && (v != 0 || trial % 5 == 0) {
+                    mask[v] = true;
+                    terminals.push(v as u32);
+                }
+            }
+            let s = 0u32;
             for max_nodes in 2..=8usize {
-                let routes = all_simple_routes(&g, s, t, max_nodes, &blocked);
+                let routes = all_routes(&g, s, &mask, max_nodes, &blocked);
                 for k in 1..=4usize {
-                    let got = finder.bounded(&g, &blocked, trial as u64 * 100 + 1, s, t, k, max_nodes, 2_000_000);
-                    // Distinct routes share no intermediate; the direct link is a single distinct route, so plain packing is exact.
+                    let got = finder.bounded(&g, &blocked, &mask, &terminals, trial as u64 * 100 + 1, s, k, max_nodes, 2_000_000);
                     let expected = pack(&routes, k, &mut HashSet::new());
                     checks += 1;
                     if expected {
@@ -520,19 +605,19 @@ mod tests {
                     match &got {
                         Search::Found(paths) => {
                             assert!(expected, "trial {trial} L{max_nodes} k{k}: found but brute force disagrees");
-                            assert!(verify_family(&g, paths, s, t, k, max_nodes, &blocked), "bad certificate");
+                            assert!(verify_family(&g, paths, s, &mask, k, max_nodes, &blocked), "bad certificate");
                         }
                         Search::Insufficient => assert!(!expected, "trial {trial} L{max_nodes} k{k}: missed a family"),
                         Search::Exhausted => panic!("budget exhausted on a tiny graph"),
                     }
                 }
             }
-            let flow = finder.disjoint_count(&g, &blocked, s, t, 4);
-            let routes = all_simple_routes(&g, s, t, n, &blocked);
+            let flow = finder.disjoint_count(&g, &blocked, &mask, s, 4);
+            let routes = all_routes(&g, s, &mask, n, &blocked);
             let best = (1..=4usize).filter(|&k| pack(&routes, k, &mut HashSet::new())).max().unwrap_or(0);
             assert_eq!(flow, best, "flow count disagrees on trial {trial}");
         }
-        assert!(feasible > 500 && checks - feasible > 500, "test must see both outcomes: {feasible}/{checks}");
+        assert!(feasible > 400 && checks - feasible > 400, "test must see both outcomes: {feasible}/{checks}");
     }
 
     #[test]

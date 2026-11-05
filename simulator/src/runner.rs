@@ -5,7 +5,7 @@
 //! Evaluator labels (`Cohort`, `Kind`) are read only by the observation functions that model noisy looks and verdict accuracy;
 //! the protocol world never sees them. Behavior rates are scenario assumptions, not calibrated human behavior.
 use crate::rng::{hash_seed, Rng};
-use crate::world::{Config as WorldConfig, Id, Reject, Status, World, DAY};
+use crate::world::{Config as WorldConfig, Id, Reject, World, DAY};
 use crate::paths::{layered_support, NO_LEVEL};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
@@ -25,6 +25,7 @@ const CH_PUBLIC: u64 = 10;
 const CH_FOLLOW: u64 = 11;
 const CH_VET: u64 = 12;
 const CH_MET: u64 = 13;
+const CH_DEFENSE: u64 = 14;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Strategy {
@@ -63,6 +64,13 @@ pub struct Detection {
     pub sponsor_willingness: f64,
     pub follow_up: bool,
     pub acquit_met: bool,
+    /// New identity cases (inspection, public evidence, follow-up) open only once this many accounts are active; the freeze veto
+    /// and the resolution of open cases are unaffected. D91 disables disputes below 100 active accounts: set 100 to model it.
+    pub disputes_from_active: usize,
+    /// A real person can prove reality cheaply (a public persona, a meeting in a cafe, a gathering of many witnesses): the chance that an
+    /// accused genuine account does, ending the case without invalidation after `defense_days`. Fakes and second accounts cannot.
+    pub defense_success: f64,
+    pub defense_days: i64,
 }
 
 #[derive(Clone, Debug)]
@@ -122,6 +130,9 @@ impl Default for RunConfig {
                 sponsor_willingness: 0.5,
                 follow_up: true,
                 acquit_met: false,
+                disputes_from_active: 0,
+                defense_success: 0.95,
+                defense_days: 3,
             },
             detection_start_day: 0,
             stop_at_honest: 0,
@@ -162,6 +173,7 @@ struct CaseRec {
     challenger: Id,
     opened_at: i64,
     id: u64,
+    defended: bool,
 }
 
 #[derive(Clone, Debug, Default)]
@@ -180,6 +192,7 @@ pub struct DetectionCounters {
     pub honest_inviter_cascades: u64,
     pub honest_inviter_acquitted: u64,
     pub holders_invalidated: u64,
+    pub defended: u64,
 }
 
 #[derive(Clone, Debug)]
@@ -192,7 +205,6 @@ pub struct Row {
     pub dirty: i64,
     pub active: usize,
     pub d: usize,
-    pub bootstrap: bool,
     pub council: usize,
     pub council_attackers: usize,
     pub attack_edges: usize,
@@ -678,7 +690,9 @@ impl Sim {
     fn open_case(&mut self, sponsor: Id, target: Id, follow_up: bool) -> bool {
         let Ok(case) = self.world.begin_case(&[sponsor, target]) else { return false };
         self.case_sequence += 1;
-        self.open_cases.push(CaseRec { case, target, challenger: sponsor, opened_at: self.world.now(), id: self.case_sequence });
+        let can_defend = matches!(self.kind[target as usize], Kind::Genuine | Kind::Operator);
+        let defended = can_defend && Rng::keyed(self.seed, CH_DEFENSE, self.case_sequence, 0).chance(self.cfg.detection.defense_success);
+        self.open_cases.push(CaseRec { case, target, challenger: sponsor, opened_at: self.world.now(), id: self.case_sequence, defended });
         self.det.cases_opened += 1;
         if follow_up {
             self.det.follow_up_cases += 1;
@@ -745,8 +759,17 @@ impl Sim {
         // Resolve due identity cases: verdict correct with the declared accuracy; a false verdict invalidates and voids the chain.
         let cases = std::mem::take(&mut self.open_cases);
         for rec in cases {
-            if self.world.now() - rec.opened_at < det.window_days * DAY {
+            let days = if rec.defended { det.defense_days } else { det.window_days };
+            if self.world.now() - rec.opened_at < days * DAY {
                 self.open_cases.push(rec);
+                continue;
+            }
+            if rec.defended {
+                // The accused proved reality in person or in public: the case ends, nothing is invalidated.
+                self.world.end_case(rec.case);
+                targeted.remove(&rec.target);
+                self.det.defended += 1;
+                self.det.cases_dismissed += 1;
                 continue;
             }
             let correct = Rng::keyed(self.seed, CH_VERDICT, rec.id, 0).chance(det.accuracy);
@@ -792,6 +815,9 @@ impl Sim {
                     }
                 }
             }
+        }
+        if self.world.active_count() < det.disputes_from_active {
+            return;
         }
         // Partner inspection: a suspicious look opens one identity case per target (D77 hold on both parties).
         let honest_ids: Vec<Id> = self.honest.iter().copied().filter(|&i| self.world.accepted(i)).collect();
@@ -865,7 +891,6 @@ impl Sim {
             dirty,
             active: w.active_count(),
             d: w.required_guarantors(),
-            bootstrap: w.bootstrap(),
             council: w.council().len(),
             council_attackers,
             attack_edges,
@@ -883,8 +908,8 @@ impl Sim {
         let _ = write!(s, "{{\"engine\":\"{ENGINE}\",\"randomness\":\"{}\",\"seed\":{:?},\"days\":{},\"completedDays\":{},\"censored\":{},", crate::rng::RANDOMNESS_POLICY, c.seed, c.days, self.day, self.censored.map_or("null".to_string(), |x| format!("{x:?}")));
         let _ = write!(s, "\"attackers\":{},\"attackStartDay\":{},\"maxPathNodes\":{},\"layered\":{},\"strategy\":\"{:?}\",", c.attackers, c.attack_start_day, c.world.max_nodes.map_or("null".to_string(), |x| x.to_string()), c.world.layered, c.strategy);
         let d = &self.det;
-        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"holdersInvalidated\":{}}},",
-            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.holders_invalidated);
+        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"holdersInvalidated\":{},\"defended\":{}}},",
+            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.holders_invalidated, d.defended);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{}}},",
             self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted());
         s.push_str("\"history\":[");
@@ -893,8 +918,8 @@ impl Sim {
                 s.push(',');
             }
             let f = |x: Option<f64>| x.map_or("null".to_string(), |v| format!("{v:.6}"));
-            let _ = write!(s, "{{\"day\":{},\"subjects\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"supply\":{},\"dirty\":{},\"dirtyShare\":{},\"active\":{},\"D\":{},\"bootstrap\":{},\"councilSize\":{},\"councilAttackers\":{},\"attackEdges\":{}}}",
-                r.day, r.subjects, r.honest, r.attackers, f(r.attacker_share()), r.supply, r.dirty, f(r.dirty_share()), r.active, r.d, r.bootstrap, r.council, r.council_attackers, r.attack_edges);
+            let _ = write!(s, "{{\"day\":{},\"subjects\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"supply\":{},\"dirty\":{},\"dirtyShare\":{},\"active\":{},\"D\":{},\"councilSize\":{},\"councilAttackers\":{},\"attackEdges\":{}}}",
+                r.day, r.subjects, r.honest, r.attackers, f(r.attacker_share()), r.supply, r.dirty, f(r.dirty_share()), r.active, r.d, r.council, r.council_attackers, r.attack_edges);
         }
         s.push_str("],\"refusals\":{");
         for (k, name) in ["honest", "attackers"].iter().enumerate() {

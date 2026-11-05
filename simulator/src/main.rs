@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::sync::atomic::{AtomicUsize, Ordering};
 
 fn usage() -> ! {
-    eprintln!("usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--layered] [--attackers N] [--horizon DAYS]\n  [--target-honest N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]\n  [--met P] [--double P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P] [--public-look P] [--max-subjects N] [--threads N] [--out DIR] [--prefix-only]");
+    eprintln!("usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--layered] [--attackers N] [--horizon DAYS]\n  [--target-honest N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]\n  [--met P] [--double P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P] [--public-look P] [--defense P] [--defense-days N] [--honest-genesis N] [--disputes-from N] [--max-subjects N] [--threads N] [--out DIR] [--prefix-only]");
     std::process::exit(2)
 }
 
@@ -77,6 +77,10 @@ fn main() {
     base.detection.review = num(&opts, "--review", base.detection.review);
     base.detection.accuracy = num(&opts, "--accuracy", base.detection.accuracy);
     base.detection.public_look = num(&opts, "--public-look", base.detection.public_look);
+    base.detection.defense_success = num(&opts, "--defense", base.detection.defense_success);
+    base.detection.defense_days = num(&opts, "--defense-days", base.detection.defense_days);
+    base.honest_genesis = num(&opts, "--honest-genesis", base.honest_genesis);
+    base.detection.disputes_from_active = num(&opts, "--disputes-from", 0);
     let prefix_only = flags.contains(&"--prefix-only".to_string());
     if let Some(dir) = &out_dir {
         std::fs::create_dir_all(dir).expect("output directory");

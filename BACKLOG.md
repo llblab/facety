@@ -4,13 +4,32 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **Current priority (D129, D132):** show with the Rust simulator, up to a year or two of network growth, that the topology defense keeps the dirty-FACY share at most 10% and the clean share at least two thirds, at a bearable cost to honest people. Detection is always on; its design is the variable.
 
+**Phase (D140): forming the baseline.** Hypotheses, the best construction of the baseline and feedback; targeted checks, no exhaustive sweeps. A broad benchmark and a search for pits at particular values start only when every axis below is fixed.
+
+| Baseline axis | Value | Status |
+| --- | --- | --- |
+| Path bound (nodes) | 7 | fixed (D123) |
+| Council size | 3 below 100 active, then the D33 lookup; equal votes | fixed (D133) |
+| Paths | D disjoint paths to D different Council members | fixed (D134) |
+| Paths avoid accounts in a dispute | on | fixed (D131) |
+| Owned-slot ceiling K | 100 | fixed (D100) |
+| Guarantor count D | digits of the active count | fixed (stand-in for N_verified) |
+| Layered support for intermediaries | off in code, tested on | open: owner adoption (D124) |
+| Detection precision (inspect rate, false-positive rate, accuracy, windows) | 0.1, 0.01, 0.9, 7 days | open: owner choice of false-positive rate (0.3% proposed) |
+| Proof of reality by a genuine account | success 0.95, 3 days | open: assumption (D136) |
+| Honest behavior rates | uniform acceptance rates | open: realism (deliberate and careless acceptance) |
+| Attacker model | cone, honest-first, supported-first; operators 10-100 | open: stronger attackers |
+| Snapshot and horizon | 1000 accounts, 60 days to one year | open: horizon for the criterion |
+| Social recovery (D135), identification reputation (D137) | not modeled | open: model |
+
 ## Rust simulator
 
 - [x] Core: graph, keyed randomness, exact length-bounded disjoint paths with verifier, layered support, world rules, runner, snapshot cloning, tests, documentation integrity guard.
 - [x] Statistical validation against the retired simulator ([contract](docs/simulator.en.md#baseline-validation-statistical)). Node simulator, tests and raw artifacts deleted at the tag `legacy-node`.
-- [ ] **Scale runs.** One-year runs at detection false-positive rates of 0.1%-0.3% (explosive honest growth, caps and memory), 100 operators against 7 nodes without layered support, supported-first at 30 operators, and a two-year horizon. Five year-long batches (10, 30 and 100 operators with layered support, 7 nodes without it, supported-first at 30) started with the old buffered output are still running (about 26 GB of memory) and print only at the end; new runs stream per seed. Results go to the [study](studies/2026-10-30-grown-network/README.md). Gate: compute and memory.
+- [ ] **Scale runs (gated by the baseline axes, D140).** One-year and two-year horizons, 10/30/100 operators and a stronger attacker against the fixed baseline; the batches started under the earlier rules were stopped. Gate: open axes in the table above.
 - [ ] **Registration tooling.** A committed registration (claim, presence, necessity by ablation, named alternatives, kill criterion, reserved seeds) and a runner mode that refuses changed implementations; until then every result is diagnostic.
-- [ ] **Performance.** Profile the daily detection pass and the bounded search at 10^5-10^6 accounts; keep outcomes identical per seed.
+- [ ] **Standing: simulator efficiency (D138).** Never closed. Look for better algorithms and caching, even where the chain could not use them, so that more days and more nodes run locally: exact two-sided pruning of the path search (done), no-good memoization, negative caches per issuer and epoch, incremental support levels, bitset adjacency, struct-of-arrays instead of per-account heap allocations, threads inside one run for the daily detection pass. Every change must leave outcomes identical per seed (compare JSON before and after) or declare the deviation in the simulator contract.
+- [ ] **Re-measure under the current rules.** Scale runs (year, 10/30/100 operators, supported-first) were started under the rules before D131, D133, D134 and D136 and were stopped; redo them only after the open axes above are fixed (D140).
 
 ## Topology defense
 
@@ -19,7 +38,8 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 - [ ] **Honest behavior realism.** Replace uniform acceptance rates with deliberate and careless acceptance, correlated friendships and cautious strangers' vetting with calibrated look quality.
 - [ ] **Second accounts and the unwitting inviter (Q19).** Proof of fault, acquittal evidence (joint co-presence artifact), collusion risk, what the acquittal covers.
 - [ ] **Remedy for a detected cluster (Q18, D119).** Quarantine, burden of proof, liability, recovery, repair for honest people.
-- [ ] **Protocol text.** Restate D123, D124 and D131 in protocol §46.15 as the owner adopts them.
+- [ ] **Protocol text.** D123, D131, D133 and D134 are written in §46.14-§46.15; D124 stays a proposal until adopted. Remaining mentions of the retired first-100 bootstrap exception (D91) elsewhere in the protocol (summary tables at the top, §18, §20, §34 pseudo-code) must be rewritten to the Council-of-three rule.
+- [ ] **Model the new concepts.** Social recovery (D135) and identification reputation (D137) as attestations weighted by closeness and independence.
 
 ## Owner-gated protocol work (carried over, not active)
 

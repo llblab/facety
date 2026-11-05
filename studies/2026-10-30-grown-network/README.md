@@ -14,6 +14,8 @@ An honest network grows by its own rules from a 100-account genesis to 1000 acco
 
 ## Results
 
+**Rule changes after the tables below were measured.** The tables below were measured with the rule set before D131 (paths avoid disputes), D133 (Council of three below 100 active participants, no initial exception), D134 (paths to different Council members) and D136 (cheap proof of reality). The current baseline, 20 seeds, 10 operators, 60 days: 7 nodes leave a mean attacker share of 13.4% of accounts (range 1.6%-30.3%, 0.30% of FACY, 3 genuine accounts invalidated); 7 nodes plus layered support leave 0.6% (0.01% of FACY, 3 genuine invalidated, 1672 honest accounts against 2003). The sharp fall in invalidated genuine accounts (about 57 to 3) is the effect of letting a real person prove reality (D136); the tables below that count invalidated genuine accounts describe the earlier, wrong model of the honest cost.
+
 ### Honest cost of the path bound (days to 1000 honest accounts, no attackers)
 
 | Rule | Retired simulator, seed 1 | Rust, mean of 12 seeds |
