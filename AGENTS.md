@@ -52,4 +52,4 @@ Rust research simulator in [`simulator/`](simulator): standard library only, `ca
 - Delete verified dead code without asking; check consumers first.
 - Success criterion for the topology defense (D129): dirty-FACY share at most 10% on the longest declared horizon; a clean share below two thirds fails the scenario.
 - Run `cargo test --release` for behavior changes; it includes the documentation integrity guard (links, anchors, English-only text). Do not weaken it.
-- Commit scoped changes at validated checkpoints and push to the configured upstream. No force-push, history rewrite or unrelated changes.
+- Commit scoped changes at validated checkpoints and push to the configured upstream. No force-push, history rewrite or unrelated changes. Every commit that completes a milestone (a rule adopted, a baseline axis fixed, a study closed, a simulator capability or fix of note) also adds its CHANGELOG entry in the same commit; check the CHANGELOG before committing.
