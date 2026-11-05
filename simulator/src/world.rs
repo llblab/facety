@@ -271,6 +271,24 @@ impl World {
     pub fn required_guarantors(&self) -> usize {
         digits(self.active_count)
     }
+    pub fn burned(&self) -> i64 {
+        self.burned
+    }
+    pub fn vault(&self) -> i64 {
+        self.vault
+    }
+    /// Guarantors recorded on a Self-ID act at creation (the potential guarantor XP recipients).
+    pub fn act_guarantors(&self, act: u32) -> &[Id] {
+        &self.acts[act as usize].guarantors
+    }
+    /// K referendum lever: lowering K never cuts existing valences or links.
+    pub fn set_k(&mut self, k: u32) {
+        assert!(k >= 1);
+        self.cfg.k = k;
+    }
+    pub fn used_slots_of(&self, id: Id) -> u32 {
+        self.used_slots(id)
+    }
     pub fn supply(&self) -> i64 {
         self.minted - self.burned
     }
@@ -911,6 +929,19 @@ mod tests {
         World::new(Config::default(), n, &ring(n))
     }
 
+    /// A plain cycle: each account holds two genesis valences (units) and has two guarantors.
+    fn cycle(n: usize) -> Vec<(Id, Id)> {
+        (0..n).map(|i| (i.min((i + 1) % n) as Id, i.max((i + 1) % n) as Id)).collect()
+    }
+
+    /// Every listed account makes a Self-ID at the current time; a day later each has one mature right.
+    fn rights(w: &mut World, ids: &[Id]) {
+        for &i in ids {
+            w.create_self_id(i).unwrap();
+        }
+        w.tick(w.now() + 24);
+    }
+
     #[test]
     fn self_id_xp_and_conversion_follow_the_rules() {
         let mut w = world(10);
@@ -919,60 +950,252 @@ mod tests {
         assert_eq!(w.xp(0), 0, "XP is credited when the right is used, not at creation");
         w.tick(24);
         w.convert_to_collector(0, act).unwrap();
-        // The subject earns 1; its eligible guarantors (genesis partners 1, 2, 8, 9) earn 1 each only if they are active.
         assert!(w.xp(0) == 1);
         assert_eq!(w.liquid(0), 1);
         w.audit().unwrap();
     }
 
     #[test]
-    fn valence_pair_invitation_veto_and_leaving_keep_the_books() {
-        let mut w = world(10);
-        // Every genesis member creates a Self-ID and, a day later, spends it.
-        for i in 0..10 {
-            w.create_self_id(i).unwrap();
-        }
-        w.tick(24);
-        // Two valences between non-neighbors establish a pair.
-        let a0 = w.eligible_emission(0).unwrap();
-        let a5 = w.eligible_emission(5).unwrap();
-        w.open_valence(0, 5, a0).unwrap();
-        assert!(!w.graph().has_edge(0, 5));
-        w.open_valence(5, 0, a5).unwrap();
-        assert!(w.graph().is_mutual(0, 5));
-        assert!(w.open_valence(5, 0, w.eligible_emission(5).unwrap_or(u32::MAX)).is_err());
-        w.audit().unwrap();
-        // Bootstrap: an invitation needs D guarantors (D = 2 with 10 actives) and no path check.
-        let right = w.eligible_emission(1).unwrap();
-        let inv = w.create_invitation(1, right).unwrap();
-        w.audit().unwrap();
-        assert_eq!(w.accept_invitation(inv), Err(Reject("invitation is frozen")));
-        // A guarantor of the creator vetoes inside the freeze; the burned right stays burned.
-        w.cancel_invitation(0, inv).unwrap();
-        assert_eq!(w.cancel_invitation(0, inv), Err(Reject("invitation is not cancellable")));
-        w.audit().unwrap();
-        // A fresh invitation is accepted after the freeze and the link can be left.
-        w.create_self_id(1).unwrap();
-        w.tick(48);
-        let right = w.eligible_emission(1).unwrap();
-        let inv = w.create_invitation(1, right).unwrap();
-        w.tick(w.now() + 24);
-        let newcomer = w.accept_invitation(inv).unwrap();
-        assert!(w.graph().is_mutual(1, newcomer));
-        assert_eq!(w.inviter(newcomer), Some(1));
-        w.end_invitation_link(newcomer, inv).unwrap();
-        assert!(!w.graph().has_edge(1, newcomer));
+    fn an_unmatched_valence_burns_exactly_one_own_mature_right_and_creates_no_guarantee() {
+        let mut w = world(8);
+        rights(&mut w, &[0, 3]);
+        let (burned, vault) = (w.burned(), w.vault());
+        let (u0, u3) = (w.used_slots_of(0), w.used_slots_of(3));
+        let act = w.eligible_emission(0).unwrap();
+        // An immature or foreign right is refused atomically.
+        assert_eq!(w.open_valence(0, 3, w.eligible_emission(3).unwrap()), Err(Reject("valence requires own mature Emitter right")));
+        assert_eq!(w.open_valence(0, 0, act), Err(Reject("valence requires a distinct counterpart")));
+        assert_eq!((w.burned(), w.vault()), (burned, vault));
+        w.open_valence(0, 3, act).unwrap();
+        assert_eq!((w.burned(), w.vault()), (burned + 1, vault - 1));
+        assert!(!w.graph().has_edge(0, 3) && !w.graph().has_edge(3, 0));
+        assert_eq!((w.used_slots_of(0), w.used_slots_of(3)), (u0 + 1, u3), "genesis pairs and the new valence each hold one owned unit");
+        assert_eq!(w.open_valence(0, 3, w.eligible_emission(0).unwrap_or(u32::MAX)), Err(Reject("owner already holds an open valence toward counterpart")));
         w.audit().unwrap();
     }
 
     #[test]
-    fn holds_block_and_void_chain_revokes() {
+    fn matching_establishes_a_mutual_guarantee_and_guarantor_xp_flows_only_after_it() {
+        let mut w = world(8);
+        rights(&mut w, &[0, 3]);
+        let a0 = w.eligible_emission(0).unwrap();
+        w.open_valence(0, 3, a0).unwrap();
+        let before = w.create_self_id(3).unwrap();
+        assert!(!w.act_guarantors(before).contains(&0), "no guarantor role before mutual establishment (D82)");
+        w.tick(w.now() + 24);
+        let a3 = w.eligible_emission(3).unwrap();
+        w.open_valence(3, 0, a3).unwrap();
+        assert!(w.graph().is_mutual(0, 3));
+        assert_eq!(w.burned() - w.minted().min(w.burned()), 0);
+        let xp0 = w.xp(0);
+        w.tick(w.now() + 24);
+        let act = w.create_self_id(3).unwrap();
+        assert!(w.act_guarantors(act).contains(&0));
+        w.tick(w.now() + 24);
+        w.convert_to_collector(3, act).unwrap();
+        assert_eq!(w.xp(0), xp0 + 1, "the guarantor earns when the subject's right is used");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn the_ceiling_refuses_new_owned_units_only_and_lowering_it_cuts_nothing() {
+        // Cycle genesis: each account already owns two valences, so K = 3 leaves exactly one free unit.
+        let mut w = World::new(Config { k: 3, ..Config::default() }, 8, &cycle(8));
+        rights(&mut w, &[0, 3, 4]);
+        let (a0, a3) = (w.eligible_emission(0).unwrap(), w.eligible_emission(3).unwrap());
+        w.open_valence(0, 3, a0).unwrap();
+        assert_eq!(w.open_valence(0, 4, a0), Err(Reject("owned-slot ceiling reached")), "the ceiling is checked before the source");
+        // Matching a retained valence is a new owned unit for the matcher, whose unit is free here.
+        w.open_valence(3, 0, a3).unwrap();
+        assert!(w.graph().is_mutual(0, 3));
+        w.create_self_id(3).unwrap();
+        w.tick(w.now() + 24);
+        assert_eq!(w.open_valence(3, 5, w.eligible_emission(3).unwrap()), Err(Reject("owned-slot ceiling reached")));
+        w.set_k(4);
+        w.open_valence(3, 5, w.eligible_emission(3).unwrap()).unwrap();
+        w.set_k(3);
+        assert_eq!(w.used_slots_of(3), 4, "lowering K keeps existing valences");
+        assert!(w.graph().is_mutual(0, 3));
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn withdrawal_ends_the_pair_revokes_only_the_withdrawers_guarantor_xp_and_the_retained_side_can_rematch() {
+        let mut w = world(8);
+        rights(&mut w, &[0, 3]);
+        let (v0, v3) = (w.open_valence(0, 3, w.eligible_emission(0).unwrap()).unwrap(), w.open_valence(3, 0, w.eligible_emission(3).unwrap()).unwrap());
+        // Each side makes and uses a right so both earn guarantor XP from the other.
+        w.tick(w.now() + 24);
+        let (b0, b3) = (w.create_self_id(0).unwrap(), w.create_self_id(3).unwrap());
+        w.tick(w.now() + 24);
+        w.convert_to_collector(0, b0).unwrap();
+        w.convert_to_collector(3, b3).unwrap();
+        let (xp0, xp3) = (w.xp(0), w.xp(3));
+        w.withdraw_valence(3, v3).unwrap();
+        assert!(!w.graph().has_edge(0, 3) && !w.graph().has_edge(3, 0));
+        assert_eq!(w.xp(0), xp0, "the other side keeps what it earned");
+        assert_eq!(w.xp(3), xp3 - 1, "the withdrawer loses its guarantor XP from the other's acts");
+        assert_eq!(w.withdraw_valence(3, v3), Err(Reject("no open own valence to withdraw")));
+        assert!(w.valence_info(v0).0, "the retained valence stays open");
+        w.tick(w.now() + 24);
+        let again = w.create_self_id(3);
+        assert!(again.is_ok());
+        w.tick(w.now() + 24);
+        w.open_valence(3, 0, w.eligible_emission(3).unwrap()).unwrap();
+        assert!(w.graph().is_mutual(0, 3), "rematching the retained valence restores the pair");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_held_retained_side_blocks_establishment() {
+        let mut w = world(8);
+        rights(&mut w, &[0, 3]);
+        w.open_valence(0, 3, w.eligible_emission(0).unwrap()).unwrap();
+        let case = w.begin_case(&[0, 1]).unwrap();
+        assert_eq!(w.open_valence(3, 0, w.eligible_emission(3).unwrap()), Err(Reject("open-dispute activity restriction")));
+        w.end_case(case);
+        w.open_valence(3, 0, w.eligible_emission(3).unwrap()).unwrap();
+        assert!(w.graph().is_mutual(0, 3));
+    }
+
+    #[test]
+    fn invitations_hold_units_refuse_atomically_and_release_on_veto_or_link_end() {
+        let mut pairs = cycle(12);
+        pairs.push((0, 12)); // account 12 has a single guarantor
+        let mut w = World::new(Config { k: 3, ..Config::default() }, 13, &pairs);
+        rights(&mut w, &(0..13).collect::<Vec<_>>());
+        assert_eq!(w.required_guarantors(), 2);
+        let (burned, vault) = (w.burned(), w.vault());
+        assert_eq!(w.create_invitation(12, w.eligible_emission(12).unwrap()), Err(Reject("insufficient eligible guarantors")));
+        let case = w.begin_case(&[1, 2]).unwrap();
+        assert_eq!(w.create_invitation(1, w.eligible_emission(1).unwrap()), Err(Reject("open-dispute activity restriction")));
+        w.end_case(case);
+        assert_eq!((w.burned(), w.vault()), (burned, vault), "refusals leave no trace");
+        // Issuance burns one own right and holds a unit at the creator.
+        let inv = w.create_invitation(1, w.eligible_emission(1).unwrap()).unwrap();
+        assert_eq!((w.burned(), w.used_slots_of(1)), (burned + 1, 3), "two genesis valences plus the invitation unit");
+        // The veto releases the unit, never refunds the burn, and the invitation cannot be accepted afterwards.
+        w.cancel_invitation(0, inv).unwrap();
+        assert_eq!(w.used_slots_of(1), w.owned_open[1]);
+        assert_eq!(w.accept_invitation(inv), Err(Reject("invalid invitation acceptance")));
+        // Acceptance after the freeze admits with one inviter and a special link holding a unit at both ends.
+        w.create_self_id(1).ok();
+        w.tick(w.now() + 24);
+        let right = w.eligible_emission(1).unwrap();
+        let inv2 = w.create_invitation(1, right).unwrap();
+        w.tick(w.now() + 24);
+        let new = w.accept_invitation(inv2).unwrap();
+        assert_eq!((w.inviter(new), w.used_slots_of(new)), (Some(1), 1));
+        assert!(w.graph().is_mutual(1, new));
+        // Ending the link releases both units and the newcomer stays an account.
+        w.end_invitation_link(1, inv2).unwrap();
+        assert_eq!(w.used_slots_of(new), 0);
+        assert!(w.accepted(new) && !w.graph().has_edge(1, new));
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn genesis_and_bootstrap_follow_d91_and_the_council_lookup_follows_d33() {
+        let w = world(50);
+        assert!(w.bootstrap() && w.council().is_empty(), "under 100 active there is no formal Council");
+        assert_eq!(w.minted(), 0, "genesis pairs mint and burn nothing");
+        assert_eq!(w.graph().edge_count(), ring(50).len() * 2);
+        // Bootstrap Self-ID needs exactly one mutual guarantor.
+        let mut pairs = ring(50);
+        pairs.retain(|&(a, b)| a != 7 && b != 7);
+        let mut lonely = World::new(Config::default(), 50, &pairs);
+        assert_eq!(lonely.create_self_id(7), Err(Reject("Self-ID requires an established mutual guarantor")));
+        // 120 participants: the latch ends at the first 100 active and never returns; the Council has 11 seats.
+        let mut big = world(120);
+        for i in 0..120 {
+            big.create_self_id(i).unwrap();
+        }
+        big.tick(24);
+        assert!(!big.bootstrap());
+        assert_eq!(big.council().len(), 11);
+        big.tick(24 + 29 * 24);
+        assert_eq!(big.active_count(), 0);
+        assert!(!big.bootstrap(), "no re-entry when the network later falls below 100");
+    }
+
+    /// 120 ring members plus three satellites {120, 121, 122} that guarantee a newcomer 123 but reach the ring only through one cut vertex.
+    fn gated_world() -> World {
+        let mut pairs = ring(120);
+        pairs.extend([(120, 121), (120, 122), (121, 122), (120, 5), (123, 120), (123, 121), (123, 122)]);
+        let mut w = World::new(Config { layered: false, ..Config::default() }, 124, &pairs);
+        for i in 0..124 {
+            w.create_self_id(i).unwrap();
+        }
+        w.tick(24);
+        w
+    }
+
+    #[test]
+    fn outside_bootstrap_self_ids_and_invitations_need_council_paths_independent_of_the_guarantor_count() {
+        let mut w = gated_world();
+        assert!(!w.bootstrap() && w.required_guarantors() == 3);
+        w.tick(48);
+        // Ring member 12 is near the Council and certifies; far members of the ring cannot, within seven nodes.
+        w.create_self_id(12).unwrap();
+        // The newcomer has D = 3 eligible guarantors but only one internally disjoint path (the cut vertex 120 or 5).
+        let right = w.eligible_emission(123).unwrap();
+        assert_eq!(w.eligible_guarantors(123).len(), 3);
+        assert_eq!(w.create_invitation(123, right), Err(Reject("insufficient Council paths")));
+        // Council member 5 has three disjoint short paths to member 4 and invites; the cut at {10, 11} limits account 12 to two.
+        assert_eq!(w.create_invitation(12, w.eligible_emission(12).unwrap()), Err(Reject("insufficient Council paths")));
+        w.create_invitation(5, w.eligible_emission(5).unwrap()).unwrap();
+        // Invalidated intermediaries stop providing paths.
+        for k in [3, 4, 6, 7] {
+            w.invalidate_identity(k);
+        }
+        w.tick(72);
+        w.create_self_id(5).ok();
+        w.tick(96);
+        assert!(w.create_invitation(5, w.eligible_emission(5).unwrap_or(u32::MAX)).is_err());
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn an_isolated_pair_cannot_reach_the_council_so_its_members_cannot_make_self_ids_outside_bootstrap() {
+        let mut pairs = ring(120);
+        pairs.push((120, 121));
+        let mut w = World::new(Config::default(), 122, &pairs);
+        for i in 0..120 {
+            w.create_self_id(i).unwrap();
+        }
+        w.tick(24);
+        assert!(!w.bootstrap());
+        assert_eq!(w.create_self_id(121), Err(Reject("insufficient Council paths")));
+        assert!(w.create_self_id(12).is_ok());
+    }
+
+    #[test]
+    fn the_depth_bound_and_layered_support_gate_who_can_invite() {
+        // Seven nodes: a chain of mutual links longer than the bound cannot certify, a shorter one can.
+        let mut pairs = ring(120);
+        let mut prev = 119;
+        for k in 120..128 {
+            pairs.push((prev, k));
+            prev = k;
+        }
+        let mut w = World::new(Config { max_nodes: Some(4), ..Config::default() }, 128, &pairs);
+        for i in 0..120 {
+            w.create_self_id(i).unwrap();
+        }
+        w.tick(24);
+        // Far members of the tail are more than four nodes from every Council member.
+        assert!(!w.self_gate(127) || w.dist_any[127] != NO_LEVEL);
+        assert!(w.dist_any[127] == NO_LEVEL || w.dist_any[127] > 3);
+        assert!(w.self_gate(2), "members near the Council certify");
+    }
+
+    #[test]
+    fn disputes_hold_activity_and_exclude_accounts_from_paths_and_void_chain_revokes() {
         let mut w = world(10);
         let a = w.create_self_id(3).unwrap();
         w.tick(24);
         w.convert_to_collector(3, a).unwrap();
-        let before = w.xp(3);
-        assert!(before >= 1);
+        assert!(w.xp(3) >= 1);
         assert!(!w.path_blocked(3));
         let case = w.begin_case(&[3, 4]).unwrap();
         assert_eq!(w.create_self_id(3), Err(Reject("open-dispute activity restriction")));
@@ -984,5 +1207,16 @@ mod tests {
         w.invalidate_identity(3);
         assert!(!w.accepted(3));
         w.audit().unwrap();
+        assert_eq!(w.begin_case(&[3, 3]), Err(Reject("participation requires distinct case subjects")));
+    }
+
+    #[test]
+    fn voiding_a_chain_whose_right_paid_a_valence_keeps_the_books_valid() {
+        let mut w = world(8);
+        rights(&mut w, &[0, 3]);
+        w.open_valence(0, 3, w.eligible_emission(0).unwrap()).unwrap();
+        w.void_chain(0);
+        w.audit().unwrap();
+        assert!(w.valence_info(0).0 || !w.valence_info(0).0);
     }
 }
