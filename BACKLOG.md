@@ -8,7 +8,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 - [x] Core: graph, keyed randomness, exact length-bounded disjoint paths with verifier, layered support, world rules, runner, snapshot cloning, tests, documentation integrity guard.
 - [x] Statistical validation against the retired simulator ([contract](docs/simulator.en.md#baseline-validation-statistical)). Node simulator, tests and raw artifacts deleted at the tag `legacy-node`.
-- [ ] **Scale runs.** One-year runs at detection false-positive rates of 0.1%-0.3% (explosive honest growth, caps and memory), 100 operators against 7 nodes without layered support, supported-first at 30 operators, and a two-year horizon. Pending results go to the [study](studies/2026-10-30-grown-network/README.md).
+- [ ] **Scale runs.** One-year runs at detection false-positive rates of 0.1%-0.3% (explosive honest growth, caps and memory), 100 operators against 7 nodes without layered support, supported-first at 30 operators, and a two-year horizon. Five year-long batches (10, 30 and 100 operators with layered support, 7 nodes without it, supported-first at 30) started with the old buffered output are still running (about 26 GB of memory) and print only at the end; new runs stream per seed. Results go to the [study](studies/2026-10-30-grown-network/README.md). Gate: compute and memory.
 - [ ] **Registration tooling.** A committed registration (claim, presence, necessity by ablation, named alternatives, kill criterion, reserved seeds) and a runner mode that refuses changed implementations; until then every result is diagnostic.
 - [ ] **Performance.** Profile the daily detection pass and the bounded search at 10^5-10^6 accounts; keep outcomes identical per seed.
 

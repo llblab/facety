@@ -2,7 +2,6 @@
 use facety_sim::runner::{RunConfig, Sim, Strategy};
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::sync::Mutex;
 
 fn usage() -> ! {
     eprintln!("usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--layered] [--attackers N] [--horizon DAYS]\n  [--target-honest N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]\n  [--met P] [--double P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P] [--public-look P] [--max-subjects N] [--threads N] [--out DIR] [--prefix-only]");
@@ -84,7 +83,6 @@ fn main() {
     }
 
     let next = AtomicUsize::new(0);
-    let lines: Mutex<Vec<(usize, String)>> = Mutex::new(Vec::new());
     std::thread::scope(|scope| {
         for _ in 0..threads.min(seeds) {
             scope.spawn(|| loop {
@@ -128,13 +126,9 @@ fn main() {
                 let d = &sim.det;
                 let line = format!("{{\"seed\":\"{}\",\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"pathSearchesExhausted\":{},\"censored\":{},\"seconds\":{:.1}}}",
                     sim.cfg.seed, prefix_days, prefix_honest, honest, att, f(share), f(dirty), g(first33), g(first50), d.genuine_invalidated, d.false_invalidated, d.links_left, sim.world.path_searches_exhausted(), sim.censored.map_or("null".to_string(), |c| format!("{c:?}")), secs);
-                lines.lock().unwrap().push((k, line));
+                // Printed as soon as the seed finishes (stdout is line-buffered), so long runs report progress; order is by completion.
+                println!("{line}");
             });
         }
     });
-    let mut lines = lines.into_inner().unwrap();
-    lines.sort();
-    for (_, l) in lines {
-        println!("{l}");
-    }
 }

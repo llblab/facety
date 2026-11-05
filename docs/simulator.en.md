@@ -18,7 +18,7 @@ cargo test --release                     # unit tests, parity tests, documentati
 cargo run --release -- grown --seeds 20 --bound 7 --layered --attackers 10 --horizon 60
 ```
 
-`grown` flags: `--bound N|none`, `--layered`, `--allow-disputed` (ablation of D131), `--attackers`, `--horizon`, `--target-honest`, `--strategy cone|honest-first|supported-first`, honest levers (`--vetting`, `--vet-sens`, `--vet-fpr`, `--met`, `--double`), detection levers (`--inspect`, `--fpr`, `--sens`, `--review`, `--accuracy`, `--public-look`, `--acquit`, `--detect-prefix`), `--max-subjects`, `--threads`, `--out DIR`, `--prefix-only`. Output is one JSON line per seed (and full histories with `--out`).
+`grown` flags: `--bound N|none`, `--layered`, `--allow-disputed` (ablation of D131), `--attackers`, `--horizon`, `--target-honest`, `--strategy cone|honest-first|supported-first`, honest levers (`--vetting`, `--vet-sens`, `--vet-fpr`, `--met`, `--double`), detection levers (`--inspect`, `--fpr`, `--sens`, `--review`, `--accuracy`, `--public-look`, `--acquit`, `--detect-prefix`), `--max-subjects`, `--threads`, `--out DIR`, `--prefix-only`. Output is one JSON line per seed, printed as each seed finishes (order by completion; sort by the `seed` field), and full histories with `--out`. `tests/cli.rs` guards the command line.
 
 ## Randomness
 
