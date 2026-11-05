@@ -69,6 +69,8 @@ Same snapshot and seed; detection (freeze veto, partner inspection, leaving, pub
 
 ## Depth bound (D123) and supported intermediaries (D124) — diagnostic, one seed
 
+**Standing rule (D125):** attack runs always have detection on; the `gate`-only columns below are legacy baselines from before that rule and are not to be extended.
+
 **Rules under test** ([protocol §46.15](../../docs/facety.protocol.en.md#4615-internally-vertex-disjoint-invitation-paths-d36)): every counted Council path has at most `L` nodes, endpoints included (`maxPathNodes`); optionally every intermediate must be *supported* (`pathSupport: 'layered'`): at least D current mutual guarantors with a strictly lower level, Council members at level 0, levels up to `L - 2`. The bound is chosen as a cap on on-chain traversal cost; the width threshold D is unchanged. Same snapshot seed `grown-1000-1`; each variant grows its own honest prefix (`prefix.mjs <seed> <L>[L]`), then 60 days of attack from the first day honest accepted subjects reach 1000. Probe: `probe.mjs <attackers> <arm> <seed> 60 10000 <L>[L]`; the suffix `L` means layered support. Runs with `L` in the file name: `runs/gate/a10-L4.json`, `...-L7L.json` and so on (`L7L` = 7 nodes plus layered support).
 
 ### Honest cost (growth to 1000 honest participants, no attackers)
