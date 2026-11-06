@@ -152,6 +152,21 @@ Softer D131 (only the accused is excluded; both parties keep the seven-day activ
 
 Assumptions: the confirming looks are independent of the first look and instantaneous, so the setting is optimistic about delay and about errors that are correlated across examiners (a genuine person with an odd public profile would look odd to all of them). The default is off; the lever changes no protocol rule. Single configuration per row, 4 seeds, no registration: diagnostic.
 
+### Bought honest accounts (D154, diagnostic)
+
+A stronger attacker buys links: a declared share of the honest accounts accepts every link request from an attacker-side account and takes no part in detection (no veto, no inspection, no public look, no relay, no confirming look). The price paid is not modeled. Baseline rules, 30 operators, one year after the genesis phase, detection on, 4 seeds; shares of accepted accounts at the end.
+
+| Bought share of honest accounts | Honest accounts | Attacker share | Dirty-FACY share | Fake accounts invalidated | Cases on genuine people |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 0 | 10,188 | 0.29% | 0.34% | 12 | 2,859 |
+| 1% | 10,331 | 0.29% | 0.32% | 27 | 2,837 |
+| 5% | 10,748 | 0.28% | 0.28% | 83 | 2,487 |
+| 10% | 10,960 | 0.30% | 0.23% | 199 | 2,274 |
+| 20% | 12,356 | 0.31% | 0.24% | 465 | 2,052 |
+| 50% | 24,238 | 0.76% | 0.74% | 2,057 | 1,331 |
+
+Reading (diagnostic): up to half of the honest accounts bought, the D129 criterion still holds (dirty-FACY share at most 0.74%, attacker share 0.76%). What changes is the work of detection: the number of fakes that get in and are caught later grows from 12 to about 2,000, and the honest network grows larger because fewer honest accounts inspect and so fewer false cases arise. A share of 80% did not finish within 40 minutes per seed (a very large cluster), and 50% combined with the softer exclusion and a confirming look did not finish within 25 minutes, so neither is reported. Why the criterion holds is not isolated here (no ablation of the layered-support gate against the bought share).
+
 ### Slot ceiling by XP level (D147, diagnostic)
 
 100 operators, 400 days after the genesis phase (day 533 and 544 of two seeds), baseline otherwise, ceiling 100 plus 50 slots per XP level. At the end the median XP is about 2,200 to 2,900, the 90th percentile about 9,800 to 10,700 and the maximum about 30,000.

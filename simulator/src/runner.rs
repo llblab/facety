@@ -55,6 +55,9 @@ pub struct Honest {
     /// Share of honest accounts that accept stranger requests carelessly (at `careless_accept_far`, never vetting) instead of at `accept_far`.
     pub careless_share: f64,
     pub careless_accept_far: f64,
+    /// Bought or compromised honest accounts (share of honest accounts): they accept every link request from an attacker-side account
+    /// and take no part in detection (no veto, inspection, public look, relay or confirming look). The price paid is not modeled.
+    pub corrupt_share: f64,
     /// D152: chance that an honest inviter holds a jointly signed co-presence artifact for an invitation of a person known to them.
     pub artifact_rate: f64,
     /// D152 collusion risk: share of second-account invitations where the inviter knowingly cooperates and always shows a (fabricated) artifact.
@@ -213,6 +216,7 @@ impl RunConfig {
             ("honest.double_life", h.double_life),
             ("honest.careless_share", h.careless_share),
             ("honest.careless_accept_far", h.careless_accept_far),
+            ("honest.corrupt_share", h.corrupt_share),
             ("honest.artifact_rate", h.artifact_rate),
             ("honest.collusion", h.collusion),
         ] {
@@ -254,11 +258,11 @@ impl RunConfig {
         format!(
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
-\"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"artifactRate\":{},\"collusion\":{}}},\
+\"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"artifactRate\":{},\"collusion\":{}}},\
 \"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.exclude_targets_only, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
-            json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.artifact_rate), json::number(h.collusion),
+            json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.corrupt_share), json::number(h.artifact_rate), json::number(h.collusion),
             json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
     }
@@ -291,6 +295,7 @@ impl Default for RunConfig {
                 double_life: 0.0,
                 careless_share: 0.2,
                 careless_accept_far: 0.5,
+                corrupt_share: 0.0,
                 artifact_rate: 1.0,
                 collusion: 0.0,
             },
@@ -609,16 +614,23 @@ impl Sim {
             return true;
         }
         if self.cfg.detection.confirm_public {
-            return (0..need).all(|_| self.look(rng, id));
+            let share = self.cfg.honest.corrupt_share;
+            return (0..need).all(|_| (share <= 0.0 || !rng.chance(share)) && self.look(rng, id));
         }
         let mut confirmers: Vec<Id> = self
             .world
             .mutual_partners(id)
             .into_iter()
-            .filter(|&p| p != observer && self.world.accepted(p) && self.cohort[p as usize] == Cohort::Honest)
+            .filter(|&p| p != observer && self.world.accepted(p) && self.cohort[p as usize] == Cohort::Honest && !self.corrupt(p))
             .collect();
         confirmers.sort_unstable();
         confirmers.len() >= need && confirmers.into_iter().take(need).all(|_| self.look(rng, id))
+    }
+
+    /// Whether an honest account is bought or compromised (declared share, fixed per account).
+    fn corrupt(&self, id: Id) -> bool {
+        let share = self.cfg.honest.corrupt_share;
+        share > 0.0 && self.cohort[id as usize] == Cohort::Honest && Rng::keyed(self.seed, CH_TYPE, u64::from(id), 1).chance(share)
     }
 
     fn invite(&mut self, creator: Id, right: u32, cohort: Cohort, kind: Kind, owner: Option<Id>, artifact: u8) -> bool {
@@ -779,7 +791,8 @@ impl Sim {
             let yes = match self.decided.get(&v) {
                 Some(&y) => y,
                 None => {
-                    let y = if self.cohort[answerer as usize] == Cohort::Attacker {
+                    let y = if self.cohort[answerer as usize] == Cohort::Attacker || (self.cohort[owner as usize] == Cohort::Attacker && self.corrupt(answerer))
+                    {
                         true
                     } else {
                         let g = self.world.graph();
@@ -1124,7 +1137,7 @@ impl Sim {
             .max_by(|&a, &b| self.world.xp(a).cmp(&self.world.xp(b)).then(b.cmp(&a)));
         let Some(sponsor) = sponsor else { return false };
         self.det.escalations += 1;
-        if self.cohort[sponsor as usize] != Cohort::Honest || !rng.chance(self.cfg.detection.sponsor_willingness) {
+        if self.cohort[sponsor as usize] != Cohort::Honest || self.corrupt(sponsor) || !rng.chance(self.cfg.detection.sponsor_willingness) {
             self.det.sponsor_refusals += 1;
             return false;
         }
@@ -1157,8 +1170,14 @@ impl Sim {
             };
             if status == crate::world::InvStatus::Pending && created_at == self.world.now() {
                 let mut vetoed = false;
-                let reviewers: Vec<Id> =
-                    self.world.graph().inn(creator).iter().copied().filter(|&g| self.cohort[g as usize] == Cohort::Honest && self.world.accepted(g)).collect();
+                let reviewers: Vec<Id> = self
+                    .world
+                    .graph()
+                    .inn(creator)
+                    .iter()
+                    .copied()
+                    .filter(|&g| self.cohort[g as usize] == Cohort::Honest && self.world.accepted(g) && !self.corrupt(g))
+                    .collect();
                 for reviewer in reviewers {
                     let mut rng = Rng::keyed(self.seed, CH_REVIEW, (u64::from(p.inv) << 32) | u64::from(reviewer), 0);
                     let target_label = false_identity(p.kind);
@@ -1304,7 +1323,7 @@ impl Sim {
             return;
         }
         // Partner inspection: a suspicious look opens one identity case per target (D77 hold on both parties).
-        let honest_ids: Vec<Id> = self.honest.iter().copied().filter(|&i| self.world.accepted(i)).collect();
+        let honest_ids: Vec<Id> = self.honest.iter().copied().filter(|&i| self.world.accepted(i) && !self.corrupt(i)).collect();
         for &id in &honest_ids {
             let mut rng = self.stream(CH_INSPECT, u64::from(id));
             for partner in self.world.mutual_partners(id) {
@@ -1592,6 +1611,23 @@ mod tests {
         let (none, one) = (run(0), run(1));
         assert!(none > 0, "the noisy baseline opens cases on genuine people");
         assert!(one < none, "a confirming look removes most of them ({one} against {none})");
+    }
+
+    /// Bought honest accounts accept attacker links and do not detect: with a full share no honest veto or inspection happens, and the state
+    /// stays consistent.
+    #[test]
+    fn bought_honest_accounts_do_not_detect_and_keep_the_audit() {
+        let run = |share: f64| {
+            let mut c = small("corrupt", 9, false);
+            c.honest.corrupt_share = share;
+            let mut sim = Sim::new(c);
+            sim.run();
+            sim.world.audit().unwrap();
+            (sim.det.vetoed_false + sim.det.vetoed_genuine, sim.det.cases_opened)
+        };
+        let (vetoes, cases) = run(0.0);
+        assert!(vetoes + cases > 0, "an honest network detects");
+        assert_eq!(run(1.0), (0, 0), "a fully bought network neither vetoes nor opens cases");
     }
 
     /// D151 appeal: wrongly invalidated people are reinstated, the state stays consistent and the lever is opt-in.
