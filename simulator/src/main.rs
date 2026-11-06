@@ -58,6 +58,12 @@ const VALUE_KEYS: &[&str] = &[
     "--patience",
     "--careless",
     "--corrupt",
+    "--befriend",
+    "--key-loss",
+    "--recovery-vouch",
+    "--recovery-delay",
+    "--invite",
+    "--accept-far",
     "--careless-accept",
 ];
 const FLAG_KEYS: &[&str] = &[
@@ -77,7 +83,7 @@ const FLAG_KEYS: &[&str] = &[
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
   [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--accuse R] [--accuse-hubs] [--shock-day N --shock-days N --shock-fpr-x X] [--odd-share P] [--odd-mult X] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
-  [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
+  [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--key-loss P] [--recovery-vouch P] [--recovery-delay DAYS] [--befriend P] [--invite P] [--accept-far P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
     eprintln!("error: {message}\n{USAGE}");
@@ -217,6 +223,12 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.world.k_xp_per_level = num(&opts, "--k-xp-per-level", base.world.k_xp_per_level)?;
     base.honest.careless_share = num(&opts, "--careless", base.honest.careless_share)?;
     base.honest.corrupt_share = num(&opts, "--corrupt", 0.0)?;
+    base.honest.befriend = num(&opts, "--befriend", base.honest.befriend)?;
+    base.honest.key_loss = num(&opts, "--key-loss", 0.0)?;
+    base.honest.recovery_vouch = num(&opts, "--recovery-vouch", base.honest.recovery_vouch)?;
+    base.honest.recovery_delay_days = num(&opts, "--recovery-delay", base.honest.recovery_delay_days)?;
+    base.honest.invite = num(&opts, "--invite", base.honest.invite)?;
+    base.honest.accept_far = num(&opts, "--accept-far", base.honest.accept_far)?;
     base.honest.careless_accept_far = num(&opts, "--careless-accept", base.honest.careless_accept_far)?;
     base.attacker_patience_days = num(&opts, "--patience", 0)?;
     base.attacker_cash_out = num(&opts, "--cash-out", 0.0)?;
@@ -383,7 +395,7 @@ fn main() {
                 let g = |x: Option<i64>| x.map_or("null".into(), |v| v.to_string());
                 let d = &sim.det;
                 let line = format!(
-                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
+                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
                     json::string(&sim.cfg.seed),
                     json::string(&sim.config_digest()),
                     prefix_days,
@@ -399,6 +411,12 @@ fn main() {
                     sim.emitted[1],
                     sim.history.last().map_or(0, |r| r.dirty),
                     d.accusations,
+                    sim.recovery[0],
+                    sim.recovery[1],
+                    sim.recovery[2],
+                    sim.recovery[3],
+                    sim.recovery[4],
+                    sim.recovery[5],
                     d.cases_on_genuine,
                     d.genuine_invalidated,
                     d.false_invalidated,

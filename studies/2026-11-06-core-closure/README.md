@@ -96,6 +96,44 @@ Frozen by the rule written beforehand: X1. Confirmation on the reserved seeds `g
 
 All 36 reserved-seed runs finished and passed both lines; none was censored. The two-year run needs about four times the memory of the one-year run (twelve seeds in parallel exhausted 62 GB and were rerun four at a time). The value held per operator grows with time (609 after two years against 257 after one) while the share stays near 1.5%: the held value is the operators' own unspent rights, not a multiplier.
 
+## Honest behavior regimes (backlog item, diagnostic)
+
+One year, 4 seeds, paired with an attack-free control in each regime. Regimes: sparse (befriend 0.02 and invite 0.005 instead of 0.05 and 0.01), dense (0.1 and 0.02), friendly (stranger acceptance 0.2, half of the accounts careless at 0.8) and averse (stranger acceptance 0.01, no careless accounts).
+
+| Regime | Operators | Honest accounts | Honest / control | Attacker share | Dirty-FACY share | Attacker-side accounts |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| sparse | 0 | 7,470 | 1.000 | 0 | 0 | 0 |
+| sparse | 30 | 6,860 | 0.921 | 0.43% | 0.68% | 29.2 |
+| sparse | 100 | 6,814 | 0.915 | 1.43% | 2.33% | 98.0 |
+| dense | 0 | 10,689 | 1.000 | 0 | 0 | 0 |
+| dense | 30 | 10,571 | 0.991 | 0.28% | 0.28% | 29.8 |
+| dense | 100 | 10,476 | 0.981 | 0.92% | 0.96% | 96.8 |
+| friendly | 0 | 10,442 | 1.000 | 0 | 0 | 0 |
+| friendly | 30 | 10,420 | 0.998 | 0.29% | 0.35% | 30.0 |
+| friendly | 100 | 10,366 | 0.993 | 0.95% | 1.31% | 99.5 |
+| averse | 0 | 10,349 | 1.000 | 0 | 0 | 0 |
+| averse | 30 | 10,530 | 1.018 | 0.28% | 0.37% | 29.8 |
+| averse | 100 | 10,531 | 1.018 | 0.93% | 1.22% | 99.0 |
+
+Reading: the D129 lines hold in every regime (dirty-FACY share at most 2.33%) and attacker-side accounts never exceed the operators. Sparse connectivity is the weakest regime: the honest network is a third smaller (about 7,000 accounts) and operators hold a larger share of it (1.4% of accounts, 2.3% of FACY with 100 operators), and the network is 8% below its control. The model already has friend-of-friend closure and invitation trees; calibrated human behavior stays blocked on data about people.
+
+## Key loss and social recovery (D135 scenario, diagnostic)
+
+Honest accounts lose their private key with a yearly probability; the person (same identity, not an attacker) is recovered by a new account that one previous guarantor invites after a delay of 3 days, vouched for by previous guarantors (each opens a guarantee toward the new account with the stated daily probability; the new account always accepts them) until at least half of them and at least D guarantee it. 30 operators, one year, 4 seeds; recovery counts are means per run. "Capturable" counts lost accounts for which bought honest accounts (the declared corrupt share) would be at least half of the previous guarantors and at least D, i.e. accounts a coalition could take over through recovery.
+
+| Run | Keys lost | Invited | Recovered | Recovered per key lost | Mean days to recover | Capturable | Honest / no-loss control | Dirty-FACY share |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| no loss | 0 | - | - | - | - | - | 1.000 | 0.34% |
+| 5% a year | 360 | - | 136 | 38% | 29 | 0 | 1.042 | 0.34% |
+| 20% a year | 1,476 | 1,233 | 647 | 44% | 28 | 0 | 1.033 | 0.35% |
+| 20%, vouching 0.1 a day | 1,390 | - | 584 | 42% | 30 | 0 | 0.981 | 0.38% |
+| 20%, 14-day delay | 1,488 | - | 590 | 40% | 42 | 0 | 1.098 | 0.35% |
+| 20% with 20% bought accounts | 1,637 | - | 805 | 49% | 32 | 7.8 | 1.211 | 0.28% |
+| 50% a year | 3,890 | - | 1,766 | 45% | 26 | 0 | 0.962 | 0.48% |
+| 50% with 30% bought accounts | 4,768 | - | 2,126 | 45% | 31 | 195.8 | 1.257 | 0.31% |
+
+Funnel of one run at 20% (seed 1): 1,502 keys lost, 1,233 recovery invitations, 1,170 new accounts admitted, 644 recoveries completed (55% of those started). A second seed: 1,396, 826, 792, 508 (64%). Two diagnostic reruns at 20%: a slot ceiling of 300 gives 59% of the started recoveries and vouching with certainty 61%, so neither the ceiling nor the willingness of guarantors is the bottleneck. A plausible cause is that the new account pays one right per guarantee (D93, D94) and emits one right a day, but it is not isolated here. Reading: recovery works as a mechanism (about two thirds of the recoveries that start finish, in about a month) and does not touch the D129 lines, yet fewer than half of the lost accounts are recovered within a year, and the lost accounts that are not recovered stay accepted and inert, which inflates the honest account count of these runs (the honest-to-control ratios above 1 are therefore not a gain, and their cause is not isolated). With 20%-30% bought accounts a fraction of lost accounts (0.5% to 4%) could be captured by a coalition through recovery; capture is counted, not executed.
+
 ## Limits
 
 - Synthetic behavior throughout: honest acceptance rates, careless share, examiner quality, the proof-of-reality model and the bought-account model are assumptions of the simulator contract. Nothing here is evidence about real people, and no run replaces such evidence.

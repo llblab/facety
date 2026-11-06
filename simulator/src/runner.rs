@@ -32,6 +32,8 @@ const CH_DEFENSE: u64 = 14;
 const CH_TYPE: u64 = 15;
 const CH_ARTIFACT: u64 = 16;
 const CH_ACCUSE: u64 = 17;
+const CH_LOSS: u64 = 18;
+const CH_VOUCH: u64 = 19;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Strategy {
@@ -59,6 +61,13 @@ pub struct Honest {
     /// Bought or compromised honest accounts (share of honest accounts): they accept every link request from an attacker-side account
     /// and take no part in detection (no veto, inspection, public look, relay or confirming look). The price paid is not modeled.
     pub corrupt_share: f64,
+    /// D135 social recovery scenario: yearly chance that an honest account loses its private key (the person is unaffected and keeps the
+    /// same identity). The person then needs a new account invited by a previous guarantor, vouched for by enough previous guarantors. 0 = off.
+    pub key_loss: f64,
+    /// Daily chance that each previous guarantor of a recovering person opens a guarantee toward the new account.
+    pub recovery_vouch: f64,
+    /// Days between the loss and the recovery invitation.
+    pub recovery_delay_days: i64,
     /// D152: chance that an honest inviter holds a jointly signed co-presence artifact for an invitation of a person known to them.
     pub artifact_rate: f64,
     /// D152 collusion risk: share of second-account invitations where the inviter knowingly cooperates and always shows a (fabricated) artifact.
@@ -166,6 +175,7 @@ impl RunConfig {
         at_least("attack_start_day", self.attack_start_day, 0)?;
         at_least("detection_start_day", self.detection_start_day, 0)?;
         at_least("attacker_patience_days", self.attacker_patience_days, 0)?;
+        at_least("honest.recovery_delay_days", self.honest.recovery_delay_days, 0)?;
         prob("attacker_cash_out", self.attacker_cash_out)?;
         if !self.attacker_accuse.is_finite() || self.attacker_accuse < 0.0 {
             return Err(format!("attacker_accuse must be a non-negative number, got {}", self.attacker_accuse));
@@ -233,6 +243,8 @@ impl RunConfig {
             ("honest.careless_share", h.careless_share),
             ("honest.careless_accept_far", h.careless_accept_far),
             ("honest.corrupt_share", h.corrupt_share),
+            ("honest.key_loss", h.key_loss),
+            ("honest.recovery_vouch", h.recovery_vouch),
             ("honest.artifact_rate", h.artifact_rate),
             ("honest.collusion", h.collusion),
         ] {
@@ -275,11 +287,11 @@ impl RunConfig {
         format!(
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"attackerAccuse\":{},\"accuseHubs\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
-\"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"artifactRate\":{},\"collusion\":{}}},\
+\"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"keyLoss\":{},\"recoveryVouch\":{},\"recoveryDelayDays\":{},\"artifactRate\":{},\"collusion\":{}}},\
 \"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), json::number(self.attacker_accuse), self.accuse_hubs, self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.exclude_targets_only, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
-            json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.corrupt_share), json::number(h.artifact_rate), json::number(h.collusion),
+            json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.corrupt_share), json::number(h.key_loss), json::number(h.recovery_vouch), h.recovery_delay_days, json::number(h.artifact_rate), json::number(h.collusion),
             json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
     }
@@ -313,6 +325,9 @@ impl Default for RunConfig {
                 careless_share: 0.2,
                 careless_accept_far: 0.5,
                 corrupt_share: 0.0,
+                key_loss: 0.0,
+                recovery_vouch: 0.5,
+                recovery_delay_days: 3,
                 artifact_rate: 1.0,
                 collusion: 0.0,
             },
@@ -388,6 +403,19 @@ struct Pending {
     owner: Option<Id>,
     /// D152: 0 none, 1 genuine co-presence artifact, 2 fabricated by a colluding inviter.
     artifact: u8,
+    /// D135: the invited account continues this lost account.
+    recovers: Option<Id>,
+}
+
+/// D135 scenario record of one lost key.
+#[derive(Clone, Debug)]
+struct LostRec {
+    old: Id,
+    lost_day: i64,
+    guarantors: Vec<Id>,
+    inv: Option<u32>,
+    successor: Option<Id>,
+    done: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -507,6 +535,11 @@ pub struct Sim {
     pub invitations: [u64; 2],
     /// Units of emission minted by Self-IDs, honest and attacker side (cumulative, whatever happens to them later).
     pub emitted: [u64; 2],
+    /// D135 scenario counters: key losses, recoveries completed, days from loss to recovery (sum), accounts a bought coalition could capture.
+    pub recovery: [u64; 6],
+    lost: Vec<LostRec>,
+    lost_set: HashSet<Id>,
+    recovering: HashMap<Id, usize>,
     pub admitted: [u64; 2],
     pub valences_opened: [u64; 2],
     pub pairs: u64,
@@ -594,6 +627,10 @@ impl Sim {
             det: DetectionCounters::default(),
             invitations: [0; 2],
             emitted: [0; 2],
+            recovery: [0; 6],
+            lost: Vec::new(),
+            lost_set: HashSet::new(),
+            recovering: HashMap::new(),
             admitted: [0; 2],
             valences_opened: [0; 2],
             pairs: 0,
@@ -672,7 +709,7 @@ impl Sim {
         let r = self.world.create_invitation(creator, right);
         match self.note(creator, r) {
             Some(inv) => {
-                self.pending.push(Pending { inv, cohort, kind, owner, artifact });
+                self.pending.push(Pending { inv, cohort, kind, owner, artifact, recovers: None });
                 self.invitations[ci(self.cohort[creator as usize])] += 1;
                 true
             }
@@ -722,6 +759,15 @@ impl Sim {
                     if p.artifact > 0 {
                         self.artifact.insert(id, p.artifact);
                     }
+                    if let Some(old) = p.recovers {
+                        if self.world.begin_recovery(id, old).is_ok() {
+                            if let Some(k) = self.lost.iter().position(|r| r.old == old) {
+                                self.lost[k].successor = Some(id);
+                                self.recovery[5] += 1;
+                                self.recovering.insert(id, k);
+                            }
+                        }
+                    }
                     match p.cohort {
                         Cohort::Honest => self.honest.push(id),
                         Cohort::Attacker => self.attackers.push(id),
@@ -765,6 +811,7 @@ impl Sim {
         if self.censored.is_none() {
             self.attackers_act();
         }
+        self.social_recovery();
         if self.censored.is_none() && day >= self.cfg.detection_start_day {
             self.detect();
             self.accuse();
@@ -825,7 +872,10 @@ impl Sim {
             let yes = match self.decided.get(&v) {
                 Some(&y) => y,
                 None => {
-                    let y = if self.cohort[answerer as usize] == Cohort::Attacker || (self.cohort[owner as usize] == Cohort::Attacker && self.corrupt(answerer))
+                    let vouched_back = self.recovering.get(&answerer).is_some_and(|&k| self.lost[k].guarantors.contains(&owner));
+                    let y = if vouched_back
+                        || self.cohort[answerer as usize] == Cohort::Attacker
+                        || (self.cohort[owner as usize] == Cohort::Attacker && self.corrupt(answerer))
                     {
                         true
                     } else {
@@ -1027,6 +1077,84 @@ impl Sim {
                 }
                 if let Some(h) = self.pick_where(&mut rng, &honest_all, |o| self.world.accepted(o) && !self.linked(id, o)) {
                     self.open_valence(id, h, right);
+                }
+            }
+        }
+    }
+
+    // ---- social recovery scenario (D135) ----------------------------------------------------------------------------
+
+    /// Honest accounts lose keys; the person recovers through a new account invited by a previous guarantor and vouched for by enough of them.
+    fn social_recovery(&mut self) {
+        let cfg = self.cfg.honest.clone();
+        if cfg.key_loss <= 0.0 {
+            return;
+        }
+        let now_day = self.day;
+        let hazard = 1.0 - (1.0 - cfg.key_loss).powf(1.0 / 365.0);
+        let candidates: Vec<Id> = self.honest.iter().copied().filter(|&i| self.world.accepted(i) && !self.lost_set.contains(&i)).collect();
+        for id in candidates {
+            if !Rng::keyed(self.seed, CH_LOSS, u64::from(id), now_day as u64).chance(hazard) {
+                continue;
+            }
+            let guarantors = self.world.mutual_partners(id);
+            if self.world.lose_key(id).is_err() {
+                continue;
+            }
+            let needed = guarantors.len().div_ceil(2).max(self.world.required_guarantors());
+            if guarantors.iter().filter(|&&g| self.corrupt(g)).count() >= needed {
+                self.recovery[3] += 1;
+            }
+            self.recovery[0] += 1;
+            self.lost_set.insert(id);
+            self.lost.push(LostRec { old: id, lost_day: now_day, guarantors, inv: None, successor: None, done: false });
+        }
+        for k in 0..self.lost.len() {
+            if self.lost[k].done {
+                continue;
+            }
+            let rec = self.lost[k].clone();
+            if let Some(new) = rec.successor {
+                let mut rng = Rng::keyed(self.seed, CH_VOUCH, u64::from(new), now_day as u64);
+                for &g in &rec.guarantors {
+                    if self.world.accepted(g) && !self.lost_set.contains(&g) && !self.linked(g, new) && rng.chance(cfg.recovery_vouch) {
+                        if let Some(right) = self.world.eligible_emission(g) {
+                            self.open_valence(g, new, right);
+                        }
+                    }
+                }
+                let ready = self.world.recovery_progress(new).is_some_and(|(vouched, needed)| vouched >= needed);
+                if ready && self.world.complete_recovery(new).is_ok() {
+                    self.lost[k].done = true;
+                    self.recovering.remove(&new);
+                    self.recovery[1] += 1;
+                    self.recovery[2] += (now_day - rec.lost_day) as u64;
+                }
+                continue;
+            }
+            if let Some(inv) = rec.inv {
+                if self.world.invitation(inv).status == crate::world::InvStatus::Cancelled {
+                    self.lost[k].inv = None;
+                }
+                continue;
+            }
+            if now_day - rec.lost_day < cfg.recovery_delay_days {
+                continue;
+            }
+            let mut rng = Rng::keyed(self.seed, CH_VOUCH, u64::from(rec.old), now_day as u64 + (1 << 40));
+            let inviter = rec
+                .guarantors
+                .iter()
+                .copied()
+                .filter(|&g| self.world.accepted(g) && !self.lost_set.contains(&g) && self.world.eligible_emission(g).is_some())
+                .collect::<Vec<Id>>();
+            if let Some(&g) = rng.pick(&inviter) {
+                let right = self.world.eligible_emission(g).expect("filtered");
+                if self.invite(g, right, Cohort::Honest, Kind::Genuine, None, 0) {
+                    let last = self.pending.last_mut().expect("just pushed");
+                    last.recovers = Some(rec.old);
+                    self.lost[k].inv = Some(last.inv);
+                    self.recovery[4] += 1;
                 }
             }
         }
@@ -1524,8 +1652,8 @@ impl Sim {
         let d = &self.det;
         let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"accusations\":{},\"casesOnGenuine\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
             d.cases_opened, d.accusations, d.cases_on_genuine, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
-        let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerLiquid\":{},\"attackerUnspent\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
-            self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.emitted[0], self.emitted[1], self.attackers.iter().map(|&a| i64::from(self.world.liquid(a))).sum::<i64>(), self.attackers.iter().map(|&a| self.world.unspent_rights(a) as i64).sum::<i64>(), self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
+        let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerLiquid\":{},\"attackerUnspent\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
+            self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.recovery[0], self.recovery[1], self.recovery[2], self.recovery[3], self.recovery[4], self.recovery[5], self.emitted[0], self.emitted[1], self.attackers.iter().map(|&a| i64::from(self.world.liquid(a))).sum::<i64>(), self.attackers.iter().map(|&a| self.world.unspent_rights(a) as i64).sum::<i64>(), self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");
         for (i, r) in self.history.iter().enumerate() {
             if i > 0 {
@@ -1732,6 +1860,25 @@ mod tests {
         assert_eq!(run(0.0).0, 0);
         let (accusations, opened) = run(3.0);
         assert!(accusations <= opened);
+    }
+
+    /// D135 scenario: honest people lose keys and recover through previous guarantors; the books stay consistent, recoveries complete and
+    /// take time, and the lever is off by default.
+    #[test]
+    fn lost_keys_are_recovered_through_previous_guarantors() {
+        let run = |loss: f64| {
+            let mut c = small("loss", 12, false);
+            c.honest.key_loss = loss;
+            let mut sim = Sim::new(c);
+            sim.run();
+            sim.world.audit().unwrap();
+            sim.recovery
+        };
+        assert_eq!(run(0.0), [0; 6]);
+        let r = run(0.99999);
+        assert!(r[0] > 0, "keys are lost");
+        assert!(r[1] > 0, "some people recover");
+        assert!(r[1] <= r[0]);
     }
 
     /// D151 appeal: wrongly invalidated people are reinstated, the state stays consistent and the lever is opt-in.
