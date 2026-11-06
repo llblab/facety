@@ -30,6 +30,7 @@ const CH_VET: u64 = 12;
 const CH_MET: u64 = 13;
 const CH_DEFENSE: u64 = 14;
 const CH_TYPE: u64 = 15;
+const CH_ARTIFACT: u64 = 16;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Strategy {
@@ -54,6 +55,10 @@ pub struct Honest {
     /// Share of honest accounts that accept stranger requests carelessly (at `careless_accept_far`, never vetting) instead of at `accept_far`.
     pub careless_share: f64,
     pub careless_accept_far: f64,
+    /// D152: chance that an honest inviter holds a jointly signed co-presence artifact for an invitation of a person known to them.
+    pub artifact_rate: f64,
+    /// D152 collusion risk: share of second-account invitations where the inviter knowingly cooperates and always shows a (fabricated) artifact.
+    pub collusion: f64,
 }
 
 #[derive(Clone, Debug)]
@@ -70,6 +75,9 @@ pub struct Detection {
     pub pattern_closure: f64,
     pub sponsor_willingness: f64,
     pub follow_up: bool,
+    /// D151 burden of proof: after a confirmed invalidation, up to this many accepted accounts of the account's invitation subtree are
+    /// examined without a noisy look (each must prove reality within the case window). 0 = off; the cap makes the invalidation partial.
+    pub subtree_cases: usize,
     pub acquit_met: bool,
     /// New identity cases (inspection, public evidence, follow-up) open only once this many accounts are active; the freeze veto
     /// and the resolution of open cases are unaffected. D91 disables disputes below 100 active accounts: set 100 to model it.
@@ -186,6 +194,8 @@ impl RunConfig {
             ("honest.double_life", h.double_life),
             ("honest.careless_share", h.careless_share),
             ("honest.careless_accept_far", h.careless_accept_far),
+            ("honest.artifact_rate", h.artifact_rate),
+            ("honest.collusion", h.collusion),
         ] {
             prob(name, x)?;
         }
@@ -223,12 +233,12 @@ impl RunConfig {
         format!(
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
-\"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{}}},\
-\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
+\"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"artifactRate\":{},\"collusion\":{}}},\
+\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
-            json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far),
-            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
+            json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.artifact_rate), json::number(h.collusion),
+            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
     }
 }
@@ -260,6 +270,8 @@ impl Default for RunConfig {
                 double_life: 0.0,
                 careless_share: 0.2,
                 careless_accept_far: 0.5,
+                artifact_rate: 1.0,
+                collusion: 0.0,
             },
             detection: Detection {
                 review: 0.5,
@@ -274,6 +286,7 @@ impl Default for RunConfig {
                 pattern_closure: 0.8,
                 sponsor_willingness: 0.5,
                 follow_up: true,
+                subtree_cases: 0,
                 acquit_met: false,
                 disputes_from_active: 0,
                 defense_success: 0.95,
@@ -319,6 +332,8 @@ struct Pending {
     cohort: Cohort,
     kind: Kind,
     owner: Option<Id>,
+    /// D152: 0 none, 1 genuine co-presence artifact, 2 fabricated by a colluding inviter.
+    artifact: u8,
 }
 
 #[derive(Clone, Debug)]
@@ -348,6 +363,8 @@ pub struct DetectionCounters {
     pub follow_up_cases: u64,
     pub honest_inviter_cascades: u64,
     pub honest_inviter_acquitted: u64,
+    /// Acquitted inviters whose artifact was fabricated (collusion leak, D152).
+    pub colluders_acquitted: u64,
     pub holders_invalidated: u64,
     pub defended: u64,
     /// Formal cases refused by the common procedure (XP gate, disabled disputes, invalid parties); no state changed for them.
@@ -401,6 +418,8 @@ pub struct Sim {
     cohort: Vec<Cohort>,
     kind: Vec<Kind>,
     owner_of: HashMap<Id, Id>,
+    /// Accounts whose inviter holds a co-presence artifact (D152): 1 genuine, 2 fabricated.
+    artifact: HashMap<Id, u8>,
     honest: Vec<Id>,
     attackers: Vec<Id>,
     children: Vec<Vec<Id>>,
@@ -484,6 +503,7 @@ impl Sim {
             cohort: vec![Cohort::Honest; n],
             kind: vec![Kind::Genuine; n],
             owner_of: HashMap::new(),
+            artifact: HashMap::new(),
             honest: (0..n as Id).collect(),
             attackers: Vec::new(),
             children: vec![Vec::new(); n],
@@ -532,7 +552,7 @@ impl Sim {
         rng.chance(if false_identity(self.kind[id as usize]) { self.cfg.detection.sensitivity } else { self.cfg.detection.false_positive })
     }
 
-    fn invite(&mut self, creator: Id, right: u32, cohort: Cohort, kind: Kind, owner: Option<Id>) -> bool {
+    fn invite(&mut self, creator: Id, right: u32, cohort: Cohort, kind: Kind, owner: Option<Id>, artifact: u8) -> bool {
         if self.world.len() + self.pending.len() >= self.cfg.max_subjects {
             self.censored = Some("maxSubjects");
             return false;
@@ -540,7 +560,7 @@ impl Sim {
         let r = self.world.create_invitation(creator, right);
         match self.note(creator, r) {
             Some(inv) => {
-                self.pending.push(Pending { inv, cohort, kind, owner });
+                self.pending.push(Pending { inv, cohort, kind, owner, artifact });
                 self.invitations[ci(self.cohort[creator as usize])] += 1;
                 true
             }
@@ -586,6 +606,9 @@ impl Sim {
                     self.children[creator as usize].push(id);
                     if let Some(o) = p.owner {
                         self.owner_of.insert(id, o);
+                    }
+                    if p.artifact > 0 {
+                        self.artifact.insert(id, p.artifact);
                     }
                     match p.cohort {
                         Cohort::Honest => self.honest.push(id),
@@ -655,7 +678,7 @@ impl Sim {
                 break;
             }
             if let Some(right) = self.world.eligible_emission(inviter) {
-                if self.invite(inviter, right, Cohort::Attacker, Kind::Operator, None) {
+                if self.invite(inviter, right, Cohort::Attacker, Kind::Operator, None, 0) {
                     entered += 1;
                 }
             }
@@ -748,7 +771,20 @@ impl Sim {
                     } else {
                         None
                     };
-                    self.invite(id, right, Cohort::Honest, if dual { Kind::Double } else { Kind::Genuine }, owner);
+                    // D152: the inviter knows the person, so a jointly signed co-presence artifact exists with `artifact_rate`; a colluding inviter
+                    // (a share of second-account invitations) always shows one, genuine or not.
+                    let artifact = {
+                        let mut a = Rng::keyed(self.seed, CH_ARTIFACT, u64::from(id), u64::from(right));
+                        let colluding = dual && self.cfg.honest.collusion > 0.0 && a.chance(self.cfg.honest.collusion);
+                        if colluding {
+                            2
+                        } else if a.chance(self.cfg.honest.artifact_rate) {
+                            1
+                        } else {
+                            0
+                        }
+                    };
+                    self.invite(id, right, Cohort::Honest, if dual { Kind::Double } else { Kind::Genuine }, owner, artifact);
                     if self.censored.is_some() {
                         return;
                     }
@@ -825,7 +861,7 @@ impl Sim {
             let rights = self.world.eligible_emissions(id, self.cfg.world.spend_hours);
             for right in rights {
                 self.sequence += 1;
-                if !waiting && self.invite(id, right, Cohort::Attacker, Kind::Fake, None) {
+                if !waiting && self.invite(id, right, Cohort::Attacker, Kind::Fake, None, 0) {
                     continue;
                 }
                 if self.censored.is_some() {
@@ -1101,11 +1137,30 @@ impl Sim {
                     self.det.holders_invalidated += 1;
                 }
             }
+            // D151: heightened handling of a cluster node; its invitation subtree must prove reality, partially (capped), without a look.
+            if det.subtree_cases > 0 && self.world.accepted(rec.challenger) {
+                let mut members: Vec<Id> =
+                    self.subtree(rec.target).into_iter().filter(|&m| m != rec.target && self.world.accepted(m) && !targeted.contains(&m)).collect();
+                members.sort_unstable();
+                members.truncate(det.subtree_cases);
+                let mut rng = Rng::keyed(self.seed, CH_FOLLOW, rec.id, 1);
+                for member in members {
+                    if self.submit_suspicion(rec.challenger, member, &mut rng, true) {
+                        targeted.insert(member);
+                    }
+                }
+            }
             let Some(inviter) = self.world.inviter(rec.target).filter(|&i| self.world.accepted(i)) else { continue };
             if self.cohort[inviter as usize] == Cohort::Honest && (det.acquit_met || self.cfg.honest.double_life > 0.0) {
+                // D152: only a co-presence artifact acquits; without one the ordinary chain liability stands.
                 if det.acquit_met {
-                    self.det.honest_inviter_acquitted += 1;
-                    continue;
+                    if let Some(&a) = self.artifact.get(&rec.target) {
+                        self.det.honest_inviter_acquitted += 1;
+                        if a == 2 {
+                            self.det.colluders_acquitted += 1;
+                        }
+                        continue;
+                    }
                 }
                 self.det.honest_inviter_cascades += 1;
             }
@@ -1258,8 +1313,8 @@ impl Sim {
             self.censored.map_or("null".to_string(), json::string)
         );
         let d = &self.det;
-        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
-            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
+        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
+            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
             self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");
@@ -1360,6 +1415,45 @@ mod tests {
         let mut d = Sim::new(dl);
         d.run();
         d.world.audit().unwrap();
+    }
+
+    /// D152: the inviter is acquitted only with a co-presence artifact; a colluding inviter shows a fabricated one.
+    #[test]
+    fn acquittal_needs_a_co_presence_artifact() {
+        let run = |artifact: f64, collusion: f64| {
+            let mut c = small("art", 4, false);
+            c.honest.double_life = 0.3;
+            c.honest.met_in_person = 0.3;
+            c.detection.acquit_met = true;
+            c.honest.artifact_rate = artifact;
+            c.honest.collusion = collusion;
+            let mut sim = Sim::new(c);
+            sim.run();
+            sim.world.audit().unwrap();
+            (sim.det.honest_inviter_acquitted, sim.det.honest_inviter_cascades, sim.det.colluders_acquitted)
+        };
+        let (none_acquitted, none_cascades, _) = run(0.0, 0.0);
+        assert_eq!(none_acquitted, 0, "no artifact, no acquittal");
+        let (all_acquitted, all_cascades, honest_colluders) = run(1.0, 0.0);
+        assert_eq!(honest_colluders, 0);
+        assert!(all_acquitted > 0 && all_cascades <= none_cascades);
+        let (_, _, colluders) = run(0.0, 1.0);
+        assert!(colluders > 0, "colluders always show an artifact and are acquitted");
+    }
+
+    /// D151: the burden of proof on the invitation subtree opens more cases than follow-up alone and keeps the state consistent.
+    #[test]
+    fn the_subtree_burden_opens_more_cases_and_keeps_the_audit() {
+        let run = |cap: usize| {
+            let mut c = small("sub", 5, false);
+            c.world.layered = false;
+            c.detection.subtree_cases = cap;
+            let mut sim = Sim::new(c);
+            sim.run();
+            sim.world.audit().unwrap();
+            sim.det.follow_up_cases
+        };
+        assert!(run(20) >= run(0));
     }
 
     /// A grown honest network with XP spread across accounts, plus a pair finder over accepted, free accounts.

@@ -175,4 +175,4 @@ Answered 2026-11-06: **D151**. All measures combine (quarantine as heightened ha
 
 ### Q19 — Second accounts and the unwitting inviter (D127)
 
-Answered 2026-11-06: **D152**. The holder is at fault; the inviter is acquitted with a jointly signed co-presence artifact, which removes the loss of reputation and partners and the XP penalties; the holder loses everything received. Still open: artifact authenticity and freshness, and the collusion risk of a fabricated meeting. Runner status: `honest.doubleLife`, `honest.metInPerson` and `detection.acquitMet` are opt-in levers (D127); the acquittal there is unconditional for honest inviters.
+Answered 2026-11-06: **D152**. The holder is at fault; the inviter is acquitted with a jointly signed co-presence artifact, which removes the loss of reputation and partners and the XP penalties; the holder loses everything received. Still open: artifact authenticity and freshness, and the collusion risk of a fabricated meeting. Runner status: `honest.doubleLife`, `honest.metInPerson` and `detection.acquitMet` are opt-in levers (D127); the acquittal there needs a co-presence artifact (`honest.artifactRate`, `honest.collusion`).

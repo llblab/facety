@@ -108,6 +108,46 @@ Honest growth stops near 10,000 accounts under the baseline because the difficul
 
 More seats let the honest network grow several times larger and lower the attacker and dirty-FACY shares at the same time (the operators stay at 100 accounts), so no security cost shows up in this scenario; the price is computation and a larger body to maintain. Other levers at 500 days, 10 operators: path bound 9 instead of 7 gives 12,018 honest accounts, difficulty capped at 4 gives 12,422, slot ceiling 300 gives 10,673 (baseline 10,482). The plateau moves with the number of Council seats against D, not with K. It also holds: with 5 seats per unit of D two years give 23,843 accounts against 24,917 at 500 days, so a fixed rule has a plateau of its own. Roughly 1,000 honest accounts per seat at D = 5.
 
+### Slot ceiling by XP level (D147, diagnostic)
+
+100 operators, 400 days after the genesis phase (day 533 and 544 of two seeds), baseline otherwise, ceiling 100 plus 50 slots per XP level. At the end the median XP is about 2,200 to 2,900, the 90th percentile about 9,800 to 10,700 and the maximum about 30,000.
+
+| XP per level | Honest accounts (2 seeds) | Attacker accounts | Attacker share |
+| --- | ---: | ---: | ---: |
+| flat ceiling 100 (baseline) | 10,396; 10,390 | 99; 99 | 0.94% |
+| 3,000 | 10,988; 10,389 | 99; 99 | 0.89%-0.94% |
+| 1,000 | 10,415; 10,702 | 101; 101 | 0.93%-0.96% |
+| 300 | 10,625; 10,679 | 100; 101 | 0.93% |
+
+The ceiling by level does not move the plateau or the attacker share, as expected while the Council-path gate binds; a level of 1,000 XP (median account at level 2 with a ceiling of 200, 90th percentile at level 10 with 600) is the starting value.
+
+### Second accounts with a co-presence artifact (D152, diagnostic)
+
+4 seeds, 10 operators, 200 days, layered support, 2% of honest invitations go to a member's second account, 30% of answers are to people known in person. The artifact lever is the chance that an inviter holds a jointly signed co-presence artifact; a colluding inviter always shows one, genuine or not.
+
+| Setting | Honest accounts | Honest inviters hit by the cascade | Acquitted | Acquitted with a fabricated artifact | Links left | Holders invalidated |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| no acquittal | 8,189 | 22.5 | 0 | 0 | 1,021 | 20 |
+| artifact for everyone | 8,774 | 0 | 22.2 | 0 | 591 | 19 |
+| artifact half of the time | 8,571 | 9.0 | 10.5 | 0 | 794 | 17.8 |
+| half, and 20% of second-account inviters collude | 8,020 | 9.8 | 11.5 | 4.0 | 804 | 18.0 |
+| everyone, and 50% collude | 8,774 | 0 | 22.2 | 9.2 | 591 | 19 |
+
+Acquittal with an artifact keeps about 7% more honest accounts and removes the cascade; the holders are invalidated at the same rate, so the colluding pair gains nothing beyond avoiding the cascade for the inviter. Colluders cannot be told apart from honest inviters by the artifact alone (the fabricated share of acquittals follows the collusion share); the cost of that leak is not measured beyond the count. Statistical noise between rows is of the order of the difference between the half and half-with-collusion rows (4 seeds).
+
+### Burden of proof on the invitation subtree (D151, diagnostic)
+
+6 seeds, 10 operators, 60 days, 7-node paths without layered support (the weak setting, so that a cluster forms). After a confirmed invalidation, up to `subtree_cases` accepted accounts of the invalidated account's invitation subtree are examined without a noisy look and must prove reality within the case window.
+
+| Cap per invalidation | Attacker accounts | Attacker share | Dirty-FACY share | Honest accounts | Genuine invalidated |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 0 (detection only) | 844 | 26.3% | 0.8% | 2,281 | 0.33 |
+| 10 | 422 | 15.3% | 0.4% | 2,324 | 0.17 |
+| 50 | 449 | 15.7% | 0.4% | 2,383 | 0.17 |
+| 1000 | 463 | 16.1% | 0.4% | 2,377 | 0.17 |
+
+A small partial scope already halves the cluster and the dirty-FACY share at no visible cost to honest people, because trapped genuine people prove reality (success 0.95); a larger cap adds nothing. Appeal and fee-free restoration of cut links are not modeled yet.
+
 ## Limits
 
 One snapshot family; honest behavior rates, detection quality and the 28-day activity window are assumptions; attackers do not adapt to detection beyond the three pairing strategies; fakes are free; the Rust runner refreshes the Council, difficulty, support levels and distance pruning once per day. Year-long runs at false-positive rates of 0.1%-0.3% and 100 operators against 7 nodes without layered support are pending ([BACKLOG](../../BACKLOG.md)).
