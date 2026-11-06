@@ -136,6 +136,40 @@ Honest accounts lose their private key with a yearly probability; the person (sa
 
 Funnel of one run at 20% (seed 1): 1,502 keys lost, 1,233 recovery invitations, 1,170 new accounts admitted, 644 recoveries completed (55% of those started). A second seed: 1,396, 826, 792, 508 (64%). Two diagnostic reruns at 20%: a slot ceiling of 300 gives 59% of the started recoveries and vouching with certainty 61%, so neither the ceiling nor the willingness of guarantors is the bottleneck. A plausible cause is that the new account pays one right per guarantee (D93, D94) and emits one right a day, but it is not isolated here. Reading: recovery works as a mechanism (about two thirds of the recoveries that start finish, in about a month) and does not touch the D129 lines, yet fewer than half of the lost accounts are recovered within a year, and the lost accounts that are not recovered stay accepted and inert, which inflates the honest account count of these runs (the honest-to-control ratios above 1 are therefore not a gain, and their cause is not isolated). With 20%-30% bought accounts a fraction of lost accounts (0.5% to 4%) could be captured by a coalition through recovery; capture is counted, not executed.
 
+## Re-check under the emission path check (D156)
+
+The sections K1 to K5 above, the honest regimes and the key-loss scenario were measured under the earlier reading of the Self-ID check (the path bound counted from the guarantor, the guarantor exempt from support; `--self-path-from-guarantor` reproduces it). The owner then made the path check from the emitter mandatory and the default (D156: every Self-ID needs a path from the emitter to a Council member of at most seven nodes through supported intermediates outside disputes). Effect of the rule alone, new against old reading, 4 seeds, one year:
+
+| Run | Reading | Honest accounts | Honest emission (units) | Attacker emission (units) | Dirty-FACY share | Cases on genuine people |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| control | earlier | 10,391 | 1,899,698 | 0 | 0 | 2,924 |
+| control | D156 | 11,261 | 863,839 | 0 | 0 | 2,391 |
+| 30 operators | earlier | 10,188 | 1,866,360 | 8,673 | 0.335% | 2,859 |
+| 30 operators | D156 | 11,330 | 860,644 | 4,382 | 0.199% | 2,352 |
+| cone without layered support, 10 operators, 60 days | earlier | 2,259 | 132,267 | 14,248 | 0.90% (attacker share 29.3%) | 60 |
+| cone without layered support | D156 | 2,170 | 131,604 | 14,333 | 0.76% (attacker share 27.0%) | 59 |
+
+The rule halves the emission of honest people and of operators alike (a Self-ID whose guarantor is not itself supported or lies in a dispute is refused), lowers the dirty-FACY share and leaves honest growth intact. A narrower reading that only counted the bound from the emitter and kept the guarantor exempt from support changed no result at all. Runs are 13 to 15 seconds per seed instead of 56 to 96 (the rule and the act-record layout together).
+
+Repeat of K1 (6 seeds, one year) and of the K5 confirmation under D156:
+
+| Run | Honest accounts | Honest / control | Attacker-side accounts | Attacker share | Dirty-FACY share | Emission per operator | Held per operator |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| control | 11,225 | 1.000 | 0 | 0 | 0 | - | - |
+| 10 operators | 11,087 | 0.989 | 10.5 | 0.095% | 0.071% | 154 | 42 |
+| 30 operators | 11,430 | 1.019 | 30.7 | 0.268% | 0.208% | 149 | 41 |
+| 100 operators | 10,900 | 0.972 | 102.5 | 0.932% | 0.774% | 153 | 45 |
+
+Exploratory re-freeze (100 operators, seeds 1-4, rule written beforehand): dirty-FACY share X1 2.00%, X2 1.75%, X3 0.46%, X4 0.01%, X5 2.12%, reference 0.77%; X1 and X5 are within 20% and the honest-to-control ratio is lower for X1 (1.08 against 1.64), so the frozen adversary is X1 again. Confirmation on the reserved seeds `grown-1001..1012` (the family was used once under the earlier reading; the rule changed by owner decision and not by tuning, and the earlier series stays above as the record of the earlier reading; the next candidate uses 2001-2012):
+
+| Run | Finished seeds | Seeds passing | Dirty-FACY share (mean, max) | Attacker share of accounts (mean, max) | Honest accounts | Attacker-side accounts | Emission per operator | Held per operator | Genuine invalidated |
+| --- | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| reference, one year | 12 | 12 | 0.79%, 0.90% | 0.90%, 0.97% | 11,333 | 102.8 | 155 | 48 | 10.8 |
+| X1, one year | 12 | 12 | 1.95%, 2.23% | 0.80%, 0.89% | 12,138 | 97.8 | 231 | 134 | 9.2 |
+| X1, two years | 12 | 12 | 2.32%, 2.59% | 0.73%, 0.83% | 13,370 | 97.7 | 319 | 222 | 32.9 (two years) |
+
+Under D156 all 36 reserved-seed runs pass both D129 lines; the frozen adversary reaches a somewhat higher dirty-FACY share than under the earlier reading (2.32% against 1.47% at two years) because the supply it is measured against is smaller. K2 to K4, the honest regimes and the key-loss scenario were not repeated under D156; they carry the label of the earlier reading.
+
 ## Limits
 
 - Synthetic behavior throughout: honest acceptance rates, careless share, examiner quality, the proof-of-reality model and the bought-account model are assumptions of the simulator contract. Nothing here is evidence about real people, and no run replaces such evidence.

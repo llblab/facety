@@ -4,7 +4,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **Current priority (D129, D132):** show with the Rust simulator, up to a year or two of network growth, that the topology defense keeps the dirty-FACY share at most 10% and the clean share at least two thirds, at a bearable cost to honest people. Detection is always on; its design is the variable.
 
-**Phase: the baseline is still forming (default-rule changes such as D156 keep arriving); changes are tested with the [benchmark panels](docs/simulator.en.md#benchmark-panels-for-default-rule-changes). Core closure programme (D155) complete under the earlier emission reading and being re-checked under D156; awaiting the owner's decision on the implementation bounds (Q20, Q21).** Earlier: **baseline complete, awaiting owner feedback (D140).** Every axis below has a named value; the last three were proposed by the builder (D143) and the owner may overrule them. From here a broad benchmark and a search for pits at particular values make sense. Order of work (D141): stability, analysis, understanding, representativeness.
+**Phase: the baseline is still forming (default-rule changes such as D156 keep arriving); changes are tested with the [benchmark panels](docs/simulator.en.md#benchmark-panels-for-default-rule-changes). Core closure programme (D155) complete; K1 and K5 re-checked under D156 (36 of 36 reserved-seed runs pass), K2-K4 carry the earlier reading; awaiting the owner's decision on the implementation bounds (Q20, Q21).** Earlier: **baseline complete, awaiting owner feedback (D140).** Every axis below has a named value; the last three were proposed by the builder (D143) and the owner may overrule them. From here a broad benchmark and a search for pits at particular values make sense. Order of work (D141): stability, analysis, understanding, representativeness.
 
 | Baseline axis | Value | Status |
 | --- | --- | --- |
@@ -20,7 +20,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 | Honest behavior rates | 20% careless accounts (accept strangers at 0.5, no second look), the rest at 0.05 | proposed (D143) |
 | Attacker model | cone, honest-first, supported-first; operators 10-100; patience up to 120 days; optional bought honest accounts, cash-out and false accusations | proposed (D143); stronger models only on owner request |
 | Snapshot and horizon | snapshot at 1000 honest accounts; criterion at 365 days, 730 as stress | proposed (D143) |
-| Emission path check | every Self-ID needs one path from the emitter to a Council member, at most 7 nodes, supported intermediates outside disputes | fixed (D156); closure results re-checked under it |
+| Emission path check | every Self-ID needs one path from the emitter to a Council member, at most 7 nodes, supported intermediates outside disputes | fixed (D156); K1 and K5 re-checked under it |
 | Social recovery (D135) | key loss and recovery scenario (`--key-loss`, `--recovery-vouch`, `--recovery-delay`) | scenario done; works but slow and incomplete (study) |
 | Identification reputation (D137) | not modeled | parked: no selected rule, not part of the core |
 
