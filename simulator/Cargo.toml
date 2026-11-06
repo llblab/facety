@@ -3,6 +3,7 @@ name = "facety-sim"
 version = "0.1.0"
 edition = "2021"
 description = "Facety research simulator (std only)"
+license = "Unlicense"
 
 [lib]
 path = "src/lib.rs"

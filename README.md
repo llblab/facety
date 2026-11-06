@@ -39,3 +39,7 @@ Rust, standard library only. One command grows an honest network to a target siz
 ## Conventions
 
 English only; no quotes of owner prompts. The protocol carries no provenance (decision IDs appear as bare trace tags). Every simulation result is conditional on its declared scenario, policy, horizon and seeds. Mechanism claims need a committed registration, a kill criterion and reserved seeds. See [AGENTS.md](AGENTS.md).
+
+## License
+
+This project is dedicated to the public domain and has no license: see [LICENSE](LICENSE). It belongs to everyone.
