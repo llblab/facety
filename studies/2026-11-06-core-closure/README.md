@@ -73,6 +73,8 @@ Reading: the honest network is not starved. Accusers can only target accounts wi
 
 Reading: the honest network recovers without any extra mechanism (five of six seeds return to 90% of the control within the year in the first row, all six in the others); the trough is about 0.7, reached about two weeks after the burst ends, and recovery to 90% takes 40 to 170 days (typically about three months). The effect of appeal and restoration on the speed is inside the seed spread: insufficient to call them required for recovery.
 
+Figure of one run (seed 1, ten-times burst between days 100 and 130 after the snapshot; honest accounts, attacker share, dirty-FACY share by day; dashed lines mark the phases): [shock-x10-30-operators-seed1.svg](figures/shock-x10-30-operators-seed1.svg). The honest count stops growing for the whole burst (consistent with the dispute holds on intermediaries, which is not isolated here) and grows faster afterwards; the attacker share keeps falling because only the denominator moves, which is why the absolute counters of K1 are reported next to the shares. Plots of any run: `facety-sim grown ... --svg DIR`.
+
 ## K5 — break attempts and reserved-seed confirmation
 
 Exploratory (100 operators, seeds 1-4, one year): X1 supported-first, patience 120 days, 20% bought honest accounts; X2 honest-first, patience 120, cash-out 0.5, 20% bought; X3 cone with 30% bought; X4 best-connected false accusations 1 per operator and day with 20% bought and patience 120; X5 = X1 in a weakened environment (odd profiles 5% with ten times the rate, proof 0.7 within 14 days); reference without extras.

@@ -27,6 +27,7 @@ const VALUE_KEYS: &[&str] = &[
     "--appeal",
     "--cash-out",
     "--accuse",
+    "--svg",
     "--shock-day",
     "--shock-days",
     "--shock-fpr-x",
@@ -82,7 +83,7 @@ const FLAG_KEYS: &[&str] = &[
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
-  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--accuse R] [--accuse-hubs] [--shock-day N --shock-days N --shock-fpr-x X] [--odd-share P] [--odd-mult X] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
+  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--svg DIR] [--accuse R] [--accuse-hubs] [--shock-day N --shock-days N --shock-fpr-x X] [--odd-share P] [--odd-mult X] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
   [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--key-loss P] [--recovery-vouch P] [--recovery-delay DAYS] [--befriend P] [--invite P] [--accept-far P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
@@ -144,6 +145,7 @@ struct Plan {
     overwrite: bool,
     /// Temporary burst of false positives: from `shock_day` days after the snapshot for `shock_days` days the false-positive rate is
     /// multiplied (capped at 1). `shock_days` 0 = no shock.
+    svg_dir: Option<String>,
     shock_day: i64,
     shock_days: i64,
     shock_x: f64,
@@ -271,6 +273,7 @@ fn plan(args: &[String]) -> Result<Plan, String> {
         out_dir: opts.get("--out").cloned(),
         prefix_only: flags.contains("--prefix-only"),
         overwrite: flags.contains("--overwrite"),
+        svg_dir: opts.get("--svg").cloned(),
         shock_day: num(&opts, "--shock-day", 100)?,
         shock_days: num(&opts, "--shock-days", 0)?,
         shock_x: num(&opts, "--shock-fpr-x", 10.0)?,
@@ -364,6 +367,14 @@ fn main() {
                 }
                 sim.world.audit().expect("books must balance");
                 let elapsed = started.elapsed().as_secs_f64();
+                if let Some(dir) = &plan.svg_dir {
+                    let _ = std::fs::create_dir_all(dir);
+                    let name = format!("{dir}/{}-{}.svg", sim.cfg.seed, sim.config_digest());
+                    if let Err(e) = std::fs::write(&name, sim.to_svg(&format!("{} (digest {})", sim.cfg.seed, sim.config_digest()))) {
+                        eprintln!("error: cannot write {name}: {e}");
+                        conflict.store(true, Ordering::SeqCst);
+                    }
+                }
                 if let Some(dir) = &plan.out_dir {
                     let name = format!("{dir}/{}-{}.json", sim.cfg.seed, sim.config_digest());
                     let body = format!("{{\"meta\":{},\"result\":{}}}", meta(elapsed, &argv, plan.threads), sim.to_json());

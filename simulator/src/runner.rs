@@ -1610,6 +1610,39 @@ impl Sim {
         self.open_cases.iter().map(|c| (c.challenger, c.target, c.challenger_xp, c.target_xp)).collect()
     }
 
+    /// Named phases of the experiment with the day each began (for plots).
+    pub fn phase_marks(&self) -> Vec<(String, i64)> {
+        self.phases.iter().map(|(n, d, _)| (n.clone(), *d)).collect()
+    }
+
+    /// A plain SVG of the run (std only): honest accounts, attacker share and dirty-FACY share by day; phase starts are dashed lines.
+    pub fn to_svg(&self, title: &str) -> String {
+        let (w, h, left, panel) = (900.0f64, 740.0f64, 70.0f64, 180.0f64);
+        let last = self.history.last().map_or(1, |r| r.day).max(1) as f64;
+        let x = |d: i64| left + (w - left - 20.0) * d as f64 / last;
+        let series: [(&str, Vec<f64>, &str); 3] = [
+            ("honest accounts", self.history.iter().map(|r| r.honest as f64).collect(), "#1f6f8b"),
+            ("attacker share of accounts (%)", self.history.iter().map(|r| 100.0 * r.attacker_share().unwrap_or(0.0)).collect(), "#b5453a"),
+            ("dirty-FACY share (%)", self.history.iter().map(|r| 100.0 * r.dirty_share().unwrap_or(0.0)).collect(), "#7a5195"),
+        ];
+        let mut s = format!("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {w} {h}\" font-family=\"sans-serif\" font-size=\"12\">\n<rect width=\"{w}\" height=\"{h}\" fill=\"white\"/>\n<text x=\"{left}\" y=\"20\" font-size=\"14\">{title}</text>\n");
+        for (k, (name, ys, color)) in series.iter().enumerate() {
+            let top = 40.0 + k as f64 * (panel + 40.0);
+            let max = ys.iter().cloned().fold(0.0f64, f64::max).max(1e-9);
+            let y = |v: f64| top + panel - panel * v / max;
+            s.push_str(&format!("<text x=\"{left}\" y=\"{}\">{name} (max {max:.3})</text>\n<rect x=\"{left}\" y=\"{top}\" width=\"{}\" height=\"{panel}\" fill=\"none\" stroke=\"#999\"/>\n", top - 6.0, w - left - 20.0));
+            let pts: Vec<String> = self.history.iter().zip(ys).map(|(r, &v)| format!("{:.1},{:.1}", x(r.day), y(v))).collect();
+            s.push_str(&format!("<polyline fill=\"none\" stroke=\"{color}\" stroke-width=\"1.5\" points=\"{}\"/>\n", pts.join(" ")));
+            for (n, d) in self.phase_marks() {
+                if d > 0 {
+                    s.push_str(&format!("<line x1=\"{0:.1}\" x2=\"{0:.1}\" y1=\"{top}\" y2=\"{1}\" stroke=\"#555\" stroke-dasharray=\"4 3\"/>\n<text x=\"{2:.1}\" y=\"{3}\" fill=\"#555\">{n}</text>\n", x(d), top + panel, x(d) + 3.0, top + 12.0));
+                }
+            }
+        }
+        s.push_str(&format!("<text x=\"{left}\" y=\"{}\">day (0 to {last})</text>\n</svg>\n", h - 8.0));
+        s
+    }
+
     pub fn false_status_count(&self) -> usize {
         (0..self.world.len() as Id).filter(|&i| !self.world.accepted(i)).count()
     }
@@ -1879,6 +1912,16 @@ mod tests {
         assert!(r[0] > 0, "keys are lost");
         assert!(r[1] > 0, "some people recover");
         assert!(r[1] <= r[0]);
+    }
+
+    /// The SVG of a run holds one polyline per panel and a dashed line per phase start.
+    #[test]
+    fn the_svg_plots_the_history_and_the_phases() {
+        let mut sim = Sim::new(small("svg", 3, false));
+        sim.run();
+        let svg = sim.to_svg("test");
+        assert!(svg.starts_with("<svg") && svg.trim_end().ends_with("</svg>"));
+        assert_eq!(svg.matches("<polyline").count(), 3);
     }
 
     /// D151 appeal: wrongly invalidated people are reinstated, the state stays consistent and the lever is opt-in.

@@ -47,7 +47,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 ## Rust simulator
 
 - [x] **Correctness and trust pass (2026-11-06).** Single-use social recovery with a strengthened audit; one formal-case procedure with the XP gate (§25) for every route; saved results with the full configuration, schema, engine, randomness policy, build commit and phases, valid JSON, no silent overwrite; strict parameter and argument validation; `cargo fmt --check`, `cargo clippy -D warnings` and `cargo test` green. Statistics of earlier runs are not comparable (see the simulator contract).
-- [ ] **Time-series graphs (D141).** Recovery after errors is measured (K4, D155); what remains is to show the trajectories (honest accounts against the paired control, attacker share, dirty-FACY share) as an SVG from the saved histories instead of endpoints. Small, uses existing results only.
+- [x] **Time-series graphs (D141, done, 2026-11-06).** `--svg DIR` plots honest accounts, attacker share and dirty-FACY share by day with phase markers; an example is in the [closure study](studies/2026-11-06-core-closure/README.md). A paired-control overlay was not built (the paired comparison is in the K4 table).
 
 - [x] Core: graph, keyed randomness, exact length-bounded disjoint paths with verifier, layered support, world rules, runner, snapshot cloning, tests, documentation integrity guard.
 - [x] Statistical validation against the retired simulator ([contract](docs/simulator.en.md#baseline-validation-statistical)). Node simulator, tests and raw artifacts deleted at the tag `legacy-node`.
