@@ -26,6 +26,12 @@ const VALUE_KEYS: &[&str] = &[
     "--confirm",
     "--appeal",
     "--cash-out",
+    "--accuse",
+    "--shock-day",
+    "--shock-days",
+    "--shock-fpr-x",
+    "--odd-share",
+    "--odd-mult",
     "--xp-penalty",
     "--collusion",
     "--max-subjects",
@@ -63,13 +69,14 @@ const FLAG_KEYS: &[&str] = &[
     "--prefix-only",
     "--detect-prefix",
     "--allow-disputed",
+    "--accuse-hubs",
     "--targets-only",
     "--overwrite",
 ];
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
-  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
+  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--accuse R] [--accuse-hubs] [--shock-day N --shock-days N --shock-fpr-x X] [--odd-share P] [--odd-mult X] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
   [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
@@ -129,6 +136,11 @@ struct Plan {
     out_dir: Option<String>,
     prefix_only: bool,
     overwrite: bool,
+    /// Temporary burst of false positives: from `shock_day` days after the snapshot for `shock_days` days the false-positive rate is
+    /// multiplied (capped at 1). `shock_days` 0 = no shock.
+    shock_day: i64,
+    shock_days: i64,
+    shock_x: f64,
 }
 
 fn plan(args: &[String]) -> Result<Plan, String> {
@@ -208,6 +220,10 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.honest.careless_accept_far = num(&opts, "--careless-accept", base.honest.careless_accept_far)?;
     base.attacker_patience_days = num(&opts, "--patience", 0)?;
     base.attacker_cash_out = num(&opts, "--cash-out", 0.0)?;
+    base.attacker_accuse = num(&opts, "--accuse", 0.0)?;
+    base.accuse_hubs = flags.contains("--accuse-hubs");
+    base.detection.odd_share = num(&opts, "--odd-share", 0.0)?;
+    base.detection.odd_multiplier = num(&opts, "--odd-mult", 1.0)?;
     base.detection.acquit_met = flags.contains("--acquit");
     base.detection.inspect = num(&opts, "--inspect", base.detection.inspect)?;
     base.detection.false_positive = num(&opts, "--fpr", base.detection.false_positive)?;
@@ -243,6 +259,9 @@ fn plan(args: &[String]) -> Result<Plan, String> {
         out_dir: opts.get("--out").cloned(),
         prefix_only: flags.contains("--prefix-only"),
         overwrite: flags.contains("--overwrite"),
+        shock_day: num(&opts, "--shock-day", 100)?,
+        shock_days: num(&opts, "--shock-days", 0)?,
+        shock_x: num(&opts, "--shock-fpr-x", 10.0)?,
     })
 }
 
@@ -309,7 +328,20 @@ fn main() {
                         c.detection_start_day = c.detection_start_day.min(prefix_days);
                     })
                     .expect("the attack phase was validated up front");
-                    sim.run();
+                    if plan.shock_days > 0 {
+                        let (from, to) = (prefix_days + plan.shock_day, prefix_days + plan.shock_day + plan.shock_days);
+                        let normal = sim.cfg.detection.false_positive;
+                        let burst = (normal * plan.shock_x).min(1.0);
+                        while sim.step_day() {
+                            if sim.day == from {
+                                sim.begin_phase("shock", |c| c.detection.false_positive = burst).expect("valid shock");
+                            } else if sim.day == to {
+                                sim.begin_phase("recovery", |c| c.detection.false_positive = normal).expect("valid recovery");
+                            }
+                        }
+                    } else {
+                        sim.run();
+                    }
                     let last = sim.history.last().unwrap();
                     share = last.attacker_share();
                     dirty = last.dirty_share();
@@ -351,7 +383,7 @@ fn main() {
                 let g = |x: Option<i64>| x.map_or("null".into(), |v| v.to_string());
                 let d = &sim.det;
                 let line = format!(
-                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
+                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
                     json::string(&sim.cfg.seed),
                     json::string(&sim.config_digest()),
                     prefix_days,
@@ -362,6 +394,11 @@ fn main() {
                     f(dirty),
                     g(first33),
                     g(first50),
+                    sim.history.last().map_or(0, |r| r.supply),
+                    sim.emitted[0],
+                    sim.emitted[1],
+                    sim.history.last().map_or(0, |r| r.dirty),
+                    d.accusations,
                     d.cases_on_genuine,
                     d.genuine_invalidated,
                     d.false_invalidated,

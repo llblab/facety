@@ -31,6 +31,7 @@ const CH_MET: u64 = 13;
 const CH_DEFENSE: u64 = 14;
 const CH_TYPE: u64 = 15;
 const CH_ARTIFACT: u64 = 16;
+const CH_ACCUSE: u64 = 17;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Strategy {
@@ -88,6 +89,10 @@ pub struct Detection {
     /// The confirming examiners are any independent honest accounts (public evidence) instead of the target's own mutual partners; a
     /// target without enough honest partners (a fake cluster) can then still be confirmed.
     pub confirm_public: bool,
+    /// Correlated examiner errors: this share of genuine accounts has an odd public profile, and every examiner's false-positive rate for
+    /// such an account is multiplied by `odd_multiplier` (capped at 1), so the same people are suspected again and again. 0 = off.
+    pub odd_share: f64,
+    pub odd_multiplier: f64,
     /// D151 appeal: chance that a wrongly invalidated (genuine) account appeals successfully; the account is reinstated after `defense_days`. 0 = off.
     pub appeal: f64,
     /// D151 repair: when an appeal reinstates a wrongly invalidated person, the honest links that the false positive cut are restored without a fee.
@@ -125,6 +130,11 @@ pub struct RunConfig {
     /// Declared attacker behavior: chance that an operator account converts a mature emission right to liquid FACY (cashing out)
     /// instead of spending it on the attack; a trade-off, since a converted right can no longer grow the cluster. 0 = never.
     pub attacker_cash_out: f64,
+    /// Declared attack on the availability of the defense: expected number of false formal cases per operator account per day against
+    /// accepted honest accounts with less XP than the operator (the public XP gate); the accuser pays nothing (stakes are not modeled).
+    pub attacker_accuse: f64,
+    /// The false accusations pick the best-connected of 64 sampled eligible honest accounts instead of a random one.
+    pub accuse_hubs: bool,
     /// Stop on the first day the honest accepted population reaches this size (0 = never): a snapshot point.
     pub stop_at_honest: usize,
 }
@@ -157,6 +167,12 @@ impl RunConfig {
         at_least("detection_start_day", self.detection_start_day, 0)?;
         at_least("attacker_patience_days", self.attacker_patience_days, 0)?;
         prob("attacker_cash_out", self.attacker_cash_out)?;
+        if !self.attacker_accuse.is_finite() || self.attacker_accuse < 0.0 {
+            return Err(format!("attacker_accuse must be a non-negative number, got {}", self.attacker_accuse));
+        }
+        if !self.detection.odd_multiplier.is_finite() || self.detection.odd_multiplier < 1.0 {
+            return Err(format!("detection.odd_multiplier must be at least 1, got {}", self.detection.odd_multiplier));
+        }
         if self.max_subjects < self.honest_genesis {
             return Err(format!("max_subjects ({}) must be at least honest_genesis ({})", self.max_subjects, self.honest_genesis));
         }
@@ -235,6 +251,7 @@ impl RunConfig {
             ("detection.false_positive", d.false_positive),
             ("detection.accuracy", d.accuracy),
             ("detection.public_look", d.public_look),
+            ("detection.odd_share", d.odd_share),
             ("detection.pattern_closure", d.pattern_closure),
             ("detection.sponsor_willingness", d.sponsor_willingness),
             ("detection.defense_success", d.defense_success),
@@ -256,14 +273,14 @@ impl RunConfig {
         let h = &self.honest;
         let d = &self.detection;
         format!(
-            "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"stopAtHonest\":{},\
+            "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"attackerAccuse\":{},\"accuseHubs\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"artifactRate\":{},\"collusion\":{}}},\
-\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
-            json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), self.stop_at_honest,
+\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
+            json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), json::number(self.attacker_accuse), self.accuse_hubs, self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.exclude_targets_only, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.corrupt_share), json::number(h.artifact_rate), json::number(h.collusion),
-            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
+            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
     }
 }
@@ -315,6 +332,8 @@ impl Default for RunConfig {
                 subtree_cases: 0,
                 confirm: 0,
                 confirm_public: false,
+                odd_share: 0.0,
+                odd_multiplier: 1.0,
                 appeal: 0.0,
                 restore_links: false,
                 recover_liquid: false,
@@ -327,6 +346,8 @@ impl Default for RunConfig {
             detection_start_day: 0,
             attacker_patience_days: 0,
             attacker_cash_out: 0.0,
+            attacker_accuse: 0.0,
+            accuse_hubs: false,
             stop_at_honest: 0,
         }
     }
@@ -384,6 +405,8 @@ struct CaseRec {
 #[derive(Clone, Debug, Default)]
 pub struct DetectionCounters {
     pub cases_opened: u64,
+    /// Cases opened by the declared false-accusation attack.
+    pub accusations: u64,
     /// Cases whose target is a genuine person or an operator account: the burden that detection puts on honest people.
     pub cases_on_genuine: u64,
     pub false_invalidated: u64,
@@ -482,6 +505,8 @@ pub struct Sim {
     cuts: HashMap<Id, Vec<(Id, Id)>>,
     pub det: DetectionCounters,
     pub invitations: [u64; 2],
+    /// Units of emission minted by Self-IDs, honest and attacker side (cumulative, whatever happens to them later).
+    pub emitted: [u64; 2],
     pub admitted: [u64; 2],
     pub valences_opened: [u64; 2],
     pub pairs: u64,
@@ -568,6 +593,7 @@ impl Sim {
             cuts: HashMap::new(),
             det: DetectionCounters::default(),
             invitations: [0; 2],
+            emitted: [0; 2],
             admitted: [0; 2],
             valences_opened: [0; 2],
             pairs: 0,
@@ -601,7 +627,12 @@ impl Sim {
 
     /// A noisy look at an account: suspicious with the declared sensitivity for a false identity, else the false-positive rate.
     fn look(&self, rng: &mut Rng, id: Id) -> bool {
-        rng.chance(if false_identity(self.kind[id as usize]) { self.cfg.detection.sensitivity } else { self.cfg.detection.false_positive })
+        let d = &self.cfg.detection;
+        if false_identity(self.kind[id as usize]) {
+            return rng.chance(d.sensitivity);
+        }
+        let odd = d.odd_share > 0.0 && Rng::keyed(self.seed, CH_TYPE, u64::from(id), 2).chance(d.odd_share);
+        rng.chance(if odd { (d.false_positive * d.odd_multiplier).min(1.0) } else { d.false_positive })
     }
 
     /// A suspicious look at `id` that must also survive the declared confirming looks of other mutual partners (`Detection::confirm`).
@@ -736,6 +767,7 @@ impl Sim {
         }
         if self.censored.is_none() && day >= self.cfg.detection_start_day {
             self.detect();
+            self.accuse();
         }
         self.sample();
         self.day += 1;
@@ -772,7 +804,9 @@ impl Sim {
             let p = if self.cohort[id as usize] == Cohort::Honest { self.cfg.honest.self_id } else { 1.0 };
             if self.stream(CH_SELFID, u64::from(id)).chance(p) {
                 let r = self.world.create_self_id(id);
-                self.note(id, r);
+                if self.note(id, r).is_some() {
+                    self.emitted[ci(self.cohort[id as usize])] += 1;
+                }
             }
         }
     }
@@ -999,6 +1033,42 @@ impl Sim {
     }
 
     // ---- detection -------------------------------------------------------------------------------------------------
+
+    /// Declared attack on the availability of the defense: operators file false formal cases through the ordinary procedure (the public
+    /// XP gate applies; nothing is staked).
+    fn accuse(&mut self) {
+        let rate = self.cfg.attacker_accuse;
+        if rate <= 0.0 {
+            return;
+        }
+        let operators: Vec<Id> = self.attackers.iter().copied().filter(|&a| self.kind[a as usize] == Kind::Operator && self.world.accepted(a)).collect();
+        let honest_all = self.honest.clone();
+        for op in operators {
+            let mut rng = self.stream(CH_ACCUSE, u64::from(op));
+            let count = rate.floor() as usize + usize::from(rng.chance(rate.fract()));
+            for _ in 0..count {
+                let targeted: HashSet<Id> = self.open_cases.iter().map(|c| c.target).collect();
+                let eligible = |s: &Sim, o: Id| s.world.accepted(o) && !targeted.contains(&o) && s.world.xp(op) > s.world.xp(o);
+                let target = if self.cfg.accuse_hubs {
+                    let mut best: Option<Id> = None;
+                    for _ in 0..64 {
+                        let Some(&c) = rng.pick(&honest_all) else { break };
+                        if eligible(self, c) && best.is_none_or(|b| self.world.mutual_count(c) > self.world.mutual_count(b)) {
+                            best = Some(c);
+                        }
+                    }
+                    best
+                } else {
+                    self.pick_where(&mut rng, &honest_all, |o| eligible(self, o))
+                };
+                if let Some(t) = target {
+                    if self.open_case(op, t, false) {
+                        self.det.accusations += 1;
+                    }
+                }
+            }
+        }
+    }
 
     fn leave(&mut self, actor: Id, partner: Id) -> bool {
         let r = if let Some(v) = self.world.open_valence_of(actor, partner).filter(|&v| self.world.valence_info(v).3) {
@@ -1452,10 +1522,10 @@ impl Sim {
             self.censored.map_or("null".to_string(), json::string)
         );
         let d = &self.det;
-        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"casesOnGenuine\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
-            d.cases_opened, d.cases_on_genuine, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
-        let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
-            self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
+        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"accusations\":{},\"casesOnGenuine\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
+            d.cases_opened, d.accusations, d.cases_on_genuine, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
+        let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerLiquid\":{},\"attackerUnspent\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
+            self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.emitted[0], self.emitted[1], self.attackers.iter().map(|&a| i64::from(self.world.liquid(a))).sum::<i64>(), self.attackers.iter().map(|&a| self.world.unspent_rights(a) as i64).sum::<i64>(), self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");
         for (i, r) in self.history.iter().enumerate() {
             if i > 0 {
@@ -1628,6 +1698,40 @@ mod tests {
         let (vetoes, cases) = run(0.0);
         assert!(vetoes + cases > 0, "an honest network detects");
         assert_eq!(run(1.0), (0, 0), "a fully bought network neither vetoes nor opens cases");
+    }
+
+    /// Correlated examiner errors concentrate false suspicion on odd-profile accounts: with every account odd and the rate multiplied, far
+    /// more cases open against genuine people than with independent errors at the base rate.
+    #[test]
+    fn odd_profiles_raise_the_cases_on_genuine_people() {
+        let run = |share: f64, mult: f64| {
+            let mut c = small("odd", 10, false);
+            c.detection.false_positive = 0.01;
+            c.detection.odd_share = share;
+            c.detection.odd_multiplier = mult;
+            let mut sim = Sim::new(c);
+            sim.run();
+            sim.world.audit().unwrap();
+            sim.det.cases_on_genuine
+        };
+        assert!(run(1.0, 10.0) > run(0.0, 1.0));
+    }
+
+    /// The false-accusation attack goes through the ordinary case procedure (the XP gate applies), is counted, keeps the audit and is off by default.
+    #[test]
+    fn false_accusations_use_the_ordinary_procedure_and_are_counted() {
+        let run = |rate: f64| {
+            let mut c = small("accuse", 11, false);
+            c.attacker_accuse = rate;
+            c.attacker_patience_days = 0;
+            let mut sim = Sim::new(c);
+            sim.run();
+            sim.world.audit().unwrap();
+            (sim.det.accusations, sim.det.cases_opened)
+        };
+        assert_eq!(run(0.0).0, 0);
+        let (accusations, opened) = run(3.0);
+        assert!(accusations <= opened);
     }
 
     /// D151 appeal: wrongly invalidated people are reinstated, the state stays consistent and the lever is opt-in.
