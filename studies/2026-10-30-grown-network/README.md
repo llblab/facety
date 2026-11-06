@@ -129,6 +129,7 @@ Rust, baseline rules, one year after the genesis phase (day 499), 10 operators, 
 | 0.003 (baseline) | 10,373 | 0.096% | 0.096% | 2,950 | 17.2 | 1,432 |
 | 0.01 | 4,905 | 0.200% | 0.264% | 5,302 | 27.5 | 1,926 |
 | baseline, paths may cross disputed accounts (`--allow-disputed`, D131 ablation) | 35,294 | 0.030% | 0.070% | 4,980 | 25.8 | 2,729 |
+| softer D131: only the accused party of a case is excluded from paths and support, the challenger stays usable (`--targets-only`) | 31,068 | 0.033% | 0.074% | 4,790 | 25.2 | 2,591 |
 | verification: 1 extra look by the target's own partners (`--confirm 1`) | 39,244 | 0.029% | 0.065% | 16 | 0 | 1,687 |
 | 2 extra looks by partners (`--confirm 2`) | 44,148 | 0.024% | 0.061% | 0 | 0 | 1,886 |
 | 1 extra look by any independent honest account (`--confirm 1 --confirm-public`) | 38,496 | 0.029% | 0.065% | 17 | 0 | 1,683 |
@@ -146,6 +147,8 @@ Security side of the verification (4 seeds, 10 operators, 60 days, `--no-layered
 | 2 extra looks by any independent honest account | 2,286 | 33.0% | 0.68% |
 
 Confirmation by the target's own partners starves exactly where it is needed: a fake cluster has no independent honest partners who could confirm, so detection collapses without layered support. Confirmation by independent examiners (public evidence) costs a modest part of the detection rate (36.8% against 29.3% for one look, 33.0% for two). With 30 operators over a year: baseline 10,188 honest accounts, attacker share 0.29% and dirty-FACY share 0.34%; with one independent confirming look 42,895 honest accounts, 0.07% and 0.19% (both inside the D129 criterion).
+
+Softer D131 (only the accused is excluded; both parties keep the seven-day activity hold): 31,068 honest accounts against 10,373 in the baseline and 35,294 with no exclusion at all, so most of the cost of the exclusion comes from taking the challengers (ordinary honest partners) off the paths. Without layered support (60 days, 10 operators, 4 seeds) the cone share is 31.0% against 29.3% with the full exclusion and 22.8% with no exclusion, so the exclusion of the challenger buys no containment there; with 30 operators over a year the softer rule gives 28,659 honest accounts, attacker share 0.11% and dirty-FACY share 0.23%. The accused party is the one whose pause pauses an investigated cluster (D131).
 
 Assumptions: the confirming looks are independent of the first look and instantaneous, so the setting is optimistic about delay and about errors that are correlated across examiners (a genuine person with an odd public profile would look odd to all of them). The default is off; the lever changes no protocol rule. Single configuration per row, 4 seeds, no registration: diagnostic.
 

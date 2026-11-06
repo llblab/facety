@@ -65,6 +65,9 @@ pub struct Config {
     pub search_order: Option<SearchOrder>,
     /// D131: accounts in an open dispute are not path intermediaries (default). `false` is the ablation used to price the rule.
     pub exclude_disputed: bool,
+    /// Softer D131 (research variant): only the accused party of a case (the second subject) is excluded from paths and from layered
+    /// support; the challenger stays usable. Both parties keep the D77 activity hold either way. Default off.
+    pub exclude_targets_only: bool,
 }
 
 impl Default for Config {
@@ -84,6 +87,7 @@ impl Default for Config {
             max_difficulty: None,
             search_order: None,
             exclude_disputed: true,
+            exclude_targets_only: false,
         }
     }
 }
@@ -209,6 +213,8 @@ pub struct World {
     inv_units: Vec<u32>,
     invitations: Vec<Invitation>,
     hold: Vec<u32>,
+    /// Open cases in which the account is excluded from paths (D131); equals `hold` unless `exclude_targets_only` is set.
+    path_hold: Vec<u32>,
     cases: Vec<Option<Vec<Id>>>,
     xp_by_pair: FastMap<(Id, Id), Vec<(u32, u32)>>,
     minted: i64,
@@ -251,6 +257,7 @@ impl World {
             inv_units: Vec::new(),
             invitations: Vec::new(),
             hold: Vec::new(),
+            path_hold: Vec::new(),
             cases: Vec::new(),
             xp_by_pair: FastMap::default(),
             minted: 0,
@@ -301,6 +308,7 @@ impl World {
         self.owned_open.push(0);
         self.inv_units.push(0);
         self.hold.push(0);
+        self.path_hold.push(0);
         self.blocked.push(self.cfg.layered);
         self.council_mask.push(false);
         self.level.push(NO_LEVEL);
@@ -543,7 +551,7 @@ impl World {
             self.council_mask[m as usize] = true;
         }
         // Accounts in an open dispute count as unusable for support levels and paths (D131).
-        let nonaccepted: Vec<bool> = (0..n as Id).map(|i| !self.accepted(i) || (self.cfg.exclude_disputed && self.hold[i as usize] > 0)).collect();
+        let nonaccepted: Vec<bool> = (0..n as Id).map(|i| !self.accepted(i) || (self.cfg.exclude_disputed && self.path_hold[i as usize] > 0)).collect();
         if self.cfg.layered {
             let max_level = (self.cfg.max_nodes.unwrap() - 2) as u8;
             self.level = layered_support(&self.graph, &self.council, self.required_guarantors() as u32, max_level, &nonaccepted);
@@ -1074,10 +1082,11 @@ impl World {
         for &s in subjects {
             self.require_account(s)?;
         }
-        for &s in subjects {
+        for (k, &s) in subjects.iter().enumerate() {
             self.hold[s as usize] += 1;
             // D131: accounts in an open dispute cannot be intermediaries of any counted path, so an investigated cluster pauses.
-            if self.cfg.exclude_disputed {
+            if self.cfg.exclude_disputed && (k > 0 || !self.cfg.exclude_targets_only) {
+                self.path_hold[s as usize] += 1;
                 self.blocked[s as usize] = true;
             }
         }
@@ -1087,9 +1096,12 @@ impl World {
 
     pub fn end_case(&mut self, case: u32) {
         if let Some(subjects) = self.cases[case as usize].take() {
-            for s in subjects {
+            for (k, s) in subjects.into_iter().enumerate() {
                 self.hold[s as usize] -= 1;
-                self.blocked[s as usize] = (self.cfg.exclude_disputed && self.hold[s as usize] > 0) || self.base_blocked(s);
+                if self.cfg.exclude_disputed && (k > 0 || !self.cfg.exclude_targets_only) {
+                    self.path_hold[s as usize] -= 1;
+                }
+                self.blocked[s as usize] = (self.cfg.exclude_disputed && self.path_hold[s as usize] > 0) || self.base_blocked(s);
             }
         }
     }
@@ -1677,6 +1689,20 @@ mod tests {
         assert!(!w.accepted(3));
         w.audit().unwrap();
         assert_eq!(w.begin_case(&[3, 3]), Err(Reject("participation requires distinct case subjects")));
+    }
+
+    #[test]
+    fn the_softer_exclusion_spares_the_challenger_but_keeps_the_activity_hold() {
+        let mut cfg = Config::default();
+        cfg.exclude_targets_only = true;
+        let mut w = World::new(cfg, 10, &ring(10));
+        let case = w.begin_case(&[3, 4]).unwrap();
+        assert_eq!(w.create_self_id(3), Err(Reject("open-dispute activity restriction")), "both parties keep the D77 hold");
+        assert!(!w.path_blocked(3), "the challenger stays usable on paths");
+        assert!(w.path_blocked(4), "the accused is excluded");
+        w.end_case(case);
+        assert!(!w.path_blocked(3) && !w.path_blocked(4));
+        w.audit().unwrap();
     }
 
     #[test]

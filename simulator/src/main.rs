@@ -62,12 +62,13 @@ const FLAG_KEYS: &[&str] = &[
     "--prefix-only",
     "--detect-prefix",
     "--allow-disputed",
+    "--targets-only",
     "--overwrite",
 ];
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
-  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
+  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
   [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
@@ -170,6 +171,7 @@ fn plan(args: &[String]) -> Result<Plan, String> {
         base.world.layered = false;
     }
     base.world.exclude_disputed = !flags.contains("--allow-disputed");
+    base.world.exclude_targets_only = flags.contains("--targets-only");
     base.honest_genesis = num(&opts, "--honest-genesis", base.honest_genesis)?;
     base.honest.vetting = num(&opts, "--vetting", 0.0)?;
     base.honest.vetting_sensitivity = opt_num(&opts, "--vet-sens")?;
