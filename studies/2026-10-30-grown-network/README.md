@@ -146,7 +146,9 @@ Acquittal with an artifact keeps about 7% more honest accounts and removes the c
 | 50 | 449 | 15.7% | 0.4% | 2,383 | 0.17 |
 | 1000 | 463 | 16.1% | 0.4% | 2,377 | 0.17 |
 
-A small partial scope already halves the cluster and the dirty-FACY share at no visible cost to honest people, because trapped genuine people prove reality (success 0.95); a larger cap adds nothing. Appeal and fee-free restoration of cut links are not modeled yet.
+Against the layered baseline (100 operators, 4 seeds, 400 days after the genesis phase) the remedy changes nothing measurable: the cone does not form, attacker accounts 98.75 against 99.0, attacker share 0.95% against 0.99%, dirty-FACY share 1.01% against 1.06%, honest accounts 10,286 against 9,906 (a 3.7% difference that four seeds cannot separate from noise), so the remedy is an insurance for a weaker gate, not a baseline gain. A small partial scope already halves the cluster and the dirty-FACY share at no visible cost to honest people, because trapped genuine people prove reality (success 0.95); a larger cap adds nothing. Appeal: a wrongly invalidated person who proves reality is an account again after the defense window (`detection.appeal`); 4 seeds, 10 operators, 200 days, layered, inspection 10% and false-positive rate 1% (a deliberately poor detector): appeal 0, 0.5 and 1 reinstate 0, 8.0 and 16.2 of about 17 wrongly invalidated people and leave 1,246, 1,265 and 1,308 honest accounts (+5% at full success), attackers unchanged at 9.8. Reinstatement restores the account only; links that partners already left, the revoked credit and the cut chain are not restored (fee-free link restoration needs a free-link operation in the world and is not modeled).
+
+Collusion leak of D152, estimated from the table above: full artifacts keep 431 more links than no acquittal over 22.2 acquitted inviters, about 19 links per acquittal; at 50% collusion 9.2 of the acquittals are colluders, so about 175 of the 431 kept links belong to colluding inviters. This prices the leak at the cascade the colluding inviter would have suffered; it is an estimate, not a separate run.
 
 ## Limits
 

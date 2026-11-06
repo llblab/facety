@@ -78,6 +78,8 @@ pub struct Detection {
     /// D151 burden of proof: after a confirmed invalidation, up to this many accepted accounts of the account's invitation subtree are
     /// examined without a noisy look (each must prove reality within the case window). 0 = off; the cap makes the invalidation partial.
     pub subtree_cases: usize,
+    /// D151 appeal: chance that a wrongly invalidated (genuine) account appeals successfully; the account is reinstated after `defense_days`. 0 = off.
+    pub appeal: f64,
     pub acquit_met: bool,
     /// New identity cases (inspection, public evidence, follow-up) open only once this many accounts are active; the freeze veto
     /// and the resolution of open cases are unaffected. D91 disables disputes below 100 active accounts: set 100 to model it.
@@ -215,6 +217,7 @@ impl RunConfig {
             ("detection.pattern_closure", d.pattern_closure),
             ("detection.sponsor_willingness", d.sponsor_willingness),
             ("detection.defense_success", d.defense_success),
+            ("detection.appeal", d.appeal),
         ] {
             prob(name, x)?;
         }
@@ -234,11 +237,11 @@ impl RunConfig {
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"artifactRate\":{},\"collusion\":{}}},\
-\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
+\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"appeal\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.artifact_rate), json::number(h.collusion),
-            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
+            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, json::number(d.appeal), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
     }
 }
@@ -287,6 +290,7 @@ impl Default for RunConfig {
                 sponsor_willingness: 0.5,
                 follow_up: true,
                 subtree_cases: 0,
+                appeal: 0.0,
                 acquit_met: false,
                 disputes_from_active: 0,
                 defense_success: 0.95,
@@ -365,6 +369,8 @@ pub struct DetectionCounters {
     pub honest_inviter_acquitted: u64,
     /// Acquitted inviters whose artifact was fabricated (collusion leak, D152).
     pub colluders_acquitted: u64,
+    /// Wrongly invalidated accounts reinstated on appeal (D151).
+    pub appeals_restored: u64,
     pub holders_invalidated: u64,
     pub defended: u64,
     /// Formal cases refused by the common procedure (XP gate, disabled disputes, invalid parties); no state changed for them.
@@ -430,6 +436,8 @@ pub struct Sim {
     mark_epoch: u32,
     scratch: Vec<Id>,
     open_cases: Vec<CaseRec>,
+    /// Appeals due (hour, account) after a wrong invalidation (D151).
+    appeals: Vec<(i64, Id)>,
     pub det: DetectionCounters,
     pub invitations: [u64; 2],
     pub admitted: [u64; 2],
@@ -514,6 +522,7 @@ impl Sim {
             mark_epoch: 0,
             scratch: Vec::new(),
             open_cases: Vec::new(),
+            appeals: Vec::new(),
             det: DetectionCounters::default(),
             invitations: [0; 2],
             admitted: [0; 2],
@@ -1059,6 +1068,15 @@ impl Sim {
     fn detect(&mut self) {
         let det = self.cfg.detection.clone();
         let mut targeted: HashSet<Id> = self.open_cases.iter().map(|c| c.target).collect();
+        // D151 appeal: due appeals reinstate the wrongly invalidated person.
+        let now = self.world.now();
+        let due: Vec<Id> = self.appeals.iter().filter(|a| a.0 <= now).map(|a| a.1).collect();
+        self.appeals.retain(|a| a.0 > now);
+        for id in due {
+            if self.world.reinstate_identity(id) {
+                self.det.appeals_restored += 1;
+            }
+        }
         // Freeze veto: honest current guarantors of the creator review invitations created today.
         let pending = std::mem::take(&mut self.pending);
         for p in pending {
@@ -1127,7 +1145,10 @@ impl Sim {
             if label {
                 self.det.false_invalidated += 1
             } else {
-                self.det.genuine_invalidated += 1
+                self.det.genuine_invalidated += 1;
+                if det.appeal > 0.0 && Rng::keyed(self.seed, CH_DEFENSE, rec.id, 1).chance(det.appeal) {
+                    self.appeals.push((self.world.now() + det.defense_days * DAY, rec.target));
+                }
             }
             // D127: a true duplicate verdict also reaches the holder of the second account.
             if let Some(&holder) = self.owner_of.get(&rec.target) {
@@ -1313,8 +1334,8 @@ impl Sim {
             self.censored.map_or("null".to_string(), json::string)
         );
         let d = &self.det;
-        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
-            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
+        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
+            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
             self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");
@@ -1454,6 +1475,24 @@ mod tests {
             sim.det.follow_up_cases
         };
         assert!(run(20) >= run(0));
+    }
+
+    /// D151 appeal: wrongly invalidated people are reinstated, the state stays consistent and the lever is opt-in.
+    #[test]
+    fn appeals_reinstate_wrongly_invalidated_people() {
+        let run = |appeal: f64| {
+            let mut c = small("app", 6, false);
+            c.detection.false_positive = 0.05;
+            c.detection.appeal = appeal;
+            let mut sim = Sim::new(c);
+            sim.run();
+            sim.world.audit().unwrap();
+            (sim.det.genuine_invalidated, sim.det.appeals_restored)
+        };
+        let (wrong, none) = run(0.0);
+        assert_eq!(none, 0);
+        let (_, restored) = run(1.0);
+        assert!(wrong == 0 || restored > 0, "with appeals every wrongly invalidated person is restored");
     }
 
     /// A grown honest network with XP spread across accounts, plus a pair finder over accepted, free accounts.

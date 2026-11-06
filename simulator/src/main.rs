@@ -23,6 +23,7 @@ const VALUE_KEYS: &[&str] = &[
     "--double",
     "--artifact",
     "--subtree-cases",
+    "--appeal",
     "--collusion",
     "--max-subjects",
     "--threads",
@@ -53,7 +54,7 @@ const FLAG_KEYS: &[&str] = &["--no-layered", "--acquit", "--prefix-only", "--det
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
-  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
+  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--appeal P] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
   [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
@@ -165,6 +166,7 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.honest.artifact_rate = num(&opts, "--artifact", base.honest.artifact_rate)?;
     base.honest.collusion = num(&opts, "--collusion", 0.0)?;
     base.detection.subtree_cases = num(&opts, "--subtree-cases", 0usize)?;
+    base.detection.appeal = num(&opts, "--appeal", 0.0)?;
     base.world.search_order = match opts.get("--search-order").map(String::as_str) {
         None => None,
         Some("none") => Some(SearchOrder::None),

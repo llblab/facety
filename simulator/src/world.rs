@@ -1091,6 +1091,17 @@ impl World {
         self.subjects[id as usize].status = Status::False;
     }
 
+    /// D151 appeal: a wrongly invalidated person who proves reality is an account again. Credit revoked with the cut chain stays revoked,
+    /// and links that others left are not restored. A retired lost-key account (D135) is never reinstated. Returns whether anything changed.
+    pub fn reinstate_identity(&mut self, id: Id) -> bool {
+        let s = &mut self.subjects[id as usize];
+        if s.status == Status::False && !s.lost_key {
+            s.status = Status::Accepted;
+            return true;
+        }
+        false
+    }
+
     /// Cut the whole Self-ID chain: unspent rights burn without XP; XP credited by the cut acts is revoked.
     pub fn void_chain(&mut self, id: Id) {
         let chain = self.subjects[id as usize].acts.clone();
