@@ -4,7 +4,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **Current priority (D129, D132):** show with the Rust simulator, up to a year or two of network growth, that the topology defense keeps the dirty-FACY share at most 10% and the clean share at least two thirds, at a bearable cost to honest people. Detection is always on; its design is the variable.
 
-**Phase (D140): baseline complete, awaiting owner feedback.** Every axis below has a named value; the last three were proposed by the builder (D143) and the owner may overrule them. From here a broad benchmark and a search for pits at particular values make sense. Order of work (D141): stability, analysis, understanding, representativeness.
+**Phase: core closure programme complete (D155), research loop stopped, awaiting the owner's decision on the implementation bounds (Q20, Q21).** Earlier: **baseline complete, awaiting owner feedback (D140).** Every axis below has a named value; the last three were proposed by the builder (D143) and the owner may overrule them. From here a broad benchmark and a search for pits at particular values make sense. Order of work (D141): stability, analysis, understanding, representativeness.
 
 | Baseline axis | Value | Status |
 | --- | --- | --- |
@@ -40,7 +40,9 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **K5 frozen before confirmation (exploratory result, seeds 1-4, 100 operators, one year).** Dirty-FACY share: X1 1.58%, X5 1.58%, X2 1.38%, X3 1.00%, X4 0.01%, reference 1.05%. X1 and X5 are within 20%; the honest-to-control ratio is lower for X1 (1.09 against 1.72 for X5), so the frozen adversary is X1: 100 operators, supported-first, patience 120 days, 20% bought honest accounts, baseline environment. Confirmation runs on `grown-1001..1012` for the 100-operator reference and X1 at one year, and X1 at two years; the per-seed criterion is the one above.
 
-**Owner-gated, named, not blocking the programme:** Q20 (verification before a case, softer D131), the honest-damage tolerance, the price of buying honest links. **Needs empirical data about people, not more synthetic runs:** how independent real examiners are, how quickly and reliably an accused person can prove reality outside the network, how much attention people actually give. Items below that are outside this table stay open and are not worked until the verdict.
+**Status (2026-11-06): K1-K7 done.** K1 met, K2 met (containment holds; honest sensitivity named), K3 met (no starvation; harm linear in false cases, Q21), K4 met (recovery without extra mechanism; the effect of appeal and restoration insufficient), K5 confirmed on 12 of 12 reserved seeds at one year and at two years, K6 restated, K7 in the [consolidated findings](docs/insights.en.md#consolidated-findings) and [D155](docs/decisions.en.md). Results: [study](studies/2026-11-06-core-closure/README.md).
+
+**Owner-gated, named, not blocking the programme:** Q20 (verification before a case, softer D131), the honest-damage tolerance, the price of buying honest links. **Needs empirical data about people, not more synthetic runs:** how independent real examiners are, how quickly and reliably an accused person can prove reality outside the network, how much attention people actually give. Items below that are outside this table stay open and parked until the owner asks for more research.
 
 ## Rust simulator
 
