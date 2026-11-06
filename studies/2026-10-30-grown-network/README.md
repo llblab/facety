@@ -9,7 +9,7 @@ An honest network grows by its own rules from a 100-account genesis to 1000 acco
 ## Design
 
 - Simulator: [`simulator/`](../../simulator), runner `grown`; the retired Node runner produced the first tables and fixed the baseline (see the [contract](../../docs/simulator.en.md#baseline-validation-statistical)).
-- Rules: guarantor count D plus D internally vertex-disjoint paths to one Council member, each path at most 7 nodes (D123); optional layered support (D124); accounts in a dispute are not path intermediaries (D131). Detection is always on: freeze veto, partner inspection (10% of partners per day), noisy looks (sensitivity 0.8, false-positive 0.01 unless varied), leaving, public evidence with escalation, follow-up, one-step verdicts (accuracy 0.9) with D77 holds.
+- Rules: guarantor count D plus D internally vertex-disjoint paths, each ending at a different Council member (any D members, each used once; D134; the first tables of this page used one Council member), each path at most 7 nodes (D123); optional layered support (D124); accounts in a dispute are not path intermediaries (D131). Detection is always on: freeze veto, partner inspection (10% of partners per day), noisy looks (sensitivity 0.8, false-positive 0.01 unless varied), leaving, public evidence with escalation, follow-up, one-step verdicts (accuracy 0.9) with D77 holds.
 - Attack: operators enter by ordinary invitation from distinct honest members and build a cone of fakes. Fakes cost nothing beyond protocol FACY. 60 days after the snapshot unless stated.
 
 ## Results
