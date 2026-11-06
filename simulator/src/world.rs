@@ -11,6 +11,7 @@ use crate::graph::Graph;
 use crate::hash::FastMap;
 use crate::paths::{layered_support, verify_family, PathFinder, Search, NO_LEVEL};
 use std::collections::{HashMap, HashSet};
+use std::sync::Arc;
 
 pub const DAY: i64 = 24;
 pub type Id = u32;
@@ -106,23 +107,32 @@ pub enum ActStatus {
     Cancelled,
 }
 
-#[derive(Clone, Debug)]
-struct Receipt {
-    recipient: Id,
-    revoked: bool,
-}
-
+/// XP credited for one act: one receipt per recipient (the subject first, then the guarantors whose guarantee stood at credit time).
+/// The recipient list is shared between acts of one account while it does not change, and single revoked receipts are rare, so they
+/// are kept as a sparse list of indexes (an efficiency layout, D145: it changes no outcome).
 #[derive(Clone, Debug)]
 struct Credit {
     revoked: bool,
-    receipts: Vec<Receipt>,
+    recipients: Arc<[Id]>,
+    revoked_receipts: Option<Box<[u32]>>,
+}
+
+impl Credit {
+    fn receipt_revoked(&self, idx: usize) -> bool {
+        self.revoked_receipts.as_ref().is_some_and(|r| r.contains(&(idx as u32)))
+    }
+    fn revoke_receipt(&mut self, idx: usize) {
+        let mut all = self.revoked_receipts.take().map_or_else(Vec::new, |b| b.into_vec());
+        all.push(idx as u32);
+        self.revoked_receipts = Some(all.into_boxed_slice());
+    }
 }
 
 #[derive(Clone, Debug)]
 struct Act {
     subject: Id,
     recorded_at: i64,
-    guarantors: Vec<Id>,
+    guarantors: Arc<[Id]>,
     status: ActStatus,
     credit: Option<Credit>,
 }
@@ -133,6 +143,9 @@ struct Subject {
     xp: i32,
     liquid: u32,
     last_reward: Option<i64>,
+    /// The most recent guarantor list and recipient list of this account's acts, reused while they are unchanged.
+    last_guarantors: Option<Arc<[Id]>>,
+    last_recipients: Option<Arc<[Id]>>,
     acts: Vec<u32>,
     first_unspent: usize,
     inviter: Option<Id>,
@@ -216,7 +229,6 @@ pub struct World {
     /// Open cases in which the account is excluded from paths (D131); equals `hold` unless `exclude_targets_only` is set.
     path_hold: Vec<u32>,
     cases: Vec<Option<Vec<Id>>>,
-    xp_by_pair: FastMap<(Id, Id), Vec<(u32, u32)>>,
     minted: i64,
     burned: i64,
     vault: i64,
@@ -259,7 +271,6 @@ impl World {
             hold: Vec::new(),
             path_hold: Vec::new(),
             cases: Vec::new(),
-            xp_by_pair: FastMap::default(),
             minted: 0,
             burned: 0,
             vault: 0,
@@ -297,6 +308,8 @@ impl World {
             xp: 0,
             liquid: 0,
             last_reward: None,
+            last_guarantors: None,
+            last_recipients: None,
             acts: Vec::new(),
             first_unspent: 0,
             inviter,
@@ -640,9 +653,9 @@ impl World {
             return false;
         }
         credit.revoked = true;
-        for r in &credit.receipts {
-            if !r.revoked {
-                self.subjects[r.recipient as usize].xp -= 1;
+        for (idx, &recipient) in credit.recipients.iter().enumerate() {
+            if !credit.receipt_revoked(idx) {
+                self.subjects[recipient as usize].xp -= 1;
             }
         }
         true
@@ -652,7 +665,7 @@ impl World {
         let (subject, recipients) = {
             let act = &self.acts[act_id as usize];
             let mut r = vec![act.subject];
-            for &g in &act.guarantors {
+            for &g in act.guarantors.iter() {
                 // A guarantor whose guarantee ended before the credit earns nothing.
                 if self.graph.has_edge(g, act.subject) {
                     r.push(g);
@@ -660,13 +673,18 @@ impl World {
             }
             (act.subject, r)
         };
-        let mut receipts = Vec::new();
-        for (idx, &recipient) in recipients.iter().enumerate() {
-            receipts.push(Receipt { recipient, revoked: false });
+        for &recipient in &recipients {
             self.subjects[recipient as usize].xp += 1;
-            self.xp_by_pair.entry((recipient, subject)).or_default().push((act_id, idx as u32));
         }
-        self.acts[act_id as usize].credit = Some(Credit { revoked: false, receipts });
+        let shared = match &self.subjects[subject as usize].last_recipients {
+            Some(last) if **last == *recipients => last.clone(),
+            _ => {
+                let fresh: Arc<[Id]> = recipients.into();
+                self.subjects[subject as usize].last_recipients = Some(fresh.clone());
+                fresh
+            }
+        };
+        self.acts[act_id as usize].credit = Some(Credit { revoked: false, recipients: shared, revoked_receipts: None });
     }
 
     fn dispose(&mut self, act_id: u32, status: ActStatus) {
@@ -721,6 +739,14 @@ impl World {
             return Err(Reject("insufficient Council paths"));
         }
         let guarantors = self.eligible_guarantors(who);
+        let guarantors: Arc<[Id]> = match &self.subjects[who as usize].last_guarantors {
+            Some(last) if **last == *guarantors => last.clone(),
+            _ => {
+                let fresh: Arc<[Id]> = guarantors.into();
+                self.subjects[who as usize].last_guarantors = Some(fresh.clone());
+                fresh
+            }
+        };
         let id = self.acts.len() as u32;
         self.acts.push(Act { subject: who, recorded_at: self.now, guarantors, status: ActStatus::Unspent, credit: None });
         let s = &mut self.subjects[who as usize];
@@ -762,15 +788,18 @@ impl World {
         };
         self.graph.remove_edge(g, d);
         if revoke {
-            if let Some(list) = self.xp_by_pair.get(&(g, d)).cloned() {
-                for (act_id, idx) in list {
-                    let act = &mut self.acts[act_id as usize];
-                    let Some(credit) = act.credit.as_mut() else { continue };
-                    if credit.revoked || credit.receipts[idx as usize].revoked {
-                        continue;
+            // Revoke the guarantor's receipts for the acts of the guaranteed account (the order does not matter: XP is a sum).
+            for k in 0..self.subjects[d as usize].acts.len() {
+                let act_id = self.subjects[d as usize].acts[k];
+                let Some(credit) = self.acts[act_id as usize].credit.as_mut() else { continue };
+                if credit.revoked {
+                    continue;
+                }
+                for idx in 1..credit.recipients.len() {
+                    if credit.recipients[idx] == g && !credit.receipt_revoked(idx) {
+                        credit.revoke_receipt(idx);
+                        self.subjects[g as usize].xp -= 1;
                     }
-                    credit.receipts[idx as usize].revoked = true;
-                    self.subjects[g as usize].xp -= 1;
                 }
             }
         }
@@ -1305,10 +1334,10 @@ impl World {
         let mut ever = vec![0i32; n];
         for act in &self.acts {
             if let Some(c) = &act.credit {
-                for r in &c.receipts {
-                    ever[r.recipient as usize] += 1;
-                    if !c.revoked && !r.revoked {
-                        xp[r.recipient as usize] += 1;
+                for (idx, &recipient) in c.recipients.iter().enumerate() {
+                    ever[recipient as usize] += 1;
+                    if !c.revoked && !c.receipt_revoked(idx) {
+                        xp[recipient as usize] += 1;
                     }
                 }
             }
