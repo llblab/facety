@@ -273,8 +273,10 @@ impl RunConfig {
             prob(name, x)?;
         }
         // The dispute clock (D69): a case lasts at least seven days after the last participant joins, so proving reality cannot be quicker either.
-        at_least("detection.window_days", d.window_days, 7)?;
-        at_least("detection.defense_days", d.defense_days, 7)?;
+        // The protocol window is seven days after the last entry; the owner concept D158 lets it shrink to three days as participants join, so
+        // the simulator accepts three as the lower bound of a sensitivity study (participants joining are not modeled; the default stays seven).
+        at_least("detection.window_days", d.window_days, 3)?;
+        at_least("detection.defense_days", d.defense_days, 3)?;
         at_least("detection.pattern_min_invitees", d.pattern_min_invitees as i64, 1)?;
         Ok(())
     }

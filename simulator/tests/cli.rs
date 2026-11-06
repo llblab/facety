@@ -54,7 +54,7 @@ fn invalid_arguments_are_refused_with_a_diagnostic_and_a_nonzero_exit() {
     refused(&["grown", "--fpr", "0.1", "--fpr", "0.2"]);
     refused(&["grown", "--bound", "none"]);
     refused(&["grown", "--layered"]);
-    refused(&["grown", "--defense-days", "3"]);
+    refused(&["grown", "--defense-days", "2"]);
     refused(&["grown", "--bound", "1"]);
     refused(&["grown", "--strategy", "clever"]);
     refused(&["grown", "--target-honest", "50"]);

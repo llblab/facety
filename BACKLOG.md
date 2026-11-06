@@ -44,6 +44,8 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **Status (2026-11-06): K1-K7 done.** K1 met, K2 met (containment holds; honest sensitivity named), K3 met (no starvation; harm linear in false cases, Q21), K4 met (recovery without extra mechanism; the effect of appeal and restoration insufficient), K5 confirmed on 12 of 12 reserved seeds at one year and at two years, K6 restated, K7 in the [consolidated findings](docs/insights.en.md#consolidated-findings) and [D155](docs/decisions.en.md). Results: [study](studies/2026-11-06-core-closure/README.md).
 
+**K5 re-frozen under D157 (softer D131), before the confirmation.** Exploratory re-run (100 operators, seeds 1-4, one year): dirty-FACY share X1 0.98%, X2 0.94%, X3 0.31%, X4 0.01%, X5 1.27%, reference 0.62%. X5 exceeds X1 by more than 20%, so the frozen adversary is X5: 100 operators, supported-first, patience 120 days, 20% bought honest accounts, odd-profile examiners (5% of genuine accounts, ten times the false-positive rate), proof of reality 0.7 within 14 days. Confirmation on the new reserved seeds `grown-2001..2012`: the 100-operator reference and X5 at one year, X5 at two years; per-seed criterion as above.
+
 **Owner-gated, named, not blocking the programme:** Q20 (verification before a case, softer D131), the honest-damage tolerance, the price of buying honest links. **Needs empirical data about people, not more synthetic runs:** how independent real examiners are, how quickly and reliably an accused person can prove reality outside the network, how much attention people actually give. Items below that are outside this table stay open and parked until the owner asks for more research.
 
 ## Rust simulator

@@ -46,6 +46,7 @@ const VALUE_KEYS: &[&str] = &[
     "--public-look",
     "--defense",
     "--defense-days",
+    "--window",
     "--disputes-from",
     "--honest-genesis",
     "--search-order",
@@ -79,13 +80,14 @@ const FLAG_KEYS: &[&str] = &[
     "--accuse-hubs",
     "--self-path-from-guarantor",
     "--targets-only",
+    "--exclude-challengers",
     "--overwrite",
 ];
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
-  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--svg DIR] [--accuse R] [--accuse-hubs] [--shock-day N --shock-days N --shock-fpr-x X] [--odd-share P] [--odd-mult X] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--self-path-from-guarantor] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
-  [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--key-loss P] [--recovery-vouch P] [--recovery-delay DAYS] [--befriend P] [--invite P] [--accept-far P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
+  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--svg DIR] [--accuse R] [--accuse-hubs] [--shock-day N --shock-days N --shock-fpr-x X] [--odd-share P] [--odd-mult X] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--exclude-challengers] [--self-path-from-guarantor] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
+  [--public-look P] [--defense P] [--defense-days N] [--window N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--key-loss P] [--recovery-vouch P] [--recovery-delay DAYS] [--befriend P] [--invite P] [--accept-far P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
     eprintln!("error: {message}\n{USAGE}");
@@ -193,7 +195,8 @@ fn plan(args: &[String]) -> Result<Plan, String> {
         base.world.layered = false;
     }
     base.world.exclude_disputed = !flags.contains("--allow-disputed");
-    base.world.exclude_targets_only = flags.contains("--targets-only");
+    // D157: the default excludes only the accused from paths; `--targets-only` is the (now redundant) explicit form, `--exclude-challengers` the ablation.
+    base.world.exclude_targets_only = !flags.contains("--exclude-challengers");
     base.world.self_path_from_subject = !flags.contains("--self-path-from-guarantor");
     base.honest_genesis = num(&opts, "--honest-genesis", base.honest_genesis)?;
     base.honest.vetting = num(&opts, "--vetting", 0.0)?;
@@ -249,6 +252,7 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.detection.public_look = num(&opts, "--public-look", base.detection.public_look)?;
     base.detection.defense_success = num(&opts, "--defense", base.detection.defense_success)?;
     base.detection.defense_days = num(&opts, "--defense-days", base.detection.defense_days)?;
+    base.detection.window_days = num(&opts, "--window", base.detection.window_days)?;
     base.detection.disputes_from_active = num(&opts, "--disputes-from", 0)?;
     // The retired baseline grew the honest prefix without detection and switched it on at the snapshot; --detect-prefix runs it from day 0.
     base.detection_start_day = if flags.contains("--detect-prefix") { 0 } else { i64::MAX / 4 };

@@ -66,8 +66,9 @@ pub struct Config {
     pub search_order: Option<SearchOrder>,
     /// D131: accounts in an open dispute are not path intermediaries (default). `false` is the ablation used to price the rule.
     pub exclude_disputed: bool,
-    /// Softer D131 (research variant): only the accused party of a case (the second subject) is excluded from paths and from layered
-    /// support; the challenger stays usable. Both parties keep the D77 activity hold either way. Default off.
+    /// D131 (owner rule, D157): only the accused party of a case (the second subject) is excluded from paths and from layered support; the
+    /// challenger stays usable. Both parties keep the D77 activity hold either way. `false` is the earlier reading (both parties excluded),
+    /// kept as an ablation.
     pub exclude_targets_only: bool,
     /// The emission check (D84, owner rule): every Self-ID needs one current path from the emitter to a Council member of at most
     /// `max_nodes` nodes including both ends, whose intermediates (the guarantor first) are accepted, supported (D124) and not in a
@@ -93,7 +94,7 @@ impl Default for Config {
             max_difficulty: None,
             search_order: None,
             exclude_disputed: true,
-            exclude_targets_only: false,
+            exclude_targets_only: true,
             self_path_from_subject: true,
         }
     }
@@ -1711,7 +1712,8 @@ mod tests {
 
     #[test]
     fn disputes_hold_activity_and_exclude_accounts_from_paths_and_void_chain_revokes() {
-        let mut w = world(10);
+        // The earlier reading of D131 (both parties excluded); the default spares the challenger (D157, tested below).
+        let mut w = World::new(Config { exclude_targets_only: false, ..Config::default() }, 10, &ring(10));
         let a = w.create_self_id(3).unwrap();
         w.tick(24);
         w.convert_to_collector(3, a).unwrap();
