@@ -135,6 +135,8 @@ struct Subject {
     /// Social recovery (D135): the account whose key was lost, and the XP restored from it once the recovery is complete.
     recovers: Option<Id>,
     restored_xp: i32,
+    /// Sum of authorized XP penalties (D55 trusted execution); XP equals receipts plus recovered XP minus this.
+    penalized_xp: i32,
     lost_key: bool,
 }
 
@@ -293,6 +295,7 @@ impl World {
             inviter,
             recovers: None,
             restored_xp: 0,
+            penalized_xp: 0,
             lost_key: false,
         });
         self.owned_open.push(0);
@@ -1102,6 +1105,56 @@ impl World {
         false
     }
 
+    /// D34/D55 (trusted execution, not adjudication): the account loses `fraction` of its current XP, recorded as an authorized adjustment.
+    /// Deviation: the snapshot of the losing act is not kept; the penalty applies to the XP the account holds now. Returns the XP removed.
+    pub fn penalize_xp(&mut self, id: Id, fraction: f64) -> i32 {
+        let s = &mut self.subjects[id as usize];
+        let cut = ((f64::from(s.xp.max(0))) * fraction).floor() as i32;
+        s.xp -= cut;
+        s.penalized_xp += cut;
+        cut
+    }
+
+    /// D151 recovery: the liquid FACY of an invalidated account is burned (FACY already transferred out cannot be un-minted, D53; here
+    /// nothing is transferable, so all liquid FACY of the account is burned). Returns the amount burned.
+    pub fn burn_liquid(&mut self, id: Id) -> u32 {
+        let mut burned = 0;
+        let acts = self.subjects[id as usize].acts.clone();
+        for act in acts {
+            if self.acts[act as usize].status == ActStatus::Converted {
+                self.acts[act as usize].status = ActStatus::Cancelled;
+                burned += 1;
+            }
+        }
+        self.subjects[id as usize].liquid -= burned;
+        self.burned += i64::from(burned);
+        burned
+    }
+
+    /// D151 repair: a pair of honest accounts whose link was cut by a false positive is restored without a fee (no emission right is burned).
+    /// The usual limits hold: both accounts are free, slots are available and no link or open valence exists between them.
+    pub fn restore_link(&mut self, a: Id, b: Id) -> Result<(), Reject> {
+        self.require_account(a)?;
+        self.require_account(b)?;
+        if a == b {
+            return Err(Reject("restoration requires a distinct counterpart"));
+        }
+        self.require_free(a)?;
+        self.require_free(b)?;
+        if self.graph.has_edge(a, b) || self.graph.has_edge(b, a) || self.open_val.contains_key(&(a, b)) || self.open_val.contains_key(&(b, a)) {
+            return Err(Reject("a link or an open valence already exists"));
+        }
+        if self.used_slots(a) >= self.slot_ceiling(a) || self.used_slots(b) >= self.slot_ceiling(b) {
+            return Err(Reject("owned-slot ceiling reached"));
+        }
+        let va = self.push_valence(a, b);
+        let vb = self.push_valence(b, a);
+        let rels = self.establish(a, b);
+        self.valences[va as usize].rels = rels.clone();
+        self.valences[vb as usize].rels = rels;
+        Ok(())
+    }
+
     /// Cut the whole Self-ID chain: unspent rights burn without XP; XP credited by the cut acts is revoked.
     pub fn void_chain(&mut self, id: Id) {
         let chain = self.subjects[id as usize].acts.clone();
@@ -1255,7 +1308,7 @@ impl World {
             if owned[i] != self.owned_open[i] {
                 return Err(format!("owned valences of {i}"));
             }
-            if xp[i] + s.restored_xp != s.xp {
+            if xp[i] + s.restored_xp - s.penalized_xp != s.xp {
                 return Err(format!("xp of {i}: stored {} recomputed {}", s.xp, xp[i]));
             }
             if units[i] != self.inv_units[i] {

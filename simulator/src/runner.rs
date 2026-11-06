@@ -80,6 +80,12 @@ pub struct Detection {
     pub subtree_cases: usize,
     /// D151 appeal: chance that a wrongly invalidated (genuine) account appeals successfully; the account is reinstated after `defense_days`. 0 = off.
     pub appeal: f64,
+    /// D151 repair: when an appeal reinstates a wrongly invalidated person, the honest links that the false positive cut are restored without a fee.
+    pub restore_links: bool,
+    /// D151 recovery: the liquid FACY of an invalidated account is burned.
+    pub recover_liquid: bool,
+    /// D34/D55 (trusted execution): the inviter of an invalidated account loses this fraction of its XP unless acquitted. 0 = off.
+    pub xp_penalty: f64,
     pub acquit_met: bool,
     /// New identity cases (inspection, public evidence, follow-up) open only once this many accounts are active; the freeze veto
     /// and the resolution of open cases are unaffected. D91 disables disputes below 100 active accounts: set 100 to model it.
@@ -218,6 +224,7 @@ impl RunConfig {
             ("detection.sponsor_willingness", d.sponsor_willingness),
             ("detection.defense_success", d.defense_success),
             ("detection.appeal", d.appeal),
+            ("detection.xp_penalty", d.xp_penalty),
         ] {
             prob(name, x)?;
         }
@@ -237,11 +244,11 @@ impl RunConfig {
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"artifactRate\":{},\"collusion\":{}}},\
-\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"appeal\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
+\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.artifact_rate), json::number(h.collusion),
-            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, json::number(d.appeal), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
+            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
         )
     }
 }
@@ -291,6 +298,9 @@ impl Default for RunConfig {
                 follow_up: true,
                 subtree_cases: 0,
                 appeal: 0.0,
+                restore_links: false,
+                recover_liquid: false,
+                xp_penalty: 0.0,
                 acquit_met: false,
                 disputes_from_active: 0,
                 defense_success: 0.95,
@@ -371,6 +381,12 @@ pub struct DetectionCounters {
     pub colluders_acquitted: u64,
     /// Wrongly invalidated accounts reinstated on appeal (D151).
     pub appeals_restored: u64,
+    /// Honest links restored without a fee after an appeal (D151).
+    pub links_restored: u64,
+    /// Liquid FACY burned on invalidated accounts (D151).
+    pub liquid_burned: u64,
+    /// XP removed from inviters of invalidated accounts (D34/D55 trusted execution).
+    pub xp_penalized: u64,
     pub holders_invalidated: u64,
     pub defended: u64,
     /// Formal cases refused by the common procedure (XP gate, disabled disputes, invalid parties); no state changed for them.
@@ -438,6 +454,8 @@ pub struct Sim {
     open_cases: Vec<CaseRec>,
     /// Appeals due (hour, account) after a wrong invalidation (D151).
     appeals: Vec<(i64, Id)>,
+    /// Honest links cut by the cascade of a verdict, per invalidated account, kept for restoration on appeal (D151).
+    cuts: HashMap<Id, Vec<(Id, Id)>>,
     pub det: DetectionCounters,
     pub invitations: [u64; 2],
     pub admitted: [u64; 2],
@@ -523,6 +541,7 @@ impl Sim {
             scratch: Vec::new(),
             open_cases: Vec::new(),
             appeals: Vec::new(),
+            cuts: HashMap::new(),
             det: DetectionCounters::default(),
             invitations: [0; 2],
             admitted: [0; 2],
@@ -1075,6 +1094,11 @@ impl Sim {
         for id in due {
             if self.world.reinstate_identity(id) {
                 self.det.appeals_restored += 1;
+                for (a, b) in self.cuts.remove(&id).unwrap_or_default() {
+                    if self.world.accepted(a) && self.world.accepted(b) && self.world.restore_link(a, b).is_ok() {
+                        self.det.links_restored += 1;
+                    }
+                }
             }
         }
         // Freeze veto: honest current guarantors of the creator review invitations created today.
@@ -1142,6 +1166,9 @@ impl Sim {
             }
             self.world.invalidate_identity(rec.target);
             self.world.void_chain(rec.target);
+            if det.recover_liquid {
+                self.det.liquid_burned += u64::from(self.world.burn_liquid(rec.target));
+            }
             if label {
                 self.det.false_invalidated += 1
             } else {
@@ -1155,6 +1182,9 @@ impl Sim {
                 if label && self.world.accepted(holder) {
                     self.world.invalidate_identity(holder);
                     self.world.void_chain(holder);
+                    if det.recover_liquid {
+                        self.det.liquid_burned += u64::from(self.world.burn_liquid(holder));
+                    }
                     self.det.holders_invalidated += 1;
                 }
             }
@@ -1185,10 +1215,13 @@ impl Sim {
                 }
                 self.det.honest_inviter_cascades += 1;
             }
+            if det.xp_penalty > 0.0 {
+                self.det.xp_penalized += self.world.penalize_xp(inviter, det.xp_penalty) as u64;
+            }
             if det.leave {
                 for partner in self.world.mutual_partners(inviter) {
-                    if self.cohort[partner as usize] == Cohort::Honest {
-                        self.leave(partner, inviter);
+                    if self.cohort[partner as usize] == Cohort::Honest && self.leave(partner, inviter) && det.restore_links && !label {
+                        self.cuts.entry(rec.target).or_default().push((partner, inviter));
                     }
                 }
             }
@@ -1334,8 +1367,8 @@ impl Sim {
             self.censored.map_or("null".to_string(), json::string)
         );
         let d = &self.det;
-        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
-            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
+        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
+            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
             self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");
@@ -1493,6 +1526,21 @@ mod tests {
         assert_eq!(none, 0);
         let (_, restored) = run(1.0);
         assert!(wrong == 0 || restored > 0, "with appeals every wrongly invalidated person is restored");
+    }
+
+    /// D151/D34: restoration, liquid recovery and the XP penalty keep the world consistent (audit) and are opt-in.
+    #[test]
+    fn the_remedy_levers_keep_the_audit() {
+        let mut c = small("rem", 7, false);
+        c.detection.false_positive = 0.05;
+        c.detection.appeal = 1.0;
+        c.detection.restore_links = true;
+        c.detection.recover_liquid = true;
+        c.detection.xp_penalty = 0.5;
+        c.detection.subtree_cases = 10;
+        let mut sim = Sim::new(c);
+        sim.run();
+        sim.world.audit().unwrap();
     }
 
     /// A grown honest network with XP spread across accounts, plus a pair finder over accepted, free accounts.

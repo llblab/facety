@@ -148,6 +148,15 @@ Acquittal with an artifact keeps about 7% more honest accounts and removes the c
 
 Against the layered baseline (100 operators, 4 seeds, 400 days after the genesis phase) the remedy changes nothing measurable: the cone does not form, attacker accounts 98.75 against 99.0, attacker share 0.95% against 0.99%, dirty-FACY share 1.01% against 1.06%, honest accounts 10,286 against 9,906 (a 3.7% difference that four seeds cannot separate from noise), so the remedy is an insurance for a weaker gate, not a baseline gain. A small partial scope already halves the cluster and the dirty-FACY share at no visible cost to honest people, because trapped genuine people prove reality (success 0.95); a larger cap adds nothing. Appeal: a wrongly invalidated person who proves reality is an account again after the defense window (`detection.appeal`); 4 seeds, 10 operators, 200 days, layered, inspection 10% and false-positive rate 1% (a deliberately poor detector): appeal 0, 0.5 and 1 reinstate 0, 8.0 and 16.2 of about 17 wrongly invalidated people and leave 1,246, 1,265 and 1,308 honest accounts (+5% at full success), attackers unchanged at 9.8. Reinstatement restores the account only; links that partners already left, the revoked credit and the cut chain are not restored (fee-free link restoration needs a free-link operation in the world and is not modeled).
 
+Remaining parts of the D151 remedy (diagnostic, 4 to 6 seeds, same scenarios; every setting is opt-in and off by default):
+
+| Part | Setting | Result |
+| --- | --- | --- |
+| Fee-free restoration of links cut by a false positive | poor detector, appeal 1, `--restore-links` | 33.5 links restored of about 657 left (5%); honest accounts 1,221 against 1,308 without restoration, a difference four seeds cannot separate from noise (restored links change which later invitations fit the slots); no benefit shown |
+| Burning liquid FACY of invalidated accounts | weak gate, subtree cap 10, `--recover-liquid` | 1.3 FACY burned per run, no change in the dirty-FACY share (0.38%): fakes hold almost no liquid FACY |
+| XP penalty for the inviter of an invalidated account (D34/D55, trusted execution, current XP rather than the act snapshot) | `--xp-penalty 0.5` | double-life scenario: 10,186 XP removed over 4 seeds, honest accounts 8,746 against 8,571; weak gate: 7,057 XP removed per run, attackers unchanged at 422; the penalty does not change the cluster outcome in the model, its deterrent value would need modeled incentives |
+| Proof window | weak gate, subtree cap 10, defense window 7, 14 and 28 days | attacker share 15.3%, 11.1% and 17.2%, honest accounts 2,324, 2,268 and 2,128; no monotone effect at 6 seeds, so the window stays at the seven-day minimum (D136) |
+
 Collusion leak of D152, estimated from the table above: full artifacts keep 431 more links than no acquittal over 22.2 acquitted inviters, about 19 links per acquittal; at 50% collusion 9.2 of the acquittals are colluders, so about 175 of the 431 kept links belong to colluding inviters. This prices the leak at the cascade the colluding inviter would have suffered; it is an estimate, not a separate run.
 
 ## Limits

@@ -171,7 +171,7 @@ Answered 2026-10-29: D85 → **D110** free termination cancelling the terminatin
 
 ### Q18 — Remedy for a detected fake cluster (D119)
 
-Answered 2026-11-06: **D151**. All measures combine (quarantine as heightened handling with partial invalidation, liability of entry points and act-time guarantors, burden of proof, economic recovery), plus appeal and fee-free restoration for honest people hit by mistake. Still open: scope of partial invalidation, the proof window, the use of recovered value (burn, bounty, compensation).
+Answered 2026-11-06: **D151**. All measures combine (quarantine as heightened handling with partial invalidation, liability of entry points and act-time guarantors, burden of proof, economic recovery), plus appeal and fee-free restoration for honest people hit by mistake. Simulator checks: a cap of about 10 accounts per invalidation is enough and the seven-day window stays. Still open: the use of recovered value beyond burning (bounty, compensation).
 
 ### Q19 — Second accounts and the unwitting inviter (D127)
 
