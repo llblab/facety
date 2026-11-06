@@ -4,7 +4,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **Current priority (D129, D132):** show with the Rust simulator, up to a year or two of network growth, that the topology defense keeps the dirty-FACY share at most 10% and the clean share at least two thirds, at a bearable cost to honest people. Detection is always on; its design is the variable.
 
-**Phase: core closure programme complete (D155), research loop stopped, awaiting the owner's decision on the implementation bounds (Q20, Q21).** Earlier: **baseline complete, awaiting owner feedback (D140).** Every axis below has a named value; the last three were proposed by the builder (D143) and the owner may overrule them. From here a broad benchmark and a search for pits at particular values make sense. Order of work (D141): stability, analysis, understanding, representativeness.
+**Phase: the baseline is still forming (default-rule changes such as D156 keep arriving); changes are tested with the [benchmark panels](docs/simulator.en.md#benchmark-panels-for-default-rule-changes). Core closure programme (D155) complete under the earlier emission reading and being re-checked under D156; awaiting the owner's decision on the implementation bounds (Q20, Q21).** Earlier: **baseline complete, awaiting owner feedback (D140).** Every axis below has a named value; the last three were proposed by the builder (D143) and the owner may overrule them. From here a broad benchmark and a search for pits at particular values make sense. Order of work (D141): stability, analysis, understanding, representativeness.
 
 | Baseline axis | Value | Status |
 | --- | --- | --- |
@@ -18,9 +18,11 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 | Detection precision | false-positive rate 0.003, inspection 0.03, accuracy 0.9, window 7 days | fixed (D142) |
 | Proof of reality by a genuine account | success 0.95, 7 days (minimum, D142) | days fixed; probability 0.95 is an assumption (D136) |
 | Honest behavior rates | 20% careless accounts (accept strangers at 0.5, no second look), the rest at 0.05 | proposed (D143) |
-| Attacker model | cone, honest-first, supported-first; operators 10-100; patience up to 120 days | proposed (D143); stronger models still welcome |
+| Attacker model | cone, honest-first, supported-first; operators 10-100; patience up to 120 days; optional bought honest accounts, cash-out and false accusations | proposed (D143); stronger models only on owner request |
 | Snapshot and horizon | snapshot at 1000 honest accounts; criterion at 365 days, 730 as stress | proposed (D143) |
-| Social recovery (D135), identification reputation (D137) | recovery operations in the world, no scenarios; reputation not modeled | open: scenarios and model |
+| Emission path check | every Self-ID needs one path from the emitter to a Council member, at most 7 nodes, supported intermediates outside disputes | fixed (D156); closure results re-checked under it |
+| Social recovery (D135) | key loss and recovery scenario (`--key-loss`, `--recovery-vouch`, `--recovery-delay`) | scenario done; works but slow and incomplete (study) |
+| Identification reputation (D137) | not modeled | parked: no selected rule, not part of the core |
 
 ## Core closure programme (opened 2026-11-06, finite)
 

@@ -149,3 +149,33 @@ fn the_repository_contains_no_cyrillic_text() {
     }
     assert!(offenders.is_empty(), "Cyrillic text in: {offenders:?}");
 }
+
+/// Every `--flag` that the current documents mention in a code span exists in the command line of the simulator, so the README and the
+/// contract cannot describe options that were removed or renamed.
+#[test]
+fn documented_command_line_flags_exist() {
+    let source = std::fs::read_to_string(repo_root().join("simulator/src/main.rs")).expect("main.rs");
+    let known: HashSet<String> = source
+        .split('"')
+        .enumerate()
+        .filter(|(i, s)| i % 2 == 1 && s.starts_with("--") && s.len() > 2 && s[2..].chars().all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '-'))
+        .map(|(_, s)| s.to_string())
+        .collect();
+    assert!(known.contains("--seeds") && known.contains("--horizon"), "the flag list was not parsed from main.rs");
+    let mut unknown = Vec::new();
+    for f in ["README.md", "docs/simulator.en.md", "BACKLOG.md", "AGENTS.md"] {
+        let body = std::fs::read_to_string(repo_root().join(f)).expect("document");
+        for span in body.split('`').skip(1).step_by(2) {
+            for word in span.split(|c: char| c.is_whitespace() || c == ',' || c == '(' || c == ')' || c == ';') {
+                if let Some(flag) = word.strip_prefix("--") {
+                    let name: String = flag.chars().take_while(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || *c == '-').collect();
+                    let cargo_flag = matches!(name.as_str(), "release" | "check");
+                    if !name.is_empty() && !cargo_flag && !known.contains(&format!("--{name}")) {
+                        unknown.push(format!("{f}: --{name}"));
+                    }
+                }
+            }
+        }
+    }
+    assert!(unknown.is_empty(), "documented flags that the simulator does not accept: {unknown:?}");
+}

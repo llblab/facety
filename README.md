@@ -22,7 +22,7 @@ Three layers stay distinct: uniqueness (identity claims and guarantees are conte
 
 ## Current state (consolidated)
 
-- The topology defense under study is the Council-path gate: a guarantor count `D` plus `D` internally vertex-disjoint current paths to one Council member, each path at most 7 nodes (the bound limits on-chain verification cost), optionally through layered-supported intermediaries and never through accounts in an open dispute. Detection of violators is always part of every attack simulation. See the [consolidated findings](docs/insights.en.md#consolidated-findings).
+- The topology defense under study is the Council-path gate: a guarantor count `D` plus `D` internally vertex-disjoint current paths to `D` different Council members for every invitation, each path at most 7 nodes (the bound limits on-chain verification cost), through layered-supported intermediaries and never through accounts in an open dispute; every emission also needs one such path from the emitter, so that a cluster cut off from the Council cannot emit (D156). Detection of violators is always part of every attack simulation. See the [consolidated findings](docs/insights.en.md#consolidated-findings), including the core readiness summary, and the [core closure study](studies/2026-11-06-core-closure/README.md).
 - The success criterion is the dirty-FACY share: at most 10% on the longest horizon, and a clean share of at least two thirds ([D129](docs/decisions.en.md)).
 - The Node.js simulator is retired (D130). Its last version is the git tag `legacy-node`.
 
@@ -31,10 +31,10 @@ Three layers stay distinct: uniqueness (identity claims and guarantees are conte
 ```text
 cd simulator
 cargo test --release                    # rule tests, graph oracles and the documentation integrity guard
-cargo run --release -- grown --seeds 20 --bound 7 --layered --attackers 10 --horizon 60
+cargo run --release -- grown --seeds 4 --attackers 10 --horizon 60      # the baseline rules; --no-layered is an ablation
 ```
 
-Rust, standard library only. One command grows an honest network to a target size once per seed and attacks clones of that snapshot, so long horizons and operator sweeps are cheap. Levers, defaults, assumptions and validation are in the [simulator contract](docs/simulator.en.md).
+Rust, standard library only. One command grows an honest network to a target size for each seed (the growth phase runs without detection), then runs the attack phase from that snapshot with detection on. Levers, defaults, assumptions, validation, the resource profile and the [benchmark panels for default-rule changes](docs/simulator.en.md#benchmark-panels-for-default-rule-changes) are in the [simulator contract](docs/simulator.en.md).
 
 ## Conventions
 
