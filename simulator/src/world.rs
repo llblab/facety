@@ -1693,8 +1693,7 @@ mod tests {
 
     #[test]
     fn the_softer_exclusion_spares_the_challenger_but_keeps_the_activity_hold() {
-        let mut cfg = Config::default();
-        cfg.exclude_targets_only = true;
+        let cfg = Config { exclude_targets_only: true, ..Config::default() };
         let mut w = World::new(cfg, 10, &ring(10));
         let case = w.begin_case(&[3, 4]).unwrap();
         assert_eq!(w.create_self_id(3), Err(Reject("open-dispute activity restriction")), "both parties keep the D77 hold");
