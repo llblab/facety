@@ -95,6 +95,8 @@ Configuration exists only where the research varies something.
 
 ## Baseline validation (statistical)
 
+**Resource profile (measured 2026-11-06).** One heavy seed (100 operators, supported-first, patience 120 days, 20% bought accounts, one thread): one year 208 s and 1.4 GB, two years 1,056 s and 5.3 GB. Bound the memory of a parallel series with `--threads`; twelve two-year seeds in parallel need more than 62 GB.
+
 **Compatibility note.** The XP-gated formal-case procedure, single-use recovery, the baseline decisions of D142 and the baseline axes of D143 (careless honest accounts, patient operators, a one-year horizon) changed the simulator after the older tables below were measured; they describe the earlier simulators and are not comparable with it. Current baseline (Rust, `RunConfig::default()`), seed families `grown-1..`:
 
 | Run | Attacker accounts | Attacker share of accounts | Dirty-FACY share (mean, max) | Honest accounts | Genuine invalidated |
