@@ -166,6 +166,37 @@ Remaining parts of the D151 remedy (diagnostic, 4 to 6 seeds, same scenarios; ev
 | XP penalty for the inviter of an invalidated account (D34/D55, trusted execution, current XP rather than the act snapshot) | `--xp-penalty 0.5` | double-life scenario: 10,186 XP removed over 4 seeds, honest accounts 8,746 against 8,571; weak gate: 7,057 XP removed per run, attackers unchanged at 422; the penalty does not change the cluster outcome in the model, its deterrent value would need modeled incentives |
 | Proof window | weak gate, subtree cap 10, defense window 7, 14 and 28 days | attacker share 15.3%, 11.1% and 17.2%, honest accounts 2,324, 2,268 and 2,128; no monotone effect at 6 seeds, so the window stays at the seven-day minimum (D136) |
 
+### Incentive analysis of the inviter penalties and of liquid recovery (D151, D152, diagnostic valuation sweeps)
+
+The utility is not chosen: the table reports recorded consequences and sweeps the valuation, as AGENTS requires. A max over scripts is not an equilibrium; this is the individual deviation of one colluding pair, conditional on being caught.
+
+Recorded consequences (4 seeds, 10 operators, 200 days, layered, 2% second-account invitations, every second-account inviter colluding, per seed):
+
+| Regime | Caught second accounts | Emissions earned by them | Inviters acquitted | Links lost by colluding inviters | XP lost by them |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| no acquittal | 20.2 | 740 | 0 | 403 | 0 |
+| no acquittal, XP penalty 0.5 | 20.2 | 741 | 0 | 404 | 11,646 |
+| acquittal on a fabricated artifact | 19.2 | 754 | 19.2 | 0 | 0 |
+| acquittal and XP penalty 0.5 | 19.2 | 754 | 19.2 | 0 | 0 |
+
+Per caught second account the pair earns 36.6 emissions and the inviter loses 19.9 links and, with the penalty, 576 XP. The sweep is over the value of one emission `g` against one link (`ℓ = 1`) and one XP point (`w` links): the inviter's loss is `19.9 + 576.5 w` link units, so deterrence needs `g` below `(19.9 + 576.5 w) / 36.6` links per emission:
+
+| Value of one XP in links `w` | 0 | 0.01 | 0.05 | 0.1 |
+| --- | ---: | ---: | ---: | ---: |
+| Break-even value of one emission in links | 0.54 | 0.70 | 1.32 | 2.12 |
+
+Reading: without a fabricated artifact the loss deters when an emission is worth less than about half a link, and the XP penalty raises that threshold only if XP is valued (at one XP per hundred links it adds 0.16). With acquittal on a fabricated artifact the loss is zero and deterrence vanishes at any positive valuation, so the co-presence artifact must resist fabrication (open in D152) before the penalty has any use. The analysis ignores the holder's own loss when caught, the chance of being caught and any externality.
+
+Attackers that cash out (declared behavior `--cash-out`: a mature right becomes liquid FACY instead of growing the cluster), 6 seeds, 10 operators, 60 days, weak gate, subtree cap 10:
+
+| Cash-out chance | Attacker accounts | Attacker share | Dirty-FACY share without recovery | with `--recover-liquid` | Liquid FACY burned |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 0 | 422 | 15.3% | 0.38% | 0.38% | 1.3 |
+| 0.3 | 196 | 7.2% | 1.20% | 0.85% | 424 |
+| 0.7 | 78 | 3.1% | 1.34% | 1.13% | 236 |
+
+Cashing out shrinks the cluster (rights converted cannot invite) but turns emission into dirty liquid FACY; recovery from caught accounts removes 29% and 16% of that dirty FACY. Against the layered baseline (100 operators, 300 days, cash-out 0.5, 2 seeds) recovery burns 1,444 FACY of 12,620 dirty (1.1% of the supply stays dirty either way) because the operators' own accounts are rarely invalidated. Dirty-FACY share stays below the 10% criterion in every row.
+
 Collusion leak of D152, estimated from the table above: full artifacts keep 431 more links than no acquittal over 22.2 acquitted inviters, about 19 links per acquittal; at 50% collusion 9.2 of the acquittals are colluders, so about 175 of the 431 kept links belong to colluding inviters. This prices the leak at the cascade the colluding inviter would have suffered; it is an estimate, not a separate run.
 
 ## Limits

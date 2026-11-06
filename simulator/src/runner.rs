@@ -112,6 +112,9 @@ pub struct RunConfig {
     pub detection_start_day: i64,
     /// Patient operators: for this many days after entry they only build honest links and reputation, and invite no fakes.
     pub attacker_patience_days: i64,
+    /// Declared attacker behavior: chance that an operator account converts a mature emission right to liquid FACY (cashing out)
+    /// instead of spending it on the attack; a trade-off, since a converted right can no longer grow the cluster. 0 = never.
+    pub attacker_cash_out: f64,
     /// Stop on the first day the honest accepted population reaches this size (0 = never): a snapshot point.
     pub stop_at_honest: usize,
 }
@@ -143,6 +146,7 @@ impl RunConfig {
         at_least("attack_start_day", self.attack_start_day, 0)?;
         at_least("detection_start_day", self.detection_start_day, 0)?;
         at_least("attacker_patience_days", self.attacker_patience_days, 0)?;
+        prob("attacker_cash_out", self.attacker_cash_out)?;
         if self.max_subjects < self.honest_genesis {
             return Err(format!("max_subjects ({}) must be at least honest_genesis ({})", self.max_subjects, self.honest_genesis));
         }
@@ -241,11 +245,11 @@ impl RunConfig {
         let h = &self.honest;
         let d = &self.detection;
         format!(
-            "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"stopAtHonest\":{},\
+            "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"artifactRate\":{},\"collusion\":{}}},\
 \"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
-            json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, self.stop_at_honest,
+            json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.artifact_rate), json::number(h.collusion),
             json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
@@ -308,6 +312,7 @@ impl Default for RunConfig {
             },
             detection_start_day: 0,
             attacker_patience_days: 0,
+            attacker_cash_out: 0.0,
             stop_at_honest: 0,
         }
     }
@@ -383,6 +388,9 @@ pub struct DetectionCounters {
     pub appeals_restored: u64,
     /// Honest links restored without a fee after an appeal (D151).
     pub links_restored: u64,
+    /// Recorded consequences of caught second accounts, index 0 unwitting inviter, 1 colluding inviter (D152 incentive ledger):
+    /// caught, emissions of the second account, inviter acquitted, links the inviter's partners left, XP removed from the inviter.
+    pub ledger: [[u64; 5]; 2],
     /// Liquid FACY burned on invalidated accounts (D151).
     pub liquid_burned: u64,
     /// XP removed from inviters of invalidated accounts (D34/D55 trusted execution).
@@ -889,6 +897,9 @@ impl Sim {
             let rights = self.world.eligible_emissions(id, self.cfg.world.spend_hours);
             for right in rights {
                 self.sequence += 1;
+                if self.cfg.attacker_cash_out > 0.0 && rng.chance(self.cfg.attacker_cash_out) && self.world.convert_to_collector(id, right).is_ok() {
+                    continue;
+                }
                 if !waiting && self.invite(id, right, Cohort::Attacker, Kind::Fake, None, 0) {
                     continue;
                 }
@@ -1202,6 +1213,13 @@ impl Sim {
                 }
             }
             let Some(inviter) = self.world.inviter(rec.target).filter(|&i| self.world.accepted(i)) else { continue };
+            // Incentive ledger: what a caught second account earned and what its inviter then lost.
+            let ledger = (label && self.kind[rec.target as usize] == Kind::Double && self.cohort[inviter as usize] == Cohort::Honest)
+                .then(|| usize::from(self.artifact.get(&rec.target) == Some(&2)));
+            if let Some(c) = ledger {
+                self.det.ledger[c][0] += 1;
+                self.det.ledger[c][1] += self.world.chain_len(rec.target) as u64;
+            }
             if self.cohort[inviter as usize] == Cohort::Honest && (det.acquit_met || self.cfg.honest.double_life > 0.0) {
                 // D152: only a co-presence artifact acquits; without one the ordinary chain liability stands.
                 if det.acquit_met {
@@ -1210,18 +1228,30 @@ impl Sim {
                         if a == 2 {
                             self.det.colluders_acquitted += 1;
                         }
+                        if let Some(c) = ledger {
+                            self.det.ledger[c][2] += 1;
+                        }
                         continue;
                     }
                 }
                 self.det.honest_inviter_cascades += 1;
             }
             if det.xp_penalty > 0.0 {
-                self.det.xp_penalized += self.world.penalize_xp(inviter, det.xp_penalty) as u64;
+                let cut = self.world.penalize_xp(inviter, det.xp_penalty) as u64;
+                self.det.xp_penalized += cut;
+                if let Some(c) = ledger {
+                    self.det.ledger[c][4] += cut;
+                }
             }
             if det.leave {
                 for partner in self.world.mutual_partners(inviter) {
-                    if self.cohort[partner as usize] == Cohort::Honest && self.leave(partner, inviter) && det.restore_links && !label {
-                        self.cuts.entry(rec.target).or_default().push((partner, inviter));
+                    if self.cohort[partner as usize] == Cohort::Honest && self.leave(partner, inviter) {
+                        if let Some(c) = ledger {
+                            self.det.ledger[c][3] += 1;
+                        }
+                        if det.restore_links && !label {
+                            self.cuts.entry(rec.target).or_default().push((partner, inviter));
+                        }
                     }
                 }
             }
@@ -1367,8 +1397,8 @@ impl Sim {
             self.censored.map_or("null".to_string(), json::string)
         );
         let d = &self.det;
-        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
-            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
+        let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
+            d.cases_opened, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
             self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");

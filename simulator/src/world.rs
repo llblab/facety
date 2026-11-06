@@ -386,6 +386,10 @@ impl World {
             _ => self.cfg.k,
         }
     }
+    /// Number of Self-ID acts (emissions) recorded by the account.
+    pub fn chain_len(&self, id: Id) -> usize {
+        self.subjects[id as usize].acts.len()
+    }
     pub fn xp_of(&self, id: Id) -> i32 {
         self.subjects[id as usize].xp
     }

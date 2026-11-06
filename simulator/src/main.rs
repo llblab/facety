@@ -24,6 +24,7 @@ const VALUE_KEYS: &[&str] = &[
     "--artifact",
     "--subtree-cases",
     "--appeal",
+    "--cash-out",
     "--xp-penalty",
     "--collusion",
     "--max-subjects",
@@ -56,7 +57,7 @@ const FLAG_KEYS: &[&str] =
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
-  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--appeal P] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
+  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--appeal P] [--cash-out P] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
   [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
@@ -190,6 +191,7 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.honest.careless_share = num(&opts, "--careless", base.honest.careless_share)?;
     base.honest.careless_accept_far = num(&opts, "--careless-accept", base.honest.careless_accept_far)?;
     base.attacker_patience_days = num(&opts, "--patience", 0)?;
+    base.attacker_cash_out = num(&opts, "--cash-out", 0.0)?;
     base.detection.acquit_met = flags.contains("--acquit");
     base.detection.inspect = num(&opts, "--inspect", base.detection.inspect)?;
     base.detection.false_positive = num(&opts, "--fpr", base.detection.false_positive)?;
