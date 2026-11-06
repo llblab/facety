@@ -23,6 +23,7 @@ const VALUE_KEYS: &[&str] = &[
     "--double",
     "--artifact",
     "--subtree-cases",
+    "--confirm",
     "--appeal",
     "--cash-out",
     "--xp-penalty",
@@ -52,12 +53,21 @@ const VALUE_KEYS: &[&str] = &[
     "--careless",
     "--careless-accept",
 ];
-const FLAG_KEYS: &[&str] =
-    &["--restore-links", "--recover-liquid", "--no-layered", "--acquit", "--prefix-only", "--detect-prefix", "--allow-disputed", "--overwrite"];
+const FLAG_KEYS: &[&str] = &[
+    "--restore-links",
+    "--confirm-public",
+    "--recover-liquid",
+    "--no-layered",
+    "--acquit",
+    "--prefix-only",
+    "--detect-prefix",
+    "--allow-disputed",
+    "--overwrite",
+];
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
-  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--appeal P] [--cash-out P] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
+  [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
   [--public-look P] [--defense P] [--defense-days N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
@@ -169,6 +179,8 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.honest.artifact_rate = num(&opts, "--artifact", base.honest.artifact_rate)?;
     base.honest.collusion = num(&opts, "--collusion", 0.0)?;
     base.detection.subtree_cases = num(&opts, "--subtree-cases", 0usize)?;
+    base.detection.confirm = num(&opts, "--confirm", 0usize)?;
+    base.detection.confirm_public = flags.contains("--confirm-public");
     base.detection.appeal = num(&opts, "--appeal", 0.0)?;
     base.detection.xp_penalty = num(&opts, "--xp-penalty", 0.0)?;
     base.detection.restore_links = flags.contains("--restore-links");
@@ -335,7 +347,7 @@ fn main() {
                 let g = |x: Option<i64>| x.map_or("null".into(), |v| v.to_string());
                 let d = &sim.det;
                 let line = format!(
-                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
+                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
                     json::string(&sim.cfg.seed),
                     json::string(&sim.config_digest()),
                     prefix_days,
@@ -346,6 +358,7 @@ fn main() {
                     f(dirty),
                     g(first33),
                     g(first50),
+                    d.cases_on_genuine,
                     d.genuine_invalidated,
                     d.false_invalidated,
                     d.links_left,

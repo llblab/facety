@@ -117,6 +117,38 @@ With a Council that scales with the network there is no plateau up to 120,000 ac
 
 More seats let the honest network grow several times larger and lower the attacker and dirty-FACY shares at the same time (the operators stay at 100 accounts), so no security cost shows up in this scenario; the price is computation and a larger body to maintain. Other levers at 500 days, 10 operators: path bound 9 instead of 7 gives 12,018 honest accounts, difficulty capped at 4 gives 12,422, slot ceiling 300 gives 10,673 (baseline 10,482). The plateau moves with the number of Council seats against D, not with K. It also holds: with 5 seats per unit of D two years give 23,843 accounts against 24,917 at 500 days, so a fixed rule has a plateau of its own. Roughly 1,000 honest accounts per seat at D = 5.
 
+### Detection precision against growth (D153, diagnostic)
+
+Rust, baseline rules, one year after the genesis phase (day 499), 10 operators, detection on, 4 seeds (`grown-1..4`), mean over seeds. Shares are of accepted accounts; `casesOnGenuine` counts the formal cases opened against genuine people (the burden detection puts on honest accounts, each a seven-day dispute hold on two parties; paths avoid accounts in a dispute, D131).
+
+| Run | Honest accounts | Attacker share | Dirty-FACY share | Cases on genuine people | Genuine invalidated | Honest links left |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| false-positive rate 0 | 48,346 | 0.022% | 0.059% | 0 | 0 | 157 |
+| 0.0003 | 19,619 | 0.053% | 0.078% | 424 | 2.0 | 319 |
+| 0.001 | 11,292 | 0.089% | 0.087% | 1,131 | 4.8 | 500 |
+| 0.003 (baseline) | 10,373 | 0.096% | 0.096% | 2,950 | 17.2 | 1,432 |
+| 0.01 | 4,905 | 0.200% | 0.264% | 5,302 | 27.5 | 1,926 |
+| baseline, paths may cross disputed accounts (`--allow-disputed`, D131 ablation) | 35,294 | 0.030% | 0.070% | 4,980 | 25.8 | 2,729 |
+| verification: 1 extra look by the target's own partners (`--confirm 1`) | 39,244 | 0.029% | 0.065% | 16 | 0 | 1,687 |
+| 2 extra looks by partners (`--confirm 2`) | 44,148 | 0.024% | 0.061% | 0 | 0 | 1,886 |
+| 1 extra look by any independent honest account (`--confirm 1 --confirm-public`) | 38,496 | 0.029% | 0.065% | 17 | 0 | 1,683 |
+
+Reading (diagnostic): in the current baseline the false-positive load, not only the Council size, is what holds honest growth at about 10,000 accounts. Cases on genuine people lock accounts for seven days and, through the exclusion of disputed accounts from paths (D131), take intermediaries away from the five disjoint paths to five seats; without the exclusion the same load allows 35,294 accounts. The mechanism (which accounts are locked, hubs near the Council) is a hypothesis; the counts show the dependence, not the cause. A confirming look before a case opens multiplies the false-positive load by the false-positive rate (2,950 cases fall to 16) and the honest network grows to 39,000-44,000 accounts at the same attacker share; the honest links left stay at 1,700-1,900, so leaving is no longer driven by false cases.
+
+Security side of the verification (4 seeds, 10 operators, 60 days, `--no-layered`, the ablation in which a cone grows; baseline 29.3% of accounts, 0.90% of FACY):
+
+| Run | Honest accounts | Attacker share | Dirty-FACY share |
+| --- | ---: | ---: | ---: |
+| baseline detection | 2,259 | 29.3% | 0.90% |
+| 1 extra look by the target's own partners | 2,476 | 67.5% | 5.34% |
+| 2 extra looks by partners | 2,481 | 70.6% | 5.58% |
+| 1 extra look by any independent honest account | 2,300 | 36.8% | 1.32% |
+| 2 extra looks by any independent honest account | 2,286 | 33.0% | 0.68% |
+
+Confirmation by the target's own partners starves exactly where it is needed: a fake cluster has no independent honest partners who could confirm, so detection collapses without layered support. Confirmation by independent examiners (public evidence) costs a modest part of the detection rate (36.8% against 29.3% for one look, 33.0% for two). With 30 operators over a year: baseline 10,188 honest accounts, attacker share 0.29% and dirty-FACY share 0.34%; with one independent confirming look 42,895 honest accounts, 0.07% and 0.19% (both inside the D129 criterion).
+
+Assumptions: the confirming looks are independent of the first look and instantaneous, so the setting is optimistic about delay and about errors that are correlated across examiners (a genuine person with an odd public profile would look odd to all of them). The default is off; the lever changes no protocol rule. Single configuration per row, 4 seeds, no registration: diagnostic.
+
 ### Slot ceiling by XP level (D147, diagnostic)
 
 100 operators, 400 days after the genesis phase (day 533 and 544 of two seeds), baseline otherwise, ceiling 100 plus 50 slots per XP level. At the end the median XP is about 2,200 to 2,900, the 90th percentile about 9,800 to 10,700 and the maximum about 30,000.
