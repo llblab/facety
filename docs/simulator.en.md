@@ -35,7 +35,7 @@ The accepted rules are fixed in the code; they are not options.
 | --- | --- |
 | D35 pre-guaranteed genesis: ring lattice plus seeded chords, two open valences per pair, no mint or burn | `Sim::new`, `World::new` |
 | D133 the Council has three equal-vote seats below 100 active accounts (genesis accounts seat it until enough are active); no initial-bootstrap exception | `council_target`, `World::tick` |
-| D84 Self-ID needs one mutual guarantor that reaches a Council member within the path bound, at every size | `World::create_self_id` |
+| D84/D156 every Self-ID needs one established mutual guarantor and one current path from the emitter to a Council member of at most `max_nodes` nodes counting both ends, whose intermediates (the guarantor first) are accepted, supported (D124) and outside a dispute (D131); at every size; the ablation `--self-path-from-guarantor` is the earlier reading (the bound counted from the guarantor, no support needed for the guarantor); the snapshot of distances is refreshed once a day | `World::create_self_id`, `World::self_gate` |
 | D93/D94/D110 paid valences burn one own mature right, never refunded; matching opposite valences establish a mutual guarantee; withdrawal is free and ends the pair | `open_valence`, `withdraw_valence` |
 | D100/D106 K slots: own open valences plus one invitation unit at each endpoint from issuance | `used_slots` |
 | D105-D107 special invitation: inviter pays one right, eligibility checked once at issuance, 24h freeze with guarantor veto, free link termination | `create_invitation`, `accept_invitation`, `cancel_invitation`, `end_invitation_link` |

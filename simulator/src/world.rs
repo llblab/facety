@@ -69,6 +69,11 @@ pub struct Config {
     /// Softer D131 (research variant): only the accused party of a case (the second subject) is excluded from paths and from layered
     /// support; the challenger stays usable. Both parties keep the D77 activity hold either way. Default off.
     pub exclude_targets_only: bool,
+    /// The emission check (D84, owner rule): every Self-ID needs one current path from the emitter to a Council member of at most
+    /// `max_nodes` nodes including both ends, whose intermediates (the guarantor first) are accepted, supported (D124) and not in a
+    /// dispute (D131). `false` is the earlier reading used as an ablation: the bound counts from the guarantor and the guarantor needs no
+    /// support of its own (the emitter one node further out).
+    pub self_path_from_subject: bool,
 }
 
 impl Default for Config {
@@ -89,6 +94,7 @@ impl Default for Config {
             search_order: None,
             exclude_disputed: true,
             exclude_targets_only: false,
+            self_path_from_subject: true,
         }
     }
 }
@@ -639,7 +645,11 @@ impl World {
         if let Some(at) = self.council.iter().position(|&m| m == p) {
             return self.member_ok[at];
         }
-        let limit = self.cfg.max_nodes.map_or(u8::MAX - 1, |m| (m - 1) as u8);
+        let from_guarantor = self.cfg.max_nodes.map_or(u8::MAX - 1, |m| (m - 1) as u8);
+        if self.cfg.self_path_from_subject && self.blocked.get(p as usize).copied().unwrap_or(true) {
+            return false;
+        }
+        let limit = if self.cfg.self_path_from_subject { from_guarantor.saturating_sub(1) } else { from_guarantor };
         let d = self.dist_any.get(p as usize).copied().unwrap_or(NO_LEVEL);
         d != NO_LEVEL && d <= limit
     }

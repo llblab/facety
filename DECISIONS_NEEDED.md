@@ -6,7 +6,7 @@ This register owns open questions, candidate trade-offs, placeholder provenance 
 
 - **Node count, not hops:** `L = 7` means at most 7 nodes, endpoints included (6 links), following the stated definition. If seven links (8 nodes) was meant, set `maxPathNodes: 8`.
 - **Reading of the D124 rule:** layered support with threshold equal to the adopted difficulty D, Council members at level 0, intermediates only (the issuer needs its own D guarantors separately). Alternatives not run: require every path member, including the issuer, to be supported; thresholds other than D; a non-layered "D guarantors anywhere" reading, which the dense cone satisfies trivially.
-- **Self-ID check:** the bound and the support rule apply to the one path from a mutual guarantor of the subject, so the subject is one node further out.
+- **Self-ID check:** settled by the owner (D156): the path runs from the emitter itself, at most seven nodes counting both ends, intermediates supported and outside disputes; the earlier reading (bound counted from the guarantor, guarantor exempt from support) survives only as the ablation `--self-path-from-guarantor`.
 - **Lost searches:** a search that exhausts its budget is refused like a missing family and counted in `pathSearchExhausted`.
 
 ## Evidence core convergence (D76)
