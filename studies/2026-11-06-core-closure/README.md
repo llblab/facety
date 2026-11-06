@@ -170,6 +170,50 @@ Exploratory re-freeze (100 operators, seeds 1-4, rule written beforehand): dirty
 
 Under D156 all 36 reserved-seed runs pass both D129 lines; the frozen adversary reaches a somewhat higher dirty-FACY share than under the earlier reading (2.32% against 1.47% at two years) because the supply it is measured against is smaller. K2 to K4, the honest regimes and the key-loss scenario were not repeated under D156; they carry the label of the earlier reading.
 
+## Re-check under the softer D131 (D157)
+
+The owner then softened D131 (D157): only the accused party of an open dispute is excluded from paths and layered support; the challenger stays usable (`--exclude-challengers` is the earlier reading). All numbers below use the strict emission check of D156 and are diagnostic unless stated; exploratory seeds `grown-1..4`, reserved seeds `grown-2001..2012` (a new family: the earlier one was used under the earlier rules).
+
+Panel 1, new against old reading, 4 seeds, one year:
+
+| Run | D131 reading | Honest accounts | Honest emission (units) | Attacker emission (units) | Attacker-side accounts | Attacker share | Dirty-FACY share | Cases on genuine people |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| control | earlier | 11,261 | 863,839 | 0 | 0 | 0 | 0 | 2,391 |
+| control | D157 | 33,613 | 2,823,009 | 0 | 0 | 0 | 0 | 4,185 |
+| 30 operators | earlier | 11,330 | 860,644 | 4,382 | 30.2 | 0.27% | 0.20% | 2,352 |
+| 30 operators | D157 | 31,886 | 2,675,660 | 6,970 | 29.0 | 0.09% | 0.18% | 3,914 |
+| 100 operators | earlier | 10,984 | 858,858 | 15,253 | 102.0 | 0.92% | 0.77% | 2,317 |
+| 100 operators | D157 | 35,282 | 2,842,155 | 24,592 | 104.2 | 0.30% | 0.62% | 3,980 |
+| cone without layered support, 10 operators, 60 days | earlier | 2,170 | 131,604 | 14,333 | 811.8 | 27.0% | 0.76% | 59 |
+| cone without layered support | D157 | 2,444 | 133,814 | 11,601 | 866.5 | 24.9% | 0.69% | 62 |
+
+The honest network triples (the false cases that freeze an honest challenger no longer take it off the paths of others) and the D129 lines hold with more room; attacker-side accounts stay at the operators.
+
+Window sensitivity (owner concept D158: the wait after the last entrant shortens as people join; joining is not modeled, so the window is a fixed value; 30 operators, 4 seeds, one year, D157): 3 days 41,321 honest accounts (1.23 of the seven-day control), 5 days 34,863 (1.03), 7 days 31,886 (0.96 of the attack-free control of 33,613), 14 days 26,306 (0.78); dirty-FACY share 0.15%, 0.17%, 0.18%, 0.18%. Under the earlier D131 reading 14 days gave 10,418 accounts (0.93 of its control).
+
+Stress panel under D157 (30 operators, one year, 4 seeds; honest accounts relative to the attack-free control with the same setting where one was run, otherwise the default control):
+
+| Run | Honest accounts | Honest / control | Attacker share | Dirty-FACY share | Genuine invalidated |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| odd profiles 5% with 30 times the false-positive rate | 25,031 | 0.745 | 0.12% | 0.18% | 35.5 |
+| proof of reality takes 28 days | 17,158 | 0.511 | 0.17% | 0.20% | 17.0 |
+| false accusations, 1 per operator and day | 33,713 | 1.008 | 0.09% | 0.00% | 64.5 |
+| 20% bought honest accounts | 37,093 | 1.090 | 0.13% | 0.07% | 16.0 |
+| 20% yearly key loss (lost accounts that are not recovered stay accepted and inert) | 25,765 | 0.778 | 0.13% | 0.19% | 18.8 |
+| sparse honest connectivity (paired with its own control of 11,100) | 11,046 | 0.995 | 0.32% | 0.54% | 6.0 |
+
+The D129 lines hold in every row. The sensitivity to the proof window remains (0.51 at 28 days), which is why the shortening window of D158 matters, and correlated examiner errors still cost a quarter of the network.
+
+Exploratory re-freeze (100 operators, seeds 1-4, rule written beforehand): dirty-FACY share X1 0.98%, X2 0.94%, X3 0.31%, X4 0.01%, X5 1.27%, reference 0.62%; X5 exceeds X1 by more than 20%, so the frozen adversary is X5 (supported-first, patience 120 days, 20% bought accounts, odd-profile examiners 5% with ten times the rate, proof 0.7 within 14 days). Confirmation on `grown-2001..2012` (criterion per seed: dirty-FACY share at most 10% and attackers below one third of accounts and of FACY):
+
+| Run | Finished seeds | Seeds passing | Dirty-FACY share (mean, max) | Attacker share of accounts (mean, max) | Honest accounts | Attacker-side accounts | Emission per operator | Held per operator | Genuine invalidated |
+| --- | ---: | ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| reference, one year | 12 | 12 | 0.59%, 0.66% | 0.31%, 0.41% | 34,666 | 104.5 | 240 | 128 | 21.7 |
+| X5, one year | 12 | 12 | 1.26%, 1.58% | 0.34%, 0.48% | 30,162 | 97.9 | 347 | 249 | 90.8 |
+| X5, two years | 12 | 12 | 1.28%, 1.66% | 0.24%, 0.33% | 43,071 | 96.5 | 654 | 550 | 461.8 (two years) |
+
+All 36 reserved-seed runs pass both lines under D157. The cost that does not show in the shares is the wrongly invalidated people in the weakened environment of X5 (proof success 0.7, odd-profile examiners): about 91 a year and 462 over two years among 30,000 to 43,000 honest accounts. K2 to K4, the honest regimes (except the sparse row above) and the key-loss table above were measured under the earlier reading and carry that label.
+
 ## Limits
 
 - Synthetic behavior throughout: honest acceptance rates, careless share, examiner quality, the proof-of-reality model and the bought-account model are assumptions of the simulator contract. Nothing here is evidence about real people, and no run replaces such evidence.

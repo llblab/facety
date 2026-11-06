@@ -4,14 +4,14 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **Current priority (D129, D132):** show with the Rust simulator, up to a year or two of network growth, that the topology defense keeps the dirty-FACY share at most 10% and the clean share at least two thirds, at a bearable cost to honest people. Detection is always on; its design is the variable.
 
-**Phase: the baseline is still forming (default-rule changes such as D156 keep arriving); changes are tested with the [benchmark panels](docs/simulator.en.md#benchmark-panels-for-default-rule-changes). Core closure programme (D155) complete; K1 and K5 re-checked under D156 (36 of 36 reserved-seed runs pass), K2-K4 carry the earlier reading; awaiting the owner's decision on the implementation bounds (Q20, Q21).** Earlier: **baseline complete, awaiting owner feedback (D140).** Every axis below has a named value; the last three were proposed by the builder (D143) and the owner may overrule them. From here a broad benchmark and a search for pits at particular values make sense. Order of work (D141): stability, analysis, understanding, representativeness.
+**Phase: the baseline is still forming (default-rule changes such as D156 keep arriving); changes are tested with the [benchmark panels](docs/simulator.en.md#benchmark-panels-for-default-rule-changes). Core closure programme (D155) complete; K1 and K5 re-checked under D156 and again under D157 (36 of 36 reserved-seed runs pass on the family 2001-2012), K2-K4 carry the earlier reading; awaiting the owner's decision on the implementation bounds (Q20, Q21).** Earlier: **baseline complete, awaiting owner feedback (D140).** Every axis below has a named value; the last three were proposed by the builder (D143) and the owner may overrule them. From here a broad benchmark and a search for pits at particular values make sense. Order of work (D141): stability, analysis, understanding, representativeness.
 
 | Baseline axis | Value | Status |
 | --- | --- | --- |
 | Path bound (nodes) | 7 | fixed (D123) |
 | Council size | 3 below 100 active, then the D33 lookup; equal votes | fixed (D133) |
 | Paths | D disjoint paths to D different Council members | fixed (D134) |
-| Paths avoid accounts in a dispute | on | fixed (D131) |
+| Paths avoid the accused of a dispute | the accused party only; the challenger stays usable | fixed (D131, softened by D157) |
 | Owned-slot ceiling K | 100 | fixed (D100) |
 | Guarantor count D | digits of the active count | fixed (stand-in for N_verified) |
 | Layered support for intermediaries | on | fixed (D124, D142) |
