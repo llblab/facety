@@ -1,5 +1,7 @@
 # Changelog
 
+- Evidence-core closure audit: reconciled the current baseline summaries with D166-D167, retained historical funding results under their builds, and corrected B4's interpretation (killed; honest growth is not a debt bound).
+
 Milestone ledger, newest first. Owner decisions and their dates live in the [decision log](docs/decisions.en.md#decision-log-and-supersession-ledger); study results live in their `studies/` pages; open work lives only in [BACKLOG](BACKLOG.md). The full per-change narrative (274 entries and review provenance) is preserved at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md); `git log` holds every commit.
 
 ## Unreleased
