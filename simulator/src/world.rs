@@ -828,7 +828,13 @@ impl World {
             }
             self.settled += 1;
             if status != ActStatus::Cancelled {
-                self.credit(act_id);
+                if self.subjects[self.acts[act_id as usize].subject as usize].debt > 0 {
+                    // D167: while the author's emission balance is negative nobody earns XP for its acts (a suspended, empty credit).
+                    let at = self.acts[act_id as usize].recorded_at + MATURITY_HOURS;
+                    self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: Arc::from(Vec::new()) });
+                } else {
+                    self.credit(act_id);
+                }
                 // D166/D4: a negative emission balance (debt) is repaid from the matured entitlement of the account, burned.
                 if status == ActStatus::Unspent && self.subjects[self.acts[act_id as usize].subject as usize].debt > 0 {
                     self.repay_debt_from(act_id);
@@ -898,6 +904,15 @@ impl World {
     fn require_free(&self, id: Id) -> Result<(), Reject> {
         if self.hold[id as usize] > 0 {
             Err(Reject("open-dispute activity restriction"))
+        } else {
+            Ok(())
+        }
+    }
+
+    /// D167: an account with a negative emission balance (debt) cannot open invitations or guarantees from its side until it is repaid.
+    fn require_solvent(&self, id: Id) -> Result<(), Reject> {
+        if self.subjects[id as usize].debt > 0 {
+            Err(Reject("negative emission balance blocks invitations and guarantees"))
         } else {
             Ok(())
         }
@@ -1032,6 +1047,7 @@ impl World {
             return Err(Reject("valence requires a distinct counterpart"));
         }
         self.require_free(owner)?;
+        self.require_solvent(owner)?;
         if self.open_val.contains_key(&(owner, counterpart)) {
             return Err(Reject("owner already holds an open valence toward counterpart"));
         }
@@ -1215,6 +1231,7 @@ impl World {
     pub fn create_invitation(&mut self, creator: Id, act: u32) -> Result<u32, Reject> {
         self.require_account(creator)?;
         self.require_free(creator)?;
+        self.require_solvent(creator)?;
         self.require_mature_own(creator, act, DAY.max(self.cfg.spend_hours), "invitation requires own mature Emitter right")?;
         let d = self.required_guarantors();
         if self.eligible_guarantors(creator).len() < d {
@@ -1312,6 +1329,22 @@ impl World {
         !self.accepted(id) || (self.cfg.layered && self.level[id as usize] == NO_LEVEL)
     }
 
+    /// D167 (D34 for an identity case): the guarantors liable for an account are exactly those who earned XP for its Self-ID acts, whether
+    /// or not they still guarantee it. Acts whose credit is revoked or suspended contribute nobody.
+    fn liable_guarantors(&self, accused: Id) -> Vec<Id> {
+        let mut roster: Vec<Id> = Vec::new();
+        for &a in &self.subjects[accused as usize].acts {
+            if let Some(c) = &self.acts[a as usize].credit {
+                if !c.revoked && c.recipients.len() > 1 {
+                    roster.extend(c.recipients[1..].iter().copied().filter(|&g| g != accused && self.accepted(g)));
+                }
+            }
+        }
+        roster.sort_unstable();
+        roster.dedup();
+        roster
+    }
+
     /// Spendable liquid FACY: what the account holds minus the stakes locked in open disputes.
     pub fn spendable(&self, id: Id) -> u32 {
         let s = &self.subjects[id as usize];
@@ -1362,7 +1395,7 @@ impl World {
         let backed = stake.min(self.spendable(challenger));
         self.stats.refused_funds += u64::from(backed < stake);
         let ladder = Ladder::open(challenger, self.subjects[challenger as usize].xp, self.now, self.cfg.base_stake.unwrap_or(0));
-        let mut case = Case { ladder, accused, accused_guarantors: self.eligible_guarantors(accused), backed: vec![backed], holds: Vec::new() };
+        let mut case = Case { ladder, accused, accused_guarantors: self.liable_guarantors(accused), backed: vec![backed], holds: Vec::new() };
         self.subjects[challenger as usize].reserved += backed;
         self.stats.staked += u64::from(stake);
         self.stats.opened += 1;
@@ -1384,7 +1417,7 @@ impl World {
     pub fn case_deadline(&self, case: u32) -> Option<i64> {
         self.case_ref(case).ok().map(|c| c.ladder.deadline())
     }
-    /// Whether the case is final at the current hour (the deadline hour itself is final).
+    /// Whether the case is final now: the deadline is the cutoff (D167).
     pub fn case_final(&self, case: u32) -> bool {
         self.case_ref(case).is_ok_and(|c| c.ladder.is_final(self.now))
     }
@@ -1835,7 +1868,9 @@ impl World {
             }
             match (&act.credit, matured) {
                 (Some(c), true) => {
-                    if c.at != act.recorded_at + MATURITY_HOURS || c.recipients[0] != act.subject || c.recipients[1..] != *act.guarantors {
+                    if c.at != act.recorded_at + MATURITY_HOURS
+                        || (!c.recipients.is_empty() && (c.recipients[0] != act.subject || c.recipients[1..] != *act.guarantors))
+                    {
                         return Err(format!("act {idx} credit is not the maturity credit of its snapshot"));
                     }
                 }
@@ -2862,6 +2897,68 @@ mod tests {
         w.audit().unwrap();
         w.end_case(b);
         w.convert_to_collector(accused, right).unwrap();
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_negative_emission_balance_blocks_invitations_and_guarantees_and_suspends_xp_until_repaid() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        // A matured, unspent right that the challenger holds before it falls into debt.
+        w.create_self_id(challenger).unwrap();
+        w.tick(w.now() + 24);
+        let start = w.now();
+        w.burn_liquid(challenger);
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.tick(start + 7 * 24);
+        w.settle_case(case, Some(Side::Accused)).unwrap();
+        assert_eq!(w.debt(challenger), 7);
+        let right = w.eligible_emission(challenger).expect("a matured right");
+        assert_eq!(w.create_invitation(challenger, right), Err(Reject("negative emission balance blocks invitations and guarantees")));
+        assert_eq!(w.open_valence(challenger, 11, right), Err(Reject("negative emission balance blocks invitations and guarantees")));
+        // Acts that mature while the balance is negative earn nobody XP; each is burned against the debt.
+        let mut suspended = 0;
+        while w.debt(challenger) > 0 {
+            let act = w.create_self_id(challenger).unwrap();
+            let guarantors = w.act_guarantors(act).to_vec();
+            let before = xps(&w);
+            w.tick(w.now() + 24);
+            assert_eq!(xps(&w), before, "no XP for the author or its guarantors while the balance is negative");
+            assert!(guarantors.len() <= 12);
+            suspended += 1;
+            assert!(suspended <= 7, "seven units repay a debt of seven");
+        }
+        assert_eq!(suspended, 7);
+        // Back in the black: the next act earns XP again and invitations are possible again.
+        let act = w.create_self_id(challenger).unwrap();
+        let before = w.xp(challenger);
+        w.tick(w.now() + 24);
+        assert_eq!(w.xp(challenger), before + 1, "XP flows again");
+        let _ = act;
+        assert!(w.create_invitation(challenger, w.eligible_emission(challenger).unwrap()).is_ok());
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn the_liable_roster_of_an_identity_case_is_everyone_who_earned_xp_for_its_acts_even_after_leaving() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let current = w.eligible_guarantors(accused);
+        assert!(!current.is_empty());
+        // One guarantor leaves; it still earned XP for past acts and so stays liable.
+        let leaver = current[0];
+        let v: Vec<u32> = (0..w.valences.len() as u32)
+            .filter(|&v| w.valences[v as usize].owner == leaver && w.valences[v as usize].counterpart == accused && w.valences[v as usize].open)
+            .collect();
+        if let Some(&val) = v.first() {
+            w.withdraw_valence(leaver, val).unwrap();
+            assert!(!w.eligible_guarantors(accused).contains(&leaver));
+            assert!(w.liable_guarantors(accused).contains(&leaver), "a departed guarantor stays on the roster of the acts it earned XP for");
+        }
+        let roster = w.liable_guarantors(accused);
+        assert!(roster.len() >= current.len() - 1);
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.end_case(case);
         w.audit().unwrap();
     }
 

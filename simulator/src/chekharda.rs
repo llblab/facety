@@ -11,8 +11,8 @@
 //!   changes neither the ordinal nor the deadline.
 //! - The Council enters once, collectively, as the terminal position on the same clock (D69, D161): one position, no extra Council window,
 //!   and ballots never add positions.
-//! - Boundary (a simulation convention, OPEN in the protocol): the dispute is open on the half-open interval `[opened, deadline)`; an
-//!   entry at exactly the deadline hour is refused (the closing is processed first). Entries at the same hour are applied in the order
+//! - Boundary (D167): the deadline is a cutoff, nothing is added to it: anyone eligible can join until it and the dispute is final from
+//!   it. Entries at the same hour are applied in the order
 //!   they are submitted, and each must satisfy the XP and alternation conditions against the entry before it.
 //! - Stakes (D159): `stake(k) = ceil(base * 1.2^(k-1))` whole FACY (declared rounding of the compound growth); every winner takes the
 //!   stake of the position directly below it and gets its own back; a loser forfeits to the position directly above it; the lowest
@@ -204,7 +204,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
     pub fn xp_to_beat(&self) -> i32 {
         self.positions.iter().rev().find(|p| p.kind == Kind::Participant).map_or(0, |p| p.xp)
     }
-    /// Whether the dispute is final at `now` (the deadline hour itself is already final).
+    /// Whether the dispute is final at `now`: the deadline is the cutoff.
     pub fn is_final(&self, now: i64) -> bool {
         now >= self.deadline()
     }
@@ -264,8 +264,9 @@ impl<W: Copy + PartialEq> Ladder<W> {
     }
 
     /// The side that wins at the deadline: the side of the last unopposed ordinary position, or, once the Council entered, the side the
-    /// equal-vote majority of the Council chose (D111). Ties and an empty vote leave the entrant's side (the Council member who joined first
-    /// is taken to be right unless a majority says otherwise; OPEN in the protocol).
+    /// majority of the Council ballots chose (D111, D167: a simple majority, no quorum, no recusal). If the majority does not confirm the
+    /// entering member (a majority against, a tie in a simulated even vote, or no ballots), the Council is taken as not having taken part and
+    /// the side of the last ordinary participant wins.
     pub fn winner(&self) -> Side {
         let top = self.positions.last().expect("a ladder has a first position");
         if top.kind != Kind::Council {
@@ -273,10 +274,10 @@ impl<W: Copy + PartialEq> Ladder<W> {
         }
         let for_entrant = self.ballots.iter().filter(|b| b.for_entrant).count();
         let against = self.ballots.len() - for_entrant;
-        if against > for_entrant {
-            top.side.other()
-        } else {
+        if for_entrant > against {
             top.side
+        } else {
+            top.side.other()
         }
     }
 
@@ -488,16 +489,19 @@ mod tests {
     }
 
     #[test]
-    fn a_council_majority_decides_and_the_entrant_wins_ties() {
+    fn a_council_majority_decides_and_a_council_that_does_not_confirm_its_member_counts_as_absent() {
         let mut l = Ladder::open(1, 10, 0, BASE_STAKE);
         l.admit(2, Kind::Participant, 20, H).unwrap();
         l.admit(7, Kind::Council, 0, 2 * H).unwrap();
-        assert_eq!(l.winner(), Side::Accuser, "no ballots: the entrant's side");
+        assert_eq!(l.winner(), Side::Accused, "no ballots: the Council did not take part, the last ordinary participant wins");
         l.ballot(7, true);
         l.ballot(8, false);
-        assert_eq!(l.winner(), Side::Accuser, "a tie keeps the entrant");
-        l.ballot(9, false);
-        assert_eq!(l.winner(), Side::Accused, "the equal-vote majority overturns the entrant");
+        assert_eq!(l.winner(), Side::Accused, "no majority for the entering member: as if the Council had not taken part");
+        l.ballot(9, true);
+        assert_eq!(l.winner(), Side::Accuser, "a majority confirms the entering member");
+        l.ballot(10, false);
+        l.ballot(11, false);
+        assert_eq!(l.winner(), Side::Accused, "a majority against returns the dispute to the last ordinary participant");
     }
 
     #[test]
@@ -548,6 +552,7 @@ mod tests {
         let mut l = Ladder::open(1, 1, 0, 10);
         l.admit(2, Kind::Participant, 2, H).unwrap();
         l.admit(9, Kind::Council, 0, 2 * H).unwrap();
+        l.ballot(9, true);
         let s = l.settle();
         assert_eq!(s.winner, Side::Accuser);
         assert!(s.forfeits.is_empty());
