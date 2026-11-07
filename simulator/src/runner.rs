@@ -132,6 +132,10 @@ pub struct Detection {
     /// Attacker accounts that hold enough XP and funds stand with their fakes (or against an honest accused) on the last day before the
     /// deadline, the strongest way to prolong a dispute; they also vote their interest in the Council. Worst case; `false` is an ablation.
     pub attacker_ladder: bool,
+    /// Examiner care (a behavior assumption): before opening a case an examiner repeats its own independent look this many times and
+    /// files only if every look is suspicious, because a dispute against a person who can cheaply prove reality is a loss for the opener
+    /// and draws attention to it. 1 = file on a single look (the earlier behavior).
+    pub examiner_looks: usize,
 }
 
 #[derive(Clone, Debug)]
@@ -291,6 +295,7 @@ impl RunConfig {
         }
         // The dispute clock (D162): the first window is seven days, so proving reality takes at least the shortest window of three days.
         at_least("detection.defense_days", d.defense_days, 3)?;
+        at_least("detection.examiner_looks", d.examiner_looks as i64, 1)?;
         at_least("detection.pattern_min_invitees", d.pattern_min_invitees as i64, 1)?;
         Ok(())
     }
@@ -304,11 +309,11 @@ impl RunConfig {
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"attackerAccuse\":{},\"accuseHubs\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"selfPathFromSubject\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{},\"baseStake\":{},\"halveLosers\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"keyLoss\":{},\"recoveryVouch\":{},\"recoveryDelayDays\":{},\"artifactRate\":{},\"collusion\":{}}},\
-\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{},\"joinRate\":{},\"councilRate\":{},\"councilTurnout\":{},\"attackerLadder\":{}}}}}",
+\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{},\"joinRate\":{},\"councilRate\":{},\"councilTurnout\":{},\"attackerLadder\":{},\"examinerLooks\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), json::number(self.attacker_accuse), self.accuse_hubs, self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.exclude_targets_only, w.self_path_from_subject, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))), w.base_stake.map_or("null".to_string(), |n| n.to_string()), w.halve_losers,
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.corrupt_share), json::number(h.key_loss), json::number(h.recovery_vouch), h.recovery_delay_days, json::number(h.artifact_rate), json::number(h.collusion),
-            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days, json::number(d.join_rate), json::number(d.council_rate), json::number(d.council_turnout), d.attacker_ladder
+            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days, json::number(d.join_rate), json::number(d.council_rate), json::number(d.council_turnout), d.attacker_ladder, d.examiner_looks
         )
     }
 }
@@ -376,6 +381,7 @@ impl Default for RunConfig {
                 council_rate: 0.5,
                 council_turnout: 0.7,
                 attacker_ladder: true,
+                examiner_looks: 1,
             },
             detection_start_day: 0,
             attacker_patience_days: 0,
@@ -712,7 +718,7 @@ impl Sim {
 
     /// A suspicious look at `id` that must also survive the declared confirming looks of other mutual partners (`Detection::confirm`).
     fn look_confirmed(&self, rng: &mut Rng, observer: Id, id: Id) -> bool {
-        if !self.look(rng, id) {
+        if !(0..self.cfg.detection.examiner_looks).all(|_| self.look(rng, id)) {
             return false;
         }
         let need = self.cfg.detection.confirm;

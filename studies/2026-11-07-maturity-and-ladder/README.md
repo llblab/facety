@@ -160,6 +160,30 @@ Builds: `baseline-spend-credit-d156` (tag), `9aa9d4a` (maturity), this repositor
 - Converged baseline: two year-long runs (30 operators, seeds `grown-1` and `grown-2`) executed with 1 and with 2 threads give byte-identical result sections (configuration, counters and the daily history), so scheduling does not change outcomes. The world audit (conservation of FACY, custody, holds, freezes, deadlines, XP maturity invariant) runs at the end of every `grown` attack run and after every unit test.
 - Not done: a brute-force comparison of the ladder at scale (the ladder has no efficiency layer to compare; its engine is checked exhaustively on small states and against the closed form).
 
+## Owner answer D164 and the examiner model (exploratory, then registered)
+
+The owner answered Q24 (D164): the halving stays for everyone, no verification or second confirmer is added, and the defect is the simulator's examiners, who file on one noisy look although a dispute against a person who can cheaply prove reality is a loss and an exposure for the opener. The model change is a behavior assumption, not a rule: `--examiner-looks K` makes an examiner repeat its own independent look K times and file only if every look is suspicious (K = 1 is the earlier behavior).
+
+Exploratory sweep (seeds `grown-1..4`, one year, full ladder with halving):
+
+| Examiner looks | Control honest accounts | 30 operators: honest accounts | Attacker share max | Dirty-FACY share max | Cases settled (control) | Council seats changing hands |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 (earlier) | 12,561 | 12,447 | 0.26% | 0.26% | 2,526 | about 320 |
+| 2 | 51,045 | 49,259 | 0.08% | 0.17% | 13 | 37 |
+| 3 | 53,560 | 52,764 | 0.07% | 0.22% | 0 | 37 |
+
+With two looks the honest network is about four times larger, the halving applies as selected, formal cases fall to about 13 a year in the control, and operators are still caught (25.8 invalidated attacker-side accounts with 30 operators). A third look adds little. This supports the owner's reading that the loss came from the examiner model.
+
+### Registered confirmation of the proposed default (written before the runs; reserved seeds `grown-4001..4004`)
+
+The proposed baseline axis is `examiner_looks = 2` (builder-proposed like the axes of D143; the owner may overrule). Conditions as in the earlier registration.
+
+| Id | Claim | Criterion | Kill criterion |
+| --- | --- | --- | --- |
+| R1 | Two looks restore honest growth with the halving on | attack-free control honest accounts with two looks at least 2 times those with one look on every seed | any seed below 1.5 |
+| R2 | The D129 lines hold for the frozen strongest adversary (100 operators, supported-first, patience 120, 20% bought, odd-profile examiners 5% at ten times, proof of reality 0.7 within 14 days) with two looks | dirty-FACY share at most 10% and attackers below one third of accounts and of FACY on every seed | any seed breaching either line |
+| R3 | Two looks do not make the honest network pay for it elsewhere | genuine invalidated people per year with two looks at most those with one look on every seed | any seed above |
+
 ## Assessment of core readiness (diagnostic; model properties against real-world assumptions)
 
 Tested model properties: (1) XP at maturity is a deterministic function of valid Self-ID history, snapshots and chronological adjustments, equal to an independent chronological reference under random event orders, with the retroactive-XP exploit blocked for invitations and valences; (2) the dispute deadline never shortens and equals the maximum window end, with deterministic refusals and same-hour ordering, and the stake ledger conserves FACY under custody, forfeits, burns, sanctions and debt (audit after every run); (3) the strongest adversary of the closure programme stays inside both D129 lines on 4 of 4 reserved seeds under the full ladder (the earlier confirmation of 12 seeds used the earlier rules); (4) the stake bounds false accusations by operator emission.

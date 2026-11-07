@@ -179,6 +179,8 @@ Answered 2026-11-06: **D152**. The holder is at fault; the inviter is acquitted 
 
 ### Q24 — Halving of losing participants against the stability of the Council (D159, registered result)
 
+Answered 2026-11-07: **D164**. The halving stays for everyone, no verification or second confirmer is added; the problem is the simulator's examiner model (single noisy look, no cost awareness). The original question follows.
+
 Blocking consequence, measured on reserved seeds (study of 2026-11-07, claims H1 to H3): with the selected ladder and the baseline detection, honest growth in a one-year attack-free control falls from about 40 thousand accounts to about 12.6 thousand because losing participants lose half their XP, and the high-XP Council members, who can challenge anyone and so open the most cases, are halved out of the XP-ranked Council (Council seats changing hands: about 310 a year against about 110 without halving). Sparing Council members from halving recovers about half of the loss; one confirming look before a case opens (an unselected lever, D153, Q20) recovers all of it and cuts cases from about 2,700 to about 25 a year. Smallest question: is the loss of half the XP of a losing accuser intended to apply to an accuser whose case was opened on a noisy look, or should a formal case need independent verification (Q20 option b) before it can cost anyone XP? Not decided here; the simulator keeps the selected rule as the default and reports both.
 
 ### Q23 — Assumptions taken in the convergence of 2026-11-07 (D162, D163)
