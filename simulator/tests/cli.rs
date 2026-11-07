@@ -45,6 +45,7 @@ fn invalid_arguments_are_refused_with_a_diagnostic_and_a_nonzero_exit() {
     refused(&["grown", "--fpr", "-0.1"]);
     refused(&["grown", "--fpr", "2"]);
     refused(&["grown", "--fpr", "NaN"]);
+    refused(&["grown", "--repeat-correlation", "1.1"]);
     refused(&["grown", "--threads", "0"]);
     refused(&["grown", "--seeds", "0"]);
     refused(&["grown", "--horizon", "0"]);

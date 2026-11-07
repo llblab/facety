@@ -1,6 +1,7 @@
 # Changelog
 
 - Evidence-core closure audit: reconciled the current baseline summaries with D166-D167, retained historical funding results under their builds, and corrected B4's interpretation (killed; honest growth is not a debt bound).
+- Evidence-core conformance checkpoint: mature Emitter stake custody and sanctions now collect held rights without rewriting XP; historical recipients remain liable regardless of status, including receipts matured during the case; losing owners and Council entrants are penalized once; own maturity repairs integrity during debt while new units stay suspended. Deep representable stakes use exact arithmetic. Added explicit repeat-error counterfactuals, complete configuration identity and collection/restriction counters (`result-v4`, randomness v2), plus a finite closure registration, paired snapshot panel and deterministic economic/timing witnesses.
 
 Milestone ledger, newest first. Owner decisions and their dates live in the [decision log](docs/decisions.en.md#decision-log-and-supersession-ledger); study results live in their `studies/` pages; open work lives only in [BACKLOG](BACKLOG.md). The full per-change narrative (274 entries and review provenance) is preserved at [`8b77cd8`](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md); `git log` holds every commit.
 

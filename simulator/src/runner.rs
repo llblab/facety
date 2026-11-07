@@ -14,7 +14,7 @@ use std::fmt::Write as _;
 
 pub const ENGINE: &str = "facety-sim/runner-v1";
 /// Version of the saved result layout.
-pub const SCHEMA: &str = "facety-sim/result-v3";
+pub const SCHEMA: &str = "facety-sim/result-v4";
 
 const CH_GENESIS: u64 = 1;
 const CH_ENTRY: u64 = 2;
@@ -36,6 +36,7 @@ const CH_LOSS: u64 = 18;
 const CH_VOUCH: u64 = 19;
 const CH_LADDER: u64 = 20;
 const CH_COUNCIL: u64 = 21;
+const CH_PERSISTENT_LOOK: u64 = 22;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Strategy {
@@ -121,7 +122,7 @@ pub struct Detection {
     pub defense_days: i64,
     /// Chekharda joining behavior (research assumptions, not protocol rules; D158-D162 fix the ladder, not who joins or when). Each day, each
     /// eligible honest supporter of the next side (the accused's mutual partners for the accused side, the first challenger's for the
-    /// accuser side; XP above the last participant, funds for the stake) who believes that side is right (a belief is the truth with
+    /// accuser side; XP above the last participant) who believes that side is right (a belief is the truth with
     /// probability `accuracy`) joins with this probability. 0 = honest supporters never join.
     pub join_rate: f64,
     /// Once a dispute has two positions, each day a Council member looks at it with this probability and enters if its own belief disagrees
@@ -129,13 +130,17 @@ pub struct Detection {
     pub council_rate: f64,
     /// At the deadline each Council member of an entered dispute votes with this probability, by its own belief (D111: one equal vote).
     pub council_turnout: f64,
-    /// Attacker accounts that hold enough XP and funds stand with their fakes (or against an honest accused) on the last day before the
+    /// Attacker accounts that hold enough XP stand with their fakes (or against an honest accused) on the last day before the
     /// deadline, the strongest way to prolong a dispute; they also vote their interest in the Council. Worst case; `false` is an ablation.
     pub attacker_ladder: bool,
     /// Examiner care (a behavior assumption): before opening a case an examiner repeats its own independent look this many times and
     /// files only if every look is suspicious, because a dispute against a person who can cheaply prove reality is a loss for the opener
     /// and draws attention to it. 1 = file on a single look (the earlier behavior).
     pub examiner_looks: usize,
+    /// Chance a repeat reuses the first observation instead of obtaining independent evidence (zero preserves the baseline).
+    pub repeat_correlation: f64,
+    /// One fixed error per target across examiners and days, with the same single-look marginal probability.
+    pub persistent_errors: bool,
     /// Any participant of the network may join a dispute (D166): the accused calls friends, guarantors and public channels, and people who
     /// profit from standing on the winning side watch open disputes. Each day this many random honest accounts look at each open dispute
     /// in addition to the accused's and the first challenger's partners, and join by the same rule (belief and `join_rate`).
@@ -162,7 +167,7 @@ pub struct RunConfig {
     /// instead of spending it on the attack; a trade-off, since a converted right can no longer grow the cluster. 0 = never.
     pub attacker_cash_out: f64,
     /// Declared attack on the availability of the defense: expected number of false formal cases per operator account per day against
-    /// accepted honest accounts with less XP than the operator (the public XP gate); the accuser pays nothing (stakes are not modeled).
+    /// accepted honest accounts with less XP than the operator (the public XP gate); ordinary soft-backed stakes apply.
     pub attacker_accuse: f64,
     /// The false accusations pick the best-connected of 64 sampled eligible honest accounts instead of a random one.
     pub accuse_hubs: bool,
@@ -300,6 +305,7 @@ impl RunConfig {
         // The dispute clock (D162): the first window is seven days, so proving reality takes at least the shortest window of three days.
         at_least("detection.defense_days", d.defense_days, 3)?;
         at_least("detection.examiner_looks", d.examiner_looks as i64, 1)?;
+        prob("detection.repeat_correlation", d.repeat_correlation)?;
         at_least("detection.pattern_min_invitees", d.pattern_min_invitees as i64, 1)?;
         Ok(())
     }
@@ -309,7 +315,7 @@ impl RunConfig {
         let w = &self.world;
         let h = &self.honest;
         let d = &self.detection;
-        format!(
+        let original = format!(
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"attackerAccuse\":{},\"accuseHubs\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"selfPathFromSubject\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{},\"baseStake\":{},\"halveLosers\":{},\"integrity\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"keyLoss\":{},\"recoveryVouch\":{},\"recoveryDelayDays\":{},\"artifactRate\":{},\"collusion\":{}}},\
@@ -318,6 +324,14 @@ impl RunConfig {
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.exclude_targets_only, w.self_path_from_subject, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))), w.base_stake.map_or("null".to_string(), |n| n.to_string()), w.halve_losers, w.integrity,
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.corrupt_share), json::number(h.key_loss), json::number(h.recovery_vouch), h.recovery_delay_days, json::number(h.artifact_rate), json::number(h.collusion),
             json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days, json::number(d.join_rate), json::number(d.council_rate), json::number(d.council_turnout), d.attacker_ladder, d.examiner_looks, d.watchers
+        );
+        // Keep behavior extensions explicit in the saved configuration and its digest.
+        format!(
+            "{{\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
+            json::number(d.repeat_correlation),
+            d.persistent_errors,
+            w.halving_spares_council,
+            &original[1..]
         )
     }
 }
@@ -386,6 +400,8 @@ impl Default for RunConfig {
                 council_turnout: 0.7,
                 attacker_ladder: true,
                 examiner_looks: 2,
+                repeat_correlation: 0.0,
+                persistent_errors: false,
                 watchers: 5,
             },
             detection_start_day: 0,
@@ -483,6 +499,7 @@ pub struct DetectionCounters {
     pub cases_on_genuine: u64,
     pub false_invalidated: u64,
     pub genuine_invalidated: u64,
+    pub wrong_by_cohort: [u64; 2],
     pub vetoed_false: u64,
     pub vetoed_genuine: u64,
     pub cases_dismissed: u64,
@@ -595,6 +612,8 @@ pub struct Sim {
     pub history: Vec<Row>,
     pub day: i64,
     pub censored: Option<&'static str>,
+    held_days: [u64; 2],
+    debt_days: [u64; 2],
     sequence: u64,
     case_sequence: u64,
 }
@@ -687,6 +706,8 @@ impl Sim {
             history: Vec::new(),
             day: 0,
             censored: None,
+            held_days: [0; 2],
+            debt_days: [0; 2],
             sequence: 0,
             case_sequence: 0,
             cfg,
@@ -714,17 +735,32 @@ impl Sim {
     /// A noisy look at an account: suspicious with the declared sensitivity for a false identity, else the false-positive rate.
     fn look(&self, rng: &mut Rng, id: Id) -> bool {
         let d = &self.cfg.detection;
-        if false_identity(self.kind[id as usize]) {
-            return rng.chance(d.sensitivity);
-        }
         let odd = d.odd_share > 0.0 && Rng::keyed(self.seed, CH_TYPE, u64::from(id), 2).chance(d.odd_share);
-        rng.chance(if odd { (d.false_positive * d.odd_multiplier).min(1.0) } else { d.false_positive })
+        let p = if false_identity(self.kind[id as usize]) {
+            d.sensitivity
+        } else if odd {
+            (d.false_positive * d.odd_multiplier).min(1.0)
+        } else {
+            d.false_positive
+        };
+        if d.persistent_errors {
+            Rng::keyed(self.seed, CH_PERSISTENT_LOOK, u64::from(id), 0).chance(p)
+        } else {
+            rng.chance(p)
+        }
     }
 
     /// A suspicious look at `id` that must also survive the declared confirming looks of other mutual partners (`Detection::confirm`).
     fn look_confirmed(&self, rng: &mut Rng, observer: Id, id: Id) -> bool {
-        if !(0..self.cfg.detection.examiner_looks).all(|_| self.look(rng, id)) {
+        if !self.look(rng, id) {
             return false;
+        }
+        let rho = self.cfg.detection.repeat_correlation;
+        for _ in 1..self.cfg.detection.examiner_looks {
+            // Conditional on the first suspicious result, re-reading it cannot add new evidence.
+            if !(rho > 0.0 && rng.chance(rho)) && !self.look(rng, id) {
+                return false;
+            }
         }
         let need = self.cfg.detection.confirm;
         if need == 0 {
@@ -864,6 +900,11 @@ impl Sim {
         if self.censored.is_none() && day >= self.cfg.detection_start_day {
             self.detect();
             self.accuse();
+        }
+        for i in 0..self.world.len() as Id {
+            let c = ci(self.cohort[i as usize]);
+            self.held_days[c] += u64::from(self.world.held(i));
+            self.debt_days[c] += u64::from(self.world.debt(i) > 0);
         }
         self.sample();
         self.day += 1;
@@ -1212,7 +1253,7 @@ impl Sim {
     // ---- detection -------------------------------------------------------------------------------------------------
 
     /// Declared attack on the availability of the defense: operators file false formal cases through the ordinary procedure (the public
-    /// XP gate applies; nothing is staked).
+    /// XP gate and soft-backed stake apply).
     fn accuse(&mut self) {
         let rate = self.cfg.attacker_accuse;
         if rate <= 0.0 {
@@ -1305,7 +1346,7 @@ impl Sim {
     /// The common procedure for a formal case (§25 ordinary direct challenge): the challenger must hold more XP than the owner of the
     /// challenged transaction (here: the challenged account), both parties must be accepted and distinct, and disputes must be enabled
     /// at the current network size. Suspicion, finding a sponsor and opening a case are separate steps; only this check admits a case.
-    /// Model deviation: the identity-case abstraction has no stake or Chekharda ladder, and the challenged account stands for the transaction owner.
+    /// Model deviation: the challenged account stands for the transaction owner in an identity case.
     pub fn case_gate(&self, challenger: Id, target: Id) -> Result<(), CaseRefusal> {
         if self.world.active_count() < self.cfg.detection.disputes_from_active {
             return Err(CaseRefusal::Disabled);
@@ -1612,6 +1653,7 @@ impl Sim {
                 self.det.false_invalidated += 1
             } else {
                 self.det.genuine_invalidated += 1;
+                self.det.wrong_by_cohort[ci(self.cohort[rec.target as usize])] += 1;
                 if det.appeal > 0.0 && Rng::keyed(self.seed, CH_DEFENSE, rec.id, 1).chance(det.appeal) {
                     self.appeals.push((self.world.now() + det.defense_days * DAY, rec.target));
                 }
@@ -1861,6 +1903,30 @@ impl Sim {
             self.censored.map_or("null".to_string(), json::string)
         );
         let d = &self.det;
+        let mut debt = [0i64; 2];
+        let mut repaid = [0u64; 2];
+        let mut liquid = [0u64; 2];
+        let mut rights = [0u64; 2];
+        let mut open_holds = [0u64; 2];
+        let mut bought = [0u64; 2];
+        for i in 0..self.world.len() as Id {
+            let c = ci(self.cohort[i as usize]);
+            debt[c] += self.world.debt(i);
+            repaid[c] += self.world.debt_repaid(i);
+            liquid[c] += u64::from(self.world.liquid(i));
+            rights[c] += self.world.unspent_rights(i) as u64;
+            open_holds[c] += u64::from(self.world.held(i));
+            if self.corrupt(i) && self.world.accepted(i) {
+                bought[0] += 1;
+                bought[1] += u64::from(self.world.liquid(i)) + self.world.unspent_rights(i) as u64;
+            }
+        }
+        let _ = write!(
+            s,
+            "\"acquired\":{{\"acceptedAccounts\":{},\"heldFacy\":{},\"wronglyInvalidatedByCohort\":{:?}}},",
+            bought[0], bought[1], self.det.wrong_by_cohort
+        );
+        let _ = write!(s, "\"economics\":{{\"outstandingDebt\":{:?},\"debtRepaid\":{:?},\"liquid\":{:?},\"unspent\":{:?},\"heldAccountDays\":{:?},\"debtorAccountDays\":{:?},\"openHolds\":{:?},\"openCases\":{},\"suspendedActs\":{}}},", debt, repaid, liquid, rights, self.held_days, self.debt_days, open_holds, self.open_cases.len(), self.world.stats.suspended_acts);
         let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"accusations\":{},\"casesOnGenuine\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
             d.cases_opened, d.accusations, d.cases_on_genuine, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
         let (st, l) = (&self.world.stats, &self.ladder);
@@ -1902,6 +1968,35 @@ impl Sim {
 mod tests {
     use super::*;
     use crate::world::SearchOrder;
+
+    #[test]
+    fn repeat_evidence_has_matched_marginals_and_the_declared_joint_probability() {
+        let mut s = Sim::new(small("repeat-evidence", 0, true));
+        let mut rng = Rng::keyed(11, 1, 1, 1);
+        let trials = 100_000u32;
+        for (kind, p) in [(Kind::Genuine, 0.1), (Kind::Fake, 0.8)] {
+            s.kind[0] = kind;
+            s.cfg.detection.false_positive = p;
+            s.cfg.detection.sensitivity = p;
+            for rho in [0.0, 0.5, 1.0] {
+                s.cfg.detection.repeat_correlation = rho;
+                let found = (0..trials).filter(|_| s.look_confirmed(&mut rng, 1, 0)).count() as f64 / f64::from(trials);
+                let expected = p * (rho + (1.0 - rho) * p);
+                assert!((found - expected).abs() < 0.006, "p={p} rho={rho}: {found} vs {expected}");
+            }
+            s.cfg.detection.persistent_errors = true;
+            let mut found = 0;
+            for seed in 0..trials {
+                s.seed = u64::from(seed);
+                let a = s.look_confirmed(&mut rng, 1, 0);
+                s.day += 1;
+                assert_eq!(a, s.look_confirmed(&mut rng, 2, 0), "persistent error is fixed across examiners and days");
+                found += usize::from(a);
+            }
+            assert!((found as f64 / f64::from(trials) - p).abs() < 0.006);
+            s.cfg.detection.persistent_errors = false;
+        }
+    }
 
     fn small(seed: &str, attackers: usize, layered: bool) -> RunConfig {
         let mut c = RunConfig { seed: seed.into(), honest_genesis: 30, attack_start_day: 60, days: 100, attackers, max_subjects: 3000, ..RunConfig::default() };
@@ -2411,6 +2506,12 @@ mod tests {
             "stopAtHonest",
             "history",
             "refusals",
+            "economics",
+            "outstandingDebt",
+            "debtRepaid",
+            "repeatCorrelation",
+            "persistentErrors",
+            "halvingSparesCouncil",
         ] {
             assert!(text.contains(&format!("\"{key}\":")), "missing {key}");
         }
@@ -2421,6 +2522,15 @@ mod tests {
         c.run();
         assert_ne!(a.config_digest(), c.config_digest());
         assert_eq!(a.config_digest(), b.config_digest());
+        for mutate in [
+            (|c: &mut RunConfig| c.world.halving_spares_council = true) as fn(&mut RunConfig),
+            |c: &mut RunConfig| c.detection.repeat_correlation = 0.5,
+            |c: &mut RunConfig| c.detection.persistent_errors = true,
+        ] {
+            let mut other = base.clone();
+            mutate(&mut other);
+            assert_ne!(a.config_digest(), Sim::new(other).config_digest(), "every behavior setting must distinguish saved identities");
+        }
         // The growing phase and the attack phase keep distinct configurations.
         let mut grown = Sim::new(RunConfig { attackers: 0, attack_start_day: 1_000, days: 1_000, stop_at_honest: 40, ..base });
         grown.run();

@@ -35,11 +35,54 @@ pub fn window_hours(n: u32) -> i64 {
 
 /// The stake of position `n` in whole FACY: `ceil(base * 1.2^(n-1))` computed from the formula, so rounding never compounds.
 pub fn stake(n: u32, base: u32) -> u32 {
+    checked_stake(n, base).expect("stake exceeds the simulator's u32 amount representation")
+}
+
+/// Exact stake when it fits the simulator's amount representation; `None` is a numeric limit, not a protocol admission rule.
+pub fn checked_stake(n: u32, base: u32) -> Option<u32> {
     assert!(n >= 1, "positions are numbered from 1");
-    // Integer arithmetic in 1/5 steps keeps the ceiling exact: base * 6^(n-1) / 5^(n-1).
-    let num = u128::from(base) * 6u128.pow(n - 1);
-    let den = 5u128.pow(n - 1);
-    num.div_ceil(den) as u32
+    if base == 0 {
+        return Some(0);
+    }
+    // Even base 1 exceeds u32 at position 123. Bound work before computing large powers.
+    if n > 122 {
+        return None;
+    }
+    if let (Some(num), Some(den)) = (6u128.checked_pow(n - 1).and_then(|v| v.checked_mul(u128::from(base))), 5u128.checked_pow(n - 1)) {
+        return u32::try_from(num.div_ceil(den)).ok();
+    }
+    // At most 345 bits are needed through position 122, including a u32 base or quotient. Big-endian limbs compare lexically.
+    fn multiply(mut limbs: [u32; 12], factor: u32) -> [u32; 12] {
+        let mut carry = 0u64;
+        for word in limbs.iter_mut().rev() {
+            let value = u64::from(*word) * u64::from(factor) + carry;
+            *word = value as u32;
+            carry = value >> 32;
+        }
+        debug_assert_eq!(carry, 0);
+        limbs
+    }
+    let mut num = [0; 12];
+    num[11] = base;
+    let mut den = [0; 12];
+    den[11] = 1;
+    for _ in 1..n {
+        num = multiply(num, 6);
+        den = multiply(den, 5);
+    }
+    if multiply(den, u32::MAX) < num {
+        return None;
+    }
+    let (mut lo, mut hi) = (0, u32::MAX);
+    while lo < hi {
+        let mid = lo + (hi - lo) / 2;
+        if multiply(den, mid) >= num {
+            hi = mid;
+        } else {
+            lo = mid + 1;
+        }
+    }
+    Some(lo)
 }
 
 /// Which side of the dispute a position takes: odd positions stand with the accuser, even positions with the accused.
@@ -84,6 +127,8 @@ pub enum Refusal {
     XpNotAbove,
     /// The Council already entered; it is the terminal entrant.
     CouncilEntered,
+    /// The exact stake does not fit the simulator's amount representation. This is a model limit, not a protocol funding gate.
+    StakeOverflow,
 }
 
 /// One admitted position with the deadline provenance a reviewer needs to explain the final deadline.
@@ -208,8 +253,8 @@ impl<W: Copy + PartialEq> Ladder<W> {
     pub fn is_final(&self, now: i64) -> bool {
         now >= self.deadline()
     }
-    pub fn stake_of_next(&self) -> u32 {
-        stake(self.next_ordinal(), self.base_stake)
+    pub fn stake_of_next(&self) -> Option<u32> {
+        checked_stake(self.next_ordinal(), self.base_stake)
     }
 
     /// The condition check for an entry without applying it (used to test eligibility before money moves).
@@ -225,6 +270,9 @@ impl<W: Copy + PartialEq> Ladder<W> {
         }
         if kind == Kind::Participant && xp <= self.xp_to_beat() {
             return Err(Refusal::XpNotAbove);
+        }
+        if kind == Kind::Participant && self.stake_of_next().is_none() {
+            return Err(Refusal::StakeOverflow);
         }
         Ok(())
     }
@@ -334,6 +382,29 @@ mod tests {
         assert_eq!(s, vec![7, 9, 11, 13, 15, 18, 21, 26]);
         assert_eq!(stake(1, 10), 10);
         assert_eq!(stake(3, 10), 15, "exact 14.4 rounds up to 15");
+    }
+
+    #[test]
+    fn exact_stakes_survive_large_intermediate_powers_and_report_amount_limits() {
+        // Independent integer-rational references: ceil(base * 6**(n-1) / 5**(n-1)).
+        for (n, base, expected) in [(49, 7, 44_239), (50, 7, 53_086), (51, 7, 63_704), (111, 7, 3_589_509_485), (122, 1, 3_810_050_849)] {
+            assert_eq!(checked_stake(n, base), Some(expected));
+        }
+        assert_eq!(checked_stake(112, 7), None);
+        assert_eq!(checked_stake(123, 1), None);
+        assert_eq!(checked_stake(1, u32::MAX), Some(u32::MAX));
+        assert_eq!(checked_stake(2, u32::MAX), None);
+        assert_eq!(checked_stake(u32::MAX, 1), None);
+        assert_eq!(checked_stake(u32::MAX, 0), Some(0));
+        let mut ladder = Ladder::open(1, 1, 0, 7);
+        for n in 2..=111 {
+            ladder.admit(n, Kind::Participant, n, 0).unwrap();
+        }
+        let before = (ladder.len(), ladder.deadline());
+        assert_eq!(ladder.admit(112, Kind::Participant, 112, 0).map(|_| ()), Err(Refusal::StakeOverflow));
+        assert_eq!((ladder.len(), ladder.deadline()), before, "numeric refusal changes no state");
+        ladder.admit(112, Kind::Council, 0, 0).unwrap();
+        assert_eq!(ladder.positions().last().unwrap().stake, 0, "Council entry has no stake and remains representable");
     }
 
     fn at(l: &mut Ladder<u32>, who: u32, xp: i32, day: f64) -> Result<(), Refusal> {

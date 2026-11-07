@@ -48,6 +48,7 @@ const VALUE_KEYS: &[&str] = &[
     "--defense-days",
     "--base-stake",
     "--examiner-looks",
+    "--repeat-correlation",
     "--watchers",
     "--keep-rights",
     "--join-rate",
@@ -93,6 +94,7 @@ const FLAG_KEYS: &[&str] = &[
     "--no-integrity",
     "--halving-spares-council",
     "--no-attacker-ladder",
+    "--persistent-errors",
 ];
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
@@ -253,6 +255,8 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.attacker_cash_out = num(&opts, "--cash-out", 0.0)?;
     base.attacker_accuse = num(&opts, "--accuse", 0.0)?;
     base.accuse_hubs = flags.contains("--accuse-hubs");
+    base.detection.repeat_correlation = num(&opts, "--repeat-correlation", 0.0)?;
+    base.detection.persistent_errors = flags.contains("--persistent-errors");
     base.detection.odd_share = num(&opts, "--odd-share", 0.0)?;
     base.detection.odd_multiplier = num(&opts, "--odd-mult", 1.0)?;
     base.detection.acquit_met = flags.contains("--acquit");

@@ -51,6 +51,8 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 ## Convergence follow-ups (opened 2026-11-07)
 
+- [ ] **Finite closure checkpoint:** execute the [registered A-C checks](studies/2026-11-08-evidence-core/README.md), freeze and run the compact fresh-seed joint panel, then write the minimal evidence table and a single implementation verdict. Stop the Grow Loop afterward; no runtime or pilot work is authorized.
+
 - [x] **Q23 answered by D166-D167; Q24 by D164.** Base stakes 7, 14 and 28 and the watcher comparison were studied before D167 (historical, not current validation). Retrospective disputes of a guarantor against its own act are unmodeled. Current closure bounds examiner dependence and actual costs; human calibration remains external evidence.
 - [ ] **Corrupt examiners that file attacks** instead of abstaining: needs an owner-declared behavior. The rest of the stress panel under the ladder is done (study of 2026-11-07): joining rates, Council attention 0.1 to 1.0, K2 weakenings, cash-out, key loss, bought accounts, sparse and dense regimes, false accusations and a false-positive burst; every earlier K-table number predates the ladder.
 - [ ] **Joining behavior is uncalibrated** (Q23.6): real participation data or an owner assumption is needed before durations and escalation depth are more than conditional.

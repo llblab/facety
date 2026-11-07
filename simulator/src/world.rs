@@ -170,8 +170,9 @@ struct Subject {
     liquid: u32,
     /// Part of `liquid` locked as stakes of open dispute positions (D159 custody); never spendable or collectible meanwhile.
     reserved: u32,
-    /// Outstanding monetary debt from sanctions that could not be collected (not a burn; never collected later in this model).
+    /// Outstanding debt, repaid by burning later matured emission; never counted as a collected loss before repayment.
     debt: i64,
+    debt_repaid: u64,
     last_reward: Option<i64>,
     /// The most recent guarantor list and recipient list of this account's acts, reused while they are unchanged.
     last_guarantors: Option<Arc<[Id]>>,
@@ -241,18 +242,29 @@ pub struct Probe {
     pub resolved_by: &'static str,
 }
 
-/// An open dispute: the ladder of positions, the accused, the accused's guarantors at opening (the D159 charge targets), and every account
+/// An open dispute: the ladder of positions, the accused, and every account
 /// whose D77 activity hold it owns, with the hour the hold began.
 #[derive(Clone, Debug)]
 struct Case {
     ladder: Ladder<Id>,
     accused: Id,
-    accused_guarantors: Vec<Id>,
     /// Per position (index = ordinal - 1): the part of its stake that is actually blocked in custody (D166: what exists is blocked, the
     /// rest of a lost stake becomes debt).
-    backed: Vec<u32>,
+    backed: Vec<Backing>,
     /// `(account, hour the restriction began, whether it also excludes the account from paths)`.
     holds: Vec<(Id, i64, bool)>,
+}
+
+#[derive(Clone, Debug, Default)]
+struct Backing {
+    liquid: u32,
+    rights: Vec<u32>,
+}
+
+impl Backing {
+    fn total(&self) -> u32 {
+        self.liquid + self.rights.len() as u32
+    }
 }
 
 /// Counters of the dispute economics, for results. Amounts are whole FACY, durations hours.
@@ -264,10 +276,11 @@ pub struct DisputeStats {
     /// Entries refused, by the ladder or by funds.
     pub refused_closed: u64,
     pub refused_xp: u64,
-    /// Entries (and openings) whose stake was not fully backed by spendable liquid FACY at the time (D166: allowed, the shortfall is debt on a loss).
+    /// Entries whose liquid and mature Emitter backing was short (D166 allows entry; a loss creates debt).
     pub refused_funds: u64,
     /// FACY of lost stakes that could not be collected and became debt, and debt later repaid from matured emission.
     pub debt_repaid: u64,
+    pub suspended_acts: u64,
     pub council_entries: u64,
     pub ballots: u64,
     /// Positions that moved the deadline later (an entry whose own window ended after the deadline in force).
@@ -300,7 +313,7 @@ pub struct CaseOutcome {
     pub positions: u32,
     pub holds: Vec<(Id, i64)>,
     pub losers: Vec<Id>,
-    /// Net liquid FACY moved by the settlement per account (forfeited and burned stakes, sanction charges and the sanction payment).
+    /// Net actually collected value moved per account (liquid or mature Emitter backing; never uncollected debt).
     pub net: Vec<(Id, i64)>,
     /// New debt per account (the uncollectible part of a sanction).
     pub debts: Vec<(Id, i64)>,
@@ -325,6 +338,7 @@ pub struct World {
     /// Open cases in which the account is the accused: its unspent rights are frozen (protocol §17.4) until the last of them ends.
     frozen: Vec<u32>,
     cases: Vec<Option<Case>>,
+    reserved_rights: HashSet<u32>,
     /// Liquid FACY destroyed by disputes (burned stakes and sanction charges, D151 recovery); `sum(liquid) + liquid_destroyed` equals the
     /// converted entitlements.
     liquid_destroyed: i64,
@@ -375,6 +389,7 @@ impl World {
             path_hold: Vec::new(),
             frozen: Vec::new(),
             cases: Vec::new(),
+            reserved_rights: HashSet::new(),
             liquid_destroyed: 0,
             stats: DisputeStats::default(),
             settled: 0,
@@ -419,6 +434,7 @@ impl World {
             liquid: 0,
             reserved: 0,
             debt: 0,
+            debt_repaid: 0,
             last_reward: None,
             last_guarantors: None,
             last_recipients: None,
@@ -566,7 +582,7 @@ impl World {
             .copied()
             .filter(|&a| {
                 let act = &self.acts[a as usize];
-                act.status == ActStatus::Unspent && self.now - act.recorded_at >= min_age
+                act.status == ActStatus::Unspent && self.now - act.recorded_at >= min_age && !self.reserved_rights.contains(&a)
             })
             .collect()
     }
@@ -617,7 +633,7 @@ impl World {
         let s = &self.subjects[id as usize];
         s.acts[s.first_unspent..].iter().copied().find(|&a| {
             let act = &self.acts[a as usize];
-            act.status == ActStatus::Unspent && self.now - act.recorded_at >= self.cfg.spend_hours
+            act.status == ActStatus::Unspent && self.now - act.recorded_at >= self.cfg.spend_hours && !self.reserved_rights.contains(&a)
         })
     }
 
@@ -829,11 +845,19 @@ impl World {
             self.settled += 1;
             if status != ActStatus::Cancelled {
                 if self.subjects[self.acts[act_id as usize].subject as usize].debt > 0 {
+                    self.stats.suspended_acts += 1;
                     // D167: while the author's emission balance is negative nobody earns XP for its acts (a suspended, empty credit).
                     let at = self.acts[act_id as usize].recorded_at + MATURITY_HOURS;
                     self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: Arc::from(Vec::new()) });
                 } else {
                     self.credit(act_id);
+                }
+                // D165 restores integrity for a valid own maturity even when D167 suspends its new responsibility units.
+                if self.cfg.integrity {
+                    let subject = self.acts[act_id as usize].subject;
+                    let c = &mut self.subjects[subject as usize].coef;
+                    *c = (*c + COEF_STEP).min(COEF_ONE);
+                    self.refresh_xp(subject);
                 }
                 // D166/D4: a negative emission balance (debt) is repaid from the matured entitlement of the account, burned.
                 if status == ActStatus::Unspent && self.subjects[self.acts[act_id as usize].subject as usize].debt > 0 {
@@ -849,6 +873,7 @@ impl World {
         self.vault -= 1;
         self.burned += 1;
         self.subjects[subject as usize].debt -= 1;
+        self.subjects[subject as usize].debt_repaid += 1;
         self.stats.debt_repaid += 1;
         let s = &mut self.subjects[subject as usize];
         while s.first_unspent < s.acts.len() && self.acts[s.acts[s.first_unspent] as usize].status != ActStatus::Unspent {
@@ -867,12 +892,6 @@ impl World {
         };
         for &recipient in &recipients {
             self.bump(recipient, 1);
-        }
-        if self.cfg.integrity {
-            // The author's own matured Self-ID restores a little integrity, never above one.
-            let c = &mut self.subjects[subject as usize].coef;
-            *c = (*c + COEF_STEP).min(COEF_ONE);
-            self.refresh_xp(subject);
         }
         let shared = match &self.subjects[subject as usize].last_recipients {
             Some(last) if **last == *recipients => last.clone(),
@@ -969,7 +988,7 @@ impl World {
             return Err(Reject("unspent rights are frozen while the account is accused"));
         }
         let a = &self.acts[act as usize];
-        if a.subject != who || self.now - a.recorded_at < self.cfg.spend_hours || a.status != ActStatus::Unspent {
+        if a.subject != who || self.now - a.recorded_at < self.cfg.spend_hours || a.status != ActStatus::Unspent || self.reserved_rights.contains(&act) {
             return Err(Reject("conversion requires own mature emission"));
         }
         self.dispose(act, ActStatus::Converted);
@@ -1008,7 +1027,7 @@ impl World {
 
     fn require_mature_own(&self, who: Id, act: u32, hours: i64, what: &'static str) -> Result<(), Reject> {
         let a = &self.acts[act as usize];
-        if a.status != ActStatus::Unspent {
+        if a.status != ActStatus::Unspent || self.reserved_rights.contains(&act) {
             return Err(Reject("emission is spent or disputed"));
         }
         if a.subject != who || self.now - a.recorded_at < hours {
@@ -1336,7 +1355,7 @@ impl World {
         for &a in &self.subjects[accused as usize].acts {
             if let Some(c) = &self.acts[a as usize].credit {
                 if !c.revoked && c.recipients.len() > 1 {
-                    roster.extend(c.recipients[1..].iter().copied().filter(|&g| g != accused && self.accepted(g)));
+                    roster.extend(c.recipients[1..].iter().copied().filter(|&g| g != accused));
                 }
             }
         }
@@ -1352,6 +1371,34 @@ impl World {
     }
     pub fn debt(&self, id: Id) -> i64 {
         self.subjects[id as usize].debt
+    }
+    pub fn debt_repaid(&self, id: Id) -> u64 {
+        self.subjects[id as usize].debt_repaid
+    }
+    pub fn responsibility_units(&self, id: Id) -> i32 {
+        self.subjects[id as usize].raw
+    }
+
+    /// D166 custody: liquid first, then mature own Emitter rights, without withdrawing a winning stake's rights.
+    fn reserve_stake(&mut self, who: Id, amount: u32) -> Backing {
+        let liquid = amount.min(self.spendable(who));
+        let rights: Vec<u32> = self.eligible_emissions(who, MATURITY_HOURS).into_iter().take((amount - liquid) as usize).collect();
+        self.subjects[who as usize].reserved += liquid;
+        self.reserved_rights.extend(rights.iter().copied());
+        Backing { liquid, rights }
+    }
+
+    /// Materialize only rights actually collected by a settlement. Credit history is untouched.
+    fn collect_backing(&mut self, who: Id, backing: &Backing) -> u32 {
+        let mut paid = backing.liquid;
+        for &a in &backing.rights {
+            if self.acts[a as usize].status == ActStatus::Unspent {
+                self.dispose(a, ActStatus::Converted);
+                paid += 1;
+            }
+        }
+        self.subjects[who as usize].liquid -= paid;
+        paid
     }
 
     fn stake_at(&self, ordinal: u32) -> u32 {
@@ -1380,7 +1427,7 @@ impl World {
         id == case.accused || (!self.cfg.exclude_targets_only && id == case.ladder.positions()[0].who)
     }
 
-    /// Open a dispute (D158/D159): position 1 is the challenger, who reserves the first stake from spendable liquid; the accused is
+    /// Open a dispute (D158/D159): position 1 reserves liquid and mature Emitter backing; the accused is
     /// restricted from the start (D77) and excluded from paths. `subjects` is `[challenger, accused]`. Nothing changes on a refusal.
     pub fn begin_case(&mut self, subjects: &[Id]) -> Result<u32, Reject> {
         if subjects.len() < 2 || subjects[0] == subjects[1] {
@@ -1391,12 +1438,10 @@ impl World {
         }
         let (challenger, accused) = (subjects[0], subjects[1]);
         let stake = self.stake_at(1);
-        // D166: the stake blocks what the account holds (liquid FACY); a missing part is not a refusal, it becomes debt if the position loses.
-        let backed = stake.min(self.spendable(challenger));
-        self.stats.refused_funds += u64::from(backed < stake);
+        let backed = self.reserve_stake(challenger, stake);
+        self.stats.refused_funds += u64::from(backed.total() < stake);
         let ladder = Ladder::open(challenger, self.subjects[challenger as usize].xp, self.now, self.cfg.base_stake.unwrap_or(0));
-        let mut case = Case { ladder, accused, accused_guarantors: self.liable_guarantors(accused), backed: vec![backed], holds: Vec::new() };
-        self.subjects[challenger as usize].reserved += backed;
+        let mut case = Case { ladder, accused, backed: vec![backed], holds: Vec::new() };
         self.stats.staked += u64::from(stake);
         self.stats.opened += 1;
         self.stats.max_positions = self.stats.max_positions.max(1);
@@ -1422,9 +1467,10 @@ impl World {
         self.case_ref(case).is_ok_and(|c| c.ladder.is_final(self.now))
     }
     /// `(positions, XP the next entrant must exceed, stake of the next position, side of the next position, Council entered)`.
-    pub fn case_state(&self, case: u32) -> Option<(u32, i32, u32, Side, bool)> {
+    pub fn case_state(&self, case: u32) -> Option<(u32, i32, Option<u32>, Side, bool)> {
         let c = self.case_ref(case).ok()?;
-        Some((c.ladder.len(), c.ladder.xp_to_beat(), self.stake_at(c.ladder.next_ordinal()), c.ladder.next_side(), c.ladder.council_entered()))
+        let next = self.cfg.base_stake.map_or(Some(0), |base| chekharda::checked_stake(c.ladder.next_ordinal(), base));
+        Some((c.ladder.len(), c.ladder.xp_to_beat(), next, c.ladder.next_side(), c.ladder.council_entered()))
     }
     /// Provenance of a case's deadline: every position with its window, proposal and the deadline before and after it.
     pub fn case_positions(&self, case: u32) -> Vec<chekharda::Position<Id>> {
@@ -1435,7 +1481,7 @@ impl World {
     }
 
     /// An ordinary entry: the next position takes the side opposite to the last one, needs more XP than the last ordinary participant,
-    /// and reserves its stake from spendable liquid. Returns the ordinal. Only an admitted position changes the ordinal, the deadline,
+    /// and reserves liquid and mature Emitter backing. Returns the ordinal. Only an admitted position changes the ordinal, the deadline,
     /// the custody and the restrictions; a refusal changes nothing.
     pub fn join_case(&mut self, case: u32, who: Id) -> Result<u32, Reject> {
         self.require_account(who)?;
@@ -1448,8 +1494,8 @@ impl World {
             return Err(self.refuse(r));
         }
         let stake = self.stake_at(ordinal);
-        let backed = stake.min(self.spendable(who));
-        self.stats.refused_funds += u64::from(backed < stake);
+        let backed = self.reserve_stake(who, stake);
+        self.stats.refused_funds += u64::from(backed.total() < stake);
         self.admit(case, who, PositionKind::Participant, xp, stake, backed)
     }
 
@@ -1463,7 +1509,7 @@ impl World {
         if let Err(r) = check {
             return Err(self.refuse(r));
         }
-        let ordinal = self.admit(case, member, PositionKind::Council, 0, 0, 0)?;
+        let ordinal = self.admit(case, member, PositionKind::Council, 0, 0, Backing::default())?;
         self.stats.council_entries += 1;
         Ok(ordinal)
     }
@@ -1480,10 +1526,11 @@ impl World {
                 Reject("XP is not above the previous participant")
             }
             Refusal::CouncilEntered => Reject("the Council entered; it is the terminal entrant"),
+            Refusal::StakeOverflow => Reject("stake exceeds the simulator's numeric representation"),
         }
     }
 
-    fn admit(&mut self, case: u32, who: Id, kind: PositionKind, xp: i32, stake: u32, backed: u32) -> Result<u32, Reject> {
+    fn admit(&mut self, case: u32, who: Id, kind: PositionKind, xp: i32, stake: u32, backed: Backing) -> Result<u32, Reject> {
         let now = self.now;
         let c = self.cases[case as usize].as_mut().expect("checked open");
         let (n, extended) = {
@@ -1492,7 +1539,6 @@ impl World {
         };
         c.holds.push((who, now, false));
         c.backed.push(backed);
-        self.subjects[who as usize].reserved += backed;
         self.stats.staked += u64::from(stake);
         self.stats.joined += 1;
         self.stats.extensions += u64::from(extended);
@@ -1522,8 +1568,11 @@ impl World {
             self.release_hold(id, path);
         }
         self.frozen[case.accused as usize] -= 1;
-        for (p, &b) in case.ladder.positions().iter().zip(&case.backed) {
-            self.subjects[p.who as usize].reserved -= b;
+        for (p, b) in case.ladder.positions().iter().zip(&case.backed) {
+            self.subjects[p.who as usize].reserved -= b.liquid;
+            for a in &b.rights {
+                self.reserved_rights.remove(a);
+            }
         }
         self.stats.hold_hours += held.iter().map(|&(_, h)| h).sum::<i64>();
         held
@@ -1538,13 +1587,16 @@ impl World {
         }
     }
 
-    /// Charge `amount` to an account from its spendable liquid; the part that cannot be collected becomes debt. Returns the collected part.
+    /// Collect liquid and mature Emitter rights; any shortfall becomes debt. Returns actual collection.
     fn charge(&mut self, id: Id, amount: u32) -> u32 {
-        let s = &mut self.subjects[id as usize];
-        let collected = amount.min(s.liquid - s.reserved);
-        s.liquid -= collected;
+        let backing = self.reserve_stake(id, amount);
+        self.subjects[id as usize].reserved -= backing.liquid;
+        for a in &backing.rights {
+            self.reserved_rights.remove(a);
+        }
+        let collected = self.collect_backing(id, &backing);
         let owed = amount - collected;
-        s.debt += i64::from(owed);
+        self.subjects[id as usize].debt += i64::from(owed);
         self.stats.debt_created += u64::from(owed);
         collected
     }
@@ -1589,8 +1641,7 @@ impl World {
         // emission) and is never paid to the winner.
         for &(from, to, amount) in &settlement.forfeits {
             let (f, t) = (who_at(from), who_at(to));
-            let paid = c.backed[from as usize - 1].min(amount);
-            self.subjects[f as usize].liquid -= paid;
+            let paid = self.collect_backing(f, &c.backed[from as usize - 1]).min(amount);
             self.subjects[t as usize].liquid += paid;
             self.stats.forfeited += u64::from(paid);
             net.push((f, -i64::from(paid)));
@@ -1599,8 +1650,7 @@ impl World {
         }
         for &(position, amount) in &settlement.burns {
             let loser = who_at(position);
-            let paid = c.backed[position as usize - 1].min(amount);
-            self.subjects[loser as usize].liquid -= paid;
+            let paid = self.collect_backing(loser, &c.backed[position as usize - 1]).min(amount);
             self.destroy_liquid(paid);
             self.stats.stake_burned += u64::from(paid);
             net.push((loser, -i64::from(paid)));
@@ -1609,16 +1659,22 @@ impl World {
         let mut losers = Vec::new();
         for &n in &settlement.losers {
             let p = &positions[n as usize - 1];
-            if p.kind == PositionKind::Participant
-                && self.cfg.halve_losers
-                && !(self.cfg.halving_spares_council && self.council_mask.get(p.who as usize).copied().unwrap_or(false))
-            {
+            if self.cfg.halve_losers && !(self.cfg.halving_spares_council && self.council_mask.get(p.who as usize).copied().unwrap_or(false)) {
                 let cut = self.penalize_xp(p.who, 0.5);
                 self.stats.xp_halved += cut as u64;
                 losers.push(p.who);
             }
         }
         if settlement.accused_lost {
+            // The accused is the losing transaction owner even without a staked ladder position (D55/D165).
+            if self.cfg.halve_losers
+                && !losers.contains(&c.accused)
+                && !(self.cfg.halving_spares_council && self.council_mask.get(c.accused as usize).copied().unwrap_or(false))
+            {
+                let cut = self.penalize_xp(c.accused, 0.5);
+                self.stats.xp_halved += cut as u64;
+                losers.push(c.accused);
+            }
             if let Some(base) = self.cfg.base_stake {
                 let accuser = c.ladder.positions()[0].who;
                 let got = self.charge(c.accused, base);
@@ -1627,7 +1683,8 @@ impl World {
                 net.push((c.accused, -i64::from(got)));
                 net.push((accuser, i64::from(got)));
                 debts.push((c.accused, i64::from(base - got)));
-                for &g in &c.accused_guarantors {
+                // Pending acts can mature during the hold: liability uses all actual receipts before the verdict/cut, not an opening snapshot.
+                for g in self.liable_guarantors(c.accused) {
                     if g != c.accused {
                         let burned = self.charge(g, base);
                         self.destroy_liquid(burned);
@@ -1896,13 +1953,19 @@ impl World {
         }
         // Dispute custody and restrictions: the reserved stakes, the holds and the path exclusions are exactly those of the open cases.
         let mut reserved = vec![0u32; n];
+        let mut reserved_rights = HashSet::new();
         let mut holds = vec![0u32; n];
         let mut path_holds = vec![0u32; n];
         let mut frozen = vec![0u32; n];
         for c in self.cases.iter().flatten() {
             frozen[c.accused as usize] += 1;
-            for (p, &b) in c.ladder.positions().iter().zip(&c.backed) {
-                reserved[p.who as usize] += b;
+            for (p, b) in c.ladder.positions().iter().zip(&c.backed) {
+                reserved[p.who as usize] += b.liquid;
+                for &a in &b.rights {
+                    if !reserved_rights.insert(a) || self.acts[a as usize].subject != p.who || self.acts[a as usize].recorded_at + MATURITY_HOURS > self.now {
+                        return Err("invalid or duplicated Emitter stake custody".into());
+                    }
+                }
             }
             for &(id, _, path) in &c.holds {
                 holds[id as usize] += 1;
@@ -1917,6 +1980,9 @@ impl World {
                 }
                 last = p.after;
             }
+        }
+        if reserved_rights != self.reserved_rights {
+            return Err("Emitter stake custody does not match open cases".into());
         }
         for (i, s) in self.subjects.iter().enumerate() {
             if reserved[i] != s.reserved || s.reserved > s.liquid {
@@ -2904,16 +2970,15 @@ mod tests {
     fn a_negative_emission_balance_blocks_invitations_and_guarantees_and_suspends_xp_until_repaid() {
         let mut w = rich_world();
         let (accused, challenger, _) = xp_ladder(&w);
-        // A matured, unspent right that the challenger holds before it falls into debt.
-        w.create_self_id(challenger).unwrap();
+        // The held mature right backs one unit of the stake; six units remain unbacked.
+        let right = w.create_self_id(challenger).unwrap();
         w.tick(w.now() + 24);
         let start = w.now();
         w.burn_liquid(challenger);
         let case = w.begin_case(&[challenger, accused]).unwrap();
         w.tick(start + 7 * 24);
         w.settle_case(case, Some(Side::Accused)).unwrap();
-        assert_eq!(w.debt(challenger), 7);
-        let right = w.eligible_emission(challenger).expect("a matured right");
+        assert_eq!(w.debt(challenger), 6);
         assert_eq!(w.create_invitation(challenger, right), Err(Reject("negative emission balance blocks invitations and guarantees")));
         assert_eq!(w.open_valence(challenger, 11, right), Err(Reject("negative emission balance blocks invitations and guarantees")));
         // Acts that mature while the balance is negative earn nobody XP; each is burned against the debt.
@@ -2921,19 +2986,21 @@ mod tests {
         while w.debt(challenger) > 0 {
             let act = w.create_self_id(challenger).unwrap();
             let guarantors = w.act_guarantors(act).to_vec();
-            let before = xps(&w);
+            let before: Vec<i32> = (0..w.len() as Id).map(|i| w.responsibility_units(i)).collect();
+            let coef = w.coefficient(challenger);
             w.tick(w.now() + 24);
-            assert_eq!(xps(&w), before, "no XP for the author or its guarantors while the balance is negative");
+            assert_eq!((0..w.len() as Id).map(|i| w.responsibility_units(i)).collect::<Vec<_>>(), before, "no new units for anyone during debt");
+            assert_eq!(w.coefficient(challenger), coef + COEF_STEP, "own maturity still repairs integrity");
             assert!(guarantors.len() <= 12);
             suspended += 1;
             assert!(suspended <= 7, "seven units repay a debt of seven");
         }
-        assert_eq!(suspended, 7);
+        assert_eq!(suspended, 6);
         // Back in the black: the next act earns XP again and invitations are possible again.
         let act = w.create_self_id(challenger).unwrap();
         let before = w.xp(challenger);
         w.tick(w.now() + 24);
-        assert_eq!(w.xp(challenger), before + 1, "XP flows again");
+        assert!(w.xp(challenger) >= before, "new units and coefficient repair resume effective XP growth");
         let _ = act;
         assert!(w.create_invitation(challenger, w.eligible_emission(challenger).unwrap()).is_ok());
         w.audit().unwrap();
@@ -2959,6 +3026,117 @@ mod tests {
         assert!(roster.len() >= current.len() - 1);
         let case = w.begin_case(&[challenger, accused]).unwrap();
         w.end_case(case);
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn emitter_custody_is_exclusive_releases_in_kind_and_a_forfeit_collects_without_rewriting_xp() {
+        let mut w = rich_world();
+        let (accused, challenger, defender) = xp_ladder(&w);
+        w.burn_liquid(challenger);
+        for _ in 0..3 {
+            w.create_self_id(challenger).unwrap();
+            w.tick(w.now() + DAY);
+        }
+        let rights = w.eligible_emissions(challenger, DAY);
+        let units = w.responsibility_units(challenger);
+        let a = w.begin_case(&[challenger, accused]).unwrap();
+        assert!(w.eligible_emissions(challenger, DAY).is_empty());
+        assert!(w.convert_to_collector(challenger, rights[0]).is_err());
+        let b = w.begin_case(&[challenger, defender]).unwrap();
+        assert_eq!(w.case_ref(b).unwrap().backed[0].total(), 0, "no collateral reuse");
+        w.end_case(b);
+        w.end_case(a);
+        assert_eq!(w.eligible_emissions(challenger, DAY), rights, "moot custody returns Emitter rights without withdrawing");
+        assert_eq!(w.liquid(challenger), 0);
+        let a = w.begin_case(&[challenger, accused]).unwrap();
+        w.tick(w.case_deadline(a).unwrap());
+        w.settle_case(a, Some(Side::Accused)).unwrap();
+        assert_eq!((w.debt(challenger), w.unspent_rights(challenger)), (4, 0));
+        assert_eq!(w.responsibility_units(challenger), units, "economic collection does not rewrite XP provenance");
+        assert_eq!(w.stats.stake_burned, 3);
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn sanctions_collect_frozen_emitter_rights_and_revoked_collateral_cannot_pay_twice() {
+        let mut w = rich_world();
+        let (accused, challenger, defender) = xp_ladder(&w);
+        w.burn_liquid(accused);
+        w.create_self_id(accused).unwrap();
+        w.tick(w.now() + DAY);
+        let a = w.begin_case(&[challenger, accused]).unwrap();
+        let units = w.responsibility_units(accused);
+        w.tick(w.case_deadline(a).unwrap());
+        let paid = w.stats.sanction_collected;
+        w.settle_case(a, None).unwrap();
+        assert_eq!(w.stats.sanction_collected - paid, 1);
+        assert_eq!(w.debt(accused), 6);
+        assert_eq!(w.responsibility_units(accused), units);
+        w.burn_liquid(defender);
+        w.create_self_id(defender).unwrap();
+        w.tick(w.now() + DAY);
+        let b = w.begin_case(&[defender, challenger]).unwrap();
+        assert_eq!(w.case_ref(b).unwrap().backed[0].total(), 1);
+        w.void_chain(defender);
+        w.audit().unwrap();
+        let supply = w.supply();
+        w.tick(w.case_deadline(b).unwrap());
+        w.settle_case(b, Some(Side::Accused)).unwrap();
+        assert_eq!(w.debt(defender), 7);
+        assert_eq!(w.supply(), supply, "revoked Emitter collateral has already burned; settlement creates debt only");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_previously_invalidated_xp_recipient_stays_liable_and_a_losing_council_entrant_is_halved() {
+        let mut w = rich_world();
+        let (accused, challenger, defender) = xp_ladder(&w);
+        let old = w.liable_guarantors(accused).into_iter().find(|&g| g != challenger && g != defender).unwrap();
+        w.invalidate_identity(old);
+        assert!(w.liable_guarantors(accused).contains(&old));
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        assert!(w.liable_guarantors(accused).contains(&old));
+        w.end_case(case);
+        w.reinstate_identity(old);
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.join_case(case, defender).unwrap();
+        let member = w.council().iter().copied().find(|&m| m != accused && m != challenger && m != defender).unwrap();
+        w.council_join(case, member).unwrap();
+        for m in w.council().to_vec() {
+            w.council_ballot(case, m, true);
+        }
+        w.tick(w.case_deadline(case).unwrap());
+        let coef = w.coefficient(member);
+        let out = w.settle_case(case, Some(Side::Accused)).unwrap();
+        assert!(out.losers.contains(&member));
+        assert_eq!(w.coefficient(member), coef / 2, "D164 includes the Council entrant");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn liability_includes_receipts_matured_during_the_case_and_the_losing_owner_is_halved_once() {
+        let mut w = rich_world();
+        let (accused, _, _) = xp_ladder(&w);
+        let g = (0..12).find(|&g| g != accused && !w.liable_guarantors(accused).contains(&g)).unwrap();
+        let a = w.create_self_id(accused).unwrap();
+        let b = w.create_self_id(g).unwrap();
+        w.tick(w.now() + DAY);
+        w.open_valence(accused, g, a).unwrap();
+        w.open_valence(g, accused, b).unwrap();
+        w.create_self_id(accused).unwrap();
+        assert!(!w.liable_guarantors(accused).contains(&g));
+        let challenger = (0..12).filter(|&i| i != accused && i != g && w.xp(i) > w.xp(accused)).max_by_key(|&i| w.xp(i)).unwrap();
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.tick(w.case_deadline(case).unwrap());
+        assert!(w.liable_guarantors(accused).contains(&g));
+        let before = i64::from(w.liquid(g)) + w.unspent_rights(g) as i64 - w.debt(g);
+        let coefficient = w.coefficient(accused);
+        let out = w.settle_case(case, None).unwrap();
+        let after = i64::from(w.liquid(g)) + w.unspent_rights(g) as i64 - w.debt(g);
+        assert_eq!(before - after, 7, "the newly credited guarantor is liable");
+        assert_eq!(w.coefficient(accused), coefficient / 2);
+        assert_eq!(out.losers.iter().filter(|&&i| i == accused).count(), 1);
         w.audit().unwrap();
     }
 
