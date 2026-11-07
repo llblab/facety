@@ -209,6 +209,17 @@ Registered before the runs (reserved seeds `grown-5001..5004`, one year, default
 | I2 | The D129 lines hold for the frozen strongest adversary (100 operators, supported-first, patience 120, 20% bought, odd-profile examiners 5% at ten times, proof of reality 0.7 within 14 days) | dirty-FACY share at most 10% and attackers below one third of accounts and of FACY on every seed | any seed breaching either line |
 | I3 | A lost dispute is recoverable inside the horizon where the account keeps playing | in the control at least half of the accounts that lost a dispute have a coefficient above their post-loss value at the end | fewer than half on any seed |
 
+Results (seeds `grown-5001..5004`, one year):
+
+| Seed | Control, one look | Control, two looks (default) | Ratio | Frozen adversary: honest accounts, attacker share, dirty-FACY share | Accounts that lost integrity / recovering (one look; two looks; adversary run) |
+| --- | --- | --- | --- | --- | --- |
+| 5001 | 12,092 | 21,359 | 1.77 | 50,151; 0.20%; 0.92% | 1,477 / 1,238; 4 / 4; 36 / 36 |
+| 5002 | 12,363 | 62,540 | 5.06 | 51,509; 0.19%; 0.80% | 1,503 / 1,366; 18 / 17; 50 / 48 |
+| 5003 | 12,782 | 59,490 | 4.65 | 42,060; 0.23%; 1.02% | 1,528 / 1,297; 19 / 18; 38 / 36 |
+| 5004 | 12,703 | 47,661 | 3.75 | 45,675; 0.21%; 0.95% | 1,472 / 1,344; 9 / 9; 43 / 43 |
+
+I1: the criterion (at least 2 times on every seed) is **not met** on seed 5001 (1.77), and the kill line (1.5) is not crossed, so the registered claim is neither confirmed nor killed: three seeds show 3.8 to 5.1 times, one shows 1.8 times (growth under careful examiners has a wide seed spread, 21 to 63 thousand). I2 **survives** (dirty-FACY share 0.80% to 1.02%, attackers at most 0.23%). I3 **survives**: 84% to 90% of the accounts that lost integrity under single-look examiners have already recovered part of it within the year, and all but one of the few that lost it under careful examiners.
+
 ## Assessment of core readiness (diagnostic; model properties against real-world assumptions)
 
 Tested model properties: (1) XP at maturity is a deterministic function of valid Self-ID history, snapshots and chronological adjustments, equal to an independent chronological reference under random event orders, with the retroactive-XP exploit blocked for invitations and valences; (2) the dispute deadline never shortens and equals the maximum window end, with deterministic refusals and same-hour ordering, and the stake ledger conserves FACY under custody, forfeits, burns, sanctions and debt (audit after every run); (3) the strongest adversary of the closure programme stays inside both D129 lines on 4 of 4 reserved seeds under the full ladder (the earlier confirmation of 12 seeds used the earlier rules); (4) the stake bounds false accusations by operator emission.

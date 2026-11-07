@@ -433,7 +433,7 @@ fn main() {
                 let g = |x: Option<i64>| x.map_or("null".into(), |v| v.to_string());
                 let d = &sim.det;
                 let line = format!(
-                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"casesSettled\":{},\"caseDaysMean\":{},\"maxPositions\":{},\"deadlineExtensions\":{},\"councilEntries\":{},\"refusedFunds\":{},\"holdDaysHonest\":{},\"holdDaysAttackers\":{},\"stakeLostHonest\":{},\"stakeLostAttackers\":{},\"debtHonest\":{},\"debtAttackers\":{},\"xpHalved\":{},\"councilTurnover\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
+                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"casesSettled\":{},\"caseDaysMean\":{},\"maxPositions\":{},\"deadlineExtensions\":{},\"councilEntries\":{},\"refusedFunds\":{},\"holdDaysHonest\":{},\"holdDaysAttackers\":{},\"stakeLostHonest\":{},\"stakeLostAttackers\":{},\"debtHonest\":{},\"debtAttackers\":{},\"xpHalved\":{},\"councilTurnover\":{},\"integrityLost\":{},\"integrityRecovering\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
                     json::string(&sim.cfg.seed),
                     json::string(&sim.config_digest()),
                     prefix_days,
@@ -474,6 +474,8 @@ fn main() {
                     sim.ladder.debt[1],
                     sim.world.stats.xp_halved,
                     sim.world.stats.council_turnover,
+                    sim.world.integrity_counts().0,
+                    sim.world.integrity_counts().1,
                     sim.world.path_searches_exhausted(),
                     sim.world.path_search_steps(),
                     sim.censored.map_or("null".to_string(), json::string),

@@ -178,6 +178,8 @@ struct Subject {
     raw: i32,
     /// Integrity coefficient in millionths (`COEF_ONE` unless the variant is on and the account lost disputes).
     coef: u32,
+    /// The lowest coefficient the account ever had (diagnostic: how many accounts are recovering).
+    low_coef: u32,
     liquid: u32,
     /// Part of `liquid` locked as stakes of open dispute positions (D159 custody); never spendable or collectible meanwhile.
     reserved: u32,
@@ -420,6 +422,7 @@ impl World {
             xp: 0,
             raw: 0,
             coef: COEF_ONE,
+            low_coef: COEF_ONE,
             liquid: 0,
             reserved: 0,
             debt: 0,
@@ -780,6 +783,18 @@ impl World {
     fn bump(&mut self, id: Id, delta: i32) {
         self.subjects[id as usize].raw += delta;
         self.refresh_xp(id);
+    }
+
+    /// `(accounts that ever lost integrity, of those how many have recovered some, how many are back at one)`.
+    pub fn integrity_counts(&self) -> (usize, usize, usize) {
+        let lost = self.subjects.iter().filter(|s| s.low_coef < COEF_ONE);
+        let (mut n, mut up, mut full) = (0, 0, 0);
+        for s in lost {
+            n += 1;
+            up += usize::from(s.coef > s.low_coef);
+            full += usize::from(s.coef == COEF_ONE);
+        }
+        (n, up, full)
     }
 
     /// The integrity coefficient of an account in millionths (`COEF_ONE` when the variant is off or nothing was lost).
@@ -1628,6 +1643,7 @@ impl World {
             let before = self.subjects[id as usize].xp;
             let s = &mut self.subjects[id as usize];
             s.coef = (f64::from(s.coef) * (1.0 - fraction)).floor() as u32;
+            s.low_coef = s.low_coef.min(s.coef);
             self.refresh_xp(id);
             return before - self.subjects[id as usize].xp;
         }
