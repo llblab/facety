@@ -95,6 +95,23 @@ Per honest account-year (population-time normalized): about 6 account-days of D7
 
 The stake makes the false-accusation attack self-limiting: an operator can afford about one case a week and loses 7 FACY and half its XP when the accused proves reality (attackers lost 2,753 FACY a year in the funded arm). The XP gate and the held accuser limited it before, but only the stake turns the attack into a cost. Honest damage is bounded by that rate (about 70 wrongly invalidated people a year, the same as the control).
 
+## Hoarding matured entitlements versus withdrawing them (diagnostic, attack-free, seed `grown-1`, 90 days)
+
+`--keep-rights N` sets how many matured entitlements an honest account keeps on the Emitter account before converting the rest to liquid FACY (default 2). With N = 1000 nobody withdraws: XP is still earned at maturity (the maximum XP is 8,099 against 7,632 with N = 2; the median is lower only because the network is far younger and larger), but no account holds liquid FACY, so the first stake is refused 620 times and **no dispute ever opens**: with the declared backing (stakes are custody of liquid FACY only, Q23.4) a population that leaves its FACY on the Emitter account is a population without detection, and its honest network grows about ten times larger in the period because no false positive occurs. This is a consequence of the backing assumption, not of the protocol text, which leaves the backing open; it is the reason for Q23.4 to ask whether a matured entitlement on the Emitter account may back a stake.
+
+## Recovery after a burst of false positives under the ladder (exploratory, attack-free, seeds `grown-1..4`)
+
+A thirty-day burst with ten times the false-positive rate starting 100 days after the snapshot (the K4 scenario of the closure programme, now with the full ladder), against the paired control without a burst:
+
+| Seed | Trough (share of the control) | Days after the burst ends at the trough | Days after the burst ends until 90% of the control | Honest accounts at the end against the control |
+| --- | --- | --- | --- | --- |
+| 1 | 0.45 | 74 | 222 | 0.91 |
+| 2 | 0.66 | 49 | 84 | 0.96 |
+| 3 | 0.53 | 43 | 114 | 0.93 |
+| 4 | 0.72 | 28 | 77 | 1.12 |
+
+The honest network returns to 90% of its control on 4 of 4 seeds within the year, but deeper and slower than before the ladder (the closure programme measured a trough of 0.69 and a return after 40 to 170 days under the abstract disputes). With one confirming look before a case opens (`--confirm 1`, unselected) the burst has no visible effect: the network stays at 0.98 or more of its own no-burst path. A burst of examiners' errors therefore costs honest people through the halving channel above, not through the burst itself; recovery needs no extra mechanism in the model but takes up to seven months at the worst seed.
+
 ## Assessment of core readiness (diagnostic; model properties against real-world assumptions)
 
 Tested model properties: (1) XP at maturity is a deterministic function of valid Self-ID history, snapshots and chronological adjustments, equal to an independent chronological reference under random event orders, with the retroactive-XP exploit blocked for invitations and valences; (2) the dispute deadline never shortens and equals the maximum window end, with deterministic refusals and same-hour ordering, and the stake ledger conserves FACY under custody, forfeits, burns, sanctions and debt (audit after every run); (3) the strongest adversary of the closure programme stays inside both D129 lines on 4 of 4 reserved seeds under the full ladder (the earlier confirmation of 12 seeds used the earlier rules); (4) the stake bounds false accusations by operator emission.

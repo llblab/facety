@@ -47,6 +47,7 @@ const VALUE_KEYS: &[&str] = &[
     "--defense",
     "--defense-days",
     "--base-stake",
+    "--keep-rights",
     "--join-rate",
     "--council-rate",
     "--council-turnout",
@@ -94,7 +95,7 @@ const FLAG_KEYS: &[&str] = &[
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
   [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--svg DIR] [--accuse R] [--accuse-hubs] [--shock-day N --shock-days N --shock-fpr-x X] [--odd-share P] [--odd-mult X] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--exclude-challengers] [--self-path-from-guarantor] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
-  [--public-look P] [--defense P] [--defense-days N] [--base-stake N] [--no-stakes] [--no-halving] [--halving-spares-council] [--join-rate P] [--council-rate P] [--council-turnout P] [--no-attacker-ladder] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--key-loss P] [--recovery-vouch P] [--recovery-delay DAYS] [--befriend P] [--invite P] [--accept-far P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
+  [--public-look P] [--defense P] [--defense-days N] [--base-stake N] [--keep-rights N] [--no-stakes] [--no-halving] [--halving-spares-council] [--join-rate P] [--council-rate P] [--council-turnout P] [--no-attacker-ladder] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--key-loss P] [--recovery-vouch P] [--recovery-delay DAYS] [--befriend P] [--invite P] [--accept-far P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
     eprintln!("error: {message}\n{USAGE}");
@@ -242,6 +243,7 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.honest.recovery_vouch = num(&opts, "--recovery-vouch", base.honest.recovery_vouch)?;
     base.honest.recovery_delay_days = num(&opts, "--recovery-delay", base.honest.recovery_delay_days)?;
     base.honest.invite = num(&opts, "--invite", base.honest.invite)?;
+    base.honest.keep_rights = num(&opts, "--keep-rights", base.honest.keep_rights)?;
     base.honest.accept_far = num(&opts, "--accept-far", base.honest.accept_far)?;
     base.honest.careless_accept_far = num(&opts, "--careless-accept", base.honest.careless_accept_far)?;
     base.attacker_patience_days = num(&opts, "--patience", 0)?;

@@ -19,7 +19,7 @@ This ledger prevents earlier drafts from being mistaken for the latest decisions
 | Chain-cut sanction with a liability wave to the inviter and its guarantors. | **[DIRECTION]** (§21.1) |
 | XP earned through a relation is revoked when the guarantor leaves it. | **[DIRECTION]** (§19.3) |
 | Chekharda stake ladder: +g per position, each winner takes the stake below. | **[DIRECTION]** (§26.5) |
-| A dispute is final 7 days after the last move; every entry restarts the clock. | **[SELECTED]** (§26.5) |
+| A dispute is final 7 days after the last move; every entry restarts the clock. | **[SELECTED then; superseded by D158 and D162: each position has its own window and the deadline is the latest end point]** (§26.5) |
 | Design principle: easy and profitable to follow the rules, hard and very unprofitable to break them. | **[DIRECTION]** (§44) |
 | Guarantees flow through acquaintance; strangers are refused by default. | **[DIRECTION]** (§20.4) |
 | Public, accountable market without zero-knowledge layers. | **[DIRECTION]** (§9) |
