@@ -2701,7 +2701,6 @@ mod tests {
         w.audit().unwrap();
     }
 
-
     #[test]
     fn the_accused_cannot_withdraw_unspent_rights_until_the_last_case_ends() {
         let mut w = rich_world();
