@@ -236,6 +236,15 @@ Without watchers the control is 52,478 accounts with 12 cases (no visible differ
 
 Defaults of the repository after the owner's answers. Control 48,796 honest accounts (12 formal cases a year); with single-look examiners 12,550; 30 operators accusing daily with half their emission cashed out 48,385 honest accounts with 1,267 accusations opened and 3 genuine people invalidated a year, attacker debt 8,380 FACY (the debt now also blocks their invitations and guarantees and suspends their XP); 100 operators in the default cone attack 50,783 honest accounts, attacker share at most 0.24%, dirty-FACY share at most 0.54%. The earlier registered results on reserved seeds were measured before the last two rules (D166 soft backing, D167 debt effects) and are not repeated: the owner asked to stop extending the model and use this baseline.
 
+### Registered confirmation of the formed baseline (written before the runs; reserved seeds `grown-6001..6004`, one year, repository defaults after D167)
+
+| Id | Claim | Criterion | Kill criterion |
+| --- | --- | --- | --- |
+| B1 | The D129 lines hold for the frozen strongest adversary (100 operators, supported-first, patience 120, 20% bought, odd-profile examiners 5% at ten times, proof of reality 0.7 within 14 days) | dirty-FACY share at most 10% and attackers below one third of accounts and of FACY on every seed | any seed breaching either line |
+| B2 | The default baseline keeps honest growth | attack-free control honest accounts at least 1.5 times those with single-look examiners (`--examiner-looks 1`) on every seed | any seed below 1.5 |
+| B3 | The default baseline does not wrongly invalidate more people than single-look examiners | genuine invalidated per year in the default control at most those with one look on every seed | any seed above |
+| B4 | Debt stays bounded by emission: under daily false accusations (30 operators, half of emission cashed out) honest accounts stay at least 80% of the control | on every seed | any seed below 80% |
+
 ## Assessment of core readiness (diagnostic; model properties against real-world assumptions)
 
 Tested model properties: (1) XP at maturity is a deterministic function of valid Self-ID history, snapshots and chronological adjustments, equal to an independent chronological reference under random event orders, with the retroactive-XP exploit blocked for invitations and valences; (2) the dispute deadline never shortens and equals the maximum window end, with deterministic refusals and same-hour ordering, and the stake ledger conserves FACY under custody, forfeits, burns, sanctions and debt (audit after every run); (3) the strongest adversary of the closure programme stays inside both D129 lines on 4 of 4 reserved seeds under the full ladder (the earlier confirmation of 12 seeds used the earlier rules); (4) the stake bounds false accusations by operator emission.
