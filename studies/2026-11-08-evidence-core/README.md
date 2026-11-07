@@ -12,7 +12,7 @@ The conformance audit also corrects the losing transaction owner's coefficient p
 
 Execution and evidence generation are Rust-only. `core_panel` writes full raw JSON and compact `.summary.json` files with every configuration/counter, exact endpoints and a noncryptographic fingerprint of the full deterministic result. Omitted daily rows in a compact artifact are explicitly labeled; they are not missing completed endpoints. No new Python or Node.js helpers are retained or used. The earlier historical prolongation script is not rerun.
 
-**Frozen executable:** `e9b0515194bffc74a444e21b78cd1eb215c30be5`, built from a clean tree. Both Rust examples and all population arms use that build; their embedded metadata records it. Schema `facety-sim/result-v4`, randomness `facety-sim-rng/v2:splitmix64-xoshiro256starstar:keyed(seed,channel,actor,day)`. Efficiency settings are unchanged: automatic degree search, structural certificates plus exact fallback, search budget 300000 and daily refresh. The population budget began at 22:07:03 UTC on 2026-11-07 (2026-11-08 locally); its two-hour aggregate stop is 00:07:03 UTC. Each arm also has a 1800-second bound. No population output from `26c1dd1` is used.
+**Frozen mechanics:** `e9b0515194bffc74a444e21b78cd1eb215c30be5`, source tree `simulator/src` OID `a759070a0a482a9503013d965e3a1cd088a0ba82`. The clean e9 build supplies the witnesses/local runs and initial final invocations. A blind final-invocation amendment below changes only the study example/configurations, preserving that exact engine source tree; each output retains its actual build hash. Schema `facety-sim/result-v4`, randomness `facety-sim-rng/v2:splitmix64-xoshiro256starstar:keyed(seed,channel,actor,day)`. Efficiency settings are unchanged: automatic degree search, structural certificates plus exact fallback, search budget 300000 and daily refresh. The population budget began at 22:07:03 UTC on 2026-11-07 (2026-11-08 locally); its two-hour aggregate stop is 00:07:03 UTC. Each arm also has a 1800-second bound. No population output from `26c1dd1` is used.
 
 Core: maturity XP and creation-time recipients; earned units times integrity; paid nonrefundable valences and invitations; K=100; D=digits of active accepted count; supported paths of at most seven nodes, D distinct Council endpoints for invitations and one endpoint for Self-ID; accused-only path exclusion; D77 holds; D162 maximum-of-window-ends cutoff; soft stakes starting at 7 with 20% growth; D167 majority/absent Council, debt restrictions, suspended units, debt service and no Treasury. No unused-coin ceiling or autonomous subjects are introduced. All counterfactual observations and schedules change research assumptions, not rules.
 
@@ -72,7 +72,7 @@ Actual attacker outflow plus retained value equals its emitted FACY in each row;
 
 **Selection:** `accuse-independent` has the lower mean same-seed default-control honest ratio (about 0.051 versus X5-independent's 1.078). For observation stress, X5-reread is worst against the common independent control (mean ratio about 0.312, against partial 0.552 and persistent 0.826). The persistent blind spot remains separately reported. No selection seed becomes confirmation evidence.
 
-## Frozen joint configuration
+## Original frozen joint configuration
 
 Written and committed before running any `grown-8001..8004` seed. Native invocation is `core_panel final SEED DIR accuse reread`; it clones the same default snapshot per seed into these five arms. All use the unchanged executable `e9b0515`, 730 days, max 200000 subjects, and the original four reserved seeds. No additional alternatives will be explored after these runs.
 
@@ -85,6 +85,21 @@ Written and committed before running any `grown-8001..8004` seed. Native invocat
 | joint-control | No operators/acquired cooperators | Same reread/odd/proof/Council environment as joint | Separate common degraded-observation harm from extra attack harm |
 
 The acquired fraction is an unpriced continuing cooperation resource, not a fixed capital budget; absolute acquired accounts/holdings are always reported. The population Council setting is a per-case probability; C's finite queue is the evidence for the separate aggregate-capacity dependency. Soft backing, debtor restrictions, coefficient penalties/repair, paths, deadlines and all selected protocol rules are identical across arms. Final D129 is evaluated at day 730 only for completed runs; day 365 is also retained. Honest harm remains a separate outcome with no invented pass threshold.
+
+### Blind correction of the baseline comparison
+
+At 22:24:38 UTC, before inspecting any final output, the configuration audit found that the original `attack` arm combined the selected strategy with the weakened evidence environment. That arm cannot establish its effect under the **default behavioral baseline**. Keeping only the extra weakened-environment control would leave the required default-baseline attack comparison missing. This is an invocation/design correction, not a repair of an unfavorable result: no final results have been read, no protocol or simulator-core source changes, no new seeds, horizon, pass line or budget. The original registration/data remain visible rather than being relabeled.
+
+The exact final required comparisons are now:
+
+| Required arm | Seeds | Configuration |
+| --- | --- | --- |
+| default-control | 8001-8004 | Default honest/detection assumptions, no attack |
+| baseline-attack | 8001-8004 | Selected 100-operator accusation/cash-out/acquired-cooperation strategy; **every detection assumption remains exactly default**, including proof 0.95/7 days and no odd-profile multiplier |
+| joint | 8001-8004 | Original reread/odd-profile/proof 0.7/14-day/limited-Council combination with the same attack resources |
+| joint-control | 8001-8004 | Same joint environment without operators/acquired cooperation |
+
+The initial invocations on seeds 8001/8002 continue; their `attack` and `attack-control` arms remain **two-seed auxiliary diagnostics only**, not a four-seed confirmation. Add only `baseline-only` for those two seeds. On 8003/8004 run `final-required`, which omits the two auxiliary arms and includes the baseline attack. Thus the final count stays exactly `2*5 + 2*1 + 2*4 = 20` runs, and the whole programme stays 38. Native invocations are `core_panel baseline-only 8001|8002 DIR accuse reread` and `core_panel final-required 8003|8004 DIR accuse reread`, with the original first two `final` invocations already running. A regression asserts that the baseline attack preserves the complete default Detection and World configurations. The engine's source-tree OID above is checked identical; new invoker metadata names its own clean commit. No earlier control is rerun or selected away. All required arms still have four reserved seeds; unfinished arms remain insufficient. This closes the user's required baseline comparison without extending the study.
 
 ## B: observed collection, incentive and recovery boundary
 

@@ -33,14 +33,24 @@ fn attack(c: &mut RunConfig, accusations: bool) {
     }
 }
 
+fn baseline_attack(c: &mut RunConfig) {
+    attack(c, true);
+    c.detection = RunConfig::default().detection;
+}
+
 fn main() {
     let args: Vec<_> = std::env::args().collect();
-    assert!(args.len() == 4 || args.len() == 6, "usage: core_panel local SEED DIR | final SEED DIR x5|accuse independent|partial|reread|persistent");
-    let final_panel = args[1] == "final";
-    assert!(final_panel || args[1] == "local");
+    assert!(
+        args.len() == 4 || args.len() == 6,
+        "usage: core_panel local SEED DIR | final|baseline-only|final-required SEED DIR x5|accuse independent|partial|reread|persistent"
+    );
+    assert!(["local", "final", "baseline-only", "final-required"].contains(&args[1].as_str()));
+    let final_panel = args[1] != "local";
     assert_eq!(args.len(), if final_panel { 6 } else { 4 });
     let seed: u32 = args[2].parse().expect("numeric seed");
     assert!(if final_panel { (8001..=8004).contains(&seed) } else { (7001..=7002).contains(&seed) }, "only registered seed families");
+    assert!(args[1] != "baseline-only" || seed <= 8002, "baseline supplement only for the first two seeds");
+    assert!(args[1] != "final-required" || seed >= 8003, "remaining required arms only for the last two seeds");
     if final_panel {
         assert!(["x5", "accuse"].contains(&args[4].as_str()));
         let mut validate = RunConfig::default();
@@ -65,7 +75,11 @@ fn main() {
     let prefix_days = snapshot.day;
     let prefix_identity = format!("{:016x}", facety_sim::rng::hash_seed(&snapshot.to_json()));
     let horizon = if final_panel { 730 } else { 365 };
-    let arms: Vec<(String, String)> = if final_panel {
+    let arms: Vec<(String, String)> = if args[1] == "baseline-only" {
+        vec![("baseline-attack".into(), "independent".into())]
+    } else if args[1] == "final-required" {
+        ["default-control", "baseline-attack", "joint", "joint-control"].iter().map(|s| ((*s).into(), args[5].clone())).collect()
+    } else if final_panel {
         ["default-control", "attack", "attack-control", "joint", "joint-control"].iter().map(|s| ((*s).into(), args[5].clone())).collect()
     } else {
         let mut arms = Vec::new();
@@ -89,6 +103,8 @@ fn main() {
                 if arm.starts_with("x5-") || arm.starts_with("accuse-") {
                     attack(c, arm.starts_with("accuse-"));
                 }
+            } else if arm == "baseline-attack" {
+                baseline_attack(c);
             } else {
                 if arm != "default-control" {
                     environment(c);
@@ -137,5 +153,21 @@ fn main() {
         json::validate(&compact).unwrap();
         save(".summary", &compact);
         std::io::stdout().flush().unwrap();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn the_baseline_attack_preserves_every_default_detection_assumption() {
+        let mut c = RunConfig::default();
+        let default_detection = format!("{:?}", c.detection);
+        let default_world = format!("{:?}", c.world);
+        baseline_attack(&mut c);
+        assert_eq!(format!("{:?}", c.detection), default_detection);
+        assert_eq!(format!("{:?}", c.world), default_world);
+        assert_eq!((c.attackers, c.attacker_accuse, c.attacker_cash_out, c.honest.corrupt_share), (100, 3.0, 0.5, 0.2));
     }
 }
