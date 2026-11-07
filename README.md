@@ -12,6 +12,7 @@ Three layers stay distinct: uniqueness (identity claims and guarantees are conte
 
 | Question | Page |
 | --- | --- |
+| What are the default rules of participation? | [Rules of the Game](docs/rules-of-the-game.en.md) |
 | What are the rules? | [Protocol](docs/facety.protocol.en.md) |
 | Who decided what, when? | [Decision log](docs/decisions.en.md) |
 | What did the simulations show? | [Insight register](docs/insights.en.md), study pages under [studies/](studies) |

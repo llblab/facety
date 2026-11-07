@@ -4,6 +4,7 @@ This index owns project navigation. The protocol is independently readable; it d
 
 ## Core documents
 
+- [Rules of the Game](rules-of-the-game.en.md): first consolidated participant-facing reading of selected defaults, without decision identifiers, research history or simulator settings. The protocol remains the authority for meaning; this reader is maintained with it.
 - [Facety protocol](facety.protocol.en.md): living manifesto/specification: the rules in force and OPEN contracts, without provenance.
 - [Decision log](decisions.en.md): dated owner decisions, their status and what they superseded; research and development decisions (§47–§50).
 - [Simulator contract](simulator.en.md): the Rust simulator's implemented rules, levers, assumptions, deviations and statistical validation.

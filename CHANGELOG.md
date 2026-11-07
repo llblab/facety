@@ -1,5 +1,7 @@
 # Changelog
 
+- Added the first coherent participant-facing Rules of the Game, folding selected participation, emission, guarantee, dispute and recovery rules into a reading without decision identifiers or simulator assumptions. Kept unfinished contracts explicit and the protocol authoritative; reconciled stale source passages on XP after exit/halving, invitation cancellation, free termination and the emitter-origin path check. Existing research and negative results remain intact.
+
 - D168 finite research closure: retained 18 local and 20 final uncensored Rust runs on one frozen core, completed the minimal mechanism evidence table and the REVISE operational-assumptions verdict. Folded the current readiness summaries into that report, preserved B4 and prior negative/build-specific evidence, and parked follow-ups at Q25. Conditional D129 containment does not establish independent information, collectible defense rewards or finite corrective service. Grow Loop stopped; no runtime/pilot work started.
 
 - Evidence-core closure audit: reconciled the current baseline summaries with D166-D167, retained historical funding results under their builds, and corrected B4's interpretation (killed; honest growth is not a debt bound).
