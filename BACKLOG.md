@@ -17,6 +17,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 | Layered support for intermediaries | on | fixed (D124, D142) |
 | Detection precision | false-positive rate 0.003, inspection 0.03, accuracy 0.9, window 7 days | fixed (D142) |
 | Proof of reality by a genuine account | success 0.95, 7 days (minimum, D142) | days fixed; probability 0.95 is an assumption (D136) |
+| Examiner care | two independent own looks before filing a case (`--examiner-looks`) | proposed (D164 reasoning; registered on seeds 4001-4004: R1-R3 survive); the owner may overrule |
 | Honest behavior rates | 20% careless accounts (accept strangers at 0.5, no second look), the rest at 0.05 | proposed (D143) |
 | Attacker model | cone, honest-first, supported-first; operators 10-100; patience up to 120 days; optional bought honest accounts, cash-out and false accusations | proposed (D143); stronger models only on owner request |
 | Snapshot and horizon | snapshot at 1000 honest accounts; criterion at 365 days, 730 as stress | proposed (D143) |
@@ -50,8 +51,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 ## Convergence follow-ups (opened 2026-11-07)
 
-- [ ] **Owner answers Q24 and Q23** (halving of losing participants against Council stability; the assumptions of the convergence). Blocks calling the ladder a settled part of the core. Smallest next experiment once answered: re-run the paired panel with the chosen variant.
-- [ ] **Explain the unrecovered 40% to 60% of the halving loss** (hypotheses: examiners of every rank lose the XP that opens the next case; invalidation cascades). Falsifier: halving only the accuser that opened a case on an unconfirmed look; compare with sparing the Council.
+- [ ] **Owner answers Q23** (the assumptions of the convergence). Q24 is answered by D164: the halving stays and the examiner model was the defect; the new default is two own looks (`examiner_looks`), registered on reserved seeds. Next: re-run the stress panel with the new default and calibrate or bound examiner behavior (how many looks, how independent).
 - [ ] **Corrupt examiners that file attacks** instead of abstaining: needs an owner-declared behavior. The rest of the stress panel under the ladder is done (study of 2026-11-07): joining rates, Council attention 0.1 to 1.0, K2 weakenings, cash-out, key loss, bought accounts, sparse and dense regimes, false accusations and a false-positive burst; every earlier K-table number predates the ladder.
 - [ ] **Joining behavior is uncalibrated** (Q23.6): real participation data or an owner assumption is needed before durations and escalation depth are more than conditional.
 - [ ] **Unmodeled selected rules:** D70-D72 Council referendum and quorum, D34 event-time liability, D55 per-act penalty snapshots, a Council share of proceeds, the Treasury, debt service.

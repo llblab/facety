@@ -381,7 +381,7 @@ impl Default for RunConfig {
                 council_rate: 0.5,
                 council_turnout: 0.7,
                 attacker_ladder: true,
-                examiner_looks: 1,
+                examiner_looks: 2,
             },
             detection_start_day: 0,
             attacker_patience_days: 0,
@@ -2209,6 +2209,8 @@ mod tests {
             c.detection.join_rate = join;
             c.detection.council_rate = council;
             c.detection.attacker_ladder = attackers;
+            // Careless examiners (one look) open enough cases in a small run to exercise the ladder.
+            c.detection.examiner_looks = 1;
             c.days = 160;
             let mut sim = Sim::new(c);
             sim.run();
