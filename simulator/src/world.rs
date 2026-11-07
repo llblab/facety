@@ -137,27 +137,14 @@ pub enum ActStatus {
     Cancelled,
 }
 
-/// XP credited for one act: one receipt per recipient (the subject first, then the guarantors whose guarantee stood at credit time).
-/// The recipient list is shared between acts of one account while it does not change, and single revoked receipts are rare, so they
-/// are kept as a sparse list of indexes (an efficiency layout, D145: it changes no outcome).
+/// XP credited for one act: one unit of responsibility per recipient (the author first, then the guarantors of the creation-time
+/// snapshot). The recipient list is shared between acts of one account while it does not change (an efficiency layout, D145).
 #[derive(Clone, Debug)]
 struct Credit {
     /// The logical credit time, `recorded_at + MATURITY_HOURS`, whenever the credit was materialized (D42).
     at: i64,
     revoked: bool,
     recipients: Arc<[Id]>,
-    revoked_receipts: Option<Box<[u32]>>,
-}
-
-impl Credit {
-    fn receipt_revoked(&self, idx: usize) -> bool {
-        self.revoked_receipts.as_ref().is_some_and(|r| r.contains(&(idx as u32)))
-    }
-    fn revoke_receipt(&mut self, idx: usize) {
-        let mut all = self.revoked_receipts.take().map_or_else(Vec::new, |b| b.into_vec());
-        all.push(idx as u32);
-        self.revoked_receipts = Some(all.into_boxed_slice());
-    }
 }
 
 #[derive(Clone, Debug)]
@@ -261,6 +248,9 @@ struct Case {
     ladder: Ladder<Id>,
     accused: Id,
     accused_guarantors: Vec<Id>,
+    /// Per position (index = ordinal - 1): the part of its stake that is actually blocked in custody (D166: what exists is blocked, the
+    /// rest of a lost stake becomes debt).
+    backed: Vec<u32>,
     /// `(account, hour the restriction began, whether it also excludes the account from paths)`.
     holds: Vec<(Id, i64, bool)>,
 }
@@ -274,7 +264,10 @@ pub struct DisputeStats {
     /// Entries refused, by the ladder or by funds.
     pub refused_closed: u64,
     pub refused_xp: u64,
+    /// Entries (and openings) whose stake was not fully backed by spendable liquid FACY at the time (D166: allowed, the shortfall is debt on a loss).
     pub refused_funds: u64,
+    /// FACY of lost stakes that could not be collected and became debt, and debt later repaid from matured emission.
+    pub debt_repaid: u64,
     pub council_entries: u64,
     pub ballots: u64,
     /// Positions that moved the deadline later (an entry whose own window ended after the deadline in force).
@@ -811,7 +804,7 @@ impl World {
             return false;
         }
         credit.revoked = true;
-        let live: Vec<Id> = credit.recipients.iter().enumerate().filter(|&(idx, _)| !credit.receipt_revoked(idx)).map(|(_, &r)| r).collect();
+        let live: Vec<Id> = credit.recipients.to_vec();
         for recipient in live {
             self.bump(recipient, -1);
         }
@@ -836,7 +829,24 @@ impl World {
             self.settled += 1;
             if status != ActStatus::Cancelled {
                 self.credit(act_id);
+                // D166/D4: a negative emission balance (debt) is repaid from the matured entitlement of the account, burned.
+                if status == ActStatus::Unspent && self.subjects[self.acts[act_id as usize].subject as usize].debt > 0 {
+                    self.repay_debt_from(act_id);
+                }
             }
+        }
+    }
+
+    fn repay_debt_from(&mut self, act_id: u32) {
+        let subject = self.acts[act_id as usize].subject;
+        self.acts[act_id as usize].status = ActStatus::Consumed;
+        self.vault -= 1;
+        self.burned += 1;
+        self.subjects[subject as usize].debt -= 1;
+        self.stats.debt_repaid += 1;
+        let s = &mut self.subjects[subject as usize];
+        while s.first_unspent < s.acts.len() && self.acts[s.acts[s.first_unspent] as usize].status != ActStatus::Unspent {
+            s.first_unspent += 1;
         }
     }
 
@@ -866,7 +876,7 @@ impl World {
                 fresh
             }
         };
-        self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: shared, revoked_receipts: None });
+        self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: shared });
     }
 
     fn dispose(&mut self, act_id: u32, status: ActStatus) {
@@ -994,31 +1004,15 @@ impl World {
 
     // ---- guarantees ------------------------------------------------------------------------------------------------
 
-    fn deactivate(&mut self, rel_id: u32, revoke: bool) {
+    /// End a guarantee. D166: the guarantor keeps the units of responsibility already credited for past acts of the guaranteed account
+    /// (they stay until a dispute refutes the act); only future snapshots are affected.
+    fn deactivate(&mut self, rel_id: u32) {
         let (g, d) = {
             let r = &mut self.rels[rel_id as usize];
             r.active = false;
             (r.guarantor, r.guaranteed)
         };
         self.graph.remove_edge(g, d);
-        if revoke {
-            // Revoke the guarantor's receipts for the acts of the guaranteed account (the order does not matter: XP is a sum).
-            let mut revoked = 0;
-            for k in 0..self.subjects[d as usize].acts.len() {
-                let act_id = self.subjects[d as usize].acts[k];
-                let Some(credit) = self.acts[act_id as usize].credit.as_mut() else { continue };
-                if credit.revoked {
-                    continue;
-                }
-                for idx in 1..credit.recipients.len() {
-                    if credit.recipients[idx] == g && !credit.receipt_revoked(idx) {
-                        credit.revoke_receipt(idx);
-                        revoked += 1;
-                    }
-                }
-            }
-            self.bump(g, -revoked);
-        }
     }
 
     fn used_slots(&self, id: Id) -> u32 {
@@ -1078,8 +1072,7 @@ impl World {
         self.owned_open[owner as usize] -= 1;
         for rel in rels {
             if self.rels[rel as usize].active {
-                let revoke = self.rels[rel as usize].guarantor == owner;
-                self.deactivate(rel, revoke);
+                self.deactivate(rel);
             }
         }
         Ok(())
@@ -1297,8 +1290,7 @@ impl World {
         }
         for rel in rels {
             if self.rels[rel as usize].active {
-                let revoke = self.rels[rel as usize].guarantor == actor;
-                self.deactivate(rel, revoke);
+                self.deactivate(rel);
             }
         }
         Ok(())
@@ -1366,13 +1358,12 @@ impl World {
         }
         let (challenger, accused) = (subjects[0], subjects[1]);
         let stake = self.stake_at(1);
-        if self.spendable(challenger) < stake {
-            self.stats.refused_funds += 1;
-            return Err(Reject("insufficient liquid FACY for the first stake"));
-        }
+        // D166: the stake blocks what the account holds (liquid FACY); a missing part is not a refusal, it becomes debt if the position loses.
+        let backed = stake.min(self.spendable(challenger));
+        self.stats.refused_funds += u64::from(backed < stake);
         let ladder = Ladder::open(challenger, self.subjects[challenger as usize].xp, self.now, self.cfg.base_stake.unwrap_or(0));
-        let mut case = Case { ladder, accused, accused_guarantors: self.eligible_guarantors(accused), holds: Vec::new() };
-        self.subjects[challenger as usize].reserved += stake;
+        let mut case = Case { ladder, accused, accused_guarantors: self.eligible_guarantors(accused), backed: vec![backed], holds: Vec::new() };
+        self.subjects[challenger as usize].reserved += backed;
         self.stats.staked += u64::from(stake);
         self.stats.opened += 1;
         self.stats.max_positions = self.stats.max_positions.max(1);
@@ -1424,11 +1415,9 @@ impl World {
             return Err(self.refuse(r));
         }
         let stake = self.stake_at(ordinal);
-        if self.spendable(who) < stake {
-            self.stats.refused_funds += 1;
-            return Err(Reject("insufficient liquid FACY for the stake"));
-        }
-        self.admit(case, who, PositionKind::Participant, xp, stake)
+        let backed = stake.min(self.spendable(who));
+        self.stats.refused_funds += u64::from(backed < stake);
+        self.admit(case, who, PositionKind::Participant, xp, stake, backed)
     }
 
     /// Collective Council entry (D161): any Council member, no XP condition and no stake, one terminal position on the shared clock.
@@ -1441,7 +1430,7 @@ impl World {
         if let Err(r) = check {
             return Err(self.refuse(r));
         }
-        let ordinal = self.admit(case, member, PositionKind::Council, 0, 0)?;
+        let ordinal = self.admit(case, member, PositionKind::Council, 0, 0, 0)?;
         self.stats.council_entries += 1;
         Ok(ordinal)
     }
@@ -1461,7 +1450,7 @@ impl World {
         }
     }
 
-    fn admit(&mut self, case: u32, who: Id, kind: PositionKind, xp: i32, stake: u32) -> Result<u32, Reject> {
+    fn admit(&mut self, case: u32, who: Id, kind: PositionKind, xp: i32, stake: u32, backed: u32) -> Result<u32, Reject> {
         let now = self.now;
         let c = self.cases[case as usize].as_mut().expect("checked open");
         let (n, extended) = {
@@ -1469,7 +1458,8 @@ impl World {
             (p.n, p.extended())
         };
         c.holds.push((who, now, false));
-        self.subjects[who as usize].reserved += stake;
+        c.backed.push(backed);
+        self.subjects[who as usize].reserved += backed;
         self.stats.staked += u64::from(stake);
         self.stats.joined += 1;
         self.stats.extensions += u64::from(extended);
@@ -1499,8 +1489,8 @@ impl World {
             self.release_hold(id, path);
         }
         self.frozen[case.accused as usize] -= 1;
-        for p in case.ladder.positions() {
-            self.subjects[p.who as usize].reserved -= p.stake;
+        for (p, &b) in case.ladder.positions().iter().zip(&case.backed) {
+            self.subjects[p.who as usize].reserved -= b;
         }
         self.stats.hold_hours += held.iter().map(|&(_, h)| h).sum::<i64>();
         held
@@ -1524,6 +1514,14 @@ impl World {
         s.debt += i64::from(owed);
         self.stats.debt_created += u64::from(owed);
         collected
+    }
+
+    fn add_debt(&mut self, id: Id, amount: u32, debts: &mut Vec<(Id, i64)>) {
+        if amount > 0 {
+            self.subjects[id as usize].debt += i64::from(amount);
+            self.stats.debt_created += u64::from(amount);
+            debts.push((id, i64::from(amount)));
+        }
     }
 
     fn destroy_liquid(&mut self, amount: u32) {
@@ -1554,20 +1552,26 @@ impl World {
         let holds = self.release_case(&c);
         let mut net: Vec<(Id, i64)> = Vec::new();
         let mut debts: Vec<(Id, i64)> = Vec::new();
+        // D166: a lost stake pays what was blocked; the unblocked part is debt of the loser (a negative emission balance, repaid from later
+        // emission) and is never paid to the winner.
         for &(from, to, amount) in &settlement.forfeits {
             let (f, t) = (who_at(from), who_at(to));
-            self.subjects[f as usize].liquid -= amount;
-            self.subjects[t as usize].liquid += amount;
-            self.stats.forfeited += u64::from(amount);
-            net.push((f, -i64::from(amount)));
-            net.push((t, i64::from(amount)));
+            let paid = c.backed[from as usize - 1].min(amount);
+            self.subjects[f as usize].liquid -= paid;
+            self.subjects[t as usize].liquid += paid;
+            self.stats.forfeited += u64::from(paid);
+            net.push((f, -i64::from(paid)));
+            net.push((t, i64::from(paid)));
+            self.add_debt(f, amount - paid, &mut debts);
         }
         for &(position, amount) in &settlement.burns {
             let loser = who_at(position);
-            self.subjects[loser as usize].liquid -= amount;
-            self.destroy_liquid(amount);
-            self.stats.stake_burned += u64::from(amount);
-            net.push((loser, -i64::from(amount)));
+            let paid = c.backed[position as usize - 1].min(amount);
+            self.subjects[loser as usize].liquid -= paid;
+            self.destroy_liquid(paid);
+            self.stats.stake_burned += u64::from(paid);
+            net.push((loser, -i64::from(paid)));
+            self.add_debt(loser, amount - paid, &mut debts);
         }
         let mut losers = Vec::new();
         for &n in &settlement.losers {
@@ -1840,9 +1844,9 @@ impl World {
                 _ => {}
             }
             if let Some(c) = &act.credit {
-                for (idx, &recipient) in c.recipients.iter().enumerate() {
+                for &recipient in c.recipients.iter() {
                     ever[recipient as usize] += 1;
-                    if !c.revoked && !c.receipt_revoked(idx) {
+                    if !c.revoked {
                         xp[recipient as usize] += 1;
                     }
                 }
@@ -1862,8 +1866,8 @@ impl World {
         let mut frozen = vec![0u32; n];
         for c in self.cases.iter().flatten() {
             frozen[c.accused as usize] += 1;
-            for p in c.ladder.positions() {
-                reserved[p.who as usize] += p.stake;
+            for (p, &b) in c.ladder.positions().iter().zip(&c.backed) {
+                reserved[p.who as usize] += b;
             }
             for &(id, _, path) in &c.holds {
                 holds[id as usize] += 1;
@@ -2045,7 +2049,7 @@ mod tests {
     }
 
     #[test]
-    fn withdrawal_ends_the_pair_revokes_only_the_withdrawers_guarantor_xp_and_the_retained_side_can_rematch() {
+    fn withdrawal_ends_the_pair_both_sides_keep_the_units_already_credited_and_the_retained_side_can_rematch() {
         let mut w = world(8);
         rights(&mut w, &[0, 3]);
         let (v0, v3) = (w.open_valence(0, 3, w.eligible_emission(0).unwrap()).unwrap(), w.open_valence(3, 0, w.eligible_emission(3).unwrap()).unwrap());
@@ -2059,7 +2063,7 @@ mod tests {
         w.withdraw_valence(3, v3).unwrap();
         assert!(!w.graph().has_edge(0, 3) && !w.graph().has_edge(3, 0));
         assert_eq!(w.xp(0), xp0, "the other side keeps what it earned");
-        assert_eq!(w.xp(3), xp3 - 1, "the withdrawer loses its guarantor XP from the other's acts");
+        assert_eq!(w.xp(3), xp3, "the withdrawer keeps the units already credited for past acts that nobody refuted (D166)");
         assert_eq!(w.withdraw_valence(3, v3), Err(Reject("no open own valence to withdraw")));
         assert!(w.valence_info(v0).0, "the retained valence stays open");
         w.tick(w.now() + 24);
@@ -2772,24 +2776,56 @@ mod tests {
     }
 
     #[test]
-    fn entries_without_funds_or_after_the_deadline_change_nothing() {
+    fn entries_after_the_deadline_change_nothing_and_an_unbacked_entry_is_allowed() {
         let mut w = rich_world();
         let (accused, challenger, defender) = xp_ladder(&w);
         let rival = (0..12).find(|&i| i != accused && i != challenger && i != defender && w.xp(i) > w.xp(challenger)).expect("another richer-in-XP account");
         let start = w.now();
         let case = w.begin_case(&[challenger, accused]).unwrap();
+        // D166: a participant without funds may still stand; it blocks what exists and a lost stake becomes debt.
         w.burn_liquid(defender);
         assert_eq!(w.spendable(defender), 0);
-        let state = (w.case_deadline(case), w.case_state(case).unwrap().0, w.spendable(defender));
-        assert_eq!(w.join_case(case, defender), Err(Reject("insufficient liquid FACY for the stake")));
-        assert_eq!((w.case_deadline(case), w.case_state(case).unwrap().0, w.spendable(defender)), state, "a refused entry changes nothing");
-        w.tick(start + 7 * 24 - 1);
+        assert_eq!(w.join_case(case, defender), Ok(2));
+        assert_eq!((w.spendable(defender), w.liquid(defender)), (0, 0));
+        assert_eq!(w.stats.refused_funds, 1, "one unbacked entry was counted");
+        w.audit().unwrap();
+        w.tick(start + 6 * 24 + 23);
         assert!(w.spendable(rival) >= 9);
-        w.tick(start + 7 * 24);
+        w.tick(start + 13 * 24);
         assert_eq!(w.join_case(case, rival), Err(Reject("the dispute is final")), "an entry at the deadline hour is refused");
-        assert!(w.stats.refused_funds >= 1 && w.stats.refused_closed >= 1);
-        assert_eq!(w.case_state(case).unwrap().0, 1, "still a lone accusation");
+        assert!(w.stats.refused_closed >= 1);
+        assert_eq!(w.case_state(case).unwrap().0, 2);
+        // The unbacked defender wins here, so it owes nothing; the accuser loses its backed stake.
         w.settle_case(case, None).unwrap();
+        assert_eq!(w.debt(defender), 0);
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_lost_unbacked_stake_becomes_debt_that_later_emission_repays() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let start = w.now();
+        w.burn_liquid(challenger);
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        assert_eq!(w.stats.refused_funds, 1);
+        w.tick(start + 7 * 24);
+        let supply = w.supply();
+        // The accused proves reality: the lone accuser loses a stake of 7 that was never blocked, so all of it is debt.
+        w.settle_case(case, Some(Side::Accused)).unwrap();
+        assert_eq!(w.debt(challenger), 7);
+        assert_eq!(w.supply(), supply, "nothing was destroyed: the stake had no backing");
+        // Each matured entitlement of the indebted account is burned against the debt before it can be spent.
+        let rights_before = w.unspent_rights(challenger);
+        w.tick(w.now() + 24);
+        w.create_self_id(challenger).ok();
+        for _ in 0..8 {
+            w.tick(w.now() + 24);
+            let _ = w.create_self_id(challenger);
+        }
+        assert!(w.debt(challenger) < 7, "emission repaid part of the debt");
+        assert!(w.stats.debt_repaid > 0);
+        let _ = rights_before;
         w.audit().unwrap();
     }
 

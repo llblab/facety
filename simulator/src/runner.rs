@@ -136,6 +136,10 @@ pub struct Detection {
     /// files only if every look is suspicious, because a dispute against a person who can cheaply prove reality is a loss for the opener
     /// and draws attention to it. 1 = file on a single look (the earlier behavior).
     pub examiner_looks: usize,
+    /// Any participant of the network may join a dispute (D166): the accused calls friends, guarantors and public channels, and people who
+    /// profit from standing on the winning side watch open disputes. Each day this many random honest accounts look at each open dispute
+    /// in addition to the accused's and the first challenger's partners, and join by the same rule (belief and `join_rate`).
+    pub watchers: usize,
 }
 
 #[derive(Clone, Debug)]
@@ -309,11 +313,11 @@ impl RunConfig {
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"attackerAccuse\":{},\"accuseHubs\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"selfPathFromSubject\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{},\"baseStake\":{},\"halveLosers\":{},\"integrity\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"keyLoss\":{},\"recoveryVouch\":{},\"recoveryDelayDays\":{},\"artifactRate\":{},\"collusion\":{}}},\
-\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{},\"joinRate\":{},\"councilRate\":{},\"councilTurnout\":{},\"attackerLadder\":{},\"examinerLooks\":{}}}}}",
+\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{},\"joinRate\":{},\"councilRate\":{},\"councilTurnout\":{},\"attackerLadder\":{},\"examinerLooks\":{},\"watchers\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), json::number(self.attacker_accuse), self.accuse_hubs, self.stop_at_honest,
             w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.exclude_targets_only, w.self_path_from_subject, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))), w.base_stake.map_or("null".to_string(), |n| n.to_string()), w.halve_losers, w.integrity,
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.corrupt_share), json::number(h.key_loss), json::number(h.recovery_vouch), h.recovery_delay_days, json::number(h.artifact_rate), json::number(h.collusion),
-            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days, json::number(d.join_rate), json::number(d.council_rate), json::number(d.council_turnout), d.attacker_ladder, d.examiner_looks
+            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days, json::number(d.join_rate), json::number(d.council_rate), json::number(d.council_turnout), d.attacker_ladder, d.examiner_looks, d.watchers
         )
     }
 }
@@ -382,6 +386,7 @@ impl Default for RunConfig {
                 council_turnout: 0.7,
                 attacker_ladder: true,
                 examiner_looks: 2,
+                watchers: 5,
             },
             detection_start_day: 0,
             attacker_patience_days: 0,
@@ -1426,7 +1431,7 @@ impl Sim {
                 continue;
             }
             let mut rng = Rng::keyed(self.seed, CH_LADDER, id, day);
-            let Some((_, beat, stake, side, council)) = self.world.case_state(case) else { continue };
+            let Some((_, beat, _, side, council)) = self.world.case_state(case) else { continue };
             if council {
                 continue;
             }
@@ -1439,10 +1444,16 @@ impl Sim {
             if det.attacker_ladder && last_day {
                 pool.extend(self.attackers.iter().copied());
             }
+            // Public watchers (D166): random honest accounts that happened to look at this dispute today.
+            for _ in 0..det.watchers {
+                if let Some(&w) = rng.pick(&self.honest) {
+                    pool.push(w);
+                }
+            }
             pool.sort_unstable();
             pool.dedup();
             for cand in pool {
-                if !self.world.accepted(cand) || self.world.xp(cand) <= beat || self.world.spendable(cand) < stake {
+                if !self.world.accepted(cand) || self.world.xp(cand) <= beat {
                     continue;
                 }
                 let cohort = self.cohort[cand as usize];
@@ -2188,15 +2199,15 @@ mod tests {
     }
 
     #[test]
-    fn an_unfunded_challenger_cannot_open_a_case_and_a_refusal_changes_nothing() {
-        let mut sim = grown_honest("stake-refusal");
+    fn an_unfunded_challenger_can_open_a_case_and_the_unbacked_stake_is_counted() {
+        let mut sim = grown_honest("stake-unbacked");
         let (challenger, target) = find_pair(&sim, |a, b| a > b).unwrap();
         sim.world.burn_liquid(challenger);
-        assert_eq!(sim.case_gate(challenger, target), Ok(()), "the XP gate is satisfied; only the stake is missing");
-        let (open, opened, refused, funds) = (sim.open_cases.len(), sim.det.cases_opened, sim.det.cases_refused, sim.world.stats.refused_funds);
-        assert!(!sim.open_case(challenger, target, false));
-        assert_eq!((sim.open_cases.len(), sim.det.cases_opened, sim.det.cases_refused, sim.world.stats.refused_funds), (open, opened, refused + 1, funds + 1));
-        assert!(!sim.world.held(challenger) && !sim.world.held(target) && sim.world.spendable(challenger) == 0);
+        assert_eq!(sim.case_gate(challenger, target), Ok(()));
+        let funds = sim.world.stats.refused_funds;
+        assert!(sim.open_case(challenger, target, false), "D166: a missing stake is not a refusal");
+        assert_eq!(sim.world.stats.refused_funds, funds + 1);
+        assert!(sim.world.held(challenger) && sim.world.held(target) && sim.world.spendable(challenger) == 0);
         sim.world.audit().unwrap();
     }
 

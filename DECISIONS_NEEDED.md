@@ -185,6 +185,8 @@ Blocking consequence, measured on reserved seeds (study of 2026-11-07, claims H1
 
 ### Q23 — Assumptions taken in the convergence of 2026-11-07 (D162, D163)
 
+Answered 2026-11-08: **D166** (items 1, 4, 5, 6, 7); items 2 and 3 were explained to the owner and stay as simulation conventions. The original list follows.
+
 Taken by the builder to implement the selected rules without inventing more than necessary; each is declared in the [simulator contract](docs/simulator.en.md#deviations-and-assumptions) and the owner may overrule any of them. Where an item blocks a claim, the exact consequence is named.
 
 1. **Who stands for the accused when the accused has less XP than the accuser.** The case gate requires the accuser to hold more XP than the accused, and an entrant needs more XP than the last participant, so the accused cannot be position 2. The simulator lets other accounts (mutual partners with enough XP and funds) stand for the accused, and keeps the cheap proof of reality (D136) as a separate process that decides for the accused. Question: may the accused enter as the first defender without the XP condition? Consequence: without this, a genuine person without a senior friend can only rely on the proof of reality.

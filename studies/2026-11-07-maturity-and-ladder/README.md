@@ -220,6 +220,18 @@ Results (seeds `grown-5001..5004`, one year):
 
 I1: the criterion (at least 2 times on every seed) is **not met** on seed 5001 (1.77), and the kill line (1.5) is not crossed, so the registered claim is neither confirmed nor killed: three seeds show 3.8 to 5.1 times, one shows 1.8 times (growth under careful examiners has a wide seed spread, 21 to 63 thousand). I2 **survives** (dirty-FACY share 0.80% to 1.02%, attackers at most 0.23%). I3 **survives**: 84% to 90% of the accounts that lost integrity under single-look examiners have already recovered part of it within the year, and all but one of the few that lost it under careful examiners.
 
+## Owner answers D166: soft backing, anyone joins, departing guarantors; base stake 7, 14, 28 (exploratory, seeds `grown-1..4`, one year)
+
+The owner (D166) made the stake backing soft (what an account holds is blocked, the rest of a lost stake is a negative emission balance repaid from later emission, no minimum funds), allowed anyone to join a dispute (modeled by five public watchers a day per case, `--watchers`), let a guarantor who leaves keep the units already credited for unrefuted acts, and asked for the base stakes 14 and 28 FACY next to 7. The attack-free control and a false-accusation arm (30 operators accusing once per operator and day, half of their emissions cashed out) under each base stake:
+
+| Base stake | Control honest accounts | Cases a year in the control | Accusation arm: honest accounts | Accusations that opened a case | Attacker debt (FACY) | Attacker stake actually lost (FACY) | Genuine invalidated | Honest restriction days per account-year |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 7 | 48,808 | 13 | 42,389 | 3,741 | 25,445 | 54 | 11.0 | 4.2 |
+| 14 | 49,060 | 13 | 48,338 | 3,744 | 51,043 | 54 | 11.5 | 3.9 |
+| 28 | 47,990 | 13 | 45,567 | 3,758 | 102,266 | 54 | 10.8 | 4.0 |
+
+Without watchers the control is 52,478 accounts with 12 cases (no visible difference at this case rate). Reading (exploratory): with soft backing the false accusations are no longer limited by funds (3,741 cases a year against 403 under liquid-only backing in the earlier arm), so the cost to the operators is debt, which scales linearly with the base stake (25 thousand, 51 thousand, 102 thousand FACY) and is repaid by burning their emission; the number of cases does not move with the base stake, because the cases are stopped by the XP gate and the integrity coefficient, not by the size of the stake. The honest network stays at 87% to 99% of its control with 11 genuine people invalidated a year; the base stake of 14 or 28 does not buy honest growth in this model. The open point is that debt has no ceiling: once an operator's emission is fully consumed, a further false case costs nothing more, and only the integrity halving and the XP gate stop it.
+
 ## Assessment of core readiness (diagnostic; model properties against real-world assumptions)
 
 Tested model properties: (1) XP at maturity is a deterministic function of valid Self-ID history, snapshots and chronological adjustments, equal to an independent chronological reference under random event orders, with the retroactive-XP exploit blocked for invitations and valences; (2) the dispute deadline never shortens and equals the maximum window end, with deterministic refusals and same-hour ordering, and the stake ledger conserves FACY under custody, forfeits, burns, sanctions and debt (audit after every run); (3) the strongest adversary of the closure programme stays inside both D129 lines on 4 of 4 reserved seeds under the full ladder (the earlier confirmation of 12 seeds used the earlier rules); (4) the stake bounds false accusations by operator emission.
