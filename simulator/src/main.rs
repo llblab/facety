@@ -46,7 +46,10 @@ const VALUE_KEYS: &[&str] = &[
     "--public-look",
     "--defense",
     "--defense-days",
-    "--window",
+    "--base-stake",
+    "--join-rate",
+    "--council-rate",
+    "--council-turnout",
     "--disputes-from",
     "--honest-genesis",
     "--search-order",
@@ -82,12 +85,16 @@ const FLAG_KEYS: &[&str] = &[
     "--targets-only",
     "--exclude-challengers",
     "--overwrite",
+    "--no-stakes",
+    "--no-halving",
+    "--halving-spares-council",
+    "--no-attacker-ladder",
 ];
 
 const USAGE: &str = "usage: facety-sim grown [--seeds N] [--first-seed K] [--bound NODES|none] [--no-layered] [--search-order none|xp|degree|both] [--attackers N] [--horizon DAYS]
   [--target-honest N] [--honest-genesis N] [--strategy cone|honest-first|supported-first] [--vetting P] [--vet-sens P] [--vet-fpr P]
   [--met P] [--double P] [--artifact P] [--subtree-cases N] [--confirm N] [--confirm-public] [--appeal P] [--cash-out P] [--svg DIR] [--accuse R] [--accuse-hubs] [--shock-day N --shock-days N --shock-fpr-x X] [--odd-share P] [--odd-mult X] [--restore-links] [--recover-liquid] [--xp-penalty F] [--collusion P] [--acquit] [--detect-prefix] [--allow-disputed] [--targets-only] [--exclude-challengers] [--self-path-from-guarantor] [--inspect P] [--fpr P] [--sens P] [--review P] [--accuracy P]
-  [--public-look P] [--defense P] [--defense-days N] [--window N] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--key-loss P] [--recovery-vouch P] [--recovery-delay DAYS] [--befriend P] [--invite P] [--accept-far P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
+  [--public-look P] [--defense P] [--defense-days N] [--base-stake N] [--no-stakes] [--no-halving] [--halving-spares-council] [--join-rate P] [--council-rate P] [--council-turnout P] [--no-attacker-ladder] [--disputes-from N] [--council-seats N] [--council-seats-per-d N] [--council-per-thousand N] [--max-d N] [--k N] [--k-step N] [--k-xp-per-level N] [--patience DAYS] [--careless P] [--corrupt P] [--key-loss P] [--recovery-vouch P] [--recovery-delay DAYS] [--befriend P] [--invite P] [--accept-far P] [--careless-accept P] [--max-subjects N] [--threads N] [--out DIR] [--overwrite] [--prefix-only]";
 
 fn fail(message: &str) -> ! {
     eprintln!("error: {message}\n{USAGE}");
@@ -252,7 +259,15 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.detection.public_look = num(&opts, "--public-look", base.detection.public_look)?;
     base.detection.defense_success = num(&opts, "--defense", base.detection.defense_success)?;
     base.detection.defense_days = num(&opts, "--defense-days", base.detection.defense_days)?;
-    base.detection.window_days = num(&opts, "--window", base.detection.window_days)?;
+    // Chekharda economics (D159): stakes are on with the selected base of 7 FACY; `--no-stakes` is the ablation. Who joins a dispute and
+    // when are research assumptions (`--join-rate`, `--council-rate`, `--council-turnout`, `--no-attacker-ladder`).
+    base.world.base_stake = if flags.contains("--no-stakes") { None } else { Some(num(&opts, "--base-stake", facety_sim::chekharda::BASE_STAKE)?) };
+    base.world.halve_losers = !flags.contains("--no-halving");
+    base.world.halving_spares_council = flags.contains("--halving-spares-council");
+    base.detection.join_rate = num(&opts, "--join-rate", base.detection.join_rate)?;
+    base.detection.council_rate = num(&opts, "--council-rate", base.detection.council_rate)?;
+    base.detection.council_turnout = num(&opts, "--council-turnout", base.detection.council_turnout)?;
+    base.detection.attacker_ladder = !flags.contains("--no-attacker-ladder");
     base.detection.disputes_from_active = num(&opts, "--disputes-from", 0)?;
     // The retired baseline grew the honest prefix without detection and switched it on at the snapshot; --detect-prefix runs it from day 0.
     base.detection_start_day = if flags.contains("--detect-prefix") { 0 } else { i64::MAX / 4 };
@@ -412,7 +427,7 @@ fn main() {
                 let g = |x: Option<i64>| x.map_or("null".into(), |v| v.to_string());
                 let d = &sim.det;
                 let line = format!(
-                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
+                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"casesSettled\":{},\"caseDaysMean\":{},\"maxPositions\":{},\"deadlineExtensions\":{},\"councilEntries\":{},\"refusedFunds\":{},\"holdDaysHonest\":{},\"holdDaysAttackers\":{},\"stakeLostHonest\":{},\"stakeLostAttackers\":{},\"debtHonest\":{},\"debtAttackers\":{},\"xpHalved\":{},\"councilTurnover\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
                     json::string(&sim.cfg.seed),
                     json::string(&sim.config_digest()),
                     prefix_days,
@@ -439,6 +454,20 @@ fn main() {
                     d.false_invalidated,
                     d.links_left,
                     d.cases_refused_xp,
+                    sim.world.stats.settled,
+                    f(if sim.world.stats.settled > 0 { Some(sim.world.stats.duration_hours as f64 / 24.0 / sim.world.stats.settled as f64) } else { None }),
+                    sim.world.stats.max_positions,
+                    sim.world.stats.extensions,
+                    sim.world.stats.council_entries,
+                    sim.world.stats.refused_funds,
+                    sim.ladder.hold_hours[0] / 24,
+                    sim.ladder.hold_hours[1] / 24,
+                    sim.ladder.lost[0],
+                    sim.ladder.lost[1],
+                    sim.ladder.debt[0],
+                    sim.ladder.debt[1],
+                    sim.world.stats.xp_halved,
+                    sim.world.stats.council_turnover,
                     sim.world.path_searches_exhausted(),
                     sim.world.path_search_steps(),
                     sim.censored.map_or("null".to_string(), json::string),

@@ -8,6 +8,7 @@
 //! - Council ties break by account index (older first), not by id string;
 //! - legacy policy options (immediate or spend-triggered XP, guarantee fees, vouching, limits) do not exist; ordinary XP is the D42
 //!   maturity credit (`settle`).
+use crate::chekharda::{self, Kind as PositionKind, Ladder, Refusal, Side};
 use crate::graph::Graph;
 use crate::hash::FastMap;
 use crate::paths::{layered_support, verify_family, PathFinder, Search, NO_LEVEL};
@@ -78,6 +79,13 @@ pub struct Config {
     /// dispute (D131). `false` is the earlier reading used as an ablation: the bound counts from the guarantor and the guarantor needs no
     /// support of its own (the emitter one node further out).
     pub self_path_from_subject: bool,
+    /// Base stake of the dispute ladder in whole FACY (D159: 7). `None` switches stakes, custody and the sanction off: a case is then only
+    /// an activity hold with a deadline (the unit tests and the ablation `--no-stakes`).
+    pub base_stake: Option<u32>,
+    /// The XP halving of losing participants (D159). `false` is an ablation (a counterfactual to attribute effects, not a protocol option).
+    pub halve_losers: bool,
+    /// Diagnostic ablation: current Council members keep their XP when they lose (isolates Council churn as the channel of the halving effect).
+    pub halving_spares_council: bool,
 }
 
 impl Default for Config {
@@ -99,6 +107,9 @@ impl Default for Config {
             exclude_disputed: true,
             exclude_targets_only: true,
             self_path_from_subject: true,
+            base_stake: None,
+            halve_losers: true,
+            halving_spares_council: false,
         }
     }
 }
@@ -154,6 +165,10 @@ struct Subject {
     status: Status,
     xp: i32,
     liquid: u32,
+    /// Part of `liquid` locked as stakes of open dispute positions (D159 custody); never spendable or collectible meanwhile.
+    reserved: u32,
+    /// Outstanding monetary debt from sanctions that could not be collected (not a burn; never collected later in this model).
+    debt: i64,
     last_reward: Option<i64>,
     /// The most recent guarantor list and recipient list of this account's acts, reused while they are unchanged.
     last_guarantors: Option<Arc<[Id]>>,
@@ -223,6 +238,65 @@ pub struct Probe {
     pub resolved_by: &'static str,
 }
 
+/// An open dispute: the ladder of positions, the accused, the accused's guarantors at opening (the D159 charge targets), and every account
+/// whose D77 activity hold it owns, with the hour the hold began.
+#[derive(Clone, Debug)]
+struct Case {
+    ladder: Ladder<Id>,
+    accused: Id,
+    accused_guarantors: Vec<Id>,
+    /// `(account, hour the restriction began, whether it also excludes the account from paths)`.
+    holds: Vec<(Id, i64, bool)>,
+}
+
+/// Counters of the dispute economics, for results. Amounts are whole FACY, durations hours.
+#[derive(Clone, Debug, Default)]
+pub struct DisputeStats {
+    pub opened: u64,
+    /// Positions admitted after the first (the first is the opening).
+    pub joined: u64,
+    /// Entries refused, by the ladder or by funds.
+    pub refused_closed: u64,
+    pub refused_xp: u64,
+    pub refused_funds: u64,
+    pub council_entries: u64,
+    pub ballots: u64,
+    /// Positions that moved the deadline later (an entry whose own window ended after the deadline in force).
+    pub extensions: u64,
+    pub settled: u64,
+    pub moot: u64,
+    pub accuser_won: u64,
+    pub accused_won: u64,
+    pub max_positions: u32,
+    /// Total hours from opening to settlement, and hours of D77 activity restriction summed over every restricted account.
+    pub duration_hours: i64,
+    pub hold_hours: i64,
+    pub staked: u64,
+    pub forfeited: u64,
+    pub stake_burned: u64,
+    pub sanction_collected: u64,
+    pub sanction_burned: u64,
+    pub debt_created: u64,
+    pub xp_halved: u64,
+    /// Council seats that changed hands, summed over the daily refreshes (members that left; the size changes are not counted).
+    pub council_turnover: u64,
+}
+
+/// What settling a case did. `holds` lists every restricted account with the hours it was restricted.
+#[derive(Clone, Debug)]
+pub struct CaseOutcome {
+    pub winner: Side,
+    pub accuser: Id,
+    pub accused: Id,
+    pub positions: u32,
+    pub holds: Vec<(Id, i64)>,
+    pub losers: Vec<Id>,
+    /// Net liquid FACY moved by the settlement per account (forfeited and burned stakes, sanction charges and the sanction payment).
+    pub net: Vec<(Id, i64)>,
+    /// New debt per account (the uncollectible part of a sanction).
+    pub debts: Vec<(Id, i64)>,
+}
+
 #[derive(Clone)]
 pub struct World {
     pub cfg: Config,
@@ -239,7 +313,11 @@ pub struct World {
     hold: Vec<u32>,
     /// Open cases in which the account is excluded from paths (D131); equals `hold` unless `exclude_targets_only` is set.
     path_hold: Vec<u32>,
-    cases: Vec<Option<Vec<Id>>>,
+    cases: Vec<Option<Case>>,
+    /// Liquid FACY destroyed by disputes (burned stakes and sanction charges, D151 recovery); `sum(liquid) + liquid_destroyed` equals the
+    /// converted entitlements.
+    liquid_destroyed: i64,
+    pub stats: DisputeStats,
     /// Acts before this index are settled: matured and credited (or cancelled before maturity). Acts are recorded in time order, so the
     /// maturity queue is the act table itself and one cursor is the whole index.
     settled: usize,
@@ -285,6 +363,8 @@ impl World {
             hold: Vec::new(),
             path_hold: Vec::new(),
             cases: Vec::new(),
+            liquid_destroyed: 0,
+            stats: DisputeStats::default(),
             settled: 0,
             minted: 0,
             burned: 0,
@@ -322,6 +402,8 @@ impl World {
             status: Status::Accepted,
             xp: 0,
             liquid: 0,
+            reserved: 0,
+            debt: 0,
             last_reward: None,
             last_guarantors: None,
             last_recipients: None,
@@ -559,7 +641,9 @@ impl World {
             .filter(|&(active, _, _)| active || early)
             .collect();
         candidates.sort_by(|a, b| b.0.cmp(&a.0).then(b.1.cmp(&a.1)).then(a.2.cmp(&b.2)));
+        let previous = std::mem::take(&mut self.council);
         self.council = candidates.into_iter().take(size).map(|(_, _, i)| i).collect();
+        self.stats.council_turnover += previous.iter().filter(|m| !self.council.contains(m)).count() as u64;
         match self.cfg.search_order.unwrap_or(SearchOrder::auto(self.cfg.layered)) {
             SearchOrder::None => self.finder.use_priority = false,
             SearchOrder::Xp => {
@@ -1175,6 +1259,43 @@ impl World {
         !self.accepted(id) || (self.cfg.layered && self.level[id as usize] == NO_LEVEL)
     }
 
+    /// Spendable liquid FACY: what the account holds minus the stakes locked in open disputes.
+    pub fn spendable(&self, id: Id) -> u32 {
+        let s = &self.subjects[id as usize];
+        s.liquid - s.reserved
+    }
+    pub fn debt(&self, id: Id) -> i64 {
+        self.subjects[id as usize].debt
+    }
+
+    fn stake_at(&self, ordinal: u32) -> u32 {
+        self.cfg.base_stake.map_or(0, |base| chekharda::stake(ordinal, base))
+    }
+
+    /// Restrict an account for a case (D77) and, when `path`, exclude it from counted paths (D131/D157).
+    fn hold_for(&mut self, id: Id, path: bool) {
+        self.hold[id as usize] += 1;
+        if path && self.cfg.exclude_disputed {
+            self.path_hold[id as usize] += 1;
+            self.blocked[id as usize] = true;
+        }
+    }
+
+    fn release_hold(&mut self, id: Id, path: bool) {
+        self.hold[id as usize] -= 1;
+        if path && self.cfg.exclude_disputed {
+            self.path_hold[id as usize] -= 1;
+        }
+        self.blocked[id as usize] = (self.cfg.exclude_disputed && self.path_hold[id as usize] > 0) || self.base_blocked(id);
+    }
+
+    /// Whether an account of a case is excluded from paths (D157: the accused; D131 earlier reading: the challenger as well).
+    fn path_held(&self, case: &Case, id: Id) -> bool {
+        id == case.accused || (!self.cfg.exclude_targets_only && id == case.ladder.positions()[0].who)
+    }
+
+    /// Open a dispute (D158/D159): position 1 is the challenger, who reserves the first stake from spendable liquid; the accused is
+    /// restricted from the start (D77) and excluded from paths. `subjects` is `[challenger, accused]`. Nothing changes on a refusal.
     pub fn begin_case(&mut self, subjects: &[Id]) -> Result<u32, Reject> {
         if subjects.len() < 2 || subjects[0] == subjects[1] {
             return Err(Reject("participation requires distinct case subjects"));
@@ -1182,28 +1303,258 @@ impl World {
         for &s in subjects {
             self.require_account(s)?;
         }
-        for (k, &s) in subjects.iter().enumerate() {
-            self.hold[s as usize] += 1;
-            // D131: accounts in an open dispute cannot be intermediaries of any counted path, so an investigated cluster pauses.
-            if self.cfg.exclude_disputed && (k > 0 || !self.cfg.exclude_targets_only) {
-                self.path_hold[s as usize] += 1;
-                self.blocked[s as usize] = true;
-            }
+        let (challenger, accused) = (subjects[0], subjects[1]);
+        let stake = self.stake_at(1);
+        if self.spendable(challenger) < stake {
+            self.stats.refused_funds += 1;
+            return Err(Reject("insufficient liquid FACY for the first stake"));
         }
-        self.cases.push(Some(subjects.to_vec()));
+        let ladder = Ladder::open(challenger, self.subjects[challenger as usize].xp, self.now, self.cfg.base_stake.unwrap_or(0));
+        let mut case = Case { ladder, accused, accused_guarantors: self.eligible_guarantors(accused), holds: Vec::new() };
+        self.subjects[challenger as usize].reserved += stake;
+        self.stats.staked += u64::from(stake);
+        self.stats.opened += 1;
+        self.stats.max_positions = self.stats.max_positions.max(1);
+        let (path_challenger, path_accused) = (self.path_held(&case, challenger), self.path_held(&case, accused));
+        case.holds = vec![(challenger, self.now, path_challenger), (accused, self.now, path_accused)];
+        self.hold_for(challenger, path_challenger);
+        self.hold_for(accused, path_accused);
+        self.cases.push(Some(case));
         Ok((self.cases.len() - 1) as u32)
     }
 
+    fn case_ref(&self, case: u32) -> Result<&Case, Reject> {
+        self.cases.get(case as usize).and_then(Option::as_ref).ok_or(Reject("no such open case"))
+    }
+
+    /// The shared deadline of an open case (hours).
+    pub fn case_deadline(&self, case: u32) -> Option<i64> {
+        self.case_ref(case).ok().map(|c| c.ladder.deadline())
+    }
+    /// Whether the case is final at the current hour (the deadline hour itself is final).
+    pub fn case_final(&self, case: u32) -> bool {
+        self.case_ref(case).is_ok_and(|c| c.ladder.is_final(self.now))
+    }
+    /// `(positions, XP the next entrant must exceed, stake of the next position, side of the next position, Council entered)`.
+    pub fn case_state(&self, case: u32) -> Option<(u32, i32, u32, Side, bool)> {
+        let c = self.case_ref(case).ok()?;
+        Some((c.ladder.len(), c.ladder.xp_to_beat(), self.stake_at(c.ladder.next_ordinal()), c.ladder.next_side(), c.ladder.council_entered()))
+    }
+    /// Provenance of a case's deadline: every position with its window, proposal and the deadline before and after it.
+    pub fn case_positions(&self, case: u32) -> Vec<chekharda::Position<Id>> {
+        self.case_ref(case).map_or_else(|_| Vec::new(), |c| c.ladder.positions().to_vec())
+    }
+    pub fn case_accused(&self, case: u32) -> Option<Id> {
+        self.case_ref(case).ok().map(|c| c.accused)
+    }
+
+    /// An ordinary entry: the next position takes the side opposite to the last one, needs more XP than the last ordinary participant,
+    /// and reserves its stake from spendable liquid. Returns the ordinal. Only an admitted position changes the ordinal, the deadline,
+    /// the custody and the restrictions; a refusal changes nothing.
+    pub fn join_case(&mut self, case: u32, who: Id) -> Result<u32, Reject> {
+        self.require_account(who)?;
+        let xp = self.subjects[who as usize].xp;
+        let (check, ordinal) = {
+            let c = self.case_ref(case)?;
+            (c.ladder.check(who, PositionKind::Participant, xp, self.now), c.ladder.next_ordinal())
+        };
+        if let Err(r) = check {
+            return Err(self.refuse(r));
+        }
+        let stake = self.stake_at(ordinal);
+        if self.spendable(who) < stake {
+            self.stats.refused_funds += 1;
+            return Err(Reject("insufficient liquid FACY for the stake"));
+        }
+        self.admit(case, who, PositionKind::Participant, xp, stake)
+    }
+
+    /// Collective Council entry (D161): any Council member, no XP condition and no stake, one terminal position on the shared clock.
+    pub fn council_join(&mut self, case: u32, member: Id) -> Result<u32, Reject> {
+        self.require_account(member)?;
+        if !self.council_mask.get(member as usize).copied().unwrap_or(false) {
+            return Err(Reject("not a Council member"));
+        }
+        let check = self.case_ref(case)?.ladder.check(member, PositionKind::Council, 0, self.now);
+        if let Err(r) = check {
+            return Err(self.refuse(r));
+        }
+        let ordinal = self.admit(case, member, PositionKind::Council, 0, 0)?;
+        self.stats.council_entries += 1;
+        Ok(ordinal)
+    }
+
+    fn refuse(&mut self, r: Refusal) -> Reject {
+        match r {
+            Refusal::Closed => {
+                self.stats.refused_closed += 1;
+                Reject("the dispute is final")
+            }
+            Refusal::AlreadyParticipant => Reject("already a participant"),
+            Refusal::XpNotAbove => {
+                self.stats.refused_xp += 1;
+                Reject("XP is not above the previous participant")
+            }
+            Refusal::CouncilEntered => Reject("the Council entered; it is the terminal entrant"),
+        }
+    }
+
+    fn admit(&mut self, case: u32, who: Id, kind: PositionKind, xp: i32, stake: u32) -> Result<u32, Reject> {
+        let now = self.now;
+        let c = self.cases[case as usize].as_mut().expect("checked open");
+        let (n, extended) = {
+            let p = c.ladder.admit(who, kind, xp, now).map_err(|_| Reject("entry refused"))?;
+            (p.n, p.extended())
+        };
+        c.holds.push((who, now, false));
+        self.subjects[who as usize].reserved += stake;
+        self.stats.staked += u64::from(stake);
+        self.stats.joined += 1;
+        self.stats.extensions += u64::from(extended);
+        self.stats.max_positions = self.stats.max_positions.max(n);
+        self.hold_for(who, false);
+        Ok(n)
+    }
+
+    /// A Council ballot (D66, D111): recorded for the vote only; it never changes the ordinal or the deadline.
+    pub fn council_ballot(&mut self, case: u32, member: Id, for_entrant: bool) -> bool {
+        if !self.council_mask.get(member as usize).copied().unwrap_or(false) || !self.accepted(member) {
+            return false;
+        }
+        let Some(c) = self.cases.get_mut(case as usize).and_then(Option::as_mut) else { return false };
+        let ok = c.ladder.ballot(member, for_entrant);
+        if ok {
+            self.stats.ballots += 1;
+        }
+        ok
+    }
+
+    /// Release the restrictions and the custody of a case; returns the hours each restricted account was held.
+    fn release_case(&mut self, case: &Case) -> Vec<(Id, i64)> {
+        let mut held = Vec::with_capacity(case.holds.len());
+        for &(id, since, path) in &case.holds {
+            held.push((id, self.now - since));
+            self.release_hold(id, path);
+        }
+        for p in case.ladder.positions() {
+            self.subjects[p.who as usize].reserved -= p.stake;
+        }
+        self.stats.hold_hours += held.iter().map(|&(_, h)| h).sum::<i64>();
+        held
+    }
+
+    /// End a case without a verdict (mooted: the accused was dealt with elsewhere, or the process ended it): custody is released, nothing
+    /// is paid or charged and no XP changes.
     pub fn end_case(&mut self, case: u32) {
-        if let Some(subjects) = self.cases[case as usize].take() {
-            for (k, s) in subjects.into_iter().enumerate() {
-                self.hold[s as usize] -= 1;
-                if self.cfg.exclude_disputed && (k > 0 || !self.cfg.exclude_targets_only) {
-                    self.path_hold[s as usize] -= 1;
-                }
-                self.blocked[s as usize] = (self.cfg.exclude_disputed && self.path_hold[s as usize] > 0) || self.base_blocked(s);
+        if let Some(c) = self.cases[case as usize].take() {
+            self.release_case(&c);
+            self.stats.moot += 1;
+        }
+    }
+
+    /// Charge `amount` to an account from its spendable liquid; the part that cannot be collected becomes debt. Returns the collected part.
+    fn charge(&mut self, id: Id, amount: u32) -> u32 {
+        let s = &mut self.subjects[id as usize];
+        let collected = amount.min(s.liquid - s.reserved);
+        s.liquid -= collected;
+        let owed = amount - collected;
+        s.debt += i64::from(owed);
+        self.stats.debt_created += u64::from(owed);
+        collected
+    }
+
+    fn destroy_liquid(&mut self, amount: u32) {
+        self.liquid_destroyed += i64::from(amount);
+        self.burned += i64::from(amount);
+    }
+
+    /// Settle a case at its deadline (D159, D161, D162): `forced` overrides the winning side when a process outside the ladder decided it
+    /// (the proof of reality of a genuine accused, D136); otherwise the last unopposed side wins, or the Council's equal-vote majority once
+    /// it entered. Every winner takes its stake back and the stake of the position directly below it; every loser forfeits to the position
+    /// directly above it (the stake of a losing top position is burned); losing participants lose half their XP; when the accused lost, the
+    /// base stake is charged to the accused (paid to the accuser) and to each guarantor of the accused at opening (burned), the uncollectible
+    /// part becoming debt. Refused before the deadline.
+    pub fn settle_case(&mut self, case: u32, forced: Option<Side>) -> Result<CaseOutcome, Reject> {
+        if !self.case_final(case) {
+            return Err(Reject("the dispute is not final yet"));
+        }
+        let c = self.cases[case as usize].take().expect("final implies open");
+        let mut settlement = c.ladder.settle();
+        if let Some(side) = forced {
+            if side != settlement.winner {
+                // Recompute the settlement for the forced side with the same ladder.
+                settlement = c.ladder.settle_for(side);
             }
         }
+        let positions: Vec<chekharda::Position<Id>> = c.ladder.positions().to_vec();
+        let who_at = |n: u32| positions[n as usize - 1].who;
+        let holds = self.release_case(&c);
+        let mut net: Vec<(Id, i64)> = Vec::new();
+        let mut debts: Vec<(Id, i64)> = Vec::new();
+        for &(from, to, amount) in &settlement.forfeits {
+            let (f, t) = (who_at(from), who_at(to));
+            self.subjects[f as usize].liquid -= amount;
+            self.subjects[t as usize].liquid += amount;
+            self.stats.forfeited += u64::from(amount);
+            net.push((f, -i64::from(amount)));
+            net.push((t, i64::from(amount)));
+        }
+        for &(position, amount) in &settlement.burns {
+            let loser = who_at(position);
+            self.subjects[loser as usize].liquid -= amount;
+            self.destroy_liquid(amount);
+            self.stats.stake_burned += u64::from(amount);
+            net.push((loser, -i64::from(amount)));
+        }
+        let mut losers = Vec::new();
+        for &n in &settlement.losers {
+            let p = &positions[n as usize - 1];
+            if p.kind == PositionKind::Participant
+                && self.cfg.halve_losers
+                && !(self.cfg.halving_spares_council && self.council_mask.get(p.who as usize).copied().unwrap_or(false))
+            {
+                let cut = self.penalize_xp(p.who, 0.5);
+                self.stats.xp_halved += cut as u64;
+                losers.push(p.who);
+            }
+        }
+        if settlement.accused_lost {
+            if let Some(base) = self.cfg.base_stake {
+                let accuser = c.ladder.positions()[0].who;
+                let got = self.charge(c.accused, base);
+                self.subjects[accuser as usize].liquid += got;
+                self.stats.sanction_collected += u64::from(got);
+                net.push((c.accused, -i64::from(got)));
+                net.push((accuser, i64::from(got)));
+                debts.push((c.accused, i64::from(base - got)));
+                for &g in &c.accused_guarantors {
+                    if g != c.accused {
+                        let burned = self.charge(g, base);
+                        self.destroy_liquid(burned);
+                        self.stats.sanction_burned += u64::from(burned);
+                        net.push((g, -i64::from(burned)));
+                        debts.push((g, i64::from(base - burned)));
+                    }
+                }
+            }
+        }
+        self.stats.settled += 1;
+        self.stats.duration_hours += self.now - c.ladder.opened_at;
+        if settlement.winner == Side::Accuser {
+            self.stats.accuser_won += 1;
+        } else {
+            self.stats.accused_won += 1;
+        }
+        Ok(CaseOutcome {
+            winner: settlement.winner,
+            accuser: positions[0].who,
+            accused: c.accused,
+            positions: positions.len() as u32,
+            holds,
+            losers,
+            net,
+            debts,
+        })
     }
 
     pub fn invalidate_identity(&mut self, id: Id) {
@@ -1234,16 +1585,9 @@ impl World {
     /// D151 recovery: the liquid FACY of an invalidated account is burned (FACY already transferred out cannot be un-minted, D53; here
     /// nothing is transferable, so all liquid FACY of the account is burned). Returns the amount burned.
     pub fn burn_liquid(&mut self, id: Id) -> u32 {
-        let mut burned = 0;
-        let acts = self.subjects[id as usize].acts.clone();
-        for act in acts {
-            if self.acts[act as usize].status == ActStatus::Converted {
-                self.acts[act as usize].status = ActStatus::Cancelled;
-                burned += 1;
-            }
-        }
+        let burned = self.spendable(id);
         self.subjects[id as usize].liquid -= burned;
-        self.burned += i64::from(burned);
+        self.destroy_liquid(burned);
         burned
     }
 
@@ -1380,8 +1724,8 @@ impl World {
         }
         let liquid: i64 = self.subjects.iter().map(|s| i64::from(s.liquid)).sum();
         let converted = self.acts.iter().filter(|a| a.status == ActStatus::Converted).count() as i64;
-        if liquid != converted {
-            return Err(format!("liquid {liquid} != converted acts {converted}"));
+        if liquid + self.liquid_destroyed != converted {
+            return Err(format!("liquid {liquid} + destroyed {} != converted acts {converted}", self.liquid_destroyed));
         }
         if self.minted - self.burned != self.vault + liquid {
             return Err("supply does not equal vault plus liquid".into());
@@ -1436,7 +1780,38 @@ impl World {
                 units[t as usize] += 1;
             }
         }
+        // Dispute custody and restrictions: the reserved stakes, the holds and the path exclusions are exactly those of the open cases.
+        let mut reserved = vec![0u32; n];
+        let mut holds = vec![0u32; n];
+        let mut path_holds = vec![0u32; n];
+        for c in self.cases.iter().flatten() {
+            for p in c.ladder.positions() {
+                reserved[p.who as usize] += p.stake;
+            }
+            for &(id, _, path) in &c.holds {
+                holds[id as usize] += 1;
+                if path && self.cfg.exclude_disputed {
+                    path_holds[id as usize] += 1;
+                }
+            }
+            let mut last = i64::MIN;
+            for p in c.ladder.positions() {
+                if p.after < last {
+                    return Err("a case deadline decreased".into());
+                }
+                last = p.after;
+            }
+        }
         for (i, s) in self.subjects.iter().enumerate() {
+            if reserved[i] != s.reserved || s.reserved > s.liquid {
+                return Err(format!("reserved stake of {i}: stored {} recomputed {} liquid {}", s.reserved, reserved[i], s.liquid));
+            }
+            if holds[i] != self.hold[i] || path_holds[i] != self.path_hold[i] {
+                return Err(format!("dispute restrictions of {i} do not match the open cases"));
+            }
+            if s.debt < 0 {
+                return Err(format!("negative debt of {i}"));
+            }
             if owned[i] != self.owned_open[i] {
                 return Err(format!("owned valences of {i}"));
             }
@@ -2050,7 +2425,9 @@ mod tests {
     fn a_guarantor_who_leaves_before_maturity_stays_in_the_creation_time_snapshot() {
         let mut w = live_world();
         let (g, alice) = (1, 0);
-        let vals: Vec<u32> = (0..w.valences.len() as u32).filter(|&v| w.valences[v as usize].owner == g && w.valences[v as usize].counterpart == alice && w.valences[v as usize].open).collect();
+        let vals: Vec<u32> = (0..w.valences.len() as u32)
+            .filter(|&v| w.valences[v as usize].owner == g && w.valences[v as usize].counterpart == alice && w.valences[v as usize].open)
+            .collect();
         let act = w.create_self_id(alice).unwrap();
         assert!(w.act_guarantors(act).contains(&g));
         w.tick(34);
@@ -2166,6 +2543,204 @@ mod tests {
         };
         assert_eq!(build(1), build(100), "ticking hour by hour or once gives identical effective XP");
         assert_eq!(build(24), build(7));
+    }
+
+    // ---- Chekharda cases with stakes, custody and settlement (D158, D159, D161, D162) ------------------------------------
+
+    /// Twelve ring accounts after forty days of Self-IDs at different rates (so XP differs) with every matured entitlement converted to
+    /// liquid FACY; stakes are on (base 7). Returns the world standing at an exact day boundary.
+    fn rich_world() -> World {
+        let mut w = World::new(Config { base_stake: Some(7), ..Config::default() }, 12, &ring(12));
+        for day in 0..40i64 {
+            for i in 0..12 {
+                if day % (1 + i64::from(i) % 3) == 0 {
+                    let _ = w.create_self_id(i);
+                }
+            }
+            w.tick((day + 1) * 24);
+            for i in 0..12 {
+                for a in w.eligible_emissions(i, 24) {
+                    let _ = w.convert_to_collector(i, a);
+                }
+            }
+        }
+        w
+    }
+
+    /// Accounts ordered by XP with distinct values: (accused, challenger, defender) with strictly increasing XP.
+    fn xp_ladder(w: &World) -> (Id, Id, Id) {
+        let mut ids: Vec<Id> = (0..w.len() as Id).collect();
+        ids.sort_by_key(|&i| (w.xp(i), i));
+        let lo = ids[0];
+        let mid = *ids.iter().find(|&&i| w.xp(i) > w.xp(lo)).unwrap();
+        let hi = *ids.iter().find(|&&i| w.xp(i) > w.xp(mid)).unwrap();
+        (lo, mid, hi)
+    }
+
+    fn total_liquid(w: &World) -> i64 {
+        (0..w.len() as Id).map(|i| i64::from(w.liquid(i))).sum()
+    }
+
+    #[test]
+    fn an_unopposed_accusation_reserves_the_stake_holds_both_parties_and_charges_the_accused_when_it_wins() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let (liquid_c, spendable_c) = (w.liquid(challenger), w.spendable(challenger));
+        assert!(spendable_c >= 7);
+        let guarantors = w.eligible_guarantors(accused);
+        assert!(!guarantors.is_empty());
+        let before_total = total_liquid(&w);
+        let before_guarantors: Vec<(u32, i64)> = guarantors.iter().map(|&g| (w.liquid(g), w.debt(g))).collect();
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        assert_eq!((w.liquid(challenger), w.spendable(challenger)), (liquid_c, spendable_c - 7), "the stake is reserved, not moved");
+        assert!(w.held(challenger) && w.held(accused));
+        assert_eq!(w.create_self_id(challenger), Err(Reject("open-dispute activity restriction")));
+        let opened = w.now();
+        assert_eq!(w.case_deadline(case), Some(opened + 7 * 24));
+        w.audit().unwrap();
+        w.tick(opened + 7 * 24 - 1);
+        assert_eq!(w.settle_case(case, None).map(|_| ()), Err(Reject("the dispute is not final yet")));
+        w.tick(opened + 7 * 24);
+        let out = w.settle_case(case, None).unwrap();
+        assert_eq!((out.winner, out.positions), (Side::Accuser, 1), "the last unopposed side wins");
+        assert!(!w.held(challenger) && !w.held(accused) && w.spendable(challenger) >= liquid_c, "restrictions and custody are released");
+        // The accused is charged the base stake (paid to the accuser) and so is each guarantor (burned); the uncollectible part is debt.
+        assert_eq!(w.stats.sanction_collected + w.debt(accused) as u64, 7, "the accused owes exactly the base stake: collected or debt");
+        for (k, &g) in guarantors.iter().enumerate() {
+            let (l0, d0) = before_guarantors[k];
+            let charged = (i64::from(l0) - i64::from(w.liquid(g))) + (w.debt(g) - d0);
+            // A guarantor may itself be the accused's own accuser or hold the stake: only check the plain case.
+            if g != challenger && g != accused {
+                assert_eq!(charged, 7, "each guarantor is charged the base stake once");
+            }
+        }
+        assert!(total_liquid(&w) <= before_total, "liquid FACY can only be burned by the sanction, never created");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_late_defender_extends_the_deadline_wins_and_takes_the_accusers_forfeited_stake() {
+        let mut w = rich_world();
+        let (accused, challenger, defender) = xp_ladder(&w);
+        let start = w.now();
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        // The accused cannot stand for themselves: less XP than the accuser. A defender with more XP can, on day 6, with the 9 FACY stake.
+        assert_eq!(w.join_case(case, accused), Err(Reject("XP is not above the previous participant")));
+        w.tick(start + 6 * 24);
+        let total = total_liquid(&w);
+        let spend_d = w.spendable(defender);
+        assert_eq!(w.join_case(case, defender), Ok(2));
+        assert_eq!(w.spendable(defender), spend_d - 9);
+        assert_eq!(w.case_deadline(case), Some(start + 12 * 24), "own window of six days from day 6");
+        assert_eq!(w.join_case(case, defender), Err(Reject("already a participant")));
+        let provenance = w.case_positions(case);
+        assert_eq!((provenance[1].before, provenance[1].after, provenance[1].extended()), (Some(start + 7 * 24), start + 12 * 24, true));
+        w.audit().unwrap();
+        w.tick(start + 12 * 24 - 1);
+        assert!(w.settle_case(case, None).is_err());
+        w.tick(start + 12 * 24);
+        let (lc, ld, xp_before) = (w.liquid(challenger), w.liquid(defender), w.xp(challenger));
+        let out = w.settle_case(case, None).unwrap();
+        assert_eq!((out.winner, out.positions, out.losers.clone()), (Side::Accused, 2, vec![challenger]));
+        assert_eq!(w.liquid(challenger), lc - 7, "the accuser forfeits its stake");
+        assert_eq!(w.liquid(defender), ld + 7, "to the first participant who stood for the accused");
+        assert_eq!(w.xp(challenger), xp_before - xp_before / 2, "the losing accuser lost half of its XP at that moment");
+        assert_eq!(total_liquid(&w), total, "stakes only move between participants");
+        assert_eq!((w.stats.extensions, w.stats.accused_won), (1, 1));
+        assert!(!w.held(challenger) && !w.held(defender) && !w.held(accused));
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn entries_without_funds_or_after_the_deadline_change_nothing() {
+        let mut w = rich_world();
+        let (accused, challenger, defender) = xp_ladder(&w);
+        let rival = (0..12).find(|&i| i != accused && i != challenger && i != defender && w.xp(i) > w.xp(challenger)).expect("another richer-in-XP account");
+        let start = w.now();
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.burn_liquid(defender);
+        assert_eq!(w.spendable(defender), 0);
+        let state = (w.case_deadline(case), w.case_state(case).unwrap().0, w.spendable(defender));
+        assert_eq!(w.join_case(case, defender), Err(Reject("insufficient liquid FACY for the stake")));
+        assert_eq!((w.case_deadline(case), w.case_state(case).unwrap().0, w.spendable(defender)), state, "a refused entry changes nothing");
+        w.tick(start + 7 * 24 - 1);
+        assert!(w.spendable(rival) >= 9);
+        w.tick(start + 7 * 24);
+        assert_eq!(w.join_case(case, rival), Err(Reject("the dispute is final")), "an entry at the deadline hour is refused");
+        assert!(w.stats.refused_funds >= 1 && w.stats.refused_closed >= 1);
+        assert_eq!(w.case_state(case).unwrap().0, 1, "still a lone accusation");
+        w.settle_case(case, None).unwrap();
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn overlapping_cases_keep_each_restriction_until_the_last_one_closes() {
+        let mut w = rich_world();
+        let (accused, c1, c2) = xp_ladder(&w);
+        let a = w.begin_case(&[c1, accused]).unwrap();
+        let b = w.begin_case(&[c2, accused]).unwrap();
+        assert!(w.path_blocked(accused));
+        w.end_case(a);
+        assert!(w.held(accused) && w.path_blocked(accused), "the second case still restricts the accused");
+        assert!(!w.held(c1) && w.held(c2));
+        w.audit().unwrap();
+        w.end_case(b);
+        assert!(!w.held(accused) && !w.held(c2), "released only when the last case ends");
+        assert_eq!((w.spendable(c1), w.spendable(c2)), (w.liquid(c1), w.liquid(c2)), "custody released");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn the_council_enters_once_without_stake_and_its_ballots_decide_on_the_shared_clock() {
+        let mut w = rich_world();
+        let (accused, challenger, defender) = xp_ladder(&w);
+        let start = w.now();
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.join_case(case, defender).unwrap();
+        let council = w.council().to_vec();
+        assert!(council.len() >= 3);
+        let outsider = (0..12).find(|i| !council.contains(i)).map(|i| i as Id);
+        if let Some(o) = outsider {
+            assert_eq!(w.council_join(case, o), Err(Reject("not a Council member")));
+            assert!(!w.council_ballot(case, o, true));
+        }
+        let entrant = council.iter().copied().find(|&m| m != accused && m != challenger && m != defender).unwrap();
+        let deadline_before = w.case_deadline(case).unwrap();
+        w.tick(start + 24);
+        let spend = w.spendable(entrant);
+        assert_eq!(w.council_join(case, entrant), Ok(3), "the Council entry is one position");
+        assert_eq!(w.spendable(entrant), spend, "no stake for the Council entry");
+        assert_eq!(w.council_join(case, council[0]), Err(Reject("the Council entered; it is the terminal entrant")));
+        let deadline_after = w.case_deadline(case).unwrap();
+        assert!(deadline_after >= deadline_before, "the deadline never shortens");
+        assert_eq!(deadline_after, deadline_before.max(start + 24 + 5 * 24));
+        let positions = w.stats.max_positions;
+        for &m in council.iter().take(3) {
+            w.council_ballot(case, m, false);
+        }
+        assert_eq!(w.case_deadline(case), Some(deadline_after), "ballots do not move the deadline");
+        assert_eq!(w.stats.max_positions, positions);
+        w.tick(deadline_after);
+        // The Council entry stood on the accuser's side (position 3); a majority against it hands the dispute to the accused's side.
+        let out = w.settle_case(case, None).unwrap();
+        assert_eq!(out.winner, Side::Accused);
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_proof_of_reality_decides_for_the_accused_and_the_lone_accusers_stake_is_burned() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let start = w.now();
+        let (lc, supply) = (w.liquid(challenger), w.supply());
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.tick(start + 7 * 24);
+        let out = w.settle_case(case, Some(Side::Accused)).unwrap();
+        assert_eq!(out.winner, Side::Accused);
+        assert_eq!(w.liquid(challenger), lc - 7, "no ordinary position above the lone accuser receives the stake");
+        assert_eq!(w.supply(), supply - 7, "it is burned");
+        assert_eq!(w.stats.stake_burned, 7);
+        w.audit().unwrap();
     }
 }
 

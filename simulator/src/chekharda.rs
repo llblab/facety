@@ -139,8 +139,9 @@ pub struct Settlement {
     pub losers: Vec<u32>,
     /// `(from position, to position, amount)`: a losing stake forfeited to the position directly above it.
     pub forfeits: Vec<(u32, u32, u32)>,
-    /// Stake of a losing top position that has no winner above it (burned).
-    pub burned_stake: u32,
+    /// `(position, amount)`: a losing stake that has no ordinary position above it to receive it, burned: the stake of a losing top
+    /// position, or one forfeited toward a Council entry (the Council's share of proceeds has no selected recipient contract, D64).
+    pub burns: Vec<(u32, u32)>,
     /// The winning first position, if any, is paid the base stake from the sanction on the accused rather than from a position below.
     pub sanction_to_first: bool,
     /// Whether the accused lost (the accuser side won): the base stake is charged to the accused and to each of its guarantors.
@@ -279,9 +280,13 @@ impl<W: Copy + PartialEq> Ladder<W> {
         }
     }
 
-    /// Settle the dispute (call at or after the deadline).
+    /// Settle the dispute (call at or after the deadline) for the side the ladder itself decides.
     pub fn settle(&self) -> Settlement {
-        let winner = self.winner();
+        self.settle_for(self.winner())
+    }
+
+    /// Settle for a given winning side (a decision taken outside the ladder, such as an accused's accepted proof of reality).
+    pub fn settle_for(&self, winner: Side) -> Settlement {
         let mut winners = Vec::new();
         let mut losers = Vec::new();
         for p in &self.positions {
@@ -293,27 +298,19 @@ impl<W: Copy + PartialEq> Ladder<W> {
         }
         let top = self.len();
         let mut forfeits = Vec::new();
-        let mut burned_stake = 0;
+        let mut burns = Vec::new();
         for &j in &losers {
             let amount = self.positions[j as usize - 1].stake;
             if amount == 0 {
                 continue;
             }
-            if j < top {
+            if j < top && self.positions[j as usize].kind == Kind::Participant {
                 forfeits.push((j, j + 1, amount));
             } else {
-                burned_stake += amount;
+                burns.push((j, amount));
             }
         }
-        Settlement {
-            winner,
-            sanction_to_first: winners.first() == Some(&1),
-            accused_lost: winner == Side::Accuser,
-            winners,
-            losers,
-            forfeits,
-            burned_stake,
-        }
+        Settlement { winner, sanction_to_first: winners.first() == Some(&1), accused_lost: winner == Side::Accuser, winners, losers, forfeits, burns }
     }
 }
 
@@ -513,7 +510,7 @@ mod tests {
         assert_eq!((s.winner, s.winners.clone(), s.losers.clone()), (Side::Accuser, vec![1, 3], vec![2]));
         assert_eq!(s.forfeits, vec![(2, 3, 12)], "the loser at 2 forfeits its stake of 12 to position 3");
         assert!(s.sanction_to_first && s.accused_lost);
-        assert_eq!(s.burned_stake, 0);
+        assert!(s.burns.is_empty());
         // The defender's side wins with two positions: the accuser's stake goes to the first defender.
         let mut m = Ladder::open(1, 1, 0, 10);
         m.admit(2, Kind::Participant, 2, H).unwrap();
@@ -530,6 +527,7 @@ mod tests {
         let s = c.settle();
         assert_eq!((s.winner, s.winners.clone(), s.losers.clone()), (Side::Accused, vec![2], vec![1, 3]));
         assert_eq!(s.forfeits, vec![(1, 2, 10)], "the accuser forfeits to the first defender; the Council entrant staked nothing");
+        assert!(s.burns.is_empty());
         // A ladder whose top ordinary position is overturned by the Council: the top participant's stake is burned.
         let mut d = Ladder::open(1, 1, 0, 10);
         d.admit(2, Kind::Participant, 2, H).unwrap();
@@ -541,6 +539,23 @@ mod tests {
         // The Council entrant took position 4 (the defender side); a vote against it hands the win to the accuser side (1, 3).
         assert_eq!((s.winner, s.winners.clone()), (Side::Accuser, vec![1, 3]));
         assert_eq!(s.forfeits, vec![(2, 3, 12)]);
-        assert_eq!(s.burned_stake, 0, "the losing Council position staked nothing, so nothing burns");
+        assert!(s.burns.is_empty(), "the losing Council position staked nothing, so nothing burns");
+    }
+
+    #[test]
+    fn a_stake_forfeited_toward_the_council_or_lost_at_the_top_is_burned() {
+        // 1 accuser, 2 defender (9), Council 3 on the accuser side: the Council wins, so the defender's stake has no ordinary recipient.
+        let mut l = Ladder::open(1, 1, 0, 10);
+        l.admit(2, Kind::Participant, 2, H).unwrap();
+        l.admit(9, Kind::Council, 0, 2 * H).unwrap();
+        let s = l.settle();
+        assert_eq!(s.winner, Side::Accuser);
+        assert!(s.forfeits.is_empty());
+        assert_eq!(s.burns, vec![(2, 12)]);
+        // A lone accusation that the accused wins by an outside proof: the top position is the loser, nobody above it.
+        let lone = Ladder::open(1, 1, 0, 10);
+        let s = lone.settle_for(Side::Accused);
+        assert_eq!((s.winners.clone(), s.losers.clone(), s.burns.clone()), (vec![], vec![1], vec![(1, 10)]));
+        assert!(!s.accused_lost);
     }
 }

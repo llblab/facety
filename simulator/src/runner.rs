@@ -4,6 +4,7 @@
 //!
 //! Evaluator labels (`Cohort`, `Kind`) are read only by the observation functions that model noisy looks and verdict accuracy;
 //! the protocol world never sees them. Behavior rates are scenario assumptions, not calibrated human behavior.
+use crate::chekharda::Side;
 use crate::json;
 use crate::paths::{layered_support, NO_LEVEL};
 use crate::rng::{hash_seed, Rng};
@@ -13,7 +14,7 @@ use std::fmt::Write as _;
 
 pub const ENGINE: &str = "facety-sim/runner-v1";
 /// Version of the saved result layout.
-pub const SCHEMA: &str = "facety-sim/result-v2";
+pub const SCHEMA: &str = "facety-sim/result-v3";
 
 const CH_GENESIS: u64 = 1;
 const CH_ENTRY: u64 = 2;
@@ -22,7 +23,6 @@ const CH_ANSWER: u64 = 4;
 const CH_SPEND: u64 = 5;
 const CH_ATTACK: u64 = 6;
 const CH_REVIEW: u64 = 7;
-const CH_VERDICT: u64 = 8;
 const CH_INSPECT: u64 = 9;
 const CH_PUBLIC: u64 = 10;
 const CH_FOLLOW: u64 = 11;
@@ -34,6 +34,8 @@ const CH_ARTIFACT: u64 = 16;
 const CH_ACCUSE: u64 = 17;
 const CH_LOSS: u64 = 18;
 const CH_VOUCH: u64 = 19;
+const CH_LADDER: u64 = 20;
+const CH_COUNCIL: u64 = 21;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Strategy {
@@ -80,7 +82,6 @@ pub struct Detection {
     pub inspect: f64,
     pub sensitivity: f64,
     pub false_positive: f64,
-    pub window_days: i64,
     pub accuracy: f64,
     pub leave: bool,
     pub public_look: f64,
@@ -118,6 +119,19 @@ pub struct Detection {
     /// accused genuine account does, ending the case without invalidation after `defense_days`. Fakes and second accounts cannot.
     pub defense_success: f64,
     pub defense_days: i64,
+    /// Chekharda joining behavior (research assumptions, not protocol rules; D158-D162 fix the ladder, not who joins or when). Each day, each
+    /// eligible honest supporter of the next side (the accused's mutual partners for the accused side, the first challenger's for the
+    /// accuser side; XP above the last participant, funds for the stake) who believes that side is right (a belief is the truth with
+    /// probability `accuracy`) joins with this probability. 0 = honest supporters never join.
+    pub join_rate: f64,
+    /// Once a dispute has two positions, each day a Council member looks at it with this probability and enters if its own belief disagrees
+    /// with the last position (D161: no XP condition, no stake, one terminal position).
+    pub council_rate: f64,
+    /// At the deadline each Council member of an entered dispute votes with this probability, by its own belief (D111: one equal vote).
+    pub council_turnout: f64,
+    /// Attacker accounts that hold enough XP and funds stand with their fakes (or against an honest accused) on the last day before the
+    /// deadline, the strongest way to prolong a dispute; they also vote their interest in the Council. Worst case; `false` is an ablation.
+    pub attacker_ladder: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -269,13 +283,13 @@ impl RunConfig {
             ("detection.defense_success", d.defense_success),
             ("detection.appeal", d.appeal),
             ("detection.xp_penalty", d.xp_penalty),
+            ("detection.join_rate", d.join_rate),
+            ("detection.council_rate", d.council_rate),
+            ("detection.council_turnout", d.council_turnout),
         ] {
             prob(name, x)?;
         }
-        // The dispute clock (D69): a case lasts at least seven days after the last participant joins, so proving reality cannot be quicker either.
-        // The protocol window is seven days after the last entry; the owner concept D158 lets it shrink to three days as participants join, so
-        // the simulator accepts three as the lower bound of a sensitivity study (participants joining are not modeled; the default stays seven).
-        at_least("detection.window_days", d.window_days, 3)?;
+        // The dispute clock (D162): the first window is seven days, so proving reality takes at least the shortest window of three days.
         at_least("detection.defense_days", d.defense_days, 3)?;
         at_least("detection.pattern_min_invitees", d.pattern_min_invitees as i64, 1)?;
         Ok(())
@@ -288,13 +302,13 @@ impl RunConfig {
         let d = &self.detection;
         format!(
             "{{\"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"attackerAccuse\":{},\"accuseHubs\":{},\"stopAtHonest\":{},\
-\"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"selfPathFromSubject\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{}}},\
+\"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"selfPathFromSubject\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{},\"baseStake\":{},\"halveLosers\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"keyLoss\":{},\"recoveryVouch\":{},\"recoveryDelayDays\":{},\"artifactRate\":{},\"collusion\":{}}},\
-\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"windowDays\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{}}}}}",
+\"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{},\"joinRate\":{},\"councilRate\":{},\"councilTurnout\":{},\"attackerLadder\":{}}}}}",
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), json::number(self.attacker_accuse), self.accuse_hubs, self.stop_at_honest,
-            w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.exclude_targets_only, w.self_path_from_subject, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))),
+            w.k, w.k_step.map_or("null".to_string(), |n| n.to_string()), w.k_xp_per_level, w.freeze_hours, w.spend_hours, w.max_nodes.map_or("null".to_string(), |n| n.to_string()), w.layered, w.search_budget, w.exclude_disputed, w.exclude_targets_only, w.self_path_from_subject, w.council_seats.map_or("null".to_string(), |n| n.to_string()), w.max_difficulty.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_d.map_or("null".to_string(), |n| n.to_string()), w.council_seats_per_thousand.map_or("null".to_string(), |n| n.to_string()), w.search_order.map_or("null".to_string(), |o| json::string(&format!("{o:?}"))), w.base_stake.map_or("null".to_string(), |n| n.to_string()), w.halve_losers,
             json::number(h.self_id), json::number(h.invite), json::number(h.befriend), json::number(h.accept_near), json::number(h.accept_far), h.keep_rights, json::number(h.vetting), json::option_number(h.vetting_sensitivity), json::option_number(h.vetting_false_positive), json::number(h.met_in_person), json::number(h.double_life), json::number(h.careless_share), json::number(h.careless_accept_far), json::number(h.corrupt_share), json::number(h.key_loss), json::number(h.recovery_vouch), h.recovery_delay_days, json::number(h.artifact_rate), json::number(h.collusion),
-            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), d.window_days, json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days
+            json::number(d.review), json::number(d.inspect), json::number(d.sensitivity), json::number(d.false_positive), json::number(d.accuracy), d.leave, json::number(d.public_look), d.pattern_min_invitees, json::number(d.pattern_closure), json::number(d.sponsor_willingness), d.follow_up, d.subtree_cases, d.confirm, d.confirm_public, json::number(d.odd_share), json::number(d.odd_multiplier), json::number(d.appeal), d.restore_links, d.recover_liquid, json::number(d.xp_penalty), d.acquit_met, d.disputes_from_active, json::number(d.defense_success), d.defense_days, json::number(d.join_rate), json::number(d.council_rate), json::number(d.council_turnout), d.attacker_ladder
         )
     }
 }
@@ -310,7 +324,7 @@ impl Default for RunConfig {
             attackers: 10,
             max_subjects: 20_000,
             // Baseline (D124 adopted): intermediaries of counted paths must be layered-supported.
-            world: WorldConfig { layered: true, ..WorldConfig::default() },
+            world: WorldConfig { layered: true, base_stake: Some(crate::chekharda::BASE_STAKE), ..WorldConfig::default() },
             strategy: Strategy::Cone,
             honest: Honest {
                 self_id: 0.9,
@@ -338,7 +352,6 @@ impl Default for RunConfig {
                 inspect: 0.03,
                 sensitivity: 0.8,
                 false_positive: 0.003,
-                window_days: 7,
                 accuracy: 0.9,
                 leave: true,
                 public_look: 0.02,
@@ -359,6 +372,10 @@ impl Default for RunConfig {
                 disputes_from_active: 0,
                 defense_success: 0.95,
                 defense_days: 7,
+                join_rate: 0.1,
+                council_rate: 0.5,
+                council_turnout: 0.7,
+                attacker_ladder: true,
             },
             detection_start_day: 0,
             attacker_patience_days: 0,
@@ -432,6 +449,20 @@ struct CaseRec {
     target_xp: i32,
 }
 
+/// Dispute counters split by cohort (index 0 honest, 1 attacker side); amounts in whole FACY, durations in hours.
+#[derive(Clone, Debug, Default)]
+pub struct LadderCounters {
+    pub hold_hours: [i64; 2],
+    pub net: [i64; 2],
+    pub lost: [i64; 2],
+    pub debt: [i64; 2],
+    /// Cases settled by the number of positions at settlement (index 0 is one position; the last bucket is six or more).
+    pub depth: [u64; 6],
+    /// Cases settled with the Council inside, and how many of those the Council overturned the last unopposed side.
+    pub with_council: u64,
+    pub entries: [u64; 2],
+}
+
 #[derive(Clone, Debug, Default)]
 pub struct DetectionCounters {
     pub cases_opened: u64,
@@ -488,6 +519,8 @@ pub struct Row {
     pub xp_p50: i32,
     pub xp_p90: i32,
     pub xp_max: i32,
+    /// Mean number of mutual guarantors of the Council members (how well connected the seats are).
+    pub council_degree: f64,
 }
 
 impl Row {
@@ -534,6 +567,8 @@ pub struct Sim {
     /// Honest links cut by the cascade of a verdict, per invalidated account, kept for restoration on appeal (D151).
     cuts: HashMap<Id, Vec<(Id, Id)>>,
     pub det: DetectionCounters,
+    /// Dispute economics by cohort (index: honest, attacker side): restricted hours (D77), net liquid FACY moved, FACY lost, new debt.
+    pub ladder: LadderCounters,
     pub invitations: [u64; 2],
     /// Units of emission minted by Self-IDs, honest and attacker side (cumulative, whatever happens to them later).
     pub emitted: [u64; 2],
@@ -627,6 +662,7 @@ impl Sim {
             appeals: Vec::new(),
             cuts: HashMap::new(),
             det: DetectionCounters::default(),
+            ladder: LadderCounters::default(),
             invitations: [0; 2],
             emitted: [0; 2],
             recovery: [0; 6],
@@ -1344,6 +1380,124 @@ impl Sim {
         self.open_case(sponsor, target, false)
     }
 
+    /// Whether an honest account with evaluator-blind judgment sides with the accused: its belief is the truth with the declared
+    /// accuracy. Evaluator truth enters only through this declared error.
+    fn believes_accused_genuine(&self, rng: &mut Rng, target: Id) -> bool {
+        let truth = !false_identity(self.kind[target as usize]);
+        if rng.chance(self.cfg.detection.accuracy) {
+            truth
+        } else {
+            !truth
+        }
+    }
+
+    /// The side an account stands for in a dispute over `target`: an honest account by its belief, an attacker-side account by interest
+    /// (with its fakes, against an honest accused). `None` for a bought honest account (no part in detection).
+    fn preferred_side(&self, rng: &mut Rng, id: Id, target: Id) -> Option<Side> {
+        if self.cohort[id as usize] == Cohort::Attacker {
+            if !self.cfg.detection.attacker_ladder {
+                return None;
+            }
+            return Some(if self.cohort[target as usize] == Cohort::Attacker { Side::Accused } else { Side::Accuser });
+        }
+        if self.corrupt(id) {
+            return None;
+        }
+        Some(if self.believes_accused_genuine(rng, target) { Side::Accused } else { Side::Accuser })
+    }
+
+    /// One day of ladder behavior for every open dispute: at most one ordinary entry (a supporter of the next side) and, once contested, a
+    /// possible Council entry. These are declared research assumptions (`detection.join_rate`, `council_rate`, `attacker_ladder`); the
+    /// protocol fixes the ladder, not who joins.
+    fn ladder_moves(&mut self) {
+        let det = self.cfg.detection.clone();
+        let now = self.world.now();
+        let day = (now / DAY) as u64;
+        let recs: Vec<(u32, Id, Id, u64)> = self.open_cases.iter().map(|r| (r.case, r.target, r.challenger, r.id)).collect();
+        for (case, target, challenger, id) in recs {
+            let Some(deadline) = self.world.case_deadline(case) else { continue };
+            if now >= deadline {
+                continue;
+            }
+            let mut rng = Rng::keyed(self.seed, CH_LADDER, id, day);
+            let Some((_, beat, stake, side, council)) = self.world.case_state(case) else { continue };
+            if council {
+                continue;
+            }
+            // Ordinary entry: honest supporters sample the daily rate; attackers wait for the last day before the deadline.
+            let last_day = deadline - now <= DAY;
+            let mut pool: Vec<Id> = match side {
+                Side::Accused => self.world.mutual_partners(target),
+                Side::Accuser => self.world.mutual_partners(challenger),
+            };
+            if det.attacker_ladder && last_day {
+                pool.extend(self.attackers.iter().copied());
+            }
+            pool.sort_unstable();
+            pool.dedup();
+            for cand in pool {
+                if !self.world.accepted(cand) || self.world.xp(cand) <= beat || self.world.spendable(cand) < stake {
+                    continue;
+                }
+                let cohort = self.cohort[cand as usize];
+                let go = if cohort == Cohort::Attacker {
+                    last_day && self.preferred_side(&mut rng, cand, target) == Some(side)
+                } else {
+                    rng.chance(det.join_rate) && self.preferred_side(&mut rng, cand, target) == Some(side)
+                };
+                if go && self.world.join_case(case, cand).is_ok() {
+                    self.ladder.entries[ci(cohort)] += 1;
+                    break;
+                }
+            }
+            // Council entry: a contested dispute draws a member who disagrees with the last position.
+            let Some((now_positions, _, _, next, entered)) = self.world.case_state(case) else { continue };
+            if now_positions >= 2 && !entered && det.council_rate > 0.0 && rng.chance(det.council_rate) {
+                let members: Vec<Id> = self.world.council().iter().copied().filter(|&m| self.world.accepted(m)).collect();
+                if let Some(&m) = rng.pick(&members) {
+                    if self.preferred_side(&mut rng, m, target) == Some(next) && self.world.council_join(case, m).is_ok() {
+                        self.ladder.entries[ci(self.cohort[m as usize])] += 1;
+                    }
+                }
+            }
+        }
+    }
+
+    /// At the deadline every Council member of an entered dispute votes with the declared turnout, by its own belief (D66, D111).
+    fn cast_ballots(&mut self, rec: &CaseRec) {
+        let positions = self.world.case_positions(rec.case);
+        let Some(entrant) = positions.iter().find(|p| p.kind == crate::chekharda::Kind::Council) else { return };
+        let entrant_side = entrant.side;
+        let mut rng = Rng::keyed(self.seed, CH_COUNCIL, rec.id, 0);
+        let members: Vec<Id> = self.world.council().to_vec();
+        for m in members {
+            if !self.world.accepted(m) || !rng.chance(self.cfg.detection.council_turnout) {
+                continue;
+            }
+            if let Some(side) = self.preferred_side(&mut rng, m, rec.target) {
+                self.world.council_ballot(rec.case, m, side == entrant_side);
+            }
+        }
+    }
+
+    /// Fold a settled dispute into the cohort counters: restricted hours, money moved and lost, debt, depth.
+    fn record_outcome(&mut self, outcome: &crate::world::CaseOutcome) {
+        for &(id, hours) in &outcome.holds {
+            self.ladder.hold_hours[ci(self.cohort[id as usize])] += hours;
+        }
+        for &(id, amount) in &outcome.net {
+            let c = ci(self.cohort[id as usize]);
+            self.ladder.net[c] += amount;
+            if amount < 0 {
+                self.ladder.lost[c] -= amount;
+            }
+        }
+        for &(id, amount) in &outcome.debts {
+            self.ladder.debt[ci(self.cohort[id as usize])] += amount;
+        }
+        self.ladder.depth[(outcome.positions as usize - 1).min(5)] += 1;
+    }
+
     fn detect(&mut self) {
         let det = self.cfg.detection.clone();
         let mut targeted: HashSet<Id> = self.open_cases.iter().map(|c| c.target).collect();
@@ -1405,27 +1559,29 @@ impl Sim {
             }
             self.pending.push(p);
         }
-        // Resolve due identity cases: verdict correct with the declared accuracy; a false verdict invalidates and voids the chain.
+        // Open disputes move first (entries and the Council), then every dispute whose deadline has been reached is settled by the ladder
+        // (D162): the last unopposed side wins, unless the Council entered and voted, or the accused proved reality (D136, which decides
+        // for the accused). A false verdict invalidates and voids the chain.
+        self.ladder_moves();
         let cases = std::mem::take(&mut self.open_cases);
         for rec in cases {
-            let days = if rec.defended { det.defense_days } else { det.window_days };
-            if self.world.now() - rec.opened_at < days * DAY {
+            let proof_done = !rec.defended || self.world.now() - rec.opened_at >= det.defense_days * DAY;
+            if !self.world.case_final(rec.case) || !proof_done {
                 self.open_cases.push(rec);
                 continue;
             }
+            self.cast_ballots(&rec);
+            let outcome = self.world.settle_case(rec.case, rec.defended.then_some(Side::Accused)).expect("final cases settle");
+            self.record_outcome(&outcome);
+            targeted.remove(&rec.target);
             if rec.defended {
                 // The accused proved reality in person or in public: the case ends, nothing is invalidated.
-                self.world.end_case(rec.case);
-                targeted.remove(&rec.target);
                 self.det.defended += 1;
                 self.det.cases_dismissed += 1;
                 continue;
             }
-            let correct = Rng::keyed(self.seed, CH_VERDICT, rec.id, 0).chance(det.accuracy);
             let label = false_identity(self.kind[rec.target as usize]);
-            let verdict_false = if label { correct } else { !correct };
-            self.world.end_case(rec.case);
-            targeted.remove(&rec.target);
+            let verdict_false = outcome.winner == Side::Accuser;
             if !verdict_false || !self.world.accepted(rec.target) {
                 self.det.cases_dismissed += 1;
                 continue;
@@ -1584,6 +1740,8 @@ impl Sim {
                 }
             }
         }
+        let council_degree =
+            if w.council().is_empty() { 0.0 } else { w.council().iter().map(|&m| w.mutual_count(m)).sum::<usize>() as f64 / w.council().len() as f64 };
         let council_attackers = w.council().iter().filter(|&&m| self.cohort[m as usize] == Cohort::Attacker).count();
         let mut xps: Vec<i32> = accepted.iter().map(|&i| w.xp_of(i)).collect();
         xps.sort_unstable();
@@ -1600,6 +1758,7 @@ impl Sim {
             d: w.required_guarantors(),
             council: w.council().len(),
             council_attackers,
+            council_degree,
             attack_edges,
             xp_p50,
             xp_p90,
@@ -1687,6 +1846,9 @@ impl Sim {
         let d = &self.det;
         let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"accusations\":{},\"casesOnGenuine\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
             d.cases_opened, d.accusations, d.cases_on_genuine, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
+        let (st, l) = (&self.world.stats, &self.ladder);
+        let _ = write!(s, "\"disputes\":{{\"opened\":{},\"joined\":{},\"refusedClosed\":{},\"refusedXp\":{},\"refusedFunds\":{},\"councilEntries\":{},\"ballots\":{},\"extensions\":{},\"settled\":{},\"moot\":{},\"accuserWon\":{},\"accusedWon\":{},\"maxPositions\":{},\"durationHours\":{},\"holdHours\":{},\"staked\":{},\"forfeited\":{},\"stakeBurned\":{},\"sanctionCollected\":{},\"sanctionBurned\":{},\"debtCreated\":{},\"xpHalved\":{},\"councilTurnover\":{},\"holdHoursByCohort\":{:?},\"netByCohort\":{:?},\"lostByCohort\":{:?},\"debtByCohort\":{:?},\"depth\":{:?},\"entriesByCohort\":{:?}}},",
+            st.opened, st.joined, st.refused_closed, st.refused_xp, st.refused_funds, st.council_entries, st.ballots, st.extensions, st.settled, st.moot, st.accuser_won, st.accused_won, st.max_positions, st.duration_hours, st.hold_hours, st.staked, st.forfeited, st.stake_burned, st.sanction_collected, st.sanction_burned, st.debt_created, st.xp_halved, st.council_turnover, l.hold_hours, l.net, l.lost, l.debt, l.depth, l.entries);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerLiquid\":{},\"attackerUnspent\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
             self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.recovery[0], self.recovery[1], self.recovery[2], self.recovery[3], self.recovery[4], self.recovery[5], self.emitted[0], self.emitted[1], self.attackers.iter().map(|&a| i64::from(self.world.liquid(a))).sum::<i64>(), self.attackers.iter().map(|&a| self.world.unspent_rights(a) as i64).sum::<i64>(), self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");
@@ -1695,8 +1857,8 @@ impl Sim {
                 s.push(',');
             }
             let f = |x: Option<f64>| x.map_or("null".to_string(), |v| format!("{v:.6}"));
-            let _ = write!(s, "{{\"day\":{},\"subjects\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"supply\":{},\"dirty\":{},\"dirtyShare\":{},\"active\":{},\"D\":{},\"councilSize\":{},\"councilAttackers\":{},\"attackEdges\":{},\"xpP50\":{},\"xpP90\":{},\"xpMax\":{}}}",
-                r.day, r.subjects, r.honest, r.attackers, f(r.attacker_share()), r.supply, r.dirty, f(r.dirty_share()), r.active, r.d, r.council, r.council_attackers, r.attack_edges, r.xp_p50, r.xp_p90, r.xp_max);
+            let _ = write!(s, "{{\"day\":{},\"subjects\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"supply\":{},\"dirty\":{},\"dirtyShare\":{},\"active\":{},\"D\":{},\"councilSize\":{},\"councilAttackers\":{},\"attackEdges\":{},\"xpP50\":{},\"xpP90\":{},\"xpMax\":{},\"councilDegree\":{:.2}}}",
+                r.day, r.subjects, r.honest, r.attackers, f(r.attacker_share()), r.supply, r.dirty, f(r.dirty_share()), r.active, r.d, r.council, r.council_attackers, r.attack_edges, r.xp_p50, r.xp_p90, r.xp_max, r.council_degree);
         }
         s.push_str("],\"refusals\":{");
         for (k, name) in ["honest", "attackers"].iter().enumerate() {
@@ -2020,6 +2182,45 @@ mod tests {
     }
 
     #[test]
+    fn an_unfunded_challenger_cannot_open_a_case_and_a_refusal_changes_nothing() {
+        let mut sim = grown_honest("stake-refusal");
+        let (challenger, target) = find_pair(&sim, |a, b| a > b).unwrap();
+        sim.world.burn_liquid(challenger);
+        assert_eq!(sim.case_gate(challenger, target), Ok(()), "the XP gate is satisfied; only the stake is missing");
+        let (open, opened, refused, funds) = (sim.open_cases.len(), sim.det.cases_opened, sim.det.cases_refused, sim.world.stats.refused_funds);
+        assert!(!sim.open_case(challenger, target, false));
+        assert_eq!((sim.open_cases.len(), sim.det.cases_opened, sim.det.cases_refused, sim.world.stats.refused_funds), (open, opened, refused + 1, funds + 1));
+        assert!(!sim.world.held(challenger) && !sim.world.held(target) && sim.world.spendable(challenger) == 0);
+        sim.world.audit().unwrap();
+    }
+
+    /// Every case is settled by the ladder at its deadline: with nobody joining a case lasts exactly the first window of seven days, joining
+    /// extends it, and the custody, holds and conservation stay exact (the world audit).
+    #[test]
+    fn a_run_settles_cases_at_their_deadlines_and_joining_only_extends_them() {
+        let run = |join: f64, council: f64, attackers: bool| {
+            let mut c = small("ladder-run", 6, true);
+            c.detection.join_rate = join;
+            c.detection.council_rate = council;
+            c.detection.attacker_ladder = attackers;
+            c.days = 160;
+            let mut sim = Sim::new(c);
+            sim.run();
+            sim.world.audit().unwrap();
+            let st = sim.world.stats.clone();
+            assert_eq!(st.opened, st.settled + st.moot + sim.open_cases.len() as u64, "every opened case is settled or still open");
+            assert!(st.settled > 0, "the run must settle cases to be a test");
+            (st.duration_hours as f64 / 24.0 / st.settled as f64, st.joined, st.max_positions)
+        };
+        let (days, joined, depth) = run(0.0, 0.0, false);
+        assert_eq!((joined, depth), (0, 1), "nobody joins");
+        assert!((days - 7.0).abs() < 1e-9, "a lone accusation lasts exactly seven days, got {days}");
+        let (days_joined, joined, depth) = run(0.3, 0.5, true);
+        assert!(joined > 0 && depth >= 2, "supporters joined");
+        assert!(days_joined > 7.0, "joining extends the dispute beyond the first window, got {days_joined}");
+    }
+
+    #[test]
     fn disabled_disputes_refuse_even_a_qualified_challenger() {
         let mut sim = grown_honest("gate-disabled");
         let higher = find_pair(&sim, |a, b| a > b).unwrap();
@@ -2101,7 +2302,7 @@ mod tests {
             ("detection.false_positive", Box::new(|c| c.detection.false_positive = f64::NAN)),
             ("detection.accuracy", Box::new(|c| c.detection.accuracy = f64::INFINITY)),
             ("honest.vetting_sensitivity", Box::new(|c| c.honest.vetting_sensitivity = Some(2.0))),
-            ("detection.window_days", Box::new(|c| c.detection.window_days = 0)),
+            ("detection.join_rate", Box::new(|c| c.detection.join_rate = 1.5)),
             ("detection.defense_days", Box::new(|c| c.detection.defense_days = -1)),
             ("world.k", Box::new(|c| c.world.k = 0)),
             ("world.max_nodes", Box::new(|c| c.world.max_nodes = Some(1))),
