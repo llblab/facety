@@ -2,9 +2,9 @@
 
 Scope: a reproducible research simulator for [the proposed protocol](docs/facety.protocol.en.md) (Rust, [`simulator/`](simulator)), not a production runtime or proof of personhood. This file alone owns open work. Meaning lives in the protocol, decisions in the [decision log](docs/decisions.en.md), findings in the [insight register](docs/insights.en.md#consolidated-findings), outcomes in [CHANGELOG](CHANGELOG.md), assumptions and owner questions in [DECISIONS_NEEDED](DECISIONS_NEEDED.md). The pre-consolidation backlog (full narrative, parked work packages) is at [`legacy-node`](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md).
 
-**Current priority (D129, D132):** show with the Rust simulator, up to a year or two of network growth, that the topology defense keeps the dirty-FACY share at most 10% and the clean share at least two thirds, at a bearable cost to honest people. Detection is always on; its design is the variable.
+**Current status: research stage closed; Grow Loop stopped (D168).** The [final evidence-core report](studies/2026-11-08-evidence-core/README.md) gives the REVISE verdict. All 38 bounded population runs completed; sampled D129 containment survives, while independent evidence, collectible defense rewards and actual finite corrective service remain critical operational dependencies. No runtime, pilot or further autonomous research is authorized.
 
-**Phase (2026-11-08): finite evidence-core closure on D162-D167.** The formed rules use overlapping monotonic deadlines, maturity XP, integrity, soft backing and debt service, anyone joining, simple-majority Council and no Treasury. `examiner_looks = 2` is an uncalibrated behavior assumption. Q20-Q24 are answered; the earlier K programme is historical evidence under earlier mechanics. The current task closes repeat-observation dependence, realized costs/recovery and dispute completion, runs one compact joint confirmation, delivers a verdict and stops. No broad benchmark or runtime/pilot implementation is authorized. The [latest study](studies/2026-11-07-maturity-and-ladder/README.md) preserves B4's crossed kill line.
+**Phase (2026-11-08): finite evidence-core closure completed on D162-D167.** Frozen mechanics `e9b0515`, identical core in invoker `0b90e6e`; source OID and exact configurations are in the report. Two independent looks remain an uncalibrated behavior assumption. Q20-Q24 are answered; the earlier K programme and axis research history below retain their original builds. B4's crossed kill line is preserved. The remaining decision is [Q25](DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure): what concrete evidence and voluntary corrective service can the application/community supply? All unchecked work below is parked pending a separate assignment; it does not restart this stage.
 
 | Baseline axis | Value | Status |
 | --- | --- | --- |
@@ -20,12 +20,14 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 | Examiner care | two independent own looks before filing a case (`--examiner-looks`) | proposed (D164 reasoning; registered on seeds 4001-4004: R1-R3 survive); the owner may overrule |
 | Honest behavior rates | 20% careless accounts (accept strangers at 0.5, no second look), the rest at 0.05 | proposed (D143) |
 | Attacker model | cone, honest-first, supported-first; operators 10-100; patience up to 120 days; optional bought honest accounts, cash-out and false accusations | proposed (D143); stronger models only on owner request |
-| Snapshot and horizon | snapshot at 1000 honest accounts; criterion at 365 days, 730 as stress | proposed (D143) |
-| Emission path check | every Self-ID needs one path from the emitter to a Council member, at most 7 nodes, supported intermediates outside disputes | fixed (D156); K1 and K5 re-checked under it |
+| Snapshot and horizon | cloned default snapshot at 1000 honest accounts; final criterion at 730 days, 365 also reported | frozen for D168 closure, not a universal horizon |
+| Emission path check | every Self-ID needs one path from the emitter to a Council member, at most 7 nodes, supported intermediates excluding the accused of disputes | fixed (D156/D157); K1 and K5 historically re-checked under it |
 | Social recovery (D135) | key loss and recovery scenario (`--key-loss`, `--recovery-vouch`, `--recovery-delay`) | scenario done; works but slow and incomplete (study) |
 | Identification reputation (D137) | not modeled | parked: no selected rule, not part of the core |
 
 ## Core closure programme (opened 2026-11-06, finite)
+
+**Historical programme:** the K table, registrations and results below belong to their named pre-D168 builds. Their earlier readiness recommendation is superseded for the next-stage decision by D168; negative results remain evidence. They are not a new task queue or current-HEAD validation.
 
 **Goal:** one rule set, one executable model, reproducible evidence, stated limits and a decision about the next stage; then the research loop stops. **Candidate core:** the mechanics baseline of the axis table with the selected rules. The variants of Q20 (verification before a case, softer D131) and every other opt-in lever are sensitivity checks only, because an exploratory variant is not a protocol rule. Criteria are the accepted ones (D129: dirty-FACY share at most 10% and clean share at least two thirds at the longest declared horizon). No honest-damage tolerance is assigned here: the honest network is compared with a paired attack-free control on the same seeds, and a line at two thirds of the control is only a reporting line borrowed from the clean-share criterion, not an owner tolerance. Every result is diagnostic (no registration tooling); the one confirmation series uses reserved seeds `grown-1001..1012` and criteria written below before it runs.
 
@@ -51,7 +53,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 ## Convergence follow-ups (opened 2026-11-07)
 
-- [ ] **Finite closure checkpoint:** execute the [registered A-C checks](studies/2026-11-08-evidence-core/README.md), freeze and run the compact fresh-seed joint panel, then write the minimal evidence table and a single implementation verdict. Stop the Grow Loop afterward; no runtime or pilot work is authorized.
+- [x] **Finite closure checkpoint (D168):** completed A-C, 18 local and 20 final Rust runs, the minimal evidence table and the REVISE verdict. The report identifies the independent-evidence/finite-defense decision and actual recovery boundaries. Grow Loop stopped; no runtime or pilot work is authorized.
 
 - [x] **Q23 answered by D166-D167; Q24 by D164.** Base stakes 7, 14 and 28 and the watcher comparison were studied before D167 (historical, not current validation). Retrospective disputes of a guarantor against its own act are unmodeled. Current closure bounds examiner dependence and actual costs; human calibration remains external evidence.
 - [ ] **Corrupt examiners that file attacks** instead of abstaining: needs an owner-declared behavior. The rest of the stress panel under the ladder is done (study of 2026-11-07): joining rates, Council attention 0.1 to 1.0, K2 weakenings, cash-out, key loss, bought accounts, sparse and dense regimes, false accusations and a false-positive burst; every earlier K-table number predates the ladder.

@@ -430,6 +430,8 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 **D121 — [OWNER rule revision under test], §18.6.** Source: the owner dropped the XP condition so the first participants are not left without invitations. One invitation right to each side of every established guarantee pair (genesis included), consumed per invitation; supersedes D120's XP condition.
 
+**D168 — [RESEARCH recommendation, finite evidence-core closure], 2026-11-08.** REVISE the operational assumptions before proceeding to implementation and a human pilot: independent information, voluntary qualified response with finite actual capacity, and admitted proof/appeal must have a concrete provider and evidence when collectible defense rewards can be zero. The [final report](../studies/2026-11-08-evidence-core/README.md) pins corrected mechanics `e9b0515` and identical-core invoker `0b90e6e`, records all 38 completed Rust population runs and the transition witnesses, preserves B4's killed result, and separates conditional D129 containment from honest availability and incentives. Supersedes D155's earlier readiness recommendation for the next-stage decision, not its historical evidence or any selected rule. Q25 records the remaining operational decision. The Grow Loop is stopped; no further research, runtime or pilot implementation is authorized by this conclusion.
+
 ### Earlier supersessions
 
 | Earlier description | Status |

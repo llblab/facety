@@ -1,10 +1,14 @@
 # Evidence-core closure
 
-Status: A-C local checks completed; exact joint configurations frozen below, before reserved-seed execution. This study closes the current research stage; it does not authorize a runtime or pilot. Evidence remains diagnostic under [AGENTS](../../AGENTS.md), even with committed criteria and reserved seeds. Rules and assumptions are owned by the [simulator contract](../../docs/simulator.en.md); tasks by [BACKLOG](../../BACKLOG.md).
+**Closed, 2026-11-08. Verdict: REVISE the operational assumptions before proceeding to implementation and a human pilot.** The selected rules stay unchanged. Conditional containment survives the tested attacks, but treating repeated looks as independent evidence and assuming available, willing correction are unsupported implementation premises. A zero-backed losing accuser pays its winning defender zero; a finite Council queue can leave a correctable innocent person unserved. Neither nominal debt nor a right to enter supplies defensive labor. The next decision is who will provide independent evidence, qualified timely response and an admitted remedy when collectible rewards do not cover the work. This requires an explicit operational commitment and real observations, not another synthetic parameter matrix.
+
+All 18 local and 20 final population runs completed within their fixed budget, with no censored endpoint. The four required arms each have four fresh reserved seeds. The minimal evidence table and reproduction records below close the current research stage. **The Grow Loop is stopped; runtime, pilot and further research work need a separate assignment.** Evidence remains diagnostic under [AGENTS](../../AGENTS.md), even with committed criteria and reserved seeds. Rules and assumptions are owned by the [simulator contract](../../docs/simulator.en.md); tasks by [BACKLOG](../../BACKLOG.md).
+
+Established within this model: audited responsibility/custody/debt transitions, monotonic window arithmetic, no false-account multiplication in the sampled population attacks, and D129 at every declared final endpoint. Refuted as general implementation premises: a reread supplies independent error reduction; nominal soft stakes guarantee a collectible defense reward; the three-day window floor bounds total duration; Council eligibility guarantees actual corrective service. Historical B4 remains killed. Unknown: human joint-error rates, effective finite response/appeal capacity, account/effort values, profitable honesty, D50's 10x target and resistance to untested adversaries. No new tolerance for honest harm or new protocol rule is inferred.
 
 ## Baseline and preservation
 
-Starting HEAD: `5a12885` (formed-baseline mechanics `d9fac60`, D162-D167). The reconciliation checkpoint is `3a5c81a`. The next validated implementation/registration commit is the frozen executable for every run in this study; its exact hash will be recorded before execution. No selected rule is changed. The corrections include D166 mature Emitter custody/collection, D167 historical liable recipients regardless of current acceptance, the Council entrant's losing-position penalty, independent D165 integrity repair during debt, exact representable stake arithmetic, full configuration identity and collection/missingness counters. Old quantitative growth, debt and containment results are historical, not validation of this executable. B4 remains killed on seed 6001; its growth observable never proved bounded debt.
+Starting HEAD: `5a12885` (formed-baseline mechanics `d9fac60`, D162-D167). The reconciliation checkpoint is `3a5c81a`; frozen executable mechanics are `e9b0515`, with the identical-core invocation amendment `0b90e6e` described below. No selected rule is changed. The corrections include D166 mature Emitter custody/collection, D167 historical liable recipients regardless of current acceptance, the Council entrant's losing-position penalty, independent D165 integrity repair during debt, exact representable stake arithmetic, full configuration identity and collection/missingness counters. Old quantitative growth, debt and containment results are historical, not validation of this executable. B4 remains killed on seed 6001; its growth observable never proved bounded debt.
 
 The conformance audit also corrects the losing transaction owner's coefficient penalty and calculates liability at settlement, so recipients of a pre-case act that matures during the hold are included. No guarantor is halved solely for being liable. The study-specific `core_panel` example uses `Sim::clone` and `begin_phase`: every arm for a seed clones exactly the same default, detection-free prefix. Its prefix identity is saved to verify pairing. Changes to observation, acquired-account behavior and proof assumptions start at the attack phase, avoiding the general CLI's parameter-dependent prefixes. This runner is only a bounded invocation of existing APIs, not new research management.
 
@@ -20,7 +24,7 @@ Material model boundaries: identity cases stand for transaction disputes; accept
 
 ## A: repeat-observation dependence (registered before local runs)
 
-Decision: whether two-look examiner behavior can be an implementation premise without an independent-evidence requirement. With single-look sensitivity p=0.8 and false-positive rate p=0.003 (odd profiles retain their declared multiplier), compare two looks with independent evidence, half reuse (`--repeat-correlation 0.5`), the same evidence (`--repeat-correlation 1`), and persistent participant error (`--persistent-errors`). The last fixes a target's observation across examiners and days. Single-look marginals match; two-look filing is `p²`, `p*(0.5+0.5*p)`, p and p respectively. Two random draws are a model of information acquisition, not measured human caution. Freeze vetoes and verdict beliefs retain their separate assumptions. Detection stays on in all attack phases.
+Decision: whether two-look examiner behavior can be an implementation premise without an independent-evidence requirement. With single-look sensitivity p=0.8 and false-positive rate p=0.003 (odd profiles retain their declared multiplier), compare two looks with independent evidence, half reuse (`--repeat-correlation 0.5`), the same evidence (`--repeat-correlation 1`), and persistent participant error (`--persistent-errors`). The last fixes a target's observation across examiners and days. Single-look marginals match; two-look observation-gate pass probability is `p²`, `p*(0.5+0.5*p)`, p and p respectively. Formal filing additionally needs inspection, eligibility and any sponsorship. Two random draws are a model of information acquisition, not measured human caution. Freeze vetoes and verdict beliefs retain their separate assumptions. Detection stays on in all attack phases.
 
 Budget: two exploratory seeds `grown-7001..7002`, 365 days after a 1000-honest snapshot, default attack-free control and the previously frozen X5 adversary under each of the four observation modes (16 runs). X5: 100 operators, supported-first, patience 120, corrupt share 0.2, odd share 0.05 with multiplier 10, outside proof success 0.7 in 14 days. One additional configuration adds `--accuse 3 --cash-out 0.5` to X5 on the same two seeds (2 runs), with the same operator budget. No exploratory seed is confirmation evidence. Population runs use `--max-subjects 200000`; bought-account counts and held FACY are reported separately because their unpriced proportional access grows with the network.
 
@@ -99,7 +103,74 @@ The exact final required comparisons are now:
 | joint | 8001-8004 | Original reread/odd-profile/proof 0.7/14-day/limited-Council combination with the same attack resources |
 | joint-control | 8001-8004 | Same joint environment without operators/acquired cooperation |
 
-The initial invocations on seeds 8001/8002 continue; their `attack` and `attack-control` arms remain **two-seed auxiliary diagnostics only**, not a four-seed confirmation. Add only `baseline-only` for those two seeds. On 8003/8004 run `final-required`, which omits the two auxiliary arms and includes the baseline attack. Thus the final count stays exactly `2*5 + 2*1 + 2*4 = 20` runs, and the whole programme stays 38. Native invocations are `core_panel baseline-only 8001|8002 DIR accuse reread` and `core_panel final-required 8003|8004 DIR accuse reread`, with the original first two `final` invocations already running. A regression asserts that the baseline attack preserves the complete default Detection and World configurations. The engine's source-tree OID above is checked identical; new invoker metadata names its own clean commit. No earlier control is rerun or selected away. All required arms still have four reserved seeds; unfinished arms remain insufficient. This closes the user's required baseline comparison without extending the study.
+The initial invocations on seeds 8001/8002 were retained; their `attack` and `attack-control` arms remain **two-seed auxiliary diagnostics only**, not a four-seed confirmation. Only `baseline-only` was added for those two seeds. On 8003/8004, `final-required` omitted the two auxiliary arms and included the baseline attack. Thus the final count is exactly `2*5 + 2*1 + 2*4 = 20` runs, and the whole programme is 38. Native invocations are `core_panel baseline-only 8001|8002 DIR accuse reread` and `core_panel final-required 8003|8004 DIR accuse reread`, alongside the original first two `final` invocations. A regression asserts that the baseline attack preserves the complete default Detection and World configurations. The engine's source-tree OID above is checked identical; new invoker metadata names its own clean commit. No earlier control was rerun or selected away. All required arms have four completed reserved seeds. This supplies the required default-baseline comparison without extending the study.
+
+## Final joint results
+
+[Compact final evidence](evidence/final) retains all 20 full configurations, counters, prefix identities and declared endpoints. Ten records were built cleanly at `e9b0515` and ten at `0b90e6e`; their core source tree is identical. Prefix identities match across every arm of each seed, including the cross-build supplements. The last process completed before 22:54:27 UTC, within the two-hour population budget; the longest individual final run took 559.5 seconds. All audits passed. No final run hit the subject or time cap. Economics/case counters below are cumulative **730-day phase** results; only population/history endpoints are extracted at 365 days.
+
+| Seed | Arm | Honest accepted at 365 / 730 days | Active accounts at 730 | Honest phase issuance | Honest held FACY at 730 | Wrong honest invalidations |
+| --- | --- | --- | ---: | ---: | ---: | ---: |
+| 8001 | default-control | 50084 / 113521 | 22493 | 12413718 | 10134743 | 2 |
+| 8001 | baseline-attack | 29594 / 128311 | 44838 | 11138170 | 8850718 | 796 |
+| 8001 | joint-control | 10425 / 9946 | 0 | 819978 | 390291 | 1008 |
+| 8001 | joint | 1482 / 1513 | 1001 | 134098 | 101972 | 1003 |
+| 8002 | default-control | 49629 / 103936 | 28268 | 11523589 | 9411296 | 3 |
+| 8002 | baseline-attack | 28293 / 100175 | 14321 | 8449768 | 6787768 | 900 |
+| 8002 | joint-control | 10240 / 9807 | 8013 | 815954 | 417878 | 904 |
+| 8002 | joint | 2429 / 11441 | 8779 | 891144 | 680347 | 2554 |
+| 8003 | default-control | 53334 / 127987 | 24387 | 13788048 | 11232268 | 3 |
+| 8003 | baseline-attack | 26077 / 86687 | 29342 | 7608368 | 6096594 | 900 |
+| 8003 | joint-control | 10015 / 9578 | 0 | 784464 | 360751 | 974 |
+| 8003 | joint | 2165 / 4640 | 2675 | 421157 | 322857 | 2283 |
+| 8004 | default-control | 55415 / 100534 | 29202 | 11153373 | 8943882 | 5 |
+| 8004 | baseline-attack | 24331 / 72711 | 17093 | 6875454 | 5532204 | 853 |
+| 8004 | joint-control | 11867 / 11374 | 0 | 955025 | 468447 | 1074 |
+| 8004 | joint | 1883 / 2178 | 1048 | 224662 | 166741 | 1954 |
+
+Accepted headcount includes inactive participants; `active` is the world's daily refreshed, all-cohort recent-Self-ID count, not honest headcount or a human engagement measurement. Three joint controls retain roughly ten thousand accepted accounts but have zero active accounts at the final endpoint. Honest phase issuance excludes the common prefix; holdings include retained prefix money. Economic counters cover **all recorded accounts of each fixed cohort**, including invalidated/inactive accounts; the genuine cohort includes acquired cooperators. Holdings are recorded balances, not a promise of immediately usable funds for currently participating people. Both absolute balances/issuance and participation are needed beside shares. Every attack phase has detection on, partner/public help available and imperfect verdicts/proof.
+
+At 730 days, baseline-attack honest/control headcount ratios are 1.130, 0.964, 0.677 and 0.723, while honest issuance ratios are 0.897, 0.733, 0.552 and 0.616. Seed 8001 grows more accepted accounts than its control but issues less honest FACY. Thus no uniform headcount-collapse claim is supported under default evidence; the increased wrong-verdict load and reduced issuance are present on all four sampled seeds. Joint/default-control headcount ratios are 0.013, 0.110, 0.036 and 0.022, issuance ratios 0.011, 0.077, 0.031 and 0.020. Joint/joint-control headcount ratios are 0.152, 1.167, 0.484 and 0.191: seed 8002 exceeds its degraded control. The joint environment itself is harmful without operators; its attack effect must not be confused with that common failure. There is no assigned acceptable-harm threshold, fitted human probability or universal ranking across seeds.
+
+**D129:** all 16 required final endpoints pass, as do the auxiliary endpoints and the saved 365-day endpoints. The worst final dirty share is `41 / 102013 = 0.040191%`; the lowest clean-account fraction is `1513 / (1513 + 97) = 93.9752%`, both joint seed 8001. These are conditional sampled containment results. No false attacker account is accepted at any final endpoint, and accepted operator accounts never exceed the 100-person budget (at most 0.98 accounts per budgeted operator). This panel does not test sustained detection of a successfully admitted fake cluster or establish universal Sybil resistance. Acquired genuine cooperation below is an additional, growing and unpriced resource; it is not hidden in the operator count.
+
+| Seed | Attack arm | Operators admitted / accepted | Operator issuance / held | Actual operator outflow: net cases + debt repaid + paid valences | Operator debt left | Acquired genuine accounts / held FACY |
+| --- | --- | --- | --- | --- | ---: | --- |
+| 8001 | baseline-attack | 97 / 97 | 14957 / 8 | 857 + 13122 + 970 = 14949 | 470151 | 25476 / 1814328 |
+| 8002 | baseline-attack | 96 / 96 | 14492 / 9 | 815 + 12792 + 876 = 14483 | 450211 | 20145 / 1443983 |
+| 8003 | baseline-attack | 97 / 97 | 14688 / 7 | 891 + 12796 + 994 = 14681 | 466980 | 17332 / 1262169 |
+| 8004 | baseline-attack | 98 / 98 | 14800 / 17 | 943 + 12909 + 931 = 14783 | 463377 | 14470 / 1143038 |
+| 8001 | joint | 97 / 97 | 10866 / 41 | 1001 + 8572 + 1252 = 10825 | 70885 | 332 / 25265 |
+| 8002 | joint | 96 / 94 | 11694 / 47 | 1039 + 9378 + 1230 = 11647 | 210720 | 2374 / 161155 |
+| 8003 | joint | 97 / 97 | 11947 / 49 | 1135 + 9346 + 1417 = 11898 | 176714 | 941 / 77010 |
+| 8004 | joint | 98 / 95 | 11114 / 11 | 1144 + 8620 + 1338 + 1 chain-cut burn = 11103 | 138144 | 431 / 41026 |
+
+The last joint row includes one unspent Emitter right destroyed by identity-chain invalidation, outside the three usual outflow counters; issuance minus holdings is 11103. This follows from the ledger and the `void_chain` burn route, not liquid recovery (disabled, with its burn counter zero). Aggregate artifacts do not identify that right's act/time or maturity status. All attack arms issue zero attacker invitations. The acquired cohort is still genuine in evaluator identity and its money is not transferred to operators by this script. A broader ownership/control definition would require a different dirty numerator; the acquired balance is therefore shown explicitly. Neither this cooperation nor account/effort value has a supplied market price. Net case transfers exclude returned principal and internal operator transfers; debt is reported only as paid when future emission actually repays it.
+
+| Seed | Arm | Honest net case expense | Honest debt repaid / left | Honest held / debtor account-days | Open cases at 730 |
+| --- | --- | ---: | --- | --- | ---: |
+| 8001 | default-control | 779 | 0 / 0 | 2176 / 0 | 4 |
+| 8001 | baseline-attack | 40455 | 1006 / 5494 | 970317 / 227302 | 953 |
+| 8001 | joint-control | 184114 | 1380 / 3056 | 164089 / 130753 | 110 |
+| 8001 | joint | 18660 | 449 / 6280 | 239221 / 425932 | 172 |
+| 8002 | default-control | 695 | 0 / 6 | 1611 / 559 | 2 |
+| 8002 | baseline-attack | 34986 | 474 / 6261 | 902566 / 239441 | 968 |
+| 8002 | joint-control | 165683 | 1224 / 2674 | 154445 / 143582 | 103 |
+| 8002 | joint | 37457 | 1206 / 17063 | 682829 / 753958 | 1052 |
+| 8003 | default-control | 757 | 0 / 2 | 1675 / 367 | 2 |
+| 8003 | baseline-attack | 37533 | 682 / 6343 | 948910 / 259188 | 1032 |
+| 8003 | joint-control | 180085 | 1333 / 3166 | 164049 / 125826 | 98 |
+| 8003 | joint | 30918 | 803 / 15363 | 560152 / 705212 | 925 |
+| 8004 | default-control | 1644 | 0 / 7 | 2877 / 69 | 2 |
+| 8004 | baseline-attack | 33251 | 861 / 6001 | 933628 / 240309 | 866 |
+| 8004 | joint-control | 195165 | 1371 / 2850 | 173931 / 129280 | 108 |
+| 8004 | joint | 23482 | 541 / 13073 | 427611 / 728262 | 106 |
+
+Held/debtor days count each affected account at most once per day within each column, so overlapping cases are not double-counted; the two columns may overlap and must not be added as disjoint time. Case expense is net within the genuine cohort, not every person's gross forfeiture or total opportunity cost. Later repayment is separate. Open cases and recovering coefficients are unfinished at the horizon, with no implied later success: joint runs have 606/1157/845/591 recovering coefficients and zero recorded full restorations. Absolute wrong verdicts are counts, not per-person risks without an exposure denominator. The controls show that a larger functioning network may collect more money in total than a smaller damaged network; this is not a reason to prefer the latter.
+
+Auxiliary weak-environment independent-observation arms are only two-seed diagnostics: attack honest accounts 13748/14017, phase issuance 1016734/1096917 and wrong invalidations 2566/2897, against environment-control 81066/87068, issuance 8842840/9878513 and wrong invalidations 94/74. They remain in the 20-run count and evidence directory, but do not replace any four-seed required comparison.
+
+**Joint decision:** the topology/eligibility stack contains the sampled multiplication strategy; it does not supply independent evidence, collectible rewards or timely defense. Default detection is a condition under which much greater honest activity survives, not a measured fact about people. Reread errors, weak/slower proof and limited per-case response give severe honest degradation while every D129 share still passes. The population model has no global Council work queue; C's finite queue witness below supplies a minimal failure example, not a population capacity estimate. The stage therefore ends at the stated REVISE verdict and the concrete operational question, without repairing selected rules or expanding the simulation.
 
 ## B: observed collection, incentive and recovery boundary
 
@@ -165,3 +236,50 @@ Evidence classes are deliberately separate. Rust tests/audits support software t
 | Appeal, reinstatement and social repair | Permit continued life after a mistaken identity verdict | B's explicit accepted appeal and restored issuing/invitation path; source refusal without reinstatement | Conditional accepted appeal; baseline has no automatic appeal | Available evidence, admitted remedy, continuing valid paths and participation | Money burned and revoked history do not automatically return; real remedy availability is unknown | Specify and implement the selected appeal/repair path before relying on honest recovery |
 
 The current executable's conformance corrections are software fixes, not evidence that the whole protocol is implemented. Material remaining boundaries are the identity-case stand-in, individual transaction liability and repeat-event identity, referendum membership snapshots and roles beyond the entering Council member, external proof/admissibility and restoration contracts. No mechanism table row establishes profitable honesty, a D50 10x advantage, usefulness, all-adversary resistance or measured human behavior.
+
+## Minimum implementation and human-pilot requirements
+
+The ledger subset needs canonical authorization and ordered events, immutable Self-ID/recipient provenance, exact K/custody accounting, a maximum-of-window-ends clock with the selected cutoff, actual collection separated from debt, honest suspended-unit/repair accounting, and independently verified live path certificates. Evaluator labels, an advisory indexer or an account's XP cannot become a personhood oracle. The identity-case abstraction must not be shipped as if it already implemented every transaction's liability, repeat-event, Council-membership and remedy contract.
+
+The operational evidence needed for a human pilot is concrete:
+
+1. Measure `P(second error | first error)` across genuinely different evidence and across rereads, targets and examiners; also examine shared veto/proof blind spots. Recording two clicks is insufficient. The community must have a practical way to obtain new information without adding an unselected mandatory second confirmer.
+2. Demonstrate actual qualified response and proof/appeal access before the applicable deadlines, including an aggregate queue with finite people/time. Common-channel notice is already assumed; another diffusion simulation does not supply review capacity. Keep permission, arrival, evidence quality and settlement distinct.
+3. State who does defensive work when the collectible reward is zero, with actual effort, available funds, collection risk and voluntary participation. Expose blocked backing and actual payout separately from nominal stake; do not finance a promise by counting unpaid debt as proceeds or inventing a Treasury.
+4. Show what happens after a genuine person loses wrongly: admitted reinstatement, paths/links, solvency, pending holds, new-unit eligibility and coefficient repair. Burned funds and revoked history do not automatically return. A continuing participant and a disposable controller must have separate supplied account values.
+5. Compare recorded harm and resources with matched controls, including absolute issuance/holdings, wrong verdicts, restrictions, collection, remaining debt and unfinished recovery. The owner has assigned no universal honest-harm tolerance. Any private-utility comparison must supply common units and avoid counting the same future repayment again as lost account value.
+
+No real-person data, runtime deployment or pilot execution is authorized here. Those observations would need a separate bounded assignment with its own consenting/licensed data and resource scope. These are conditions for the next engineering decision, not a new autonomous research programme. Further synthetic matrices cannot establish these human properties.
+
+## Reproduction and evidence identity
+
+Measured on Linux x86_64, Rust `1.98.0 (88d9e12ae 2026-08-18)`, Cargo `1.98.0 (797e8a9bc 2026-08-05)`, release profile, standard library only. Every record contains the seed/randomness policy/configuration and actual build metadata. Compact files retain declared endpoints and all counters/configurations; full daily files are generated in the same output directory. `rawResultFingerprint` is a deterministic noncryptographic result fingerprint, not an identity/authentication proof. Native writers refuse existing paths. Use fresh output directories to reproduce; do not overwrite earlier evidence.
+
+For witnesses, local selection and the two original final invocations, build commit `e9b0515194bffc74a444e21b78cd1eb215c30be5` in a detached worktree:
+
+```text
+git worktree add --detach /tmp/facety-e9-repro e9b0515194bffc74a444e21b78cd1eb215c30be5
+cd /tmp/facety-e9-repro/simulator
+cargo test --release
+cargo build --release --examples
+target/release/examples/core_witnesses
+target/release/examples/core_panel local 7001 /tmp/facety-local-repro
+target/release/examples/core_panel local 7002 /tmp/facety-local-repro
+target/release/examples/core_panel final 8001 /tmp/facety-final-repro accuse reread
+target/release/examples/core_panel final 8002 /tmp/facety-final-repro accuse reread
+```
+
+The corrected **invoker**, commit `0b90e6e`, has exactly the same `simulator/src` tree OID `a759070a0a482a9503013d965e3a1cd088a0ba82`. It adds only the required default-behavior comparison while reusing the first controls and keeping the total budget:
+
+```text
+git worktree add --detach /tmp/facety-required-repro 0b90e6e
+cd /tmp/facety-required-repro/simulator
+cargo test --release --example core_panel
+cargo build --release --example core_panel
+target/release/examples/core_panel baseline-only 8001 /tmp/facety-final-repro accuse reread
+target/release/examples/core_panel baseline-only 8002 /tmp/facety-final-repro accuse reread
+target/release/examples/core_panel final-required 8003 /tmp/facety-final-repro accuse reread
+target/release/examples/core_panel final-required 8004 /tmp/facety-final-repro accuse reread
+```
+
+Each example is single-threaded; at most four processes run concurrently. Closure gates passed: `cargo fmt --check`, `cargo clippy --release --all-targets -- -D warnings`, `cargo test --release`, and `cargo test --release --example core_panel`. The optional multi-minute path research measurement remains ignored; its exact-answer/verifier test ran. Tests/audits establish their named transition/reference checks and documentation integrity; they do not establish calibrated human behavior.
