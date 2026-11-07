@@ -177,6 +177,10 @@ Answered 2026-11-06: **D151**. All measures combine (quarantine as heightened ha
 
 Answered 2026-11-06: **D152**. The holder is at fault; the inviter is acquitted with a jointly signed co-presence artifact, which removes the loss of reputation and partners and the XP penalties; the holder loses everything received. Still open: artifact authenticity and freshness, and the collusion risk of a fabricated meeting. Runner status: `honest.doubleLife`, `honest.metInPerson` and `detection.acquitMet` are opt-in levers (D127); the acquittal there needs a co-presence artifact (`honest.artifactRate`, `honest.collusion`).
 
+### Q24 — Halving of losing participants against the stability of the Council (D159, registered result)
+
+Blocking consequence, measured on reserved seeds (study of 2026-11-07, claims H1 to H3): with the selected ladder and the baseline detection, honest growth in a one-year attack-free control falls from about 40 thousand accounts to about 12.6 thousand because losing participants lose half their XP, and the high-XP Council members, who can challenge anyone and so open the most cases, are halved out of the XP-ranked Council (Council seats changing hands: about 310 a year against about 110 without halving). Sparing Council members from halving recovers about half of the loss; one confirming look before a case opens (an unselected lever, D153, Q20) recovers all of it and cuts cases from about 2,700 to about 25 a year. Smallest question: is the loss of half the XP of a losing accuser intended to apply to an accuser whose case was opened on a noisy look, or should a formal case need independent verification (Q20 option b) before it can cost anyone XP? Not decided here; the simulator keeps the selected rule as the default and reports both.
+
 ### Q23 — Assumptions taken in the convergence of 2026-11-07 (D162, D163)
 
 Taken by the builder to implement the selected rules without inventing more than necessary; each is declared in the [simulator contract](docs/simulator.en.md#deviations-and-assumptions) and the owner may overrule any of them. Where an item blocks a claim, the exact consequence is named.

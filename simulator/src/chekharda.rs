@@ -558,4 +558,25 @@ mod tests {
         assert_eq!((s.winners.clone(), s.losers.clone(), s.burns.clone()), (vec![], vec![1], vec![(1, 10)]));
         assert!(!s.accused_lost);
     }
+
+    /// An adversary with a chain of eligible accounts that enters in the last hour before each deadline holds the accused for the sum
+    /// of the windows minus one hour per entry: the engine agrees with the closed form of the prolongation study.
+    #[test]
+    fn last_hour_entries_prolong_a_dispute_by_each_window_minus_an_hour() {
+        let mut l = Ladder::open(0, 0, 0, BASE_STAKE);
+        let mut expected = 7 * H;
+        for n in 2..=21u32 {
+            let join = l.deadline() - 1;
+            l.admit(n, Kind::Participant, n as i32, join).unwrap();
+            expected = expected.max(join + window_hours(n));
+            assert_eq!(l.deadline(), expected);
+        }
+        // 20 entries: 7 days + 6 + 5 + 4 + 3 * 17 days minus 20 hours, 72.17 days, with a last stake of 269 FACY.
+        assert_eq!(l.deadline(), (7 + 6 + 5 + 4 + 3 * 17) * H - 20);
+        assert_eq!(stake(21, BASE_STAKE), 269);
+        assert_eq!(l.positions().iter().map(|p| u64::from(p.stake)).sum::<u64>(), 1587);
+        // The Council, entering once, ends the escalation: no further entry is possible.
+        l.admit(99, Kind::Council, 0, l.deadline() - 1).unwrap();
+        assert_eq!(l.admit(100, Kind::Participant, 1000, l.deadline() - 1), Err(Refusal::CouncilEntered));
+    }
 }

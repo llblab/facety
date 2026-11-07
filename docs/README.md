@@ -36,6 +36,7 @@ Each study page states its evidence level; untested raw outputs are archived at 
 
 - [Topology takeover (D115)](../studies/2026-10-29-topology-takeover/README.md): 100 honest people with a 100-day head start versus an attacker cone, with and without the D104/D36 path gate and the D33 Council size.
 - [Grown network versus operators (D122–D154)](../studies/2026-10-30-grown-network/README.md): an honest network grown to 1000 participants, then 1 to 100 cooperating operators; baseline results, growth levers, remedies, incentive sweeps and bought honest accounts, with detection always on.
+- [Maturity XP and the dispute ladder (D162, D163)](../studies/2026-11-07-maturity-and-ladder/README.md): the converged baseline, the registered confirmation of the halving effect on reserved seeds, the prolongation bound, false accusations under stakes and the readiness assessment.
 - [Core closure programme (D155)](../studies/2026-11-06-core-closure/README.md): absolute metrics, defense assumptions, false accusations, recovery, the frozen adversary on reserved seeds, honest regimes, key loss and social recovery; the basis of the core readiness summary.
 - [D50 falsifier (D108)](../studies/2026-10-29-d50-falsifier/README.md): honest versus attacker yield per unit of effort; exploratory probe and D109-bound design.
 
