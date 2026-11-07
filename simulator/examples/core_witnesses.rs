@@ -34,13 +34,34 @@ fn prepare(own_days: u32, second_empty: bool, empty_prefix: bool, accused_days: 
     pairs.sort_unstable();
     let mut w = World::new(Config { layered: true, base_stake: Some(7), ..Config::default() }, N as usize, &pairs);
     for day in 0..32 {
+        let mut maintenance = Vec::new();
         for id in 0..N {
-            let emits = if empty_prefix { id >= 25 } else { (id != CHALLENGER || day >= 32 - own_days) && !(second_empty && id == 18) };
-            if emits && (id != ACCUSED || day >= 32 - accused_days) {
-                w.create_self_id(id).expect("prepared genesis can emit");
+            let retained_days = if (empty_prefix && id < 25) || (second_empty && id == 18) {
+                0
+            } else if id == CHALLENGER {
+                own_days
+            } else if id == ACCUSED {
+                accused_days
+            } else {
+                32
+            };
+            let retain = day >= 32 - retained_days;
+            // Guarantors must stay active to earn receipts. Two own acts maintain the 28-day activity window.
+            if retain || day == 0 || day == 20 {
+                let act = w.create_self_id(id).expect("prepared genesis can emit");
+                if !retain {
+                    maintenance.push((id, act));
+                }
             }
         }
         w.tick(w.now() + DAY);
+        // Empty-backed accounts legitimately spend those two mature rights on guarantee renewals before the case.
+        for (id, act) in maintenance {
+            let partner = (id + 1) % N;
+            let valence = w.open_valence_of(id, partner).expect("the genesis ring supplies a paid valence");
+            w.withdraw_valence(id, valence).unwrap();
+            w.open_valence(id, partner, act).unwrap();
+        }
         withdraw(&mut w);
     }
     assert!(w.xp(CHALLENGER) > w.xp(ACCUSED));
@@ -93,7 +114,7 @@ fn reward(backing: u32) {
     assert_eq!(received, backing);
     w.audit().unwrap();
     println!(
-        "{{\"witness\":\"defender-reward\",\"backing\":{backing},\"nominalReward\":{nominal},\"actualReward\":{received},\"ownStakeReleased\":{own_stake},\"durationHours\":{},\"debtCreated\":{},\"holds\":{},\"challenger\":{},\"defender\":{}}}",
+        "{{\"witness\":\"defender-reward\",\"backing\":{backing},\"preparationCostChallenger\":2,\"nominalReward\":{nominal},\"actualReward\":{received},\"ownStakeReleased\":{own_stake},\"durationHours\":{},\"debtCreated\":{},\"holds\":{},\"challenger\":{},\"defender\":{}}}",
         w.now() - start, w.stats.debt_created, holds(&[out]), account(&w, CHALLENGER), account(&w, DEFENDER)
     );
 }
@@ -151,7 +172,7 @@ fn recovery(continues: bool) {
     }
     let opt = |v: Option<u32>| v.map_or("null".into(), |n| n.to_string());
     println!(
-        "{{\"witness\":\"lost-accusation-recovery\",\"continues\":{continues},\"horizonDays\":800,\"caseLossCollected\":{},\"debtCreated\":{},\"debtRepaid\":{},\"outstandingDebt\":{},\"restrictionDays\":{held_days},\"blockedDailyEmissionCapacity\":{held_days},\"debtRestrictedDays\":{debt_days},\"ownActs\":{own_acts},\"ownActsWithoutNewUnits\":{suppressed_units},\"usableEmissionForgoneToDebt\":{},\"solventDayFromOpening\":{},\"integrityRestoredDayFromOpening\":{},\"outsiderActs\":{outsider_acts},\"holds\":{},\"account\":{}}}",
+        "{{\"witness\":\"lost-accusation-recovery\",\"continues\":{continues},\"horizonDays\":800,\"preparationCostChallenger\":2,\"caseLossCollected\":{},\"debtCreated\":{},\"debtRepaid\":{},\"outstandingDebt\":{},\"restrictionDays\":{held_days},\"blockedDailyEmissionCapacity\":{held_days},\"debtRestrictedDays\":{debt_days},\"ownActs\":{own_acts},\"ownActsWithoutNewUnits\":{suppressed_units},\"usableEmissionForgoneToDebt\":{},\"solventDayFromOpening\":{},\"integrityRestoredDayFromOpening\":{},\"outsiderActs\":{outsider_acts},\"holds\":{},\"account\":{}}}",
         w.stats.stake_burned, w.stats.debt_created, w.debt_repaid(CHALLENGER), w.debt(CHALLENGER), w.debt_repaid(CHALLENGER), opt(solvent_day), opt(restored_day), holds(&outcomes), account(&w, CHALLENGER)
     );
 }
@@ -212,7 +233,7 @@ fn accused_recovery() {
     assert!(restored_day.is_some());
     let opt = |v: Option<u32>| v.map_or("null".into(), |n| n.to_string());
     println!(
-        "{{\"witness\":\"wrongly-lost-accused-recovery\",\"horizonDays\":800,\"appealAcceptedDay\":14,\"restrictionDays\":{restriction_days},\"identityUnavailableOrHeldDays\":{unavailable_days},\"blockedDailyEmissionCapacity\":{unavailable_days},\"ownActs\":{own_acts},\"postLossCoefficient\":{},\"integrityRestoredDayFromOpening\":{},\"accusedSanctionCollected\":{},\"guarantorSanctionsBurned\":{},\"totalDebtCreated\":{},\"accusedDebtRepaid\":{},\"accusedOutstandingDebt\":{},\"solventDay\":{},\"invitationActuallyAdmissibleDay\":{},\"outsiderActs\":{outsider_acts},\"before\":{before},\"after\":{},\"holds\":{}}}",
+        "{{\"witness\":\"wrongly-lost-accused-recovery\",\"horizonDays\":800,\"preparationCostChallenger\":2,\"preparationCostAccused\":2,\"appealAcceptedDay\":14,\"restrictionDays\":{restriction_days},\"identityUnavailableOrHeldDays\":{unavailable_days},\"blockedDailyEmissionCapacity\":{unavailable_days},\"ownActs\":{own_acts},\"postLossCoefficient\":{},\"integrityRestoredDayFromOpening\":{},\"accusedSanctionCollected\":{},\"guarantorSanctionsBurned\":{},\"totalDebtCreated\":{},\"accusedDebtRepaid\":{},\"accusedOutstandingDebt\":{},\"solventDay\":{},\"invitationActuallyAdmissibleDay\":{},\"outsiderActs\":{outsider_acts},\"before\":{before},\"after\":{},\"holds\":{}}}",
         COEF_ONE / 2, opt(restored_day), w.stats.sanction_collected, w.stats.sanction_burned, w.stats.debt_created, w.debt_repaid(ACCUSED), w.debt(ACCUSED), opt(solvent_day), opt(invitation_day), account(&w, ACCUSED), holds(&[outcome.unwrap()])
     );
 }
@@ -305,10 +326,11 @@ fn chain(rapid: bool, council_day: Option<i64>, unbacked: bool) {
     let out = w.settle_case(case, None).unwrap();
     let expense: i64 = -out.net.iter().filter(|(id, _)| actual_members.contains(id)).map(|(_, amount)| amount).sum::<i64>();
     let coalition_debt: i64 = actual_members.iter().map(|&id| w.debt(id)).sum();
+    let preparation_cost = if unbacked { 2 * actual_members.len() } else { 0 };
     w.audit().unwrap();
     let attention = attention_at.map_or("null".into(), |h| h.to_string());
     println!(
-        "{{\"witness\":\"dispute-chain\",\"rapid\":{rapid},\"unbackedGuarantors\":{unbacked},\"councilScheduledDay\":{},\"councilActualHour\":{attention},\"durationHours\":{},\"positions\":{},\"nominalStakeTotal\":{stake_total},\"lastNominalStake\":{last_stake},\"collectedForfeits\":{},\"collectedStakeBurn\":{},\"sanctionCollected\":{},\"sanctionBurned\":{},\"coalitionNetExpense\":{expense},\"coalitionOutstandingDebt\":{coalition_debt},\"totalDebtCreated\":{},\"outsider\":{outsider},\"outsiderActs\":{outsider_acts},\"timeline\":[{}],\"holds\":{}}}",
+        "{{\"witness\":\"dispute-chain\",\"rapid\":{rapid},\"unbackedGuarantors\":{unbacked},\"coalitionPreparationCost\":{preparation_cost},\"councilScheduledDay\":{},\"councilActualHour\":{attention},\"durationHours\":{},\"positions\":{},\"nominalStakeTotal\":{stake_total},\"lastNominalStake\":{last_stake},\"collectedForfeits\":{},\"collectedStakeBurn\":{},\"sanctionCollected\":{},\"sanctionBurned\":{},\"coalitionNetExpense\":{expense},\"coalitionOutstandingDebt\":{coalition_debt},\"totalDebtCreated\":{},\"outsider\":{outsider},\"outsiderActs\":{outsider_acts},\"timeline\":[{}],\"holds\":{}}}",
         council_day.map_or("null".into(), |d| d.to_string()), deadline - start, positions.len(), w.stats.forfeited, w.stats.stake_burned, w.stats.sanction_collected, w.stats.sanction_burned, w.stats.debt_created, timeline.join(","), holds(&[out])
     );
 }
@@ -335,7 +357,7 @@ fn overlaps() {
     let out = [first, second, third];
     w.audit().unwrap();
     println!(
-        "{{\"witness\":\"overlap-and-repeat\",\"durationHours\":{},\"targetRestrictedUnionHours\":{},\"caseTargetHoursSum\":{},\"repeatEligible\":{repeat_eligible},\"collectedStakeBurn\":{},\"debtCreated\":{},\"outsiderActs\":{outsider_acts},\"holds\":{},\"firstChallenger\":{},\"secondChallenger\":{},\"accused\":{}}}",
+        "{{\"witness\":\"overlap-and-repeat\",\"preparationCostChallengers\":4,\"durationHours\":{},\"targetRestrictedUnionHours\":{},\"caseTargetHoursSum\":{},\"repeatEligible\":{repeat_eligible},\"collectedStakeBurn\":{},\"debtCreated\":{},\"outsiderActs\":{outsider_acts},\"holds\":{},\"firstChallenger\":{},\"secondChallenger\":{},\"accused\":{}}}",
         w.now() - start, 17 * DAY, 21 * DAY, w.stats.stake_burned, w.stats.debt_created, holds(&out), account(&w, CHALLENGER), account(&w, 18), account(&w, ACCUSED)
     );
 }
@@ -407,4 +429,26 @@ fn main() {
     chain(false, Some(14), false);
     overlaps();
     council_queue();
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn empty_backing_keeps_actual_activity_and_earned_response_ranks() {
+        let w = prepared(0, false);
+        assert!(w.is_active(CHALLENGER));
+        assert_eq!(w.liquid(CHALLENGER), 0);
+        assert_eq!(w.burned(), 2, "two real own rights paid for pre-case guarantee renewals");
+        assert!(w.xp(CHALLENGER) > w.xp(ACCUSED));
+        assert!(w.xp(DEFENDER) > w.xp(CHALLENGER));
+        let w = prepare(0, false, true, 32);
+        let mut ranks: Vec<_> = (0..25).map(|id| w.xp(id)).collect();
+        ranks.sort_unstable();
+        ranks.dedup();
+        assert!(ranks.len() >= 21, "the unbacked chain needs twenty-one distinct earned ranks");
+        assert!((0..25).all(|id| w.is_active(id) && w.liquid(id) == 0 && w.unspent_rights(id) == 0));
+        assert_eq!(w.burned(), 50);
+    }
 }

@@ -86,8 +86,8 @@ The final trust boundary is human collective judgment. Equal votes limit individ
 | Guarantee / valence | D93 creates a one-sided valence for immediate 1 own-FACY burn, even unanswered; only valid opposite valences establish ordinary mutual XP/liability. D94 own withdrawal leaves opposite open; recreate own for NEW 1 burn/current K, not a fresh opposite charge. |
 | Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
 | XP penalty | A liable loss can halve effective XP; monetary penalties can create collectible debt. |
-| Council | D33 selects a difficulty-based target `1, 11, 101, 1001, 10001, 100001` (the number written as `G` digits, 1, zeros, 1, with `G = round(sqrt(D))`), capped by active verified/eligible participants; target 1 is no formal Council. Each formal consul has one vote. |
-| Atmo / network governance | D53 support remains separate. D74 records defaults; D100 counts own OPEN valences/invitations from creation, initial K = 100 referendum-adjustable with existing records/links preserved. D87 defers ballot assets; D88/D90 offer product/square-root internal vote weights (not adopted; root scope to confirm). D89 proposes pre-Council Chekharda-off startup, not a path-gate waiver. |
+| Council | Below 100 active participants, three equal-vote seats (D133). From 100, the difficulty-based lookup gives 11, 101, 1001, 10001 or 100001 seats, subject to eligible population (§27, §46.4). Each consul has one vote; a dispute vote is a simple majority of ballots cast, without quorum or recusal (D167). |
+| Atmo / network governance | D53 support remains separate. D74 specifies the core-control defaults; D100 counts own OPEN valences/invitations from creation, initial K = 100 referendum-adjustable with existing records/links preserved. A network referendum uses each voter's XP as its weight (D149). |
 
 ---
 
@@ -247,7 +247,7 @@ Facety uses **Leapfrog / Chekharda**. A participant with more effective XP than 
 
 Small disputes can end near the people who know the evidence. Large disputes can attract people with significant public social capital. The visibility of a dispute rises with the XP and money placed at risk.
 
-At the institutional scale, qualifying XP-ranked consuls form a Council whose target grows in steps with Network Difficulty, capped by the active verified and eligible population (§27, §46.4). Each formal consul gets one vote, regardless of XP magnitude. The one-consul target means no formal Council, not a sovereign individual. A formal Council may choose to intervene in a dispute without being required to hear every local conflict; small-network apex review remains OPEN.
+At the institutional scale, qualifying XP-ranked consuls form a Council with three seats below 100 active participants and a target that grows in steps with Network Difficulty from 100 (§27, §46.4). Genesis members seat the small Council until enough accounts are active. Each consul gets one vote, regardless of XP magnitude. The Council may intervene in a dispute without being required to hear every local conflict; a Council seat confers no unilateral verdict power or immunity.
 
 Facety does not need an infinite sequence of higher courts. It accepts a final social assumption: if its most respected participants collectively abuse their position, the network can lose legitimacy. Publicly corrupt Council behavior is comparable, as a **trust failure**, to a monetary network abandoning a rule that made it credible. Loss of legitimacy is not a guaranteed method of repair.
 
@@ -402,7 +402,7 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Chekharda / Leapfrog** — A sequence of alternating dispute positions with strictly increasing participant XP and growing stakes.
 
-**Consul Council** — The qualifying XP-ranked collective body, with a difficulty-dependent target, population/eligibility caps and one equal vote per formal member. A target of one means no formal Council. **Council of 101** is the historical fixed-size design, not the current universal target.
+**Consul Council** — The qualifying XP-ranked collective body, with three equal-vote seats below 100 active participants and a difficulty-dependent target from 100, subject to the membership rules in §27.1. Each member has one vote; no member has unilateral verdict power.
 
 **Trust cone** — A directed, time-ordered part of the invitation and guarantee graph that depends on one or more upstream identity claims or entry paths.
 
@@ -557,7 +557,7 @@ The runtime or an authorized index should support efficient lookup of other clai
 
 **[SELECTED pre-registration/zero Genesis act] (D107)** Before receiving an invitation the account is ALREADY pre-registered, has completed the required fields and published its zero Genesis Self-ID. The invitation is addressed to this existing account/address, not issued into an unbound pool for a later arbitrary person. The zero act does NOT print FACY, burn FACY, create a spendable Emitter entitlement or incur invitation debt. Its conceptual use as the recipient-side channel opening is not a monetary transaction or an ordinary paid valence. D84 below concerns ordinary REWARDED Self-ID, not a circular requirement to obtain a mutual guarantor before publishing this zero act. Canonical fields/signatures/address binding and zero-act XP/chain-N/ordinary rate-slot semantics need an implementation contract; no arbitrary field list, extra subsidy, personal-data collection authority or default migration follows.
 
-**[SELECTED eligibility distinction] (D84, D133)** A new rewarded Self-ID needs at least ONE established mutual guarantor and, at every emission, one current mutual-guarantee path from the emitter itself to an admissible Council member (below 100 active participants the Council has three seats, D133). The path has at most seven nodes counting both ends (D123); its intermediates, the guarantor first, are supported (D124) and outside a dispute (D131). One path is enough because one guarantee is enough; the check is what stops a cluster that is cut off from the Council from emitting and diluting the asset (D156). D guarantors AND independent paths are instead required for invitations (§18.2). Prior admission is not a permanent support exemption; unilateral offers do not qualify. D91 selects the initial no-Council path waiver (§46.14); exact phase/count snapshots, first100 activation, bounded verification and same-time changes still need contracts. This conditions NEW acts, not retroactive erasure of identity/XP/sources; D77 and evidence/24h rules remain.
+**[SELECTED eligibility distinction] (D84, D133)** A new rewarded Self-ID needs at least ONE established mutual guarantor and, at every emission, one current mutual-guarantee path from the emitter itself to an admissible Council member (below 100 active participants the Council has three seats, D133). The path has at most seven nodes counting both ends (D123); its intermediates, the guarantor first, are supported (D124) and outside a dispute (D131). One path is enough because one guarantee is enough; the check is what stops a cluster that is cut off from the Council from emitting and diluting the asset (D156). D guarantors AND independent paths are instead required for invitations (§18.2). Prior admission is not a permanent support exemption; unilateral offers do not qualify. These checks apply from the first act at every size; exact count/member snapshots, bounded verification and same-time changes still need contracts. This conditions NEW acts, not retroactive erasure of identity/XP/sources; D77 and evidence/24h rules remain.
 
 **[DIRECTION]** Each Self-ID is a unique, individually addressable, non-transferable object with immutable evidence fields and a controlled state for its emission right. Calling it an *NFT-like Self-ID* describes uniqueness and one-time disposition. It does not imply that it must use an NFT marketplace or `pallet_nfts`.
 
@@ -1259,11 +1259,13 @@ A window starts when its position joins, not at the previous deadline, and not w
 
 **[MODEL FINDING, diagnostic]** In one retained cheap-fake run, a top-XP coalition defender ended all 89 resolved disputes at depth 2 despite a common noisy signal favoring the accusation. This demonstrates an XP-gate obstruction under that script. It does not prove that XP dominance is necessary for every wrongful verdict, that non-dominance guarantees safety, or that real fabrication costs prevent dominance; see insight F21.
 
-**[SELECTED, not modeled] (D159) Escalating stakes.** The participants of a dispute form an ordered list: the accuser is position 1, the first to stand for the accused is position 2, and so on, odd positions on one side and even positions on the other. Each position posts a stake 20% above the stake of the position before it, so with many participants the stake compounds. Stakes are reserved and released when the dispute ends. The last, unopposed position wins. Every winner takes their own stake back and takes the stake of the position directly below it (on the opposite side), so each entrant stands to claim almost 80% of its own stake as a prize (the stake below is 1 / 1.2, about 83%, of its own); every loser forfeits the stake, which goes to the position directly above it. If the accuser loses, the accuser's stake therefore goes to the first participant who stood for the accused. The base stake is **7 FACY**. When the accused loses, the base stake is charged to the emission balance of the accused recorded in the NFT, which may go negative, and the same amount to the emission balance of each of the accused's guarantors; the accuser, the first participant, takes the base amount, and the other charges leave circulation. Burning the amount at every guarantor can therefore remove more value from circulation than the disputed transaction involved, which is accepted: if the emission was dishonest, the loss lands on those who vouched for it.
+**[SELECTED] (D159) Escalating stakes.** The participants of a dispute form an ordered list: the accuser is position 1, the first to stand for the accused is position 2, and so on, odd positions on one side and even positions on the other. Each position posts a stake 20% above the previous stake, compounding from a base of **7 FACY**. Stakes are reserved until the dispute ends. Each winner recovers its own backing and receives the collectible stake of the position directly below it; each loser forfeits upward. A losing accuser's stake therefore goes to the first participant who stood for the accused. When the accused loses, the base stake is charged to the accused and to each liable guarantor; the accuser receives the collectible charge from the accused, and the guarantors' collected charges are burned. For an identity case, the liable guarantors are exactly those who received XP for the accused's acts (§24, D167), including those who later ended their guarantees. Uncollected amounts are debt, not money already received or burned. The return of a winner's own backing is not a reward.
 
-**[SELECTED, not modeled] (D161) Council entry into a dispute.** Any member of the Council may join any dispute, without the XP condition that applies to other participants (who need more XP than the last participant to take the opposite side). When a Council member joins, the whole Council votes among itself on one question: is the first Council member who joined right, or is the opposing side? No stake is required for this entry; the variant in which each Council member reserves a share of the stake is a permitted alternative and not the default. The entry and the vote follow the shared clock of D69 and the Council procedures of D66, D70 and D72.
+**[SELECTED] (D161, D167) Council entry into a dispute.** Any Council member may initiate one terminal collective entry, without the ordinary XP condition or a stake. The whole Council then votes on whether the entering member's opposing position is right. Each member has one vote; a simple majority of ballots cast decides, with no quorum or recusal. If the Council does not confirm its entering member, it counts as absent and the last non-Council participant's side wins, with stakes settled as if the Council had not entered. The entry and vote use the shared deadline (§27.3), with no separate Council window.
 
-**[SELECTED] (D166) Soft backing and joining.** Anyone in the network may join a dispute against the last participant (the accused may call friends, guarantors and public channels, and people who profit from standing on the winning side will come). A position needs no minimum funds: the part of its stake that the account holds (emission balance and Collector balance) is blocked as security until the dispute ends, and the part it does not hold is a negative emission balance if the position loses, repaid from later emission, so a penalty works for the future. The same applies to the base-stake charge to the accused and to the accused's guarantors. **[OPEN]** What happens to the stake of a losing top position, which has no winner above it (the legacy simulator burns the collectible amount as an assumption), and the stake of a loser that lies directly beneath a Council entry. The base stake of 7 FACY is the default; 14 and 28 FACY are alternatives under study. Caps and exact collective Council entry/ballot recognition under the shared clock (D69), not a late-only voting gate (D66), remain open. Earlier research references for the backing are not selected economics.
+**[SELECTED] (D166, D167) Soft backing and joining.** Anyone eligible may take the opposite side of the last participant; the accused may seek friends, guarantors and public help. Permission does not guarantee that anyone will join. A position needs no minimum funds: the part of its stake held in the account's emission and Collector balances is blocked until settlement. Any unbacked part of a losing stake becomes a negative emission balance, repaid from later emission. The same backing rule applies to the base-stake charges on the accused and liable guarantors. There is no debt ceiling. While an account's emission balance is negative, it cannot open invitations or guarantees, and its acts earn no new XP units for it or its guarantors (§24). There is no protocol Treasury; burned amounts stay burned. **[OPEN]** The disposition of a losing top stake with no recipient above it, the allocation of any Council share, asset precision and stake rounding, and exact entry/ballot execution and membership snapshots still require contracts.
+
+**[HYPOTHESIS]** The opportunity to receive a collectible losing stake may attract willing defenders. Calling friends, guarantors or public channels may bring help, but neither participation nor correct judgment is guaranteed.
 
 **[MODEL FINDING]** A ladder decided only by the last unopposed side favors the side with the most disposable high-XP identities. Fake identities have nothing to lose, and mutual guarantees inflate their XP. In the simulator, verdict accuracy fell to 0.2–0.4 without Council intervention. Accuracy reached 0.83–0.89 (1.0 without coalition harassment) when the active Council could step in early, at depth 2–4; at depth 6 it came too late. The Council's honest majority and its willingness to intervene early are the anchor of the dispute system. See the [insight register](insights.en.md).
 
@@ -1273,9 +1275,9 @@ A window starts when its position joins, not at the previous deadline, and not w
 
 A final result must be attributable to a specified procedure. The mere willingness of a wealthy or high-XP participant to join a side does not prove that side true.
 
-**[DIRECTION / HYPOTHESIS] (D64)** An old, high-XP participant knowingly supporting an incorrect position is not, by that fact alone, a successful attack on the complete protocol. The intended counter-loop is public prominence and human/automated observation, evidence reaching a more senior eligible participant, and Council intervention when individual XP escalation cannot provide correction. Higher XP/history/relationships are proposed attention channels, not verified independence, honesty, useful contribution or guaranteed reach. **[HYPOTHESIS]** A rule-following Council majority, interested in network integrity and a share of a successful dispute's proceeds, will mobilize; unanimity or participation by every member is not the premise. This is a conditional institutional/economic hypothesis, not a selected quorum, a guaranteed response, proof of accurate evidence or a change to D33's unresolved voting contracts. XP-only last-move obstruction and historical depth-triggered Council accuracy do not test the full endogenous mobilization loop.
+**[DIRECTION / HYPOTHESIS] (D64)** Public prominence and observation may bring evidence to a more senior eligible participant or to the Council when ordinary XP escalation cannot provide correction. XP, history and relationships are possible attention channels, not verified independence, honesty or guaranteed reach. **[HYPOTHESIS]** Council members concerned about network integrity may mobilize; their actual willingness and evidence quality are not guaranteed by the selected voting rule. Any proposed share of collectible proceeds still needs its own allocation contract. Public support for an incorrect position is not by itself a separately established violation.
 
-**[SELECTED] (D69) Shared Chekharda clock.** There is **one common deadline** (D158, D162: every admitted position has its own window of seven days for the first, one day less per further position, never below three, and the deadline is the latest end point), not an additional Council-specific window. Each accepted new participant takes the opposite side and adds its own window to that same deadline. The Council is the final collective entrant in this escalation; its accepted entry is one position on the same clock with the window of its ordinal, and its voting occurs within the applicable deadline. Do not stack a Council response interval or another voting extension on top, nor treat each member's ballot as a new entrant that extends the deadline. D66 still permits Council voting at any time during an ongoing dispute; there is no final-three-days gate. A shorter **three-day Council voting duration** is a candidate only, not a selected exception or a late-only voting rule. The collective Council need not wait for every member to vote to affect the outcome; D72 recognizes referendum opening as immediate collective entry; remaining ballot, applicable majority/quorum/recusal, merits execution and finality contracts stay OPEN, without reopening the shared-clock rule.
+**[SELECTED] (D69, D162) Shared Chekharda clock.** There is **one common deadline**: each admitted position has its own window of seven days for the first, one day less for each further position, never below three days, and the deadline is the latest window end. The Council is one terminal collective position on that clock, with the window of its ordinal; its referendum opens that position immediately. Ballots neither add positions nor extend the deadline. Council voting may occur at any time during the ongoing dispute (D66). Its simple-majority rule requires neither every member's participation nor a quorum or recusal (D167). Entry/ballot authentication, membership snapshots and settlement execution remain OPEN; they must preserve the cutoff and the overlapping monotonic deadline.
 
 **D64 reward direction retained.** The Council's proposed share must come from actually collectible, authorized dispute proceeds; recipient eligibility, allocation, custody, losses, conflicts and net individual incentives still need contracts. A public position or wrong verdict alone does not authorize a separate sanction (D52).
 
@@ -1300,7 +1302,7 @@ Keep eight stages separate:
 7. A distinct formal case may open only under its own XP/stake/admissibility rules.
 8. A specified adjudication may produce only that case's authorized consequences, including actual collection and unpaid debt separately.
 
-No stage is guaranteed by the previous one. Exposure is not detection; detection is not admission, a verdict or recovery. Higher XP/significance may increase exposure under a declared hypothesis, not a new guilt probability or evidence-quality multiplier. Local collusive contacts may suppress investigation; outside-community observers may help only if they can access evidence and procedural authority. The Council's intended apex route retains OPEN referral, quorum and merits contracts; a wider audience does not invent them or transfer low-XP observers' responsibility to themselves as challengers.
+No stage is guaranteed by the previous one. Exposure is not detection; detection is not admission, a verdict or recovery. Higher XP/significance may increase exposure under a declared hypothesis, not a new guilt probability or evidence-quality multiplier. Local collusive contacts may suppress investigation; outside-community observers may help only if they can access evidence and procedural authority. Council referral representation and evidence execution remain OPEN, while its voting rule is selected (§27.3). A wider audience does not invent procedural access or turn a low-XP observer into a qualified challenger.
 
 A defender can be correct, honestly mistaken, misinformed or knowingly dishonest. **Taking a public position, defending a suspicious act or being on a losing side is not an independent violation.** This mechanism adds no automatic monetary/XP penalty or blanket defender-chain liability; any already defined procedural exposure remains subject to its own duty/scope and OPEN contracts. A later case must identify its separate target, duty, supporting evidence, time and authorized remedy. Genuine coalitions are not false identities, and an act defect cannot be silently converted into false-person enforcement.
 
@@ -1314,56 +1316,56 @@ The Council is the intended collective route for correcting concentrated influen
 
 ### 27.1 Membership and equal votes
 
-The direct formula uses Network Difficulty from §18.2/§46.1. **(D33)** `round` means the nearest integer, not ceiling/always-up rounding. Since `D` is an integer digit count, `sqrt(D)` cannot be exactly a half-integer; no half-way tie choice is needed here:
+**[SELECTED] (D133)** Below 100 active participants the Council has exactly three equal-vote seats. Genesis members fill those seats until enough accounts are active. From 100, the lookup uses Network Difficulty from §18.2/§46.1. **(D33)** `round` means the nearest integer, not ceiling; since `D` is an integer digit count, `sqrt(D)` cannot be exactly a half-integer:
 
 ```text
 r = round(sqrt(D))
-r:          1    2    3     4      5       6
-C_target:   1   11  101  1001  10001  100001
+r:           2    3     4      5       6
+C_target:   11  101  1001  10001  100001
 ```
 
-The lookup is not the repunit sequence `1,11,111,...`; behavior beyond `r=6` remains OPEN. Membership cannot exceed the active verified population or the eligible candidate set. A target of one means **no formal Council**: it creates no special office, unilateral verdict power or immunity. Under the direct formula, `N_verified<100` has no formal Council; at 100 the target is 11. The interaction with delayed difficulty adoption remains OPEN (§46.10), not an implicit phase rule.
+At 100 active participants the target is 11. From that size, membership cannot exceed the active verified population or eligible candidate set. Behavior beyond `r=6`, vacancies and the execution of size changes remain OPEN (§46.10). Neither a small network nor a vacant seat grants an individual unilateral verdict power or immunity.
 
-**[SELECTED] Each formal consul has one vote**, regardless of XP magnitude (D111). XP may determine Council eligibility/ranking but never vote weight inside the Council. **[OPEN]** Whether network-wide K referendums (D87–D90) use the same rule. Eligibility requires activity over the preceding 28 days under the declared verification/eligibility contract. Topology-aware effective-XP ranking is D33 guidance, not a selected numerical multiplier or a replacement for chronological XP credits/penalties. The ranking/dispute-authority boundary, candidate filters and graph observations still need exact contracts.
+**[SELECTED] Each consul has one vote**, regardless of XP magnitude (D111). XP may determine Council eligibility/ranking but never vote weight inside the Council. A network-wide K referendum instead weights each voter's ballot by the voter's XP (D149). Eligibility requires activity over the preceding 28 days under the declared verification/eligibility contract. Topology-aware effective-XP ranking is guidance, not a selected numerical multiplier or a replacement for chronological XP credits/penalties. The ranking/dispute-authority boundary, candidate filters and graph observations still need exact contracts.
 
-Membership changes with XP/activity. **Recalculation is not turnover:** continuously active leaders may retain seats. Stability is not itself failure, and rapid replacement is not itself success; actual contestability, independence and influence removal after established misconduct matter. An active-case membership snapshot and dynamic membership are distinct references. Ties at the last seat, vacancies, additional recusal, minimum functioning quorum and case-membership updates remain OPEN; D71 excludes both parties from a consul-versus-consul case. A lone remaining member cannot acquire the powers denied to the one-consul phase.
+Membership changes with XP/activity. **Recalculation is not turnover:** continuously active leaders may retain seats. Stability is not itself failure, and rapid replacement is not itself success; actual contestability, independence and correction matter. Ties at the last seat, vacancies and active-case membership snapshots remain OPEN. Council dispute voting has no quorum or recusal (D167), including when Council members are parties to the case.
 
 ### 27.2 Voluntary intervention
 
 **[SELECTED]** The Council may decide to intervene in **any dispute**. It is not required to take every local conflict. D70 selects individual-consul initiation and a collective referendum on the opposing position's merits (§27.3), not merely an administrative vote granting permission to intervene.
 
-**[SELECTED anytime voting / rejection of a late-only rule] (D66)** The Council may vote **at any time while a dispute is ongoing**, under its applicable procedure. There is no rule requiring it to wait until the final three days, the second half of a dispute or a fixed T-minus threshold. There is no late-only voting window. Information diffusion may be modeled as an optional research mechanism; high-XP dispute prominence is an expected signal, not a mandatory artificial waiting period or a calibrated diffusion law. This timing permission does not supply turnout, referral access, quorum, merits or automatic intervention. D69 clarifies that the Council uses the same seven-day last-entry clock, without a separate added Council interval; timing permission and collective-entry recognition remain distinct.
+**[SELECTED] (D66)** The Council may vote **at any time while a dispute is ongoing**. No late-only voting gate applies. Permission to vote does not guarantee attention, turnout or a correct judgment. The Council uses the shared overlapping-window deadline (§26.5, D162), without a separate added interval; its collective entry is distinct from each member's ballot.
 
 **[RESEARCH ASSUMPTION; no separate diffusion study] (D67)** The intended community has dedicated Discord and Telegram channels discussing disputes, with many Council members present. For the current attention/capacity inquiry, take a published dispute as available to that common channel at opening and treat notice to the declared present members as having no material dissemination delay. Do not add a separate information-diffusion investigation or simulate slow graph propagation as a prerequisite. This is an explicit simplifying input, not measured deployment, universal Council presence, required surveillance, permission to access real channels or a guarantee that everyone reads every message. It grants no automatic vote, work, quorum, correct evidence or execution: under overload, distinguish available notices, funded/available review, priority, merits and disposition. High-XP prominence may inform salience, but it need not manufacture a second delivery gate once common-channel notice is assumed.
 
 This creates an upper review path for conflicts involving the largest amount of social capital, including an allegation against a subject that nobody can challenge through the ordinary `XP(challenger) > XP(owner)` gate.
 
-The Council's capacity to hear apex cases prevents individual maximum-XP immunity in the intended design. **[SELECTED]** A consul has no seniority immunity: another consul may challenge through the applicable ordinary or collective route. XP does not add votes inside the Council. D70 below selects the individual-consul referral and merits-referendum shape. D71 selects direct referendum adjudication for disputes between two consuls, with both parties excluded from that case's voting body; remaining operational contracts are explicit.
+The Council provides a collective route for apex cases. **[SELECTED]** A consul has no seniority immunity: another consul may challenge through the applicable ordinary or collective route. XP does not add votes inside the Council. Individual-consul initiation of a merits referendum follows §27.3; a dispute between two consuls follows the direct referendum route in §27.6. Both use the voting rule without quorum or recusal (D167).
 
 <a id="273-an-intervention-vote-is-not-automatically-a-truth-verdict"></a>
 
 ### 27.3 Individual initiation and collective merits referendum (D70)
 
-**[SELECTED initiator, sequence and ballot subject; operational remainder OPEN] (D70)** How a Council that is not yet participating joins an existing dispute: any formal Council member may select such a dispute and initiate the Council's referendum, proposing to take the side **opposite the last non-Council participant**, in accordance with Chekharda's alternation. One member can trigger Council participation and the proposed opposing position under D72; that is not unilateral power to determine the Council's collective merits verdict. The no-formal-Council phase in §27.1 supplies no individual substitute for this power.
+**[SELECTED] (D70)** Any Council member may initiate its referendum on an ongoing dispute in which the Council has not entered, proposing the side **opposite the last non-Council participant**. That act opens the collective position; it does not give its initiator unilateral power to decide the merits.
 
 **[SELECTED] (D167) Simple majority.** The Council's collective vote is decided by a simple majority of the ballots cast: no quorum, no recusal, no tie. If the majority backs the entering member, the Council's side stands; if it does not, the Council counts as not having taken part and the side of the last non-Council participant wins, with the stakes settled as if the Council had never entered.
 
 The referendum asks the Council to judge the disputed positions: **is taking the proposed opposite side correct, or was the last non-Council participant already on the correct side?** It is a collective merits choice, not only “may our colleague intervene?” A collective result supporting opposition backs the proposed opposite position; a collective result supporting the previous participant means the proposed opposition was not justified. That second merits result is not equivalent to no opinion, insufficient turnout or an expired/unresolved ballot. A vote is a procedural judgment under the evidence rules, not an infallible truth oracle; ordinary error, correlated error and capture remain possible. Preserve the actual claim and alternating position meaning rather than hard-code “yes” as fraud or “no” as genuine identity.
 
-**[SELECTED immediate collective entry on the shared clock] (D72, D162)** Opening this referendum by a consul explicitly acting at Council level **immediately counts as Council entry into the ongoing Chekharda**. The entry is one position on the shared ladder with the window of its ordinal (D162): if the referendum opens at time t while the dispute is still open, the new deadline is `max(previous deadline, t + window(n))`, never a separate Council-only clock and never the previous deadline plus an extra period. No prior majority approval or later ratification is required to activate that procedural entry. This is the intended last-moment safeguard: the Council can enter just before an otherwise imminent ending and obtain the common response period (at least three days) for collective voting. Exact same-timestamp opening-versus-finalization ordering still needs an execution contract (the simulator closes first: an entry at the deadline hour is refused); no automatic reopening of an already finalized case is selected.
+**[SELECTED] (D72, D162, D167)** Opening the referendum **immediately counts as Council entry**. It is one terminal position with the window of its ordinal: if entry occurs at time `t` before the cutoff, the new deadline is `max(previous deadline, t + window(n))`. No prior majority approval or later ratification is required to start that window. Entry at or after the cutoff cannot reopen the finalized dispute. Ballots never add another position or extend the deadline.
 
 D70's merits referendum then determines whether the proposed opposition is right or the previous participant was already right. Initiating that collective process and determining its merits are distinct powers. A no-clock request with entry only after approval is **not the rule**. D69's terminal collective Council role, D66 anytime voting and D67 common-channel near-immediate notice remain. Ballots and further referrals to a case already entered by the same Council do not create new Council entrants or renew the window; they cannot stack seven-day extensions. A consul's ordinary private participation is distinct from explicitly opening the Council referendum; membership alone does not turn every private act into this collective entry.
 
 **[OPEN]** Define the remaining execution contracts:
 
 1. Referral representation, formal initiator/membership snapshot and the last-position/claim snapshot bound by the referendum, including the ordering of concurrent ordinary entry versus Council opening and duplicate referrals.
-2. Pending referendum state and legal custody/stake/XP/finality consequences of either merits result, insufficient turnout, ties or expiry; no silent rollback of the D72 entry/clock or deletion “as if never entered.” Opening the referendum is already the selected collective-entry event, not an unresolved request-versus-ratification choice.
-3. Applicable quorum, vote denominator, majority/critical-case threshold, ties, abstention and insufficient-turnout/timeout effects, separately from explicit support for the previous participant. No example48–72h window,50%+1 quorum or shorter three-day exception is selected here.
+2. Pending referendum representation, auditable ballots, custody and authorized XP/settlement execution. The recorded entry and its clock remain in history even when the Council does not confirm its member and stakes settle as if it had not entered.
+3. Ballot authentication and finalization under the selected simple majority of ballots cast. No quorum, recusal, supermajority threshold or additional voting window may be inserted; a lack of confirmation leaves the last non-Council participant's side winning.
 4. Evidence presentation/access, reasoning, error and recording within the selected collective merits referendum; its existence and ballot subject are no longer OPEN alternatives to an unspecified replacement court.
-5. Other conflict/recusal and active-case membership contracts; D71 already excludes both disputing consuls from the electorate in a consul-versus-consul case. Accused-member participation outside that peer-case route still needs a contract.
+5. Active-case membership snapshots and the handling of membership changes. Disputing members are not recused; a conflict does not silently change the electorate.
 6. Authorized settlement, collectible proceeds/rewards, appeals and attribution/recording of consequences. Public defense, an incorrect vote or refusal alone is not an independently proved violation.
 
-A 51-versus-50 simple-majority example illustrates equal voting. It is not an approved threshold. **D33 (§46.9)** recommends simple majority for ordinary decisions and two-thirds for critical interventions; quorum, vote denominator, critical-case definition and operational merits/referral contracts remain OPEN; D70 selects the initiator and merits-ballot subject, and D71 selects the direct peer-case route with both parties excluded. The earlier example is historical, not an alternate current threshold.
+A majority of cast ballots confirms the proposed Council side. If it does not, the Council counts as absent and the last non-Council side wins (D167). The number of available seats or abstentions creates no separate quorum or supermajority condition.
 
 ### 27.4 The limit of internal legitimacy
 
@@ -1380,11 +1382,11 @@ There is no requirement for an infinite chain of councils above the Consul Counc
 
 ### 27.6 Disputes between consuls (D71)
 
-**[SELECTED peer-dispute route and party exclusion; execution remainder OPEN] (D71)** Consuls retain the right to dispute one another. A consul opens a dispute against another consul through the ordinary dispute-opening transaction. For this peer case the adjudication route is **not a Chekharda escalation ladder**: it proceeds directly to a referendum in which the **rest of the Council** judges which of the two disputed positions is correct. This is distinct from D70's Council entry into an already ongoing non-Council ladder, though both use collective judgment on the merits. Rank or a Council seat provides no immunity; one initiating consul cannot issue the collective verdict.
+**[SELECTED] (D71, D167)** Consuls retain the right to dispute one another. A consul opens a dispute against another through the ordinary opening transaction. This peer case proceeds directly to a Council referendum on the two positions instead of an ordinary Chekharda escalation. Rank or a Council seat supplies no immunity, and one initiating consul cannot issue a collective verdict.
 
-**Both parties are excluded from voting in this case.** The initiating and responding consuls do not sit as judges of their own dispute. The remaining eligible Council members form the case's voting body; this is a case-specific exclusion, not automatic removal from office, an XP penalty or a requirement that every remaining member cast a ballot. Additional conflicts, membership snapshots and changes, quorum, vote denominator/threshold, ties, abstention, unavailable/insufficient remaining members and timeout effects still need exact contracts. A failed vote is not a merits finding; neither returning votes to the parties nor inventing a unilateral substitute is an implicit remedy for missing adjudicators. The no-formal-Council and no-single-consul-sovereignty boundaries of §27.1 remain.
+**Each Council member has one vote, with no recusal or quorum (D167).** The parties remain eligible to vote; a simple majority of ballots cast decides. Membership snapshots and changes, ballot authentication and the peer-case representation of the collective entry and settlement remain OPEN. Those execution contracts must preserve the shared cutoff and the rule that an unconfirmed Council position counts as absent; they must not create unilateral verdict authority.
 
-The ordinary opening transaction does not itself settle all special-route admission or execution details. Bind the admissible act/claim, the application of XP/access and funded stake requirements, exact transition into the peer referendum, its clock/finality, evidence, authorized custody/reward/sanction consequences and cross-/duplicate-case handling before code or research. Do not silently apply a new universal XP bypass, assume an XP ordering that grants apex immunity, or import example48–72h/three-day voting rules or an added Council-only window. The case concerns its particular allegation; disagreement, Council membership, an incorrect vote or losing this case is not automatically false identity, an unrelated violation or removal from office. D68 core-first survivability and the existing evidence/merits/recovery boundaries remain intact.
+The ordinary opening transaction does not itself settle all peer-route execution details. Bind the admissible act/claim, application of XP/access, stake reservation and debt, transition into the referendum, evidence, authorized custody/reward/sanction consequences and cross-/duplicate-case handling. No additional Council-only window applies. Disagreement, Council membership or losing this case does not automatically establish false identity, an unrelated violation or removal from office. The existing evidence, responsibility and recovery boundaries remain intact.
 
 # Part VI: FACY Economics and Atmo Integration
 
@@ -1412,7 +1414,7 @@ The design distinguishes actual token operations from ledger claims.
 | Operation | Effect on fungible FACY supply |
 | --- | --- |
 | Valid Self-ID under minted-escrow reference | Mint 1 FACY into controlled Emitter custody. |
-| D92 invitation | Burn 2 distinct eligible own-source backing FACY from inviter; newcomer pays0/no debt. |
+| D105 invitation | Burn 1 eligible own-source backing FACY from inviter; newcomer pays 0 and incurs no debt. |
 | Free eligible Self-ID cancellation before 24 h | Burn Emitter backing; no maturity XP (D42). |
 | Collector conversion | Transfer an existing FACY unit; do **not** mint a second unit. |
 | D93 valence creation | Burn 1 own-issued FACY now, even unanswered; matching has no extra burn (§19.2). |
@@ -1490,7 +1492,7 @@ This describes the intended economic result. It does **not** select the exact as
 
 The debt should follow the `SubjectId`, not a changeable account key. A person who makes an error may continue to participate and work toward a non-negative balance. Negative debt is not, by itself, permanent exclusion.
 
-**[OPEN]** Decide the seizure order among Collector FACY, unspent Emitter emissions, other eligible balances, commitments, and future rewards; debt ceilings; appeal effects; inherited liability; write-offs; and what happens if a debtor abandons participation. Distinguish a promised nominal fine from a recoverable amount.
+**[SELECTED] (D166, D167)** Stake and sanction backing includes held Collector FACY and emission value; an uncollected loss becomes negative emission balance and is repaid from later emission. There is no debt ceiling or protocol Treasury. **[OPEN]** Exact collection priority among existing balances and commitments, appeal effects, overlapping liabilities and account-abandonment execution still require contracts. A nominal fine is not an amount actually recovered.
 
 **[DIRECTION]** Proven serious violations can create actual deflation through burns of collectible FACY. This is separate from D105's 1 FACY invitation burn, D93's 1 FACY valence charge and Atmo buyback burn.
 
@@ -1709,7 +1711,7 @@ CouncilCase {
     case_id
     associated_dispute_id
     council_members_snapshot
-    disclosed_conflicts_or_recusals
+    disclosed_conflicts
     intervention_vote
     possible_merits_proceeding
     public_outcome
@@ -2030,7 +2032,7 @@ Simulate rational truthful actors, careless actors, paid colluders, and particip
 
 ### 41.9 Council failure
 
-Simulate a leading person accused of misconduct, Council recusals, a Council majority that refuses intervention, and a captured Council that publicly supports false claims. Track the economic damage before broader participants lose trust.
+Simulate a leading person accused of misconduct, Council members abstaining, a Council majority that does not confirm intervention, and a captured Council that publicly supports false claims. Track the economic damage before broader participants lose trust.
 
 ### 41.10 Atmo demand pause
 
@@ -2075,7 +2077,7 @@ The model also needs the utility and opportunity cost of honest observers. Prote
 
 ### 41.12 Simulation status
 
-The repository's simulator implements the subset in the [coverage map](https://github.com/llblab/facety/blob/legacy-node/docs/simulator.en.md#protocol-coverage), with declared assumptions for open mechanics. D33's topology and dynamic-Council design is not implemented; the fixed-101/raw-guarantor legacy reference remains explicitly identified rather than presented as conforming to every current selected requirement. Research evidence does not by itself change these rules. A confirmed model claim passed a preregistered test on reserved seeds under its source and assumptions; an exploratory result maps a finite tested range, and a diagnostic explains a targeted rule or execution boundary. None establishes deployed personhood, real retention or general attack resistance. Full study records are supporting evidence, not additional participant obligations.
+A simulation result supports only its stated conditional claim under its specified rules and assumptions. It does not change protocol obligations, prove real personhood or establish human retention or general attack resistance. Implementation coverage and deviations must be stated separately from protocol meaning; supporting evidence cannot silently supply an unfinished rule.
 
 ## 42. Decisions still open before production
 
@@ -2096,7 +2098,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 
 7. Exact same-subject reuse semantics on an already registered artifact (§14.4); ordinary age-based XP timing at 24 hours is selected by D42 in §17.5.
 8. Minted escrow versus deferred mint, including exact supply accounting and custody.
-9. Chronological reversal, relation eligibility and same-time credit/penalty semantics; D42 selects 24-hour maturity credit, not spending-triggered or immediate credit.
+9. Authorized reversal, disputed eligibility and replay execution. Ordinary credit is at 24-hour maturity to the creation-time roster (D163); effective XP is live units times the current coefficient rounded down, and later units use that coefficient (D165).
 10. Guarantor authority snapshot versus current graph authority at the time of cancellation.
 11. Precedence of an authorized guarantor cancellation and an open Self-ID dispute.
 12. Freeze and appeal effects on age-based eligibility and finality.
@@ -2115,20 +2117,20 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 
 ### D. Disputes, XP, and the Council
 
-22. Exact XP rounding, event ordering, new-credit treatment after halving, and penalty finality.
-23. Which participants in a losing side or guarantee chain receive XP penalties.
+22. Penalty finality and appeal/replay execution. XP is rounded down after multiplying live responsibility units by the integrity coefficient; a loss halves that coefficient, and each valid matured own Self-ID restores 1/1000 up to one (D165). Maturity credits precede other events at the same hour (§17.5, D163).
+23. Remaining act-specific penalty qualification and overlapping-event deduplication, respecting the selected losing-author and invitation roles (§24.1). Losing participants are not spared because they are Council members (D164); identity-case liable guarantors are the actual XP recipients (D167).
 24. What makes a challenge admissible, including deadlines for different transaction types.
-25. Stake asset, initial amount, escalation schedule and winning-stake distribution.
+25. Stake asset precision/rounding, reservation and settlement execution. Stakes use FACY, start at 7, compound by 20% per position and pay each winner the collectible stake below it; missing backing becomes debt on loss (D159, D166). The disposition of a losing top stake and any Council allocation remain OPEN (§26.5).
 26. Execution bounds and deadline interactions; every position has its own window of 7 days for the first, one day less per further position, floor 3 days, and the deadline is the latest end point of all windows (§26.5, D158, D162).
 27. Finality/appeal effects when reversal of already matured XP affects prior eligibility or decisions; an act in its initial free-veto window earns no ordinary maturity credit (D42).
-28. Council referral, membership snapshot, recusal, quorum and intervention threshold.
-29. Merits decision procedure after Council intervention, and how it overrides or continues the ordinary Chekharda sequence.
+28. Council referral representation, active-case membership snapshots and ballot authentication. A member may initiate the terminal collective entry; voting uses one equal vote per member and a simple majority of ballots cast, with no quorum or recusal (D167).
+29. Evidence access, reasoned merits and settlement execution. Council entry is terminal; if its entering member is not confirmed, the Council counts as absent and the last non-Council side wins (D167).
 30. Evidence thresholds for intentional fraud versus negligent guarantees.
 
 ### E. Money, operations, and safety
 
-31. Financial penalty function, relation to proof-chain length, per-person caps and recoverable assets.
-32. Debt collection versus token burn, repayment order, and identity abandonment.
+31. Remaining act-specific financial penalty scope, proof-chain depth and overlapping-event identity. Identity-case charges use the base stake and the liable XP-recipient roster (§24, §26.5); no debt ceiling applies (D167).
+32. Collection priority, appeal and abandonment execution. Uncollected debt is not an actual burn; later matured emission repays debt, invitations and guarantees are blocked while it is negative, and acts earn no new XP units meanwhile. There is no protocol Treasury or debt ceiling (D167).
 33. Treasury D activation, pause and restart policy, credible health measures and market limits.
 34. Bounded on-chain storage, indexing, execution weights, and migrations.
 35. Privacy, access to identity media, safety of public artifact publication, and dispute evidence retention.
@@ -2147,7 +2149,7 @@ The following sequence is **[REFERENCE]**. It aims to prove the smallest complet
 | 5. Guarantees and invitations | Matching authorizations, verified difficulty, separate qualifying guarantee/path gates and earned FACY burn. | Purchased FACY cannot create invitations; path witnesses exclude shared intermediaries; verification/anchor/genesis contracts precede enforcement. |
 | 6. XP and prevention | Age-based personal/guarantor credits; initial-window free cancellation. | Unused valid act credits once at 24 hours; spending/withdrawal cannot duplicate it; pre-maturity cancellation prevents it (D42). |
 | 7. Dispute engine | Ordinary challenge, Chekharda, monetary stakes, deadlines. | Valid XP escalation, freezes, deterministic outcomes and penalties. |
-| 8. Council | Difficulty-sized eligible consuls, phase/case snapshots and intervention ballots. | No formal one-consul powers; one vote per formal member; apex review, quorum and membership changes have explicit contracts. |
+| 8. Council | Three seats below 100, then difficulty-sized eligible consuls, case snapshots and intervention ballots. | One vote per member; simple majority of ballots cast without quorum or recusal; unconfirmed Council entry leaves the last non-Council side winning; membership changes have explicit contracts. |
 | 9. Financial sanctions | Real burns, recoverable debt, auditable XP halving. | No double collection or fictitious burns. |
 | 10. Atmo demand interface | Treasury D purchase and burn under bounded policy. | Treasury limits, actual output burn, pause behavior and atomic local execution. |
 | 11. Adversarial system tests | Agent-based model and fault-injection integration tests. | Honest-growth and coordinated-attack scenarios expose quantified outcomes. |
@@ -2172,7 +2174,7 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 10. **Group artifacts create independent claims about shared appearance, not automatic guarantees.** Duplicate face-index claims remain visible and disputable.
 11. **XP is earned authority.** It is not money. Participants compete for it and risk losing it in public disputes.
 12. **Chekharda escalates responsibility through strictly increasing XP and monetary stakes.** Higher XP grants a procedural role, not an automatic proof of truth.
-13. **A difficulty-sized Consul Council gives each eligible member one vote.** Its target is capped by population/eligibility; the one-consul target means no formal Council, not a single-person sovereign. Referral and merits contracts remain OPEN.
+13. **The Council has three seats below 100 active participants and a difficulty-sized target from 100.** Each member has one vote, and its dispute vote uses a simple majority of ballots cast without quorum or recusal. Referral representation, membership snapshots and evidence execution remain OPEN.
 14. **Fraud can damage an accountable proof chain.** Disconnection and proven personal guilt must remain separate findings.
 15. **Recorded debt is not a burned token.** Actual monetary supply changes require actual mint and burn operations.
 16. **Facety's credibility is a public good.** Public misconduct by its most respected participants can destroy its legitimacy.
@@ -2250,7 +2252,7 @@ The exact age, dispute admissibility, penalty expiry, independence and external-
 
 **D35 refinement:** bootstrap starts from an explicitly recorded, already mutually guaranteed genesis group; roughly 7–12 participants is an example, not a mandatory range (§46.14). Exact genesis contents and activation remain to be specified.
 
-The protocol MUST allow cold-start operation from a very small network. For `N < 10`, difficulty is `1`; a participant MAY become eligible with one qualifying guarantor, and the network MAY operate without a formal Council. Governance and dispute resolution SHOULD rely primarily on XP, public accountability, preventive cancellation, time delays and Chekharda-style escalation, subject to the no-special-authority rule in §46.5.
+The protocol MUST allow cold-start operation from a small pre-guaranteed genesis group. For `N < 10`, difficulty is `1`, and a participant may qualify with one guarantor while still satisfying the applicable Council-path gate. Below 100 active participants the Council has three equal-vote seats, seated by genesis members until enough accounts are active (D133). Ordinary path and dispute rules apply from the first act; no initial no-Council or dispute-free exemption applies.
 
 Early-bootstrap safeguards SHOULD include:
 
@@ -2268,7 +2270,7 @@ At `N = 0` or `1`, a threshold of one does not supply a non-self guarantor. The 
 
 ### 46.4 Dynamic Consul Council size
 
-The protocol MUST define the target size through the **nearest-integer** square root of difficulty, not ceiling (D33):
+Below 100 active participants the Council target is **three seats** (D133). From 100, the target follows the **nearest-integer** square root of difficulty, not ceiling (D33):
 
 ```math
 r = round(sqrt(D))
@@ -2277,7 +2279,6 @@ r = round(sqrt(D))
 The selected lookup sequence is:
 
 ```text
-r = 1 -> C_target =      1
 r = 2 -> C_target =     11
 r = 3 -> C_target =    101
 r = 4 -> C_target =   1001
@@ -2288,8 +2289,8 @@ r = 6 -> C_target = 100001
 This is the stated lookup, not the repunit sequence `1, 11, 111, ...`. No extension or saturation rule for `r > 6` is selected; such a rule MUST be specified if that domain is admitted.
 
 ```text
-N =             1..9        D = 1  sqrt(D) = 1       r = 1  C_target =   1
-N =            10..99       D = 2  sqrt(D) ~ 1.414   r = 1  C_target =   1
+N =             1..9        D = 1                         C_target =   3
+N =            10..99       D = 2                         C_target =   3
 N =           100..999      D = 3  sqrt(D) ~ 1.732   r = 2  C_target =  11
 N =          1000..9999     D = 4  sqrt(D) = 2       r = 2  C_target =  11
 N =         10000..99999    D = 5  sqrt(D) ~ 2.236   r = 2  C_target =  11
@@ -2297,23 +2298,25 @@ N =        100000..999999   D = 6  sqrt(D) ~ 2.449   r = 2  C_target =  11
 N =       1000000..9999999  D = 7  sqrt(D) ~ 2.645   r = 3  C_target = 101
 ```
 
-Actual membership MUST NOT exceed the active verified population. The protocol SHOULD use:
+From 100 active participants, actual membership MUST NOT exceed the active verified population or eligible candidate set:
 
 ```math
 C_actual = min(C_target, N_verified)
 ```
 
-This is a population cap, not permission to fill seats with ineligible candidates. Filled seats MUST also be bounded by eligible candidates; vacancies, minimum functioning quorum and recusal handling remain OPEN. At `N = 0`, actual membership is zero even though the lookup target is one.
+Below 100, the three-seat rule applies, with genesis members seating the Council until enough accounts are active. Vacancies, candidate qualification and membership snapshots remain OPEN execution contracts. Voting has no quorum or recusal (D167).
 
-The protocol MAY reduce membership to an odd number not exceeding the applicable population/target cap, or define an explicit tie-breaking rule. It MUST define a tie rule if even membership is permitted. Odd rounding, vacancies and eligibility filters MUST NOT grant a lone remaining person the powers prohibited in §46.5.
+Size and eligibility transitions MUST preserve collective authority and the selected voting rule (§27.3). A lack of confirmation of the entering member leaves the last non-Council side winning; no vacancy creates extra votes or a unilateral verdict power.
 
-### 46.5 One consul phase is not a formal Council
+<a id="465-one-consul-phase-is-not-a-formal-council"></a>
 
-When the formula returns one consul, this MUST be interpreted as the absence of a formal institutional Council mechanism. The single-consul value is a placeholder, not a special office, extra vote, unilateral merits power or exemption from review.
+### 46.5 Small-network Council
 
-In the direct formula reference, `N < 100` has no formal Council. Coordination SHOULD use XP, public accountability, guarantees, preventive cancellation, time delays and Chekharda escalation. At `N = 100`, `D = 3` and the target becomes 11: this marks the intended transition from direct social coordination to representative Council coordination.
+**[SELECTED] (D133)** Below 100 active participants the Council has exactly three equal-vote seats. Genesis members seat it until enough accounts are active. A participant's XP rank or a small population grants no unilateral merits power or exemption from review.
 
-**[HYPOTHESIS]** The small phase is a high-trust environment below approximately Dunbar-scale limits, where direct social accountability is intended to be sufficient. Population size does not establish acquaintance, honesty, adequate attention or safe dispute outcomes. This is not evidence that direct accountability is actually sufficient. In particular, the maximum-XP participant still needs an accessible correction route; no formal small-Council fallback is invented here. Bootstrap apex review and phase behavior during hysteresis remain OPEN.
+All ordinary path and dispute rules apply at these sizes. At `N = 100`, `D = 3` and the Council target becomes 11. If activity later falls below 100, the target is three; the network does not enter a dispute-free or path-free bootstrap mode.
+
+**[HYPOTHESIS]** A small community may coordinate through direct acquaintance, public accountability and guarantees. Population size does not establish honesty, adequate attention or correct judgment. The Council remains the collective correction route, including for the highest-XP participant; exact membership transitions during ongoing cases remain OPEN.
 
 ### 46.6 Effective guarantors and independent support
 
@@ -2379,7 +2382,7 @@ effective_independent_guarantors(candidate) >= D
 no unresolved critical disputes
 ```
 
-Each consul has one vote. Ordinary Council decisions SHOULD require a simple majority; critical interventions SHOULD require a two-thirds majority. Even membership MUST have an explicit tie rule. Quorum, eligible/cast-vote denominator, critical-case classification, abstention, recusal, membership snapshots, rounding and case interaction with Chekharda remain OPEN; a vote to intervene is still distinct from a merits verdict.
+Each consul has one equal vote. A Council dispute vote uses a simple majority of ballots cast, without quorum or recusal (D167). If it does not confirm the entering member, the Council counts as absent and the last non-Council side wins. Membership snapshots, ballot authentication and settlement execution remain OPEN; initiating collective entry is distinct from deciding its merits.
 
 The protocol SHOULD limit capture by any single cluster. A design example is: **no more than 20% of consuls SHOULD belong to the same invitation subtree or detected cluster**. This is a candidate cap, not a measured safe concentration. Group assignment, overlap, integer rounding, vacancies and an infeasible cap when too few independent groups qualify require explicit resolution. The protocol MUST NOT manufacture candidates or infer collusion solely from genuine community membership.
 
@@ -2389,7 +2392,7 @@ The protocol SHOULD apply hysteresis so temporary activity changes do not cause 
 
 For clarity, the instantaneous formula value in §46.1 is the **target**, `D_target`. If delayed adoption is used, publish a distinct **current/adopted** value, `D_current`. Invitation eligibility MUST use a declared snapshot/value; the target MUST NOT silently be mistaken for an already applied threshold. The shorthand `k = D` refers to the applicable adopted difficulty at enforcement. Epoch length, decrease persistence, upward/downward ordering and activation/grace rules remain OPEN.
 
-Difficulty changes MUST NOT retroactively invalidate identity status. Council phase/size must also have explicit timing: for example, `N` can fall below 100 while a delayed `D_current` remains 3. The strict small-network no-Council statement and an epoch-retained Council target then need a precedence rule. A proposed resolution is to publish phase separately and keep the `N < 100` no-special-authority safeguard while choosing how Council and invitation transitions use target/adopted difficulty. That resolution is not silently selected here.
+Difficulty changes MUST NOT retroactively invalidate identity status. Council size changes need explicit activation and active-case membership snapshots. A delayed difficulty value does not authorize a no-Council phase: below 100 active participants the three-seat target applies (D133). The execution order of count updates, target adoption and ongoing-case snapshots remains OPEN.
 
 ### 46.11 Privacy consideration
 
@@ -2413,7 +2416,7 @@ Rules in force for network topology:
 3. **Invitation.** The creator needs at least D established mutual guarantors AND D internally vertex-disjoint paths through the current mutual-guarantee graph to D different Council members (D104, D134, D36). Eligibility is checked once, at issuance (D107).
 4. **Small-network Council (D133).** Below 100 active participants the Council has three equal-vote seats, and Council paths are checked from the first act; there is no initial exception.
 5. **Genesis.** The network starts from a recorded group whose members already guarantee one another (D35).
-6. **Council.** Its size follows the D33 lookup `1, 11, 101, 1001, …`; target 1 means no formal Council. Each consul has one vote (D111).
+6. **Council.** Below 100 active participants it has three seats (D133); from 100 its target follows the D33 lookup `11, 101, 1001, …`. Each consul has one vote (D111).
 7. **No cluster quotas.** No cluster invitation quota or boundary gate applies (D35).
 
 Topological support is not proof of personhood, honesty or usefulness.
@@ -2431,7 +2434,7 @@ Topological support is not proof of personhood, honesty or usefulness.
 - Hysteresis: target versus adopted threshold versus institutional phase, with explicit activation and precedence.
 - Graph direction and anchor membership.
 
-Topology suspicion (low conductance, shared guarantors, a failed challenge, an allegation) never proves a false identity or inherited guilt by itself; sanctions need declared adjudication. The research simulator does not implement the verified-count, independent-path, genesis-activation or dynamic-Council contracts.
+Topology suspicion (low conductance, shared guarantors, a failed challenge or an allegation) never proves a false identity or inherited guilt by itself. Sanctions require an admitted claim, an authorized decision and the applicable liability rule.
 
 ---
 
@@ -2443,11 +2446,11 @@ Topology suspicion (low conductance, shared guarantors, a failed challenge, an a
 
 D36 remains: issuer/terminal endpoints may be shared, intermediaries may not. For a common Council terminal, §46.15 applies. Mixed terminals/terminal-intermediary conflicts, membership/status snapshots, path length/resource bounds, self/zero-hop and adoption remain contracts. The semantic graph is established mutual guarantees, not invitation lineage, raw reciprocal legacy edges, verified independence or cross-user capacity.
 
-**[SELECTED INVARIANT] (D133) Council of three below 100 active participants.** Whatever the number of active participants below 100 (one or ninety-nine), the Council has exactly three seats with equal weight. Three is the smallest body that can form a majority, even a supermajority. Council members deliberate; the Chekharda ladder does not apply to them. This replaces the earlier initial-bootstrap exception (no Council paths, no disputes before the first 100 active participants): every other path and dispute rule now holds at every size, and the network does not re-enter any special mode if activity later falls below 100. Genesis members seat the Council until enough accounts are active. Whether disputes are safer than disabling them in a small network was a research question; the owner fixed this Council as the default.
+**[SELECTED INVARIANT] (D133) Council of three below 100 active participants.** At every active count below 100, the Council has exactly three equal-vote seats. Genesis members seat it until enough accounts are active. Council members deliberate collectively; a dispute between consuls follows the direct referendum route (§27.6). Every ordinary path and dispute rule applies from the first act, including after activity falls back below 100. There is no dispute-free or Council-path-free bootstrap mode.
 
 **Pre-guaranteed genesis.** The network MUST support starting from an explicit genesis state containing a small initial participant set and its already established guarantees. An example is roughly 7–12 initial participants who already guarantee one another and then begin operation. This is a supplied starting trust assumption, not ordinary funded admission and not proof of Sybil resistance. It replaces the need to manufacture the first guarantee through normal invitations from an empty graph. It does not select an exact population, a complete graph, free money/XP, permanently honest founders or immunity from later correction.
 
-The genesis record MUST identify members and established mutual guarantees under D83/D84; older directed records need an explicit mapping. Declare prior financing/own sources or the supplied pre-guaranteed assumption; no free mint, retroactive burn/refund or permanent exception is inferred. Initial verification/activity status, XP/balances/emission rights, authorization evidence, financing and activation of ordinary invitation/path checks still require a declared contract. The decade formula is unchanged: 7–9 active verified founders imply `D = 1`; 10–12 imply `D = 2`, not a special bootstrap difficulty of one. No formal Council is created at these sizes under D33. The initial group need not acquire external cluster support: the cluster-boundary gate is deferred below. Applicability of other age/lineage/independence filters to the starting graph remains OPEN and MUST NOT silently make the chosen starting route unusable or create permanent exceptions.
+The genesis record MUST identify members and established mutual guarantees under D83/D84; older directed records need an explicit mapping. Declare prior financing/own sources or the supplied pre-guaranteed assumption; no free mint, retroactive burn/refund or permanent exception is inferred. Initial verification/activity status, XP/balances/emission rights, authorization evidence, financing and activation of ordinary invitation/path checks still require a declared contract. The decade formula is unchanged: 7–9 active verified founders imply `D = 1`; 10–12 imply `D = 2`, not a special bootstrap difficulty of one. The Council has three equal-vote seats at these sizes (D133). The initial group needs no external cluster support because no cluster-boundary gate applies. Other age, eligibility and independence contracts MUST NOT silently make the chosen starting route unusable or create permanent exceptions.
 
 **No cluster quotas for now.** The protocol MUST NOT currently impose a cluster invitation quota, a `B_eff(C) >= D` cluster gate or a `floor(B_eff(C) / D)` capacity budget. The deferred quota formulas are in the decision log. Quota windows, source reuse and cluster split/merge accounting are not prerequisites for this current design stage. This is not a promise of unlimited or free invitations: the individual guarantee/path conditions, own-emission cost and selected 24-hour contest/cancellation mechanics remain. No new numerical invitation cap is selected by this clarification; earlier pending-cap suggestions remain unimplemented guidance, not permission to introduce a quota covertly.
 
@@ -2539,7 +2542,7 @@ The comparison MUST distinguish assumed fake graph nodes, non-oracular effective
 
 **XP accumulation and correction race.** Mutual edges create no XP: qualifying Self-ID source receipts do. An m-member fully directed guarantee clique with one qualifying Self-ID/person/day can conditionally earn m XP/day/member before cancellation/penalties/eligibility changes. A fixed-rate catch-up estimate is not a moving-rank/Council-capture model. XP-centered targets, the case's eligible Council and individual challenge admission remain distinct; anchors grant no Council votes. Detection before an authority crossing is insufficient without usable evidence, authorized funded case/merits and effective correction. Genuine-person violation coalitions, patient growth and legitimate visible coordination need distinct controls. D42 Self-ID cancellation forgoes unissued credit rather than taking already earned XP; invitation prior-credit effects and role-specific D55 sanctions must remain separate.
 
-**Research priority and inclusion rule.** Prepare static T1 reusable bridges, T2 d_eff/genuine-access frontier, T3 guarantee/path factorial and separately specified capacity controls, and T5 weakly connected genuine emitters before dynamic T4 bridge costs, T6 XP/correction race, T7 preventive incentives and T8 no-formal-Council bootstrap. T9 adds capture/false-health-trigger attacks on D74 controls. Static certificate/software checks may prepare the question; empirical execution still requires the existing master gates, supported committed method/source/RNG/ranges/error/precision/search/kills and permission for any external/personal graph. N_verified<100 has no formal Council under the direct rule; at100 the target becomes11, subject to activation/eligibility contracts, not an automatic no-Council100-subject arm.
+**Research priority and inclusion rule.** Prepare static T1 reusable bridges, T2 d_eff/genuine-access frontier, T3 guarantee/path factorial and separately specified capacity controls, and T5 weakly connected genuine emitters before dynamic T4 bridge costs, T6 XP/correction race, T7 preventive incentives and T8 small-network Council. T9 adds capture/false-health-trigger attacks on D74 controls. Static certificate/software checks may prepare the question; empirical execution still requires supported committed method/source/RNG/ranges/error/precision/search/kills and permission for any external/personal graph. Below 100 active participants the Council has three seats; at 100 the target becomes 11, with membership snapshots and activation execution specified before use.
 
 A claimed core security mechanism must earn retention through registered incremental benefit against amplification, genuine access/harm or declared collapse/correction endpoints, including interactions and named alternatives. “No effect” means no established effect in those contexts/precision, not universal uselessness or authority to delete selected rules/rights after an underpowered sweep. A nonempty simulated cost/d_eff region is conditional candidate evidence, not proof of a working real-world core; finite empty search is not universal impossibility or automatic authorization to add cluster quotas.
 

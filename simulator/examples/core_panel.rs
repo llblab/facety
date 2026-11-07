@@ -111,15 +111,31 @@ fn main() {
             }
         }
         sim.world.audit().unwrap();
-        let body = format!(
-            "{{\"meta\":{{\"commit\":{},\"dirty\":{},\"arm\":{},\"prefixIdentity\":{},\"prefixDays\":{prefix_days},\"horizon\":{horizon},\"elapsedSeconds\":{},\"argv\":{}}},\"result\":{}}}",
-            json::string(env!("FACETY_COMMIT")), env!("FACETY_DIRTY"), json::string(&arm), json::string(&prefix_identity), started.elapsed().as_secs_f64(), json::string(&args.join(" ")), sim.to_json()
+        let meta = format!(
+            "{{\"commit\":{},\"dirty\":{},\"arm\":{},\"prefixIdentity\":{},\"prefixDays\":{prefix_days},\"prefixEmissionHonest\":{},\"horizon\":{horizon},\"elapsedSeconds\":{},\"argv\":{}}}",
+            json::string(env!("FACETY_COMMIT")), env!("FACETY_DIRTY"), json::string(&arm), json::string(&prefix_identity), snapshot.emitted[0], started.elapsed().as_secs_f64(), json::string(&args.join(" "))
         );
+        let result = sim.to_json();
+        let body = format!("{{\"meta\":{meta},\"result\":{result}}}");
         json::validate(&body).unwrap();
-        let path = format!("{}/{}-{arm}.json", args[3], prefix.seed);
-        let mut file = std::fs::OpenOptions::new().write(true).create_new(true).open(&path).expect("new result path; never overwrite evidence");
-        file.write_all(body.as_bytes()).unwrap();
-        println!("{path} completedDays={} censored={:?} seconds={:.1}", sim.day - prefix_days, sim.censored, started.elapsed().as_secs_f64());
+        let save = |suffix: &str, body: &str| {
+            let path = format!("{}/{}-{arm}{suffix}.json", args[3], prefix.seed);
+            let mut file = std::fs::OpenOptions::new().write(true).create_new(true).open(path).expect("new result path; never overwrite evidence");
+            file.write_all(body.as_bytes()).unwrap();
+        };
+        save("", &body);
+        let last = sim.history.last().unwrap();
+        println!("arm={arm} seed={seed} days={} censored={:?} honest={} attackers={} dirty={:.6} supply={} heldA={} emitH={} emitA={} casesG={} wrongH={} falseInvalid={} settled={} durationHours={} maxDepth={} netH={} netA={} lostH={} lostA={} createdDebtH={} createdDebtA={} totalDebt={} repaid={} holdH={} holdA={} seconds={:.1}",
+            sim.day - prefix_days, sim.censored, last.honest, last.attackers, last.dirty_share().unwrap_or(f64::NAN), last.supply, last.dirty,
+            sim.emitted[0] - snapshot.emitted[0], sim.emitted[1], sim.det.cases_on_genuine, sim.det.wrong_by_cohort[0], sim.det.false_invalidated,
+            sim.world.stats.settled, sim.world.stats.duration_hours, sim.world.stats.max_positions,
+            sim.ladder.net[0], sim.ladder.net[1], sim.ladder.lost[0], sim.ladder.lost[1], sim.ladder.debt[0], sim.ladder.debt[1],
+            sim.world.stats.debt_created - sim.world.stats.debt_repaid, sim.world.stats.debt_repaid, sim.ladder.hold_hours[0] / 24, sim.ladder.hold_hours[1] / 24, started.elapsed().as_secs_f64());
+        // Compact retained evidence keeps exact endpoints and every configuration/counter; daily raw output stays alongside it.
+        sim.history.retain(|r| [prefix_days - 1, prefix_days + 364, prefix_days + 729].contains(&r.day));
+        let compact = format!("{{\"meta\":{meta},\"historySampling\":\"prefix-end and declared 365/730-day endpoints only\",\"rawResultFingerprint\":\"fnv-splitmix64:{:016x}\",\"result\":{}}}", facety_sim::rng::hash_seed(&result), sim.to_json());
+        json::validate(&compact).unwrap();
+        save(".summary", &compact);
         std::io::stdout().flush().unwrap();
     }
 }

@@ -1909,6 +1909,7 @@ impl Sim {
         let mut rights = [0u64; 2];
         let mut open_holds = [0u64; 2];
         let mut bought = [0u64; 2];
+        let mut operators = [0u64; 3];
         for i in 0..self.world.len() as Id {
             let c = ci(self.cohort[i as usize]);
             debt[c] += self.world.debt(i);
@@ -1916,11 +1917,18 @@ impl Sim {
             liquid[c] += u64::from(self.world.liquid(i));
             rights[c] += self.world.unspent_rights(i) as u64;
             open_holds[c] += u64::from(self.world.held(i));
+            if self.kind[i as usize] == Kind::Operator {
+                operators[0] += 1;
+                operators[1] += u64::from(self.world.accepted(i));
+            } else if c == ci(Cohort::Attacker) && false_identity(self.kind[i as usize]) {
+                operators[2] += u64::from(self.world.accepted(i));
+            }
             if self.corrupt(i) && self.world.accepted(i) {
                 bought[0] += 1;
                 bought[1] += u64::from(self.world.liquid(i)) + self.world.unspent_rights(i) as u64;
             }
         }
+        let _ = write!(s, "\"operators\":{{\"admitted\":{},\"accepted\":{},\"falseAccountsAccepted\":{}}},", operators[0], operators[1], operators[2]);
         let _ = write!(
             s,
             "\"acquired\":{{\"acceptedAccounts\":{},\"heldFacy\":{},\"wronglyInvalidatedByCohort\":{:?}}},",

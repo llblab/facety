@@ -8,6 +8,11 @@ license = "Unlicense"
 [lib]
 path = "src/lib.rs"
 
+[[example]]
+name = "core_witnesses"
+path = "examples/core_witnesses.rs"
+test = true
+
 [profile.release]
 opt-level = 3
 lto = true
