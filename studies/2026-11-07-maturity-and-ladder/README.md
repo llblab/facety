@@ -245,6 +245,17 @@ Defaults of the repository after the owner's answers. Control 48,796 honest acco
 | B3 | The default baseline does not wrongly invalidate more people than single-look examiners | genuine invalidated per year in the default control at most those with one look on every seed | any seed above |
 | B4 | Debt stays bounded by emission: under daily false accusations (30 operators, half of emission cashed out) honest accounts stay at least 80% of the control | on every seed | any seed below 80% |
 
+Results (seeds `grown-6001..6004`, one year):
+
+| Seed | Control, defaults | Control, one look | Ratio | Genuine invalidated, defaults / one look | Frozen adversary: honest accounts, attacker share, dirty-FACY share | Accusation arm: honest accounts, share of the control |
+| --- | --- | --- | --- | --- | --- | --- |
+| 6001 | 58,572 | 12,186 | 4.81 | 1 / 54 | 57,158; 0.18%; 0.75% | 45,971; 0.78 |
+| 6002 | 61,196 | 12,786 | 4.79 | 1 / 61 | 38,891; 0.25%; 1.06% | 51,137; 0.84 |
+| 6003 | 41,745 | 11,454 | 3.64 | 1 / 70 | 38,587; 0.25%; 1.01% | 49,203; 1.18 |
+| 6004 | 52,156 | 13,460 | 3.87 | 1 / 68 | 30,921; 0.32%; 1.28% | 43,349; 0.83 |
+
+B1 **survives** (dirty-FACY share 0.75% to 1.28%, attackers at most 0.32%). B2 **survives** (3.6 to 4.8 times the single-look control). B3 **survives** (1 genuine invalidated against 54 to 70). B4 is **killed as registered**: the honest network under daily false accusations is 0.78 of the control on seed 6001 (0.84, 1.18, 0.83 on the others), below the 80% line on one seed; the seed-to-seed spread of the control itself is wide (41 to 61 thousand), so the shortfall is within what the control's own spread allows, but the registered line was crossed and is reported as such.
+
 ## Assessment of core readiness (diagnostic; model properties against real-world assumptions)
 
 Tested model properties: (1) XP at maturity is a deterministic function of valid Self-ID history, snapshots and chronological adjustments, equal to an independent chronological reference under random event orders, with the retroactive-XP exploit blocked for invitations and valences; (2) the dispute deadline never shortens and equals the maximum window end, with deterministic refusals and same-hour ordering, and the stake ledger conserves FACY under custody, forfeits, burns, sanctions and debt (audit after every run); (3) the strongest adversary of the closure programme stays inside both D129 lines on 4 of 4 reserved seeds under the full ladder (the earlier confirmation of 12 seeds used the earlier rules); (4) the stake bounds false accusations by operator emission.
