@@ -6,7 +6,8 @@
 //! - the Council, the active count / difficulty D, the layered-support levels and the distance pruning are refreshed
 //!   once per simulated day by `tick`, not on every call;
 //! - Council ties break by account index (older first), not by id string;
-//! - legacy policy options (immediate/maturity XP, guarantee fees, vouching, limits) do not exist.
+//! - legacy policy options (immediate or spend-triggered XP, guarantee fees, vouching, limits) do not exist; ordinary XP is the D42
+//!   maturity credit (`settle`).
 use crate::graph::Graph;
 use crate::hash::FastMap;
 use crate::paths::{layered_support, verify_family, PathFinder, Search, NO_LEVEL};
@@ -14,6 +15,8 @@ use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 
 pub const DAY: i64 = 24;
+/// D42: a valid, uncancelled Self-ID matures, and its ordinary XP is earned, exactly this many hours after creation.
+pub const MATURITY_HOURS: i64 = 24;
 pub type Id = u32;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -119,6 +122,8 @@ pub enum ActStatus {
 /// are kept as a sparse list of indexes (an efficiency layout, D145: it changes no outcome).
 #[derive(Clone, Debug)]
 struct Credit {
+    /// The logical credit time, `recorded_at + MATURITY_HOURS`, whenever the credit was materialized (D42).
+    at: i64,
     revoked: bool,
     recipients: Arc<[Id]>,
     revoked_receipts: Option<Box<[u32]>>,
@@ -193,7 +198,6 @@ pub struct Invitation {
     pub created_at: i64,
     pub status: InvStatus,
     pub target: Option<Id>,
-    act: u32,
     rels: Vec<u32>,
 }
 
@@ -236,6 +240,9 @@ pub struct World {
     /// Open cases in which the account is excluded from paths (D131); equals `hold` unless `exclude_targets_only` is set.
     path_hold: Vec<u32>,
     cases: Vec<Option<Vec<Id>>>,
+    /// Acts before this index are settled: matured and credited (or cancelled before maturity). Acts are recorded in time order, so the
+    /// maturity queue is the act table itself and one cursor is the whole index.
+    settled: usize,
     minted: i64,
     burned: i64,
     vault: i64,
@@ -278,6 +285,7 @@ impl World {
             hold: Vec::new(),
             path_hold: Vec::new(),
             cases: Vec::new(),
+            settled: 0,
             minted: 0,
             burned: 0,
             vault: 0,
@@ -538,6 +546,8 @@ impl World {
     pub fn tick(&mut self, hour: i64) {
         assert!(hour >= self.now, "time cannot move backwards");
         self.now = hour;
+        // Every Self-ID that matured up to `hour` earns its XP before any decision of this moment reads it (D42).
+        self.settle();
         let n = self.subjects.len();
         self.active_count = (0..n as Id).filter(|&i| self.is_active(i)).count();
         let size = self.council_target();
@@ -657,7 +667,9 @@ impl World {
 
     // ---- XP and acts -----------------------------------------------------------------------------------------------
 
-    fn revoke_credit(&mut self, act_id: u32) -> bool {
+    /// Authorized source revocation (a separately authorized correction, never a side effect of consumption): the credit of one source
+    /// Self-ID is withdrawn from every recipient, once. Other sources keep their credits; nothing is replayed. Returns whether it changed.
+    pub fn revoke_source_xp(&mut self, act_id: u32) -> bool {
         let act = &mut self.acts[act_id as usize];
         let Some(credit) = act.credit.as_mut() else { return false };
         if credit.revoked {
@@ -672,17 +684,36 @@ impl World {
         true
     }
 
-    fn credit(&mut self, act_id: u32) {
-        let (subject, recipients) = {
-            let act = &self.acts[act_id as usize];
-            let mut r = vec![act.subject];
-            for &g in act.guarantors.iter() {
-                // A guarantor whose guarantee ended before the credit earns nothing.
-                if self.graph.has_edge(g, act.subject) {
-                    r.push(g);
-                }
+    /// Materialize the ordinary XP of every Self-ID that matured at or before `now` (D42). The logical credit time is
+    /// `recorded_at + MATURITY_HOURS`; the recipients are the author and the creation-time guarantor snapshot (D54), never the current
+    /// graph. Cancelled acts (free early cancellation) earn nothing. Spending, withdrawal or burning the entitlement is not an input.
+    /// Time moves only through `tick`, which settles first, so every decision reads exactly the XP that a credit at the maturity
+    /// timestamp would have produced; settling a batch is the chronological processing of its acts.
+    fn settle(&mut self) {
+        while self.settled < self.acts.len() {
+            let act_id = self.settled as u32;
+            let (recorded_at, status) = {
+                let a = &self.acts[self.settled];
+                (a.recorded_at, a.status)
+            };
+            if recorded_at + MATURITY_HOURS > self.now {
+                break;
             }
-            (act.subject, r)
+            self.settled += 1;
+            if status != ActStatus::Cancelled {
+                self.credit(act_id);
+            }
+        }
+    }
+
+    fn credit(&mut self, act_id: u32) {
+        let (subject, at, recipients) = {
+            let act = &self.acts[act_id as usize];
+            debug_assert!(act.credit.is_none(), "an act is credited at most once");
+            let mut r = Vec::with_capacity(1 + act.guarantors.len());
+            r.push(act.subject);
+            r.extend(act.guarantors.iter().copied());
+            (act.subject, act.recorded_at + MATURITY_HOURS, r)
         };
         for &recipient in &recipients {
             self.subjects[recipient as usize].xp += 1;
@@ -695,7 +726,7 @@ impl World {
                 fresh
             }
         };
-        self.acts[act_id as usize].credit = Some(Credit { revoked: false, recipients: shared, revoked_receipts: None });
+        self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: shared, revoked_receipts: None });
     }
 
     fn dispose(&mut self, act_id: u32, status: ActStatus) {
@@ -708,7 +739,6 @@ impl World {
         } else {
             self.burned += 1;
         }
-        self.credit(act_id);
         let s = &mut self.subjects[subject as usize];
         while s.first_unspent < s.acts.len() && self.acts[s.acts[s.first_unspent] as usize].status != ActStatus::Unspent {
             s.first_unspent += 1;
@@ -775,6 +805,36 @@ impl World {
             return Err(Reject("conversion requires own mature emission"));
         }
         self.dispose(act, ActStatus::Converted);
+        Ok(())
+    }
+
+    /// D42/D79 free early cancellation of an unspent Self-ID inside its initial 24 hours, by its author or by a guarantor of its creation-time
+    /// snapshot. The emission right and its backing are destroyed and no ordinary XP is ever earned; the rolling 24-hour slot of the
+    /// recording stays used (`last_reward` is not reset). A disputed author cannot cancel (the dispute freeze takes precedence; the
+    /// precedence rule itself is OPEN, so the smallest reading is taken: refused).
+    pub fn cancel_self_id(&mut self, actor: Id, act: u32) -> Result<(), Reject> {
+        self.require_account(actor)?;
+        let a = &self.acts[act as usize];
+        let (subject, recorded_at, status) = (a.subject, a.recorded_at, a.status);
+        if status != ActStatus::Unspent {
+            return Err(Reject("only an unspent Self-ID can be cancelled"));
+        }
+        if self.now - recorded_at >= MATURITY_HOURS {
+            return Err(Reject("the free cancellation window ended at maturity"));
+        }
+        if actor != subject && !self.acts[act as usize].guarantors.contains(&actor) {
+            return Err(Reject("no authority to cancel the Self-ID"));
+        }
+        if self.hold[subject as usize] > 0 {
+            return Err(Reject("open-dispute activity restriction"));
+        }
+        self.acts[act as usize].status = ActStatus::Cancelled;
+        self.vault -= 1;
+        self.burned += 1;
+        let s = &mut self.subjects[subject as usize];
+        while s.first_unspent < s.acts.len() && self.acts[s.acts[s.first_unspent] as usize].status != ActStatus::Unspent {
+            s.first_unspent += 1;
+        }
         Ok(())
     }
 
@@ -1030,7 +1090,7 @@ impl World {
         }
         self.dispose(act, ActStatus::Consumed);
         self.inv_units[creator as usize] += 1;
-        self.invitations.push(Invitation { creator, created_at: self.now, status: InvStatus::Pending, target: None, act, rels: Vec::new() });
+        self.invitations.push(Invitation { creator, created_at: self.now, status: InvStatus::Pending, target: None, rels: Vec::new() });
         Ok((self.invitations.len() - 1) as u32)
     }
 
@@ -1056,12 +1116,13 @@ impl World {
         Ok(id)
     }
 
-    /// Veto during the freeze by a current guarantor of the creator. The burned right stays burned and its XP is revoked.
+    /// Veto during the freeze by a current guarantor of the creator. The burned right stays burned; the matured XP of the source Self-ID
+    /// stays earned (D42: consumption neither earns nor loses it; a separate revocation needs a separately authorized source correction).
     pub fn cancel_invitation(&mut self, guarantor: Id, inv: u32) -> Result<(), Reject> {
         self.require_account(guarantor)?;
-        let (creator, created_at, status, act) = {
+        let (creator, created_at, status) = {
             let i = &self.invitations[inv as usize];
-            (i.creator, i.created_at, i.status, i.act)
+            (i.creator, i.created_at, i.status)
         };
         if status != InvStatus::Pending || self.now - created_at >= self.cfg.freeze_hours {
             return Err(Reject("invitation is not cancellable"));
@@ -1071,7 +1132,6 @@ impl World {
         }
         self.invitations[inv as usize].status = InvStatus::Cancelled;
         self.inv_units[creator as usize] -= 1;
-        self.revoke_credit(act);
         Ok(())
     }
 
@@ -1224,7 +1284,7 @@ impl World {
                 self.vault -= 1;
                 self.burned += 1;
             }
-            self.revoke_credit(act_id);
+            self.revoke_source_xp(act_id);
         }
         let s = &mut self.subjects[id as usize];
         while s.first_unspent < s.acts.len() && self.acts[s.acts[s.first_unspent] as usize].status != ActStatus::Unspent {
@@ -1343,7 +1403,23 @@ impl World {
         }
         let mut xp = vec![0i32; n];
         let mut ever = vec![0i32; n];
-        for act in &self.acts {
+        for (idx, act) in self.acts.iter().enumerate() {
+            // D42: an act is credited exactly when it matured and was not cancelled before; the credit stamp is the maturity time and
+            // the recipients are the author and the creation-time snapshot, whatever happened to the entitlement later.
+            let matured = act.recorded_at + MATURITY_HOURS <= self.now;
+            if matured != (idx < self.settled) {
+                return Err(format!("act {idx} maturity does not match the settlement cursor"));
+            }
+            match (&act.credit, matured) {
+                (Some(c), true) => {
+                    if c.at != act.recorded_at + MATURITY_HOURS || c.recipients[0] != act.subject || c.recipients[1..] != *act.guarantors {
+                        return Err(format!("act {idx} credit is not the maturity credit of its snapshot"));
+                    }
+                }
+                (Some(_), false) => return Err(format!("act {idx} earned XP before maturity")),
+                (None, true) if act.status != ActStatus::Cancelled => return Err(format!("matured act {idx} has no credit")),
+                _ => {}
+            }
             if let Some(c) = &act.credit {
                 for (idx, &recipient) in c.recipients.iter().enumerate() {
                     ever[recipient as usize] += 1;
@@ -1439,10 +1515,11 @@ mod tests {
         let mut w = world(10);
         let act = w.create_self_id(0).unwrap();
         assert_eq!(w.create_self_id(0), Err(Reject("rolling 24-hour reward limit")));
-        assert_eq!(w.xp(0), 0, "XP is credited when the right is used, not at creation");
+        assert_eq!(w.xp(0), 0, "no ordinary XP at creation");
         w.tick(24);
+        assert_eq!(w.xp(0), 1, "XP is earned at maturity, before any use of the right");
         w.convert_to_collector(0, act).unwrap();
-        assert!(w.xp(0) == 1);
+        assert_eq!(w.xp(0), 1, "conversion credits nothing more");
         assert_eq!(w.liquid(0), 1);
         w.audit().unwrap();
     }
@@ -1485,7 +1562,7 @@ mod tests {
         assert!(w.act_guarantors(act).contains(&0));
         w.tick(w.now() + 24);
         w.convert_to_collector(3, act).unwrap();
-        assert_eq!(w.xp(0), xp0 + 1, "the guarantor earns when the subject's right is used");
+        assert_eq!(w.xp(0), xp0 + 1, "the guarantor earned at the maturity of the subject's act, not at its use");
         w.audit().unwrap();
     }
 
@@ -1754,6 +1831,342 @@ mod tests {
         w.audit().unwrap();
         assert!(w.valence_info(0).0 || !w.valence_info(0).0);
     }
+
+    // ---- D42 maturity credit: the retroactive-XP exploit and the maturity invariants (goal §1.3, §1.6) ---------------------
+
+    /// Independent reference of the XP rule: recompute every balance from the act table, the maturity time and the creation-time
+    /// snapshots only (no cache, no credit records). Valid while no revocation or penalty ran.
+    fn reference_xp(w: &World) -> Vec<i32> {
+        let mut xp = vec![0i32; w.len()];
+        for a in &w.acts {
+            if a.status != ActStatus::Cancelled && a.recorded_at + MATURITY_HOURS <= w.now() {
+                xp[a.subject as usize] += 1;
+                for &g in a.guarantors.iter() {
+                    xp[g as usize] += 1;
+                }
+            }
+        }
+        xp
+    }
+
+    fn xps(w: &World) -> Vec<i32> {
+        (0..w.len() as Id).map(|i| w.xp(i)).collect()
+    }
+
+    /// Twelve accounts on the ring, all active: every account recorded a Self-ID at hour 0 and the world stands at hour 24, so every
+    /// account holds one matured unspent entitlement and has earned its first credits.
+    fn live_world() -> World {
+        let mut w = world(12);
+        for i in 0..12 {
+            w.create_self_id(i).unwrap();
+        }
+        w.tick(24);
+        w
+    }
+
+    #[test]
+    fn xp_is_earned_exactly_at_the_maturity_boundary_and_not_before() {
+        let mut w = live_world();
+        let act = w.create_self_id(0).unwrap();
+        assert!(!w.act_guarantors(act).is_empty());
+        let before = xps(&w);
+        w.tick(47);
+        assert_eq!(xps(&w), before, "no ordinary XP one hour before maturity");
+        assert_ne!(w.eligible_emission(0), Some(act), "and the entitlement is not spendable yet");
+        w.tick(48);
+        let mut expected = before.clone();
+        expected[0] += 1;
+        for &g in w.act_guarantors(act).to_vec().iter() {
+            expected[g as usize] += 1;
+        }
+        assert_eq!(xps(&w), expected, "the author and each snapshot guarantor earn at the boundary, nobody else");
+        assert!(w.eligible_emissions(0, 24).contains(&act));
+        assert_eq!(w.acts[act as usize].credit.as_ref().unwrap().at, 48, "the credit stamp is the maturity time");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn matured_entitlement_left_on_the_emitter_keeps_its_xp_and_consumption_never_credits_again() {
+        let mut w = live_world();
+        let mut acts = w.eligible_emissions(0, 24);
+        for _ in 0..3 {
+            acts.push(w.create_self_id(0).unwrap());
+            w.tick(w.now() + 24);
+        }
+        w.tick(w.now() + 24 * 10);
+        let at_rest = xps(&w)[..12].to_vec();
+        assert_eq!(at_rest, reference_xp(&w)[..12].to_vec(), "unused entitlements earned their XP at maturity, without any operation");
+        let n = w.len();
+        let same = |w: &World| xps(w)[..n].to_vec();
+        w.convert_to_collector(0, acts[0]).unwrap();
+        assert_eq!(same(&w), at_rest, "withdrawal after maturity: no second credit");
+        assert_eq!(w.convert_to_collector(0, acts[0]), Err(Reject("conversion requires own mature emission")), "one entitlement is consumed once");
+        let inv = w.create_invitation(0, acts[1]).unwrap();
+        assert_eq!(same(&w), at_rest, "invitation burn after maturity: no second credit");
+        assert_eq!(w.create_invitation(0, acts[1]), Err(Reject("emission is spent or disputed")));
+        w.tick(w.now() + 24);
+        assert_eq!(same(&w), at_rest, "the freeze period earns nothing either");
+        w.accept_invitation(inv).unwrap();
+        w.open_valence(0, 6, acts[2]).unwrap();
+        assert_eq!(same(&w), at_rest, "valence burn after maturity: no second credit");
+        assert_eq!(w.supply(), w.vault() + (0..w.len() as Id).map(|i| i64::from(w.liquid(i))).sum::<i64>(), "FACY accounting is conserved");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_failed_consumption_changes_neither_the_entitlement_nor_its_xp() {
+        let mut w = World::new(Config { k: 3, ..Config::default() }, 8, &cycle(8));
+        rights(&mut w, &[0, 3]);
+        let act = w.eligible_emission(0).unwrap();
+        let (xp, vault, burned, liquid) = (xps(&w), w.vault(), w.burned(), w.liquid(0));
+        assert!(w.open_valence(0, 0, act).is_err(), "no valence toward oneself");
+        assert!(w.convert_to_collector(3, act).is_err(), "not the owner");
+        assert!(w.open_valence(0, 3, w.eligible_emission(3).unwrap()).is_err(), "not the owner's right");
+        assert!(w.create_invitation(0, w.eligible_emission(3).unwrap()).is_err());
+        let held = w.begin_case(&[0, 1]).unwrap();
+        assert!(w.open_valence(0, 4, act).is_err(), "disputed");
+        w.end_case(held);
+        assert_eq!((xps(&w), w.vault(), w.burned(), w.liquid(0)), (xp, vault, burned, liquid));
+        assert_eq!(w.eligible_emission(0), Some(act), "the entitlement is still unspent");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn free_cancellation_inside_the_window_prevents_both_the_entitlement_and_the_xp() {
+        for canceller in [0u32, 1] {
+            let mut w = live_world();
+            let before = xps(&w);
+            let rights_before = w.unspent_rights(0);
+            let act = w.create_self_id(0).unwrap();
+            assert!(w.act_guarantors(act).contains(&1));
+            assert_eq!(w.cancel_self_id(5, act), Err(Reject("no authority to cancel the Self-ID")), "a stranger cannot cancel");
+            w.tick(47);
+            w.cancel_self_id(canceller, act).unwrap();
+            assert_eq!(w.cancel_self_id(canceller, act), Err(Reject("only an unspent Self-ID can be cancelled")));
+            w.tick(48);
+            assert_eq!(xps(&w), before, "no XP for anyone, including the author");
+            assert_eq!(w.unspent_rights(0), rights_before, "no matured FACY from the cancelled act");
+            assert!(w.create_self_id(0).is_ok(), "the original slot expired at t0+24 (D79)");
+            w.audit().unwrap();
+        }
+        let mut w = live_world();
+        let act = w.create_self_id(0).unwrap();
+        w.tick(48);
+        let matured = xps(&w);
+        assert_eq!(w.cancel_self_id(0, act), Err(Reject("the free cancellation window ended at maturity")));
+        assert_eq!(xps(&w), matured);
+    }
+
+    #[test]
+    fn a_cancelled_self_id_keeps_the_original_rolling_slot() {
+        let mut w = world(12);
+        let act = w.create_self_id(0).unwrap();
+        w.tick(1);
+        w.cancel_self_id(0, act).unwrap();
+        assert_eq!(w.create_self_id(0), Err(Reject("rolling 24-hour reward limit")), "no instant retry (D79)");
+        w.tick(24);
+        assert!(w.create_self_id(0).is_ok());
+    }
+
+    #[test]
+    fn retroactive_xp_exploit_a_new_relationship_never_acquires_xp_from_earlier_self_ids() {
+        // Alice (0) repeatedly makes Self-IDs and leaves ten matured entitlements on her Emitter account.
+        let mut w = live_world();
+        let alice = 0;
+        let mut acts = Vec::new();
+        for _ in 0..10 {
+            acts.push(w.create_self_id(alice).unwrap());
+            w.tick(w.now() + 24);
+        }
+        let recipients: Vec<Vec<Id>> = acts.iter().map(|&a| w.acts[a as usize].credit.as_ref().unwrap().recipients.to_vec()).collect();
+        let earned = xps(&w);
+        assert_eq!(earned, reference_xp(&w));
+        // Alice invites Bob, burning one matured entitlement; after the freeze Bob is admitted and the special mutual link is active.
+        let inv = w.create_invitation(alice, acts[0]).unwrap();
+        assert_eq!(xps(&w), earned, "creating the invitation reissues nothing");
+        w.tick(w.now() + 24);
+        let bob = w.accept_invitation(inv).unwrap();
+        assert!(w.graph().is_mutual(alice, bob), "the special mutual relationship is active");
+        w.tick(w.now() + 24);
+        let after_link = xps(&w);
+        assert_eq!(after_link[bob as usize], 0, "Bob receives no XP from Alice's historical Self-IDs");
+        // Alice withdraws every remaining matured entitlement.
+        for &a in &acts[1..] {
+            w.convert_to_collector(alice, a).unwrap();
+        }
+        assert_eq!(xps(&w), after_link, "withdrawal does not reissue the historical credits");
+        for (i, &a) in acts.iter().enumerate() {
+            let credit = w.acts[a as usize].credit.as_ref().unwrap();
+            assert_eq!(credit.recipients.to_vec(), recipients[i], "the recipient set of act {i} is unchanged");
+            assert!(!credit.recipients.contains(&bob));
+        }
+        assert_eq!(xps(&w), reference_xp(&w));
+        // Bob becomes active by his own Self-ID; a later qualifying Self-ID of Alice then credits him as a guarantor.
+        w.create_self_id(bob).unwrap();
+        w.tick(w.now() + 24);
+        let own = w.xp(bob);
+        let later = w.create_self_id(alice).unwrap();
+        assert!(w.act_guarantors(later).contains(&bob), "Bob is in the creation-time snapshot of the later act");
+        w.tick(w.now() + 24);
+        assert_eq!(w.xp(bob), own + 1, "Bob earns guarantor XP from Alice's later act, and only from it");
+        assert_eq!(xps(&w), reference_xp(&w));
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn retroactive_xp_exploit_also_fails_through_an_owned_valence_that_becomes_mutual_later() {
+        let mut w = world(12);
+        let (alice, carol) = (0, 6);
+        assert!(!w.graph().has_edge(carol, alice) && !w.graph().has_edge(alice, carol));
+        let mut acts = Vec::new();
+        for _ in 0..5 {
+            acts.push(w.create_self_id(alice).unwrap());
+            w.tick(w.now() + 24);
+        }
+        // Carol is active through her own Self-ID, so she would be an eligible guarantor if the relation existed at creation.
+        let carol_act = w.create_self_id(carol).unwrap();
+        w.tick(w.now() + 24);
+        let before = xps(&w);
+        // Alice opens a valence toward Carol with a matured entitlement; nothing is mutual yet.
+        w.open_valence(alice, carol, acts[0]).unwrap();
+        assert_eq!(xps(&w), before);
+        w.tick(w.now() + 24);
+        // Carol opens the opposite valence: the pair becomes mutual only now.
+        w.open_valence(carol, alice, carol_act).unwrap();
+        assert!(w.graph().is_mutual(alice, carol));
+        for &a in &acts {
+            assert!(!w.acts[a as usize].credit.as_ref().unwrap().recipients.contains(&carol));
+        }
+        let at_link = xps(&w);
+        for &a in &acts[1..] {
+            w.convert_to_collector(alice, a).unwrap();
+        }
+        assert_eq!(xps(&w), at_link, "withdrawing the remaining entitlements credits nobody");
+        assert_eq!(xps(&w), reference_xp(&w));
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_guarantor_who_leaves_before_maturity_stays_in_the_creation_time_snapshot() {
+        let mut w = live_world();
+        let (g, alice) = (1, 0);
+        let vals: Vec<u32> = (0..w.valences.len() as u32).filter(|&v| w.valences[v as usize].owner == g && w.valences[v as usize].counterpart == alice && w.valences[v as usize].open).collect();
+        let act = w.create_self_id(alice).unwrap();
+        assert!(w.act_guarantors(act).contains(&g));
+        w.tick(34);
+        w.withdraw_valence(g, vals[0]).unwrap();
+        assert!(!w.graph().has_edge(g, alice), "the relation ended");
+        let before = w.xp(g);
+        w.tick(48);
+        assert_eq!(w.xp(g), before + 1, "the pending credit still reaches the initial guarantor (D54)");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn a_guarantor_joining_after_creation_gets_no_credit_for_that_act() {
+        let mut w = live_world();
+        let (alice, carol) = (0, 6);
+        let act = w.create_self_id(alice).unwrap();
+        let before = w.xp(carol);
+        w.open_valence(alice, carol, w.eligible_emissions(alice, 24)[0]).unwrap();
+        w.open_valence(carol, alice, w.eligible_emission(carol).unwrap()).unwrap();
+        assert!(w.graph().is_mutual(alice, carol));
+        w.tick(48);
+        assert_eq!(w.xp(carol), before, "joined after the act: no credit");
+        assert!(!w.act_guarantors(act).contains(&carol));
+    }
+
+    #[test]
+    fn source_revocation_and_halving_follow_the_chronology_of_credits() {
+        let mut w = live_world();
+        let a1 = w.create_self_id(0).unwrap();
+        w.tick(48);
+        let a2 = w.create_self_id(0).unwrap();
+        // Halving after the first maturity and before the second: only the first credit is halved.
+        w.tick(54);
+        let before = w.xp(0);
+        let cut = w.penalize_xp(0, 0.5);
+        assert_eq!(cut, before / 2);
+        let halved = w.xp(0);
+        w.tick(72);
+        assert_eq!(w.xp(0), halved + 1, "the credit that matured after the penalty is not penalized by it");
+        // Authorized revocation of one source removes exactly that credit from its recipients and touches nobody else.
+        let others = xps(&w);
+        let recipients = w.acts[a1 as usize].credit.as_ref().unwrap().recipients.to_vec();
+        assert!(w.revoke_source_xp(a1));
+        assert!(!w.revoke_source_xp(a1), "revoked once");
+        let mut expected = others.clone();
+        for r in recipients {
+            expected[r as usize] -= 1;
+        }
+        assert_eq!(xps(&w), expected);
+        assert!(w.acts[a2 as usize].credit.as_ref().is_some_and(|c| !c.revoked), "other sources keep their credits");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn effective_xp_matches_the_reference_after_random_event_orders_and_batch_settlement() {
+        // Deterministic pseudo-random sequences of Self-IDs, valences, conversions, cancellations and time jumps; after every step the
+        // balances equal the independent chronological recomputation, so lazy settlement of a batch equals processing one by one.
+        for seed in 1..=6u64 {
+            let mut state = seed.wrapping_mul(0x9E37_79B9_7F4A_7C15);
+            let mut next = move |m: u64| {
+                state ^= state << 13;
+                state ^= state >> 7;
+                state ^= state << 17;
+                state % m
+            };
+            let mut w = world(14);
+            for _ in 0..120 {
+                let who = next(14) as Id;
+                match next(6) {
+                    0 | 1 => {
+                        let _ = w.create_self_id(who);
+                    }
+                    2 => {
+                        if let Some(a) = w.eligible_emission(who) {
+                            let _ = w.convert_to_collector(who, a);
+                        }
+                    }
+                    3 => {
+                        let other = next(14) as Id;
+                        if let Some(a) = w.eligible_emission(who) {
+                            let _ = w.open_valence(who, other, a);
+                        }
+                    }
+                    4 => {
+                        let act = (0..w.acts.len() as u32).find(|&a| w.acts[a as usize].subject == who && w.acts[a as usize].status == ActStatus::Unspent);
+                        if let Some(a) = act {
+                            let _ = w.cancel_self_id(who, a);
+                        }
+                    }
+                    _ => {
+                        w.tick(w.now() + 1 + next(60) as i64);
+                    }
+                }
+                assert_eq!(xps(&w), reference_xp(&w), "seed {seed}, hour {}", w.now());
+            }
+            w.audit().unwrap();
+        }
+    }
+
+    #[test]
+    fn one_batch_settlement_equals_day_by_day_processing() {
+        let build = |step: i64| {
+            let mut w = world(12);
+            for i in 0..12 {
+                w.create_self_id(i).unwrap();
+            }
+            let mut t = 0;
+            while t < 100 {
+                t += step;
+                w.tick(t.min(100));
+            }
+            xps(&w)
+        };
+        assert_eq!(build(1), build(100), "ticking hour by hour or once gives identical effective XP");
+        assert_eq!(build(24), build(7));
+    }
 }
 
 #[cfg(test)]
@@ -1803,6 +2216,9 @@ mod recovery_tests {
         w.open_valence(new, 4, w.eligible_emission(new).unwrap()).unwrap();
         w.open_valence(4, new, w.eligible_emission(4).unwrap()).unwrap();
         assert_eq!(w.recovery_progress(new), Some((2, 2)));
+        // The lost account keeps earning guarantor XP from matured acts of others (account 4's act matured at hour 72); what moves is all of it.
+        let earned = w.xp(5);
+        assert!(earned > 1, "the lost account earned its own XP and guarantor XP at maturity");
         let before = w.xp(new);
         w.complete_recovery(new).unwrap();
         assert_eq!(w.xp(new), before + earned, "the earned XP returns");

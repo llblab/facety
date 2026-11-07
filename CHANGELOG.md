@@ -4,6 +4,10 @@ Milestone ledger, newest first. Owner decisions and their dates live in the [dec
 
 ## Unreleased
 
+### Maturity XP and overlapping dispute deadlines (2026-11-07)
+
+- Owner rules D162 (each Chekharda position has its own window `max(3, 8 - n)` days from its own join; the shared deadline is the latest end point and never shortens) and D163 (Self-ID XP is earned at 24-hour maturity for the author and the creation-time snapshot, independent of withdrawing, burning or leaving the entitlement; economic use never rewrites the history that generated XP) in the decision log and the protocol. Simulator: XP credited at maturity (`settle`, one cursor, equals chronological processing), free early cancellation, source revocation, an audit of the maturity invariant, the retroactive-XP regression tests for both invitation and valence, a randomized check against an independent reference; the pure Chekharda ladder engine (`chekharda.rs`) with the goal's examples A-D, an exhaustive small-state check of monotonicity, refusal and same-hour determinism, Council entry as one terminal position, and stake settlement. The previous baseline is the tag `baseline-spend-credit-d156`.
+
 ### Baseline, correctness and growth levers (2026-11-05 to 2026-11-06)
 
 - Rules adopted by the owner (decision log D131-D144, protocol §46.14-§46.15 and §19.4): paths avoid accounts in a dispute (D131); the Council has three equal-vote seats below 100 active accounts with no initial exception (D133); the D independent paths go to D different Council members (D134); key loss and social recovery as a customizable starting point (D135, proposal); cheap proof of reality by a genuine person (D136); reputation of identification as its own kind (D137); layered support, a 0.3% false-positive detector with 3% inspection and a seven-day minimum for proving reality enter the baseline (D142); the 7-node path bound is selected (D123). Working rules: record every owner statement, consolidate periodically and moderately, phases with the baseline first (D138-D141). Research note: find the levers that set the size at which growth stops and tune them by referendum (D144).
