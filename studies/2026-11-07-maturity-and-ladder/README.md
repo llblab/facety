@@ -128,7 +128,17 @@ Joining assumptions, the K2 weakenings, cash-out, key loss and bought accounts, 
 | key loss 20% a year (`--key-loss 0.2`) | 13,409 | 1,912 | 8.1 | 6 | 51 / 21 | 4.6 | 2.5 | 248 |
 | 20% bought honest accounts (`--corrupt 0.2`) | 45,586 | 2,997 | 7.8 | 7 | 59 / 806 | 3.3 | 1.7 | 52 |
 
-Reading (exploratory): the baseline numbers move little with the joining assumptions (honest accounts 12.1 to 12.8 thousand), so the headline growth loss is not an artifact of them; a slower proof of reality is the largest single cost to honest people (genuine invalidations 63 to 398, FACY lost per honest account-year 3.9 to 9.9, case duration 12 days), as in the closure programme; operators that cash out lose 936 FACY of stake on average and 125 of debt, and still never reach 0.3% of accounts. Bought accounts file no false cases, so the honest network grows to 45.6 thousand while 806 fakes are invalidated (the weak spot of the model: it treats corrupt examiners as absent, it does not model them filing attacks). Not run here: dense and sparse honest regimes and false accusations with funded hubs beyond the section above.
+Second part of the panel (same seeds and horizon; honest regimes as in the closure programme: sparse `--befriend 0.02 --invite 0.005`, dense `--befriend 0.1 --invite 0.02`; Council attention 1.0 per day), each with its paired attack-free control where it is a regime:
+
+| Variant | Honest accounts (control, 30 operators) | Attacker share max | Dirty-FACY share max | Cases settled | Mean case days | Deepest ladder | Genuine invalidated | Council seats changing hands |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| sparse honest regime | 10,183; 9,645 | 0.34% | 0.59% | 928 | 7.9 | 6 | 26 | 203 |
+| dense honest regime | 14,606; 14,840 | 0.22% | 0.02% | 4,080 | 7.9 | 6 | 104 | 400 |
+| Council attention 1.0 per day | 12,152; 12,094 | 0.26% | 0.26% | 2,500 | 8.0 | 6 | 73 | 314 |
+
+Both D129 lines hold in all three; the honest network is 0.95 to 1.02 of its paired control; Council attention up to its maximum changes neither duration nor growth, because the Council only enters contested disputes and the entry is terminal.
+
+Reading (exploratory): the baseline numbers move little with the joining assumptions (honest accounts 12.1 to 12.8 thousand), so the headline growth loss is not an artifact of them; a slower proof of reality is the largest single cost to honest people (genuine invalidations 63 to 398, FACY lost per honest account-year 3.9 to 9.9, case duration 12 days), as in the closure programme; operators that cash out lose 936 FACY of stake on average and 125 of debt, and still never reach 0.3% of accounts. Bought accounts file no false cases, so the honest network grows to 45.6 thousand while 806 fakes are invalidated (the weak spot of the model: it treats corrupt examiners as absent, it does not model them filing attacks). Corrupt examiners that file attacks instead of abstaining are not modeled (no selected rule or declared behavior exists for them).
 
 ## Authority and chronology (exploratory, attack-free control, seeds `grown-1..4`, day 364)
 
