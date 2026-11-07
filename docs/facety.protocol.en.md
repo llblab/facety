@@ -1077,18 +1077,19 @@ Effective XP is derived from these source credits together with authorized chron
 
 ## 24. XP losses and accounting
 
-**[SELECTED]** A liable losing participant in a dispute can receive an XP halving. The effective XP after a penalty is half of its value before the penalty, under a defined integer rounding rule. Independent later penalties can halve the value again.
+**[SELECTED] (D165) XP is units of responsibility times an integrity coefficient.** Each Self-ID gives one **unit of responsibility** to its author and to every guarantor of its creation-time roster, as under D42 and D54. The units are the source of XP and stay attached to the Self-ID acts: an act that is contested and cancelled, or a source that is validly revoked, removes its unit from each recipient. Every account also has an **integrity coefficient** between 0 and 1, which is 1 by default. **Effective XP is the number of live units multiplied by the coefficient and rounded down.** A liable losing participant in a dispute has the coefficient halved; the units and the guarantee links are not touched. Independent later losses halve it again. Each valid Self-ID of the account itself that matures adds 1/1000 of the whole coefficient, which is the right to recover from a mistake by playing by the rules; the coefficient never rises above 1, so XP returns to the number of live units. Units that mature while the coefficient is low are scaled by it, so a penalty is neither forgiven nor applied only to the past.
 
-For example, absent later earnings:
+For example, with 10,000 units and a coefficient of 1:
 
 ```text
-10,000 XP -> first loss -> 5,000 XP
- 5,000 XP -> next loss  -> 2,500 XP
+10,000 XP -> first loss  -> coefficient 0.5    -> 5,000 XP
+ 5,000 XP -> next loss   -> coefficient 0.25   -> 2,500 XP
+ 2,500 XP -> 500 own Self-IDs later (+0.5) -> coefficient 0.75 -> 7,500 XP, and new units count at that coefficient
 ```
 
-The penalty represents lost access and public reputation, not the transfer of XP to the winner.
+The penalty represents lost access and public reputation, not the transfer of XP to the winner. The coefficient is a penalty lever only; it never multiplies XP above the number of live units.
 
-**[OPEN, narrowed by D55/§24.1]** The act-specific Self-ID/invitation XP roles below are selected. Other losing-role qualification, integer rounding, appeals and remaining future-credit/remedy ordering still require contracts. In particular, lifetime credits divided by `2^losses` is not equivalent to applying halving events in chronological order when new credits arrive between losses.
+**[OPEN, narrowed by D55/§24.1 and D165]** The act-specific Self-ID/invitation XP roles below are selected, and D165 fixes the rounding (down) and the order of penalties and later credits. Other losing-role qualification, appeals and the interaction of a penalty with an authorized source revocation of an older credit still require contracts.
 
 **[REFERENCE]** An ordered ledger of `XP_Credit` and `XP_Halving` events can preserve this distinction. Efficient snapshots may implement the same semantics.
 

@@ -18,6 +18,10 @@ use std::sync::Arc;
 pub const DAY: i64 = 24;
 /// D42: a valid, uncancelled Self-ID matures, and its ordinary XP is earned, exactly this many hours after creation.
 pub const MATURITY_HOURS: i64 = 24;
+/// The integrity coefficient is kept in millionths: 1,000,000 is 1 (integer arithmetic keeps results reproducible).
+pub const COEF_ONE: u32 = 1_000_000;
+/// Each matured Self-ID of the account itself restores this much integrity (1/1000, D165 variant).
+pub const COEF_STEP: u32 = 1_000;
 pub type Id = u32;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -86,6 +90,10 @@ pub struct Config {
     pub halve_losers: bool,
     /// Diagnostic ablation: current Council members keep their XP when they lose (isolates Council churn as the channel of the halving effect).
     pub halving_spares_council: bool,
+    /// The integrity coefficient (D165, selected): XP is the number of live credits times an integrity coefficient in [0, 1] rounded down;
+    /// a lost dispute halves the coefficient instead of the balance, and each matured Self-ID of the account itself restores 1/1000 of it,
+    /// up to 1. `false` is the ablation that halves the balance as in the first reading of D159.
+    pub integrity: bool,
 }
 
 impl Default for Config {
@@ -110,6 +118,7 @@ impl Default for Config {
             base_stake: None,
             halve_losers: true,
             halving_spares_council: false,
+            integrity: true,
         }
     }
 }
@@ -163,7 +172,12 @@ struct Act {
 #[derive(Clone, Debug)]
 struct Subject {
     status: Status,
+    /// Effective XP: `raw` when the integrity variant is off, otherwise `floor(raw * coef)`. Always a cache of those two.
     xp: i32,
+    /// Live credits (receipts not revoked, plus restored, minus balance penalties when the variant is off).
+    raw: i32,
+    /// Integrity coefficient in millionths (`COEF_ONE` unless the variant is on and the account lost disputes).
+    coef: u32,
     liquid: u32,
     /// Part of `liquid` locked as stakes of open dispute positions (D159 custody); never spendable or collectible meanwhile.
     reserved: u32,
@@ -404,6 +418,8 @@ impl World {
         self.subjects.push(Subject {
             status: Status::Accepted,
             xp: 0,
+            raw: 0,
+            coef: COEF_ONE,
             liquid: 0,
             reserved: 0,
             debt: 0,
@@ -755,6 +771,22 @@ impl World {
 
     // ---- XP and acts -----------------------------------------------------------------------------------------------
 
+    fn refresh_xp(&mut self, id: Id) {
+        let integrity = self.cfg.integrity;
+        let s = &mut self.subjects[id as usize];
+        s.xp = if integrity && s.raw > 0 { (i64::from(s.raw) * i64::from(s.coef) / i64::from(COEF_ONE)) as i32 } else { s.raw };
+    }
+
+    fn bump(&mut self, id: Id, delta: i32) {
+        self.subjects[id as usize].raw += delta;
+        self.refresh_xp(id);
+    }
+
+    /// The integrity coefficient of an account in millionths (`COEF_ONE` when the variant is off or nothing was lost).
+    pub fn coefficient(&self, id: Id) -> u32 {
+        self.subjects[id as usize].coef
+    }
+
     /// Authorized source revocation (a separately authorized correction, never a side effect of consumption): the credit of one source
     /// Self-ID is withdrawn from every recipient, once. Other sources keep their credits; nothing is replayed. Returns whether it changed.
     pub fn revoke_source_xp(&mut self, act_id: u32) -> bool {
@@ -764,10 +796,9 @@ impl World {
             return false;
         }
         credit.revoked = true;
-        for (idx, &recipient) in credit.recipients.iter().enumerate() {
-            if !credit.receipt_revoked(idx) {
-                self.subjects[recipient as usize].xp -= 1;
-            }
+        let live: Vec<Id> = credit.recipients.iter().enumerate().filter(|&(idx, _)| !credit.receipt_revoked(idx)).map(|(_, &r)| r).collect();
+        for recipient in live {
+            self.bump(recipient, -1);
         }
         true
     }
@@ -804,7 +835,13 @@ impl World {
             (act.subject, act.recorded_at + MATURITY_HOURS, r)
         };
         for &recipient in &recipients {
-            self.subjects[recipient as usize].xp += 1;
+            self.bump(recipient, 1);
+        }
+        if self.cfg.integrity {
+            // The author's own matured Self-ID restores a little integrity, never above one.
+            let c = &mut self.subjects[subject as usize].coef;
+            *c = (*c + COEF_STEP).min(COEF_ONE);
+            self.refresh_xp(subject);
         }
         let shared = match &self.subjects[subject as usize].last_recipients {
             Some(last) if **last == *recipients => last.clone(),
@@ -951,6 +988,7 @@ impl World {
         self.graph.remove_edge(g, d);
         if revoke {
             // Revoke the guarantor's receipts for the acts of the guaranteed account (the order does not matter: XP is a sum).
+            let mut revoked = 0;
             for k in 0..self.subjects[d as usize].acts.len() {
                 let act_id = self.subjects[d as usize].acts[k];
                 let Some(credit) = self.acts[act_id as usize].credit.as_mut() else { continue };
@@ -960,10 +998,11 @@ impl World {
                 for idx in 1..credit.recipients.len() {
                     if credit.recipients[idx] == g && !credit.receipt_revoked(idx) {
                         credit.revoke_receipt(idx);
-                        self.subjects[g as usize].xp -= 1;
+                        revoked += 1;
                     }
                 }
             }
+            self.bump(g, -revoked);
         }
     }
 
@@ -1584,10 +1623,18 @@ impl World {
     /// D34/D55 (trusted execution, not adjudication): the account loses `fraction` of its current XP, recorded as an authorized adjustment.
     /// Deviation: the snapshot of the losing act is not kept; the penalty applies to the XP the account holds now. Returns the XP removed.
     pub fn penalize_xp(&mut self, id: Id, fraction: f64) -> i32 {
+        if self.cfg.integrity {
+            // The integrity variant: the coefficient is cut, the credits stay; the XP removed is the visible drop (rounded down).
+            let before = self.subjects[id as usize].xp;
+            let s = &mut self.subjects[id as usize];
+            s.coef = (f64::from(s.coef) * (1.0 - fraction)).floor() as u32;
+            self.refresh_xp(id);
+            return before - self.subjects[id as usize].xp;
+        }
         let s = &mut self.subjects[id as usize];
         let cut = ((f64::from(s.xp.max(0))) * fraction).floor() as i32;
-        s.xp -= cut;
-        s.penalized_xp += cut;
+        self.bump(id, -cut);
+        self.subjects[id as usize].penalized_xp += cut;
         cut
     }
 
@@ -1715,11 +1762,14 @@ impl World {
         if vouched < needed {
             return Err(Reject("not enough previous guarantors vouch for the new account"));
         }
-        let amount = self.subjects[old as usize].xp;
+        // The earned credits move (in the integrity variant the raw credits, and the lower coefficient follows the person).
+        let amount = self.subjects[old as usize].raw;
+        let old_coef = self.subjects[old as usize].coef;
         self.recovery_log.push((new, old, amount));
         self.subjects[new as usize].recovers = None;
         self.subjects[new as usize].restored_xp += amount;
-        self.subjects[new as usize].xp += amount;
+        self.subjects[new as usize].coef = self.subjects[new as usize].coef.min(old_coef);
+        self.bump(new, amount);
         self.subjects[old as usize].status = Status::False;
         Ok(())
     }
@@ -1826,8 +1876,12 @@ impl World {
             if owned[i] != self.owned_open[i] {
                 return Err(format!("owned valences of {i}"));
             }
-            if xp[i] + s.restored_xp - s.penalized_xp != s.xp {
-                return Err(format!("xp of {i}: stored {} recomputed {}", s.xp, xp[i]));
+            if xp[i] + s.restored_xp - s.penalized_xp != s.raw {
+                return Err(format!("credits of {i}: stored {} recomputed {}", s.raw, xp[i]));
+            }
+            let derived = if self.cfg.integrity && s.raw > 0 { (i64::from(s.raw) * i64::from(s.coef) / i64::from(COEF_ONE)) as i32 } else { s.raw };
+            if s.xp != derived || s.coef > COEF_ONE || (!self.cfg.integrity && s.coef != COEF_ONE) {
+                return Err(format!("xp of {i}: stored {} derived {} (coefficient {})", s.xp, derived, s.coef));
             }
             if units[i] != self.inv_units[i] {
                 return Err(format!("invitation units of {i}: stored {} recomputed {}", self.inv_units[i], units[i]));
@@ -2464,22 +2518,32 @@ mod tests {
         assert!(!w.act_guarantors(act).contains(&carol));
     }
 
+    /// XP as the owner defined it (D165): live credits times the integrity coefficient, rounded down.
+    fn derived(w: &World, id: Id) -> i32 {
+        let s = &w.subjects[id as usize];
+        (i64::from(s.raw) * i64::from(s.coef) / i64::from(COEF_ONE)) as i32
+    }
+
     #[test]
-    fn source_revocation_and_halving_follow_the_chronology_of_credits() {
+    fn source_revocation_and_the_integrity_penalty_follow_the_chronology_of_credits() {
         let mut w = live_world();
         let a1 = w.create_self_id(0).unwrap();
         w.tick(48);
         let a2 = w.create_self_id(0).unwrap();
-        // Halving after the first maturity and before the second: only the first credit is halved.
         w.tick(54);
-        let before = w.xp(0);
-        let cut = w.penalize_xp(0, 0.5);
-        assert_eq!(cut, before / 2);
-        let halved = w.xp(0);
+        // A lost dispute halves the coefficient; the credits (the units of responsibility) stay untouched.
+        let (raw, before) = (w.subjects[0].raw, w.xp(0));
+        w.penalize_xp(0, 0.5);
+        assert_eq!((w.subjects[0].raw, w.coefficient(0)), (raw, COEF_ONE / 2));
+        assert_eq!(w.xp(0), derived(&w, 0));
+        assert_eq!(w.xp(0), before / 2, "XP is rounded down");
+        // The credit that matures later is scaled by the lowered coefficient, and the own act restores 1/1000 of integrity.
         w.tick(72);
-        assert_eq!(w.xp(0), halved + 1, "the credit that matured after the penalty is not penalized by it");
-        // Authorized revocation of one source removes exactly that credit from its recipients and touches nobody else.
-        let others = xps(&w);
+        assert_eq!(w.subjects[0].raw, raw + 1);
+        assert_eq!(w.coefficient(0), COEF_ONE / 2 + COEF_STEP);
+        assert_eq!(w.xp(0), derived(&w, 0));
+        // Authorized revocation of one source removes exactly one unit of responsibility from each recipient and touches nobody else.
+        let others: Vec<i32> = (0..w.len() as Id).map(|i| w.subjects[i as usize].raw).collect();
         let recipients = w.acts[a1 as usize].credit.as_ref().unwrap().recipients.to_vec();
         assert!(w.revoke_source_xp(a1));
         assert!(!w.revoke_source_xp(a1), "revoked once");
@@ -2487,8 +2551,37 @@ mod tests {
         for r in recipients {
             expected[r as usize] -= 1;
         }
-        assert_eq!(xps(&w), expected);
+        assert_eq!((0..w.len() as Id).map(|i| w.subjects[i as usize].raw).collect::<Vec<_>>(), expected);
+        assert!((0..w.len() as Id).all(|i| w.xp(i) == derived(&w, i)));
         assert!(w.acts[a2 as usize].credit.as_ref().is_some_and(|c| !c.revoked), "other sources keep their credits");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn integrity_returns_slowly_by_playing_by_the_rules_and_never_exceeds_one() {
+        let mut w = live_world();
+        w.penalize_xp(0, 0.5);
+        w.penalize_xp(0, 0.5);
+        assert_eq!(w.coefficient(0), COEF_ONE / 4);
+        let low = w.xp(0);
+        let mut last = w.coefficient(0);
+        // One Self-ID a day: 750 days restore 750/1000 of the whole, so the coefficient reaches exactly one.
+        for day in 0..800 {
+            w.tick(w.now() + 24);
+            // Keep the guarantors active so that the account keeps qualifying.
+            if day % 20 == 0 {
+                for i in 1..12 {
+                    let _ = w.create_self_id(i);
+                }
+            }
+            let _ = w.create_self_id(0);
+            assert!(w.coefficient(0) >= last, "never falls by playing");
+            assert!(w.coefficient(0) <= COEF_ONE, "never above one");
+            last = w.coefficient(0);
+        }
+        assert_eq!(w.coefficient(0), COEF_ONE, "the coefficient is back to one");
+        assert!(w.xp(0) > low);
+        assert_eq!(w.xp(0), w.subjects[0].raw, "XP equals the credits again");
         w.audit().unwrap();
     }
 
@@ -2655,7 +2748,7 @@ mod tests {
         assert_eq!((out.winner, out.positions, out.losers.clone()), (Side::Accused, 2, vec![challenger]));
         assert_eq!(w.liquid(challenger), lc - 7, "the accuser forfeits its stake");
         assert_eq!(w.liquid(defender), ld + 7, "to the first participant who stood for the accused");
-        assert_eq!(w.xp(challenger), xp_before - xp_before / 2, "the losing accuser lost half of its XP at that moment");
+        assert_eq!(w.xp(challenger), xp_before / 2, "the losing accuser halved its integrity coefficient: XP is rounded down");
         assert_eq!(total_liquid(&w), total, "stakes only move between participants");
         assert_eq!((w.stats.extensions, w.stats.accused_won), (1, 1));
         assert!(!w.held(challenger) && !w.held(defender) && !w.held(accused));

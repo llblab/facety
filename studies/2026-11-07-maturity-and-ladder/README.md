@@ -195,6 +195,20 @@ Results (seeds `grown-4001..4004`, one year):
 
 R1, R2 and R3 all survive on 4 of 4 seeds (diagnostic in the sense of AGENTS: no mechanism registration tooling exists). `examiner_looks = 2` is now the default; it is a proposed baseline axis, conditional on the assumption that careful examiners repeat an independent look before filing. The earlier findings 20 and 23 describe the model with single-look examiners and stay as the record of that model.
 
+## Integrity coefficient as the default (D165): exploratory and registered confirmation
+
+The owner made the integrity coefficient the default (D165): XP is the live units of responsibility times a coefficient in [0, 1], rounded down; a lost dispute halves the coefficient, each matured own Self-ID adds 1/1000, never above 1. `--no-integrity` is the ablation (the halving of the balance of the first reading of D159).
+
+Exploratory (seeds `grown-1..4`, one year, full ladder): single-look examiners 11,949 honest accounts in the control and 12,478 with 30 operators (the balance halving gave 12,561 and 12,447); two-look examiners 51,045 and 45,689 with the lines held (attacker share at most 0.14%, dirty-FACY share at most 0.17%), about 13 formal cases a year. The slow restoration (1/1000 per own Self-ID, about two years from 0.25 to 1) does not rescue careless examiners, who lose a dispute almost every time they file; it changes nothing for careful ones. The rule's stability therefore also depends on the examiner assumption.
+
+Registered before the runs (reserved seeds `grown-5001..5004`, one year, defaults of the repository, i.e. integrity on and two looks):
+
+| Id | Claim | Criterion | Kill criterion |
+| --- | --- | --- | --- |
+| I1 | Under the integrity coefficient, careful examiners keep honest growth | attack-free control honest accounts with two looks at least 2 times those with one look on every seed | any seed below 1.5 |
+| I2 | The D129 lines hold for the frozen strongest adversary (100 operators, supported-first, patience 120, 20% bought, odd-profile examiners 5% at ten times, proof of reality 0.7 within 14 days) | dirty-FACY share at most 10% and attackers below one third of accounts and of FACY on every seed | any seed breaching either line |
+| I3 | A lost dispute is recoverable inside the horizon where the account keeps playing | in the control at least half of the accounts that lost a dispute have a coefficient above their post-loss value at the end | fewer than half on any seed |
+
 ## Assessment of core readiness (diagnostic; model properties against real-world assumptions)
 
 Tested model properties: (1) XP at maturity is a deterministic function of valid Self-ID history, snapshots and chronological adjustments, equal to an independent chronological reference under random event orders, with the retroactive-XP exploit blocked for invitations and valences; (2) the dispute deadline never shortens and equals the maximum window end, with deterministic refusals and same-hour ordering, and the stake ledger conserves FACY under custody, forfeits, burns, sanctions and debt (audit after every run); (3) the strongest adversary of the closure programme stays inside both D129 lines on 4 of 4 reserved seeds under the full ladder (the earlier confirmation of 12 seeds used the earlier rules); (4) the stake bounds false accusations by operator emission.
