@@ -112,6 +112,38 @@ A thirty-day burst with ten times the false-positive rate starting 100 days afte
 
 The honest network returns to 90% of its control on 4 of 4 seeds within the year, but deeper and slower than before the ladder (the closure programme measured a trough of 0.69 and a return after 40 to 170 days under the abstract disputes). With one confirming look before a case opens (`--confirm 1`, unselected) the burst has no visible effect: the network stays at 0.98 or more of its own no-burst path. A burst of examiners' errors therefore costs honest people through the halving channel above, not through the burst itself; recovery needs no extra mechanism in the model but takes up to seven months at the worst seed.
 
+## Stress panel under the ladder (exploratory, 30 operators, seeds `grown-1..4`, one year)
+
+Joining assumptions, the K2 weakenings, cash-out, key loss and bought accounts, each varied alone from the baseline (the cone strategy, 30 operators). Honest cost is per honest account-year (population-time normalized). All runs pass both D129 lines (attacker share at most 0.31%, dirty-FACY share at most 0.29%).
+
+| Variant | Honest accounts | Cases settled | Mean case days | Deepest ladder | Genuine / false invalidated | Honest restriction days | Honest FACY lost | Council seats changing hands |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| baseline | 12,447 | 2,561 | 7.9 | 6 | 63 / 20 | 6.2 | 3.9 | 322 |
+| nobody joins (`--join-rate 0 --council-rate 0`) | 12,143 | 2,527 | 7.0 | 1 | 128 / 28 | 4.2 | 5.0 | 310 |
+| join rate 0.5 per day | 12,079 | 2,504 | 7.8 | 8 | 56 / 18 | 6.9 | 4.4 | 350 |
+| Council attention 0.1 per day | 12,790 | 2,565 | 7.9 | 6 | 74 / 24 | 5.9 | 4.3 | 325 |
+| proof of reality 0.7 within 14 days (`--defense 0.7 --defense-days 14`) | 12,511 | 2,259 | 12.0 | 6 | 398 / 20 | 8.2 | 9.9 | 240 |
+| odd-profile examiners 5% at ten times (`--odd-share 0.05 --odd-mult 10`) | 12,505 | 3,428 | 7.9 | 6 | 95 / 16 | 8.3 | 5.6 | 366 |
+| operators cash out half of their emissions (`--cash-out 0.5`) | 12,617 | 2,535 | 8.0 | 6 | 71 / 18 | 6.2 | 4.1 | 325 |
+| key loss 20% a year (`--key-loss 0.2`) | 13,409 | 1,912 | 8.1 | 6 | 51 / 21 | 4.6 | 2.5 | 248 |
+| 20% bought honest accounts (`--corrupt 0.2`) | 45,586 | 2,997 | 7.8 | 7 | 59 / 806 | 3.3 | 1.7 | 52 |
+
+Reading (exploratory): the baseline numbers move little with the joining assumptions (honest accounts 12.1 to 12.8 thousand), so the headline growth loss is not an artifact of them; a slower proof of reality is the largest single cost to honest people (genuine invalidations 63 to 398, FACY lost per honest account-year 3.9 to 9.9, case duration 12 days), as in the closure programme; operators that cash out lose 936 FACY of stake on average and 125 of debt, and still never reach 0.3% of accounts. Bought accounts file no false cases, so the honest network grows to 45.6 thousand while 806 fakes are invalidated (the weak spot of the model: it treats corrupt examiners as absent, it does not model them filing attacks). Not run here: dense and sparse honest regimes and false accusations with funded hubs beyond the section above.
+
+## Authority and chronology (exploratory, attack-free control, seeds `grown-1..4`, day 364)
+
+| Build | XP median | XP 90th percentile | XP maximum |
+| --- | --- | --- | --- |
+| spend-credit | 236 | 2,134 | 17,931 |
+| maturity | 225 | 2,058 | 17,756 |
+| ladder | 219 | 1,862 | 9,413 |
+
+XP at maturity leaves the distribution almost unchanged, because honest accounts convert surplus rights quickly; hoarding does not lower XP any more (tested at the unit level and by `--keep-rights`). The ladder halves the top of the distribution (the maximum falls from 17.8 thousand to 9.4 thousand) and triples Council turnover (310 to 334 seats a year against 107 to 120 without halving), so formal authority becomes less stable than the early-participant advantage that XP accumulation gives under the other builds. Challenge eligibility (more XP than the accused) is the gate that lets Council members open the most cases, which is the link to Q24.
+
+## Reproduction
+
+Builds: `baseline-spend-credit-d156` (tag), `9aa9d4a` (maturity), this repository's `main` (ladder). The seed family, one-year horizon and flags of every table are in the table headings; the invocation is `facety-sim grown --seeds 4 [--first-seed 3001] --attackers N --horizon 365 --threads 4 --out DIR` plus the listed flags (`--no-halving`, `--halving-spares-council`, `--confirm 1`, `--no-stakes`, `--join-rate`, `--council-rate`, `--defense`, `--defense-days`, `--odd-share`, `--odd-mult`, `--cash-out`, `--key-loss`, `--corrupt`, `--accuse`, `--shock-day 100 --shock-days 30 --shock-fpr-x 10`, `--strategy supported-first --patience 120` for the frozen adversary). Saved results record the configuration digest, schema `facety-sim/result-v3` and the build commit.
+
 ## Assessment of core readiness (diagnostic; model properties against real-world assumptions)
 
 Tested model properties: (1) XP at maturity is a deterministic function of valid Self-ID history, snapshots and chronological adjustments, equal to an independent chronological reference under random event orders, with the retroactive-XP exploit blocked for invitations and valences; (2) the dispute deadline never shortens and equals the maximum window end, with deterministic refusals and same-hour ordering, and the stake ledger conserves FACY under custody, forfeits, burns, sanctions and debt (audit after every run); (3) the strongest adversary of the closure programme stays inside both D129 lines on 4 of 4 reserved seeds under the full ladder (the earlier confirmation of 12 seeds used the earlier rules); (4) the stake bounds false accusations by operator emission.
