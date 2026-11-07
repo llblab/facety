@@ -54,7 +54,7 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 - [ ] **Explain the unrecovered 40% to 60% of the halving loss** (hypotheses: examiners of every rank lose the XP that opens the next case; invalidation cascades). Falsifier: halving only the accuser that opened a case on an unconfirmed look; compare with sparing the Council.
 - [ ] **Rest of the stress panel under the ladder:** dense and sparse honest regimes, corrupt examiners that file attacks instead of abstaining, a Council-attention sweep above 0.5. The joining rates, Council attention 0.1, K2 weakenings, cash-out, key loss, bought accounts, false accusations and a false-positive burst are done (study of 2026-11-07); every earlier K-table number predates the ladder.
 - [ ] **Joining behavior is uncalibrated** (Q23.6): real participation data or an owner assumption is needed before durations and escalation depth are more than conditional.
-- [ ] **Unmodeled selected rules:** the accused's unspent rights freeze (§17.4), D70-D72 Council referendum and quorum, D34 event-time liability, D55 per-act penalty snapshots, a Council share of proceeds, the Treasury, debt service.
+- [ ] **Unmodeled selected rules:** D70-D72 Council referendum and quorum, D34 event-time liability, D55 per-act penalty snapshots, a Council share of proceeds, the Treasury, debt service.
 
 ## Rust simulator
 

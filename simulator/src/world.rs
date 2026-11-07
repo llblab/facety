@@ -313,6 +313,8 @@ pub struct World {
     hold: Vec<u32>,
     /// Open cases in which the account is excluded from paths (D131); equals `hold` unless `exclude_targets_only` is set.
     path_hold: Vec<u32>,
+    /// Open cases in which the account is the accused: its unspent rights are frozen (protocol §17.4) until the last of them ends.
+    frozen: Vec<u32>,
     cases: Vec<Option<Case>>,
     /// Liquid FACY destroyed by disputes (burned stakes and sanction charges, D151 recovery); `sum(liquid) + liquid_destroyed` equals the
     /// converted entitlements.
@@ -362,6 +364,7 @@ impl World {
             invitations: Vec::new(),
             hold: Vec::new(),
             path_hold: Vec::new(),
+            frozen: Vec::new(),
             cases: Vec::new(),
             liquid_destroyed: 0,
             stats: DisputeStats::default(),
@@ -419,6 +422,7 @@ impl World {
         self.inv_units.push(0);
         self.hold.push(0);
         self.path_hold.push(0);
+        self.frozen.push(0);
         self.blocked.push(self.cfg.layered);
         self.council_mask.push(false);
         self.level.push(NO_LEVEL);
@@ -884,6 +888,9 @@ impl World {
 
     pub fn convert_to_collector(&mut self, who: Id, act: u32) -> Result<(), Reject> {
         self.require_account(who)?;
+        if self.frozen[who as usize] > 0 {
+            return Err(Reject("unspent rights are frozen while the account is accused"));
+        }
         let a = &self.acts[act as usize];
         if a.subject != who || self.now - a.recorded_at < self.cfg.spend_hours || a.status != ActStatus::Unspent {
             return Err(Reject("conversion requires own mature emission"));
@@ -1319,6 +1326,7 @@ impl World {
         case.holds = vec![(challenger, self.now, path_challenger), (accused, self.now, path_accused)];
         self.hold_for(challenger, path_challenger);
         self.hold_for(accused, path_accused);
+        self.frozen[accused as usize] += 1;
         self.cases.push(Some(case));
         Ok((self.cases.len() - 1) as u32)
     }
@@ -1436,6 +1444,7 @@ impl World {
             held.push((id, self.now - since));
             self.release_hold(id, path);
         }
+        self.frozen[case.accused as usize] -= 1;
         for p in case.ladder.positions() {
             self.subjects[p.who as usize].reserved -= p.stake;
         }
@@ -1784,7 +1793,9 @@ impl World {
         let mut reserved = vec![0u32; n];
         let mut holds = vec![0u32; n];
         let mut path_holds = vec![0u32; n];
+        let mut frozen = vec![0u32; n];
         for c in self.cases.iter().flatten() {
+            frozen[c.accused as usize] += 1;
             for p in c.ladder.positions() {
                 reserved[p.who as usize] += p.stake;
             }
@@ -1806,7 +1817,7 @@ impl World {
             if reserved[i] != s.reserved || s.reserved > s.liquid {
                 return Err(format!("reserved stake of {i}: stored {} recomputed {} liquid {}", s.reserved, reserved[i], s.liquid));
             }
-            if holds[i] != self.hold[i] || path_holds[i] != self.path_hold[i] {
+            if holds[i] != self.hold[i] || path_holds[i] != self.path_hold[i] || frozen[i] != self.frozen[i] {
                 return Err(format!("dispute restrictions of {i} do not match the open cases"));
             }
             if s.debt < 0 {
@@ -2687,6 +2698,26 @@ mod tests {
         w.end_case(b);
         assert!(!w.held(accused) && !w.held(c2), "released only when the last case ends");
         assert_eq!((w.spendable(c1), w.spendable(c2)), (w.liquid(c1), w.liquid(c2)), "custody released");
+        w.audit().unwrap();
+    }
+
+
+    #[test]
+    fn the_accused_cannot_withdraw_unspent_rights_until_the_last_case_ends() {
+        let mut w = rich_world();
+        let (accused, c1, c2) = xp_ladder(&w);
+        // A fresh matured right on the accused.
+        let own = w.create_self_id(accused);
+        w.tick(w.now() + 24);
+        let right = own.ok().and_then(|_| w.eligible_emission(accused)).expect("a matured right");
+        let a = w.begin_case(&[c1, accused]).unwrap();
+        let b = w.begin_case(&[c2, accused]).unwrap();
+        assert_eq!(w.convert_to_collector(accused, right), Err(Reject("unspent rights are frozen while the account is accused")));
+        w.end_case(a);
+        assert!(w.convert_to_collector(accused, right).is_err(), "still frozen by the second case");
+        w.audit().unwrap();
+        w.end_case(b);
+        w.convert_to_collector(accused, right).unwrap();
         w.audit().unwrap();
     }
 
