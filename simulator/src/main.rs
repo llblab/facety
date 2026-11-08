@@ -1,6 +1,7 @@
 //! `facety-sim grown`: grow an honest network to a target size, then attack clones of that snapshot (detection always on).
 //! Invalid or unknown arguments are refused with a diagnostic and exit code 2; a result file that already exists is never
 //! overwritten silently (exit code 3).
+use facety_sim::amount::Amount;
 use facety_sim::json;
 use facety_sim::runner::{RunConfig, Sim, Strategy};
 use facety_sim::world::SearchOrder;
@@ -450,10 +451,10 @@ fn main() {
                     f(dirty),
                     g(first33),
                     g(first50),
-                    sim.history.last().map_or(0, |r| r.supply),
+                    sim.history.last().map_or(Amount::ZERO, |r| r.supply),
                     sim.emitted[0],
                     sim.emitted[1],
-                    sim.history.last().map_or(0, |r| r.dirty),
+                    sim.history.last().map_or(Amount::ZERO, |r| r.dirty),
                     d.accusations,
                     sim.recovery[0],
                     sim.recovery[1],

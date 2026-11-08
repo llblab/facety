@@ -4,6 +4,7 @@
 //!
 //! Evaluator labels (`Cohort`, `Kind`) are read only by the observation functions that model noisy looks and verdict accuracy;
 //! the protocol world never sees them. Behavior rates are scenario assumptions, not calibrated human behavior.
+use crate::amount::{Amount, SignedAmount};
 use crate::chekharda::{CouncilVote, Side};
 use crate::json;
 use crate::paths::{layered_support, NO_LEVEL};
@@ -12,9 +13,9 @@ use crate::world::{Config as WorldConfig, Id, Reject, World, DAY};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
 
-pub const ENGINE: &str = "facety-sim/runner-v3";
+pub const ENGINE: &str = "facety-sim/runner-v4";
 /// Version of the saved result layout.
-pub const SCHEMA: &str = "facety-sim/result-v6";
+pub const SCHEMA: &str = "facety-sim/result-v7";
 pub const COUNCIL_VOTING_POLICY: &str = "first-daily-review-per-round/binary-belief-v1";
 pub const APPEAL_EXECUTION_POLICY: &str = "conditional-approved-case-reversal/earned-receipts/integrity-replay/fifo-debt/v1";
 
@@ -329,7 +330,7 @@ impl RunConfig {
         );
         // Keep behavior extensions explicit in the saved configuration and its digest.
         format!(
-            "{{\"caseAdmissionPolicy\":{},\"appealExecutionPolicy\":{},\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
+            "{{\"moneyPolicy\":\"integer-quanta/12-decimals/final-stake-ceiling/v1\",\"caseAdmissionPolicy\":{},\"appealExecutionPolicy\":{},\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
             json::string(crate::world::CASE_ADMISSION_POLICY),
             json::string(APPEAL_EXECUTION_POLICY),
             json::string(COUNCIL_VOTING_POLICY),
@@ -476,6 +477,7 @@ struct CaseRec {
     case: u32,
     target: Id,
     challenger: Id,
+    /// Scheduled activation, 24 hours after recording; the defense delay starts here.
     opened_at: i64,
     id: u64,
     defended: bool,
@@ -484,13 +486,13 @@ struct CaseRec {
     offered_round: Option<u32>,
 }
 
-/// Dispute counters split by cohort (index 0 honest, 1 attacker side); amounts in whole FCTY, durations in hours.
+/// Dispute counters split by cohort (index 0 honest, 1 attacker side); money is exact to 12 places, durations in hours.
 #[derive(Clone, Debug, Default)]
 pub struct LadderCounters {
     pub hold_hours: [i64; 2],
-    pub net: [i64; 2],
-    pub lost: [i64; 2],
-    pub debt: [i64; 2],
+    pub net: [SignedAmount; 2],
+    pub lost: [Amount; 2],
+    pub debt: [Amount; 2],
     /// Cases settled by the number of positions at settlement (index 0 is one position; the last bucket is six or more).
     pub depth: [u64; 6],
     /// Cases settled with the Council inside, and how many of those the Council overturned the last unopposed side.
@@ -529,7 +531,7 @@ pub struct DetectionCounters {
     /// caught, emissions of the second account, inviter acquitted, links the inviter's partners left, XP removed from the inviter.
     pub ledger: [[u64; 5]; 2],
     /// Liquid FCTY burned on invalidated accounts (D151).
-    pub liquid_burned: u64,
+    pub liquid_burned: Amount,
     /// XP removed from inviters of invalidated accounts (D34/D55 trusted execution).
     pub xp_penalized: u64,
     pub holders_invalidated: u64,
@@ -545,8 +547,8 @@ pub struct Row {
     pub subjects: usize,
     pub honest: usize,
     pub attackers: usize,
-    pub supply: i64,
-    pub dirty: i64,
+    pub supply: Amount,
+    pub dirty: Amount,
     pub active: usize,
     pub d: usize,
     pub council: usize,
@@ -569,8 +571,8 @@ impl Row {
         }
     }
     pub fn dirty_share(&self) -> Option<f64> {
-        if self.supply > 0 {
-            Some(self.dirty as f64 / self.supply as f64)
+        if !self.supply.is_zero() {
+            Some(self.dirty.as_f64() / self.supply.as_f64())
         } else {
             None
         }
@@ -913,7 +915,7 @@ impl Sim {
         for i in 0..self.world.len() as Id {
             let c = ci(self.cohort[i as usize]);
             self.held_days[c] += u64::from(self.world.held(i));
-            self.debt_days[c] += u64::from(self.world.debt(i) > 0);
+            self.debt_days[c] += u64::from(!self.world.debt(i).is_zero());
         }
         self.sample();
         self.day += 1;
@@ -1372,7 +1374,7 @@ impl Sim {
         Ok(())
     }
 
-    /// Open a formal case through the common procedure; a refusal changes nothing (no hold, record or counter other than the refusal count).
+    /// Record a pending opening; maturity starts custody, restrictions and the dispute clock 24 hours later.
     fn open_case(&mut self, challenger: Id, target: Id, follow_up: bool) -> bool {
         if let Err(reason) = self.case_gate(challenger, target) {
             self.det.cases_refused += 1;
@@ -1381,7 +1383,7 @@ impl Sim {
             }
             return false;
         }
-        let Ok(case) = self.world.begin_case(&[challenger, target]) else {
+        let Ok(case) = self.world.record_case_opening(&[challenger, target]) else {
             self.det.cases_refused += 1;
             return false;
         };
@@ -1392,7 +1394,7 @@ impl Sim {
             case,
             target,
             challenger,
-            opened_at: self.world.now(),
+            opened_at: self.world.case_opening(case).expect("recorded opening").matures_at,
             id: self.case_sequence,
             defended,
             challenger_xp: self.world.xp(challenger),
@@ -1557,20 +1559,24 @@ impl Sim {
 
     /// Fold a settled dispute into the cohort counters: restricted hours, money moved and lost, debt, depth.
     fn record_outcome(&mut self, outcome: &crate::world::CaseOutcome) {
-        for &(id, hours) in &outcome.holds {
+        self.record_resource_changes(&outcome.holds, &outcome.net, &outcome.debts);
+        self.ladder.depth[(outcome.positions as usize - 1).min(5)] += 1;
+    }
+
+    fn record_resource_changes(&mut self, holds: &[(Id, i64)], net: &[(Id, SignedAmount)], debts: &[(Id, Amount)]) {
+        for &(id, hours) in holds {
             self.ladder.hold_hours[ci(self.cohort[id as usize])] += hours;
         }
-        for &(id, amount) in &outcome.net {
+        for &(id, amount) in net {
             let c = ci(self.cohort[id as usize]);
             self.ladder.net[c] += amount;
-            if amount < 0 {
-                self.ladder.lost[c] -= amount;
+            if amount.is_negative() {
+                self.ladder.lost[c] += amount.unsigned_abs();
             }
         }
-        for &(id, amount) in &outcome.debts {
+        for &(id, amount) in debts {
             self.ladder.debt[ci(self.cohort[id as usize])] += amount;
         }
-        self.ladder.depth[(outcome.positions as usize - 1).min(5)] += 1;
     }
 
     fn detect(&mut self) {
@@ -1647,6 +1653,13 @@ impl Sim {
         self.ladder_moves();
         let cases = std::mem::take(&mut self.open_cases);
         for mut rec in cases {
+            if self.world.case_opening(rec.case).is_some_and(|o| matches!(o.stage, crate::world::OpeningStage::Cancelled | crate::world::OpeningStage::Moot)) {
+                if let Some(outcome) = self.world.case_cancellation(rec.case).cloned() {
+                    self.record_resource_changes(&outcome.holds, &outcome.net, &[(outcome.author, outcome.debt_created)]);
+                }
+                targeted.remove(&rec.target);
+                continue;
+            }
             self.cast_ballots(&mut rec);
             let proof_done = !rec.defended || self.world.now() - rec.opened_at >= det.defense_days * DAY;
             if !self.world.case_final(rec.case) || !proof_done {
@@ -1675,7 +1688,7 @@ impl Sim {
                 continue;
             }
             if det.recover_liquid {
-                self.det.liquid_burned += u64::from(self.world.burn_liquid(rec.target));
+                self.det.liquid_burned += self.world.burn_liquid(rec.target);
             }
             if label {
                 self.det.false_invalidated += 1
@@ -1691,7 +1704,7 @@ impl Sim {
                 if label && self.world.accepted(holder) {
                     self.world.apply_case_identity_verdict_to(rec.case, holder).expect("related holder in the settled identity verdict");
                     if det.recover_liquid {
-                        self.det.liquid_burned += u64::from(self.world.burn_liquid(holder));
+                        self.det.liquid_burned += self.world.burn_liquid(holder);
                     }
                     self.det.holders_invalidated += 1;
                 }
@@ -1816,10 +1829,10 @@ impl Sim {
         let w = &self.world;
         let accepted: Vec<Id> = (0..w.len() as Id).filter(|&i| w.accepted(i)).collect();
         let attackers_accepted = accepted.iter().filter(|&&i| self.cohort[i as usize] == Cohort::Attacker).count();
-        let mut dirty = 0i64;
+        let mut dirty = Amount::ZERO;
         let mut attack_edges = 0usize;
         for &a in &self.attackers {
-            dirty += i64::from(w.liquid(a)) + w.unspent_rights(a) as i64;
+            dirty += w.liquid(a) + Amount::coins(w.unspent_rights(a) as u64);
             for &o in w.graph().out(a) {
                 if self.cohort[o as usize] == Cohort::Honest && w.graph().has_edge(o, a) {
                     attack_edges += 1;
@@ -1930,18 +1943,19 @@ impl Sim {
             self.censored.map_or("null".to_string(), json::string)
         );
         let d = &self.det;
-        let mut debt = [0i64; 2];
-        let mut repaid = [0u64; 2];
-        let mut liquid = [0u64; 2];
+        let mut debt = [Amount::ZERO; 2];
+        let mut repaid = [Amount::ZERO; 2];
+        let mut liquid = [Amount::ZERO; 2];
         let mut rights = [0u64; 2];
         let mut open_holds = [0u64; 2];
-        let mut bought = [0u64; 2];
+        let mut bought_accounts = 0u64;
+        let mut bought_held = Amount::ZERO;
         let mut operators = [0u64; 3];
         for i in 0..self.world.len() as Id {
             let c = ci(self.cohort[i as usize]);
             debt[c] += self.world.debt(i);
             repaid[c] += self.world.debt_repaid(i);
-            liquid[c] += u64::from(self.world.liquid(i));
+            liquid[c] += self.world.liquid(i);
             rights[c] += self.world.unspent_rights(i) as u64;
             open_holds[c] += u64::from(self.world.held(i));
             if self.kind[i as usize] == Kind::Operator {
@@ -1951,8 +1965,8 @@ impl Sim {
                 operators[2] += u64::from(self.world.accepted(i));
             }
             if self.corrupt(i) && self.world.accepted(i) {
-                bought[0] += 1;
-                bought[1] += u64::from(self.world.liquid(i)) + self.world.unspent_rights(i) as u64;
+                bought_accounts += 1;
+                bought_held += self.world.liquid(i) + Amount::coins(self.world.unspent_rights(i) as u64);
             }
         }
         let _ = write!(s, "\"operators\":{{\"admitted\":{},\"accepted\":{},\"falseAccountsAccepted\":{}}},", operators[0], operators[1], operators[2]);
@@ -1960,12 +1974,18 @@ impl Sim {
         let _ = write!(
             s,
             "\"acquired\":{{\"acceptedAccounts\":{},\"heldFacy\":{},\"wronglyInvalidatedByCohort\":{:?}}},",
-            bought[0], bought[1], self.det.wrong_by_cohort
+            bought_accounts, bought_held, self.det.wrong_by_cohort
         );
-        let _ = write!(s, "\"economics\":{{\"outstandingDebt\":{:?},\"debtRepaid\":{:?},\"liquid\":{:?},\"unspent\":{:?},\"heldAccountDays\":{:?},\"debtorAccountDays\":{:?},\"openHolds\":{:?},\"openCases\":{},\"suspendedActs\":{}}},", debt, repaid, liquid, rights, self.held_days, self.debt_days, open_holds, self.open_cases.len(), self.world.stats.suspended_acts);
+        let active_cases = self.open_cases.iter().filter(|r| self.world.case_state(r.case).is_some()).count();
+        let _ = write!(s, "\"economics\":{{\"outstandingDebt\":{:?},\"debtRepaid\":{:?},\"liquid\":{:?},\"unspent\":{:?},\"heldAccountDays\":{:?},\"debtorAccountDays\":{:?},\"openHolds\":{:?},\"openCases\":{},\"pendingOpenings\":{},\"suspendedActs\":{}}},", debt, repaid, liquid, rights, self.held_days, self.debt_days, open_holds, active_cases, self.world.pending_openings(), self.world.stats.suspended_acts);
         let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"accusations\":{},\"casesOnGenuine\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
             d.cases_opened, d.accusations, d.cases_on_genuine, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
         let (st, l) = (&self.world.stats, &self.ladder);
+        let _ = write!(
+            s,
+            "\"openingTransactions\":{{\"recorded\":{},\"activated\":{},\"cancelledBeforeMaturity\":{},\"authorCancelledActive\":{}}},",
+            st.openings_recorded, st.openings_activated, st.openings_cancelled, st.author_cancelled
+        );
         let _ = write!(
             s,
             "\"restoration\":{{\"executionPolicy\":{},\"casesReversed\":{},\"statusesRestored\":{},\"unitsRestored\":{},\"debtCancelled\":{},\"blockedConditionalAppeals\":{}}},",
@@ -1988,7 +2008,7 @@ impl Sim {
         let _ = write!(s, "\"disputes\":{{\"opened\":{},\"joined\":{},\"refusedClosed\":{},\"refusedXp\":{},\"refusedFunds\":{},\"councilEntries\":{},\"ballots\":{},\"extensions\":{},\"settled\":{},\"moot\":{},\"accuserWon\":{},\"accusedWon\":{},\"maxPositions\":{},\"durationHours\":{},\"holdHours\":{},\"staked\":{},\"forfeited\":{},\"stakeBurned\":{},\"sanctionCollected\":{},\"sanctionBurned\":{},\"debtCreated\":{},\"xpHalved\":{},\"councilTurnover\":{},\"integrityLost\":{},\"integrityRecovering\":{},\"integrityRestored\":{},\"holdHoursByCohort\":{:?},\"netByCohort\":{:?},\"lostByCohort\":{:?},\"debtByCohort\":{:?},\"depth\":{:?},\"entriesByCohort\":{:?}}},",
             st.opened, st.joined, st.refused_closed, st.refused_xp, st.refused_funds, st.council_entries, st.ballots, st.extensions, st.settled, st.moot, st.accuser_won, st.accused_won, st.max_positions, st.duration_hours, st.hold_hours, st.staked, st.forfeited, st.stake_burned, st.sanction_collected, st.sanction_burned, st.debt_created, st.xp_halved, st.council_turnover, self.world.integrity_counts().0, self.world.integrity_counts().1, self.world.integrity_counts().2, l.hold_hours, l.net, l.lost, l.debt, l.depth, l.entries);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerLiquid\":{},\"attackerUnspent\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
-            self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.recovery[0], self.recovery[1], self.recovery[2], self.recovery[3], self.recovery[4], self.recovery[5], self.emitted[0], self.emitted[1], self.attackers.iter().map(|&a| i64::from(self.world.liquid(a))).sum::<i64>(), self.attackers.iter().map(|&a| self.world.unspent_rights(a) as i64).sum::<i64>(), self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
+            self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.recovery[0], self.recovery[1], self.recovery[2], self.recovery[3], self.recovery[4], self.recovery[5], self.emitted[0], self.emitted[1], self.attackers.iter().map(|&a| self.world.liquid(a)).sum::<Amount>(), self.attackers.iter().map(|&a| self.world.unspent_rights(a) as i64).sum::<i64>(), self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");
         for (i, r) in self.history.iter().enumerate() {
             if i > 0 {
@@ -2289,6 +2309,7 @@ mod tests {
         sim.world.burn_liquid(target);
         assert!(sim.open_case(challenger, target, false));
         let case = sim.open_cases[0].case;
+        sim.world.tick(sim.world.case_opening(case).unwrap().matures_at);
         sim.world.tick(sim.world.case_deadline(case).unwrap());
         let units = sim.world.responsibility_units(target);
         let coefficient = sim.world.coefficient(target);
@@ -2296,18 +2317,18 @@ mod tests {
         assert!(!sim.world.accepted(target));
         assert!(sim.world.responsibility_units(target) < units, "own-chain units are revoked; unrelated guarantor receipts remain");
         let debt = sim.world.debt(target);
-        assert!(debt > 0, "an empty-backed defendant acquires actual attributable debt");
+        assert!(!debt.is_zero(), "an empty-backed defendant acquires actual attributable debt");
         let funds = (sim.world.supply(), sim.world.liquid(target));
         sim.world.tick(sim.world.now() + sim.cfg.detection.defense_days * DAY);
         sim.detect();
         assert!(sim.world.accepted(target));
         assert_eq!(sim.world.responsibility_units(target), units);
         assert_eq!(sim.world.coefficient(target), coefficient);
-        assert_eq!(sim.world.debt(target), 0);
+        assert_eq!(sim.world.debt(target), Amount::ZERO);
         assert_eq!((sim.world.supply(), sim.world.liquid(target)), funds);
         assert_eq!(sim.det.appeals_restored, 1);
         assert_eq!(sim.world.stats.restorations, 1);
-        assert!(sim.world.stats.debt_cancelled >= debt as u64);
+        assert!(sim.world.stats.debt_cancelled >= debt);
         let saved = sim.to_json();
         json::validate(&saved).unwrap();
         assert!(saved.contains(APPEAL_EXECUTION_POLICY));
@@ -2378,6 +2399,9 @@ mod tests {
         sim.world.audit().unwrap();
         // The qualified accusation stays possible.
         assert!(sim.open_case(higher.0, higher.1, false));
+        assert!(!sim.world.held(higher.0) && !sim.world.held(higher.1), "recording creates no active restrictions");
+        let case = sim.open_cases[0].case;
+        sim.world.tick(sim.world.case_opening(case).unwrap().matures_at);
         assert!(sim.world.held(higher.0) && sim.world.held(higher.1));
         assert_eq!(sim.open_case_records().len(), 1);
         let (c, t, cx, tx) = sim.open_case_records()[0];
@@ -2397,8 +2421,31 @@ mod tests {
         assert_eq!(sim.case_gate(challenger, target), Ok(()));
         let funds = sim.world.stats.refused_funds;
         assert!(sim.open_case(challenger, target, false), "D166: a missing stake is not a refusal");
+        let case = sim.open_cases[0].case;
+        assert_eq!(sim.world.stats.refused_funds, funds, "pending filings reserve nothing");
+        assert!(!sim.world.held(challenger) && !sim.world.held(target));
+        assert!(sim.world.case_deadline(case).is_none());
+        assert!(sim.to_json().contains("\"openCases\":0,\"pendingOpenings\":1"));
+        let mut cancelled = sim.clone();
+        cancelled.world.cancel_case_opening(case, challenger).unwrap();
+        cancelled.detect();
+        assert!(cancelled.open_cases.is_empty(), "cancelled filings leave no runner record awaiting activation");
+        assert_eq!((cancelled.world.stats.openings_cancelled, cancelled.world.stats.opened), (1, 0));
+        cancelled.world.tick(cancelled.world.now() + DAY);
+        assert!(cancelled.world.case_state(case).is_none(), "a cancelled filing never activates");
+        cancelled.world.audit().unwrap();
+        sim.world.tick(sim.world.case_opening(case).unwrap().matures_at);
         assert_eq!(sim.world.stats.refused_funds, funds + 1);
-        assert!(sim.world.held(challenger) && sim.world.held(target) && sim.world.spendable(challenger) == 0);
+        assert!(sim.world.held(challenger) && sim.world.held(target) && sim.world.spendable(challenger).is_zero());
+        let cancellation = sim.world.cancel_case_opening(case, challenger).unwrap();
+        sim.detect();
+        assert!(sim.open_cases.is_empty());
+        assert_eq!((sim.world.stats.author_cancelled, sim.world.stats.settled), (1, 0), "cancellation is no merits decision");
+        assert_eq!(sim.ladder.debt.iter().copied().sum::<Amount>(), cancellation.debt_created);
+        let net = sim.ladder.net;
+        sim.detect();
+        assert_eq!(sim.ladder.net, net, "the cancellation resource journal is consumed once");
+        json::validate(&sim.to_json()).unwrap();
         sim.world.audit().unwrap();
     }
 
@@ -2418,7 +2465,9 @@ mod tests {
             sim.run();
             sim.world.audit().unwrap();
             let st = sim.world.stats.clone();
-            assert_eq!(st.opened, st.settled + st.moot + sim.open_cases.len() as u64, "every opened case is settled or still open");
+            let active = sim.open_cases.iter().filter(|r| sim.world.case_state(r.case).is_some()).count() as u64;
+            assert_eq!(st.opened, st.settled + st.moot + st.author_cancelled + active, "every activated case is closed or still active");
+            assert_eq!(st.openings_recorded, st.openings_activated + st.openings_cancelled + sim.world.pending_openings() as u64);
             assert!(st.settled > 0, "the run must settle cases to be a test");
             (st.duration_hours as f64 / 24.0 / st.settled as f64, st.joined, st.max_positions)
         };
@@ -2439,6 +2488,7 @@ mod tests {
         let (challenger, target) = find_pair(&sim, |a, b| a > b).unwrap();
         assert!(sim.open_case(challenger, target, false));
         let case = sim.open_cases[0].case;
+        sim.world.tick(sim.world.case_opening(case).unwrap().matures_at);
         let member = sim.world.council().iter().copied().find(|&m| m != challenger && m != target).unwrap();
         sim.world.council_join(case, member).unwrap();
         let cutoff = sim.world.case_deadline(case).unwrap();
@@ -2656,6 +2706,9 @@ mod tests {
             "councilExecutionPolicy",
             "appealExecutionPolicy",
             "caseAdmissionPolicy",
+            "moneyPolicy",
+            "openingTransactions",
+            "pendingOpenings",
             "restoration",
             "debtCancelled",
             "councilRounds",

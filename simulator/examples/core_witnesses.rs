@@ -1,5 +1,6 @@
 //! Finite deterministic transition witnesses for the evidence-core closure.
 //! These are scripted, uncalibrated scenarios, not human behavior or attack probabilities.
+use facety_sim::amount::{Amount, SignedAmount};
 use facety_sim::chekharda::{CouncilVote, Side};
 use facety_sim::json;
 use facety_sim::world::{CaseOutcome, Config, Id, World, COEF_ONE, DAY};
@@ -66,7 +67,7 @@ fn prepare(own_days: u32, second_empty: bool, empty_prefix: bool, accused_days: 
     }
     assert!(w.xp(CHALLENGER) > w.xp(ACCUSED));
     assert!(w.xp(DEFENDER) > w.xp(CHALLENGER));
-    assert_eq!(w.liquid(CHALLENGER), if empty_prefix { 0 } else { own_days });
+    assert_eq!(w.liquid(CHALLENGER), Amount::coins(if empty_prefix { 0 } else { u64::from(own_days) }));
     w.audit().unwrap();
     w
 }
@@ -111,7 +112,7 @@ fn reward(backing: u32) {
     let out = w.settle_case(case, None).unwrap();
     assert_eq!(out.winner, Side::Accused);
     let received = w.liquid(DEFENDER) - before;
-    assert_eq!(received, backing);
+    assert_eq!(received, Amount::coins(u64::from(backing)));
     w.audit().unwrap();
     println!(
         "{{\"witness\":\"defender-reward\",\"backing\":{backing},\"preparationCostChallenger\":2,\"nominalReward\":{nominal},\"actualReward\":{received},\"ownStakeReleased\":{own_stake},\"durationHours\":{},\"debtCreated\":{},\"holds\":{},\"challenger\":{},\"defender\":{}}}",
@@ -132,7 +133,7 @@ fn recovery(continues: bool) {
     let mut outcomes = Vec::new();
     for elapsed in 0..800 {
         held_days += u32::from(w.held(CHALLENGER));
-        debt_days += u32::from(w.debt(CHALLENGER) > 0);
+        debt_days += u32::from(w.debt(CHALLENGER) > Amount::ZERO);
         let mut own_created = false;
         for id in 0..N {
             if id == CHALLENGER && !continues {
@@ -145,15 +146,15 @@ fn recovery(continues: bool) {
             }
             outsider_acts += u32::from(id == OBSERVER && emitted);
         }
-        suppressed_units += u32::from(own_created && w.debt(CHALLENGER) > 0);
+        suppressed_units += u32::from(own_created && w.debt(CHALLENGER) > Amount::ZERO);
         w.tick(w.now() + DAY);
         if elapsed == 6 {
             // The accepted proof is the declared D136 external-evidence abstraction, not guaranteed human truth.
             outcomes.push(w.settle_case(case, Some(Side::Accused)).unwrap());
-            assert_eq!(w.debt(CHALLENGER), 7);
+            assert_eq!(w.debt(CHALLENGER), Amount::coins(7));
             assert_eq!(w.coefficient(CHALLENGER), COEF_ONE / 2);
         }
-        if elapsed >= 6 && solvent_day.is_none() && w.debt(CHALLENGER) == 0 {
+        if elapsed >= 6 && solvent_day.is_none() && w.debt(CHALLENGER) == Amount::ZERO {
             solvent_day = Some(elapsed + 1);
         }
         if elapsed >= 6 && restored_day.is_none() && w.coefficient(CHALLENGER) == COEF_ONE {
@@ -164,10 +165,10 @@ fn recovery(continues: bool) {
     w.audit().unwrap();
     assert_eq!(held_days, 7);
     if continues {
-        assert_eq!(w.debt(CHALLENGER), 0);
+        assert_eq!(w.debt(CHALLENGER), Amount::ZERO);
         assert_eq!(w.coefficient(CHALLENGER), COEF_ONE);
     } else {
-        assert_eq!(w.debt(CHALLENGER), 7);
+        assert_eq!(w.debt(CHALLENGER), Amount::coins(7));
         assert_eq!(w.coefficient(CHALLENGER), COEF_ONE / 2);
     }
     let opt = |v: Option<u32>| v.map_or("null".into(), |n| n.to_string());
@@ -208,7 +209,7 @@ fn accused_recovery() {
             // A declared successful appeal, seven days after a mistaken identity verdict.
             assert!(w.reinstate_identity(ACCUSED));
         }
-        if elapsed >= 6 && w.debt(ACCUSED) == 0 && solvent_day.is_none() {
+        if elapsed >= 6 && w.debt(ACCUSED) == Amount::ZERO && solvent_day.is_none() {
             solvent_day = Some(elapsed + 1);
         }
         if elapsed >= 6 && restored_day.is_none() && w.coefficient(ACCUSED) == COEF_ONE {
@@ -228,7 +229,7 @@ fn accused_recovery() {
     w.audit().unwrap();
     assert_eq!(restriction_days, 7);
     assert_eq!(unavailable_days, 14);
-    assert_eq!(w.debt(ACCUSED), 0);
+    assert_eq!(w.debt(ACCUSED), Amount::ZERO);
     assert_eq!(w.coefficient(ACCUSED), COEF_ONE);
     assert!(restored_day.is_some());
     let opt = |v: Option<u32>| v.map_or("null".into(), |n| n.to_string());
@@ -305,7 +306,7 @@ fn chain(rapid: bool, council_day: Option<i64>, unbacked: bool) {
     }
     let positions = w.case_positions(case);
     let actual_members: HashSet<_> = positions.iter().filter(|p| p.kind == facety_sim::chekharda::Kind::Participant).map(|p| p.who).collect();
-    let stake_total: u64 = positions.iter().map(|p| u64::from(p.stake)).sum();
+    let stake_total: Amount = positions.iter().map(|p| p.stake).sum();
     let last_stake = positions.last().unwrap().stake;
     let timeline: Vec<_> = positions
         .iter()
@@ -324,8 +325,8 @@ fn chain(rapid: bool, council_day: Option<i64>, unbacked: bool) {
     let deadline = w.case_deadline(case).unwrap();
     advance_with_abstention(&mut w, deadline, outsider, &mut outsider_acts, &abstain);
     let out = w.settle_case(case, None).unwrap();
-    let expense: i64 = -out.net.iter().filter(|(id, _)| actual_members.contains(id)).map(|(_, amount)| amount).sum::<i64>();
-    let coalition_debt: i64 = actual_members.iter().map(|&id| w.debt(id)).sum();
+    let expense: SignedAmount = -out.net.iter().filter(|(id, _)| actual_members.contains(id)).map(|(_, amount)| amount).sum::<SignedAmount>();
+    let coalition_debt: Amount = actual_members.iter().map(|&id| w.debt(id)).sum();
     let preparation_cost = if unbacked { 2 * actual_members.len() } else { 0 };
     w.audit().unwrap();
     let attention = attention_at.map_or("null".into(), |h| h.to_string());
@@ -439,8 +440,8 @@ mod tests {
     fn empty_backing_keeps_actual_activity_and_earned_response_ranks() {
         let w = prepared(0, false);
         assert!(w.is_active(CHALLENGER));
-        assert_eq!(w.liquid(CHALLENGER), 0);
-        assert_eq!(w.burned(), 2, "two real own rights paid for pre-case guarantee renewals");
+        assert_eq!(w.liquid(CHALLENGER), Amount::ZERO);
+        assert_eq!(w.burned(), Amount::coins(2), "two real own rights paid for pre-case guarantee renewals");
         assert!(w.xp(CHALLENGER) > w.xp(ACCUSED));
         assert!(w.xp(DEFENDER) > w.xp(CHALLENGER));
         let w = prepare(0, false, true, 32);
@@ -448,7 +449,7 @@ mod tests {
         ranks.sort_unstable();
         ranks.dedup();
         assert!(ranks.len() >= 21, "the unbacked chain needs twenty-one distinct earned ranks");
-        assert!((0..25).all(|id| w.is_active(id) && w.liquid(id) == 0 && w.unspent_rights(id) == 0));
-        assert_eq!(w.burned(), 50);
+        assert!((0..25).all(|id| w.is_active(id) && w.liquid(id) == Amount::ZERO && w.unspent_rights(id) == 0));
+        assert_eq!(w.burned(), Amount::coins(50));
     }
 }

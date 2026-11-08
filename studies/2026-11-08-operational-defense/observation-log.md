@@ -22,12 +22,13 @@ No session has been run. These are empty forms, not collected data. Copy a form 
 | Deadline before / deadline after / before cutoff | |
 | Opening transaction / accepted-recording time / pending interval / 24-hour maturity / activation record | |
 | Author cancellation request / pre-maturity or active-open / finalization status / joined ordinary defenders | |
-| Actual collected author stake / equal share claim / own backing released-preserved / unresolved rounding-remainder | |
+| Actual collected author-stake quanta / ordinary-recipient count / quotient / remainder quanta / joining order | |
+| Extra quantum per earliest recipient / total quanta allocated equals actual pool / own backing released-preserved | |
 | Challenged opening author / event-time guarantor roster or UNKNOWN / sanction basis still missing | |
 | Council round / round start / membership snapshot / timely confirm-oppose-defer counts | |
 | Deadline-only recognition / decision ID / next round start / fresh snapshot / no carried ballots | |
 | Seven-day extension cause: majority or automatic-cutoff / applied once / previous count / actual new work accepted | |
-| Nominal stake / backing reserved / own principal returned | |
+| Position / exact nominal expression / one final upward-rounded stake quanta / backing reserved / own principal returned | |
 | Prize actually collectible / collected burn / allocation authority | |
 | New debt / later hypothetical repayment / debt left / real money (zero) | |
 | Reversed decision / original source recipients / units restored / coefficient history without this loss | |

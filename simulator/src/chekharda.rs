@@ -15,18 +15,22 @@
 //!   A majority for deferral, or no majority, adds seven days to the current deadline and starts a fresh, empty round. Council
 //!   confirmation or opposition ends the case; deferral keeps the Council terminal and supplies no winner. Entries at the same hour are applied in the order
 //!   they are submitted, and each must satisfy the XP and alternation conditions against the entry before it.
-//! - Stakes (D159): `stake(k) = ceil(base * 1.2^(k-1))` whole FCTY (declared rounding of the compound growth); every winner takes the
+//! - Stakes (D159, D185): `stake(k) = ceil(base * SCALE * 1.2^(k-1))` atoms, rounded once at the final 10^-12 FCTY quantum; every winner takes the
 //!   stake of the position directly below it and gets its own back; a loser forfeits to the position directly above it; the lowest
 //!   winning position is paid from the sanction on the accused (base stake); the stake of a losing top position has no winner above it
 //!   and is burned (D179); an adjacent Council position likewise receives none of the forfeited stake.
 //!
 //! Time is in hours, like the world clock.
 
+use crate::amount::{Amount, SCALE};
+
 pub const DAY_HOURS: i64 = 24;
 /// Base stake of the first position, in whole FCTY (D159).
 pub const BASE_STAKE: u32 = 7;
 /// Stake growth per position: 20% (D159).
 pub const STAKE_GROWTH: f64 = 0.20;
+/// Retained simulator nominal ceiling, independent of the finer currency quantum; this is not a protocol depth or funding limit.
+pub const MAX_STAKE: Amount = Amount::coins(u32::MAX as u64);
 
 /// The response window of position `n` in hours: `max(3, 8 - n)` days (D158).
 pub fn window_hours(n: u32) -> i64 {
@@ -34,47 +38,57 @@ pub fn window_hours(n: u32) -> i64 {
     (8 - i64::from(n)).max(3) * DAY_HOURS
 }
 
-/// The stake of position `n` in whole FCTY: `ceil(base * 1.2^(n-1))` computed from the formula, so rounding never compounds.
-pub fn stake(n: u32, base: u32) -> u32 {
-    checked_stake(n, base).expect("stake exceeds the simulator's u32 amount representation")
+/// The exact formula in atoms, rounded upward once at the final currency quantum rather than at intermediate positions.
+pub fn stake(n: u32, base: u32) -> Amount {
+    checked_stake(n, base).expect("stake exceeds the simulator's u32 whole-FCTY nominal ceiling")
 }
 
-/// Exact stake when it fits the simulator's amount representation; `None` is a numeric limit, not a protocol admission rule.
-pub fn checked_stake(n: u32, base: u32) -> Option<u32> {
+/// Exact stake through the retained nominal ceiling; `None` is a simulator numeric limit, not a protocol admission rule.
+pub fn checked_stake(n: u32, base: u32) -> Option<Amount> {
     assert!(n >= 1, "positions are numbered from 1");
     if base == 0 {
-        return Some(0);
+        return Some(Amount::ZERO);
     }
-    // Even base 1 exceeds u32 at position 123. Bound work before computing large powers.
+    // Even base 1 exceeds the u32 whole-FCTY ceiling at position 123. Bound work before computing large powers.
     if n > 122 {
         return None;
     }
-    if let (Some(num), Some(den)) = (6u128.checked_pow(n - 1).and_then(|v| v.checked_mul(u128::from(base))), 5u128.checked_pow(n - 1)) {
-        return u32::try_from(num.div_ceil(den)).ok();
+    let scaled_base = u128::from(base) * SCALE;
+    let limit = MAX_STAKE.atoms();
+    if let (Some(num), Some(den)) = (6u128.checked_pow(n - 1).and_then(|v| v.checked_mul(scaled_base)), 5u128.checked_pow(n - 1)) {
+        let atoms = num.div_ceil(den);
+        return (atoms <= limit).then(|| Amount::from_atoms(atoms));
     }
-    // At most 345 bits are needed through position 122, including a u32 base or quotient. Big-endian limbs compare lexically.
-    fn multiply(mut limbs: [u32; 12], factor: u32) -> [u32; 12] {
-        let mut carry = 0u64;
-        for word in limbs.iter_mut().rev() {
-            let value = u64::from(*word) * u64::from(factor) + carry;
-            *word = value as u32;
-            carry = value >> 32;
+    // base*SCALE*6^121 needs at most 385 bits; 5^121*(u32::MAX*SCALE) needs at most 353. Sixteen limbs provide 512 bits.
+    // Big-endian limbs compare lexically; each schoolbook column fits u64: (2^32-1)^2 + 2*(2^32-1) = 2^64-1.
+    fn multiply(limbs: [u32; 16], factor: u128) -> [u32; 16] {
+        let mut product = [0; 16];
+        for shift in 0..4 {
+            let part = ((factor >> (32 * shift)) & u128::from(u32::MAX)) as u32;
+            if part == 0 {
+                continue;
+            }
+            let mut carry = 0u64;
+            for destination in (0..16 - shift).rev() {
+                let value = u64::from(limbs[destination + shift]) * u64::from(part) + u64::from(product[destination]) + carry;
+                product[destination] = value as u32;
+                carry = value >> 32;
+            }
+            assert!(carry == 0 && limbs[..shift].iter().all(|&word| word == 0), "stake intermediate exceeds its proven 512-bit bound");
         }
-        debug_assert_eq!(carry, 0);
-        limbs
+        product
     }
-    let mut num = [0; 12];
-    num[11] = base;
-    let mut den = [0; 12];
-    den[11] = 1;
+    let mut den = [0; 16];
+    den[15] = 1;
+    let mut num = multiply(den, scaled_base);
     for _ in 1..n {
         num = multiply(num, 6);
         den = multiply(den, 5);
     }
-    if multiply(den, u32::MAX) < num {
+    if multiply(den, limit) < num {
         return None;
     }
-    let (mut lo, mut hi) = (0, u32::MAX);
+    let (mut lo, mut hi) = (0, limit);
     while lo < hi {
         let mid = lo + (hi - lo) / 2;
         if multiply(den, mid) >= num {
@@ -83,7 +97,7 @@ pub fn checked_stake(n: u32, base: u32) -> Option<u32> {
             lo = mid + 1;
         }
     }
-    Some(lo)
+    Some(Amount::from_atoms(lo))
 }
 
 /// Which side of the dispute a position takes: odd positions stand with the accuser, even positions with the accused.
@@ -128,7 +142,7 @@ pub enum Refusal {
     XpNotAbove,
     /// The Council already entered; it is the terminal entrant.
     CouncilEntered,
-    /// The exact stake does not fit the simulator's amount representation. This is a model limit, not a protocol funding gate.
+    /// The exact stake exceeds the simulator's retained nominal ceiling. This is a model limit, not a protocol funding gate.
     StakeOverflow,
 }
 
@@ -150,7 +164,7 @@ pub struct Position<W> {
     pub after: i64,
     /// XP of the entrant at admission (the condition for the next entrant); 0 for the Council.
     pub xp: i32,
-    pub stake: u32,
+    pub stake: Amount,
 }
 
 impl<W> Position<W> {
@@ -203,7 +217,7 @@ pub struct Ladder<W> {
     rounds: Vec<CouncilRound<W>>,
 }
 
-/// What a closed dispute settles: who wins, and every transfer of stake in whole FCTY.
+/// What a closed dispute settles: who wins, and every exact transfer of stake.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Settlement {
     pub winner: Side,
@@ -211,10 +225,10 @@ pub struct Settlement {
     pub winners: Vec<u32>,
     pub losers: Vec<u32>,
     /// `(from position, to position, amount)`: a losing stake forfeited to the position directly above it.
-    pub forfeits: Vec<(u32, u32, u32)>,
+    pub forfeits: Vec<(u32, u32, Amount)>,
     /// `(position, amount)`: a losing stake that has no ordinary position above it to receive it, burned: the stake of a losing top
     /// position, or one forfeited toward a Council entry (D179: no ordinary recipient means burn, not Council proceeds).
-    pub burns: Vec<(u32, u32)>,
+    pub burns: Vec<(u32, Amount)>,
     /// The winning first position, if any, is paid the base stake from the sanction on the accused rather than from a position below.
     pub sanction_to_first: bool,
     /// Whether the accused lost (the accuser side won): the base stake is charged to the accused and to each of its guarantors.
@@ -303,7 +317,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
             Some(u32::try_from(self.rounds.len()).expect("Council round number exceeds u32"))
         }
     }
-    pub fn stake_of_next(&self) -> Option<u32> {
+    pub fn stake_of_next(&self) -> Option<Amount> {
         checked_stake(self.next_ordinal(), self.base_stake)
     }
 
@@ -345,7 +359,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
             before: Some(before),
             after: before.max(proposed),
             xp: if kind == Kind::Council { 0 } else { xp },
-            stake: if kind == Kind::Council { 0 } else { stake(n, self.base_stake) },
+            stake: if kind == Kind::Council { Amount::ZERO } else { stake(n, self.base_stake) },
         };
         self.positions.push(position);
         Ok(self.positions.last().expect("just pushed"))
@@ -442,7 +456,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
                     previous_xp = Some(p.xp);
                 }
                 Kind::Council => {
-                    if p.xp != 0 || p.stake != 0 {
+                    if p.xp != 0 || !p.stake.is_zero() {
                         return Err("Council position has XP or stake".into());
                     }
                     council = true;
@@ -504,7 +518,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
         let mut burns = Vec::new();
         for &j in &losers {
             let amount = self.positions[j as usize - 1].stake;
-            if amount == 0 {
+            if amount.is_zero() {
                 continue;
             }
             if j < top && self.positions[j as usize].kind == Kind::Participant {
@@ -531,25 +545,80 @@ mod tests {
 
     #[test]
     fn stakes_grow_by_twenty_percent_from_the_base_and_round_up_once() {
-        let s: Vec<u32> = (1..=8).map(|n| stake(n, 7)).collect();
-        // 7, 8.4, 10.08, 12.096, 14.5152, 17.418, 20.90, 25.08
-        assert_eq!(s, vec![7, 9, 11, 13, 15, 18, 21, 26]);
-        assert_eq!(stake(1, 10), 10);
-        assert_eq!(stake(3, 10), 15, "exact 14.4 rounds up to 15");
+        let s: Vec<String> = (1..=8).map(|n| stake(n, 7).to_string()).collect();
+        assert_eq!(s, vec!["7", "8.4", "10.08", "12.096", "14.5152", "17.41824", "20.901888", "25.0822656"]);
+        assert_eq!(stake(1, 10), Amount::coins(10));
+        assert_eq!(stake(3, 10), Amount::from_atoms(14_400_000_000_000));
+        let iterative = Amount::from_atoms((stake(14, 7).atoms() * 6).div_ceil(5));
+        assert_eq!(iterative, stake(15, 7) + Amount::from_atoms(1), "rounding earlier positions would overcharge this position by one quantum");
+    }
+
+    /// Independent radix-10 schoolbook arithmetic checks q*5^(n-1) >= base*SCALE*6^(n-1) > (q-1)*5^(n-1).
+    fn verify_decimal_reference(n: u32, base: u32, amount: Option<Amount>) {
+        fn digits(value: u128) -> Vec<u8> {
+            value.to_string().bytes().rev().map(|b| b - b'0').collect()
+        }
+        fn product(a: &[u8], b: &[u8]) -> Vec<u8> {
+            let mut columns = vec![0u32; a.len() + b.len()];
+            for (i, &left) in a.iter().enumerate() {
+                for (j, &right) in b.iter().enumerate() {
+                    columns[i + j] += u32::from(left) * u32::from(right);
+                }
+            }
+            for i in 0..columns.len() - 1 {
+                columns[i + 1] += columns[i] / 10;
+                columns[i] %= 10;
+            }
+            while columns.len() > 1 && columns.last() == Some(&0) {
+                columns.pop();
+            }
+            assert!(columns.iter().all(|&d| d < 10));
+            columns.into_iter().map(|d| d as u8).collect()
+        }
+        fn compare(a: &[u8], b: &[u8]) -> std::cmp::Ordering {
+            a.len().cmp(&b.len()).then_with(|| a.iter().rev().cmp(b.iter().rev()))
+        }
+        let (mut numerator, mut denominator) = (digits(u128::from(base) * SCALE), digits(1));
+        for _ in 1..n {
+            numerator = product(&numerator, &[6]);
+            denominator = product(&denominator, &[5]);
+        }
+        if let Some(amount) = amount {
+            assert!(compare(&numerator, &product(&denominator, &digits(amount.atoms()))).is_le(), "n={n}, base={base}, q={amount}: rounded too low");
+            if amount.is_zero() {
+                assert_eq!(numerator, vec![0]);
+            } else {
+                assert!(compare(&numerator, &product(&denominator, &digits(amount.atoms() - 1))).is_gt(), "n={n}, base={base}, q={amount}: rounded too high");
+            }
+            assert!(amount <= MAX_STAKE);
+        } else {
+            assert!(compare(&numerator, &product(&denominator, &digits(MAX_STAKE.atoms()))).is_gt(), "numeric refusal below the nominal ceiling");
+        }
     }
 
     #[test]
     fn exact_stakes_survive_large_intermediate_powers_and_report_amount_limits() {
-        // Independent integer-rational references: ceil(base * 6**(n-1) / 5**(n-1)).
+        // Independently retained whole-coin brackets; the decimal reference below checks the precise final quantum.
         for (n, base, expected) in [(49, 7, 44_239), (50, 7, 53_086), (51, 7, 63_704), (111, 7, 3_589_509_485), (122, 1, 3_810_050_849)] {
-            assert_eq!(checked_stake(n, base), Some(expected));
+            let amount = checked_stake(n, base).unwrap();
+            assert!(amount > Amount::coins(expected - 1) && amount <= Amount::coins(expected));
+            verify_decimal_reference(n, base, Some(amount));
         }
         assert_eq!(checked_stake(112, 7), None);
         assert_eq!(checked_stake(123, 1), None);
-        assert_eq!(checked_stake(1, u32::MAX), Some(u32::MAX));
+        assert_eq!(checked_stake(1, u32::MAX), Some(MAX_STAKE));
+        assert_eq!(MAX_STAKE.atoms(), 4_294_967_295_000_000_000_000);
         assert_eq!(checked_stake(2, u32::MAX), None);
         assert_eq!(checked_stake(u32::MAX, 1), None);
-        assert_eq!(checked_stake(u32::MAX, 0), Some(0));
+        assert_eq!(checked_stake(u32::MAX, 0), Some(Amount::ZERO));
+        for base in [0, 1, 7, 14, 28, u32::MAX] {
+            for n in [1, 2, 8, 14, 15, 21, 49, 50, 51, 111, 112, 122, 123] {
+                verify_decimal_reference(n, base, checked_stake(n, base));
+            }
+        }
+        for n in 1..=21 {
+            verify_decimal_reference(n, 7, checked_stake(n, 7));
+        }
         let mut ladder = Ladder::open(1, 1, 0, 7);
         for n in 2..=111 {
             ladder.admit(n, Kind::Participant, n, 0).unwrap();
@@ -558,7 +627,7 @@ mod tests {
         assert_eq!(ladder.admit(112, Kind::Participant, 112, 0).map(|_| ()), Err(Refusal::StakeOverflow));
         assert_eq!((ladder.len(), ladder.deadline()), before, "numeric refusal changes no state");
         ladder.admit(112, Kind::Council, 0, 0).unwrap();
-        assert_eq!(ladder.positions().last().unwrap().stake, 0, "Council entry has no stake and remains representable");
+        assert_eq!(ladder.positions().last().unwrap().stake, Amount::ZERO, "Council entry has no stake and remains representable");
     }
 
     fn at(l: &mut Ladder<u32>, who: u32, xp: i32, day: f64) -> Result<(), Refusal> {
@@ -700,7 +769,7 @@ mod tests {
         let before = l.deadline();
         // A Council member needs no XP: a member with less XP than the last participant still enters, once.
         let p = l.admit(77, Kind::Council, 0, 6 * H).unwrap().clone();
-        assert_eq!((p.n, p.side, p.stake), (3, Side::Accuser, 0));
+        assert_eq!((p.n, p.side, p.stake), (3, Side::Accuser, Amount::ZERO));
         assert_eq!(p.window, 5 * H, "the ordinary window of its ordinal, no Council-specific window");
         assert_eq!(l.deadline(), before.max(6 * H + 5 * H));
         let deadline = l.deadline();
@@ -843,7 +912,7 @@ mod tests {
         l.admit(3, Kind::Participant, 3, 2 * H).unwrap();
         let s = l.settle().unwrap();
         assert_eq!((s.winner, s.winners.clone(), s.losers.clone()), (Side::Accuser, vec![1, 3], vec![2]));
-        assert_eq!(s.forfeits, vec![(2, 3, 12)], "the loser at 2 forfeits its stake of 12 to position 3");
+        assert_eq!(s.forfeits, vec![(2, 3, Amount::coins(12))], "the loser at 2 forfeits its stake of 12 to position 3");
         assert!(s.sanction_to_first && s.accused_lost);
         assert!(s.burns.is_empty());
         // The defender's side wins with two positions: the accuser's stake goes to the first defender.
@@ -851,7 +920,7 @@ mod tests {
         m.admit(2, Kind::Participant, 2, H).unwrap();
         let s = m.settle().unwrap();
         assert_eq!((s.winner, s.winners.clone(), s.losers.clone()), (Side::Accused, vec![2], vec![1]));
-        assert_eq!(s.forfeits, vec![(1, 2, 10)]);
+        assert_eq!(s.forfeits, vec![(1, 2, Amount::coins(10))]);
         assert!(!s.sanction_to_first && !s.accused_lost);
         // The Council overturns the top position: its stake (none) and the loser below it... the council entrant has no stake.
         let mut c = Ladder::open(1, 1, 0, 10);
@@ -862,7 +931,7 @@ mod tests {
         c.close_round(0, c.deadline()).unwrap();
         let s = c.settle().unwrap();
         assert_eq!((s.winner, s.winners.clone(), s.losers.clone()), (Side::Accused, vec![2], vec![1, 3]));
-        assert_eq!(s.forfeits, vec![(1, 2, 10)], "the accuser forfeits to the first defender; the Council entrant staked nothing");
+        assert_eq!(s.forfeits, vec![(1, 2, Amount::coins(10))], "the accuser forfeits to the first defender; the Council entrant staked nothing");
         assert!(s.burns.is_empty());
         // A ladder whose top ordinary position is overturned by the Council: the top participant's stake is burned.
         let mut d = Ladder::open(1, 1, 0, 10);
@@ -875,7 +944,7 @@ mod tests {
         let s = d.settle().unwrap();
         // The Council entrant took position 4 (the defender side); a vote against it hands the win to the accuser side (1, 3).
         assert_eq!((s.winner, s.winners.clone()), (Side::Accuser, vec![1, 3]));
-        assert_eq!(s.forfeits, vec![(2, 3, 12)]);
+        assert_eq!(s.forfeits, vec![(2, 3, Amount::coins(12))]);
         assert!(s.burns.is_empty(), "the losing Council position staked nothing, so nothing burns");
     }
 
@@ -890,11 +959,11 @@ mod tests {
         let s = l.settle().unwrap();
         assert_eq!(s.winner, Side::Accuser);
         assert!(s.forfeits.is_empty());
-        assert_eq!(s.burns, vec![(2, 12)]);
+        assert_eq!(s.burns, vec![(2, Amount::coins(12))]);
         // A lone accusation that the accused wins by an outside proof: the top position is the loser, nobody above it.
         let lone = Ladder::open(1, 1, 0, 10);
         let s = lone.settle_for(Side::Accused);
-        assert_eq!((s.winners.clone(), s.losers.clone(), s.burns.clone()), (vec![], vec![1], vec![(1, 10)]));
+        assert_eq!((s.winners.clone(), s.losers.clone(), s.burns.clone()), (vec![], vec![1], vec![(1, Amount::coins(10))]));
         assert!(!s.accused_lost);
     }
 
@@ -910,10 +979,11 @@ mod tests {
             expected = expected.max(join + window_hours(n));
             assert_eq!(l.deadline(), expected);
         }
-        // 20 entries: 7 days + 6 + 5 + 4 + 3 * 17 days minus 20 hours, 72.17 days, with a last stake of 269 FCTY.
+        // 20 entries: 7 days + 6 + 5 + 4 + 3 * 17 days minus 20 hours, with the exact last stake rounded once at the final quantum.
         assert_eq!(l.deadline(), (7 + 6 + 5 + 4 + 3 * 17) * H - 20);
-        assert_eq!(stake(21, BASE_STAKE), 269);
-        assert_eq!(l.positions().iter().map(|p| u64::from(p.stake)).sum::<u64>(), 1587);
+        assert_eq!(stake(21, BASE_STAKE), Amount::from_atoms(268_363_199_471_324));
+        let total: Amount = l.positions().iter().map(|p| p.stake).sum();
+        assert!(total > Amount::coins(1575) && total < Amount::coins(1576));
         // The Council, entering once, ends the escalation: no further entry is possible.
         l.admit(99, Kind::Council, 0, l.deadline() - 1).unwrap();
         assert_eq!(l.admit(100, Kind::Participant, 1000, l.deadline() - 1), Err(Refusal::CouncilEntered));

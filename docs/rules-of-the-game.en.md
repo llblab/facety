@@ -18,6 +18,8 @@ The subject's identity acts, invitations, guarantees, dispute positions and auth
 
 FCTY is transferable money once it has entered an ordinary balance. XP is personal, non-transferable procedural authority. Buying FCTY does not buy XP or the right to create invitations from someone else's emission.
 
+FCTY has twelve decimal places. Its smallest quantum is 10^-12 FCTY, and monetary amounts are integer counts of that quantum.
+
 An ordinary rewarded identity act creates one FCTY entitlement. It also becomes a source of responsibility units for its author and eligible guarantors when it matures. The resulting effective XP depends on the participant's integrity coefficient, as described below.
 
 An **Emitter right** is the personally earned, one-time right attached to an identity act. The **Collector balance** holds ordinary fungible FCTY after withdrawal or receipt. The distinction matters: withdrawing an Emitter right gives ordinary money, while retaining it preserves its eligibility for specified network-building operations.
@@ -144,7 +146,9 @@ An accepted/recorded open-dispute transaction stays pending for 24 hours. Only a
 
 Before 24-hour maturity, the author may cancel the pending transaction without forfeiting its stake. Once active, the author may cancel its own case while it is open, including Council deferrals; it cannot cancel after a final decision. Split its actually collected stake equally among joined ordinary participants on the accused/defending side, without stake or XP weights. The collective Council receives none. Other participants on the author's side recover their own stakes; defending participants' own backing is preserved/released too. No additional author/guarantor charges or XP penalties apply. Uncollected debt is not payout money, and other cases' holds remain. Closed cases use the appeal route.
 
-Record acceptance, maturity and activation separately. The delay does not require maturity before acceptance/recording or create a new revalidation power. Payout precision, rounding and remainder handling, applicable merits-sanction amounts, historical records and authorized execution remain unfinished. No refund or compensation fund is invented.
+A Council member actually joined in an ordinary position remains an ordinary participant for this allocation; the collective Council position is excluded. For an equal split, divide the actual pool's integer quanta equally among the joined ordinary defending-side recipients. Give one leftover quantum to each recipient in joining order until the remainder is exhausted. This preserves the entire actual pool without creating money or changing XP/stake weights.
+
+Record acceptance, maturity and activation separately. The delay does not require maturity before acceptance/recording or create a new revalidation power. Applicable merits-sanction amounts, historical records and authorized execution remain unfinished. Stakes use the final-rounding rule below, separately from equal-payout remainders. No refund or compensation fund is invented.
 
 Evidence of a person's presence can answer an allegation that the person was invented. It does not by itself answer an allegation about a particular wrongful act or establish uniqueness. Meetings, witnesses and voluntarily offered documents can supply different evidence; no universal government-ID check or infallible verifier is prescribed.
 
@@ -154,7 +158,7 @@ Opening a case establishes an allegation, not guilt. The accused may answer and 
 
 The first challenger occupies position one. Each later ordinary entrant takes the side opposite the preceding position and must have strictly more effective XP than that entrant. One participant occupies each position; no mandatory second confirming participant is required to open a case.
 
-The base stake is seven FCTY. Each later ordinary position's nominal stake is 20% higher than the preceding one, compounded from that base. Asset precision and rounding still need their production rule. Money cannot replace the XP requirement.
+The base stake is seven FCTY. Compute ordinary position n's exact nominal stake as `7 * (6/5)^(n-1)` FCTY, then round that final value upward once to the least integer count of 10^-12-FCTY quanta not below it. An already exact amount is unchanged; the first stakes are 7, 8.4, 10.08 and 12.096 FCTY. Never round intermediate steps or compound from a previously rounded stake. Money cannot replace the XP requirement; this arithmetic imposes no stake or position cap.
 
 ### One shared deadline
 
@@ -272,7 +276,7 @@ The common rules above do not yet form a complete executable specification. The 
 - Network qualification: verification, independent support, exact qualifying graph state, difficulty adoption, founding membership and activation, Council ranking/vacancies and snapshots at changes.
 - Authorization records: one numerical XP-to-capacity schedule, duplicate and pending-record handling, invitation acceptance/expiration, and ordinary versus invitation relationship closure.
 - Adjudication: admissible claims and evidence, duties of care, correction and appeal procedures, repeat-claim identity, historical-chain coverage, suffix counting and overlapping liability.
-- Economic execution: stake precision/rounding, collection priorities, reserved rights later revoked, appeal financial scope, canonical debt/repayment records, transferred-money refunds and treatment of abandoned accounts.
+- Economic execution: collection priorities, reserved rights later revoked, appeal financial scope, canonical debt/repayment records, transferred-money refunds and treatment of abandoned accounts.
 - Concurrent operations and governance: exact ordering at boundaries, maturity of already committed disputed acts, participant rosters and guarantee termination during cases, same-time membership ordering at round starts, ballot authentication and revision, replay-safe execution of each deadline result, and authorization/activation of parameter changes and pauses.
 
 These gaps must be resolved without changing already selected rights by implication. Human willingness, evidence quality, review capacity and market demand remain conditions of operation, not guarantees created by this rulebook.
