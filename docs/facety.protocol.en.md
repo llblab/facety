@@ -441,6 +441,8 @@ Trust history survives account changes. A wallet address alone does not define p
 
 ## 14. Media artifacts and publication
 
+**[SELECTED] (D186) Voluntary public accountability.** Self-ID is a voluntary public act by a person who identifies themselves openly, accepts responsibility for their signed claim and dedicates the Self-ID record they author to the public domain. The dedication of an authored Self-ID record and the publisher's rights assertion for shared media are distinct commitments; the latter follows §14.2.
+
 ### 14.1 Registration
 
 **[SELECTED]** An initial publisher registers an artifact on-chain. Registration establishes at least:

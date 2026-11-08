@@ -1,6 +1,6 @@
 # Facety: Rules of the Game
 
-Facety is a network of people who repeatedly identify themselves, vouch for one another and take responsibility for public claims. Participation creates FCTY emission and a history of responsibility. That history determines procedural authority in disputes.
+Facety is a network of people who choose public, accountable participation. They repeatedly identify themselves, vouch for one another and take responsibility for their public claims. By publishing a Self-ID, a participant voluntarily dedicates the Self-ID record they author to the public domain. Participation creates FCTY emission and a history of responsibility. That history determines procedural authority in disputes.
 
 This first consolidated draft describes the selected rules for ordinary participation. Invitations, emission and the opening of disputes are enabled by default. Details that still need a precise rule are collected at the end; they are not permissions to choose an arbitrary implementation.
 
@@ -45,6 +45,8 @@ There is no separate lifetime or outgoing invitation quota. Actual eligible fund
 The founding network begins with declared, already established guarantees. It is not created by treating a formula's minimum value as a self-guarantee or by exempting founders from paths to the Council.
 
 ## 4. Making a Self-ID
+
+Making a Self-ID is a voluntary public act. You identify yourself openly, accept responsibility for your signed claim and dedicate your own Self-ID record to the public domain.
 
 A Self-ID is a signed claim about the participant's presence in a registered media artifact. The publisher registers a content reference and publication time. Each participant selects a reproducible face reference consisting of the artifact, the detector version and the face index.
 
