@@ -1,5 +1,8 @@
 # Changelog
 
+- Prepared an operational-defense owner decision and contract plus a synthetic manual-validation kit: voluntary finite work, source lineage, neutral cases, concealed keys, shared clocks and blank observations. Kept admission/execution/appeal questions in Q25 and preserved D168/B4; no people, exercise, personal data, runtime or pilot were engaged.
+- D171: selected a default third Council ballot option, adding seven days to the current latest deadline, repeatable; an entered vote with no option majority at cutoff automatically defers seven days. Updated current rule text and manual clock/logs, preserved terminal entry and continuing restrictions, and declared the existing binary simulator/results outside this later rule's implementation/evidence coverage.
+
 - Added the first coherent participant-facing Rules of the Game, folding selected participation, emission, guarantee, dispute and recovery rules into a reading without decision identifiers or simulator assumptions. Kept unfinished contracts explicit and the protocol authoritative; reconciled stale source passages on XP after exit/halving, invitation cancellation, free termination and the emitter-origin path check. Existing research and negative results remain intact.
 
 - D168 finite research closure: retained 18 local and 20 final uncensored Rust runs on one frozen core, completed the minimal mechanism evidence table and the REVISE operational-assumptions verdict. Folded the current readiness summaries into that report, preserved B4 and prior negative/build-specific evidence, and parked follow-ups at Q25. Conditional D129 containment does not establish independent information, collectible defense rewards or finite corrective service. Grow Loop stopped; no runtime/pilot work started.

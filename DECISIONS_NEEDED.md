@@ -6,9 +6,33 @@ This register owns open questions, candidate trade-offs, placeholder provenance 
 
 ## Q25: operational evidence and finite defense after closure
 
-**Open next-stage decision, not authorization for more work.** What concrete source of independent information, willing qualified response before deadlines and admitted proof/appeal will the application/community commit to when a disposable losing accuser has no collectible backing? Specify who supplies the work, its finite capacity and voluntary incentives, and the observations needed to assess joint errors, response/refusal/appeal times and honest recovery. No synthetic rate alone establishes those human properties.
+**OPEN after operational preparation.** The [proposed operational contract](docs/operational-defense.en.md) and [unused manual kit](studies/2026-11-08-operational-defense/README.md) make one candidate workflow and its tests inspectable. They supply neither committed people nor observations and do not close this question. What concrete source of independent information, willing qualified response before deadlines and admitted proof/appeal will the application/community commit to when a disposable losing accuser has no collectible backing? Specify actual voluntary work, finite capacity and incentives. No synthetic rate alone establishes those human properties. The bounded preparation assignment authorizes documents only; any session, recruitment, data collection, runtime or pilot needs a separate assignment.
 
 Minimum counterexamples in the [report](studies/2026-11-08-evidence-core/README.md): zero-backed loser pays a winning defender zero; a one-case Council queue leaves two of three cases unserved and one innocent person losing; the same-evidence reread removes the independent-look error reduction. The joint population panel passes D129 while honest activity degrades sharply. These block relying on self-financing, automatically available correction, not a selected XP/debt/Council rule. Account and effort valuations remain supplied unknowns; no positive value is imposed on an abandoned account. A new debt ceiling, Treasury, second confirmer, halving exemption or duration cap is not selected or re-asked. B4 remains killed. Follow-up work is parked in BACKLOG until a separate assignment.
+
+### Q25-A: claim, evidence and admission authority
+
+**Normative, before implementing these transitions.** What record and procedure admit a specific existence/duplicate/act allegation and recognize evidence or an author-only self-correction? Bind the target/duty, permitted evidence, reply and actual decision authority without adding a compulsory second examiner or an application veto over existing challenge rights. A low-XP observer's correct report is not an admitted position; the ordinary strict greater-XP test cannot itself admit an author against the same author. A meeting can address presence without proving uniqueness or a different act's validity.
+
+The rehearsal can use explicitly supplied already-admitted fictional openings after a separate voluntary prefiling segment and mark missing admission/recognition BLOCKED. This permits observation of information work and response; it does not validate the missing admission contract.
+
+### Q25-B: attributable execution and economic scope
+
+**Normative, before implementing the affected effects.** Bind case/participant/Council-membership and historical duty snapshots, authenticated entry/ballots, authorized executor, repeat-event identity and applicable monetary/XP consequences. For Council deferrals, bind successive period/ballot snapshots, recognition time and replay-safe execution of each extension once. The three choices, seven days added to the latest deadline, repeatability and automatic seven-day deferral when no option has a majority at an entered referendum's cutoff are selected (D171), not remaining alternatives. In particular, how do the act-specific terminal/suffix sanctions interact with the ladder base, conflicting reservations, losing top stake and any Council allocation? Do not invent an extra charge or available money. A correct informal result with an unknown remedy cannot authorize a chain cut, a payment or release of every other case's hold.
+
+The rehearsal records calculable paper effects separately and leaves unspecified effects blocked. Seven-FACY nominal loss, zero backing, zero collectible reward and outstanding debt remain distinct. The ordinary XP gate, selected clock/vote, soft entry, no debt ceiling and no Treasury are settled rather than alternatives in this question.
+
+### Q25-C: admitted appeal and exact restoration
+
+**Normative, before relying on return after a wrong verdict.** Who may request, admit, decide and execute an appeal after the cutoff, under what claim/evidence conditions, and with which binding effects on status, holds, honest links, paths, debt, revoked source units and prior coefficient penalties? A new remedy must preserve history and distinguish a new admitted review from an ordinary entry that is too late. Selected appeal/fee-free honest-link repair direction is retained; it does not assign all those powers or promise refunds/backfilled units.
+
+Minimal failing step: a wrongly invalidated subject presents convincing new material, but no selected executor/admission contract yet turns it into reinstatement. Without reinstatement and usable support the subject cannot simply emit to repay debt and repair integrity. In the rehearsal the request and normative stop are observable; a separately labeled conditional arithmetic example is not performed restoration.
+
+### Q25-D: actual voluntary work and permission for a session
+
+**Operational commitment and human evidence, not a new protocol rule.** Before commissioning a session, who willingly accepts organizer/observer work and which finite tasks do participants actually accept at zero collectible winnings? Approve exercise parameters and explicit consent, access/storage/retention terms for any behavioral logs. No real people, funds or work hours are booked by the proposal. Refusal, withdrawal and unserved cases remain permissible and measured; an organizational promise is different from delivered work.
+
+The proposed small synthetic rehearsal may proceed under a later assignment while A-C remain explicit observed blocks; it cannot be described as validation of those still-missing transitions. Actual implementation of a blocked transition needs its normative decision first. Seven-day availability, real economic motivation, shared evidence error and representative participation remain unmeasured after a compressed session unless separately evidenced. No additional theoretical research programme is implied.
 
 ## Assumptions taken for D123/D124 (2026-11-05)
 

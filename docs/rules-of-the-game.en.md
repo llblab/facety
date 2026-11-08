@@ -152,7 +152,7 @@ The base stake is seven FACY. Each later ordinary position's nominal stake is 20
 
 ### One shared deadline
 
-The first position receives seven days from its own entry. Later positions receive six, five, four and then three days each. Every admitted position starts its own window when it joins. The shared deadline is the latest end of any admitted window:
+The first position receives seven days from its own entry. Later positions receive six, five, four and then three days each. Every admitted position starts its own window when it joins. Before any Council deferral, the shared deadline is the latest end of any admitted window:
 
 ```text
 window(n) = max(3, 8 - n) days
@@ -160,19 +160,21 @@ deadline(1) = joined(1) + 7 days
 deadline(n) = max(deadline(n - 1), joined(n) + window(n))
 ```
 
+A majority choosing deferral adds seven days to the current latest shared deadline. An entered Council referendum also defers automatically at its cutoff if no option has a simple majority. Both forms may repeat. The effective deadline is the maximum position-window end plus seven days for each recorded deferral. Each deferred round/result or cutoff period applies once, creates no new position and cannot be replayed for another extension.
+
 A position can preserve or extend the deadline, never shorten it. Entries on days zero, six and eleven give deadlines on days seven, twelve and sixteen. Rapid entries cannot shorten the original seven days, and the three-day floor does not cap total case duration.
 
-An eligible participant may join before the cutoff. At or after it, a new entry cannot reopen the dispute. Without a confirmed Council position, the last ordinary side wins when the dispute ends. Failed attempts, notices, evidence submissions and individual Council ballots add no position and move no deadline. There is no protocol rule limiting ordinary entry to one participant per day.
+An eligible participant may join before the cutoff until the Council's terminal entry. A new entry cannot reopen a finalized dispute. Without Council entry the ordinary case has its normal cutoff; no automatic Council extension applies. Confirmation backs the Council side and opposition leaves the last ordinary side winning. A deferral instead keeps the case open. Failed attempts, notices, evidence, an unserved queue and individual ballots move no deadline by themselves. There is no protocol rule limiting ordinary entry to one participant per day.
 
 ### Restrictions while a case is open
 
-All actual participants in an open dispute are prohibited from creating new Self-IDs, invitations or guarantees. The restriction is not limited to the accused or latest entrant. It ends only when the participant has no remaining open-case restriction. Uninvolved people continue ordinary life.
+All actual participants in an open dispute are prohibited from creating new Self-IDs, invitations or guarantees. The restriction is not limited to the accused or latest entrant. It continues during Council deferrals and ends only when the participant has no remaining open-case restriction. Uninvolved people continue ordinary life.
 
 The Emitter right targeted by a dispute is separately frozen against use for invitations, guarantee operations or withdrawal until resolution. These restrictions do not imply a universal ban on every transfer or defense action. The treatment of already committed acts and termination during participation still needs an exact contract.
 
 ## 10. Stakes, collection and debt
 
-A stake has soft backing. Existing emission value and ordinary FACY held by the account are blocked for it, but entry requires no minimum funded balance. Missing backing becomes debt if the stake is lost. A reserved unit cannot simultaneously fund another obligation.
+A stake has soft backing. Existing emission value and ordinary FACY held by the account are blocked for it, but entry requires no minimum funded balance. Custody continues until the case ends, including during Council deferrals. Missing backing becomes debt if the stake is lost. A reserved unit cannot simultaneously fund another obligation.
 
 Each winner recovers its own backing and receives the collectible losing stake directly below it. Return of principal is not winnings. A losing position forfeits upward. If the accused loses an identity case, the base charge on the accused pays the first accuser to the extent it can be collected. Each liable guarantor is also charged the base amount, with collected guarantor charges burned. For an identity case, the liable guarantors are exactly those who actually received XP from that account's acts, including departed guarantors.
 
@@ -200,11 +202,17 @@ From 100 active participants, membership is limited by the active verified popul
 
 Every Council member has one vote, regardless of XP. A member may initiate intervention in any ongoing case before its cutoff, taking the side opposite the last ordinary participant. Opening the referendum immediately creates one terminal collective position, without the ordinary XP gate or stake. Ordinary escalation stops at that entry.
 
-The Council position receives the window of its ordinal on the same shared clock. There is no extra Council interval. Voting can occur at any time during the ongoing dispute; ballots do not add entries or extend the clock.
+The Council position receives the window of its ordinal on the same shared clock. No extra Council interval is added automatically. Voting can occur at any time during the ongoing dispute. An individual ballot does not create another entry or independently extend the clock.
 
-A simple majority of ballots cast must confirm the entering member's position. There is no quorum or recusal. If the Council does not confirm it, the Council counts as absent: the last non-Council participant's side wins, and stakes settle as if the Council had not entered. The actual entry and its clock remain part of the record.
+Every member has three default ballot choices: confirm the entering member, oppose it in favor of the last ordinary side, or defer the decision by seven days. A simple majority of ballots cast adopts a choice, without quorum or recusal. Confirmation backs the Council position. Opposition makes the Council count as absent for settlement: the last ordinary side wins, and stakes settle as if the Council had not entered. The entry and clock remain in the record.
 
-A dispute between Council members proceeds directly to the collective referendum rather than ordinary escalation. The parties retain their votes. Its exact admission, membership snapshot and settlement representation still need definition.
+With no quorum, one cast ballot can constitute that majority when the period's result is validly recognized. A ballot record is separate from recognition and application of the collective result; this is not a requirement for a second voter or minimum turnout.
+
+A deferral majority adds seven days to the **current latest shared deadline**, not seven days from the decision time. At the cutoff of an entered Council referendum, if no choice has a simple majority, deferral is automatic. A two/two/two split or no ballots therefore adds seven days rather than awarding either side a win. The case stays open, with participation restrictions and custody continuing; deferral alone settles nothing and halves no coefficient.
+
+The Council remains terminal and ordinary escalation does not resume. Deferrals may repeat without a selected maximum. Each distinct deferred round/result or cutoff period adds seven days once: a majority deferral and automatic cutoff cannot both extend the same result. Replaying old votes or checking the same cutoff repeatedly supplies no new extension. The exact production records for rounds, members and authenticated ballots still need definition. Notice or a waiting queue without Council entry is no extension, and additional calendar time promises no further review work.
+
+A dispute between Council members proceeds directly to the collective referendum rather than ordinary escalation. The parties retain their votes; the same three choices, majority rule and repeatable deferral clock, including automatic no-majority cutoff deferral, apply. Its exact admission, round/member snapshots, ballot authentication and settlement representation still need definition.
 
 The Council is not obliged to handle every dispute. Published notice, a right to vote and an available seat are different from actual review work. Neither a majority nor a high-XP position guarantees a true judgment. There is no higher infinite ladder of councils that guarantees a correction of collective failure.
 
@@ -249,6 +257,6 @@ The common rules above do not yet form a complete executable specification. The 
 - Authorization records: one numerical XP-to-capacity schedule, duplicate and pending-record handling, invitation acceptance/expiration, and ordinary versus invitation relationship closure.
 - Adjudication: admissible claims and evidence, duties of care, correction and appeal procedures, repeat-claim identity, historical-chain coverage, suffix counting and overlapping liability.
 - Economic execution: stake precision/rounding, collection priorities, allocation of a losing top stake and any Council proceeds, reserved rights later revoked, debt/appeal effects and treatment of abandoned accounts.
-- Concurrent operations and governance: exact ordering at boundaries, maturity of already committed disputed acts, participant rosters and guarantee termination during cases, ballot authentication, and authorization/activation of parameter changes and pauses.
+- Concurrent operations and governance: exact ordering at boundaries, maturity of already committed disputed acts, participant rosters and guarantee termination during cases, round/member snapshots, ballot authentication and recognition of each distinct majority-adopted or automatic cutoff deferral, and authorization/activation of parameter changes and pauses.
 
 These gaps must be resolved without changing already selected rights by implication. Human willingness, evidence quality, review capacity and market demand remain conditions of operation, not guarantees created by this rulebook.
