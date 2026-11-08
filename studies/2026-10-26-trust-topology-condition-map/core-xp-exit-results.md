@@ -16,7 +16,7 @@ The challenged accounting claim is exit-timing neutrality: same initial earned s
 - Exit after maturity: +0 retained guarantor XP,2 issued/2 revoked receipts.
 - Existing keep reference: +2 under both schedules; this is a named comparison, not a newly selected option.
 
-These facts hold at both declared activation fees. Each within-fee/mode pair has identical initial/final monetary audit, recipient act/credit times and horizon, peak live outgoing count1 and final count0. All relation intervals and act-time rosters remain. The sponsor pays two real1 FACY breaks plus any declared activation fees, ends with zero liquid FACY/debt; final feeVault is2 or4, **burned is0**, target unspent source vault is2. Fees are not burns, and recipient source value is not sponsor profit. The eight traces are dependent engineering controls, not eight sampled worlds or equilibrium evidence.
+These facts hold at both declared activation fees. Each within-fee/mode pair has identical initial/final monetary audit, recipient act/credit times and horizon, peak live outgoing count1 and final count0. All relation intervals and act-time rosters remain. The sponsor pays two real1 FCTY breaks plus any declared activation fees, ends with zero liquid FCTY/debt; final feeVault is2 or4, **burned is0**, target unspent source vault is2. Fees are not burns, and recipient source value is not sponsor profit. The eight traces are dependent engineering controls, not eight sampled worlds or equilibrium evidence.
 
 ## Causal consequence and limits
 

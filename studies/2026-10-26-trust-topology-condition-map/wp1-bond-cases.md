@@ -14,7 +14,7 @@ Each commitment conserves `bond = bondRemaining + slashed + refunded`. Here **sl
 
 Pending cases block refunds even after V, and encumbered/depleted commitments cannot support a new c-vouch admission. Exit remains free and does not escape held exposure; it neither resolves the case nor releases collateral. Neither the case nor a partial debit resets T or extends V/K slot occupancy. Partial remainder stays locked; after V and all holds resolve, an explicit separate clearance refunds only that remainder. Full debit can leave a zero-valued reserved record until its ordinary clearance. Rejected-case resolution clears that hold only, not every possible obligation or a missing clearance.
 
-All verdict totals, recipient existence/duplicates/balances, supply bounds and remaining backing are preflighted before mutation. Per-bond debits across cases cannot exceed original B. Case/pending indexes, clearance fields and principal/allocation history are reconstructed by audit alongside full FACY conservation. No direct graph mutation, minted payout, fictitious recovery/debt burn, free refund or court integration is introduced.
+All verdict totals, recipient existence/duplicates/balances, supply bounds and remaining backing are preflighted before mutation. Per-bond debits across cases cannot exceed original B. Case/pending indexes, clearance fields and principal/allocation history are reconstructed by audit alongside full FCTY conservation. No direct graph mutation, minted payout, fictitious recovery/debt burn, free refund or court integration is introduced.
 
 ## Validation and remaining gate
 

@@ -49,7 +49,7 @@ Use the following labels:
 - [Part III — Identity Evidence and Self-ID](#part-iii-identity-evidence-and-self-id): media artifacts, deterministic FaceRef, group Self-ID, and Emitter rights.
 - [Part IV — Invitations, Guarantees, and Graph Responsibility](#part-iv-invitations-guarantees-and-graph-responsibility): social admission, payments, and two kinds of liability.
 - [Part V — XP, Public Disputes, and the Council](#part-v-xp-public-disputes-and-the-council): earned authority, halving, Chekharda, dynamic consuls and limits on apex judgment.
-- [Part VI — FACY Economics and Atmo Integration](#part-vi-facy-economics-and-atmo-integration): deflation, debt, and Bucket D buyback-and-burn.
+- [Part VI — FCTY Economics and Atmo Integration](#part-vi-fcty-economics-and-atmo-integration): deflation, debt, and Bucket D buyback-and-burn.
 - [Part VII — Reference Implementation Contracts](#part-vii-reference-implementation-contracts): state records, example transitions, and protocol invariants.
 - [Part VIII — Threat Model, Research, and Delivery](#part-viii-threat-model-research-and-delivery): adversarial tests, unresolved policies, and development sequence.
 - [Part IX — Condensed Protocol Constitution](#part-ix-condensed-protocol-constitution): the rules and final thesis.
@@ -58,7 +58,7 @@ Use the following labels:
 
 ## From identity work to a maintained network
 
-A participant makes an ordinary rewarded signed Self-ID about fresh presence. Unlike D107's pre-registration zero Genesis Self-ID (no emission), that act creates one restricted FACY entitlement, not immediately liquid money or verified personhood. At the end of its 24-hour contest period, an uncancelled act earns the subject and its eligible guarantors 1 XP each, even if its value remains unused; the original free guarantor veto ends then (D42). The matured value remains the subject's own non-vetoable emission right, not an automatic Collector payment. Its holder separately chooses withdrawal or invitation use, subject to own-emission provenance and the independent-guarantee/path conditions (D42, §17.3). The invitation then has its own 24-hour freeze. D105 revises the special invitation price to 1 own FACY, no newborn payment/debt. D106 reserves one K slot at EACH endpoint on issuance. D107 addresses an already pre-registered account with completed fields and a zero Genesis Self-ID; that act only conceptually supplies the recipient-side channel opening, with no actual mint/burn, and no repeated issuance-eligibility check at acceptance. Admission/acceptance/activation and the newcomer's own identity work retain distinct explicit transitions; an unaccepted offer alone does not create mutual responsibility.
+A participant makes an ordinary rewarded signed Self-ID about fresh presence. Unlike D107's pre-registration zero Genesis Self-ID (no emission), that act creates one restricted FCTY entitlement, not immediately liquid money or verified personhood. At the end of its 24-hour contest period, an uncancelled act earns the subject and its eligible guarantors 1 XP each, even if its value remains unused; the original free guarantor veto ends then (D42). The matured value remains the subject's own non-vetoable emission right, not an automatic Collector payment. Its holder separately chooses withdrawal or invitation use, subject to own-emission provenance and the independent-guarantee/path conditions (D42, §17.3). The invitation then has its own 24-hour freeze. D105 revises the special invitation price to 1 own FCTY, no newborn payment/debt. D106 reserves one K slot at EACH endpoint on issuance. D107 addresses an already pre-registered account with completed fields and a zero Genesis Self-ID; that act only conceptually supplies the recipient-side channel opening, with no actual mint/burn, and no repeated issuance-eligibility check at acceptance. Admission/acceptance/activation and the newcomer's own identity work retain distinct explicit transitions; an unaccepted offer alone does not create mutual responsibility.
 
 A guarantee joins compensation to responsibility: qualifying identity work can earn its guarantor XP, while the guarantor can inspect and prevent specific suspect acts. A genuine mistake need not destroy the relationship. Either party can end the guarantee under its separate fee/XP rules, but ending it does not erase responsibility for historical events under D34. Whether participants willingly maintain these relations, rather than avoid risk or conceal problems, is a hypothesis about human choices, not a result of credit arithmetic.
 
@@ -78,12 +78,12 @@ The final trust boundary is human collective judgment. Equal votes limit individ
 
 | Event | Human and economic rule |
 | --- | --- |
-| Ordinary rewarded Self-ID | At least 1 mutual guarantor, and at every emission one current path from the emitter to a Council member of at most 7 nodes through supported intermediates outside disputes (D84, D133, D156). Signed act creates 1 FACY entitlement, ordinary XP at 24h (D42); no automatic withdrawal. |
+| Ordinary rewarded Self-ID | At least 1 mutual guarantor, and at every emission one current path from the emitter to a Council member of at most 7 nodes through supported intermediates outside disputes (D84, D133, D156). Signed act creates 1 FCTY entitlement, ordinary XP at 24h (D42); no automatic withdrawal. |
 | First 24 hours | The holder cannot use the emission. An authorized guarantor may cancel it for free during this window. A cancelled act earns no ordinary XP. |
 | From 24 hours | The uncancelled act earns the subject and each eligible guarantor 1 XP even if unused. The original free veto ends. Invitation use also retains that credit and creates no second XP reward. The matured own right stays in place until its holder chooses withdrawal or invitation use; no automatic Collector movement. |
-| Invitation | D105 inviter burns 1 own FACY, recipient0/no debt. D106 counts 1 slot at EACH endpoint from issuance; D107 pre-registered recipient has a zero Genesis Self-ID, no mint/burn. Issuance checks once, no acceptance recheck; special mutual link follows the selected pending/admission transition.≥D mutual guarantors and D internally vertex-disjoint paths to D different Council members on the current mutual graph (D104, D134), no mandatory invitation ancestry or cascade.24h freeze/no cluster quota retained. |
+| Invitation | D105 inviter burns 1 own FCTY, recipient0/no debt. D106 counts 1 slot at EACH endpoint from issuance; D107 pre-registered recipient has a zero Genesis Self-ID, no mint/burn. Issuance checks once, no acceptance recheck; special mutual link follows the selected pending/admission transition.≥D mutual guarantors and D internally vertex-disjoint paths to D different Council members on the current mutual graph (D104, D134), no mandatory invitation ancestry or cascade.24h freeze/no cluster quota retained. |
 | Liability | A proven false identity voids its whole Self-ID chain. Its inviter and the guarantors liable at the relevant historical events owe the defined per-act sanction; under D34, later link termination does not erase past responsibility. Timely cancellation can prevent the defined act/invitation liability; exit limits future exposure, not past responsibility. Exact event/duty, overlap and recovery contracts remain OPEN. |
-| Guarantee / valence | D93 creates a one-sided valence for immediate 1 own-FACY burn, even unanswered; only valid opposite valences establish ordinary mutual XP/liability. D94 own withdrawal leaves opposite open; recreate own for NEW 1 burn/current K, not a fresh opposite charge. |
+| Guarantee / valence | D93 creates a one-sided valence for immediate 1 own-FCTY burn, even unanswered; only valid opposite valences establish ordinary mutual XP/liability. D94 own withdrawal leaves opposite open; recreate own for NEW 1 burn/current K, not a fresh opposite charge. |
 | Dispute | Eligible challenger XP exceeds transaction-owner XP. Each later Chekharda position needs more XP and stakes a fixed percentage more (10–20%); each winner takes the stake of the position directly below it. |
 | XP penalty | A liable loss can halve effective XP; monetary penalties can create collectible debt. |
 | Council | Below 100 active participants, three equal-vote seats (D133). From 100, the difficulty-based lookup gives 11, 101, 1001, 10001 or 100001 seats, subject to eligible population (§27, §46.4). Each consul has one vote among confirmation, opposition and seven-day deferral, decided by simple majority without quorum or recusal. An entered referendum with no option holding a majority at cutoff automatically defers. Each deferral adds seven days to the current shared deadline once; deferrals may repeat (D171). |
@@ -141,7 +141,7 @@ emission → honest retention / contributor growth → more accountable particip
          → sustained useful participation
 ```
 
-Every behavioral arrow needs evidence. The inverse can also reinforce itself: farmed emission finances more controlled activity and collusive support; accumulated procedural influence obstructs correction; wrongful sanctions or exclusion drive honest people out; weaker independent review permits further farming. FACY does not directly purchase XP, and public traces do not establish evidence validity.
+Every behavioral arrow needs evidence. The inverse can also reinforce itself: farmed emission finances more controlled activity and collusive support; accumulated procedural influence obstructs correction; wrongful sanctions or exclusion drive honest people out; weaker independent review permits further farming. FCTY does not directly purchase XP, and public traces do not establish evidence validity.
 
 **Three distinct layers:**
 
@@ -163,7 +163,7 @@ Every behavioral arrow needs evidence. The inverse can also reinforce itself: fa
 
 Facety is designed to spread through people who know other people. A person cannot join through an anonymous market purchase alone. A new subject needs an invitation and qualifying social guarantees.
 
-A participant gains FACY from personal Self-ID work. A participant gains XP both from personal Self-ID work and from successful Self-ID work by people it guarantees. **[DIRECTION]** Guarantee-derived XP compensates network-building work and exposure to liability instead of relying solely on unpaid enthusiasm. Unequal earned influence is intentional; removing these credits merely to equalize influence would remove part of the incentive.
+A participant gains FCTY from personal Self-ID work. A participant gains XP both from personal Self-ID work and from successful Self-ID work by people it guarantees. **[DIRECTION]** Guarantee-derived XP compensates network-building work and exposure to liability instead of relying solely on unpaid enthusiasm. Unequal earned influence is intentional; removing these credits merely to equalize influence would remove part of the incentive.
 
 That wider network also creates exposure. The guarantor can become responsible for false identity claims and for failing to prevent invalid Self-ID acts within the defined rules.
 
@@ -171,7 +171,7 @@ The intended result is a feedback loop:
 
 ```text
 real people -> guarantees -> repeated Self-ID
-    -> FACY + XP -> more eligible invitations and connections
+    -> FCTY + XP -> more eligible invitations and connections
     -> more public responsibility -> stronger incentives to detect abuse
     -> a more useful and credible network of people
 ```
@@ -233,11 +233,11 @@ A liable loser of a dispute can lose **50% of effective XP**. Repeated independe
 
 Guarantors must not bear responsibility for another person's identity acts without a way to stop harmful acts before their economic rights are consumed.
 
-An eligible guarantor can cancel a specific unspent Self-ID emission without paying a fee **before its 24-hour maturity** (D42). The cancellation destroys that emission right and its backing FACY under the selected monetary representation. Merely leaving the value unused does not extend the free veto beyond that window.
+An eligible guarantor can cancel a specific unspent Self-ID emission without paying a fee **before its 24-hour maturity** (D42). The cancellation destroys that emission right and its backing FCTY under the selected monetary representation. Merely leaving the value unused does not extend the free veto beyond that window.
 
 This is preventive accountability. It is separate from a later dispute that establishes liability and applies penalties. **[SELECTED] (D79)** The author as well as an eligible guarantor may cancel the author's eligible still-pending Self-ID for free before 24h, without a dispute (§20.2–§20.5). Cancellation does not return the author's rolling 24h issuance slot: the next act is no earlier than the original recording time+24h, not cancellation time+24h and not immediate retry. It is not a renewed mature veto or a guarantor-link termination.
 
-A guarantor can keep a long-term relationship with a real person while rejecting one invalid Self-ID from that person. A person can also unilaterally break an established guarantee link if the guarantor abuses cancellation power. D85 leaves the established-link termination price as free versus burning 1 FACY of any permitted origin; neither candidate is selected.
+A guarantor can keep a long-term relationship with a real person while rejecting one invalid Self-ID from that person. A person can also unilaterally break an established guarantee link if the guarantor abuses cancellation power. D85 leaves the established-link termination price as free versus burning 1 FCTY of any permitted origin; neither candidate is selected.
 
 The protocol should make it easier to correct an error than to hide it.
 
@@ -261,20 +261,20 @@ This is not biometric identification by the runtime. The software deterministica
 
 ## 8. Atmo supports a human network, not merely a token price
 
-DEOS supplies economic execution. Atmo is a network that uses DEOS. Facety is an application and a human-trust layer within Atmo. FACY is the Facety fungible token. XP is its independent measure of procedural authority.
+DEOS supplies economic execution. Atmo is a network that uses DEOS. Facety is an application and a human-trust layer within Atmo. FCTY is the Facety fungible token. XP is its independent measure of procedural authority.
 
-The Atmo instance assigns **Bucket D** to a demand-generation policy. Bucket D is dormant until approved activation. Released capital enters **Treasury D**. Treasury D can buy FACY on the market and burn the acquired tokens. **[DIRECTION] (D53)** Atmo governance using the **ATMO token** decides whether to authorize this economic support. This identifies the outside policy-control plane, not a completed ballot specification: voting weight, quorum, delegation, timing and execution permissions remain to be specified under Atmo's rules. FACY holdings and Facety XP do not themselves grant discretionary control over Bucket D; an authorization cannot bypass capital-release, Treasury budget or market-execution checks.
+The Atmo instance assigns **Bucket D** to a demand-generation policy. Bucket D is dormant until approved activation. Released capital enters **Treasury D**. Treasury D can buy FCTY on the market and burn the acquired tokens. **[DIRECTION] (D53)** Atmo governance using the **ATMO token** decides whether to authorize this economic support. This identifies the outside policy-control plane, not a completed ballot specification: voting weight, quorum, delegation, timing and execution permissions remain to be specified under Atmo's rules. FCTY holdings and Facety XP do not themselves grant discretionary control over Bucket D; an authorization cannot bypass capital-release, Treasury budget or market-execution checks.
 
 ```text
 Bucket D (Dormant)
     -> approved Demand activation
     -> capital release
     -> Treasury D
-    -> controlled FACY market purchase
-    -> actual FACY burn
+    -> controlled FCTY market purchase
+    -> actual FCTY burn
 ```
 
-This is a controlled interface between two economies, not a redemption promise. Atmo does not buy individual identity claims. D53's support interface influences aggregate FACY demand; it does not itself authorize changing Facety admission, identity, XP or dispute rules. D74 separately delegates the four expressly named parameter controls in §8.1, not arbitrary identity judgments or a general power to rewrite those rules.
+This is a controlled interface between two economies, not a redemption promise. Atmo does not buy individual identity claims. D53's support interface influences aggregate FCTY demand; it does not itself authorize changing Facety admission, identity, XP or dispute rules. D74 separately delegates the four expressly named parameter controls in §8.1, not arbitrary identity judgments or a general power to rewrite those rules.
 
 If the Facety trust graph has serious Sybil problems, Atmo can slow or pause buyback. If the network recovers, the approved policy can restore the flow. This makes Bucket D an **economic isolation and coupling mechanism**, similar to an isolation transformer: financial support and internal identity adjudication remain distinct. A buyback pause is not an implicit D74 core-control activation.
 
@@ -286,19 +286,19 @@ The deeper marketing idea is that Atmo does not merely purchase attention. It he
 
 - **Open-authorization limit K — default100, referendum-adjustable (D100/D106).** Count own open valences and invitation-side units from issuance: EACH invitation occupies 1 slot at issuer AND recipient, even before acceptance. Ordinary matching charges no extra slot to a retained counted side. Existing paid records/links survive reductions; no refund/forced cut. Canonical status/duplicate/cutover handling remains an implementation contract, not an unresolved recipient-count choice.
 - **Invitations — enabled.** Control over new invitations; treatment of existing mature own rights and already frozen/issued invitations remains OPEN.
-- **Emission — enabled.** Control over new FACY issuance and associated XP production; the exact new-act/previously committed-act/credit cutoff and behavior during a pause remain OPEN.
+- **Emission — enabled.** Control over new FCTY issuance and associated XP production; the exact new-act/previously committed-act/credit cutoff and behavior during a pause remain OPEN.
 - **Dispute opening — enabled.** Control over opening new disputes; existing cases, D72 entry into an existing case, shared timers and preventive act-specific vetoes require explicit separate treatment.
 
-**[CONCEPT] (D144) Tunable difficulty.** The variables that set how hard it is to grow and to cheat, such as the path length bound `L`, the number of Council seats, the difficulty `D` and the slot ceiling `K`, are candidates for network referendums. They are levers on one trade-off: a higher bound or a larger Council lets the honest network grow further, a lower one keeps the gate tighter. Any change must keep the reliability of the network and the credibility of identities at an acceptable level, which the simulator measures by the attacker and dirty-FACY shares and by the honest growth the same setting allows. The Council size is not a free lever: it follows the D33 digit rule (D148), so the simulator's plateau of roughly one thousand honest accounts per seat at D = 5 is a property of that rule.
+**[CONCEPT] (D144) Tunable difficulty.** The variables that set how hard it is to grow and to cheat, such as the path length bound `L`, the number of Council seats, the difficulty `D` and the slot ceiling `K`, are candidates for network referendums. They are levers on one trade-off: a higher bound or a larger Council lets the honest network grow further, a lower one keeps the gate tighter. Any change must keep the reliability of the network and the credibility of identities at an acceptable level, which the simulator measures by the attacker and dirty-FCTY shares and by the honest growth the same setting allows. The Council size is not a free lever: it follows the D33 digit rule (D148), so the simulator's plateau of roughly one thousand honest accounts per seat at D = 5 is a property of that rule.
 
 **[SELECTED] (D147) Slot progression.** The owned-slot ceiling K grows with experience instead of being flat: each XP level gives an account a fixed number of additional slots (for example 50, so 100, 150, 200, 250). The size of a level is a starting value of 1,000 XP, to be tuned from the observed XP distribution. K also stays changeable by referendum (D87), a separate global lever of the growth–security trade-off (D144).
 
-**[SELECTED capability; governance detail OPEN] (D87)** K can be changed through a network referendum. Non-FACY base-coin control and FACY-weighted Facety self-governance are alternatives; neither is adopted, and the D74 defaults select neither. A voter's weight in a network referendum is the voter's XP (D149); the Council keeps one equal vote (D111). XP is not transferable money, and no voting implementation is selected. XP remains neither truth nor usefulness. Dispute standing, Council's dispute role/equal votes and lack of path-anchor powers remain; no external governance/token action is authorized.
+**[SELECTED capability; governance detail OPEN] (D87)** K can be changed through a network referendum. Non-FCTY base-coin control and FCTY-weighted Facety self-governance are alternatives; neither is adopted, and the D74 defaults select neither. A voter's weight in a network referendum is the voter's XP (D149); the Council keeps one equal vote (D111). XP is not transferable money, and no voting implementation is selected. XP remains neither truth nor usefulness. Dispute standing, Council's dispute role/equal votes and lack of path-anchor powers remain; no external governance/token action is authorized.
 
-**[SELECTED] (D149)** A participant's weight in a network referendum is the participant's XP, plainly. XP stays personal and non-transferable, not pooled money and not evidence of truth. No FACY is committed to a ballot (the former D88 product weight is superseded) and no square root is taken (the former D90 weight is retired: it adds an operation without changing the order of weights). Quorum, denominator, ties, voter and XP snapshot, and execution are OPEN before any implementation. No favorable security or economic claim follows.
+**[SELECTED] (D149)** A participant's weight in a network referendum is the participant's XP, plainly. XP stays personal and non-transferable, not pooled money and not evidence of truth. No FCTY is committed to a ballot (the former D88 product weight is superseded) and no square root is taken (the former D90 weight is retired: it adds an operation without changing the order of weights). Quorum, denominator, ties, voter and XP snapshot, and execution are OPEN before any implementation. No favorable security or economic claim follows.
 
 
-These parameter names/defaults do not select a ballot implementation, instantaneous activation or an unlimited emergency mandate. The new controls' electorate, voting weight/quorum, proposal/authentication/execution authority, possible Facety-Council confirmation, health-evidence requirements, time-lock, duration limit and automatic restoration are OPEN. D53's ATMO-token support vote does not silently settle these controls' exact electorate or a proposed Council-plus-Atmo variant. FACY holdings and XP alone create no new outside authority.
+These parameter names/defaults do not select a ballot implementation, instantaneous activation or an unlimited emergency mandate. The new controls' electorate, voting weight/quorum, proposal/authentication/execution authority, possible Facety-Council confirmation, health-evidence requirements, time-lock, duration limit and automatic restoration are OPEN. D53's ATMO-token support vote does not silently settle these controls' exact electorate or a proposed Council-plus-Atmo variant. FCTY holdings and XP alone create no new outside authority.
 
 D100/D106 make initial K = 100 a ceiling on own open valences PLUS issued AND received invitation-side units, not only mutual degree, incoming popularity, a fixed lifetime quota or Native K/V slots. A new owned increment must fit current K; retained counted sides need no extra slot to match. Reductions do not erase paid records/effective links/history/credits/duties. Both invitation endpoints are already counted at issuance (D106); exact record/status/duplicates/cutover/governance/failure contracts remain; own-emission flow does not define/refill K. No runtime/default counter migration is implemented.
 
@@ -312,7 +312,7 @@ Facety aims to create conditions in which:
 
 1. Honest entry is feasible through real social relationships.
 2. False entry requires time, controlled subjects, eligible earned emissions, and responsible guarantors.
-3. Honest participation earns FACY and XP.
+3. Honest participation earns FCTY and XP.
 4. Dishonest participation risks money, XP, access, social links, and future earnings.
 5. Guarantors can prevent local damage before a reward becomes freely liquid.
 6. Participants can challenge suspicious actions outside their own guarantee network.
@@ -355,7 +355,7 @@ For investigation, distinguish continued participation, willingness to inspect/r
 | **TMCTOL** | Token Minting Curve and Treasury-Owned Liquidity. | Facety identity rules or its XP. |
 | **Atmo Network** | Concrete DEOS instance, DOT-oriented reserve policy, Buckets, Treasuries, instance governance, and support for applications. | Individual Facety identity judgments. |
 | **Facety** | Subjects, artifacts, Self-ID, invitations, guarantees, XP, disputes, liability, identity graph. | Direct discretionary access to Atmo capital. |
-| **FACY** | Fungible economic asset used by the Facety economy. | Human identity or XP authority. |
+| **FCTY** | Fungible economic asset used by the Facety economy. | Human identity or XP authority. |
 | **XP** | Earned, non-transferable procedural authority and recorded identity work. | A transferable monetary claim. |
 
 Facety is not required to run as a separate blockchain. The target is the Atmo runtime based on Substrate/Polkadot SDK and DEOS mechanisms. **DEOS Actors** here means bounded runtime execution infrastructure, not the human participants whose identity claims Facety records.
@@ -374,19 +374,19 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Self-ID** — An immutable, individually addressable record of a subject's signed identity assertion, linked to a specific artifact and FaceRef. It has a mutable dispute state and, for an ordinary rewarded act, a one-time emission right. It has **NFT-like semantics** but is not necessarily a transferable NFT-standard asset.
 
-**Zero Genesis Self-ID (D107)** — The initial signed Self-ID of a pre-registered account, published with the required completed fields before an invitation can target its address. It creates NO FACY emission/right to spend and performs no actual burn. It conceptually supplies the recipient's invitation-channel side, not a paid ordinary valence, debt or subsidy; it is distinct from the network's founding genesis population. Publication alone is not protocol admission, verified personhood or an activity-count decision. No XP/chargeable-N/ordinary rolling-slot policy is inferred from this choice.
+**Zero Genesis Self-ID (D107)** — The initial signed Self-ID of a pre-registered account, published with the required completed fields before an invitation can target its address. It creates NO FCTY emission/right to spend and performs no actual burn. It conceptually supplies the recipient's invitation-channel side, not a paid ordinary valence, debt or subsidy; it is distinct from the network's founding genesis population. Publication alone is not protocol admission, verified personhood or an activity-count decision. No XP/chargeable-N/ordinary rolling-slot policy is inferred from this choice.
 
-**Emitter** — The one-time emission-right state associated with a Self-ID. It defines whether the related FACY is restricted, available for network use, disputed, cancelled, consumed, or converted.
+**Emitter** — The one-time emission-right state associated with a Self-ID. It defines whether the related FCTY is restricted, available for network use, disputed, cancelled, consumed, or converted.
 
-**Collector** — The ordinary fungible FACY balance or destination to which an eligible Emitter emission can be converted after 24 hours. The term is a protocol role, not necessarily a separate token or chain.
+**Collector** — The ordinary fungible FCTY balance or destination to which an eligible Emitter emission can be converted after 24 hours. The term is a protocol role, not necessarily a separate token or chain.
 
 **Guarantor** — A subject that explicitly accepts responsibility for another subject's identity under an established guarantee relation.
 
-**Valence** — A paid, one-sided request to guarantee a particular account (D93): creation immediately burns 1 own-issued eligible FACY. It can remain open without an answer and is not mutual responsibility or guarantor XP.
+**Valence** — A paid, one-sided request to guarantee a particular account (D93): creation immediately burns 1 own-issued eligible FCTY. It can remain open without an answer and is not mutual responsibility or guarantor XP.
 
 **Guarantee relation** — Established mutual responsibility from two valid opposite valences, or an accepted special invitation (§18). Ordinary matching/current-K checks and canonical signed records are required, not raw legacy reciprocal graph edges. D94 withdrawal removes only one's valence and preserves the opposite; history survives. The earlier directed-only model is dated history, not the current XP/liability rule.
 
-**Invitation** — D105 special admission paid by 1 eligible own-issued FACY from the inviter, recipient0/no debt. D106 occupies 1 slot at each endpoint on issuance; D107 requires the target's completed pre-registration and zero Genesis Self-ID, with issuance-only eligibility validation. Acceptance establishes a first mutual inviter–newcomer link with distinct inviter provenance/responsibility. It requires ≥D mutual guarantors and D internally vertex-disjoint current mutual paths to D different Council members (D104, D134), with no mandatory invitation-chain member or long-ancestry check. Pending invitation, lineage and established mutuality remain distinct canonical records.
+**Invitation** — D105 special admission paid by 1 eligible own-issued FCTY from the inviter, recipient0/no debt. D106 occupies 1 slot at each endpoint on issuance; D107 requires the target's completed pre-registration and zero Genesis Self-ID, with issuance-only eligibility validation. Acceptance establishes a first mutual inviter–newcomer link with distinct inviter provenance/responsibility. It requires ≥D mutual guarantors and D internally vertex-disjoint current mutual paths to D different Council members (D104, D134), with no mandatory invitation-chain member or long-ancestry check. Pending invitation, lineage and established mutuality remain distinct canonical records.
 
 **Active subject** — A distinct subject with a qualifying Self-ID during the previous 28 days. Counting a subject once does not establish a unique human. The exact treatment of disputed or cancelled acts is OPEN.
 
@@ -408,7 +408,7 @@ No section of this document implies that a named Facety pallet, actor, API, or s
 
 **Disconnected subject** — A subject that has lost an accepted trust path. It is not automatically an impostor.
 
-**Emission debt** — A negative protocol obligation that reduces future eligible economic rewards. It is not a negative quantity of already issued circulating FACY.
+**Emission debt** — A negative protocol obligation that reduces future eligible economic rewards. It is not a negative quantity of already issued circulating FCTY.
 
 ## 12. Distinct graphs
 
@@ -533,7 +533,7 @@ Artifact H registered at T
   Carol signs Self-ID C -> (H, detector_v1, face_index=2)
 ```
 
-Each valid Self-ID is independent. Each subject can earn its own standard **1 FACY** and **1 XP** under the normal frequency and cancellation rules. Each act can also give the subject's eligible guarantors XP.
+Each valid Self-ID is independent. Each subject can earn its own standard **1 FCTY** and **1 XP** under the normal frequency and cancellation rules. Each act can also give the subject's eligible guarantors XP.
 
 The common artifact lets observers compare multiple independently signed claims about the same reported meeting. It can create stronger contextual evidence than three unrelated personal images. It does not prove that all participants were physically together: montage, generated media, mistaken claims, and collusion remain possible.
 
@@ -555,7 +555,7 @@ The runtime or an authorized index should support efficient lookup of other clai
 
 ### 17.1 Identity claim, not a tradable NFT
 
-**[SELECTED pre-registration/zero Genesis act] (D107)** Before receiving an invitation the account is ALREADY pre-registered, has completed the required fields and published its zero Genesis Self-ID. The invitation is addressed to this existing account/address, not issued into an unbound pool for a later arbitrary person. The zero act does NOT print FACY, burn FACY, create a spendable Emitter entitlement or incur invitation debt. Its conceptual use as the recipient-side channel opening is not a monetary transaction or an ordinary paid valence. D84 below concerns ordinary REWARDED Self-ID, not a circular requirement to obtain a mutual guarantor before publishing this zero act. Canonical fields/signatures/address binding and zero-act XP/chain-N/ordinary rate-slot semantics need an implementation contract; no arbitrary field list, extra subsidy, personal-data collection authority or default migration follows.
+**[SELECTED pre-registration/zero Genesis act] (D107)** Before receiving an invitation the account is ALREADY pre-registered, has completed the required fields and published its zero Genesis Self-ID. The invitation is addressed to this existing account/address, not issued into an unbound pool for a later arbitrary person. The zero act does NOT print FCTY, burn FCTY, create a spendable Emitter entitlement or incur invitation debt. Its conceptual use as the recipient-side channel opening is not a monetary transaction or an ordinary paid valence. D84 below concerns ordinary REWARDED Self-ID, not a circular requirement to obtain a mutual guarantor before publishing this zero act. Canonical fields/signatures/address binding and zero-act XP/chain-N/ordinary rate-slot semantics need an implementation contract; no arbitrary field list, extra subsidy, personal-data collection authority or default migration follows.
 
 **[SELECTED eligibility distinction] (D84, D133)** A new rewarded Self-ID needs at least ONE established mutual guarantor and, at every emission, one current mutual-guarantee path from the emitter itself to an admissible Council member (below 100 active participants the Council has three seats, D133). The path has at most seven nodes counting both ends (D123); its intermediates, the guarantor first, are supported (D124) and outside a dispute (D131). One path is enough because one guarantee is enough; the check is what stops a cluster that is cut off from the Council from emitting and diluting the asset (D156). D guarantors AND independent paths are instead required for invitations (§18.2). Prior admission is not a permanent support exemption; unilateral offers do not qualify. These checks apply from the first act at every size; exact count/member snapshots, bounded verification and same-time changes still need contracts. This conditions NEW acts, not retroactive erasure of identity/XP/sources; D77 and evidence/24h rules remain.
 
@@ -583,9 +583,9 @@ Stable historical fields remain available after the emission is consumed. A comp
 
 ### 17.2 Economic right
 
-**[SELECTED]** A normal rewarded Self-ID creates **one unit of FACY entitlement** attached to its individual Emitter. The entitlement is not a general transferable FACY balance.
+**[SELECTED]** A normal rewarded Self-ID creates **one unit of FCTY entitlement** attached to its individual Emitter. The entitlement is not a general transferable FCTY balance.
 
-**[REFERENCE]** One implementation mints 1 real fungible FACY into a common runtime-controlled Emitter vault when the Self-ID is accepted. The Self-ID stores the sole right to dispose of that unit. The Emitter vault is the custody layer, not a new freely transferable token.
+**[REFERENCE]** One implementation mints 1 real fungible FCTY into a common runtime-controlled Emitter vault when the Self-ID is accepted. The Self-ID stores the sole right to dispose of that unit. The Emitter vault is the custody layer, not a new freely transferable token.
 
 Other accounting representations, including deferred minting, are possible. **[OPEN]** The final mint/custody implementation must be selected and must give correct meanings to invitation burn, cancellation burn, total issuance, and transfers to the Collector.
 
@@ -593,29 +593,29 @@ Under the reference minted-escrow implementation:
 
 ```text
 Self-ID accepted:
-    mint 1 FACY to common Emitter vault
+    mint 1 FCTY to common Emitter vault
     Self-ID.emission = Unspent
 
 Valid guarantor cancellation:
-    burn its 1 FACY from the Emitter vault
+    burn its 1 FCTY from the Emitter vault
     Self-ID.emission = Cancelled
 
 D105 invitation creation from 1 eligible own right after 24 hours:
-    burn its backing unit (1 FACY total), not a mint
+    burn its backing unit (1 FCTY total), not a mint
     mark the source Self-ID.emission = UsedForInvitation
     target the D107 pre-registered account/zero Genesis act; mint/burn NOTHING for it
     allocate 1 invitation-side K unit to EACH endpoint (D106)
 
 Collector conversion after 24 hours:
-    transfer its 1 FACY from the Emitter vault to Collector
+    transfer its 1 FCTY from the Emitter vault to Collector
     Self-ID.emission = Converted
 ```
 
-**[SELECTED] (D93)** Successful creation of each one-sided valence IMMEDIATELY burns 1 eligible self-issued FACY, even if never answered (§19.2). A fresh ordinary pair accounts for two paid valences/2FACY, not an atomic fresh 2 burn at every activation or a refundable bond. D94 can restore mutuality with a retained opposite valence without charging it again. An invitation burns 1 own FACY from the inviter (D105), none from the recipient; D107 zero Genesis is conceptual counterpart support, not a second real burn. Existing maturity/provenance and atomic failure handling remain.
+**[SELECTED] (D93)** Successful creation of each one-sided valence IMMEDIATELY burns 1 eligible self-issued FCTY, even if never answered (§19.2). A fresh ordinary pair accounts for two paid valences/2FCTY, not an atomic fresh 2 burn at every activation or a refundable bond. D94 can restore mutuality with a retained opposite valence without charging it again. An invitation burns 1 own FCTY from the inviter (D105), none from the recipient; D107 zero Genesis is conceptual counterpart support, not a second real burn. Existing maturity/provenance and atomic failure handling remain.
 
 ### 17.3 The one-day schedule
 
-This schedule describes ordinary emission-bearing Self-ID. D107's zero Genesis Self-ID has no FACY issuance to mature/spend; do not silently turn it into a funded source or infer its XP/rate-slot policy from the ordinary table.
+This schedule describes ordinary emission-bearing Self-ID. D107's zero Genesis Self-ID has no FCTY issuance to mature/spend; do not silently turn it into a funded source or infer its XP/rate-slot policy from the ordinary table.
 
 **[SELECTED] (D1, D42)** Let `age = chain_time - SelfId.recorded_at`. **Maturation is age-based: XP is not triggered by spending, and an unspent right has no unlimited veto.**
 
@@ -627,7 +627,7 @@ This schedule describes ordinary emission-bearing Self-ID. D107's zero Genesis S
 
 After one day the emission is a normal irrevocable coin with respect to the **original free guarantor veto**, not immunity from adjudicated fraud, sanctions or an authorized dispute freeze. D42 does not abolish the separate 24-hour invitation freeze or permit invitation spending before emission maturity.
 
-**[SELECTED] (D42) No automatic withdrawal.** After 24 hours the subject retains its own matured, non-vetoable emission right. The holder separately chooses withdrawal to ordinary Collector FACY or spending that own right on an eligible invitation. XP credit and expiry of the original free veto occur at maturity without waiting for that choice; neither subsequent operation credits XP again. Maturation MUST NOT itself move the backing into the ordinary Collector balance. Own-emission provenance, one-time use and the prohibition on market-funded invitations remain intact.
+**[SELECTED] (D42) No automatic withdrawal.** After 24 hours the subject retains its own matured, non-vetoable emission right. The holder separately chooses withdrawal to ordinary Collector FCTY or spending that own right on an eligible invitation. XP credit and expiry of the original free veto occur at maturity without waiting for that choice; neither subsequent operation credits XP again. Maturation MUST NOT itself move the backing into the ordinary Collector balance. Own-emission provenance, one-time use and the prohibition on market-funded invitations remain intact.
 
 **[SELECTED] (D42)** Cancellation and ordinary maturation are branches of **one conditional 24-hour boundary**, not independent reward and veto processes. The holder's reward vests only if the original act was not validly cancelled during its initial window. Under a minted-escrow representation the restricted backing may already exist at recording; maturation does not mint it again.
 
@@ -670,13 +670,13 @@ A freeze MUST preserve the original emission disposition and history. It is a pr
 
 | Recipient | Reward |
 | --- | --- |
-| Subject that created the Self-ID | 1 FACY on the Self-ID Emitter. |
+| Subject that created the Self-ID | 1 FCTY on the Self-ID Emitter. |
 | Same subject | 1 XP credit. |
 | Each eligible guarantor for that act | 1 XP credit. |
 
-Guarantors receive XP, not an automatic FACY mint, for that act.
+Guarantors receive XP, not an automatic FCTY mint, for that act.
 
-**[SELECTED] (D42, D163, D165, D167) Age-based responsibility credit.** In the ordinary uncontested lifecycle, an uncancelled qualifying Self-ID credits one responsibility unit to its author and each eligible creation-time guarantor at `createdAt + 24h`, whether its FACY remains unused, is consumed for an invitation or valence, or is withdrawn. An act cancelled in its initial window earns no ordinary unit; maturity ends that original free veto. The negative-balance exception suspends new units for an indebted author's acts (§24). Effective XP is the live units times the recipient's current integrity coefficient, rounded down; neither earlier nor later surviving units escape that coefficient.
+**[SELECTED] (D42, D163, D165, D167) Age-based responsibility credit.** In the ordinary uncontested lifecycle, an uncancelled qualifying Self-ID credits one responsibility unit to its author and each eligible creation-time guarantor at `createdAt + 24h`, whether its FCTY remains unused, is consumed for an invitation or valence, or is withdrawn. An act cancelled in its initial window earns no ordinary unit; maturity ends that original free veto. The negative-balance exception suspends new units for an indebted author's acts (§24). Effective XP is the live units times the recipient's current integrity coefficient, rounded down; neither earlier nor later surviving units escape that coefficient.
 
 Economic use never creates, repeats, moves or re-targets this credit. A relationship established after an act cannot acquire units from it, however late its entitlement is consumed. The recipients remain the author and the guarantor roster fixed at creation, including eligible departed guarantors (D54, D166). A guarantor needs no transaction of its own to receive another participant's maturity credit.
 
@@ -686,7 +686,7 @@ The protocol defines a logical maturity event, not a scheduled storage write. La
 
 Cancellation, conversion, and subsequent punishment are different operations:
 
-- **Preventive cancellation** invalidates an eligible unspent Self-ID within its initial 24 hours and burns the associated Emitter FACY under the minted-escrow representation.
+- **Preventive cancellation** invalidates an eligible unspent Self-ID within its initial 24 hours and burns the associated Emitter FCTY under the minted-escrow representation.
 - **Maturation (D42)** ends the original free veto and credits ordinary XP at 24 hours, independently of use. It is not an adjudication of truth.
 - **Collector conversion** is the holder's separately chosen withdrawal of matured value, not an automatic maturity event or the XP trigger (D42 clarification).
 - **Network use** irreversibly consumes the emission instead of converting it; an invitation does not forfeit or duplicate its matured Self-ID XP.
@@ -701,7 +701,7 @@ The system MUST record a terminal emission disposition exactly once.
 
 ### 18.1 Invitation conditions
 
-**[SELECTED]** An invitation is not free and cannot be mass-produced by buying FACY on the open market.
+**[SELECTED]** An invitation is not free and cannot be mass-produced by buying FCTY on the open market.
 
 The creator MUST:
 
@@ -710,10 +710,10 @@ The creator MUST:
 3. Control **one unspent eligible Self-ID emission earned by that subject**, aged at least 24 hours (D105).
 4. Address an ALREADY pre-registered account with completed required fields and its published zero Genesis Self-ID (D107).
 5. Fit the new invitation-side increment into BOTH endpoints' current K and allocate 1 slot to each on issuance (D106), not only to the sender or on later acceptance.
-6. Burn **1 own FACY** irreversibly at creation; the recipient pays nothing and receives no invitation debt (D105).
+6. Burn **1 own FCTY** irreversibly at creation; the recipient pays nothing and receives no invitation debt (D105).
 7. Record the bound invitation, both counted side units and its authorization atomically.
 
-A FACY unit bought, gifted, received from a transfer, or received from another subject's Self-ID does **not** provide invitation eligibility. A unit already converted to normal circulating FACY on the Collector does not regain Self-ID provenance through a market purchase.
+A FCTY unit bought, gifted, received from a transfer, or received from another subject's Self-ID does **not** provide invitation eligibility. A unit already converted to normal circulating FCTY on the Collector does not regain Self-ID provenance through a market purchase.
 
 The restriction applies to the **origin of the emission right**, not merely the current wallet balance.
 
@@ -732,7 +732,7 @@ qualifying_mutual_internally_vertex_disjoint_paths(creator, D_different_Council_
 
 **[SELECTED simplified invitation gate] (D104)** At NEW invitation issuance, require at least D qualifying established mutual guarantors AND D qualifying internally vertex-disjoint paths to admissible Council membership through the CURRENT mutual-guarantee graph. NO path is required to follow invitation ancestry or have an invitation-kind witness. D103's current-valid-graph-only rule applies. Invitation-origin mutual links may qualify like other current mutual links, but old invitation records, unanswered offers and bare stored reciprocal edges do not supply authorization.
 
-Keep D36 independence across the whole family and D84 Self-ID support/reachability. No long invitation-ancestry check is required for invitations or Self-ID, and no downstream cascade or general inviter-replacement operation is introduced. Original inviter/provenance, inviter-paid 1 FACY admission (D105), paid valences/K, pending rights/history/liability remain unchanged. Seek short compatible witnesses as an optimization preference, NOT a selected hop cap or CPU/search guarantee. Exact canonical mutual state, episode/status/direction, Council snapshots/self/mixed terminals/bounds and independently fresh verification remain contracts before code/data; no default migration, indexer restart, empirical equivalence/security proof or historical evidence replay follows.
+Keep D36 independence across the whole family and D84 Self-ID support/reachability. No long invitation-ancestry check is required for invitations or Self-ID, and no downstream cascade or general inviter-replacement operation is introduced. Original inviter/provenance, inviter-paid 1 FCTY admission (D105), paid valences/K, pending rights/history/liability remain unchanged. Seek short compatible witnesses as an optimization preference, NOT a selected hop cap or CPU/search guarantee. Exact canonical mutual state, episode/status/direction, Council snapshots/self/mixed terminals/bounds and independently fresh verification remain contracts before code/data; no default migration, indexer restart, empirical equivalence/security proof or historical evidence replay follows.
 
 **The invitation tests apply to the creator, not the recipient.** Both tests apply at every network size (below 100 active participants the Council has three seats, D133), neither substituting for the other. Each path is simple and distinct. Counted paths share only the creator: their endpoints are different Council members and no intermediary is shared. Edge-disjoint routes through the same intermediary do not supply separate paths. D104 retains D84's qualifying mutual graph/Council endpoint without a mandatory invitation-chain member. Paths reach D different admissible Council members, any members of the Council at confirmation time, not all members or an arbitrary highest-XP/healthy seed. Canonical mutual records, independent-support qualification, Council snapshots, mixed-terminal/self/zero-hop and small-network startup remain contracts (§46.14–§46.15). D61 remains a research reference, not a default migration, capacity quota or Standing-to-XP conversion.
 
@@ -751,15 +751,15 @@ At zero the numeric target is also one; the formula creates neither a founder no
 
 **No cluster invitation quota or external-boundary capacity gate is imposed for now (D35).** The own-emission burn, individual guarantee/path conditions and invitation freeze still apply. Difficulty changes must not retroactively invalidate identity. Epoch/hysteresis adoption, grace periods, pending-invitation handling and recovery after an anchor/count change remain OPEN; direct formula examples do not choose those policies.
 
-**[SELECTED enforcement priority] (D41)** The difficulty-sized guarantee threshold is a hard authorization barrier at **invitation creation**, not merely a graph statistic or an XP effect. A creator with fewer than `D` qualifying guarantors MUST NOT create an invitation, even with a mature own emission, high XP or liquid FACY. The authorization check MUST precede the invitation burn and recording. Implementing and verifying this boundary is a priority. It neither removes the separate D35/D36 path gate nor selects the still-OPEN verification/independence, anchor, graph, genesis-activation or difficulty-adoption contracts. A legacy raw-count check is only an implemented subset, not verified independence or full topology compliance.
+**[SELECTED enforcement priority] (D41)** The difficulty-sized guarantee threshold is a hard authorization barrier at **invitation creation**, not merely a graph statistic or an XP effect. A creator with fewer than `D` qualifying guarantors MUST NOT create an invitation, even with a mature own emission, high XP or liquid FCTY. The authorization check MUST precede the invitation burn and recording. Implementing and verifying this boundary is a priority. It neither removes the separate D35/D36 path gate nor selects the still-OPEN verification/independence, anchor, graph, genesis-activation or difficulty-adoption contracts. A legacy raw-count check is only an implemented subset, not verified independence or full topology compliance.
 
 ### 18.3 Economic effect
 
-**[SELECTED current special invitation route] (D105–D107)** The inviter burns 1 eligible own-issued FACY (D105). Recipient-side preparation is an existing pre-registered account with required fields and its zero Genesis Self-ID (D107): that act is the CONCEPTUAL counterpart for opening the invitation channel, with NO actual recipient emission, burn, minus 1 debt or automatic first-emission collection. This remains a SPECIAL invitation route, not two ordinary paid valences. D106 occupies 1 K slot at EACH endpoint on issuance, including before acceptance; no additional matching slot for those counted units. D107 fixes eligibility at issuance, not a repeated support/path/K check at acceptance. Keep the separately selected 24h invitation contest delay unless explicitly changed; issuance, counted pending units and established mutual/admitted state remain distinct canonical transitions. No rule selects immediate unfrozen admission or a new timing rule by rejecting the earlier overlong ordering discussion.
+**[SELECTED current special invitation route] (D105–D107)** The inviter burns 1 eligible own-issued FCTY (D105). Recipient-side preparation is an existing pre-registered account with required fields and its zero Genesis Self-ID (D107): that act is the CONCEPTUAL counterpart for opening the invitation channel, with NO actual recipient emission, burn, minus 1 debt or automatic first-emission collection. This remains a SPECIAL invitation route, not two ordinary paid valences. D106 occupies 1 K slot at EACH endpoint on issuance, including before acceptance; no additional matching slot for those counted units. D107 fixes eligibility at issuance, not a repeated support/path/K check at acceptance. Keep the separately selected 24h invitation contest delay unless explicitly changed; issuance, counted pending units and established mutual/admitted state remain distinct canonical transitions. No rule selects immediate unfrozen admission or a new timing rule by rejecting the earlier overlong ordering discussion.
 
 The stronger inviter responsibility reflects the risk that an inviter itself created/registered a fake. This is a role-specific scrutiny/accountability rationale, not proof of shared control, automatic guilt, a new numeric sanction or release of other historically liable parties. Preserve D34/D55/D57 and D54 act rosters.
 
-Under minted escrow, a D105 invitation destroys ONE existing personally earned backing unit and consumes that eligible Self-ID right. No FACY is minted/transferred/burned for the recipient's zero Genesis act. Old one-source/one-burn code matching the nominal price remains legacy unless it also implements the selected registration, both-side slots, support and timing contracts.
+Under minted escrow, a D105 invitation destroys ONE existing personally earned backing unit and consumes that eligible Self-ID right. No FCTY is minted/transferred/burned for the recipient's zero Genesis act. Old one-source/one-burn code matching the nominal price remains legacy unless it also implements the selected registration, both-side slots, support and timing contracts.
 
 ```text
 1 own Self-ID -> 1 eligible Emitter right aged at least 24 hours
@@ -767,12 +767,12 @@ Under minted escrow, a D105 invitation destroys ONE existing personally earned b
     -> D mutual guarantors AND D independent paths to D different Council members
    on the CURRENT mutual graph (D104), no mandatory invitation ancestry; disjoint across the WHOLE family
     -> validate issuance once; allocate 1 K slot to EACH endpoint
-    -> burn 1 personally earned FACY (D105); recipient mint/burn/debt = 0
+    -> burn 1 personally earned FCTY (D105); recipient mint/burn/debt = 0
     -> addressed invitation recorded and frozen for 24 hours
     -> valid uncancelled invitation proceeds to admission without a repeated eligibility test (D107)
 ```
 
-The creator cannot sell the right on the market and later buy it back. Under the D42 clarification, keeping the matured own emission preserves its eligible invitation use; separately withdrawing it supplies ordinary Collector FACY instead. Maturity alone does not make that choice. The asset implementation must preserve provenance and prevent double use.
+The creator cannot sell the right on the market and later buy it back. Under the D42 clarification, keeping the matured own emission preserves its eligible invitation use; separately withdrawing it supplies ordinary Collector FCTY instead. Maturity alone does not make that choice. The asset implementation must preserve provenance and prevent double use.
 
 **[RESEARCH direction, not a selected protocol change] (D60)** A separate comparison of creator invitation cooldown P and own-matured-emission burn b, including zero-burn/no-limit counterfactuals, is requested. Current retained own rights constrain long-run funding but do not themselves impose a minimum interval between invitations: several banked rights can fund a burst. A research arm called (P1,b1) must therefore distinguish an explicit cooldown from this existing resource limit. The comparison does not replace the selected guarantee/path gate, custody or invitation freeze, and selects no new Standing, bond or jury system. Its capacity prior and H6 are research claims, not verified safety or automatic authority to change defaults.
 
@@ -780,11 +780,11 @@ The creator cannot sell the right on the market and later buy it back. Under the
 
 ### 18.4 Invitations are accountable, not anonymous coupons
 
-**[SELECTED original creation-inviter clarification] (D99)** An ordinary invited account is created through ONE invitation and has ONE original inviter. There is no outgoing, pending or lifetime invitation limit: a participant may issue as many as its eligible own funding, current K and invitation gates allow. The price is 1 own FACY (D105); there is no outgoing-count quota. D107 means technical account/zero-act pre-registration PRECEDES this first admission invitation; “creation inviter” denotes original admission provenance, not the creator of a previously nonexistent key/address. An additional invitation addressed to an already admitted account is NOT itself an ordinary valence, another account-creation event or an automatic second responsibility/XP relationship. D95's specifically authorized unsupported-person re-entry remains a separate episode/acceptance contract with the SAME identity and preserved original creation provenance; it must not reset history or multiply SubjectIds. Supplied genesis remains its separately declared starting assumption, not a fabricated inviter.
+**[SELECTED original creation-inviter clarification] (D99)** An ordinary invited account is created through ONE invitation and has ONE original inviter. There is no outgoing, pending or lifetime invitation limit: a participant may issue as many as its eligible own funding, current K and invitation gates allow. The price is 1 own FCTY (D105); there is no outgoing-count quota. D107 means technical account/zero-act pre-registration PRECEDES this first admission invitation; “creation inviter” denotes original admission provenance, not the creator of a previously nonexistent key/address. An additional invitation addressed to an already admitted account is NOT itself an ordinary valence, another account-creation event or an automatic second responsibility/XP relationship. D95's specifically authorized unsupported-person re-entry remains a separate episode/acceptance contract with the SAME identity and preserved original creation provenance; it must not reset history or multiply SubjectIds. Supplied genesis remains its separately declared starting assumption, not a fabricated inviter.
 
-**[SELECTED re-entry after loss of initial invitation support] (D95)** If the inviter ends the newcomer's only invitation relationship before the newcomer has an eligible own emission, the person lacks current support/access; the broken first invitation does not continue to qualify. Another participant may issue a NEW paid special invitation (current D105 price 1 own FACY) to that person, restoring support on acceptance without requiring a self-funded ordinary valence first. This is re-entry, not creation of another person, another clean zero Genesis act or a new SubjectId: preserve existing identity, personal-chain/XP/debt/history and per-act rights. “Outside the network” does not mean a proven false identity, erased balances or a blanket transaction ban. Ordinary paid valence entry remains possible when its source/authorization/support conditions can actually be met. Exact re-admission target binding and episode/status/count transitions need a contract; old Native new-target-only admission is not this mechanism.
+**[SELECTED re-entry after loss of initial invitation support] (D95)** If the inviter ends the newcomer's only invitation relationship before the newcomer has an eligible own emission, the person lacks current support/access; the broken first invitation does not continue to qualify. Another participant may issue a NEW paid special invitation (current D105 price 1 own FCTY) to that person, restoring support on acceptance without requiring a self-funded ordinary valence first. This is re-entry, not creation of another person, another clean zero Genesis act or a new SubjectId: preserve existing identity, personal-chain/XP/debt/history and per-act rights. “Outside the network” does not mean a proven false identity, erased balances or a blanket transaction ban. Ordinary paid valence entry remains possible when its source/authorization/support conditions can actually be met. Exact re-admission target binding and episode/status/count transitions need a contract; old Native new-target-only admission is not this mechanism.
 
-**Re-entry by mutual guarantee (D112) — [SELECTED].** A person who lost current support re-enters by establishing ordinary mutual guarantee links; a NEW invitation is one possible route, not a requirement. New Self-IDs and FACY emission require at least one current established mutual guarantee, whether invitation-origin or ordinary (consistent with D84's one-guarantor minimum). The SubjectId, personal chain, XP, debt and history are preserved. When the re-entrant holds no eligible own FACY, the guarantor who establishes the link pays the re-entrant's valence (D150). **[OPEN]** Whether D84's outside-bootstrap path-to-Council condition applies to that guarantor.
+**Re-entry by mutual guarantee (D112) — [SELECTED].** A person who lost current support re-enters by establishing ordinary mutual guarantee links; a NEW invitation is one possible route, not a requirement. New Self-IDs and FCTY emission require at least one current established mutual guarantee, whether invitation-origin or ordinary (consistent with D84's one-guarantor minimum). The SubjectId, personal chain, XP, debt and history are preserved. When the re-entrant holds no eligible own FCTY, the guarantor who establishes the link pays the re-entrant's valence (D150). **[OPEN]** Whether D84's outside-bootstrap path-to-Council condition applies to that guarantor.
 
 **[SELECTED new transactions, not reopening closed invitations] (D98)** A closed invitation cannot be resumed or reset. One can create a NEW invitation or a NEW valence transaction; their own costs, current K and authorizations apply. A new ordinary valence must not silently resurrect the old invitation's active type/privileges, and no unpaid opposite valence may be fabricated from a dead invitation. Historical invitation provenance/actual past D34 duties remain records, not a permanent active-link type or assumed extra liability of every new ordinary relationship. D94's retained opposite ordinary valence remains its own still-open record; withdrawing and recreating one's side is a new transaction, never revival of the withdrawn record. Canonical special-link/ordinary-valence mapping remains an execution contract.
 
@@ -822,7 +822,7 @@ This rule is under test in the simulator as an opt-in reference. It is not a def
 
 ### 19.1 Both parties must agree
 
-**[SELECTED, clarified D93/D94]** Ordinary mutuality requires two valid opposite paid valences, one authorized by each subject. One-sided creation immediately burns its own 1 FACY but does not create mutual responsibility/XP. Recreating only one's withdrawn valence can match the still-open opposite without charging it again. D105–D107 invitation is the special route paid 1 by the inviter, with a pre-registered zero Genesis act supplying the conceptual recipient side (no recipient mint/burn/debt), not two ordinary paid newborn valences.
+**[SELECTED, clarified D93/D94]** Ordinary mutuality requires two valid opposite paid valences, one authorized by each subject. One-sided creation immediately burns its own 1 FCTY but does not create mutual responsibility/XP. Recreating only one's withdrawn valence can match the still-open opposite without charging it again. D105–D107 invitation is the special route paid 1 by the inviter, with a pre-registered zero Genesis act supplying the conceptual recipient side (no recipient mint/burn/debt), not two ordinary paid newborn valences.
 
 **[SELECTED] (D81/D82)** A proposal is not an established mutual guarantee, and no guarantor XP is earned from the other person's Self-ID without that mutual establishment (§17.5). Receiving or acknowledging an offer must not be silently treated as the completed XP-qualifying relationship. This preserves the two-party matching requirement without choosing canonical record layout, activation ordering or funding; two raw opposite graph edges alone are not proof of authorized establishment.
 
@@ -830,11 +830,11 @@ A guarantee makes a specific claim: A accepts the defined responsibility for B's
 
 ### 19.2 Payment or commitment
 
-**[SELECTED]** An eligible Self-ID emission can be used for a defined network-building guarantee operation after it reaches 24 hours of age. Such use is different from arbitrary FACY spending.
+**[SELECTED]** An eligible Self-ID emission can be used for a defined network-building guarantee operation after it reaches 24 hours of age. Such use is different from arbitrary FCTY spending.
 
-**[SELECTED paid valences and matching] (D93)** A valence is a signed one-sided request to guarantee a particular account. Successful creation IMMEDIATELY burns 1 eligible self-issued FACY as a protocol transaction charge, even if unanswered. The open valence is NOT a mutual link, XP entitlement or guarantee responsibility. Unmatched payment is not refunded; no implicit expiry is selected. Own-act/independent duties remain. Whether this charge is additional to or integrated with host/base fees is unselected; the FACY burn is not replaced by another asset.
+**[SELECTED paid valences and matching] (D93)** A valence is a signed one-sided request to guarantee a particular account. Successful creation IMMEDIATELY burns 1 eligible self-issued FCTY as a protocol transaction charge, even if unanswered. The open valence is NOT a mutual link, XP entitlement or guarantee responsibility. Unmatched payment is not refunded; no implicit expiry is selected. Own-act/independent duties remain. Whether this charge is additional to or integrated with host/base fees is unselected; the FCTY burn is not replaced by another asset.
 
-Two present valid opposite valences establish an ordinary mutual relationship, subject to current K/eligibility. **(D97, D100)** Capacity preflight counts the creator's OWN open valences/invitations, including unmatched requests, not only mutual degree. A full creator cannot open another counted unit. A first party's already-counted valence needs no extra slot when a reciprocal transaction arrives; do not reject matching solely because that retained counterparty has no additional free slot if its count does not increase. Preserve existing offers when new creation is blocked. Exact duplicate/recipient/special-invitation accounting and atomic snapshots still need a contract. Valid opposite valences suffice once their creation is admitted; no extra mutuality transaction or dormant-pair rescan on K increase is selected. A fresh pair accounts for two 1 FACY burns at their creation times, NOT a fresh deferred atomic 2 burn at each matching. Only the established double link supplies guarantor XP roles/mutual responsibility; D42/D54 per-act receipts, not payment/establishment itself, produce XP. Authorized paid valences are not raw reciprocal legacy edges or personhood proof. D92 is a separate inviter-paid special route.
+Two present valid opposite valences establish an ordinary mutual relationship, subject to current K/eligibility. **(D97, D100)** Capacity preflight counts the creator's OWN open valences/invitations, including unmatched requests, not only mutual degree. A full creator cannot open another counted unit. A first party's already-counted valence needs no extra slot when a reciprocal transaction arrives; do not reject matching solely because that retained counterparty has no additional free slot if its count does not increase. Preserve existing offers when new creation is blocked. Exact duplicate/recipient/special-invitation accounting and atomic snapshots still need a contract. Valid opposite valences suffice once their creation is admitted; no extra mutuality transaction or dormant-pair rescan on K increase is selected. A fresh pair accounts for two 1 FCTY burns at their creation times, NOT a fresh deferred atomic 2 burn at each matching. Only the established double link supplies guarantor XP roles/mutual responsibility; D42/D54 per-act receipts, not payment/establishment itself, produce XP. Authorized paid valences are not raw reciprocal legacy edges or personhood proof. D92 is a separate inviter-paid special route.
 
 The implementation MUST distinguish:
 
@@ -849,7 +849,7 @@ Own-source/identity validation, duplicate requests, D77 phases, matching/current
 
 ### 19.3 Unilateral link break
 
-**[SELECTED]** Either party can unilaterally end an established guarantee under protocol rules. **Termination is free (D110) — [SELECTED].** Termination charges nothing and cancels the terminating party's valence of that link; its K slot is released (D75) and the FACY burned to create it stays burned (D93/D97). The counterparty's valence follows the existing D94/D98 matching rules. Atomic ordering and D34 history still need execution contracts.
+**[SELECTED]** Either party can unilaterally end an established guarantee under protocol rules. **Termination is free (D110) — [SELECTED].** Termination charges nothing and cancels the terminating party's valence of that link; its K slot is released (D75) and the FCTY burned to create it stays burned (D93/D97). The counterparty's valence follows the existing D94/D98 matching rules. Atomic ordering and D34 history still need execution contracts.
 
 An abusive guarantor may repeatedly cancel otherwise valid Self-ID records. The guaranteed subject can decide to end that relation. A guarantor can also withdraw from an unsustainable responsibility relation.
 
@@ -875,7 +875,7 @@ Each NEW invitation must fit a1unit increment at EACH endpoint and counts both a
 
 **Restoration is a new transaction.** D94/D98 allow a new paid valence to match a still-open valid opposite after one's withdrawal, not revival of the withdrawn record or a second charge of the retained side. The creator needs current capacity for its new unit. Closed invitations cannot be reopened; a new ordinary relation does not automatically inherit their active type, while old provenance/D34 duties remain history. Exact special invitation/ordinary mapping and failed-transaction ordering still need contracts. Termination itself is free and cancels the terminating party's valence (D110); the executed creation burn is never refunded.
 
-**Invitation counts and identity.** D99 gives an ordinary invited account ONE original creation inviter, not a two-outgoing-invite quota or lifetime issuance limit. Issuing is bounded by actual own funding (currently 1 own FACY per invitation, D105), eligibility and K. Merely sending an additional invitation to an existing account does not create an ordinary valence, a second account-creation event or automatic guarantor XP. D95 re-entry preserves the same SubjectId/history; an episode sponsor is not silently rewritten as its original creator.
+**Invitation counts and identity.** D99 gives an ordinary invited account ONE original creation inviter, not a two-outgoing-invite quota or lifetime issuance limit. Issuing is bounded by actual own funding (currently 1 own FCTY per invitation, D105), eligibility and K. Merely sending an additional invitation to an existing account does not create an ordinary valence, a second account-creation event or automatic guarantor XP. D95 re-entry preserves the same SubjectId/history; an episode sponsor is not silently rewritten as its original creator.
 
 **Implementation/evidence boundary.** Existing unpaid-directed/K_slot/T/V/B-bond/invite1 references do not implement this owned-open-unit counter, paid valence matching, D105–D107/D95 registration/admission or phase contracts. Preserve historical artifacts/defaults; no replay/relabel, independent-person oracle, cross-user capacity quota, scientific G1 or native migration follows. D34/D42/D54/separate D9 rights and source/party history survive slot changes.
 
@@ -1055,7 +1055,7 @@ A person with many active, genuine guarantee relations can earn far more than on
 
 **[DIRECTION]** Early builders intentionally receive an earned advantage for building before the network was attractive. This is not permanent immunity, inaccessible governance or an assumption that they stay honest forever. Non-transferability blocks direct purchase of XP by token accumulation; it does not automatically block bribery, coercion, account control, delegated influence or coordination among real people.
 
-A public leaderboard ranks subjects by effective XP. High XP may provide access to disputes of higher procedural rank and an opportunity to receive dispute rewards. The quantity of XP is not a token balance and cannot be transferred, minted by FACY purchase, or delegated merely as a market asset.
+A public leaderboard ranks subjects by effective XP. High XP may provide access to disputes of higher procedural rank and an opportunity to receive dispute rewards. The quantity of XP is not a token balance and cannot be transferred, minted by FCTY purchase, or delegated merely as a market asset.
 
 A conceptual relation is:
 
@@ -1141,7 +1141,7 @@ The distinct **free guarantor cancellation** of an eligible unspent Self-ID **be
 
 **[SELECTED observer/relay distinction, not guaranteed participation] (D46)** A low-XP noticer can ask a higher-XP participant to assess the evidence and take responsibility for an eligible challenge, including seeking a wider audience rather than relying only on the accused's local guarantors. This follows D28 and the senior-contact hypothesis in §26.5: low XP belongs to the noticer, and the contact request is not itself a Chekharda position. The contacted participant must actually be reachable, assess the evidence, be willing and satisfy the applicable XP/stake gates before entering. A request does not guarantee arrival, independent support, a true accusation, a favorable verdict or access to half the network; contact/exposure assumptions remain explicit and OPEN. The proposed roughly tenfold guarantor suspicion advantage is not the earlier illustrative tenfold **senior XP** or 10% **joining chance** in §26.5, and does not select those numbers.
 
-The investigator and sponsor may negotiate compensation outside protocol. A built-in bounty marketplace, transferable XP or mandatory new token is not required. Funding, payer/recipient, currency, payment conditions, sponsor effort, collection risk and enforceability are **[OPEN / RESEARCH ASSUMPTIONS]**, not free resources or silently minted FACY.
+The investigator and sponsor may negotiate compensation outside protocol. A built-in bounty marketplace, transferable XP or mandatory new token is not required. Funding, payer/recipient, currency, payment conditions, sponsor effort, collection risk and enforceability are **[OPEN / RESEARCH ASSUMPTIONS]**, not free resources or silently minted FCTY.
 
 **[HYPOTHESIS]** An active investigative minority with sufficiently responsive sponsors and decision-makers can support a much larger passive population and expose violations beyond the accused's local guarantor cluster. Outsiders, rivals and former collaborators may supply evidence, but they need access and a willing capable sponsor. Multiple routing, publication and sponsor competition are possible mechanisms to test, not omnipotent fallbacks. Public availability does not imply attention or enforcement.
 
@@ -1184,7 +1184,7 @@ These XP values are illustrative. They are not protocol thresholds.
 The system uses both forms of capital:
 
 - **XP** determines who may participate at the current escalation level.
-- **FACY or another approved stake asset** places transferable economic value at risk.
+- **FCTY or another approved stake asset** places transferable economic value at risk.
 
 More money cannot bypass the XP condition. More XP does not establish factual truth by itself.
 
@@ -1272,7 +1272,7 @@ A window starts when its position joins, not at the previous deadline, and not w
 
 **[MODEL FINDING, diagnostic]** In one retained cheap-fake run, a top-XP coalition defender ended all 89 resolved disputes at depth 2 despite a common noisy signal favoring the accusation. This demonstrates an XP-gate obstruction under that script. It does not prove that XP dominance is necessary for every wrongful verdict, that non-dominance guarantees safety, or that real fabrication costs prevent dominance; see insight F21.
 
-**[SELECTED] (D159) Escalating stakes.** The participants of a dispute form an ordered list: the accuser is position 1, the first to stand for the accused is position 2, and so on, odd positions on one side and even positions on the other. Each position posts a stake 20% above the previous stake, compounding from a base of **7 FACY**. Stakes are reserved until the dispute ends. Each winner recovers its own backing and receives the collectible stake of the position directly below it; each loser forfeits upward. A losing accuser's stake therefore goes to the first participant who stood for the accused. When the accused loses, the base stake is charged to the accused and to each liable guarantor; the accuser receives the collectible charge from the accused, and the guarantors' collected charges are burned. For an identity case, the liable guarantors are exactly those who received XP for the accused's acts (§24, D167), including those who later ended their guarantees. Uncollected amounts are debt, not money already received or burned. The return of a winner's own backing is not a reward.
+**[SELECTED] (D159) Escalating stakes.** The participants of a dispute form an ordered list: the accuser is position 1, the first to stand for the accused is position 2, and so on, odd positions on one side and even positions on the other. Each position posts a stake 20% above the previous stake, compounding from a base of **7 FCTY**. Stakes are reserved until the dispute ends. Each winner recovers its own backing and receives the collectible stake of the position directly below it; each loser forfeits upward. A losing accuser's stake therefore goes to the first participant who stood for the accused. When the accused loses, the base stake is charged to the accused and to each liable guarantor; the accuser receives the collectible charge from the accused, and the guarantors' collected charges are burned. For an identity case, the liable guarantors are exactly those who received XP for the accused's acts (§24, D167), including those who later ended their guarantees. Uncollected amounts are debt, not money already received or burned. The return of a winner's own backing is not a reward.
 
 **[SELECTED] (D161, D167, D171) Council entry into a dispute.** Any Council member may initiate one terminal collective entry, without the ordinary XP condition or a stake. Each member has one equal vote among confirmation, opposition or seven-day deferral. A simple majority of ballots cast adopts a choice, without quorum or recusal. Confirmation backs the Council position; opposition makes the Council count as absent for settlement and leaves the last ordinary side winning. A deferral majority, or no majority for any choice at the entered referendum's cutoff, adds seven days to the current latest shared deadline once. Deferrals may repeat without a selected cap. They do not settle the case, halve XP or create another Council position; holds/custody continue (§27.3).
 
@@ -1298,7 +1298,7 @@ A final result must be attributable to a specified procedure. The mere willingne
 
 **[DIRECTION and falsifiable accountability hypothesis] (D52)** A high-XP participant's public defense can attract attention to that participant's own history, guarantees, invitation activity, Self-ID acts, XP sources and economic behavior. The first-order process concerns the originally challenged transaction. A **second-order investigation concerns a separately admissible alleged violation in the defender's own or otherwise applicable history**. It may continue after the original dispute ends, including after a successful defense; winning one claim supplies no immunity from a different, evidenced claim. Public history is attributable evidence to inspect, not proof that any violation exists.
 
-**[SELECTED] (D151) Remedy for a detected fake cluster.** The remedy measures combine. Quarantine: when a dispute opens against a node of a cluster, its entry points are handled with heightened scrutiny and the invalidation that follows is partial. Burden of proof: accounts of the entry point's invitation subtree prove they are real people within a window or are invalidated, and real people trapped in the cluster survive by proving it (D136). Liability: each invitation of a fake is a losing act for its creator and the act-time guarantors (D34/D55). Recovery: unspent rights and liquid FACY on invalidated accounts are burned; FACY already transferred out cannot be un-minted (D53). Repair: a wrongly invalidated person can appeal, and honest-honest links cut by false positives are restored without a fee; cut-off participants regain standing by finding honest guarantors outside the cluster. **[OPEN]** the use of recovered value beyond burning it (bounty or compensation).
+**[SELECTED] (D151) Remedy for a detected fake cluster.** The remedy measures combine. Quarantine: when a dispute opens against a node of a cluster, its entry points are handled with heightened scrutiny and the invalidation that follows is partial. Burden of proof: accounts of the entry point's invitation subtree prove they are real people within a window or are invalidated, and real people trapped in the cluster survive by proving it (D136). Liability: each invitation of a fake is a losing act for its creator and the act-time guarantors (D34/D55). Recovery: unspent rights and liquid FCTY on invalidated accounts are burned; FCTY already transferred out cannot be un-minted (D53). Repair: a wrongly invalidated person can appeal, and honest-honest links cut by false positives are restored without a fee; cut-off participants regain standing by finding honest guarantors outside the cluster. **[OPEN]** the use of recovered value beyond burning it (bounty or compensation).
 
 **[SELECTED] (D152) Second accounts.** When a real member registers a second account through an acquaintance who could not know, the holder of the second account is at fault. A verdict that both accounts belong to one person invalidates the second account and reaches the holder; everything received through it is recovered. The inviter is acquitted if a jointly signed co-presence artifact with the invitee, made before the invitation, exists (§7); acquittal removes the loss of reputation and partners and the XP penalties of D34/D55. Without the artifact ordinary chain liability applies. **[OPEN]** authenticity and freshness of the artifact, and collusion by a fabricated meeting.
 
@@ -1405,62 +1405,64 @@ There is no requirement for an infinite chain of councils above the Consul Counc
 
 The ordinary opening transaction does not itself settle all peer-route execution details. Bind the admissible act/claim, application of XP/access, stake reservation and debt, transition into the referendum, evidence, authorized custody/reward/sanction consequences and cross-/duplicate-case handling. Entry has no separate Council-only interval; majority-adopted and automatic cutoff deferrals have their selected seven-day effect. Disagreement, Council membership or losing this case does not automatically establish false identity, an unrelated violation or removal from office. Existing evidence, responsibility and recovery boundaries remain intact.
 
-# Part VI: FACY Economics and Atmo Integration
+<a id="part-vi-facy-economics-and-atmo-integration"></a>
+
+# Part VI: FCTY Economics and Atmo Integration
 
 ## 28. A monetary token and a separate authority measure
 
-Facety deliberately separates FACY from XP:
+Facety deliberately separates FCTY from XP:
 
-| Property | FACY | XP |
+| Property | FCTY | XP |
 | --- | --- | --- |
 | Nature | Fungible economic token. | Non-transferable procedural experience. |
-| Primary issuance | 1 FACY for a valid, rewarded Self-ID. | 1 credit for an eligible own Self-ID, plus 1 per qualifying guaranteed Self-ID. |
+| Primary issuance | 1 FCTY for a valid, rewarded Self-ID. | 1 credit for an eligible own Self-ID, plus 1 per qualifying guaranteed Self-ID. |
 | Market transfer | Yes, after the applicable Emitter-to-Collector conversion or through already liquid holdings. | No. |
-| Invitation eligibility | Only personally earned, unspent Emitter emission, at least 24 hours old. | Does not substitute for the FACY invitation burn. |
+| Invitation eligibility | Only personally earned, unspent Emitter emission, at least 24 hours old. | Does not substitute for the FCTY invitation burn. |
 | Dispute role | Monetary stake and possible winnings or penalties. | Admission and escalation authority. |
 | Penalty | Real balance loss, possible burn, or future-reward debt under policy. | Possible 50% reduction in effective XP. |
 
-The two measures are complementary. Large market wealth does not directly buy procedural XP, and large XP does not mint arbitrary FACY.
+The two measures are complementary. Large market wealth does not directly buy procedural XP, and large XP does not mint arbitrary FCTY.
 
-The amount of FACY issued per Self-ID is fixed by the standard reward rule. Its market price is not fixed by Facety. There is no selected dollar peg or promised daily income in fiat terms.
+The amount of FCTY issued per Self-ID is fixed by the standard reward rule. Its market price is not fixed by Facety. There is no selected dollar peg or promised daily income in fiat terms.
 
 ## 29. Monetary operations and supply
 
 The design distinguishes actual token operations from ledger claims.
 
-| Operation | Effect on fungible FACY supply |
+| Operation | Effect on fungible FCTY supply |
 | --- | --- |
-| Valid Self-ID under minted-escrow reference | Mint 1 FACY into controlled Emitter custody. |
-| D105 invitation | Burn 1 eligible own-source backing FACY from inviter; newcomer pays 0 and incurs no debt. |
+| Valid Self-ID under minted-escrow reference | Mint 1 FCTY into controlled Emitter custody. |
+| D105 invitation | Burn 1 eligible own-source backing FCTY from inviter; newcomer pays 0 and incurs no debt. |
 | Free eligible Self-ID cancellation before 24 h | Burn Emitter backing; no maturity XP (D42). |
-| Collector conversion | Transfer an existing FACY unit; do **not** mint a second unit. |
-| D93 valence creation | Burn 1 own-issued FACY now, even unanswered; matching has no extra burn (§19.2). |
+| Collector conversion | Transfer an existing FCTY unit; do **not** mint a second unit. |
+| D93 valence creation | Burn 1 own-issued FCTY now, even unanswered; matching has no extra burn (§19.2). |
 | Established-link termination | D110: free; cancels the terminating party's valence (§19.3). |
 | Monetary sanction | Burn only if the approved rule executes an actual burn; otherwise transfer or record debt. |
-| Treasury D buyback | Buy existing market FACY; burn the acquired quantity. |
+| Treasury D buyback | Buy existing market FCTY; burn the acquired quantity. |
 
 General supply identity:
 
 ```text
-FACY_supply_end
-    = FACY_supply_start
+FCTY_supply_end
+    = FCTY_supply_start
     + actual_mints
     - actual_burns
 ```
 
-A debt entry of `-100 FACY` is **not** an actual burn of 100 existing tokens. A transfer to another participant is not a burn. A skipped future mint can reduce expected supply growth but does not destroy already circulating FACY.
+A debt entry of `-100 FCTY` is **not** an actual burn of 100 existing tokens. A transfer to another participant is not a burn. A skipped future mint can reduce expected supply growth but does not destroy already circulating FCTY.
 
-Under the minted-escrow reference design, an invariant must connect the common Emitter vault to outstanding individual Self-ID rights. If guarantees reserve backing or split rights, the accounting must include all such commitments and ensure that no rights can claim the same FACY twice.
+Under the minted-escrow reference design, an invariant must connect the common Emitter vault to outstanding individual Self-ID rights. If guarantees reserve backing or split rights, the accounting must include all such commitments and ensure that no rights can claim the same FCTY twice.
 
 ### 29.1 Autonomous issuance and the monetary-stock question (D53)
 
-**[DIRECTION and hypotheses] (D53)** Distinguish the standalone single-network/single-token value thesis from the Atmo-coupled economic design. Analyse **autonomous FACY economics without assumed external demand** separately from **conditional Atmo-supported economics**. These are analytical contexts, not a newly selected deployment mode or a change to the one-FACY reward, invitation rules or D42.
+**[DIRECTION and hypotheses] (D53)** Distinguish the standalone single-network/single-token value thesis from the Atmo-coupled economic design. Analyse **autonomous FCTY economics without assumed external demand** separately from **conditional Atmo-supported economics**. These are analytical contexts, not a newly selected deployment mode or a change to the one-FCTY reward, invitation rules or D42.
 
 With genuine unique participation, each person's normal rewarded acts are limited to at most one per rolling 24 h. This rate argument depends on uniqueness enforcement; admitted Sybil accounts need not respect the human-population bound. At a fixed participating population, full-rate gross issuance is linear in elapsed time; with changing participation it can accelerate or slow. A person's lifetime and the contemporaneous human population are finite. An illustrative **four billion participants** is a saturation scenario, not a protocol cap, a forecast or a verified-population input. Future generations and continuing participation mean that a bounded simultaneous population does **not** by itself bound lifetime cumulative token issuance.
 
-For a simplified fully participating constant population `N`, no burns, unchanged reward and elapsed time `t` in days, gross daily issuance is `N FACY/day` and stock is `S(t) = S(0) + N*t`. A single added unit has relative size `1/S(t)`; the entire daily issue has relative size `N/S(t)`. Both can shrink, but **one tiny coin is not the entire issuance flow**. Actual supply always follows §29's mint-minus-actual-burn identity; cancellations, invitations and real market burns must not be replaced by nominal debt or assumed deflation. No automatic issuance end, aggregate hard cap or new emission-halving schedule is selected.
+For a simplified fully participating constant population `N`, no burns, unchanged reward and elapsed time `t` in days, gross daily issuance is `N FCTY/day` and stock is `S(t) = S(0) + N*t`. A single added unit has relative size `1/S(t)`; the entire daily issue has relative size `N/S(t)`. Both can shrink, but **one tiny coin is not the entire issuance flow**. Actual supply always follows §29's mint-minus-actual-burn identity; cancellations, invitations and real market burns must not be replaced by nominal debt or assumed deflation. No automatic issuance end, aggregate hard cap or new emission-halving schedule is selected.
 
-**[HYPOTHESES, not price laws]** One intuition compares roughly quadratic network opportunity with linear per-person issuance. `N*(N-1)/2` counts possible undirected pairs, not valuable interactions, token demand, market capitalization or a FACY price floor. Genuine useful links may create value; duplicate accounts, collusion, low utilization, review costs and saturation may not. A falling issue/stock ratio does not establish negligible monetary effects or nonzero long-run price. As a counterexample, an explicitly assumed fixed desired aggregate token holding value alongside indefinitely growing stock could make unit price tend toward zero even as percentage issuance falls. This is a toy alternative, not the selected market model. A maturing network's accumulated useful economy is also expected to make incremental issuance less significant. That is a hypothesis about economic development over time, not a result implied by age, token stock or population saturation; applications and useful activity can grow, stagnate or disappear even at fixed population. Demand, token value capture, holdings/velocity, application use, actual funding and burns require their own evidence.
+**[HYPOTHESES, not price laws]** One intuition compares roughly quadratic network opportunity with linear per-person issuance. `N*(N-1)/2` counts possible undirected pairs, not valuable interactions, token demand, market capitalization or a FCTY price floor. Genuine useful links may create value; duplicate accounts, collusion, low utilization, review costs and saturation may not. A falling issue/stock ratio does not establish negligible monetary effects or nonzero long-run price. As a counterexample, an explicitly assumed fixed desired aggregate token holding value alongside indefinitely growing stock could make unit price tend toward zero even as percentage issuance falls. This is a toy alternative, not the selected market model. A maturing network's accumulated useful economy is also expected to make incremental issuance less significant. That is a hypothesis about economic development over time, not a result implied by age, token stock or population saturation; applications and useful activity can grow, stagnate or disappear even at fixed population. Demand, token value capture, holdings/velocity, application use, actual funding and burns require their own evidence.
 
 ### 29.2 Majority-conditioned economic resilience (D62)
 
@@ -1470,7 +1472,7 @@ For a simplified fully participating constant population `N`, no burns, unchange
 
 **Chosen resilience question.** For both requested fractions and the boundaries around them, identify conditions on admission/evidence, concentration of authority, funded attack/response resources, growth, collection and demand under which attack-attributable damage remains bounded while genuine access and growth remain usable. Report false emission/extraction, actual recovered principal, unpaid debt, innocent harm, authority capture and recovery separately. A network that prevents abuse only by preventing genuine participation has not earned a resilience result. An adversary's lawful personal issuance is not fraud solely because of intent; aliases and genuine-person violation coalitions both require explicit tests.
 
-**Economic scope.** Distinguish protocol integrity and bounded incremental attack loss from the market price itself. Even universal rule-following cannot guarantee demand, liquidity or a price floor (§29.1). Autonomous FACY and finite conditional Atmo support (§33.1) remain separate; no free sponsor, protected price or automatic recovery fork may fill a missing contract. Comparisons need matched declared no-attack resources/demand conditions, an explicit horizon, loss units/budgets, bad-event/risk criteria and attacker scope. Acceptable-loss tolerances are parameters of a conditional frontier until bound before evidence, not invented universal constants. Finite-horizon or bounded active-abuse results do not imply bounded cumulative loss forever.
+**Economic scope.** Distinguish protocol integrity and bounded incremental attack loss from the market price itself. Even universal rule-following cannot guarantee demand, liquidity or a price floor (§29.1). Autonomous FCTY and finite conditional Atmo support (§33.1) remain separate; no free sponsor, protected price or automatic recovery fork may fill a missing contract. Comparisons need matched declared no-attack resources/demand conditions, an explicit horizon, loss units/budgets, bad-event/risk criteria and attacker scope. Acceptable-loss tolerances are parameters of a conditional frontier until bound before evidence, not invented universal constants. Finite-horizon or bounded active-abuse results do not imply bounded cumulative loss forever.
 
 **Status and OPEN remainder.** Human/evidence/market calibration, local sampling and authority, funded response latency/collection, plausible ranges and precision/error/kill contracts remain explicit. The existing master evidence gates govern testing; this direction selects no new reward, vote, verification oracle, threshold or default migration. D33/D35/D36/D41, D49's genuine-growth test, D50's incentive target, D53's economic boundaries and D61's named reference remain intact. Autonomous preparation does not turn unknown assumptions into favorable facts or waive separate approval for irreversible, external or personal-data actions.
 
@@ -1494,24 +1496,24 @@ For a simplified fully participating constant population `N`, no burns, unchange
 
 ## 30. Monetary penalties and negative emission balances
 
-**[SELECTED / DIRECTION]** A participant can incur a monetary penalty larger than its current liquid and recoverable balances. The remaining obligation becomes a negative emission balance or debt. Future valid identity work can reduce that debt before the participant receives free disposable FACY.
+**[SELECTED / DIRECTION]** A participant can incur a monetary penalty larger than its current liquid and recoverable balances. The remaining obligation becomes a negative emission balance or debt. Future valid identity work can reduce that debt before the participant receives free disposable FCTY.
 
 Illustrative ledger:
 
 ```text
-Recorded penalty debt: 8 FACY
-Next valid Self-ID:   standard reward = 1 FACY
-Apply debt recovery:  debt falls to 7 FACY
-Disposable reward:    0 FACY
+Recorded penalty debt: 8 FCTY
+Next valid Self-ID:   standard reward = 1 FCTY
+Apply debt recovery:  debt falls to 7 FCTY
+Disposable reward:    0 FCTY
 ```
 
 This describes the intended economic result. It does **not** select the exact asset implementation. A final implementation could withhold a future mint or mint into restricted custody and burn after the selected veto window; §17.3 governs timing, not immediate burning at acceptance. Total-issuance effects must match the chosen representation.
 
 The debt should follow the `SubjectId`, not a changeable account key. A person who makes an error may continue to participate and work toward a non-negative balance. Negative debt is not, by itself, permanent exclusion.
 
-**[SELECTED] (D166, D167)** Stake and sanction backing includes held Collector FACY and emission value; an uncollected loss becomes negative emission balance and is repaid from later emission. There is no debt ceiling or protocol Treasury. **[OPEN]** Exact collection priority among existing balances and commitments, appeal effects, overlapping liabilities and account-abandonment execution still require contracts. A nominal fine is not an amount actually recovered.
+**[SELECTED] (D166, D167)** Stake and sanction backing includes held Collector FCTY and emission value; an uncollected loss becomes negative emission balance and is repaid from later emission. There is no debt ceiling or protocol Treasury. **[OPEN]** Exact collection priority among existing balances and commitments, appeal effects, overlapping liabilities and account-abandonment execution still require contracts. A nominal fine is not an amount actually recovered.
 
-**[DIRECTION]** Proven serious violations can create actual deflation through burns of collectible FACY. This is separate from D105's 1 FACY invitation burn, D93's 1 FACY valence charge and Atmo buyback burn.
+**[DIRECTION]** Proven serious violations can create actual deflation through burns of collectible FCTY. This is separate from D105's 1 FCTY invitation burn, D93's 1 FCTY valence charge and Atmo buyback burn.
 
 ## 31. The DEOS / Atmo capital model
 
@@ -1522,13 +1524,13 @@ The Atmo instance uses the separation of capital allocation and spending authori
 | **Bucket A** | Immutable monetary anchor; not discretionary Facety funding. |
 | **Bucket B → Treasury B** | Development and builder-related spending under its own policy. |
 | **Bucket C → Treasury C** | Operational capital and available native/reserve assets. |
-| **Bucket D → Treasury D** | Dormant allocation at launch; later a Demand policy used to support Facety through FACY buyback and burn. |
+| **Bucket D → Treasury D** | Dormant allocation at launch; later a Demand policy used to support Facety through FCTY buyback and burn. |
 
 Buckets and Treasuries are not interchangeable. The right to change the capital's liquidity position is a different control plane from the right to spend treasury assets.
 
-**[PROPOSAL, not established funding or a sustainability theorem] (D65)** A one-sixth protocol-flow allocation is proposed, with DEOS/Facety as economic L1/L2 federal layers. These are proposed integration terms, not evidence of an existing universal DEOS transfer, guaranteed liquidity or a separate blockchain requirement. DEOS supplies reusable execution; Atmo is the concrete instance; Facety is its accountable-human application. An allocation needs its actual asset, flow base, authority, budget, available funds and routing contract. D53's autonomous FACY versus conditional Atmo support remains intact; neither a nominal fraction nor a research work cap supplies outside money, a price floor or verified economic demand.
+**[PROPOSAL, not established funding or a sustainability theorem] (D65)** A one-sixth protocol-flow allocation is proposed, with DEOS/Facety as economic L1/L2 federal layers. These are proposed integration terms, not evidence of an existing universal DEOS transfer, guaranteed liquidity or a separate blockchain requirement. DEOS supplies reusable execution; Atmo is the concrete instance; Facety is its accountable-human application. An allocation needs its actual asset, flow base, authority, budget, available funds and routing contract. D53's autonomous FCTY versus conditional Atmo support remains intact; neither a nominal fraction nor a research work cap supplies outside money, a price floor or verified economic demand.
 
-**D65 terminology — Protocol Income.** Use this term for an explicitly specified service/fee receipt attributed to reducing uncertainty or verification work. It does not declare every FACY emission a service payment or establish that work was useful/true. The fixed-total review-resource comparison conserves an assumed work endowment; it does not prove independence from new participants, eliminate Ponzi risk, establish contribution-proportional income or solve long-run financing.
+**D65 terminology — Protocol Income.** Use this term for an explicitly specified service/fee receipt attributed to reducing uncertainty or verification work. It does not declare every FCTY emission a service payment or establish that work was useful/true. The fixed-total review-resource comparison conserves an assumed work endowment; it does not prove independence from new participants, eliminate Ponzi risk, establish contribution-proportional income or solve long-run financing.
 
 **[SELECTED]** The Facety buyback-and-burn is an **Atmo instance policy**. It is not a universal rule imposed on every DEOS instance. Another instance could use its Bucket D for another lawful purpose.
 
@@ -1541,9 +1543,9 @@ Bucket D capital, initially Dormant
     -> policy-authorized activation
     -> release of available capital from its position
     -> Treasury D spend budget
-    -> market route into FACY
-    -> purchase existing FACY
-    -> burn all FACY acquired for that operation
+    -> market route into FCTY
+    -> purchase existing FCTY
+    -> burn all FCTY acquired for that operation
     -> auditable accounting
 ```
 
@@ -1556,19 +1558,19 @@ A reasonable minimum execution policy includes:
 - Explicit Treasury D budget and maximum spend per period.
 - Maximum spend per operation and optional minimum interval.
 - Approved input assets and market routes.
-- Minimum actual FACY output, slippage, and price-impact limits.
+- Minimum actual FCTY output, slippage, and price-impact limits.
 - Fresh reference-price or market-health checks.
 - A pause mechanism and rules for restoring activity.
 - Replay protection and actual balance-delta accounting.
-- A public record of the asset spent and FACY burned.
+- A public record of the asset spent and FCTY burned.
 
-For an atomic local market, the purchase, burn, consumed budget, and execution record should form one atomic transition. A failure to burn the purchased FACY must also fail the local purchase operation. Remote or asynchronous market execution needs a separate recovery protocol; local storage rollback cannot undo an already completed remote trade.
+For an atomic local market, the purchase, burn, consumed budget, and execution record should form one atomic transition. A failure to burn the purchased FCTY must also fail the local purchase operation. Remote or asynchronous market execution needs a separate recovery protocol; local storage rollback cannot undo an already completed remote trade.
 
-**Invariants:** A Treasury D buyback does not mint invitation-eligible Self-ID emissions and does not create XP. Buying FACY does not buy personhood. A completed buyback must account for actual FACY burned, not a theoretical quote.
+**Invariants:** A Treasury D buyback does not mint invitation-eligible Self-ID emissions and does not create XP. Buying FCTY does not buy personhood. A completed buyback must account for actual FCTY burned, not a theoretical quote.
 
 ## 33. Bucket D as a controlled economic interface
 
-Atmo can **reduce or stop** its FACY buyback policy when Facety suffers a serious Sybil outbreak or a material failure of the trust graph. It can restore spending after credible recovery under the approved policy.
+Atmo can **reduce or stop** its FCTY buyback policy when Facety suffers a serious Sybil outbreak or a material failure of the trust graph. It can restore spending after credible recovery under the approved policy.
 
 This is not a guarantee of price support or redemption. The buyback is capped and conditional. Facety remains responsible for its internal social truth; Atmo remains responsible for capital allocation.
 
@@ -1592,7 +1594,7 @@ credible and useful human network
 
 “Support rewards honesty” describes this intended network-level conditionality; it is not an individual truth oracle, automatic wage or guarantee that all participants understand/believe it. The incentive depends on perceived future value, horizon, actual authorized resources, credible observable health signals and a sponsor able and willing to act. Short-horizon extraction, outside benefits or coordinated genuine-person violations can remain profitable. A private attack gain can exceed the attacker's own share of a funding loss borne by the whole network. A sponsor unwilling to harm innocent users or its own dependent applications may also make a threatened pause/redirection non-credible; these are competing incentive explanations, not selected behavior. Atmo governance can also be captured or misinformed; falsely alleged capture can punish an honest network, and a pause can reduce review capacity precisely when correction is needed. Preserve sponsor independence as a tested assumption, not a property inferred from different token names or source tags.
 
-External support supplies real order flow/resources, not free value or guaranteed redemption/price. §32's buy-and-burn route buys existing market FACY; it does not mint invitation-eligible emissions or XP. Support for liquidity must have its own approved route/budget/custody: buyback is not automatically a liquidity-provider position. Report actual sponsor spend and acquired/burned FACY in their own units, fees/depth/slippage, who receives the funds and who bears pause losses. Do not give autonomous-core experiments an undisclosed subsidy or value XP by an assumed protected FACY price.
+External support supplies real order flow/resources, not free value or guaranteed redemption/price. §32's buy-and-burn route buys existing market FCTY; it does not mint invitation-eligible emissions or XP. Support for liquidity must have its own approved route/budget/custody: buyback is not automatically a liquidity-provider position. Report actual sponsor spend and acquired/burned FCTY in their own units, fees/depth/slippage, who receives the funds and who bears pause losses. Do not give autonomous-core experiments an undisclosed subsidy or value XP by an assumed protected FCTY price.
 
 ### 33.2 Redirectable sponsorship and a recovery fork (D53)
 
@@ -1626,7 +1628,7 @@ Atmo's Bucket D should therefore be understood as a **protocol-native marketing 
 
 Facety can be a low-level human-identity and trust primitive that other Atmo applications reuse. Possible higher-level uses include human-aware governance, Sybil-resistant public-goods funding, social recovery, membership and attendance claims, portable reputation, and human-authorized agent actions. A Facety identity claim must not automatically grant all of these permissions. Each application defines its own access and consequence rules.
 
-Possible additional **FACY utility surfaces**: verifier staking, attestation fees, dispute and appeal deposits, anti-spam charges, organization and API access, curation, and selected Facety governance parameters. These are **[DIRECTION / CANDIDATE]** surfaces unless this specification defines an exact transition for them. The selected foundation is narrower: Self-ID emission, invitation burn, guarantee-related operations, dispute stakes and sanctions, and market buyback-and-burn.
+Possible additional **FCTY utility surfaces**: verifier staking, attestation fees, dispute and appeal deposits, anti-spam charges, organization and API access, curation, and selected Facety governance parameters. These are **[DIRECTION / CANDIDATE]** surfaces unless this specification defines an exact transition for them. The selected foundation is narrower: Self-ID emission, invitation burn, guarantee-related operations, dispute stakes and sanctions, and market buyback-and-burn.
 
 Likewise, Facety can publish reusable attestations and context-specific reputation without treating XP as a universal social score. The basic layer concerns human identity and social guarantees. Future layers may consume that evidence for different purposes without changing its historical meaning.
 
@@ -1678,7 +1680,7 @@ SelfId {
 
 EmitterRight {
     source_self_id_id
-    amount = ONE_FACY
+    amount = ONE_FCTY
     status: unspent | allocated | consumed | converted | cancelled
     eligibility_time = recorded_at + 24 hours
     collector_time = recorded_at + 24 hours
@@ -1739,8 +1741,8 @@ TreasuryDBuyback {
     execution_nonce
     spent_asset_and_amount
     route_and_output
-    facy_acquired
-    facy_burned
+    fcty_acquired
+    fcty_burned
     effective_execution_price
     remaining_budget
     block_number
@@ -1776,7 +1778,7 @@ create_self_id(subject, artifact_id, detector_version, face_index, assertions):
     require subject has not used its rolling 24-hour reward slot
     record the used slot at original creation time; cancellation cannot reset it (D79)
     create unique SelfId with one unspent emission right
-    perform approved FACY issuance/custody transition
+    perform approved FCTY issuance/custody transition
     schedule ordinary XP credit and the end of free veto at 24-hour maturity (D42)
     do not credit ordinary XP on creation or wait for spending/withdrawal
     check and publicly flag conflicting FaceRef claims
@@ -1815,7 +1817,7 @@ create_invitation(creator, registered_target, source_self_id):
     require target pre-registration fields and published zero Genesis Self-ID (D107)
     require new 1-unit invitation opening fits current K at EACH endpoint (D106)
     require own source right unspent, eligible, not disputed and age >= 24 hours
-    burn exactly ONE_FACY of its existing backing (D105), no recipient mint/burn/debt
+    burn exactly ONE_FCTY of its existing backing (D105), no recipient mint/burn/debt
     mark source emission UsedForInvitation
     count exactly 1 invitation-side unit at EACH endpoint from this issuance
     record addressed accountable invitation, frozen for 24 hours
@@ -1839,12 +1841,12 @@ convert_to_collector(owner, self_id_id):
     require owner is authorized for self_id_id
     require emitter right is unspent and not disputed
     require emitter right age >= 24 hours
-    transfer the ONE_FACY backing to ordinary Collector balance
+    transfer the ONE_FCTY backing to ordinary Collector balance
     mark source emission Converted
     commit once
 ```
 
-A market transfer from Collector does not retroactively recreate an Emitter right. A Collector conversion is not an invitation burn and does not reduce total FACY supply.
+A market transfer from Collector does not retroactively recreate an Emitter right. A Collector conversion is not an invitation burn and does not reduce total FCTY supply.
 
 ### 36.6 Open a dispute against a Self-ID
 
@@ -1877,7 +1879,7 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 
 ### Emission and token integrity
 
-10. Each eligible Self-ID produces no more than one standard FACY entitlement.
+10. Each eligible Self-ID produces no more than one standard FCTY entitlement.
 11. One emission right has no more than one terminal disposition: cancellation, invitation consumption, defined guarantee disposal, or Collector conversion.
 12. Before 24 hours, an emission cannot be spent or converted by its owner.
 13. From 24 hours onward, only explicitly approved network-building operations can use a still-restricted Emitter emission.
@@ -1886,15 +1888,15 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 16. Free author/eligible guarantor cancellation requires age < 24 hours; leaving an emission unused does not extend it (D42/D79), and cancellation never resets the original issued 24h slot.
 17. A consumed or converted emission cannot be cancelled again through the original free Emitter-veto mechanism.
 18. An active dispute freezes its target's still-unspent emission against use or conversion.
-19. FACY bought or received from another subject does not create invitation eligibility.
-20. D105 invitation burns exactly 1 FACY backed by one creator-earned eligible Emitter right. D106 counts 1 slot at each endpoint on issuance; D107 zero Genesis/recipient emits and burns nothing, no debt, no repeated acceptance eligibility test.
-21. Every actual burn reduces fungible FACY issuance by the amount actually burned under the selected asset model.
-22. The custody and entitlement ledger cannot create multiple claims against the same backing FACY.
+19. FCTY bought or received from another subject does not create invitation eligibility.
+20. D105 invitation burns exactly 1 FCTY backed by one creator-earned eligible Emitter right. D106 counts 1 slot at each endpoint on issuance; D107 zero Genesis/recipient emits and burns nothing, no debt, no repeated acceptance eligibility test.
+21. Every actual burn reduces fungible FCTY issuance by the amount actually burned under the selected asset model.
+22. The custody and entitlement ledger cannot create multiple claims against the same backing FCTY.
 23. Debt and nominal penalties cannot be counted as actual token burns.
 
 ### Social graph and responsibility
 
-24. D93 ordinary mutuality requires valid opposite paid valences; each creation immediately burns 1 own-issued FACY even unanswered. D105–D107 invitation is a special inviter-paid 1 route, recipient zero Genesis conceptual half with no mint/burn/debt, not two newborn-paid valences.
+24. D93 ordinary mutuality requires valid opposite paid valences; each creation immediately burns 1 own-issued FCTY even unanswered. D105–D107 invitation is a special inviter-paid 1 route, recipient zero Genesis conceptual half with no mint/burn/debt, not two newborn-paid valences.
 25. A paid unilateral valence uses 1 creator-owned K slot from creation (D100), but gives no guarantor XP/mutual responsibility; matching retained units adds no mutual-degree slot. Own-act/independent duties remain.
 26. Link termination is distinct from free Self-ID cancellation; D110 makes it free and cancels the terminating party's valence, with valid-end capacity release/history preserved.
 27. An authorized guarantor can prevent liability for a specific suspect Self-ID by validly cancelling that act, without automatically negating the underlying guarantee.
@@ -1905,7 +1907,7 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 
 ### XP and dispute procedure
 
-32. XP cannot be bought, transferred, or generated merely by moving FACY.
+32. XP cannot be bought, transferred, or generated merely by moving FCTY.
 33. Each qualifying Self-ID creates exactly the XP credits defined by the selected reward rule, subject to valid cancellation accounting.
 34. An ordinary direct challenger has strictly more effective XP than the owner of the challenged transaction.
 35. A later Chekharda participant has strictly more effective XP than the immediately preceding participant.
@@ -1921,7 +1923,7 @@ The implementation MUST preserve the selected invariants below. Where exact mech
 
 43. Facety does not obtain discretionary control over Bucket A, B, or C through its identity rules.
 44. Bucket D capital activation and Treasury D spending use separate authority checks.
-45. Treasury D purchases market FACY; it does not mint invitation-eligible FACY.
+45. Treasury D purchases market FCTY; it does not mint invitation-eligible FCTY.
 46. Every successful local buyback/burn accounts for the actual purchased and burned amount, and fails atomically when any indispensable local step fails.
 47. Suspending Atmo buybacks must not silently modify a subject's identity, XP, guarantee status, or legal dispute rights. D74 core-parameter actions require their own explicit authority, scope and activation contract; pausing buyback alone is never that authorization or permission to erase historical/pending rights.
 48. Public audit data must not require storing private media bytes directly in runtime state.
@@ -1962,7 +1964,7 @@ Facety must be evaluated against several adversaries, not only a person who buys
 
 | Threat | Attacker strategy | Relevant defense or unresolved risk |
 | --- | --- | --- |
-| Market-financed Sybil farm | Buy FACY and mass-create identities. | Bought FACY does not create invitation rights; entry also needs accountable guarantees. |
+| Market-financed Sybil farm | Buy FCTY and mass-create identities. | Bought FCTY does not create invitation rights; entry also needs accountable guarantees. |
 | Earned-right Sybil farm | Maintain false subjects until they earn their own Emitter rights. | Time delay, witnesses, guarantee liability, disputes; successful false entry remains a significant risk. |
 | XP farming cartel | Use dense mutual guarantees to earn XP at high speed. | Public graph and liability; **open:** whether authority outruns independent evidence. |
 | Impersonation or twins | Claim another person's image or create multiple subjects for one person. | FaceRef collision visibility, signed claims, guarantor cancellation, disputes. |
@@ -2005,7 +2007,7 @@ Deterrence held only while verdict accuracy was at least about 0.8 and raw false
 
 **Attention-flood controls.** Compare recycled/unsecured nominal commitments with exclusively funded simultaneous stakes at equal available capital; retain ordinary independently funded smaller disputes. Match legitimate circular transfers and legitimate dispute surges so stake-origin patterns cannot become guilt labels. Under D67, make common-channel notices immediately available to the declared present members, without a separate diffusion model; test early bursts, small or late-arriving harms, response/work outages, shared evidence and pending cases across the declared observation horizon; do not invent a final-three-days filter or resolve pending rights at horizon. Early tripwires/hot lists are notification candidates only, not extra votes, truth or automatic authority.
 
-**Graph and capital controls.** Compare genuine low-transaction communities with collusive rings; no economic transfer does not mean uselessness, and guarantee edges alone neither prove false people nor create XP. Structural witness/indexer validity is not verification of economic value. Compare otherwise matched wealthy and low-balance subjects: FACY cannot buy XP or extra votes, and each formal consul retains one vote. A verified-person mapping and any age/quality/lifetime guarantor-capacity formula remain distinct unresolved contracts; do not infer a selected quota from these tests.
+**Graph and capital controls.** Compare genuine low-transaction communities with collusive rings; no economic transfer does not mean uselessness, and guarantee edges alone neither prove false people nor create XP. Structural witness/indexer validity is not verification of economic value. Compare otherwise matched wealthy and low-balance subjects: FCTY cannot buy XP or extra votes, and each formal consul retains one vote. A verified-person mapping and any age/quality/lifetime guarantor-capacity formula remain distinct unresolved contracts; do not infer a selected quota from these tests.
 
 **Admissibility boundary.** Automatic slashing or ignoring of circular funding, and reputation decay for low economic activity, are not enforcement rules. The same observations can arise from legitimate treasuries, refunds, communities or ordinary transfers. Screening may invite independently evidenced review; sanctions require a defined violation, evidence, authorized procedure and actual funded execution. Preserve valid earlier history, innocent defense and non-retroactive duties. No penalty solely for graph membership, public defense, a losing side, capital or reported outrage; no blanket identity verdict from a money-flow flag. Genuine coordinated violation coalitions and clean-history controls are required alongside false identities.
 
@@ -2065,8 +2067,8 @@ false_or_duplicate_subjects_detected
 undetected_false_subjects
 active verified count, target/adopted difficulty and guarantee/path eligibility
 legacy N28 separately when evaluating the older reference
-FACY minted / burned / converted / still on Emitter
-FACY restricted for disputes
+FCTY minted / burned / converted / still on Emitter
+FCTY restricted for disputes
 invite burns and guarantee fees
 XP distribution / concentration / loss events
 Council composition and conflict exposure
@@ -2074,7 +2076,7 @@ accepted, challenged, cancelled and invalidated Self-ID counts
 guarantee and invitation cone connectivity
 dispute cost, accuracy and time to finality
 actual recovered financial penalties / unpaid debt
-Treasury D capital spent / FACY acquired and burned
+Treasury D capital spent / FCTY acquired and burned
 independent applications using Facety identity evidence
 ```
 
@@ -2119,13 +2121,13 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 10. Guarantor authority snapshot versus current graph authority at the time of cancellation.
 11. Precedence of an authorized guarantor cancellation and an open Self-ID dispute.
 12. Freeze and appeal effects on age-based eligibility and finality.
-13. D93 selects immediate 1 own-FACY burn per created valence, even unanswered/no refund; source provenance, invalid/frozen/debt/D77/failure/matching/K atomic execution remain.
+13. D93 selects immediate 1 own-FCTY burn per created valence, even unanswered/no refund; source provenance, invalid/frozen/debt/D77/failure/matching/K atomic execution remain.
 14. Meaning of a terminal Emitter right when backing value was only temporarily reserved.
 
 ### C. Entry, guarantees, and graph
 
 15. Actual pre-guaranteed genesis membership, verification/activity, financing and activation; the numeric zero clamp and already-guaranteed starting route are selected, not open alternatives.
-16. D100 resolves K's OWN OPEN valence/invitation resource (unanswered included, retained matching not charged again), replacing mutual-only degree. D99 one original creation inviter is not an invitation quota; D current mutually qualifying Council paths with D36 whole-family independence apply, with no ancestry prerequisite or cascade (D104). D105–D107 select the 1-FACY invitation, both-side slots, a pre-registered zero Genesis and issuance-only validation; paid valence/same-ID re-entry/closed-record rules remain. Bind owned-unit duplicates/pending/accepted/recipient-side mapping, canonical ordinary/special records, source/failure/D77/cutover, first100/Council activation, mature downturns and path/member snapshots/bounds/self cases; no raw legacy counter/graph or lifetime quota.
+16. D100 resolves K's OWN OPEN valence/invitation resource (unanswered included, retained matching not charged again), replacing mutual-only degree. D99 one original creation inviter is not an invitation quota; D current mutually qualifying Council paths with D36 whole-family independence apply, with no ancestry prerequisite or cascade (D104). D105–D107 select the 1-FCTY invitation, both-side slots, a pre-registered zero Genesis and issuance-only validation; paid valence/same-ID re-entry/closed-record rules remain. Bind owned-unit duplicates/pending/accepted/recipient-side mapping, canonical ordinary/special records, source/failure/D77/cutover, first100/Council activation, mature downturns and path/member snapshots/bounds/self cases; no raw legacy counter/graph or lifetime quota.
 17. How disputed or cancelled acts affect the rolling active-subject count.
 18. Invitation target binding, expiration, acceptance, replay protection, and any cancellation remedy.
 19. D105–D107 settle inviter1/recipient0,1slot at each endpoint at issuance, existing pre-registration/zero Genesis with no recipient mint/burn and no repeated acceptance gate. D93/D94 ordinary paid valence/opposite persistence remain. Bind canonical ordinary/special/zero-act records, duplicates/K/pending/failure/D77/source chronology, not a reopening of those choices.
@@ -2137,7 +2139,7 @@ The following are gaps in the **protocol**, not discretionary coding choices. An
 22. Penalty finality and appeal/replay execution. XP is rounded down after multiplying live responsibility units by the integrity coefficient; a loss halves that coefficient, and each valid matured own Self-ID restores 1/1000 up to one (D165). Maturity credits precede other events at the same hour (§17.5, D163).
 23. Remaining act-specific penalty qualification and overlapping-event deduplication, respecting the selected losing-author and invitation roles (§24.1). Losing participants are not spared because they are Council members (D164); identity-case liable guarantors are the actual XP recipients (D167).
 24. What makes a challenge admissible, including deadlines for different transaction types.
-25. Stake asset precision/rounding, reservation and settlement execution. Stakes use FACY, start at 7, compound by 20% per position and pay each winner the collectible stake below it; missing backing becomes debt on loss (D159, D166). The disposition of a losing top stake and any Council allocation remain OPEN (§26.5).
+25. Stake asset precision/rounding, reservation and settlement execution. Stakes use FCTY, start at 7, compound by 20% per position and pay each winner the collectible stake below it; missing backing becomes debt on loss (D159, D166). The disposition of a losing top stake and any Council allocation remain OPEN (§26.5).
 26. Execution bounds and deadline interactions; every position has its own window of 7 days for the first, one day less per further position, floor 3 days. Their maximum end point supplies the position-window deadline; D171 adds repeatable seven-day majority/automatic Council deferrals to the latest shared deadline (§26.5, §27.3). Bind each result/period's recognition and replay-safe application without changing that selected effect.
 27. Finality/appeal effects when reversal of already matured XP affects prior eligibility or decisions; an act in its initial free-veto window earns no ordinary maturity credit (D42).
 28. Council referral representation, active-case membership snapshots and ballot authentication. A member may initiate the terminal collective entry; voting uses one equal vote per member and a simple majority of ballots cast, with no quorum or recusal (D167).
@@ -2163,7 +2165,7 @@ The following sequence is **[REFERENCE]**. It aims to prove the smallest complet
 | 2. Artifact and FaceRef | Hash registration, timestamps, deterministic face indices. | Same canonical artifact produces the same references across supported clients. |
 | 3. Self-ID and Emitter | NFT-like Self-ID plus exactly one emission right. | No double emission; free cancellation only before 24 hours; explicit matured-custody contract (D42). |
 | 4. Group Self-ID | Multiple separate signed claims on one artifact. | Two different subjects can claim different indices; duplicate index conflict is flagged, not rejected. |
-| 5. Guarantees and invitations | Matching authorizations, verified difficulty, separate qualifying guarantee/path gates and earned FACY burn. | Purchased FACY cannot create invitations; path witnesses exclude shared intermediaries; verification/anchor/genesis contracts precede enforcement. |
+| 5. Guarantees and invitations | Matching authorizations, verified difficulty, separate qualifying guarantee/path gates and earned FCTY burn. | Purchased FCTY cannot create invitations; path witnesses exclude shared intermediaries; verification/anchor/genesis contracts precede enforcement. |
 | 6. XP and prevention | Age-based personal/guarantor credits; initial-window free cancellation. | Unused valid act credits once at 24 hours; spending/withdrawal cannot duplicate it; pre-maturity cancellation prevents it (D42). |
 | 7. Dispute engine | Ordinary challenge, Chekharda, monetary stakes, deadlines. | Valid XP escalation, freezes, deterministic outcomes and penalties. |
 | 8. Council | Three seats below 100, then difficulty-sized eligible consuls, case snapshots and three-choice intervention ballots. | One vote per member, simple majority without quorum/recusal; confirmation backs entry and opposition leaves the last ordinary side winning. A deferral majority or no majority at an entered referendum cutoff adds seven days to the current shared deadline once, repeatably; round/member/authentication records have explicit contracts. |
@@ -2187,7 +2189,7 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 6. **Free guarantor cancellation ends at 24 hours even if the emission is unused (D42).** Later adjudicated correction and sanctions are separate, not an extension of that veto.
 7. **The guarantor can prevent one bad act without automatically revoking a real person's identity.** Responsibility for identity guarantees is separate from responsibility for individual Self-ID acts.
 8. **A real guarantee needs both subjects' authorization.** Either party can end a relation under the fee and graph rules.
-9. **An invitation consumes personally earned FACY and requires both difficulty-sized independent guarantee support and internally vertex-disjoint XP-centered paths.** Verification/anchor details remain OPEN; no cluster quota is selected for now, and market capital cannot directly buy the right to invite.
+9. **An invitation consumes personally earned FCTY and requires both difficulty-sized independent guarantee support and internally vertex-disjoint XP-centered paths.** Verification/anchor details remain OPEN; no cluster quota is selected for now, and market capital cannot directly buy the right to invite.
 10. **Group artifacts create independent claims about shared appearance, not automatic guarantees.** Duplicate face-index claims remain visible and disputable.
 11. **XP is earned authority.** It is not money. Participants compete for it and risk losing it in public disputes.
 12. **Chekharda escalates responsibility through strictly increasing XP and monetary stakes.** Higher XP grants a procedural role, not an automatic proof of truth.
@@ -2195,7 +2197,7 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 14. **Fraud can damage an accountable proof chain.** Disconnection and proven personal guilt must remain separate findings.
 15. **Recorded debt is not a burned token.** Actual monetary supply changes require actual mint and burn operations.
 16. **Facety's credibility is a public good.** Public misconduct by its most respected participants can destroy its legitimacy.
-17. **Bucket D connects Atmo to Facety through an approved, bounded economic policy.** Atmo can buy and burn FACY, but cannot purchase historical XP or define human truth through market spending.
+17. **Bucket D connects Atmo to Facety through an approved, bounded economic policy.** Atmo can buy and burn FCTY, but cannot purchase historical XP or define human truth through market spending.
 18. **The test of the design is behavioral.** The protocol succeeds only if honest participation is practical and large, profitable fraud becomes sufficiently difficult under realistic adversarial behavior.
 19. **Vouch for people you know.** Guarantees flow through real acquaintance; requests from strangers are refused by default.
 20. **A proven false identity cuts its whole Self-ID chain under the defined sanction.** Actual recovery is distinct from nominal debt, and D34 retains responsibility for relevant historical events after exit. Duty, event/penalty identity, overlap and correction funding still need exact contracts.
@@ -2206,9 +2208,9 @@ A UI and indexer should display the same canonical state as the runtime. They ma
 
 Facety proposes a different way to organize network growth.
 
-A person brings a key, an image claim, and real social relationships. Continued Self-ID creates FACY and XP. Genuine guarantees let a participant expand the network and accept responsibility for the people it helps admit. Public disputes challenge false claims. Time, money, and accumulated XP make incorrect behavior costly. A small trusted community can build responsibility capital that later participants inherit as a protective social environment.
+A person brings a key, an image claim, and real social relationships. Continued Self-ID creates FCTY and XP. Genuine guarantees let a participant expand the network and accept responsibility for the people it helps admit. Public disputes challenge false claims. Time, money, and accumulated XP make incorrect behavior costly. A small trusted community can build responsibility capital that later participants inherit as a protective social environment.
 
-The application does not ask Atmo to decide who is human. It asks Atmo to support a credible and useful human network through bounded demand for FACY. **Bucket D is the controlled economic coupling between Atmo and Facety.** It can amplify growth without joining the two systems' internal governance or monetary rules.
+The application does not ask Atmo to decide who is human. It asks Atmo to support a credible and useful human network through bounded demand for FCTY. **Bucket D is the controlled economic coupling between Atmo and Facety.** It can amplify growth without joining the two systems' internal governance or monetary rules.
 
 The essential claim is not that trust can be created by software alone. The claim is that **software can record human commitments, reward durable cooperation, make false commitments costly, and expose the public process by which a community defends its own credibility**.
 
@@ -2551,7 +2553,7 @@ This decision changes the specification only. A future reference implementation 
 
 ### 46.17 Reused bridges, core loops and incremental gate evidence (D73)
 
-**[RESEARCH PRIORITY; hypotheses under test, not established safety or a selected gate removal] (D73)** Prioritize the growth loop (actual Self-ID, 24h maturity, own-funded invitation/24h freeze, qualifying creator guarantees AND paths, new subject) and correction loop (specific-act 24h veto, Chekharda, applicable D70–D72 Council route, authorized chain/liability consequences). Core FACY accounting retains actual issue/burn/debt/collection/custody and required funded costs; no outside buyback, price floor or recovery fork may make the baseline safe by assumption.
+**[RESEARCH PRIORITY; hypotheses under test, not established safety or a selected gate removal] (D73)** Prioritize the growth loop (actual Self-ID, 24h maturity, own-funded invitation/24h freeze, qualifying creator guarantees AND paths, new subject) and correction loop (specific-act 24h veto, Chekharda, applicable D70–D72 Council route, authorized chain/liability consequences). Core FCTY accounting retains actual issue/burn/debt/collection/custody and required funded costs; no outside buyback, price floor or recovery fork may make the baseline safe by assumption.
 
 **Shared support is not a reserved resource.** A per-issuer D-path certificate does not prevent other issuers using the same intermediaries/bridges. D purchased boundary supports may serve many suitable issuers within a declared short-path topology; internally disjoint paths within one query are not disjoint allocations across all users. This establishes an attack hypothesis and the need for an incremental-benefit test, not “all clusters pass” or “the path has no effect.” At fixed r, admissible degree/count limits, graph orientation, d_eff and qualified anchors can change feasibility. D81 now clarifies D74's initially100 ceiling as active mutual bilateral counterparts, not incoming unmatched votes; referendums may raise/lower K without forcing existing effective links to end. D75 valid-end immediate release/D34 retained (§19.4), not a lifetime or measured growth-rate bound; D35 still defers cluster quotas and D61's C remains a separately specified research arm.
 

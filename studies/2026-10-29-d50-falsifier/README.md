@@ -1,6 +1,6 @@
 # D50 falsifier: honest versus fraudulent yield per unit of effort (D108)
 
-**Status (2026-10-29):** design bound by [D109](../../docs/decisions.en.md#evidence-core-convergence-d76) (all [Q16](../../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108) defaults accepted); one of four registered balance confirmations executed (weak, sybil-cone: supported); the other three were superseded by [D114](../../docs/decisions.en.md#evidence-core-convergence-d76), which makes dirty-FACY share and attacker share over time the primary outcomes. No mechanism claim exists.
+**Status (2026-10-29):** design bound by [D109](../../docs/decisions.en.md#evidence-core-convergence-d76) (all [Q16](../../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108) defaults accepted); one of four registered balance confirmations executed (weak, sybil-cone: supported); the other three were superseded by [D114](../../docs/decisions.en.md#evidence-core-convergence-d76), which makes dirty-FCTY share and attacker share over time the primary outcomes. No mechanism claim exists.
 
 **Authority:** [D108](../../docs/decisions.en.md#evidence-core-convergence-d76) releases the master-programme order lock and the WP1/G1 method precondition for research runs. The evidence contract itself is unchanged: claims still need a committed registration before a reserved-seed confirmation, with presence, necessity and named alternatives where a mechanism is claimed.
 
@@ -11,7 +11,7 @@
 - **Weak D50 (falsifier):** honest yield per effort exceeds attacker yield per effort in every declared attack context. Failure in any context is a counterexample.
 - **Strong D50 (target):** the ratio reaches 10× in every declared context.
 
-Yield is FACY-equivalent holdings (liquid + unspent Emitter rights + reserved stake − debt) per unit of declared effort, per cohort. It is protocol accounting, not utility: XP, private benefits, market prices and real human costs stay outside the statistic.
+Yield is FCTY-equivalent holdings (liquid + unspent Emitter rights + reserved stake − debt) per unit of declared effort, per cohort. It is protocol accounting, not utility: XP, private benefits, market prices and real human costs stay outside the statistic.
 
 ## Exploratory probe (diagnostic, exploration seeds)
 
@@ -28,7 +28,7 @@ Observations, at diagnostic level only:
 
 1. **The defense never fires under defaults.** Honest `challenge` activity defaults to 0, so enabling disputes changes nothing, and verification only adds honest cost. Zero attacker subjects are invalidated in every run.
 2. **The about 2× ratio is structural, not defensive.** Attackers spend extra actions (fabrication, invitations, guarantees) per unit of emission. The ratio is therefore set mostly by the illustrative unit weights (`fabricateIdentity = recruitHuman = 1`).
-3. **Absolute fraud dominates.** Three Sybil operators each end with about 1950 FACY versus about 16 per honest operator, because fraud scales with resources while honest emission is one identity per person. A per-effort ratio above 1 does not prevent profitable fraud whenever effort is cheap relative to FACY. Under a linear price `P` per FACY and cost `c` per effort unit, honest participation is profitable when `P/c > ~4.2` and this fraud when `P/c > ~9`. The window between them is the only region where the weak D50 holds in a profit sense.
+3. **Absolute fraud dominates.** Three Sybil operators each end with about 1950 FCTY versus about 16 per honest operator, because fraud scales with resources while honest emission is one identity per person. A per-effort ratio above 1 does not prevent profitable fraud whenever effort is cheap relative to FCTY. Under a linear price `P` per FCTY and cost `c` per effort unit, honest participation is profitable when `P/c > ~4.2` and this fraud when `P/c > ~9`. The window between them is the only region where the weak D50 holds in a profit sense.
 4. **The resource cap binds.** Attacker cones saturate `maxSubjects = 2000` before day 60, so the horizon endpoint is cap-censored growth, not equilibrium.
 
 These numbers are not evidence for or against D50; they show which assumptions decide the answer: effort weights, defense activity, the cap and the horizon.
@@ -54,7 +54,7 @@ These numbers are not evidence for or against D50; they show which assumptions d
 
 Each has 9 contexts (3 defenses × fabrication weight 1/5/20), 30 replicas, α = 0.05 and the v2 `family-contradiction/v1` analysis; Holm adjustment across the four via `study`. Base: 90 days, `maxSubjects` 10000, `maxActions` 5,000,000 (raised from 500,000 because the action cap, not the design, censored runtime probes), legacy terminal XP.
 
-**Deviation from D109 (v1 withdrawn).** The first registrations (`hypotheses/d50-*-{sybil-cone,real-cartel}.json`, committed in `ed29272`) bound D42 `xpFinality: "maturity"`. Their first confirmation aborted with `debt/maturity ordering requires an explicit contract`: the model refuses to mature XP once dispute penalties create debt, an OPEN D42 migration item (BACKLOG "Remaining migration"). No statistic was computed or seen. The v2 registrations above differ only by using the labeled legacy terminal XP; the statistic is FACY holdings, which XP finality affects only indirectly through Council/eligibility. A D42-faithful rerun waits for the debt/maturity contract.
+**Deviation from D109 (v1 withdrawn).** The first registrations (`hypotheses/d50-*-{sybil-cone,real-cartel}.json`, committed in `ed29272`) bound D42 `xpFinality: "maturity"`. Their first confirmation aborted with `debt/maturity ordering requires an explicit contract`: the model refuses to mature XP once dispute penalties create debt, an OPEN D42 migration item (BACKLOG "Remaining migration"). No statistic was computed or seen. The v2 registrations above differ only by using the labeled legacy terminal XP; the statistic is FCTY holdings, which XP finality affects only indirectly through Council/eligibility. A D42-faithful rerun waits for the debt/maturity contract.
 
 **Encoding note.** Q16's log ratio is undefined when attacker yield is ≤ 0, which is the strongest pro-D50 outcome. The registered statistics are the equivalent sign tests (ratio > 1 ⇔ difference > 0; ratio > 10 ⇔ honest − 10 × attacker > 0 for positive yields), defined for every sign. Log ratios are reported descriptively.
 
@@ -70,15 +70,15 @@ Each has 9 contexts (3 defenses × fabrication weight 1/5/20), 30 replicas, α =
 | challenge, fabrication 1 / 5 / 20 | 0.348 / 0.347 / 0.370 |
 | challenge + verification, fabrication 1 / 5 / 20 | 2.262 / 2.091 / 1.649 |
 
-Exact replays of replica 0 per context (descriptive) give honest/attacker ratios of 1.9× / 2.3× / 3.5× without defense and 9.8× with challenge at fabrication weight 1; elsewhere attacker holdings are negative. **Caveat:** negative attacker holdings are mostly uncollected debt on disposable Sybils (challenge + verification, fabrication 1: about 93,600 FACY fined, about 3,500 collected). Flooring each subject's holdings at zero gives 1.9× (no defense), 4.9× (challenge, fabrication 1), 12.8× (challenge, fabrication 20) and 12× (challenge + verification, fabrication 1).
+Exact replays of replica 0 per context (descriptive) give honest/attacker ratios of 1.9× / 2.3× / 3.5× without defense and 9.8× with challenge at fabrication weight 1; elsewhere attacker holdings are negative. **Caveat:** negative attacker holdings are mostly uncollected debt on disposable Sybils (challenge + verification, fabrication 1: about 93,600 FCTY fined, about 3,500 collected). Flooring each subject's holdings at zero gives 1.9× (no defense), 4.9× (challenge, fabrication 1), 12.8× (challenge, fabrication 20) and 12× (challenge + verification, fabrication 1).
 
 **Not run (superseded by D114):** weak real-cartel and both strong hypotheses. Their registrations stay committed and valid; running them later is a separate decision, not a hidden result.
 
 ## D114 trajectories (diagnostic)
 
-[`trajectory-probe.mjs`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/trajectory-probe.mjs) on one exploration seed per arm, 90 days, `maxSubjects` 10000, legacy terminal XP; [output](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/trajectory-probe.txt). New observables: `dirty.heldShare` (FACY held by attacker-cohort subjects as liquid + unspent Emitter rights + reserved stake, over ledger supply) and `dirty.acceptedAttackerShare` (attacker share of accepted, not invalidated, subjects).
+[`trajectory-probe.mjs`](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/trajectory-probe.mjs) on one exploration seed per arm, 90 days, `maxSubjects` 10000, legacy terminal XP; [output](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-29-d50-falsifier/trajectory-probe.txt). New observables: `dirty.heldShare` (FCTY held by attacker-cohort subjects as liquid + unspent Emitter rights + reserved stake, over ledger supply) and `dirty.acceptedAttackerShare` (attacker share of accepted, not invalidated, subjects).
 
-| Arm | Attackers d0 → d10 → d30 → d89 | Dirty FACY d0 → d30 → peak → d89 |
+| Arm | Attackers d0 → d10 → d30 → d89 | Dirty FCTY d0 → d30 → peak → d89 |
 | --- | --- | --- |
 | sybil-cone, no defense | 10% → 45% → 97% → 96% | 14% → 87% → 89% → 72% |
 | sybil-cone, challenge, fab 1 | 10% → 43% → 96% → 95% | 14% → 75% → 83% → 49% |
@@ -87,7 +87,7 @@ Exact replays of replica 0 per context (descriptive) give honest/attacker ratios
 | real-cartel, all three arms | 10% → 45% → 98% → 96% | 14% → 87% → 89% → 72% |
 
 1. **Population takeover in about 30 days in every arm.** Defense changes the attacker share by at most a few points; invalidations are tens to a few hundred against thousands of attacker subjects.
-2. **Defense lowers dirty FACY late, not early.** The decline after day 45 coincides with attacker budget exhaustion (no new attacker emission) plus collected fines; it is not removal of attackers.
+2. **Defense lowers dirty FCTY late, not early.** The decline after day 45 coincides with attacker budget exhaustion (no new attacker emission) plus collected fines; it is not removal of attackers.
 3. **real-cartel is untouched by defense** because its members are genuine people: identity challenges have nothing to find, and act-level misconduct is not modeled here.
 4. **Cause candidates, not yet separated:** scripted attacker rates (invite 0.4 and guarantee 2 per subject-day versus honest 0.05 and 0.3), equal 100,000-unit budgets, and the absence of the selected D104/D36 path barrier from the legacy cohort engine.
 

@@ -6,7 +6,7 @@
 
 ## Explicit constructor contract
 
-`new FacetyModel({vouching: {K,T,V,B,reference}})` requires all fields; null/omission disables it. K is a nonnegative integer concurrent slot count; T/V are positive integer days; B is nonnegative integer FACY. Safe hour/end/balance bounds are checked. The immutable nested reference record must explicitly supply:
+`new FacetyModel({vouching: {K,T,V,B,reference}})` requires all fields; null/omission disables it. K is a nonnegative integer concurrent slot count; T/V are positive integer days; B is nonnegative integer FCTY. Safe hour/end/balance bounds are checked. The immutable nested reference record must explicitly supply:
 
 ```js
 reference: {

@@ -11,7 +11,7 @@ Two concrete largest cases:
 - **D2/M12:**2 distinct boundary relations support14 assumed-fake issuer subjects, including2 bridge subjects; exact Λ=14/2=7, each bridge's outgoing degree13.
 - **D3/M12:**3 distinct boundary relations support15 assumed-fake issuer subjects, including3 bridge subjects; exact Λ=15/3=5, each bridge's outgoing degree14.
 
-B counts supplied boundary **relations**, not a measured number of bribed people or paid FACY. Assumed-fake/all-genuine roles are outside graph/codec/view/verifier inputs; neither set is verified personhood. These are not actual newly admitted subjects or observed attack probabilities. Ratios count bridge subjects consistently; no post-hoc universal c threshold is fitted. K100 enforcement/count meaning is still unresolved; these modest degrees would fit one *candidate* live-outgoing count, but that is not a selected or implemented interpretation and proves no general K bound.
+B counts supplied boundary **relations**, not a measured number of bribed people or paid FCTY. Assumed-fake/all-genuine roles are outside graph/codec/view/verifier inputs; neither set is verified personhood. These are not actual newly admitted subjects or observed attack probabilities. Ratios count bridge subjects consistently; no post-hoc universal c threshold is fitted. K100 enforcement/count meaning is still unresolved; these modest degrees would fit one *candidate* live-outgoing count, but that is not a selected or implemented interpretation and proves no general K bound.
 
 ## Negative and scope controls
 

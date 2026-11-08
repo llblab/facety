@@ -18,7 +18,7 @@ For the remainder of this wave, use a **supplied already-admitted fictional disp
 
 The supplied first challenger is T02 at fictional day 0 with XP 24, above T01's 12. Position 1 has nominal stake 7 and backing 0; its deadline is day 7. It puts both T01 and T02 under the named participation restrictions. Nobody else has agreed to enter. T03 may have ordinary XP standing; T04-T06 may consider collective intervention. None is promised.
 
-Lock a factual assessment about the selected act and a separate action record. Do not label a defective reference proof of a fabricated person. If a merits/settlement operation needs an unspecified authority, record `BLOCKED`. A terminal-act liability calculation is separate from a seven-FACY identity-case sanction.
+Lock a factual assessment about the selected act and a separate action record. Do not label a defective reference proof of a fabricated person. If a merits/settlement operation needs an unspecified authority, record `BLOCKED`. A terminal-act liability calculation is separate from a seven-FCTY identity-case sanction.
 
 ## Packet P02: record R202
 
@@ -32,7 +32,7 @@ Available request labels: `R202-REPORT-1`, `R202-REPORT-2`, `R202-SOURCE`, `R202
 
 For the remainder of this wave, use a **supplied already-admitted fictional identity allegation** opened by T02 against T01 at day 0. The opening is not an observed voluntary filing. T02 has XP 24 against T01's 12, nominal stake 7, backing 0 and deadline day 7. T01 and T02 are restricted; nobody is pre-committed to defend.
 
-T03 may request an ordinary opposing position if willing and eligible. Its nominal position-2 stake would be 8.4, funded from its fictional balance of 10. If T03 wins that supplied two-position branch, returning its own 8.4 is principal: the zero-backed stake below pays zero additional FACY. A loss would expose its actual backing and integrity; no guaranteed reward, rescue or correct vote is offered. Record a refusal without replacing it.
+T03 may request an ordinary opposing position if willing and eligible. Its nominal position-2 stake would be 8.4, funded from its fictional balance of 10. If T03 wins that supplied two-position branch, returning its own 8.4 is principal: the zero-backed stake below pays zero additional FCTY. A loss would expose its actual backing and integrity; no guaranteed reward, rescue or correct vote is offered. Record a refusal without replacing it.
 
 Assess only what the actual requested records support. A fresh presence record is not a universal proof of uniqueness. If no Council has entered and the paper case reaches its cutoff without an admitted opposing ordinary position, record the last side's procedural result separately from factual confidence. If a Council position has entered, use its three-choice rule, including automatic deferral when no option has a majority at cutoff. Pending or unrecognized outside proof does not automatically override a finalized result.
 
@@ -60,7 +60,7 @@ For each case, request labels are `R301-ACT`, `R301-REGISTRY`, `R301-TRACE`, and
 
 This wave supplies a **prior final fictional decision**, not a new observation of participant error. Its opening was at day 0 and its unopposed first position concluded at day 7 on the allegation's side. The exercise now begins at day 7. T01 contests that decision and asks what information and authority could permit a remedy.
 
-The prior allegation was that T01 was an invented person. T02's seven-FACY position had no backing. The supplied outcome charged T01 seven: three were collected and four remain debt; the three collected units went to T02. Exactly T03 was the liable guarantor and seven of its ten units were collected and burned. T01 was invalidated, its four own-act source units revoked, and its coefficient halved. T03 lost the corresponding four source units, but was not halved merely for liability.
+The prior allegation was that T01 was an invented person. T02's seven-FCTY position had no backing. The supplied outcome charged T01 seven: three were collected and four remain debt; the three collected units went to T02. Exactly T03 was the liable guarantor and seven of its ten units were collected and burned. T01 was invalidated, its four own-act source units revoked, and its coefficient halved. T03 lost the corresponding four source units, but was not halved merely for liability.
 
 | Identity | Supplied state now | Live units | Coefficient / XP | Liquid / debt |
 | --- | --- | ---: | --- | --- |

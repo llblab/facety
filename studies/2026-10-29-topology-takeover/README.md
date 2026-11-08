@@ -9,7 +9,7 @@
 Outcomes ([D114](../../docs/decisions.en.md#evidence-core-convergence-d76)), all daily trajectories:
 
 1. attacker share of accepted subjects;
-2. dirty-FACY share: FACY held by attacker-controlled subjects (liquid + unspent Emitter rights) over ledger supply;
+2. dirty-FCTY share: FCTY held by attacker-controlled subjects (liquid + unspent Emitter rights) over ledger supply;
 3. attacker seats on the Council and Council size;
 4. attack edges (established mutual links between honest and attacker subjects) and gate refusals.
 
@@ -30,7 +30,7 @@ A new runner (`src/topology-experiment.mjs`) drives `FacetyModel` in valence mod
 
 ### Behavior scripts (scenario assumptions, not calibrated)
 
-Every subject attempts at most one Self-ID per day (protocol limit) and spends only its own mature rights, so growth is limited by FACY, not by an effort budget.
+Every subject attempts at most one Self-ID per day (protocol limit) and spends only its own mature rights, so growth is limited by FCTY, not by an effort budget.
 
 - **Honest, per day:** Self-ID with probability 0.9. Then, per mature unspent right, in order: invite a new honest recruit with probability 0.01; open a valence toward a random friend-of-friend (two hops) with probability 0.05; and keep at most two unspent rights, converting older surplus to the Collector. An honest subject answers an incoming open valence (opens the opposite one) with probability 0.5 if the proposer is within two hops, otherwise 0.05. The same rule applies to attackers' requests: honest people cannot see who is an attacker.
 - **Attackers, per day:** every attacker subject attempts a Self-ID. Per mature right, in order: invite a new fake account (pre-registered by its operator); open a valence toward another cone member that lacks D partners; request a valence from a random honest subject. Attackers answer every valence from their own cone and convert nothing. Fake accounts need no fabrication cost in v1 (an upper bound on attacker ease).
@@ -69,9 +69,9 @@ Observations at diagnostic level:
 
 1. **With 10 infiltrators the gate changes nothing.** Both arms follow the same trajectory to 79% attackers within 24 days of the attack. Ten infiltrators admitted by ten different honest inviters already give the cone ten independent links into the honest region, so every cone member easily finds D = 3 (later 4) internally vertex-disjoint paths to an honest Council member.
 2. **The gate is a threshold on independent gateways, not a cap on cone size.** *(Wording corrected 2026-10-29 after the owner's D118 clarification.)* What matters is vertex-disjointness: every path from a fake must leave the cone through a different cone member that has its own honest link. A lone infiltrator is a cut vertex, so fakes behind it can never invite unless they obtain honest guarantors themselves, as the owner expects (1-infiltrator gate run: 33 attackers by day 169, growing only as fakes won honest valences). D colluding genuine people, each invited once by a different honest member, guarantee each other and supply D disjoint gateways; from then on cone growth matches the no-gate arm. In the 10-infiltrator run each infiltrator had 1–2 honest partners and still issued 16–18 invitations. Paths are checked for existence, not consumed.
-3. **Attack edges keep growing.** Attackers spend FACY on valence requests to random honest people; at a 5% stranger acceptance rate, 1–3 seeded links became 6–12 within weeks. The day-116 stall in the 3-infiltrator gate run coincides with D rising from 3 to 4 at 1000 active participants, and growth resumed once attack edges reached 4.
+3. **Attack edges keep growing.** Attackers spend FCTY on valence requests to random honest people; at a 5% stranger acceptance rate, 1–3 seeded links became 6–12 within weeks. The day-116 stall in the 3-infiltrator gate run coincides with D rising from 3 to 4 at 1000 active participants, and growth resumed once attack edges reached 4.
 4. **The Council stays honest** (0 attacker seats in every run): the honest head start keeps XP ahead. The gate still fails because paths can end at honest Council members.
-5. **Dirty FACY lags population.** At 79% attackers, attackers hold only 14% of FACY, because they burn their rights on invitations and valences. Population share is the earlier warning sign.
+5. **Dirty FCTY lags population.** At 79% attackers, attackers hold only 14% of FCTY, because they burn their rights on invitations and valences. Population share is the earlier warning sign.
 
 These are single-seed exploration runs under scripted behavior with no detection, disputes or fabrication cost; they are not a confirmation. The structural point in observation 2 is graph-theoretic (Menger: D disjoint paths exist whenever the cut has at least D vertices) and does not depend on the seed.
 
@@ -158,7 +158,7 @@ Model: opt-in `inviteRights: 'higher-xp-pair'` in `FacetyModel` (one right to th
 | 10 | gate + rule + v3 detection | 292 | 127 | 155 (v3.1, 483 honest) |
 | 3 | gate + rule + v3 detection | 292 | 140 | never (v3.1, 483 honest) |
 
-1. **The rule slows the cone by about 8–14 days but does not stop it.** Each fake needs a pair with an older (higher-XP) cone member before it can invite, so a new fake costs about 3 FACY instead of 1; the cone always contains older members.
+1. **The rule slows the cone by about 8–14 days but does not stop it.** Each fake needs a pair with an older (higher-XP) cone member before it can invite, so a new fake costs about 3 FCTY instead of 1; the cone always contains older members.
 2. **It also slows honest growth:** 426 honest people on day 100 instead of 660 (−35%). Genesis members start with equal XP and earn no rights until XP diverges, and the honest script does not seek senior partners deliberately, so this cost may be overstated.
 3. **With detection the comparison is confounded:** the smaller honest network (292 instead of 483 on day 100) gave detection fewer observers, and the 3-infiltrator run was not contained, unlike v3.1. One seed cannot separate rule effect from seed luck; the multi-seed sweep must settle it.
 
@@ -176,7 +176,7 @@ Model: `inviteRights: 'per-pair'` grants each side of every established valence 
 | 3 | gate + rule + v3 detection | 480 | never (8 attackers on day 199) | never (v3.1) |
 
 1. **No cost to honest growth:** 655 honest people on day 100 versus 660; genesis pairs give the first participants their rights.
-2. **A small delay for the cone, about 4–5 days.** Each fake needs one more pair before inviting, so a fake costs about 3 FACY instead of 1, but pairs inside the cone are always available.
+2. **A small delay for the cone, about 4–5 days.** Each fake needs one more pair before inviting, so a fake costs about 3 FCTY instead of 1, but pairs inside the cone are always available.
 3. **With detection, 3 infiltrators are again contained; 10 reach 50% on day 139.** That is earlier than v3.1's day 155 without the rule, which points to seed-level variation rather than a rule effect. Only the multi-seed sweep can separate them.
 
 ## Acceptance before running

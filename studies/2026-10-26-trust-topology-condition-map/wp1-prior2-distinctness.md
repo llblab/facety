@@ -15,7 +15,7 @@ n_max = floor((sK − T_K)/(c−K))                 NEW admissions
 N_max = s + n_max = floor((sc − T_K)/(c−K))    TOTAL subjects
 ```
 
-This is a maximum over all legal chronological parent assignments, not a claim that every greedy choice attains it. Products/division are exact integer mathematics, not floating-point evaluated values. Quotas are not FACY, refundable collateral, XP, standing or verified people.
+This is a maximum over all legal chronological parent assignments, not a claim that every greedy choice attains it. Products/division are exact integer mathematics, not floating-point evaluated values. Quotas are not FCTY, refundable collateral, XP, standing or verified people.
 
 ## Necessary bound: the last K births retain a triangular quota stock
 

@@ -108,7 +108,7 @@ pub struct Detection {
     pub appeal: f64,
     /// D151 repair: when an appeal reinstates a wrongly invalidated person, the honest links that the false positive cut are restored without a fee.
     pub restore_links: bool,
-    /// D151 recovery: the liquid FACY of an invalidated account is burned.
+    /// D151 recovery: the liquid FCTY of an invalidated account is burned.
     pub recover_liquid: bool,
     /// D34/D55 (trusted execution): the inviter of an invalidated account loses this fraction of its XP unless acquitted. 0 = off.
     pub xp_penalty: f64,
@@ -163,7 +163,7 @@ pub struct RunConfig {
     pub detection_start_day: i64,
     /// Patient operators: for this many days after entry they only build honest links and reputation, and invite no fakes.
     pub attacker_patience_days: i64,
-    /// Declared attacker behavior: chance that an operator account converts a mature emission right to liquid FACY (cashing out)
+    /// Declared attacker behavior: chance that an operator account converts a mature emission right to liquid FCTY (cashing out)
     /// instead of spending it on the attack; a trade-off, since a converted right can no longer grow the cluster. 0 = never.
     pub attacker_cash_out: f64,
     /// Declared attack on the availability of the defense: expected number of false formal cases per operator account per day against
@@ -476,7 +476,7 @@ struct CaseRec {
     target_xp: i32,
 }
 
-/// Dispute counters split by cohort (index 0 honest, 1 attacker side); amounts in whole FACY, durations in hours.
+/// Dispute counters split by cohort (index 0 honest, 1 attacker side); amounts in whole FCTY, durations in hours.
 #[derive(Clone, Debug, Default)]
 pub struct LadderCounters {
     pub hold_hours: [i64; 2],
@@ -519,7 +519,7 @@ pub struct DetectionCounters {
     /// Recorded consequences of caught second accounts, index 0 unwitting inviter, 1 colluding inviter (D152 incentive ledger):
     /// caught, emissions of the second account, inviter acquitted, links the inviter's partners left, XP removed from the inviter.
     pub ledger: [[u64; 5]; 2],
-    /// Liquid FACY burned on invalidated accounts (D151).
+    /// Liquid FCTY burned on invalidated accounts (D151).
     pub liquid_burned: u64,
     /// XP removed from inviters of invalidated accounts (D34/D55 trusted execution).
     pub xp_penalized: u64,
@@ -595,7 +595,7 @@ pub struct Sim {
     /// Honest links cut by the cascade of a verdict, per invalidated account, kept for restoration on appeal (D151).
     cuts: HashMap<Id, Vec<(Id, Id)>>,
     pub det: DetectionCounters,
-    /// Dispute economics by cohort (index: honest, attacker side): restricted hours (D77), net liquid FACY moved, FACY lost, new debt.
+    /// Dispute economics by cohort (index: honest, attacker side): restricted hours (D77), net liquid FCTY moved, FCTY lost, new debt.
     pub ladder: LadderCounters,
     pub invitations: [u64; 2],
     /// Units of emission minted by Self-IDs, honest and attacker side (cumulative, whatever happens to them later).
@@ -1835,7 +1835,7 @@ impl Sim {
         self.phases.iter().map(|(n, d, _)| (n.clone(), *d)).collect()
     }
 
-    /// A plain SVG of the run (std only): honest accounts, attacker share and dirty-FACY share by day; phase starts are dashed lines.
+    /// A plain SVG of the run (std only): honest accounts, attacker share and dirty-FCTY share by day; phase starts are dashed lines.
     pub fn to_svg(&self, title: &str) -> String {
         let (w, h, left, panel) = (900.0f64, 740.0f64, 70.0f64, 180.0f64);
         let last = self.history.last().map_or(1, |r| r.day).max(1) as f64;
@@ -1843,7 +1843,7 @@ impl Sim {
         let series: [(&str, Vec<f64>, &str); 3] = [
             ("honest accounts", self.history.iter().map(|r| r.honest as f64).collect(), "#1f6f8b"),
             ("attacker share of accounts (%)", self.history.iter().map(|r| 100.0 * r.attacker_share().unwrap_or(0.0)).collect(), "#b5453a"),
-            ("dirty-FACY share (%)", self.history.iter().map(|r| 100.0 * r.dirty_share().unwrap_or(0.0)).collect(), "#7a5195"),
+            ("dirty-FCTY share (%)", self.history.iter().map(|r| 100.0 * r.dirty_share().unwrap_or(0.0)).collect(), "#7a5195"),
         ];
         let mut s = format!("<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {w} {h}\" font-family=\"sans-serif\" font-size=\"12\">\n<rect width=\"{w}\" height=\"{h}\" fill=\"white\"/>\n<text x=\"{left}\" y=\"20\" font-size=\"14\">{title}</text>\n");
         for (k, (name, ys, color)) in series.iter().enumerate() {
@@ -1929,6 +1929,7 @@ impl Sim {
             }
         }
         let _ = write!(s, "\"operators\":{{\"admitted\":{},\"accepted\":{},\"falseAccountsAccepted\":{}}},", operators[0], operators[1], operators[2]);
+        // Keep the result-v4 serialized key for compatibility; its amounts are FCTY.
         let _ = write!(
             s,
             "\"acquired\":{{\"acceptedAccounts\":{},\"heldFacy\":{},\"wronglyInvalidatedByCohort\":{:?}}},",

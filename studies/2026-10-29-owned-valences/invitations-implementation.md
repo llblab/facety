@@ -6,7 +6,7 @@
 
 With `valences.reference.invitations: 'v2-special-link'`, `src/model.mjs` adds `preregisterAccount`, `preregistrations` and `endInvitationLink`, and gives `createInvitation`, `acceptInvitation` and `cancelInvitation` valence-mode semantics exactly as contracted. `'refuse'` keeps V1 behavior; V1 tests now bind it explicitly and pass unchanged otherwise. `ownedSlots(id)` also accepts pre-registered IDs and reports `invitations` alongside `open` valences.
 
-- Pre-registration is a supplied assertion (no FACY, right, XP, chain position or slot).
+- Pre-registration is a supplied assertion (no FCTY, right, XP, chain position or slot).
 - Issuance validates once: creator accepted, not D77-held, ≥ `requiredGuarantors()` eligible mutual guarantors (Council paths not checked — V3), own mature right, pre-registered target without a pending invitation, capacity at both endpoints. It burns the right and counts one unit at each endpoint.
 - Acceptance after the freeze rechecks nothing about the creator (D107), admits the target with a lineage edge from its one creation inviter, activates both special-link edges and keeps both units.
 - Guarantor cancellation during the freeze and `endInvitationLink` release both units (D75); burns are never refunded; closed invitations never reopen.

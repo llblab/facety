@@ -4,17 +4,17 @@
 
 ## Question
 
-An honest network grows by its own rules from a 100-account genesis to 1000 accounts, with an 11-seat Council and difficulty D = 4. From that one snapshot, can 1 to 100 cooperating operators take it over, how much of the emission do they capture, and what does the defense cost honest people? The criterion is the dirty-FACY share at most 10% and a clean share of at least two thirds ([D129](../../docs/decisions.en.md)).
+An honest network grows by its own rules from a 100-account genesis to 1000 accounts, with an 11-seat Council and difficulty D = 4. From that one snapshot, can 1 to 100 cooperating operators take it over, how much of the emission do they capture, and what does the defense cost honest people? The criterion is the dirty-FCTY share at most 10% and a clean share of at least two thirds ([D129](../../docs/decisions.en.md)).
 
 ## Design
 
 - Simulator: [`simulator/`](../../simulator), runner `grown`; the retired Node runner produced the first tables and fixed the baseline (see the [contract](../../docs/simulator.en.md#baseline-validation-statistical)).
 - Rules: guarantor count D plus D internally vertex-disjoint paths, each ending at a different Council member (any D members, each used once; D134; the first tables of this page used one Council member), each path at most 7 nodes (D123); optional layered support (D124); accounts in a dispute are not path intermediaries (D131). Detection is always on: freeze veto, partner inspection (10% of partners per day), noisy looks (sensitivity 0.8, false-positive 0.01 unless varied), leaving, public evidence with escalation, follow-up, one-step verdicts (accuracy 0.9) with D77 holds.
-- Attack: operators enter by ordinary invitation from distinct honest members and build a cone of fakes. Fakes cost nothing beyond protocol FACY. 60 days after the snapshot unless stated.
+- Attack: operators enter by ordinary invitation from distinct honest members and build a cone of fakes. Fakes cost nothing beyond protocol FCTY. 60 days after the snapshot unless stated.
 
 ## Results
 
-**Rule changes after the tables below were measured.** The tables below were measured with the rule set before D131 (paths avoid disputes), D133 (Council of three below 100 active participants, no initial exception), D134 (paths to different Council members) and D136 (cheap proof of reality). The current baseline, 20 seeds, 10 operators, 60 days: 7 nodes leave a mean attacker share of 13.4% of accounts (range 1.6%-30.3%, 0.30% of FACY, 3 genuine accounts invalidated); 7 nodes plus layered support leave 0.6% (0.01% of FACY, 3 genuine invalidated, 1672 honest accounts against 2003). The sharp fall in invalidated genuine accounts (about 57 to 3) is the effect of letting a real person prove reality (D136); the tables below that count invalidated genuine accounts describe the earlier, wrong model of the honest cost.
+**Rule changes after the tables below were measured.** The tables below were measured with the rule set before D131 (paths avoid disputes), D133 (Council of three below 100 active participants, no initial exception), D134 (paths to different Council members) and D136 (cheap proof of reality). The current baseline, 20 seeds, 10 operators, 60 days: 7 nodes leave a mean attacker share of 13.4% of accounts (range 1.6%-30.3%, 0.30% of FCTY, 3 genuine accounts invalidated); 7 nodes plus layered support leave 0.6% (0.01% of FCTY, 3 genuine invalidated, 1672 honest accounts against 2003). The sharp fall in invalidated genuine accounts (about 57 to 3) is the effect of letting a real person prove reality (D136); the tables below that count invalidated genuine accounts describe the earlier, wrong model of the honest cost.
 
 ### Honest cost of the path bound (days to 1000 honest accounts, no attackers)
 
@@ -27,7 +27,7 @@ An honest network grows by its own rules from a 100-account genesis to 1000 acco
 | 3 nodes | 163 | n/a |
 | 7 nodes + layered support | 137 | 136 |
 
-### Ten operators, attacker share of accounts / of FACY after 60 days
+### Ten operators, attacker share of accounts / of FCTY after 60 days
 
 | Rule | Retired simulator (seeds 1, 2, 3) | Rust (20 seeds) |
 | --- | --- | --- |
@@ -40,7 +40,7 @@ Adaptive attackers against 7 nodes + layered support: honest-first (retired simu
 
 ### Operators over a year (Rust, 8 seeds, layered support, detection at 1% false positives, disputes allowed)
 
-| Operators | Attacker accounts at day 365 | Share of accounts | Share of FACY |
+| Operators | Attacker accounts at day 365 | Share of accounts | Share of FCTY |
 | ---: | ---: | ---: | ---: |
 | 10 | 5-9 | 0.2%-0.4% | 0.1%-0.3% |
 | 30 | 19-24 | 0.7%-1.0% | 0.6%-0.8% |
@@ -87,13 +87,13 @@ Acquittal keeps about 6% more honest accounts without visible gain to the attack
 
 ### Baseline under the current rules (D142, D143)
 
-Rust, current rules: Council of three below 100 active accounts, paths to different Council members, paths avoiding disputes, layered support, false-positive rate 0.3%, inspection of 3% of partners per day, cheap proof of reality (success 0.95, seven days), XP gate for formal cases, 20% careless honest accounts, one-year horizon. The full table (10, 30 and 100 operators, patient and honest-first operators, two years, the ablation without layered support) is in the [simulator contract](../../docs/simulator.en.md#baseline-validation-statistical). In short, after a year 10, 30 and 100 operators hold 0.09%, 0.29% and 0.95% of accounts and at most 1.5% of FACY; the cone never forms; the honest community grows about ten times and then stalls near 10,000 accounts (open question in [BACKLOG](../../BACKLOG.md)). Without layered support the 10-operator scenario leaves 31.7% of accounts at 60 days. Diagnostic: 3 to 20 seeds of one scenario family; honest-behavior, attacker and horizon values are the builder's proposals (D143).
+Rust, current rules: Council of three below 100 active accounts, paths to different Council members, paths avoiding disputes, layered support, false-positive rate 0.3%, inspection of 3% of partners per day, cheap proof of reality (success 0.95, seven days), XP gate for formal cases, 20% careless honest accounts, one-year horizon. The full table (10, 30 and 100 operators, patient and honest-first operators, two years, the ablation without layered support) is in the [simulator contract](../../docs/simulator.en.md#baseline-validation-statistical). In short, after a year 10, 30 and 100 operators hold 0.09%, 0.29% and 0.95% of accounts and at most 1.5% of FCTY; the cone never forms; the honest community grows about ten times and then stalls near 10,000 accounts (open question in [BACKLOG](../../BACKLOG.md)). Without layered support the 10-operator scenario leaves 31.7% of accounts at 60 days. Diagnostic: 3 to 20 seeds of one scenario family; honest-behavior, attacker and horizon values are the builder's proposals (D143).
 
 ### Growth against security: Council size (D144, diagnostic)
 
 Honest growth stops near 10,000 accounts under the baseline because the difficulty reaches D = 5 and an 11-seat Council cannot supply five disjoint short paths. Council size against 100 operators, 500 days, 4 seeds, baseline otherwise:
 
-| Council seats from 100 active accounts | Honest accounts | Attacker accounts | Attacker share | Dirty-FACY share (mean, max) | Genuine invalidated |
+| Council seats from 100 active accounts | Honest accounts | Attacker accounts | Attacker share | Dirty-FCTY share (mean, max) | Genuine invalidated |
 | --- | ---: | ---: | ---: | --- | ---: |
 | 11 (the D33 lookup, baseline) | 10,324 | 98 | 0.95% | 0.92%, 1.11% | 30 |
 | 21 | 16,724 | 100 | 0.60% | 0.59%, 0.69% | 42 |
@@ -108,20 +108,20 @@ Honest growth stops near 10,000 accounts under the baseline because the difficul
 
 Seats per thousand active accounts (ablation of the withdrawn D146, 100 operators, 2 seeds, capped at 120,000 accounts; both runs hit the cap at day 520 to 556, so they measure the absence of the plateau, not its height):
 
-| Seats per thousand active accounts | Honest accounts at the cap | Attacker accounts | Attacker share | Dirty-FACY share | Council at the end | Genuine invalidated |
+| Seats per thousand active accounts | Honest accounts at the cap | Attacker accounts | Attacker share | Dirty-FCTY share | Council at the end | Genuine invalidated |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | 2 | 119,120-119,731 | 98-99 | 0.08% | 0.37%-0.38% | 237-238 | 36 |
 | 3 | 118,733-119,475 | 99-101 | 0.08% | 0.37%-0.38% | 353-355 | 27-36 |
 
 With a Council that scales with the network there is no plateau up to 120,000 accounts and the attacker share stays below 0.1%; the cost is a Council of several hundred seats, which D33 does not allow (D148).
 
-More seats let the honest network grow several times larger and lower the attacker and dirty-FACY shares at the same time (the operators stay at 100 accounts), so no security cost shows up in this scenario; the price is computation and a larger body to maintain. Other levers at 500 days, 10 operators: path bound 9 instead of 7 gives 12,018 honest accounts, difficulty capped at 4 gives 12,422, slot ceiling 300 gives 10,673 (baseline 10,482). The plateau moves with the number of Council seats against D, not with K. It also holds: with 5 seats per unit of D two years give 23,843 accounts against 24,917 at 500 days, so a fixed rule has a plateau of its own. Roughly 1,000 honest accounts per seat at D = 5.
+More seats let the honest network grow several times larger and lower the attacker and dirty-FCTY shares at the same time (the operators stay at 100 accounts), so no security cost shows up in this scenario; the price is computation and a larger body to maintain. Other levers at 500 days, 10 operators: path bound 9 instead of 7 gives 12,018 honest accounts, difficulty capped at 4 gives 12,422, slot ceiling 300 gives 10,673 (baseline 10,482). The plateau moves with the number of Council seats against D, not with K. It also holds: with 5 seats per unit of D two years give 23,843 accounts against 24,917 at 500 days, so a fixed rule has a plateau of its own. Roughly 1,000 honest accounts per seat at D = 5.
 
 ### Detection precision against growth (D153, diagnostic)
 
 Rust, baseline rules, one year after the genesis phase (day 499), 10 operators, detection on, 4 seeds (`grown-1..4`), mean over seeds. Shares are of accepted accounts; `casesOnGenuine` counts the formal cases opened against genuine people (the burden detection puts on honest accounts, each a seven-day dispute hold on two parties; paths avoid accounts in a dispute, D131).
 
-| Run | Honest accounts | Attacker share | Dirty-FACY share | Cases on genuine people | Genuine invalidated | Honest links left |
+| Run | Honest accounts | Attacker share | Dirty-FCTY share | Cases on genuine people | Genuine invalidated | Honest links left |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | false-positive rate 0 | 48,346 | 0.022% | 0.059% | 0 | 0 | 157 |
 | 0.0003 | 19,619 | 0.053% | 0.078% | 424 | 2.0 | 319 |
@@ -136,9 +136,9 @@ Rust, baseline rules, one year after the genesis phase (day 499), 10 operators, 
 
 Reading (diagnostic): in the current baseline the false-positive load, not only the Council size, is what holds honest growth at about 10,000 accounts. Cases on genuine people lock accounts for seven days and, through the exclusion of disputed accounts from paths (D131), take intermediaries away from the five disjoint paths to five seats; without the exclusion the same load allows 35,294 accounts. The mechanism (which accounts are locked, hubs near the Council) is a hypothesis; the counts show the dependence, not the cause. A confirming look before a case opens multiplies the false-positive load by the false-positive rate (2,950 cases fall to 16) and the honest network grows to 39,000-44,000 accounts at the same attacker share; the honest links left stay at 1,700-1,900, so leaving is no longer driven by false cases.
 
-Security side of the verification (4 seeds, 10 operators, 60 days, `--no-layered`, the ablation in which a cone grows; baseline 29.3% of accounts, 0.90% of FACY):
+Security side of the verification (4 seeds, 10 operators, 60 days, `--no-layered`, the ablation in which a cone grows; baseline 29.3% of accounts, 0.90% of FCTY):
 
-| Run | Honest accounts | Attacker share | Dirty-FACY share |
+| Run | Honest accounts | Attacker share | Dirty-FCTY share |
 | --- | ---: | ---: | ---: |
 | baseline detection | 2,259 | 29.3% | 0.90% |
 | 1 extra look by the target's own partners | 2,476 | 67.5% | 5.34% |
@@ -146,9 +146,9 @@ Security side of the verification (4 seeds, 10 operators, 60 days, `--no-layered
 | 1 extra look by any independent honest account | 2,300 | 36.8% | 1.32% |
 | 2 extra looks by any independent honest account | 2,286 | 33.0% | 0.68% |
 
-Confirmation by the target's own partners starves exactly where it is needed: a fake cluster has no independent honest partners who could confirm, so detection collapses without layered support. Confirmation by independent examiners (public evidence) costs a modest part of the detection rate (36.8% against 29.3% for one look, 33.0% for two). With 30 operators over a year: baseline 10,188 honest accounts, attacker share 0.29% and dirty-FACY share 0.34%; with one independent confirming look 42,895 honest accounts, 0.07% and 0.19% (both inside the D129 criterion).
+Confirmation by the target's own partners starves exactly where it is needed: a fake cluster has no independent honest partners who could confirm, so detection collapses without layered support. Confirmation by independent examiners (public evidence) costs a modest part of the detection rate (36.8% against 29.3% for one look, 33.0% for two). With 30 operators over a year: baseline 10,188 honest accounts, attacker share 0.29% and dirty-FCTY share 0.34%; with one independent confirming look 42,895 honest accounts, 0.07% and 0.19% (both inside the D129 criterion).
 
-Softer D131 (only the accused is excluded; both parties keep the seven-day activity hold): 31,068 honest accounts against 10,373 in the baseline and 35,294 with no exclusion at all, so most of the cost of the exclusion comes from taking the challengers (ordinary honest partners) off the paths. Without layered support (60 days, 10 operators, 4 seeds) the cone share is 31.0% against 29.3% with the full exclusion and 22.8% with no exclusion, so the exclusion of the challenger buys no containment there; with 30 operators over a year the softer rule gives 28,659 honest accounts, attacker share 0.11% and dirty-FACY share 0.23%. The accused party is the one whose pause pauses an investigated cluster (D131).
+Softer D131 (only the accused is excluded; both parties keep the seven-day activity hold): 31,068 honest accounts against 10,373 in the baseline and 35,294 with no exclusion at all, so most of the cost of the exclusion comes from taking the challengers (ordinary honest partners) off the paths. Without layered support (60 days, 10 operators, 4 seeds) the cone share is 31.0% against 29.3% with the full exclusion and 22.8% with no exclusion, so the exclusion of the challenger buys no containment there; with 30 operators over a year the softer rule gives 28,659 honest accounts, attacker share 0.11% and dirty-FCTY share 0.23%. The accused party is the one whose pause pauses an investigated cluster (D131).
 
 Assumptions: the confirming looks are independent of the first look and instantaneous, so the setting is optimistic about delay and about errors that are correlated across examiners (a genuine person with an odd public profile would look odd to all of them). The default is off; the lever changes no protocol rule. Single configuration per row, 4 seeds, no registration: diagnostic.
 
@@ -156,7 +156,7 @@ Assumptions: the confirming looks are independent of the first look and instanta
 
 A stronger attacker buys links: a declared share of the honest accounts accepts every link request from an attacker-side account and takes no part in detection (no veto, no inspection, no public look, no relay, no confirming look). The price paid is not modeled. Baseline rules, 30 operators, one year after the genesis phase, detection on, 4 seeds; shares of accepted accounts at the end.
 
-| Bought share of honest accounts | Honest accounts | Attacker share | Dirty-FACY share | Fake accounts invalidated | Cases on genuine people |
+| Bought share of honest accounts | Honest accounts | Attacker share | Dirty-FCTY share | Fake accounts invalidated | Cases on genuine people |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 0 | 10,188 | 0.29% | 0.34% | 12 | 2,859 |
 | 1% | 10,331 | 0.29% | 0.32% | 27 | 2,837 |
@@ -165,7 +165,7 @@ A stronger attacker buys links: a declared share of the honest accounts accepts 
 | 20% | 12,356 | 0.31% | 0.24% | 465 | 2,052 |
 | 50% | 24,238 | 0.76% | 0.74% | 2,057 | 1,331 |
 
-Reading (diagnostic): up to half of the honest accounts bought, the D129 criterion still holds (dirty-FACY share at most 0.74%, attacker share 0.76%). What changes is the work of detection: the number of fakes that get in and are caught later grows from 12 to about 2,000, and the honest network grows larger because fewer honest accounts inspect and so fewer false cases arise. A share of 80% did not finish within 40 minutes per seed (a very large cluster), and 50% combined with the softer exclusion and a confirming look did not finish within 25 minutes, so neither is reported. Why the criterion holds is not isolated here (no ablation of the layered-support gate against the bought share).
+Reading (diagnostic): up to half of the honest accounts bought, the D129 criterion still holds (dirty-FCTY share at most 0.74%, attacker share 0.76%). What changes is the work of detection: the number of fakes that get in and are caught later grows from 12 to about 2,000, and the honest network grows larger because fewer honest accounts inspect and so fewer false cases arise. A share of 80% did not finish within 40 minutes per seed (a very large cluster), and 50% combined with the softer exclusion and a confirming look did not finish within 25 minutes, so neither is reported. Why the criterion holds is not isolated here (no ablation of the layered-support gate against the bought share).
 
 ### Slot ceiling by XP level (D147, diagnostic)
 
@@ -198,21 +198,21 @@ Acquittal with an artifact keeps about 7% more honest accounts and removes the c
 
 6 seeds, 10 operators, 60 days, 7-node paths without layered support (the weak setting, so that a cluster forms). After a confirmed invalidation, up to `subtree_cases` accepted accounts of the invalidated account's invitation subtree are examined without a noisy look and must prove reality within the case window.
 
-| Cap per invalidation | Attacker accounts | Attacker share | Dirty-FACY share | Honest accounts | Genuine invalidated |
+| Cap per invalidation | Attacker accounts | Attacker share | Dirty-FCTY share | Honest accounts | Genuine invalidated |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 0 (detection only) | 844 | 26.3% | 0.8% | 2,281 | 0.33 |
 | 10 | 422 | 15.3% | 0.4% | 2,324 | 0.17 |
 | 50 | 449 | 15.7% | 0.4% | 2,383 | 0.17 |
 | 1000 | 463 | 16.1% | 0.4% | 2,377 | 0.17 |
 
-Against the layered baseline (100 operators, 4 seeds, 400 days after the genesis phase) the remedy changes nothing measurable: the cone does not form, attacker accounts 98.75 against 99.0, attacker share 0.95% against 0.99%, dirty-FACY share 1.01% against 1.06%, honest accounts 10,286 against 9,906 (a 3.7% difference that four seeds cannot separate from noise), so the remedy is an insurance for a weaker gate, not a baseline gain. A small partial scope already halves the cluster and the dirty-FACY share at no visible cost to honest people, because trapped genuine people prove reality (success 0.95); a larger cap adds nothing. Appeal: a wrongly invalidated person who proves reality is an account again after the defense window (`detection.appeal`); 4 seeds, 10 operators, 200 days, layered, inspection 10% and false-positive rate 1% (a deliberately poor detector): appeal 0, 0.5 and 1 reinstate 0, 8.0 and 16.2 of about 17 wrongly invalidated people and leave 1,246, 1,265 and 1,308 honest accounts (+5% at full success), attackers unchanged at 9.8. Reinstatement restores the account only; links that partners already left, the revoked credit and the cut chain are not restored (fee-free link restoration needs a free-link operation in the world and is not modeled).
+Against the layered baseline (100 operators, 4 seeds, 400 days after the genesis phase) the remedy changes nothing measurable: the cone does not form, attacker accounts 98.75 against 99.0, attacker share 0.95% against 0.99%, dirty-FCTY share 1.01% against 1.06%, honest accounts 10,286 against 9,906 (a 3.7% difference that four seeds cannot separate from noise), so the remedy is an insurance for a weaker gate, not a baseline gain. A small partial scope already halves the cluster and the dirty-FCTY share at no visible cost to honest people, because trapped genuine people prove reality (success 0.95); a larger cap adds nothing. Appeal: a wrongly invalidated person who proves reality is an account again after the defense window (`detection.appeal`); 4 seeds, 10 operators, 200 days, layered, inspection 10% and false-positive rate 1% (a deliberately poor detector): appeal 0, 0.5 and 1 reinstate 0, 8.0 and 16.2 of about 17 wrongly invalidated people and leave 1,246, 1,265 and 1,308 honest accounts (+5% at full success), attackers unchanged at 9.8. Reinstatement restores the account only; links that partners already left, the revoked credit and the cut chain are not restored (fee-free link restoration needs a free-link operation in the world and is not modeled).
 
 Remaining parts of the D151 remedy (diagnostic, 4 to 6 seeds, same scenarios; every setting is opt-in and off by default):
 
 | Part | Setting | Result |
 | --- | --- | --- |
 | Fee-free restoration of links cut by a false positive | poor detector, appeal 1, `--restore-links` | 33.5 links restored of about 657 left (5%); honest accounts 1,221 against 1,308 without restoration, a difference four seeds cannot separate from noise (restored links change which later invitations fit the slots); no benefit shown |
-| Burning liquid FACY of invalidated accounts | weak gate, subtree cap 10, `--recover-liquid` | 1.3 FACY burned per run, no change in the dirty-FACY share (0.38%): fakes hold almost no liquid FACY |
+| Burning liquid FCTY of invalidated accounts | weak gate, subtree cap 10, `--recover-liquid` | 1.3 FCTY burned per run, no change in the dirty-FCTY share (0.38%): fakes hold almost no liquid FCTY |
 | XP penalty for the inviter of an invalidated account (D34/D55, trusted execution, current XP rather than the act snapshot) | `--xp-penalty 0.5` | double-life scenario: 10,186 XP removed over 4 seeds, honest accounts 8,746 against 8,571; weak gate: 7,057 XP removed per run, attackers unchanged at 422; the penalty does not change the cluster outcome in the model, its deterrent value would need modeled incentives |
 | Proof window | weak gate, subtree cap 10, defense window 7, 14 and 28 days | attacker share 15.3%, 11.1% and 17.2%, honest accounts 2,324, 2,268 and 2,128; no monotone effect at 6 seeds, so the window stays at the seven-day minimum (D136) |
 
@@ -237,15 +237,15 @@ Per caught second account the pair earns 36.6 emissions and the inviter loses 19
 
 Reading: without a fabricated artifact the loss deters when an emission is worth less than about half a link, and the XP penalty raises that threshold only if XP is valued (at one XP per hundred links it adds 0.16). With acquittal on a fabricated artifact the loss is zero and deterrence vanishes at any positive valuation, so the co-presence artifact must resist fabrication (open in D152) before the penalty has any use. The analysis ignores the holder's own loss when caught, the chance of being caught and any externality.
 
-Attackers that cash out (declared behavior `--cash-out`: a mature right becomes liquid FACY instead of growing the cluster), 6 seeds, 10 operators, 60 days, weak gate, subtree cap 10:
+Attackers that cash out (declared behavior `--cash-out`: a mature right becomes liquid FCTY instead of growing the cluster), 6 seeds, 10 operators, 60 days, weak gate, subtree cap 10:
 
-| Cash-out chance | Attacker accounts | Attacker share | Dirty-FACY share without recovery | with `--recover-liquid` | Liquid FACY burned |
+| Cash-out chance | Attacker accounts | Attacker share | Dirty-FCTY share without recovery | with `--recover-liquid` | Liquid FCTY burned |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | 0 | 422 | 15.3% | 0.38% | 0.38% | 1.3 |
 | 0.3 | 196 | 7.2% | 1.20% | 0.85% | 424 |
 | 0.7 | 78 | 3.1% | 1.34% | 1.13% | 236 |
 
-Cashing out shrinks the cluster (rights converted cannot invite) but turns emission into dirty liquid FACY; recovery from caught accounts removes 29% and 16% of that dirty FACY. Against the layered baseline (100 operators, 300 days, cash-out 0.5, 2 seeds) recovery burns 1,444 FACY of 12,620 dirty (1.1% of the supply stays dirty either way) because the operators' own accounts are rarely invalidated. Dirty-FACY share stays below the 10% criterion in every row.
+Cashing out shrinks the cluster (rights converted cannot invite) but turns emission into dirty liquid FCTY; recovery from caught accounts removes 29% and 16% of that dirty FCTY. Against the layered baseline (100 operators, 300 days, cash-out 0.5, 2 seeds) recovery burns 1,444 FCTY of 12,620 dirty (1.1% of the supply stays dirty either way) because the operators' own accounts are rarely invalidated. Dirty-FCTY share stays below the 10% criterion in every row.
 
 Collusion leak of D152, estimated from the table above: full artifacts keep 431 more links than no acquittal over 22.2 acquitted inviters, about 19 links per acquittal; at 50% collusion 9.2 of the acquittals are colluders, so about 175 of the 431 kept links belong to colluding inviters. This prices the leak at the cascade the colluding inviter would have suffered; it is an estimate, not a separate run.
 

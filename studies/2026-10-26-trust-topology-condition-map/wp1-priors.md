@@ -47,7 +47,7 @@ K>=c removes this declining-total-quota argument, but does not establish actual 
 
 ## Prior3: dimensions, recovery and survival
 
-Let b be a **sunk actual coalition cost** in FACY, E>0 a constant collectible FACY/day flow newly enabled by the funded act, and X a same-unit total external gain. Gross deterministic recovery time b/E excludes maturity/first receipt, interrupted eligibility, liquidity, wages/effort, discounting, market effects and the lawful counterfactual. Existing emission the payer would receive without the act is not automatically an incremental benefit. E=0,b>0 has no such recovery; 0/0 is undefined, not zero-day payback.
+Let b be a **sunk actual coalition cost** in FCTY, E>0 a constant collectible FCTY/day flow newly enabled by the funded act, and X a same-unit total external gain. Gross deterministic recovery time b/E excludes maturity/first receipt, interrupted eligibility, liquidity, wages/effort, discounting, market effects and the lawful counterfactual. Existing emission the payer would receive without the act is not automatically an incremental benefit. E=0,b>0 has no such recovery; 0/0 is undefined, not zero-day payback.
 
 For survival time L with survival function S(t), expected finite-horizon flow is `E*integral_0^H S(t) dt`, or the explicitly discrete receipt sum when emission is not continuous. Only for a constant exponential removal hazard lambda>0, indefinite horizon and uninterrupted collectible flow does this equal E/lambda and E[L]=1/lambda. At lambda=0 no finite inverse-hazard lifetime exists; fixed delay/nonstationary/censoring/competing risks cannot be collapsed into that formula.
 

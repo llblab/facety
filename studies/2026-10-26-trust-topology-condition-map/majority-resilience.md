@@ -14,7 +14,7 @@
 
 ## Answer available before simulation
 
-**Neither 51% nor two-thirds rule-following people alone implies bounded attack damage or a FACY price floor.** There is no established Facety-wide threshold theorem/result for either case. This is a limitation of a fraction-only implication, not an executable exploit against the complete selected protocol, proof of inevitable collapse or a finding that the two fractions perform equally under a specified model.
+**Neither 51% nor two-thirds rule-following people alone implies bounded attack damage or a FCTY price floor.** There is no established Facety-wide threshold theorem/result for either case. This is a limitation of a fraction-only implication, not an executable exploit against the complete selected protocol, proof of inevitable collapse or a finding that the two fractions perform equally under a specified model.
 
 1. **Price is not protocol integrity.** Even an entirely rule-following network can lose useful demand or liquidity. D53 already gives a toy fixed desired-holdings / growing-stock counterexample. A purchase-price or purchasing-power bound requires a declared demand/market/funding model; buying support from an assumed inexhaustible sponsor is not a defense mechanism.
 2. **People are not admitted accounts or effective authority.** A minority of real controllers may control many admitted aliases, valuable balances, eligibility weight, a local jury pool or sponsor governance. A global person majority need not be the majority at a particular decision or a majority of funded defense work. A missing mapping is an assumption, not an implicit one-person-one-vote guarantee.

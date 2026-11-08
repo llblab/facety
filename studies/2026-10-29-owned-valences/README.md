@@ -27,8 +27,8 @@ new FacetyModel({ genesis, valences: {
 
 Missing, extra or unsupported keys reject. `valences` is incompatible with `vouching`/`vouchAdmission` (separate references). With `valences: null` (default) the model is byte-for-byte unchanged.
 
-- `source: 'own-mature-right'`: the burn consumes one caller-named own Emitter right with the same eligibility as an invitation source (own subject, unspent, not dispute-locked or debt-reserved, age ≥ `spendMaturityHours`); it is disposed as consumed with disposition `valence-burn`, so FACY is burned and terminal-mode XP follows the existing consumption rule.
-- `withdrawal: 'burn-one-liquid'` burns 1 liquid FACY of any origin; `'free'` burns nothing.
+- `source: 'own-mature-right'`: the burn consumes one caller-named own Emitter right with the same eligibility as an invitation source (own subject, unspent, not dispute-locked or debt-reserved, age ≥ `spendMaturityHours`); it is disposed as consumed with disposition `valence-burn`, so FCTY is burned and terminal-mode XP follows the existing consumption rule.
+- `withdrawal: 'burn-one-liquid'` burns 1 liquid FCTY of any origin; `'free'` burns nothing.
 - `pairEndXp`: when a pair ends, `'withdrawer-only'` ends both directed relations but applies `policy.linkBreakXp` only to the withdrawer's guarantor receipts; `'both-relations'` applies it to both sides.
 - `withdrawDuringHold`: whether a D77 case participant may withdraw.
 

@@ -19,7 +19,7 @@ Use only `native-vouch-tape/v1`/`native-funded-composition-reference/v1`, existi
 
 Arm variation can replace the complete `work.actors` array through the actual parameter API. Do NOT use `work.actors.0.budget`: `withExperimentParameters` deliberately rejects traversal inside arrays. Contexts can similarly replace complete `environment.subjects`/`environment.validity` records; no new parameter API is needed and literal arm/context overlap rules remain.
 
-The work budget is the EXISTING finite, nonrefilling UNCALIBRATED allowance, not FACY, wages, measured effort or earned human defense funding. Non-review labor is unmodeled. This design cannot establish honest10× advantage, actual human correction affordability, endogenous monitoring or absence of earlier/later culpability. No court/hold/identity migration or new D34 liability is supplied.
+The work budget is the EXISTING finite, nonrefilling UNCALIBRATED allowance, not FCTY, wages, measured effort or earned human defense funding. Non-review labor is unmodeled. This design cannot establish honest10× advantage, actual human correction affordability, endogenous monitoring or absence of earlier/later culpability. No court/hold/identity migration or new D34 liability is supplied.
 
 ## Closed-scope measurement identity — real existing scalar, not fake F/D
 

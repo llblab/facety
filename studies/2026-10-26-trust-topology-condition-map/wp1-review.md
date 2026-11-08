@@ -4,7 +4,7 @@
 
 ## Explicit reference and scope
 
-`new VouchActReview(model,{reference:'paid-single-suspicion-veto-reference',actors,costs})` requires an actual funded-admission `FacetyModel` with native maturity/snapshot policy. Each actor is `{id,subject,budget}`; subject is a known native SubjectId or null for an outside observer. Costs are explicit positive integer `{inspect,respond}`, budgets finite nonnegative integers, non-refilling. They are uncalibrated work units—not FACY, human time, wages or purchased useful evidence. The reference allows one work account per registered subject; custody actor IDs and procedural SubjectIds differ. Accounts, distinct subjects and source labels do not establish independent people/operators. No work is minted on admission; future engines must bind any new accounts/resources explicitly.
+`new VouchActReview(model,{reference:'paid-single-suspicion-veto-reference',actors,costs})` requires an actual funded-admission `FacetyModel` with native maturity/snapshot policy. Each actor is `{id,subject,budget}`; subject is a known native SubjectId or null for an outside observer. Costs are explicit positive integer `{inspect,respond}`, budgets finite nonnegative integers, non-refilling. They are uncalibrated work units—not FCTY, human time, wages or purchased useful evidence. The reference allows one work account per registered subject; custody actor IDs and procedural SubjectIds differ. Accounts, distinct subjects and source labels do not establish independent people/operators. No work is minted on admission; future engines must bind any new accounts/resources explicitly.
 
 `review(actorId,selfId,environment,{opportunity})` composes:
 

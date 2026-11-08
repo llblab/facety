@@ -12,12 +12,12 @@ That runs 9 profiles plus 36 deviation settings, 24 replicas each (1,080 runs, a
 
 ## Setup
 
-The scenario is a sybil-cone with 40 initial people, 4 of them coalition members, over 30 days. The Council is active-only. Disputes use verdict accuracy 0.9, a fine of 5 FACY per liable party (subject plus its guarantors), a 50% challenger reward and XP halving for losers.
+The scenario is a sybil-cone with 40 initial people, 4 of them coalition members, over 30 days. The Council is active-only. Disputes use verdict accuracy 0.9, a fine of 5 FCTY per liable party (subject plus its guarantors), a 50% challenger reward and XP halving for losers.
 
 - **Honest strategies:** `vigilant` (3 inspections a day, always challenge when eligible), `lax` (0.3 inspections, challenge 20%), `passive` (no inspection, veto or challenge).
 - **Coalition strategies:** `abstain` (behave like honest people, no fakes), `farm` (default Sybil script), `farm-then-hide` (stop admissions from day 12).
 - **Valuation per initial operator:**
-  - honest: liquid FACY +1, Emitter FACY +0.5, debt −1, effort −0.05 per unit, and −0.02 per liquid FACY held by fakes (dilution);
+  - honest: liquid FCTY +1, Emitter FCTY +0.5, debt −1, effort −0.05 per unit, and −0.02 per liquid FCTY held by fakes (dilution);
   - coalition: the same money and effort weights, Council seats +2, and debt left on fakes ignored (`falseDebt: +1`), because exposed fakes are abandoned.
 
 ## Payoffs per initial operator (mean, bootstrap 95%)

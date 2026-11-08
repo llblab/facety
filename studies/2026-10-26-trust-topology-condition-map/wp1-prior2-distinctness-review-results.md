@@ -32,7 +32,7 @@ Diagnostic 17420 bytes/SHA256 `454618b3d3f61e5c7f2a86c61301a68ef36bbb3ed19cb2aa7
 
 ## Limits and disposition
 
-Only the NEW exact unit-quota mathematical seam closes. Quota is not FACY/B/XP/Standing/personhood. Complete choice/consent is assumed; funding, topology, timing and eligibility can reduce attainment. K>=c/c1 excluded. Finite exact products/certificate sizes may exceed machine-safe values/storage; no runtime/CPU/storage guarantee.
+Only the NEW exact unit-quota mathematical seam closes. Quota is not FCTY/B/XP/Standing/personhood. Complete choice/consent is assumed; funding, topology, timing and eligibility can reduce attainment. K>=c/c1 excluded. Finite exact products/certificate sizes may exceed machine-safe values/storage; no runtime/CPU/storage guarantee.
 
 No lifetime engine/Native quota enforcement, D75 migration, funded realization, scientific method/registration, genuine-person growth/advantage/capture defense or G1 follows. No Model/config/reference/test/RNG/namespace/data/grid/flow-library/solver call or source mutation occurred. D80 resumes this counterfactual checking only; stopped 3072 proposal and unrelated parked tracks stay unchanged.
 

@@ -5,7 +5,7 @@ This reruns the [deterrence-threshold](../2026-10-22-deterrence-threshold/README
 - **Guarantee scope:** honest people guarantee only invitees and friends of friends, and accept only acquaintances' guarantees. They engage strangers at a 2% rate.
 - **Screening and verification:** public graph screening picks whom to inspect, and a call or meeting (90% hit, 1% false alarm) precedes any veto or challenge.
 - **Investigation:** proven fakes trigger checks of their inviter and that inviter's other invitees.
-- **Stakes and bribes:** challenges require a stake of 1 FACY, and 5% of honest strangers accept off-protocol bribes to guarantee fakes.
+- **Stakes and bribes:** challenges require a stake of 1 FCTY, and 5% of honest strangers accept off-protocol bribes to guarantee fakes.
 
 Coalition strategies add `farm-and-bribe`. Everything else matches the earlier study: illustrative valuation, 30 days, 16 replicas, exploratory and unregistered.
 

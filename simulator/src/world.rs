@@ -83,7 +83,7 @@ pub struct Config {
     /// dispute (D131). `false` is the earlier reading used as an ablation: the bound counts from the guarantor and the guarantor needs no
     /// support of its own (the emitter one node further out).
     pub self_path_from_subject: bool,
-    /// Base stake of the dispute ladder in whole FACY (D159: 7). `None` switches stakes, custody and the sanction off: a case is then only
+    /// Base stake of the dispute ladder in whole FCTY (D159: 7). `None` switches stakes, custody and the sanction off: a case is then only
     /// an activity hold with a deadline (the unit tests and the ablation `--no-stakes`).
     pub base_stake: Option<u32>,
     /// The XP halving of losing participants (D159). `false` is an ablation (a counterfactual to attribute effects, not a protocol option).
@@ -267,7 +267,7 @@ impl Backing {
     }
 }
 
-/// Counters of the dispute economics, for results. Amounts are whole FACY, durations hours.
+/// Counters of the dispute economics, for results. Amounts are whole FCTY, durations hours.
 #[derive(Clone, Debug, Default)]
 pub struct DisputeStats {
     pub opened: u64,
@@ -278,7 +278,7 @@ pub struct DisputeStats {
     pub refused_xp: u64,
     /// Entries whose liquid and mature Emitter backing was short (D166 allows entry; a loss creates debt).
     pub refused_funds: u64,
-    /// FACY of lost stakes that could not be collected and became debt, and debt later repaid from matured emission.
+    /// FCTY of lost stakes that could not be collected and became debt, and debt later repaid from matured emission.
     pub debt_repaid: u64,
     pub suspended_acts: u64,
     pub council_entries: u64,
@@ -339,7 +339,7 @@ pub struct World {
     frozen: Vec<u32>,
     cases: Vec<Option<Case>>,
     reserved_rights: HashSet<u32>,
-    /// Liquid FACY destroyed by disputes (burned stakes and sanction charges, D151 recovery); `sum(liquid) + liquid_destroyed` equals the
+    /// Liquid FCTY destroyed by disputes (burned stakes and sanction charges, D151 recovery); `sum(liquid) + liquid_destroyed` equals the
     /// converted entitlements.
     liquid_destroyed: i64,
     pub stats: DisputeStats,
@@ -1364,7 +1364,7 @@ impl World {
         roster
     }
 
-    /// Spendable liquid FACY: what the account holds minus the stakes locked in open disputes.
+    /// Spendable liquid FCTY: what the account holds minus the stakes locked in open disputes.
     pub fn spendable(&self, id: Id) -> u32 {
         let s = &self.subjects[id as usize];
         s.liquid - s.reserved
@@ -1748,8 +1748,8 @@ impl World {
         cut
     }
 
-    /// D151 recovery: the liquid FACY of an invalidated account is burned (FACY already transferred out cannot be un-minted, D53; here
-    /// nothing is transferable, so all liquid FACY of the account is burned). Returns the amount burned.
+    /// D151 recovery: the liquid FCTY of an invalidated account is burned (FCTY already transferred out cannot be un-minted, D53; here
+    /// nothing is transferable, so all liquid FCTY of the account is burned). Returns the amount burned.
     pub fn burn_liquid(&mut self, id: Id) -> u32 {
         let burned = self.spendable(id);
         self.subjects[id as usize].liquid -= burned;
@@ -2470,7 +2470,7 @@ mod tests {
         w.accept_invitation(inv).unwrap();
         w.open_valence(0, 6, acts[2]).unwrap();
         assert_eq!(same(&w), at_rest, "valence burn after maturity: no second credit");
-        assert_eq!(w.supply(), w.vault() + (0..w.len() as Id).map(|i| i64::from(w.liquid(i))).sum::<i64>(), "FACY accounting is conserved");
+        assert_eq!(w.supply(), w.vault() + (0..w.len() as Id).map(|i| i64::from(w.liquid(i))).sum::<i64>(), "FCTY accounting is conserved");
         w.audit().unwrap();
     }
 
@@ -2506,7 +2506,7 @@ mod tests {
             assert_eq!(w.cancel_self_id(canceller, act), Err(Reject("only an unspent Self-ID can be cancelled")));
             w.tick(48);
             assert_eq!(xps(&w), before, "no XP for anyone, including the author");
-            assert_eq!(w.unspent_rights(0), rights_before, "no matured FACY from the cancelled act");
+            assert_eq!(w.unspent_rights(0), rights_before, "no matured FCTY from the cancelled act");
             assert!(w.create_self_id(0).is_ok(), "the original slot expired at t0+24 (D79)");
             w.audit().unwrap();
         }
@@ -2773,7 +2773,7 @@ mod tests {
     // ---- Chekharda cases with stakes, custody and settlement (D158, D159, D161, D162) ------------------------------------
 
     /// Twelve ring accounts after forty days of Self-IDs at different rates (so XP differs) with every matured entitlement converted to
-    /// liquid FACY; stakes are on (base 7). Returns the world standing at an exact day boundary.
+    /// liquid FCTY; stakes are on (base 7). Returns the world standing at an exact day boundary.
     fn rich_world() -> World {
         let mut w = World::new(Config { base_stake: Some(7), ..Config::default() }, 12, &ring(12));
         for day in 0..40i64 {
@@ -2839,7 +2839,7 @@ mod tests {
                 assert_eq!(charged, 7, "each guarantor is charged the base stake once");
             }
         }
-        assert!(total_liquid(&w) <= before_total, "liquid FACY can only be burned by the sanction, never created");
+        assert!(total_liquid(&w) <= before_total, "liquid FCTY can only be burned by the sanction, never created");
         w.audit().unwrap();
     }
 
@@ -2849,7 +2849,7 @@ mod tests {
         let (accused, challenger, defender) = xp_ladder(&w);
         let start = w.now();
         let case = w.begin_case(&[challenger, accused]).unwrap();
-        // The accused cannot stand for themselves: less XP than the accuser. A defender with more XP can, on day 6, with the 9 FACY stake.
+        // The accused cannot stand for themselves: less XP than the accuser. A defender with more XP can, on day 6, with the 9 FCTY stake.
         assert_eq!(w.join_case(case, accused), Err(Reject("XP is not above the previous participant")));
         w.tick(start + 6 * 24);
         let total = total_liquid(&w);

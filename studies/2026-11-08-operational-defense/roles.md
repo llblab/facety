@@ -2,7 +2,7 @@
 
 These identities and balances are entirely fictional supplied snapshots. They are not real accounts or a representation that any real person earned XP. Each of the six volunteers may refuse work or leave the exercise. A role does not oblige a verdict, evidence request, guarantee or dispute entry.
 
-| Identity | Supplied live responsibility units | Coefficient | Effective XP | Ordinary liquid FACY | Emitter backing | Role |
+| Identity | Supplied live responsibility units | Coefficient | Effective XP | Ordinary liquid FCTY | Emitter backing | Role |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
 | T01 | 12 | 1 | 12 | 3 | 0 | Claim owner in P01/P02; evidence/help requester. |
 | T02 | 24 | 1 | 24 | 0 | 0 | Possible assessor/challenger; no collectible stake backing initially. |

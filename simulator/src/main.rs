@@ -268,7 +268,7 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.detection.public_look = num(&opts, "--public-look", base.detection.public_look)?;
     base.detection.defense_success = num(&opts, "--defense", base.detection.defense_success)?;
     base.detection.defense_days = num(&opts, "--defense-days", base.detection.defense_days)?;
-    // Chekharda economics (D159): stakes are on with the selected base of 7 FACY; `--no-stakes` is the ablation. Who joins a dispute and
+    // Chekharda economics (D159): stakes are on with the selected base of 7 FCTY; `--no-stakes` is the ablation. Who joins a dispute and
     // when are research assumptions (`--join-rate`, `--council-rate`, `--council-turnout`, `--no-attacker-ladder`).
     base.world.base_stake = if flags.contains("--no-stakes") { None } else { Some(num(&opts, "--base-stake", facety_sim::chekharda::BASE_STAKE)?) };
     base.world.halve_losers = !flags.contains("--no-halving");

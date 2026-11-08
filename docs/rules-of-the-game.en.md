@@ -1,6 +1,6 @@
 # Facety: Rules of the Game
 
-Facety is a network of people who repeatedly identify themselves, vouch for one another and take responsibility for public claims. Participation creates FACY emission and a history of responsibility. That history determines procedural authority in disputes.
+Facety is a network of people who repeatedly identify themselves, vouch for one another and take responsibility for public claims. Participation creates FCTY emission and a history of responsibility. That history determines procedural authority in disputes.
 
 This first consolidated draft describes the selected rules for ordinary participation. Invitations, emission and the opening of disputes are enabled by default. Details that still need a precise rule are collected at the end; they are not permissions to choose an arbitrary implementation.
 
@@ -16,21 +16,21 @@ The subject's identity acts, invitations, guarantees, dispute positions and auth
 
 ## 2. Money and responsibility
 
-FACY is transferable money once it has entered an ordinary balance. XP is personal, non-transferable procedural authority. Buying FACY does not buy XP or the right to create invitations from someone else's emission.
+FCTY is transferable money once it has entered an ordinary balance. XP is personal, non-transferable procedural authority. Buying FCTY does not buy XP or the right to create invitations from someone else's emission.
 
-An ordinary rewarded identity act creates one FACY entitlement. It also becomes a source of responsibility units for its author and eligible guarantors when it matures. The resulting effective XP depends on the participant's integrity coefficient, as described below.
+An ordinary rewarded identity act creates one FCTY entitlement. It also becomes a source of responsibility units for its author and eligible guarantors when it matures. The resulting effective XP depends on the participant's integrity coefficient, as described below.
 
-An **Emitter right** is the personally earned, one-time right attached to an identity act. The **Collector balance** holds ordinary fungible FACY after withdrawal or receipt. The distinction matters: withdrawing an Emitter right gives ordinary money, while retaining it preserves its eligibility for specified network-building operations.
+An **Emitter right** is the personally earned, one-time right attached to an identity act. The **Collector balance** holds ordinary fungible FCTY after withdrawal or receipt. The distinction matters: withdrawing an Emitter right gives ordinary money, while retaining it preserves its eligibility for specified network-building operations.
 
 Every right can be used only once. Moving or spending its money does not move, repeat or rewrite the responsibility history of the act that created it.
 
 ## 3. Entering the network
 
-Ordinary first admission requires an invitation. Before receiving one, the prospective participant registers an account with the required fields and publishes an initial zero Self-ID. This initial act supplies the signed identity preparation; it creates no FACY entitlement, requires no FACY burn by the recipient and creates no invitation debt. It is distinct from an ordinary rewarded Self-ID; its XP, chain-position and rolling-slot treatment still need definition.
+Ordinary first admission requires an invitation. Before receiving one, the prospective participant registers an account with the required fields and publishes an initial zero Self-ID. This initial act supplies the signed identity preparation; it creates no FCTY entitlement, requires no FCTY burn by the recipient and creates no invitation debt. It is distinct from an ordinary rewarded Self-ID; its XP, chain-position and rolling-slot treatment still need definition.
 
 The invitation is addressed to that prepared account. Its creator must have an eligible personally earned Emitter right at least 24 hours old, enough qualifying mutual guarantors, the required current paths to the Council and room under the authorization limits at both endpoints.
 
-Creating the invitation burns one FACY from the inviter's own eligible emission and reserves one authorization slot at each endpoint. The recipient pays zero. Money bought, gifted or received from someone else's emission cannot replace the inviter's own eligible right. An already withdrawn right cannot regain its invitation provenance through a later purchase or transfer.
+Creating the invitation burns one FCTY from the inviter's own eligible emission and reserves one authorization slot at each endpoint. The recipient pays zero. Money bought, gifted or received from someone else's emission cannot replace the inviter's own eligible right. An already withdrawn right cannot regain its invitation provenance through a later purchase or transfer.
 
 The invitation has its own 24-hour contest period before admission. During that period, an authorized current guarantor of the inviter can cancel it. The executed burn is not refunded, and cancellation of the invitation does not revoke the source Self-ID's already earned responsibility units.
 
@@ -56,7 +56,7 @@ A content hash cannot be registered again. Suspected near-duplicates or fabricat
 
 A new rewarded Self-ID requires at least one current established mutual guarantee and a qualifying current path from the emitter itself to a Council member. These are continuing conditions, not permanent exemptions obtained at admission. A participant in an open dispute cannot create a new Self-ID.
 
-Each subject may record at most one ordinary rewarded Self-ID per rolling 24 hours. It creates one FACY entitlement, initially restricted. The act fixes its guarantor roster at creation; a relationship formed later cannot acquire rewards from that earlier act.
+Each subject may record at most one ordinary rewarded Self-ID per rolling 24 hours. It creates one FCTY entitlement, initially restricted. The act fixes its guarantor roster at creation; a relationship formed later cannot acquire rewards from that earlier act.
 
 ### The first day and maturity
 
@@ -66,11 +66,11 @@ Cancellation leaves the original rolling slot in place. An act recorded at noon 
 
 At 24 hours, an uncancelled qualifying act matures. Its author and each eligible guarantor in its creation-time roster receive one responsibility unit, subject to the debt rule. A guarantor's later departure does not replace the roster. The original free veto ends at maturity, even when the entitlement remains unused.
 
-The matured Emitter right stays with its holder. There is no automatic withdrawal. The holder may later withdraw it into ordinary FACY or consume it in an eligible network-building operation, including an invitation or paid valence. Neither choice awards another responsibility unit. Maturity ends the original veto; it does not establish factual truth or immunity from a later adjudicated correction.
+The matured Emitter right stays with its holder. There is no automatic withdrawal. The holder may later withdraw it into ordinary FCTY or consume it in an eligible network-building operation, including an invitation or paid valence. Neither choice awards another responsibility unit. Maturity ends the original veto; it does not establish factual truth or immunity from a later adjudicated correction.
 
 ## 5. Giving and ending a guarantee
 
-An ordinary guarantee starts with a **valence**: a signed, one-sided request to guarantee a particular participant. Creating it immediately burns one eligible own-issued FACY and occupies one of the creator's authorization slots. The charge is not refunded if the request goes unanswered, is withdrawn or never becomes mutual.
+An ordinary guarantee starts with a **valence**: a signed, one-sided request to guarantee a particular participant. Creating it immediately burns one eligible own-issued FCTY and occupies one of the creator's authorization slots. The charge is not refunded if the request goes unanswered, is withdrawn or never becomes mutual.
 
 Two valid opposite valences establish an ordinary mutual relationship. Matching adds no new burn and no additional slot for an already counted side. Until mutual establishment, an offer provides no guarantor rewards or mutual responsibility.
 
@@ -118,7 +118,7 @@ A path establishes the required reachability in the qualifying graph. It does no
 
 ## 7. Earning and losing procedural authority
 
-Responsibility units come from actual matured Self-ID acts: one for the author and one for each eligible creation-time guarantor. Guarantors receive no automatic FACY reward from another person's act. Creating a guarantee or invitation is not itself a new Self-ID reward.
+Responsibility units come from actual matured Self-ID acts: one for the author and one for each eligible creation-time guarantor. Guarantors receive no automatic FCTY reward from another person's act. Creating a guarantee or invitation is not itself a new Self-ID reward.
 
 Each account has an integrity coefficient between zero and one, initially one:
 
@@ -148,7 +148,7 @@ Opening a case establishes an allegation, not guilt. The accused may answer and 
 
 The first challenger occupies position one. Each later ordinary entrant takes the side opposite the preceding position and must have strictly more effective XP than that entrant. One participant occupies each position; no mandatory second confirming participant is required to open a case.
 
-The base stake is seven FACY. Each later ordinary position's nominal stake is 20% higher than the preceding one, compounded from that base. Asset precision and rounding still need their production rule. Money cannot replace the XP requirement.
+The base stake is seven FCTY. Each later ordinary position's nominal stake is 20% higher than the preceding one, compounded from that base. Asset precision and rounding still need their production rule. Money cannot replace the XP requirement.
 
 ### One shared deadline
 
@@ -174,7 +174,7 @@ The Emitter right targeted by a dispute is separately frozen against use for inv
 
 ## 10. Stakes, collection and debt
 
-A stake has soft backing. Existing emission value and ordinary FACY held by the account are blocked for it, but entry requires no minimum funded balance. Custody continues until the case ends, including during Council deferrals. Missing backing becomes debt if the stake is lost. A reserved unit cannot simultaneously fund another obligation.
+A stake has soft backing. Existing emission value and ordinary FCTY held by the account are blocked for it, but entry requires no minimum funded balance. Custody continues until the case ends, including during Council deferrals. Missing backing becomes debt if the stake is lost. A reserved unit cannot simultaneously fund another obligation.
 
 Each winner recovers its own backing and receives the collectible losing stake directly below it. Return of principal is not winnings. A losing position forfeits upward. If the accused loses an identity case, the base charge on the accused pays the first accuser to the extent it can be collected. Each liable guarantor is also charged the base amount, with collected guarantor charges burned. For an identity case, the liable guarantors are exactly those who actually received XP from that account's acts, including departed guarantors.
 
@@ -222,11 +222,11 @@ Consequences follow the established claim and the applicable historical duty. A 
 
 An author may seek correction of its own specific Self-ID after the original veto window as well as during it. After that window, this is a dispute that others can oppose, not unilateral deletion. An appropriately admitted and upheld author-initiated correction reverses that one act's economic effect and revokes its units from the actual recipients. An upheld non-author challenge instead cuts the affected suffix from the challenged act onward, preserving the earlier valid prefix. A guarantor does not obtain the author-only remedy by being a guarantor. Authorship does not make a false self-challenge succeed. Its exact admission, funding, dependent-right and appeal procedure remains unfinished; the ordinary greater-XP gate alone cannot admit an author against itself.
 
-For a losing Self-ID act, liability concerns its author and that act's fixed guarantors. The author incurs the XP-halving consequence; guarantors are not halved merely for that financial liability. Removing an invalid act's attributable units is a separate operation. The act-specific sanction description charges one FACY per liable party for a terminal one-act case and refers to a suffix-based amount for deeper cuts. Its interaction with the ladder's seven-FACY base, suffix counting and overlapping charges still needs a precise rule; these descriptions do not authorize inventing a combined fine.
+For a losing Self-ID act, liability concerns its author and that act's fixed guarantors. The author incurs the XP-halving consequence; guarantors are not halved merely for that financial liability. Removing an invalid act's attributable units is a separate operation. The act-specific sanction description charges one FCTY per liable party for a terminal one-act case and refers to a suffix-based amount for deeper cuts. Its interaction with the ladder's seven-FCTY base, suffix counting and overlapping charges still needs a precise rule; these descriptions do not authorize inventing a combined fine.
 
 For a losing invitation act, the creator and the guarantors responsible when the invitation was created face the specified XP-halving consequence. The relevant roster is that invitation's historical roster, not whichever links exist at judgment time.
 
-Previously transferred FACY cannot simply disappear from another holder's balance. Recovery requires an authorized collection operation; already burned value cannot be burned again. Overlapping acts and cases must not be used as an excuse to invent an additional penalty without its own enforceable basis.
+Previously transferred FCTY cannot simply disappear from another holder's balance. Recovery requires an authorized collection operation; already burned value cannot be burned again. Overlapping acts and cases must not be used as an excuse to invent an additional penalty without its own enforceable basis.
 
 An evidenced fake cluster is subject to heightened scrutiny and the selected proof-of-person/partial-invalidation remedy. Genuine people in an affected invitation subtree can establish their reality; association alone does not prove guilt. Recoverable unspent rights and liquid holdings on invalidated accounts are burned. A wrongly invalidated person can appeal, and honest relationships cut through false positives are restored without another link fee. Exact evidence, proof windows and remedy execution remain to be specified.
 
@@ -234,19 +234,19 @@ If a person operates a second identity, a verdict establishes the duplicate and 
 
 Supporting a side, losing a vote or being acquainted with a wrongdoer is not by itself a new offense. A further accusation must identify its own violation and evidence. A correct defense does not grant immunity for unrelated historical misconduct.
 
-Loss of current support is also different from a false-identity verdict. A person can return through ordinary mutual guarantees without obtaining a new invitation. If the returning person has no eligible own FACY, the guarantor establishing the relationship pays that person's valence. Identity, original inviter, earned history, XP and debt are preserved. Rewarded acts still need current support and the qualifying Council path.
+Loss of current support is also different from a false-identity verdict. A person can return through ordinary mutual guarantees without obtaining a new invitation. If the returning person has no eligible own FCTY, the guarantor establishing the relationship pays that person's valence. Identity, original inviter, earned history, XP and debt are preserved. Rewarded acts still need current support and the qualifying Council path.
 
 An admitted appeal, restored links, solvency and integrity repair are separate steps. No automatic refund of burned money, restoration of revoked units or catch-up emission for a restricted interval is promised. Key recovery must preserve the same subject; a particular social key-recovery voting threshold is not yet a default rule.
 
 ## 13. Changing parameters and the external economy
 
-The common authorization limit and path-length bound can be changed by network referendum. A participant's referendum weight is its XP. No FACY stake multiplies that weight. A referendum on the authorization limit pauses no invitations, valences, guarantees or Self-IDs; existing-case restrictions still apply. Council dispute votes remain one vote per member.
+The common authorization limit and path-length bound can be changed by network referendum. A participant's referendum weight is its XP. No FCTY stake multiplies that weight. A referendum on the authorization limit pauses no invitations, valences, guarantees or Self-IDs; existing-case restrictions still apply. Council dispute votes remain one vote per member.
 
 Atmo-level governance has a selected mandate over the authorization limit and whether new invitations, emission and dispute opening are enabled. The ordinary state keeps all three enabled. Electorates, activation, pause/resumption and treatment of in-flight operations still need exact contracts. A pause cannot silently erase earned history, commitments, liabilities, collateral or already open cases.
 
-FACY has no promised market price, redemption value or fiat income. One rewarded act creates one entitlement; buying FACY creates no identity or historical XP. There is no selected total lifetime issuance cap or automatic end to issuance.
+FCTY has no promised market price, redemption value or fiat income. One rewarded act creates one entitlement; buying FCTY creates no identity or historical XP. There is no selected total lifetime issuance cap or automatic end to issuance.
 
-Atmo's separate, conditional support policy may spend an authorized budget to buy existing market FACY and burn what it actually acquires. This external Treasury is not a Facety fund for paying uncollected dispute winnings. Support can be paused or stopped under its policy, creates no XP or invitation-eligible personal emission, and supplies no price guarantee or truth verdict.
+Atmo's separate, conditional support policy may spend an authorized budget to buy existing market FCTY and burn what it actually acquires. This external Treasury is not a Facety fund for paying uncollected dispute winnings. Support can be paused or stopped under its policy, creates no XP or invitation-eligible personal emission, and supplies no price guarantee or truth verdict.
 
 ## 14. What still needs a precise rule
 

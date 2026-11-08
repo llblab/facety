@@ -14,7 +14,7 @@
 //! - Boundary (D167): the deadline is a cutoff, nothing is added to it: anyone eligible can join until it and the dispute is final from
 //!   it. Entries at the same hour are applied in the order
 //!   they are submitted, and each must satisfy the XP and alternation conditions against the entry before it.
-//! - Stakes (D159): `stake(k) = ceil(base * 1.2^(k-1))` whole FACY (declared rounding of the compound growth); every winner takes the
+//! - Stakes (D159): `stake(k) = ceil(base * 1.2^(k-1))` whole FCTY (declared rounding of the compound growth); every winner takes the
 //!   stake of the position directly below it and gets its own back; a loser forfeits to the position directly above it; the lowest
 //!   winning position is paid from the sanction on the accused (base stake); the stake of a losing top position has no winner above it
 //!   and is burned (the legacy assumption, OPEN in the protocol).
@@ -22,7 +22,7 @@
 //! Time is in hours, like the world clock.
 
 pub const DAY_HOURS: i64 = 24;
-/// Base stake of the first position, in whole FACY (D159).
+/// Base stake of the first position, in whole FCTY (D159).
 pub const BASE_STAKE: u32 = 7;
 /// Stake growth per position: 20% (D159).
 pub const STAKE_GROWTH: f64 = 0.20;
@@ -33,7 +33,7 @@ pub fn window_hours(n: u32) -> i64 {
     (8 - i64::from(n)).max(3) * DAY_HOURS
 }
 
-/// The stake of position `n` in whole FACY: `ceil(base * 1.2^(n-1))` computed from the formula, so rounding never compounds.
+/// The stake of position `n` in whole FCTY: `ceil(base * 1.2^(n-1))` computed from the formula, so rounding never compounds.
 pub fn stake(n: u32, base: u32) -> u32 {
     checked_stake(n, base).expect("stake exceeds the simulator's u32 amount representation")
 }
@@ -175,7 +175,7 @@ pub struct Ladder<W> {
     ballots: Vec<Ballot<W>>,
 }
 
-/// What a closed dispute settles: who wins, and every transfer of stake in whole FACY.
+/// What a closed dispute settles: who wins, and every transfer of stake in whole FCTY.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Settlement {
     pub winner: Side,
@@ -647,7 +647,7 @@ mod tests {
             expected = expected.max(join + window_hours(n));
             assert_eq!(l.deadline(), expected);
         }
-        // 20 entries: 7 days + 6 + 5 + 4 + 3 * 17 days minus 20 hours, 72.17 days, with a last stake of 269 FACY.
+        // 20 entries: 7 days + 6 + 5 + 4 + 3 * 17 days minus 20 hours, 72.17 days, with a last stake of 269 FCTY.
         assert_eq!(l.deadline(), (7 + 6 + 5 + 4 + 3 * 17) * H - 20);
         assert_eq!(stake(21, BASE_STAKE), 269);
         assert_eq!(l.positions().iter().map(|p| u64::from(p.stake)).sum::<u64>(), 1587);

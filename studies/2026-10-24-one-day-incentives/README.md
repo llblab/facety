@@ -44,9 +44,9 @@ bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root .
 
 ### Fixed valuation and unknown-loss contrasts
 
-The 14 named cases are fixed **before report execution**, not fitted to yield a favorable comparison. Values 0/1/10 are zero, unit and decade illustrations in caller-declared common utility units, not market prices or measured preferences. Default illustrated case is FACY value 1, XP value 0, work cost 1, both private benefits 0 and both incremental expected losses 0; zeros are supplied for that illustration, never inferred from no scripted debt.
+The 14 named cases are fixed **before report execution**, not fitted to yield a favorable comparison. Values 0/1/10 are zero, unit and decade illustrations in caller-declared common utility units, not market prices or measured preferences. Default illustrated case is FCTY value 1, XP value 0, work cost 1, both private benefits 0 and both incremental expected losses 0; zeros are supplied for that illustration, never inferred from no scripted debt.
 
-- **Zero/cash/work:** `zero-value-control` sets FACY/work to zero; `cash-only` sets work cost zero; `cash-and-work` retains the default; `cash-tenfold` sets FACY value 10.
+- **Zero/cash/work:** `zero-value-control` sets FCTY/work to zero; `cash-only` sets work cost zero; `cash-and-work` retains the default; `cash-tenfold` sets FCTY value 10.
 - **Authority/connection:** `xp-unit` and `xp-tenfold` set XP value 1/10; `admission-unit` and `guarantee-unit` separately set the corresponding private benefit to 1. Other components stay at the illustrated default.
 - **Signed expected losses:** `added-loss-unit` supplies +1 for each invitation alternative relative to waiting; `avoided-loss-unit` supplies −1. These are explicit utility hypotheses, not measured duties, prevention or a new sanction/insurance rule.
 - **Unknowns:** `unknown-xp`, `unknown-losses`, `unknown-benefits` and `all-unknown` preserve explicit nulls in the named inputs. Keep every unknown score/candidate and zero-exposure rule from the existing analyzer; do not prune inconclusive cases.
@@ -77,15 +77,15 @@ All raw adverse, null and positive comparisons remain. There are no p-values, co
 
 Fresh terminal facts, equal in both declared XP modes:
 
-| Script | Sponsor FACY | Sponsor XP | Sponsor work | Newcomer FACY | Newcomer XP | Entry burn |
+| Script | Sponsor FCTY | Sponsor XP | Sponsor work | Newcomer FCTY | Newcomer XP | Entry burn |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | Wait | 1 | 1 | 3 | Absent | Absent | 0 |
 | Invite only | 0 | 1 | 4 | 1 | 1 | 1 |
 | Invite + guarantee | 0 | 2 | 5 | 1 | 1 | 1 |
 
-Work uses the supplied illustrative source units, not measured human labor. The invitation burns an own matured right; it is not a fee paid from an injected initial wallet. Peer custody remains 1 FACY in every branch. At the endpoint waiting has two minted rights/no burn; admission has three rights/one entry burn, leaving the same total two-FACY supply in this sparse script. Adding a subject is not demonstrated useful demand or net external value.
+Work uses the supplied illustrative source units, not measured human labor. The invitation burns an own matured right; it is not a fee paid from an injected initial wallet. Peer custody remains 1 FCTY in every branch. At the endpoint waiting has two minted rights/no burn; admission has three rights/one entry burn, leaving the same total two-FCTY supply in this sparse script. Adding a subject is not demonstrated useful demand or net external value.
 
-Relative to waiting, sponsor `(FACY, XP, work)` is **`(-1,0,+1)`** for invitation alone and **`(-1,+1,+2)`** with the separate guarantee. These were recomputed from fresh raw ledgers/actions, not copied from the old tables. They happen to agree with the historical endpoint vector, but not its physical clock or source identity.
+Relative to waiting, sponsor `(FCTY, XP, work)` is **`(-1,0,+1)`** for invitation alone and **`(-1,+1,+2)`** with the separate guarantee. These were recomputed from fresh raw ledgers/actions, not copied from the old tables. They happen to agree with the historical endpoint vector, but not its physical clock or source identity.
 
 With selected terminal XP, the first retained own-credit checkpoint is **24 h for waiting and both invitation scripts**. Newcomer and eligible sponsor-guarantor credit first appear at 72 h. The immediate-XP counterfactual instead records own credit at 0 h and newcomer/guarantor credit at 48 h. Equal-hour admission/work remain separate. Thus A8's no-inherited-day-3-versus-day-7 timing premium is visible in this executed reference; equal terminal values do **not** show finality timing is irrelevant to future options, rank or disputes, which the terminal utility functional excludes.
 
@@ -112,7 +112,7 @@ The following sponsor differences relative to waiting are identical in the two m
 
 Across the **56 arithmetic comparison rows**, 36 are negative, 4 zero, 2 positive and 14 unknown. These are not success frequencies or independent replications: the same 14 supplied preference cases appear in two mode contexts. The only positive row per mode is the supplied tenfold-XP guarantee illustration; zero-value controls tie. Unknown losses stay unknown even though every scripted observed debt is zero. Unknown XP leaves invitation-only's zero XP exposure priced at zero, without imputing XP's actual value.
 
-For supplied FACY value `P`, own-XP value `v`, work cost `c`, admission benefit `A`, guarantee benefit `G` and incremental expected losses `L_i/L_g`, the freshly reconstructed differences are:
+For supplied FCTY value `P`, own-XP value `v`, work cost `c`, admission benefit `A`, guarantee benefit `G` and incremental expected losses `L_i/L_g`, the freshly reconstructed differences are:
 
 ```text
 Invite only:          -P     - c  + A     - L_i
@@ -124,13 +124,13 @@ At `P=c=1`, zero benefits and explicitly supplied zero losses, the guarantee thr
 
 ### Custody/work overlay, not a second admission
 
-| Script | Independent FACY | Independent work | Controlled FACY | Controlled work |
+| Script | Independent FCTY | Independent work | Controlled FCTY | Controlled work |
 | --- | ---: | ---: | ---: | ---: |
 | Wait | 1 | 3 | 1 | 3 |
 | Invite only | 0 | 4 | 1 | 7 |
 | Invite + guarantee | 0 | 5 | 1 | 9 |
 
-These are sponsor-**operator** totals. The controlled overlay counts newcomer-wallet custody under the sponsor's assumed control, not an executed transfer or extra minting. Relative to waiting it retains FACY delta 0 but costs +4/+6 work, versus independent admission's FACY -1 and work +1/+2. Sponsor/newcomer XP stays `{1,1}` or `{2,1}` in separate subjects, never one identity's summed authority. No operator utility is aggregated. The fabricated-identity label and fabrication-work substitution are evaluator assumptions; neither actual fabrication feasibility nor control-implies-false-personhood is established. Real attack cost, oracle validity and calibration remain open.
+These are sponsor-**operator** totals. The controlled overlay counts newcomer-wallet custody under the sponsor's assumed control, not an executed transfer or extra minting. Relative to waiting it retains FCTY delta 0 but costs +4/+6 work, versus independent admission's FCTY -1 and work +1/+2. Sponsor/newcomer XP stays `{1,1}` or `{2,1}` in separate subjects, never one identity's summed authority. No operator utility is aggregated. The fabricated-identity label and fabrication-work substitution are evaluator assumptions; neither actual fabrication feasibility nor control-implies-false-personhood is established. Real attack cost, oracle validity and calibration remain open.
 
 ### Retained-data audit and assurance
 

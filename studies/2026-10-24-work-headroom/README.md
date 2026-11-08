@@ -21,7 +21,7 @@ Honest caps are fixed structurally, not fitted to outcomes:
 - `headroom-126`: **324 = 198 + 2×9×7**;
 - `generous-reference`: **100000**, leaving nominal post-setup 99802.
 
-The coalition's whole-run cap remains **100000**. These are **whole-cohort/run pools**, not per-person/daily grants or refills, calibrated human capacity, private utility or real attack-acquisition cost. Work is not FACY: the supplied zero guarantee-fee reference mints no initial money/XP; prior root acquisition/acceptance/trust remain unpriced scenario assumptions.
+The coalition's whole-run cap remains **100000**. These are **whole-cohort/run pools**, not per-person/daily grants or refills, calibrated human capacity, private utility or real attack-acquisition cost. Work is not FCTY: the supplied zero guarantee-fee reference mints no initial money/XP; prior root acquisition/acceptance/trust remain unpriced scenario assumptions.
 
 This intervention constrains **all** honest work: Self-ID, guarantees, conversion, inspection and response. It can change activity, eligibility, graphs, rights and population, not just inspection availability. It is not isolated attention scarcity, a marginal veto price, an optimal allocation or an equilibrium. Honest newcomers are disabled, so the honest cohort remains the declared initial nine subjects; no new population distribution is invented.
 
