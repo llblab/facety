@@ -12,10 +12,11 @@ use crate::world::{Config as WorldConfig, Id, Reject, World, DAY};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
 
-pub const ENGINE: &str = "facety-sim/runner-v2";
+pub const ENGINE: &str = "facety-sim/runner-v3";
 /// Version of the saved result layout.
-pub const SCHEMA: &str = "facety-sim/result-v5";
+pub const SCHEMA: &str = "facety-sim/result-v6";
 pub const COUNCIL_VOTING_POLICY: &str = "first-daily-review-per-round/binary-belief-v1";
+pub const APPEAL_EXECUTION_POLICY: &str = "conditional-approved-case-reversal/earned-receipts/integrity-replay/fifo-debt/v1";
 
 const CH_GENESIS: u64 = 1;
 const CH_ENTRY: u64 = 2;
@@ -105,7 +106,7 @@ pub struct Detection {
     /// such an account is multiplied by `odd_multiplier` (capped at 1), so the same people are suspected again and again. 0 = off.
     pub odd_share: f64,
     pub odd_multiplier: f64,
-    /// D151 appeal: chance that a wrongly invalidated (genuine) account appeals successfully; the account is reinstated after `defense_days`. 0 = off.
+    /// Conditional accepted appeal (D177): after `defense_days`, execute restoration for this original case. Not Council adjudication; 0 = off.
     pub appeal: f64,
     /// D151 repair: when an appeal reinstates a wrongly invalidated person, the honest links that the false positive cut are restored without a fee.
     pub restore_links: bool,
@@ -328,7 +329,9 @@ impl RunConfig {
         );
         // Keep behavior extensions explicit in the saved configuration and its digest.
         format!(
-            "{{\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
+            "{{\"caseAdmissionPolicy\":{},\"appealExecutionPolicy\":{},\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
+            json::string(crate::world::CASE_ADMISSION_POLICY),
+            json::string(APPEAL_EXECUTION_POLICY),
             json::string(COUNCIL_VOTING_POLICY),
             json::string(crate::world::COUNCIL_EXECUTION_POLICY),
             json::string(crate::rng::RANDOMNESS_POLICY),
@@ -519,6 +522,7 @@ pub struct DetectionCounters {
     pub colluders_acquitted: u64,
     /// Wrongly invalidated accounts reinstated on appeal (D151).
     pub appeals_restored: u64,
+    pub appeals_blocked: u64,
     /// Honest links restored without a fee after an appeal (D151).
     pub links_restored: u64,
     /// Recorded consequences of caught second accounts, index 0 unwitting inviter, 1 colluding inviter (D152 incentive ledger):
@@ -596,7 +600,7 @@ pub struct Sim {
     scratch: Vec<Id>,
     open_cases: Vec<CaseRec>,
     /// Appeals due (hour, account) after a wrong invalidation (D151).
-    appeals: Vec<(i64, Id)>,
+    appeals: Vec<(i64, u32, Id)>,
     /// Honest links cut by the cascade of a verdict, per invalidated account, kept for restoration on appeal (D151).
     cuts: HashMap<Id, Vec<(Id, Id)>>,
     pub det: DetectionCounters,
@@ -1572,12 +1576,19 @@ impl Sim {
     fn detect(&mut self) {
         let det = self.cfg.detection.clone();
         let mut targeted: HashSet<Id> = self.open_cases.iter().map(|c| c.target).collect();
-        // D151 appeal: due appeals reinstate the wrongly invalidated person.
+        // Conditional accepted appeal, not admission or Council adjudication: execute only effects attributed to that original case.
         let now = self.world.now();
-        let due: Vec<Id> = self.appeals.iter().filter(|a| a.0 <= now).map(|a| a.1).collect();
+        let due: Vec<(u32, Id)> = self.appeals.iter().filter(|a| a.0 <= now).map(|a| (a.1, a.2)).collect();
         self.appeals.retain(|a| a.0 > now);
-        for id in due {
-            if self.world.reinstate_identity(id) {
+        for (case, id) in due {
+            let restored = match self.world.restore_case_effects(case) {
+                Ok(outcome) => outcome,
+                Err(_) => {
+                    self.det.appeals_blocked += 1;
+                    continue;
+                }
+            };
+            if restored.status_restored {
                 self.det.appeals_restored += 1;
                 for (a, b) in self.cuts.remove(&id).unwrap_or_default() {
                     if self.world.accepted(a) && self.world.accepted(b) && self.world.restore_link(a, b).is_ok() {
@@ -1653,12 +1664,16 @@ impl Sim {
             }
             let label = false_identity(self.kind[rec.target as usize]);
             let verdict_false = outcome.winner == Side::Accuser;
-            if !verdict_false || !self.world.accepted(rec.target) {
+            if !verdict_false {
                 self.det.cases_dismissed += 1;
                 continue;
             }
-            self.world.invalidate_identity(rec.target);
-            self.world.void_chain(rec.target);
+            let was_accepted = self.world.accepted(rec.target);
+            self.world.apply_case_identity_verdict(rec.case).expect("settled adverse identity verdict");
+            if !was_accepted {
+                self.det.cases_dismissed += 1;
+                continue;
+            }
             if det.recover_liquid {
                 self.det.liquid_burned += u64::from(self.world.burn_liquid(rec.target));
             }
@@ -1668,14 +1683,13 @@ impl Sim {
                 self.det.genuine_invalidated += 1;
                 self.det.wrong_by_cohort[ci(self.cohort[rec.target as usize])] += 1;
                 if det.appeal > 0.0 && Rng::keyed(self.seed, CH_DEFENSE, rec.id, 1).chance(det.appeal) {
-                    self.appeals.push((self.world.now() + det.defense_days * DAY, rec.target));
+                    self.appeals.push((self.world.now() + det.defense_days * DAY, rec.case, rec.target));
                 }
             }
             // D127: a true duplicate verdict also reaches the holder of the second account.
             if let Some(&holder) = self.owner_of.get(&rec.target) {
                 if label && self.world.accepted(holder) {
-                    self.world.invalidate_identity(holder);
-                    self.world.void_chain(holder);
+                    self.world.apply_case_identity_verdict_to(rec.case, holder).expect("related holder in the settled identity verdict");
                     if det.recover_liquid {
                         self.det.liquid_burned += u64::from(self.world.burn_liquid(holder));
                     }
@@ -1720,7 +1734,7 @@ impl Sim {
                 self.det.honest_inviter_cascades += 1;
             }
             if det.xp_penalty > 0.0 {
-                let cut = self.world.penalize_xp(inviter, det.xp_penalty) as u64;
+                let cut = self.world.apply_case_xp_penalty(rec.case, inviter, det.xp_penalty).expect("settled case-specific inviter penalty") as u64;
                 self.det.xp_penalized += cut;
                 if let Some(c) = ledger {
                     self.det.ledger[c][4] += cut;
@@ -1952,6 +1966,16 @@ impl Sim {
         let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"accusations\":{},\"casesOnGenuine\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
             d.cases_opened, d.accusations, d.cases_on_genuine, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
         let (st, l) = (&self.world.stats, &self.ladder);
+        let _ = write!(
+            s,
+            "\"restoration\":{{\"executionPolicy\":{},\"casesReversed\":{},\"statusesRestored\":{},\"unitsRestored\":{},\"debtCancelled\":{},\"blockedConditionalAppeals\":{}}},",
+            json::string(APPEAL_EXECUTION_POLICY),
+            st.restorations,
+            st.statuses_restored,
+            st.units_restored,
+            st.debt_cancelled,
+            self.det.appeals_blocked
+        );
         let _ = write!(
             s,
             "\"councilRounds\":{{\"votingPolicy\":{},\"executionPolicy\":{},\"recognized\":{},\"majorityDeferrals\":{},\"automaticDeferrals\":{}}},",
@@ -2246,10 +2270,51 @@ mod tests {
         let (wrong, none) = run(0.0);
         assert_eq!(none, 0);
         let (_, restored) = run(1.0);
-        assert!(wrong == 0 || restored > 0, "with appeals every wrongly invalidated person is restored");
+        assert!(wrong == 0 || restored > 0, "supplied accepted appeals must deliver actual restorations");
     }
 
     /// D151/D34: restoration, liquid recovery and the XP penalty keep the world consistent (audit) and are opt-in.
+    #[test]
+    fn a_conditional_appeal_restores_original_case_receipts_and_unpaid_debt_without_refunding_money() {
+        let mut sim = grown_honest("case-bound-appeal");
+        sim.cfg.detection.defense_success = 0.0;
+        sim.cfg.detection.false_positive = 0.0;
+        sim.cfg.detection.join_rate = 0.0;
+        sim.cfg.detection.council_rate = 0.0;
+        sim.cfg.detection.appeal = 1.0;
+        let (challenger, target) = find_pair(&sim, |a, b| a > b).unwrap();
+        for act in sim.world.eligible_emissions(target, DAY) {
+            sim.world.convert_to_collector(target, act).unwrap();
+        }
+        sim.world.burn_liquid(target);
+        assert!(sim.open_case(challenger, target, false));
+        let case = sim.open_cases[0].case;
+        sim.world.tick(sim.world.case_deadline(case).unwrap());
+        let units = sim.world.responsibility_units(target);
+        let coefficient = sim.world.coefficient(target);
+        sim.detect();
+        assert!(!sim.world.accepted(target));
+        assert!(sim.world.responsibility_units(target) < units, "own-chain units are revoked; unrelated guarantor receipts remain");
+        let debt = sim.world.debt(target);
+        assert!(debt > 0, "an empty-backed defendant acquires actual attributable debt");
+        let funds = (sim.world.supply(), sim.world.liquid(target));
+        sim.world.tick(sim.world.now() + sim.cfg.detection.defense_days * DAY);
+        sim.detect();
+        assert!(sim.world.accepted(target));
+        assert_eq!(sim.world.responsibility_units(target), units);
+        assert_eq!(sim.world.coefficient(target), coefficient);
+        assert_eq!(sim.world.debt(target), 0);
+        assert_eq!((sim.world.supply(), sim.world.liquid(target)), funds);
+        assert_eq!(sim.det.appeals_restored, 1);
+        assert_eq!(sim.world.stats.restorations, 1);
+        assert!(sim.world.stats.debt_cancelled >= debt as u64);
+        let saved = sim.to_json();
+        json::validate(&saved).unwrap();
+        assert!(saved.contains(APPEAL_EXECUTION_POLICY));
+        assert!(saved.contains("\"casesReversed\":1"));
+        sim.world.audit().unwrap();
+    }
+
     #[test]
     fn the_remedy_levers_keep_the_audit() {
         let mut c = small("rem", 7, false);
@@ -2589,6 +2654,10 @@ mod tests {
             "halvingSparesCouncil",
             "councilVotingPolicy",
             "councilExecutionPolicy",
+            "appealExecutionPolicy",
+            "caseAdmissionPolicy",
+            "restoration",
+            "debtCancelled",
             "councilRounds",
             "majorityDeferrals",
             "automaticDeferrals",

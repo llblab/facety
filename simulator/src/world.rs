@@ -18,6 +18,8 @@ use std::sync::Arc;
 pub const DAY: i64 = 24;
 /// Model assumptions while production authentication, ballot revision and same-hour membership ordering remain open.
 pub const COUNCIL_EXECUTION_POLICY: &str = "trusted-ids/first-ballot/whole-hour-maturity-before-round/daily-entry-cache/v1";
+/// The later opening-transaction maturity/cancellation lifecycle is not represented by the current identity-case fixtures.
+pub const CASE_ADMISSION_POLICY: &str = "admitted-identity-case-fixtures/no-opening-maturity-or-author-cancellation/v1";
 /// D42: a valid, uncancelled Self-ID matures, and its ordinary XP is earned, exactly this many hours after creation.
 pub const MATURITY_HOURS: i64 = 24;
 /// The integrity coefficient is kept in millionths: 1,000,000 is 1 (integer arithmetic keeps results reproducible).
@@ -149,6 +151,36 @@ struct Credit {
     recipients: Arc<[Id]>,
 }
 
+/// An attributed obligation; repayment and cancellation retain the original amount as history.
+#[derive(Clone, Debug)]
+struct DebtTranche {
+    case: u32,
+    amount: u32,
+    remaining: u32,
+    repaid: u32,
+    cancelled: u32,
+}
+
+#[derive(Clone, Debug)]
+struct CaseEffects {
+    accused: Id,
+    winner: Side,
+    reversed: bool,
+    identity_subjects: Vec<Id>,
+    source_acts: Vec<u32>,
+    penalized_subjects: Vec<Id>,
+}
+
+/// Effects actually restored by a trusted, already authorized reversal; this is not appeal admission or adjudication.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct RestorationOutcome {
+    pub status_restored: bool,
+    pub statuses_restored: u64,
+    pub responsibility_units: u64,
+    pub penalty_events: u64,
+    pub debt_cancelled: u64,
+}
+
 #[derive(Clone, Debug)]
 struct Act {
     subject: Id,
@@ -156,6 +188,20 @@ struct Act {
     guarantors: Arc<[Id]>,
     status: ActStatus,
     credit: Option<Credit>,
+}
+
+#[derive(Clone, Debug)]
+enum IntegrityAdjustmentKind {
+    Penalty { fraction: f64, flat_cut: i32 },
+    InheritedCap(u32),
+}
+
+#[derive(Clone, Debug)]
+struct IntegrityAdjustment {
+    at_maturities: u64,
+    kind: IntegrityAdjustmentKind,
+    case: Option<u32>,
+    reversed: bool,
 }
 
 #[derive(Clone, Debug)]
@@ -167,6 +213,8 @@ struct Subject {
     raw: i32,
     /// Integrity coefficient in millionths (`COEF_ONE` unless the variant is on and the account lost disputes).
     coef: u32,
+    own_maturities: u64,
+    integrity_adjustments: Vec<IntegrityAdjustment>,
     /// The lowest coefficient the account ever had (diagnostic: how many accounts are recovering).
     low_coef: u32,
     liquid: u32,
@@ -174,6 +222,7 @@ struct Subject {
     reserved: u32,
     /// Outstanding debt, repaid by burning later matured emission; never counted as a collected loss before repayment.
     debt: i64,
+    debt_tranches: Vec<DebtTranche>,
     debt_repaid: u64,
     last_reward: Option<i64>,
     /// The most recent guarantor list and recipient list of this account's acts, reused while they are unchanged.
@@ -313,6 +362,10 @@ pub struct DisputeStats {
     pub sanction_collected: u64,
     pub sanction_burned: u64,
     pub debt_created: u64,
+    pub debt_cancelled: u64,
+    pub restorations: u64,
+    pub statuses_restored: u64,
+    pub units_restored: u64,
     pub xp_halved: u64,
     /// Council seats that changed hands, summed over the daily refreshes (members that left; the size changes are not counted).
     pub council_turnover: u64,
@@ -354,6 +407,11 @@ pub struct World {
     /// Open cases in which the account is the accused: its unspent rights are frozen (protocol §17.4) until the last of them ends.
     frozen: Vec<u32>,
     cases: Vec<Option<Case>>,
+    case_effects: Vec<Option<CaseEffects>>,
+    /// Independent causes coexist: removing one case cannot erase another case or a separately authorized revocation.
+    xp_revocations: FastMap<u32, Vec<Option<u32>>>,
+    identity_cases: FastMap<Id, Vec<u32>>,
+    independent_invalid: Vec<bool>,
     reserved_rights: HashSet<u32>,
     /// Liquid FCTY destroyed by disputes (burned stakes and sanction charges, D151 recovery); `sum(liquid) + liquid_destroyed` equals the
     /// converted entitlements.
@@ -405,6 +463,10 @@ impl World {
             path_hold: Vec::new(),
             frozen: Vec::new(),
             cases: Vec::new(),
+            case_effects: Vec::new(),
+            xp_revocations: FastMap::default(),
+            identity_cases: FastMap::default(),
+            independent_invalid: Vec::new(),
             reserved_rights: HashSet::new(),
             liquid_destroyed: 0,
             stats: DisputeStats::default(),
@@ -446,10 +508,13 @@ impl World {
             xp: 0,
             raw: 0,
             coef: COEF_ONE,
+            own_maturities: 0,
+            integrity_adjustments: Vec::new(),
             low_coef: COEF_ONE,
             liquid: 0,
             reserved: 0,
             debt: 0,
+            debt_tranches: Vec::new(),
             debt_repaid: 0,
             last_reward: None,
             last_guarantors: None,
@@ -463,6 +528,7 @@ impl World {
             lost_key: false,
         });
         self.owned_open.push(0);
+        self.independent_invalid.push(false);
         self.inv_units.push(0);
         self.hold.push(0);
         self.path_hold.push(0);
@@ -851,8 +917,16 @@ impl World {
     /// Authorized source revocation (a separately authorized correction, never a side effect of consumption): the credit of one source
     /// Self-ID is withdrawn from every recipient, once. Other sources keep their credits; nothing is replayed. Returns whether it changed.
     pub fn revoke_source_xp(&mut self, act_id: u32) -> bool {
+        self.revoke_source_for(act_id, None)
+    }
+
+    fn revoke_source_for(&mut self, act_id: u32, case: Option<u32>) -> bool {
         let act = &mut self.acts[act_id as usize];
         let Some(credit) = act.credit.as_mut() else { return false };
+        let causes = self.xp_revocations.entry(act_id).or_default();
+        if !causes.contains(&case) {
+            causes.push(case);
+        }
         if credit.revoked {
             return false;
         }
@@ -890,8 +964,9 @@ impl World {
                     self.credit(act_id);
                 }
                 // D165 restores integrity for a valid own maturity even when D167 suspends its new responsibility units.
+                let subject = self.acts[act_id as usize].subject;
+                self.subjects[subject as usize].own_maturities += 1;
                 if self.cfg.integrity {
-                    let subject = self.acts[act_id as usize].subject;
                     let c = &mut self.subjects[subject as usize].coef;
                     *c = (*c + COEF_STEP).min(COEF_ONE);
                     self.refresh_xp(subject);
@@ -910,6 +985,9 @@ impl World {
         self.vault -= 1;
         self.burned += 1;
         self.subjects[subject as usize].debt -= 1;
+        let tranche = self.subjects[subject as usize].debt_tranches.iter_mut().find(|d| d.remaining > 0).expect("positive attributed debt");
+        tranche.remaining -= 1;
+        tranche.repaid += 1;
         self.subjects[subject as usize].debt_repaid += 1;
         self.stats.debt_repaid += 1;
         let s = &mut self.subjects[subject as usize];
@@ -1488,6 +1566,7 @@ impl World {
         self.hold_for(accused, path_accused);
         self.frozen[accused as usize] += 1;
         self.cases.push(Some(case));
+        self.case_effects.push(None);
         Ok((self.cases.len() - 1) as u32)
     }
 
@@ -1640,7 +1719,7 @@ impl World {
     }
 
     /// Collect liquid and mature Emitter rights; any shortfall becomes debt. Returns actual collection.
-    fn charge(&mut self, id: Id, amount: u32) -> u32 {
+    fn charge(&mut self, id: Id, amount: u32, case: u32) -> u32 {
         let backing = self.reserve_stake(id, amount);
         self.subjects[id as usize].reserved -= backing.liquid;
         for a in &backing.rights {
@@ -1648,15 +1727,22 @@ impl World {
         }
         let collected = self.collect_backing(id, &backing);
         let owed = amount - collected;
-        self.subjects[id as usize].debt += i64::from(owed);
-        self.stats.debt_created += u64::from(owed);
+        self.record_debt(id, owed, case);
         collected
     }
 
-    fn add_debt(&mut self, id: Id, amount: u32, debts: &mut Vec<(Id, i64)>) {
+    fn record_debt(&mut self, id: Id, amount: u32, case: u32) {
         if amount > 0 {
-            self.subjects[id as usize].debt += i64::from(amount);
+            let subject = &mut self.subjects[id as usize];
+            subject.debt_tranches.push(DebtTranche { case, amount, remaining: amount, repaid: 0, cancelled: 0 });
+            subject.debt += i64::from(amount);
             self.stats.debt_created += u64::from(amount);
+        }
+    }
+
+    fn add_debt(&mut self, id: Id, amount: u32, case: u32, debts: &mut Vec<(Id, i64)>) {
+        if amount > 0 {
+            self.record_debt(id, amount, case);
             debts.push((id, i64::from(amount)));
         }
     }
@@ -1698,7 +1784,7 @@ impl World {
             self.stats.forfeited += u64::from(paid);
             net.push((f, -i64::from(paid)));
             net.push((t, i64::from(paid)));
-            self.add_debt(f, amount - paid, &mut debts);
+            self.add_debt(f, amount - paid, case, &mut debts);
         }
         for &(position, amount) in &settlement.burns {
             let loser = who_at(position);
@@ -1706,13 +1792,13 @@ impl World {
             self.destroy_liquid(paid);
             self.stats.stake_burned += u64::from(paid);
             net.push((loser, -i64::from(paid)));
-            self.add_debt(loser, amount - paid, &mut debts);
+            self.add_debt(loser, amount - paid, case, &mut debts);
         }
         let mut losers = Vec::new();
         for &n in &settlement.losers {
             let p = &positions[n as usize - 1];
             if self.cfg.halve_losers && !(self.cfg.halving_spares_council && self.council_mask.get(p.who as usize).copied().unwrap_or(false)) {
-                let cut = self.penalize_xp(p.who, 0.5);
+                let cut = self.penalize_xp_for_case(p.who, 0.5, case);
                 self.stats.xp_halved += cut as u64;
                 losers.push(p.who);
             }
@@ -1723,13 +1809,13 @@ impl World {
                 && !losers.contains(&c.accused)
                 && !(self.cfg.halving_spares_council && self.council_mask.get(c.accused as usize).copied().unwrap_or(false))
             {
-                let cut = self.penalize_xp(c.accused, 0.5);
+                let cut = self.penalize_xp_for_case(c.accused, 0.5, case);
                 self.stats.xp_halved += cut as u64;
                 losers.push(c.accused);
             }
             if let Some(base) = self.cfg.base_stake {
                 let accuser = c.ladder.positions()[0].who;
-                let got = self.charge(c.accused, base);
+                let got = self.charge(c.accused, base, case);
                 self.subjects[accuser as usize].liquid += got;
                 self.stats.sanction_collected += u64::from(got);
                 net.push((c.accused, -i64::from(got)));
@@ -1738,7 +1824,7 @@ impl World {
                 // Pending acts can mature during the hold: liability uses all actual receipts before the verdict/cut, not an opening snapshot.
                 for g in self.liable_guarantors(c.accused) {
                     if g != c.accused {
-                        let burned = self.charge(g, base);
+                        let burned = self.charge(g, base, case);
                         self.destroy_liquid(burned);
                         self.stats.sanction_burned += u64::from(burned);
                         net.push((g, -i64::from(burned)));
@@ -1754,6 +1840,14 @@ impl World {
         } else {
             self.stats.accused_won += 1;
         }
+        self.case_effects[case as usize] = Some(CaseEffects {
+            accused: c.accused,
+            winner: settlement.winner,
+            reversed: false,
+            identity_subjects: Vec::new(),
+            source_acts: Vec::new(),
+            penalized_subjects: losers.clone(),
+        });
         Ok(CaseOutcome {
             winner: settlement.winner,
             accuser: positions[0].who,
@@ -1768,7 +1862,117 @@ impl World {
         })
     }
 
+    /// Apply a settled identity verdict with its case provenance; no evaluator labels or appeal powers enter World.
+    pub fn apply_case_identity_verdict(&mut self, case: u32) -> Result<(), Reject> {
+        let accused = self.case_effects.get(case as usize).and_then(Option::as_ref).ok_or(Reject("no settled case effects"))?.accused;
+        self.apply_case_identity_verdict_to(case, accused)
+    }
+
+    /// Execute the same authorized verdict for an explicitly supplied related account, such as D127's duplicate holder.
+    pub fn apply_case_identity_verdict_to(&mut self, case: u32, accused: Id) -> Result<(), Reject> {
+        let effects = self.case_effects.get(case as usize).and_then(Option::as_ref).ok_or(Reject("no settled case effects"))?;
+        if effects.reversed || effects.winner != Side::Accuser || effects.identity_subjects.contains(&accused) || accused as usize >= self.subjects.len() {
+            return Err(Reject("no unapplied adverse identity verdict"));
+        }
+        self.identity_cases.entry(accused).or_default().push(case);
+        self.subjects[accused as usize].status = Status::False;
+        let chain = self.subjects[accused as usize].acts.clone();
+        let mut sources = Vec::new();
+        for act_id in chain {
+            let act = &mut self.acts[act_id as usize];
+            if act.status == ActStatus::Unspent {
+                act.status = ActStatus::Cancelled;
+                self.vault -= 1;
+                self.burned += 1;
+            }
+            if act.credit.is_some() {
+                sources.push(act_id);
+                self.revoke_source_for(act_id, Some(case));
+            }
+        }
+        let effects = self.case_effects[case as usize].as_mut().expect("checked settled effects");
+        effects.identity_subjects.push(accused);
+        effects.source_acts.extend(sources);
+        effects.source_acts.sort_unstable();
+        let subject = &mut self.subjects[accused as usize];
+        while subject.first_unspent < subject.acts.len() && self.acts[subject.acts[subject.first_unspent] as usize].status != ActStatus::Unspent {
+            subject.first_unspent += 1;
+        }
+        Ok(())
+    }
+
+    /// Attribute a separately authorized role-specific penalty to its settled case, including the runner's optional inviter penalty.
+    pub fn apply_case_xp_penalty(&mut self, case: u32, subject: Id, fraction: f64) -> Result<i32, Reject> {
+        let effects = self.case_effects.get_mut(case as usize).and_then(Option::as_mut).ok_or(Reject("no settled case effects"))?;
+        if effects.reversed || subject as usize >= self.subjects.len() {
+            return Err(Reject("no active case penalty target"));
+        }
+        if !effects.penalized_subjects.contains(&subject) {
+            effects.penalized_subjects.push(subject);
+        }
+        Ok(self.penalize_xp_for_case(subject, fraction, case))
+    }
+
+    /// Trusted execution of D177/D178 after an authorized reversal, not a way to admit or win an appeal.
+    pub fn restore_case_effects(&mut self, case: u32) -> Result<RestorationOutcome, Reject> {
+        let effects = self.case_effects.get(case as usize).and_then(Option::as_ref).ok_or(Reject("no settled case effects"))?.clone();
+        if effects.reversed {
+            return Err(Reject("case effects already reversed"));
+        }
+        // A completed key recovery moved XP under a separate contract. Do not silently redirect historical receipts or an inherited cap.
+        let mut affected = effects.penalized_subjects.clone();
+        affected.push(effects.accused);
+        affected.extend(&effects.identity_subjects);
+        for &act in &effects.source_acts {
+            affected.extend(self.acts[act as usize].credit.as_ref().expect("recorded receipt").recipients.iter().copied());
+        }
+        if self.recovery_log.iter().any(|&(_, source, _)| affected.contains(&source)) {
+            return Err(Reject("restoration across completed key recovery needs its migration contract"));
+        }
+        let mut restored = RestorationOutcome::default();
+        for &subject in &effects.identity_subjects {
+            let causes = self.identity_cases.get_mut(&subject).expect("recorded identity cause");
+            causes.retain(|&id| id != case);
+            if causes.is_empty() && !self.independent_invalid[subject as usize] {
+                self.subjects[subject as usize].status = Status::Accepted;
+                restored.statuses_restored += 1;
+                restored.status_restored |= subject == effects.accused;
+            }
+        }
+        for &act in &effects.source_acts {
+            let causes = self.xp_revocations.get_mut(&act).expect("recorded source cause");
+            causes.retain(|&id| id != Some(case));
+            if causes.is_empty() {
+                self.xp_revocations.remove(&act);
+                let credit = self.acts[act as usize].credit.as_mut().expect("recorded receipt");
+                credit.revoked = false;
+                let recipients = credit.recipients.to_vec();
+                for recipient in recipients {
+                    self.bump(recipient, 1);
+                    restored.responsibility_units += 1;
+                }
+            }
+        }
+        restored.penalty_events = self.restore_case_xp_penalties(case);
+        for subject in &mut self.subjects {
+            for debt in subject.debt_tranches.iter_mut().filter(|d| d.case == case) {
+                let cancelled = debt.remaining;
+                subject.debt -= i64::from(cancelled);
+                debt.cancelled += cancelled;
+                debt.remaining = 0;
+                restored.debt_cancelled += u64::from(cancelled);
+            }
+        }
+        self.case_effects[case as usize].as_mut().expect("checked effects").reversed = true;
+        self.stats.restorations += 1;
+        self.stats.statuses_restored += restored.statuses_restored;
+        self.stats.units_restored += restored.responsibility_units;
+        self.stats.debt_cancelled += restored.debt_cancelled;
+        Ok(restored)
+    }
+
     pub fn invalidate_identity(&mut self, id: Id) {
+        self.independent_invalid[id as usize] = true;
         self.subjects[id as usize].status = Status::False;
     }
 
@@ -1776,7 +1980,8 @@ impl World {
     /// and links that others left are not restored. A retired lost-key account (D135) is never reinstated. Returns whether anything changed.
     pub fn reinstate_identity(&mut self, id: Id) -> bool {
         let s = &mut self.subjects[id as usize];
-        if s.status == Status::False && !s.lost_key {
+        if s.status == Status::False && !s.lost_key && self.identity_cases.get(&id).is_none_or(|cases| cases.is_empty()) {
+            self.independent_invalid[id as usize] = false;
             s.status = Status::Accepted;
             return true;
         }
@@ -1786,20 +1991,113 @@ impl World {
     /// D34/D55 (trusted execution, not adjudication): the account loses `fraction` of its current XP, recorded as an authorized adjustment.
     /// Deviation: the snapshot of the losing act is not kept; the penalty applies to the XP the account holds now. Returns the XP removed.
     pub fn penalize_xp(&mut self, id: Id, fraction: f64) -> i32 {
+        self.apply_xp_penalty(id, fraction, None)
+    }
+
+    fn penalize_xp_for_case(&mut self, id: Id, fraction: f64, case: u32) -> i32 {
+        self.apply_xp_penalty(id, fraction, Some(case))
+    }
+
+    fn apply_xp_penalty(&mut self, id: Id, fraction: f64, case: Option<u32>) -> i32 {
+        let s = &mut self.subjects[id as usize];
+        let flat_cut = if self.cfg.integrity { 0 } else { (f64::from(s.xp.max(0)) * fraction).floor() as i32 };
+        s.integrity_adjustments.push(IntegrityAdjustment {
+            at_maturities: s.own_maturities,
+            kind: IntegrityAdjustmentKind::Penalty { fraction, flat_cut },
+            case,
+            reversed: false,
+        });
         if self.cfg.integrity {
             // The integrity variant: the coefficient is cut, the credits stay; the XP removed is the visible drop (rounded down).
-            let before = self.subjects[id as usize].xp;
-            let s = &mut self.subjects[id as usize];
+            let before = s.xp;
             s.coef = (f64::from(s.coef) * (1.0 - fraction)).floor() as u32;
             s.low_coef = s.low_coef.min(s.coef);
             self.refresh_xp(id);
             return before - self.subjects[id as usize].xp;
         }
-        let s = &mut self.subjects[id as usize];
-        let cut = ((f64::from(s.xp.max(0))) * fraction).floor() as i32;
-        self.bump(id, -cut);
-        self.subjects[id as usize].penalized_xp += cut;
-        cut
+        self.bump(id, -flat_cut);
+        self.subjects[id as usize].penalized_xp += flat_cut;
+        flat_cut
+    }
+
+    fn replay_integrity(s: &Subject) -> Option<u32> {
+        fn repair(coef: u32, count: u64) -> u32 {
+            let steps = count.min(u64::from(COEF_ONE / COEF_STEP));
+            (u64::from(coef) + steps * u64::from(COEF_STEP)).min(u64::from(COEF_ONE)) as u32
+        }
+        let (mut coef, mut maturities) = (COEF_ONE, 0);
+        for adjustment in &s.integrity_adjustments {
+            if adjustment.at_maturities < maturities || adjustment.at_maturities > s.own_maturities {
+                return None;
+            }
+            coef = repair(coef, adjustment.at_maturities - maturities);
+            maturities = adjustment.at_maturities;
+            if !adjustment.reversed {
+                coef = match adjustment.kind {
+                    IntegrityAdjustmentKind::Penalty { fraction, .. } => (f64::from(coef) * (1.0 - fraction)).floor() as u32,
+                    IntegrityAdjustmentKind::InheritedCap(cap) => coef.min(cap),
+                };
+            }
+        }
+        Some(repair(coef, s.own_maturities - maturities))
+    }
+
+    /// Remove this case's penalty events once. The balance-halving ablation returns recorded cuts without repricing later cuts.
+    fn restore_case_xp_penalties(&mut self, case: u32) -> u64 {
+        let mut removed = 0;
+        for id in 0..self.subjects.len() {
+            let s = &mut self.subjects[id];
+            let (mut count, mut flat_restored) = (0, 0);
+            for adjustment in &mut s.integrity_adjustments {
+                if adjustment.case == Some(case) && !adjustment.reversed {
+                    if let IntegrityAdjustmentKind::Penalty { flat_cut, .. } = adjustment.kind {
+                        adjustment.reversed = true;
+                        count += 1;
+                        flat_restored += flat_cut;
+                    }
+                }
+            }
+            if count != 0 {
+                if self.cfg.integrity {
+                    s.coef = Self::replay_integrity(s).expect("ordered integrity history");
+                } else {
+                    s.raw += flat_restored;
+                    s.penalized_xp -= flat_restored;
+                }
+                self.refresh_xp(id as Id);
+                removed += count;
+            }
+        }
+        removed
+    }
+
+    fn audit_integrity(&self) -> Result<(), String> {
+        let mut maturities = vec![0u64; self.subjects.len()];
+        for act in &self.acts {
+            if act.credit.is_some() {
+                maturities[act.subject as usize] += 1;
+            }
+        }
+        for (id, s) in self.subjects.iter().enumerate() {
+            if s.own_maturities != maturities[id] {
+                return Err(format!("own maturity count of {id} differs from original credits"));
+            }
+            let mut flat_penalties = 0i64;
+            for adjustment in &s.integrity_adjustments {
+                match adjustment.kind {
+                    IntegrityAdjustmentKind::Penalty { flat_cut, .. } if !adjustment.reversed => flat_penalties += i64::from(flat_cut),
+                    IntegrityAdjustmentKind::InheritedCap(cap) if cap > COEF_ONE || adjustment.case.is_some() || adjustment.reversed => {
+                        return Err(format!("invalid inherited integrity cap of {id}"));
+                    }
+                    _ => {}
+                }
+            }
+            let replay = Self::replay_integrity(s).ok_or_else(|| format!("unordered integrity history of {id}"))?;
+            if (self.cfg.integrity && replay != s.coef) || (!self.cfg.integrity && flat_penalties != i64::from(s.penalized_xp)) {
+                return Err(format!("integrity history of {id} differs from cached state"));
+            }
+        }
+        Ok(())
     }
 
     /// D151 recovery: the liquid FCTY of an invalidated account is burned (FCTY already transferred out cannot be un-minted, D53; here
@@ -1840,9 +2138,6 @@ impl World {
         let chain = self.subjects[id as usize].acts.clone();
         for act_id in chain {
             let act = &mut self.acts[act_id as usize];
-            if act.status == ActStatus::Cancelled {
-                continue;
-            }
             if act.status == ActStatus::Unspent {
                 act.status = ActStatus::Cancelled;
                 self.vault -= 1;
@@ -1933,14 +2228,26 @@ impl World {
         self.subjects[new as usize].recovers = None;
         self.subjects[new as usize].restored_xp += amount;
         self.subjects[new as usize].coef = self.subjects[new as usize].coef.min(old_coef);
+        let successor = &mut self.subjects[new as usize];
+        successor.integrity_adjustments.push(IntegrityAdjustment {
+            at_maturities: successor.own_maturities,
+            kind: IntegrityAdjustmentKind::InheritedCap(old_coef),
+            case: None,
+            reversed: false,
+        });
         self.bump(new, amount);
         self.subjects[old as usize].status = Status::False;
+        self.independent_invalid[old as usize] = true;
         Ok(())
     }
 
     // ---- invariants ------------------------------------------------------------------------------------------------
 
     pub fn audit(&self) -> Result<(), String> {
+        self.audit_integrity()?;
+        if self.case_effects.len() != self.cases.len() || self.independent_invalid.len() != self.subjects.len() {
+            return Err("case effects or independent status history has no matching owner".into());
+        }
         let unspent = self.acts.iter().filter(|a| a.status == ActStatus::Unspent).count() as i64;
         if unspent != self.vault {
             return Err(format!("vault {} != unspent rights {}", self.vault, unspent));
@@ -1988,6 +2295,23 @@ impl World {
                 (Some(_), false) => return Err(format!("act {idx} earned XP before maturity")),
                 (None, true) if act.status != ActStatus::Cancelled => return Err(format!("matured act {idx} has no credit")),
                 _ => {}
+            }
+            let causes = self.xp_revocations.get(&(idx as u32));
+            if act.credit.as_ref().is_some_and(|c| c.revoked) != causes.is_some_and(|c| !c.is_empty()) {
+                return Err(format!("act {idx} revocation has no matching causes"));
+            }
+            if let Some(causes) = causes {
+                let distinct: HashSet<Option<u32>> = causes.iter().copied().collect();
+                if distinct.len() != causes.len()
+                    || causes.iter().flatten().any(|&case| {
+                        self.case_effects
+                            .get(case as usize)
+                            .and_then(Option::as_ref)
+                            .is_none_or(|e| e.reversed || e.source_acts.binary_search(&(idx as u32)).is_err())
+                    })
+                {
+                    return Err(format!("act {idx} has invalid revocation causes"));
+                }
             }
             if let Some(c) = &act.credit {
                 for &recipient in c.recipients.iter() {
@@ -2061,7 +2385,51 @@ impl World {
         if reserved_rights != self.reserved_rights {
             return Err("Emitter stake custody does not match open cases".into());
         }
+        for (case, effects) in self.case_effects.iter().enumerate().filter_map(|(case, e)| e.as_ref().map(|e| (case as u32, e))) {
+            if effects.source_acts.windows(2).any(|pair| pair[0] >= pair[1]) {
+                return Err(format!("case {case} has unordered or duplicated receipt references"));
+            }
+            if !effects.reversed
+                && (effects.identity_subjects.iter().any(|subject| !self.identity_cases.get(subject).is_some_and(|causes| causes.contains(&case)))
+                    || effects.source_acts.iter().any(|act| !self.xp_revocations.get(act).is_some_and(|causes| causes.contains(&Some(case)))))
+            {
+                return Err(format!("case {case} has missing identity or receipt effects"));
+            }
+        }
+        let created: u64 = self.subjects.iter().flat_map(|s| &s.debt_tranches).map(|d| u64::from(d.amount)).sum();
+        let repaid: u64 = self.subjects.iter().flat_map(|s| &s.debt_tranches).map(|d| u64::from(d.repaid)).sum();
+        let cancelled: u64 = self.subjects.iter().flat_map(|s| &s.debt_tranches).map(|d| u64::from(d.cancelled)).sum();
+        if (created, repaid, cancelled) != (self.stats.debt_created, self.stats.debt_repaid, self.stats.debt_cancelled) {
+            return Err("debt history differs from creation/repayment/cancellation counters".into());
+        }
         for (i, s) in self.subjects.iter().enumerate() {
+            let identity_causes = self.identity_cases.get(&(i as Id)).map_or(&[][..], Vec::as_slice);
+            let false_status = self.independent_invalid[i] || !identity_causes.is_empty();
+            if (s.status == Status::False) != false_status
+                || identity_causes.iter().any(|&case| {
+                    self.case_effects.get(case as usize).and_then(Option::as_ref).is_none_or(|e| e.reversed || !e.identity_subjects.contains(&(i as Id)))
+                })
+            {
+                return Err(format!("status of {i} has no matching causes"));
+            }
+            let outstanding: i64 = s.debt_tranches.iter().map(|d| i64::from(d.remaining)).sum();
+            let repaid: u64 = s.debt_tranches.iter().map(|d| u64::from(d.repaid)).sum();
+            let mut later_repayment = false;
+            for debt in s.debt_tranches.iter().rev() {
+                if debt.remaining > 0 && later_repayment {
+                    return Err(format!("debt of {i} was repaid outside FIFO order"));
+                }
+                later_repayment |= debt.repaid > 0;
+            }
+            if outstanding != s.debt
+                || repaid != s.debt_repaid
+                || s.debt_tranches.iter().any(|d| {
+                    u64::from(d.amount) != u64::from(d.remaining) + u64::from(d.repaid) + u64::from(d.cancelled)
+                        || self.case_effects.get(d.case as usize).and_then(Option::as_ref).is_none_or(|e| e.reversed && d.remaining > 0)
+                })
+            {
+                return Err(format!("debt of {i} has no matching creation/repayment/cancellation history"));
+            }
             if reserved[i] != s.reserved || s.reserved > s.liquid {
                 return Err(format!("reserved stake of {i}: stored {} recomputed {} liquid {}", s.reserved, reserved[i], s.liquid));
             }
@@ -2756,6 +3124,73 @@ mod tests {
     }
 
     #[test]
+    fn case_integrity_restoration_replays_maturities_and_is_inert_on_repeat() {
+        let mut w = live_world();
+        w.penalize_xp(0, 0.2);
+        assert_eq!(w.coefficient(0), 800_000);
+        w.penalize_xp_for_case(0, 0.5, 71);
+        assert_eq!(w.coefficient(0), 400_000);
+        for _ in 0..20 {
+            w.create_self_id(0).unwrap();
+            w.tick(w.now() + DAY);
+        }
+        assert_eq!(w.coefficient(0), 420_000);
+        let units = w.subjects[0].raw;
+        assert_eq!(w.restore_case_xp_penalties(71), 1);
+        assert_eq!(w.coefficient(0), 820_000, "the generic 0.8 coefficient retains twenty own maturities without the reversed loss");
+        assert_eq!(w.subjects[0].raw, units, "restoring integrity creates no responsibility units");
+        assert_eq!(w.subjects[0].low_coef, 400_000, "the historical minimum remains recorded");
+        assert_eq!(w.restore_case_xp_penalties(71), 0);
+        assert_eq!(w.coefficient(0), 820_000);
+        w.audit_integrity().unwrap();
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn integrity_replay_preserves_saturation_other_losses_and_same_count_order() {
+        let mut w = live_world();
+        w.penalize_xp_for_case(0, 0.001, 71);
+        for _ in 0..2 {
+            w.create_self_id(0).unwrap();
+            w.tick(w.now() + DAY);
+        }
+        assert_eq!(w.coefficient(0), COEF_ONE, "repair saturates before the later losses");
+        w.penalize_xp(0, 0.5);
+        w.penalize_xp_for_case(0, 0.5, 72);
+        assert_eq!(w.restore_case_xp_penalties(71), 1);
+        assert_eq!(w.coefficient(0), 250_000, "removing an already repaired loss cannot undo later losses");
+        assert_eq!(w.restore_case_xp_penalties(72), 1);
+        assert_eq!(w.coefficient(0), 500_000);
+        w.penalize_xp_for_case(0, 0.5, 73);
+        w.penalize_xp(0, 0.333333);
+        let expected = (500_000f64 * (1.0 - 0.333333)).floor() as u32;
+        assert_eq!(w.restore_case_xp_penalties(73), 1);
+        assert_eq!(w.coefficient(0), expected, "uncased fractions retain the original f64 rounding and insertion order");
+        w.audit_integrity().unwrap();
+        w.subjects[0].integrity_adjustments[0].at_maturities = w.subjects[0].own_maturities + 1;
+        assert!(w.audit_integrity().is_err());
+    }
+
+    #[test]
+    fn balance_halving_ablation_restores_recorded_cuts_without_repricing_other_cuts() {
+        let mut w = live_world();
+        w.cfg.integrity = false;
+        let units = w.subjects[0].raw;
+        let first = w.penalize_xp_for_case(0, 0.5, 75);
+        let second = w.penalize_xp_for_case(0, 0.5, 76);
+        let generic = w.penalize_xp(0, 0.25);
+        assert_eq!(w.restore_case_xp_penalties(75), 1);
+        assert_eq!(w.subjects[0].raw, units - second - generic);
+        assert_eq!(w.subjects[0].penalized_xp, second + generic);
+        assert_eq!(w.restore_case_xp_penalties(75), 0);
+        assert_eq!(w.restore_case_xp_penalties(76), 1);
+        assert_eq!(w.subjects[0].raw, units - generic);
+        assert!(first > 0 && second > 0);
+        w.audit_integrity().unwrap();
+        w.audit().unwrap();
+    }
+
+    #[test]
     fn integrity_returns_slowly_by_playing_by_the_rules_and_never_exceeds_one() {
         let mut w = live_world();
         w.penalize_xp(0, 0.5);
@@ -3335,6 +3770,139 @@ mod tests {
     }
 
     #[test]
+    fn case_restoration_preserves_other_verdicts_and_independent_revocations() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let original: Vec<i32> = (0..w.len() as Id).map(|id| w.responsibility_units(id)).collect();
+        let separately_penalized = (0..w.len() as Id).find(|&id| id != accused && id != challenger).unwrap();
+        w.penalize_xp(separately_penalized, 0.2);
+        let source = w.subjects[accused as usize].acts[0];
+        assert!(w.revoke_source_xp(source));
+        let expected: Vec<i32> = (0..w.len() as Id).map(|id| w.responsibility_units(id)).collect();
+        let a = w.begin_case(&[challenger, accused]).unwrap();
+        let b = w.begin_case(&[challenger, accused]).unwrap();
+        w.tick(w.case_deadline(a).unwrap());
+        w.settle_case(a, None).unwrap();
+        w.settle_case(b, None).unwrap();
+        let ongoing = w.begin_case(&[challenger, accused]).unwrap();
+        w.apply_case_identity_verdict(a).unwrap();
+        w.apply_case_identity_verdict(b).unwrap();
+        w.apply_case_xp_penalty(a, separately_penalized, 0.5).unwrap();
+        let mut independently_invalid = w.clone();
+        independently_invalid.invalidate_identity(accused);
+        let money = (w.supply(), w.burned, total_liquid(&w));
+        let first = w.restore_case_effects(a).unwrap();
+        assert!(!first.status_restored);
+        assert_eq!(first.responsibility_units, 0, "the other verdict still blocks the same receipts");
+        assert!(!w.accepted(accused));
+        assert_eq!(w.coefficient(accused), COEF_ONE / 2);
+        assert_eq!(w.coefficient(separately_penalized), 800_000, "the case's role penalty is removed, its independent loss remains");
+        let second = w.restore_case_effects(b).unwrap();
+        assert!(second.status_restored && second.responsibility_units > 0);
+        for (id, &units) in expected.iter().enumerate() {
+            assert_eq!(w.responsibility_units(id as Id), units);
+        }
+        assert!(original[accused as usize] > expected[accused as usize]);
+        assert_eq!(w.coefficient(accused), COEF_ONE);
+        assert!(w.held(accused), "restoration never releases another case's hold");
+        assert_eq!((w.supply(), w.burned, total_liquid(&w)), money, "no burned or transferred money is refunded");
+        assert!(w.restore_case_effects(a).is_err());
+        assert!(w.apply_case_xp_penalty(a, separately_penalized, 0.5).is_err());
+        assert!(w.restore_case_effects(ongoing).is_err());
+        assert!(w.restore_case_effects(u32::MAX).is_err());
+        independently_invalid.restore_case_effects(a).unwrap();
+        independently_invalid.restore_case_effects(b).unwrap();
+        assert!(!independently_invalid.accepted(accused));
+        w.audit().unwrap();
+        independently_invalid.audit().unwrap();
+        w.end_case(ongoing);
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn case_restoration_covers_an_authorized_related_identity_without_undoing_its_independent_cause() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let related = (0..w.len() as Id).find(|&id| id != accused && id != challenger).unwrap();
+        let original = (w.responsibility_units(accused), w.responsibility_units(related));
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.tick(w.case_deadline(case).unwrap());
+        w.settle_case(case, None).unwrap();
+        w.apply_case_identity_verdict(case).unwrap();
+        w.apply_case_identity_verdict_to(case, related).unwrap();
+        assert!(w.apply_case_identity_verdict_to(case, related).is_err());
+        let mut independent = w.clone();
+        independent.invalidate_identity(related);
+        let restored = w.restore_case_effects(case).unwrap();
+        assert_eq!(restored.statuses_restored, 2);
+        assert!(w.accepted(accused) && w.accepted(related));
+        assert_eq!((w.responsibility_units(accused), w.responsibility_units(related)), original);
+        let restored = independent.restore_case_effects(case).unwrap();
+        assert_eq!(restored.statuses_restored, 1);
+        assert!(independent.accepted(accused) && !independent.accepted(related));
+        w.audit().unwrap();
+        independent.audit().unwrap();
+    }
+
+    #[test]
+    fn case_debt_cancellation_follows_fifo_and_preserves_paid_burns_and_other_debt() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        w.burn_liquid(challenger);
+        let a = w.begin_case(&[challenger, accused]).unwrap();
+        let b = w.begin_case(&[challenger, accused]).unwrap();
+        w.tick(w.case_deadline(a).unwrap());
+        w.settle_case(a, Some(Side::Accused)).unwrap();
+        w.settle_case(b, Some(Side::Accused)).unwrap();
+        assert_eq!(w.debt(challenger), 14);
+        let burned = w.burned;
+        let mut suspended = Vec::new();
+        for _ in 0..5 {
+            suspended.push(w.create_self_id(challenger).unwrap());
+            w.tick(w.now() + DAY);
+        }
+        assert_eq!(w.subjects[challenger as usize].debt_tranches.iter().map(|d| d.remaining).collect::<Vec<_>>(), vec![2, 7]);
+        let units = w.responsibility_units(challenger);
+        let outcome = w.restore_case_effects(a).unwrap();
+        assert_eq!(outcome.debt_cancelled, 2);
+        assert_eq!(w.debt(challenger), 7);
+        assert_eq!(w.debt_repaid(challenger), 5);
+        assert_eq!(w.burned, burned + 5);
+        assert_eq!(w.stats.debt_created, 14);
+        assert_eq!(w.stats.debt_cancelled, 2);
+        assert_eq!(w.coefficient(challenger), COEF_ONE / 2 + 5 * COEF_STEP);
+        assert_eq!(w.responsibility_units(challenger), units, "debt-suspended receipts are never backfilled");
+        assert!(suspended.iter().all(|&a| w.acts[a as usize].credit.as_ref().unwrap().recipients.is_empty()));
+        assert!(w.restore_case_effects(a).is_err());
+        assert_eq!(w.debt(challenger), 7);
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn case_restoration_returns_original_receipts_without_resurrecting_cancelled_rights() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let guarantor = w.acts[w.subjects[accused as usize].acts[0] as usize].credit.as_ref().unwrap().recipients[1];
+        let valence = w.valences.iter().position(|v| v.open && v.owner == guarantor && v.counterpart == accused).unwrap() as u32;
+        w.withdraw_valence(guarantor, valence).unwrap();
+        let before = (w.responsibility_units(accused), w.responsibility_units(guarantor));
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        w.tick(w.case_deadline(case).unwrap());
+        w.settle_case(case, None).unwrap();
+        let young = w.create_self_id(accused).unwrap();
+        w.apply_case_identity_verdict(case).unwrap();
+        assert!(w.acts[young as usize].credit.is_none());
+        let burned = w.burned;
+        w.restore_case_effects(case).unwrap();
+        assert_eq!((w.responsibility_units(accused), w.responsibility_units(guarantor)), before);
+        assert_eq!(w.burned, burned);
+        assert_eq!(w.acts[young as usize].status, ActStatus::Cancelled);
+        w.tick(w.now() + DAY);
+        assert!(w.acts[young as usize].credit.is_none(), "no unit is invented for an act cancelled before maturity");
+        w.audit().unwrap();
+    }
+
+    #[test]
     fn a_proof_of_reality_decides_for_the_accused_and_the_lone_accusers_stake_is_burned() {
         let mut w = rich_world();
         let (accused, challenger, _) = xp_ladder(&w);
@@ -3480,6 +4048,48 @@ mod recovery_tests {
         let new = w.accept_invitation(inv).unwrap();
         w.begin_recovery(new, old).unwrap();
         new
+    }
+
+    #[test]
+    fn restoring_a_case_across_consumed_key_recovery_is_blocked_before_any_mutation() {
+        let mut w = World::new(Config::default(), 12, &ring(12));
+        for id in 0..12 {
+            w.create_self_id(id).unwrap();
+        }
+        w.tick(DAY);
+        w.create_self_id(5).unwrap();
+        w.tick(2 * DAY);
+        assert!(w.xp(0) > w.xp(5));
+        let case = w.begin_case(&[0, 5]).unwrap();
+        w.tick(w.case_deadline(case).unwrap());
+        w.settle_case(case, Some(Side::Accuser)).unwrap();
+        w.lose_key(5).unwrap();
+        let new = successor(&mut w, 5, 3);
+        vouch(&mut w, new, 4);
+        w.complete_recovery(new).unwrap();
+        let before = (w.xp(new), w.coefficient(new), w.xp(5), w.coefficient(5), w.stats.restorations);
+        assert_eq!(w.restore_case_effects(case), Err(Reject("restoration across completed key recovery needs its migration contract")));
+        assert_eq!((w.xp(new), w.coefficient(new), w.xp(5), w.coefficient(5), w.stats.restorations), before);
+        assert!(!w.accepted(5));
+        assert!(!w.reinstate_identity(5), "a consumed key-recovery source cannot be revived");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn integrity_restoration_preserves_the_actual_inherited_recovery_cap() {
+        let (mut w, old, _) = recovery_world();
+        w.penalize_xp(old, 0.4);
+        let new = successor(&mut w, old, 3);
+        vouch(&mut w, new, 4);
+        w.penalize_xp_for_case(new, 0.5, 74);
+        w.complete_recovery(new).unwrap();
+        assert_eq!(w.coefficient(new), 500_000);
+        assert_eq!(w.restore_case_xp_penalties(74), 1);
+        assert_eq!(w.coefficient(new), 600_000, "removing the successor's loss keeps the actual inherited cap");
+        assert_eq!(w.coefficient(old), 600_000);
+        assert_eq!(w.restore_case_xp_penalties(74), 0);
+        w.audit_integrity().unwrap();
+        w.audit().unwrap();
     }
 
     #[test]

@@ -18,7 +18,7 @@
 //! - Stakes (D159): `stake(k) = ceil(base * 1.2^(k-1))` whole FCTY (declared rounding of the compound growth); every winner takes the
 //!   stake of the position directly below it and gets its own back; a loser forfeits to the position directly above it; the lowest
 //!   winning position is paid from the sanction on the accused (base stake); the stake of a losing top position has no winner above it
-//!   and is burned (the legacy assumption, OPEN in the protocol).
+//!   and is burned (D179); an adjacent Council position likewise receives none of the forfeited stake.
 //!
 //! Time is in hours, like the world clock.
 
@@ -213,7 +213,7 @@ pub struct Settlement {
     /// `(from position, to position, amount)`: a losing stake forfeited to the position directly above it.
     pub forfeits: Vec<(u32, u32, u32)>,
     /// `(position, amount)`: a losing stake that has no ordinary position above it to receive it, burned: the stake of a losing top
-    /// position, or one forfeited toward a Council entry (the Council's share of proceeds has no selected recipient contract, D64).
+    /// position, or one forfeited toward a Council entry (D179: no ordinary recipient means burn, not Council proceeds).
     pub burns: Vec<(u32, u32)>,
     /// The winning first position, if any, is paid the base stake from the sanction on the accused rather than from a position below.
     pub sanction_to_first: bool,

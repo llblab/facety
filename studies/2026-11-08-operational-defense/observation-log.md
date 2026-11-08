@@ -20,12 +20,18 @@ No session has been run. These are empty forms, not collected data. Copy a form 
 | Willing / refused / not asked / stopped | |
 | Action status: REQUESTED, SUPPLIED, ADMITTED within stated fixture assumptions, BLOCKED, REFUSED, PENDING or CONDITIONAL | |
 | Deadline before / deadline after / before cutoff | |
+| Opening transaction / accepted-recording time / pending interval / 24-hour maturity / activation record | |
+| Author cancellation request / pre-maturity or active-open / finalization status / joined ordinary defenders | |
+| Actual collected author stake / equal share claim / own backing released-preserved / unresolved rounding-remainder | |
+| Challenged opening author / event-time guarantor roster or UNKNOWN / sanction basis still missing | |
 | Council round / round start / membership snapshot / timely confirm-oppose-defer counts | |
 | Deadline-only recognition / decision ID / next round start / fresh snapshot / no carried ballots | |
 | Seven-day extension cause: majority or automatic-cutoff / applied once / previous count / actual new work accepted | |
 | Nominal stake / backing reserved / own principal returned | |
 | Prize actually collectible / collected burn / allocation authority | |
 | New debt / later hypothetical repayment / debt left / real money (zero) | |
+| Reversed decision / original source recipients / units restored / coefficient history without this loss | |
+| FIFO debt creation order / repayments / reversed decision's unpaid debt cancelled / other debt retained | |
 | Locked substantive judgment / confidence and scale / actual source exposure | |
 | Operational reason if voluntarily given / normative gap | |
 | Missingness / non-sensitive consent or stop note | |

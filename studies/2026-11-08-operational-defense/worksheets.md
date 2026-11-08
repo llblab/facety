@@ -32,6 +32,8 @@ The minute-2 admitted branch is recorded separately as SUPPLIED. It never fills 
 
 Apply `window(n) = max(3, 8-n)` days and `deadline = max(previous, joined + window)`. An observation, reply, private recommendation or ballot is not a new position. A case still open when the exercise stops is PENDING. The exercise lock does not close it under the protocol.
 
+Recorded opening stays pending 24 hours; maturity alone activates case/restrictions/clock and an appeal's Council vote/first seven days/fresh snapshot. Keep phase records distinct; effective fixtures validate no admission/maturity execution or new revalidation power. Before maturity cancellation forfeits no stake. Once active, the author may cancel its own open case, including deferrals, not after final decision. Split actual collected author stake equally among joined ordinary defenders, without stake/XP weights or collective Council payout. Others retain/recover their own backing, no additional charges/XP sanctions apply, and other cases' holds remain. Record the challenged author's event-time guarantor roster separately. Precision/rounding/remainders, merits-sanction amounts and execution remain OPEN; debt funds no payout.
+
 Record Council choices separately: entering position, last ordinary position, or seven-day deferral. Take a fresh Council membership snapshot at each round's start. Recognize all timely ballots only at the current shared deadline; an early partial majority or split is not a result. A deferral majority or no option majority (including zero ballots) adds seven days once. Start the next round at that cutoff with a fresh membership snapshot and no carried ballots. Apply one extension per round, not both a majority and automatic extension or another extension on replay. Later rounds may defer again. There is no new position/stake or automatic settlement, and no inferred new reviewer availability. Without Council entry, ordinary finality still applies.
 
 | Council round / start / membership snapshot | Timely confirm / oppose / defer ballots | Deadline recognition / outcome / majority or automatic cause | Extension applied before? | Deadline before / after | Next round start / fresh snapshot / no carried ballots | New voluntary work actually accepted | Case status at observation stop |
@@ -44,11 +46,13 @@ Record Council choices separately: entering position, last ordinary position, or
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | | | | | | | | | | | 0 |
 
-| Case / identity | Live units before | Removed source units / basis | Coefficient before | Authorized loss | Valid own maturities | New units suspended | Coefficient after | Effective XP after | Status / missing rule |
+| Case / identity | Live units before | Source units removed/restored / decision / original recipient | Coefficient before | Authorized loss/reversal | Retained valid own maturities/other losses | New units suspended | Coefficient after | Effective XP after | Status / missing rule |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | | | | | | | | | | |
 
-Use exact paper stakes 7, 8.4, 10.08, 12.096, then `7 * 1.2^(n-1)`; this is exercise precision only. A zero-backed losing accuser's nominal 7 does not pay a winning defender 7. Do not supply an OPEN top-position burn allocation or an appeal refund as a chosen rule. A terminal single-act liability basis and an identity-case seven-unit base charge are distinct.
+Use exact paper stakes 7, 8.4, 10.08, 12.096, then `7 * 1.2^(n-1)`; this is exercise precision only. A zero-backed losing accuser's nominal 7 does not pay a winning defender 7. A losing top stake with no ordinary recipient above, including Council-only entry above it, burns only actual collection; the Council receives none and the missing part remains FIFO debt repaid from later emission. This creates no Treasury or Council fund. Appeal financial scope and transferred-money refunds remain OPEN. A terminal single-act liability basis and an identity-case seven-unit base charge are distinct.
+
+For an authorized reversal, restore status and only this verdict's revoked units to their original recipients, recalculate integrity without this loss while retaining later own maturities and other losses, and cancel only its unpaid debt. Burned FCTY stay burned; other legitimate cases/holds, current support/path requirements and no catch-up issuance remain. Use FIFO repayment: A7 then B7 and repayment5 gives A2/B7; reversing A cancels2 only, leaving B7 and the prior5 burns. This is conditional arithmetic on the existing sheet, not a new case, actual payment or executed remedy.
 
 ## Individual locked assessment
 
@@ -64,7 +68,7 @@ Keep presence, unique personhood and act validity in separate claims. This sheet
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | | | | | | | | |
 
-A supplied prior wrong decision is not a newly measured error. A conditional repayment calculation is not an admitted remedy. Record the remaining invalidation, restrictions, debt, source history, links and coefficient separately; don't mark recovery complete from only one field.
+A supplied prior wrong decision is not a newly measured error. Conditional restoration/repayment arithmetic is not an admitted remedy. Record status, other restrictions, decision-specific debt and FIFO repayments, original source recipients, links and recalculated coefficient separately; don't mark recovery complete from only one field.
 
 ## Debrief summary
 
