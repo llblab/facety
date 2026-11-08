@@ -1,51 +1,97 @@
-# Facety
+<h1 align="center">
+  <img src="docs/facety-banner.svg" alt="Facety" width="100%">
+</h1>
 
-**A living protocol and a research workbench for accountable human participation.** The self-contained [manifesto and protocol specification](docs/facety.protocol.en.md) owns Facety's purpose, mechanisms, selected rules and open contracts. This repository adds the decision log, the findings and one Rust simulator that tests the protocol's defenses against attack.
+<p align="center">
+  <strong>Human trust. Shared responsibility.</strong><br>
+  A proposed protocol and a Rust research workbench for accountable participation.
+</p>
 
-Facety's monetary token uses the ticker **FCTY**.
+<p align="center">
+  <strong><a href="docs/rules-of-the-game.en.md">Read the rules</a></strong>
+  &nbsp; · &nbsp;
+  <a href="docs/facety.protocol.en.md">Explore the protocol</a>
+  &nbsp; · &nbsp;
+  <a href="docs/README.md">Browse the docs</a>
+</p>
 
-## Thesis
+<p align="center">
+  <strong>Research stage</strong> ·
+  <a href="studies/2026-11-08-evidence-core/README.md">Operational assumptions under revision</a>
+</p>
 
-Facety is an accountability substrate for farming-resistant emission distribution and network growth ([D32](docs/facety.protocol.en.md#accountability-for-emission-and-growth-d32)): who is a real, unique, responsible participant, who vouched for whom, and what that costs. The aim is that honest participation is much easier and more profitable than identity fraud, and that the emission captured by violators stays too small to dilute the asset (D50, D129).
+---
 
-Three layers stay distinct: uniqueness (identity claims and guarantees are contestable, not certified personhood); contribution and reputation (XP records specified work and responsibility, not usefulness); emission and distribution.
+## People, guarantees, consequences
 
-## Where things live
+Facety connects repeated identity claims, mutual guarantees and responsibility for public acts. Participants put their own history behind the people they vouch for. Claims can be challenged, defended and corrected through a shared dispute process.
 
-| Question | Page |
+The aim is to make honest participation easier and more rewarding than identity fraud, while limiting emission captured by fabricated identities. That is a design goal whose operational dependencies still need validation.
+
+Three layers stay distinct:
+
+- **Identity** — claims about real, unique people, open to challenge. Guarantees and paths do not certify personhood.
+- **Responsibility** — personal XP and integrity from specified acts and consequences. They establish neither usefulness nor truth.
+- **Emission** — FCTY distribution under the protocol. Monetary holdings do not confer procedural authority.
+
+## Where the project stands
+
+> **Research closed. Revise the operational assumptions.**
+>
+> The [evidence-core study](studies/2026-11-08-evidence-core/README.md) completed 38 Rust runs. Attack containment survived within the tested scenarios; independent evidence, timely qualified help and effective correction remain unverified human dependencies. The study recommends resolving them before production implementation or a human pilot.
+
+The Rust research model implements maturity-based XP, responsibility and integrity, supported Council paths, staked disputes, Council voting rounds, 24-hour pending openings, author cancellation and case-specific restoration with FIFO debt. FCTY accounting uses twelve decimal places.
+
+The [simulator contract](docs/simulator.en.md) defines that implemented subset and its assumptions. Earlier results retain their original builds and arithmetic; they do not validate later mechanics. The full transaction-level appeal route, production execution, completed key-recovery migration and actual human capacity remain open.
+
+A proposed [operational defense contract](docs/operational-defense.en.md) and an [unused manual-validation kit](studies/2026-11-08-operational-defense/README.md) are ready for owner review. They supply no committed people or observations. Further research, recruitment, a rehearsal, runtime or a pilot requires a separate assignment.
+
+## Find your way
+
+| Start here to… | Read |
 | --- | --- |
-| What are the default rules of participation? | [Rules of the Game](docs/rules-of-the-game.en.md) |
-| What are the rules? | [Protocol](docs/facety.protocol.en.md) |
-| Who decided what, when? | [Decision log](docs/decisions.en.md) |
-| What did the simulations show? | [Insight register](docs/insights.en.md), study pages under [studies/](studies) |
-| What does the simulator implement and assume? | [Simulator contract](docs/simulator.en.md) |
-| How could people organize defense, and what is ready to rehearse? | [Proposed operational contract](docs/operational-defense.en.md), [unused manual kit](studies/2026-11-08-operational-defense/README.md) |
-| What is open? What did we assume? | [BACKLOG](BACKLOG.md), [DECISIONS_NEEDED](DECISIONS_NEEDED.md) |
-| What happened when? | [CHANGELOG](CHANGELOG.md) |
-| Navigation of all documents | [docs/README.md](docs/README.md) |
+| **Understand participation** | [Rules of the Game](docs/rules-of-the-game.en.md) · [Protocol](docs/facety.protocol.en.md) |
+| **Assess the evidence** | [Findings](docs/insights.en.md#consolidated-findings) · [Final study](studies/2026-11-08-evidence-core/README.md) |
+| **Plan human validation** | [Operational contract](docs/operational-defense.en.md) · [Manual kit](studies/2026-11-08-operational-defense/README.md) |
+| **Inspect the model** | [Simulator contract](docs/simulator.en.md) · [Rust source](simulator/src) |
+| **Trace a decision** | [Decision log](docs/decisions.en.md) · [Changelog](CHANGELOG.md) |
+| **See what remains open** | [Backlog](BACKLOG.md) · [Questions and assumptions](DECISIONS_NEEDED.md) |
 
-## Current state (consolidated)
+The [documentation index](docs/README.md) connects the full collection of specifications and studies.
 
-- **Research stage closed: REVISE operational assumptions before implementation/pilot (D168).** The [final evidence-core report](studies/2026-11-08-evidence-core/README.md) gives the frozen Rust baseline, minimal mechanism evidence, all 38 completed runs, failure examples and reproduction commands. Sampled containment survives; independent evidence and actual finite defense/appeal remain critical human dependencies. That study changed no selected rules. Its Grow Loop is stopped; further research, runtime or pilot work needs a separate assignment.
-- The separate [operational proposal](docs/operational-defense.en.md) and [unused manual kit](studies/2026-11-08-operational-defense/README.md) prepare an owner decision without recruiting people or closing Q25. Rust implements Council rounds, case-specific restoration, FIFO debt, 24-hour pending openings and author cancellation with exact 12-decimal FCTY. Earlier research does not validate these later mechanics; the full transaction-level appeal route, production execution, key-recovery migration and human capacity remain separate contracts.
-- The topology defense under study is the Council-path gate: a guarantor count `D` plus `D` internally vertex-disjoint current paths for every invitation, each ending at a different Council member (any `D` members of the Council, each used once; D134), each path at most 7 nodes (the bound limits on-chain verification cost), through layered-supported intermediaries excluding the accused of disputes (D157); every emission also needs one such path from the emitter, so that a cluster cut off from the Council cannot emit (D156). Detection of violators is always part of every attack simulation. The [consolidated findings](docs/insights.en.md#consolidated-findings) distinguish current evidence from historical readiness recommendations.
-- The success criterion is the dirty-FCTY share: at most 10% on the longest horizon, and a clean share of at least two thirds ([D129](docs/decisions.en.md)).
-- The Node.js simulator is retired (D130). Its last version is the git tag `legacy-node`.
+## Work with the simulator
 
-## The simulator
+**Rust, standard library only.** From the repository root:
 
-```text
+```sh
 cd simulator
-cargo test --release                    # rule tests, graph oracles and the documentation integrity guard
-cargo run --release -- grown --seeds 4 --attackers 10 --horizon 60      # the implemented subset; --no-layered is an ablation
+cargo test --release
 ```
 
-Rust, standard library only. One command grows an honest network to a target size for each seed (the growth phase runs without detection), then runs the attack phase from that snapshot with detection on. Levers, defaults, assumptions, validation, the resource profile and the [benchmark panels for default-rule changes](docs/simulator.en.md#benchmark-panels-for-default-rule-changes) are in the [simulator contract](docs/simulator.en.md).
+The checks cover protocol transitions, independent graph references, accounting invariants and documentation integrity.
 
-## Conventions
+<details>
+<summary><strong>Run a research scenario</strong></summary>
 
-English only; no quotes of owner prompts. The protocol carries no provenance (decision IDs appear as bare trace tags). Every simulation result is conditional on its declared scenario, policy, horizon and seeds. Mechanism claims need a committed registration, a kill criterion and reserved seeds. See [AGENTS.md](AGENTS.md).
+From `simulator/`:
 
-## License
+```sh
+cargo run --release -- grown \
+  --seeds 4 \
+  --attackers 10 \
+  --horizon 60
+```
 
-This project is dedicated to the public domain and has no license: see [LICENSE](LICENSE). It belongs to everyone.
+Each seed first grows an honest network to the target size, then runs the attack phase from that snapshot with detection enabled. The growth prefix runs without detection. Results are conditional on the declared scenario, policies, horizon and seeds.
+
+Consult the [simulator contract](docs/simulator.en.md) for defaults, levers, deviations, resource requirements and validation. The former Node.js simulator is archived at the `legacy-node` git tag.
+
+</details>
+
+## Working agreements
+
+Read [AGENTS.md](AGENTS.md) before changing the project. Repository documentation is in English. The protocol owns meaning, the simulator contract owns model assumptions, and [BACKLOG.md](BACKLOG.md) alone owns open work. Research results keep their evidence level and limitations.
+
+## Public domain
+
+Dedicated to the public domain. See [LICENSE](LICENSE). It belongs to everyone.

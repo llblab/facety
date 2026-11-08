@@ -12,6 +12,7 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 - Selected burning of actual collection from a losing top stake when no ordinary recipient is above it, including Council-only intervention. The Council receives none; missing backing remains FIFO debt. Existing Rust behavior now follows this rule rather than an allocation assumption; no new fund or economic obligation was introduced.
 - Selected opening-transaction guarantor responsibility; implemented 24-hour pending activation and author cancellation, free before maturity. Active cancellation shares actual collection equally among ordinary defenders, returns other backing and adds no sanctions. Final cases require appeal; transaction-level merits/liability execution remains open.
 - Selected and implemented 12-decimal FCTY arithmetic: exact rational stakes round upward once at the final quantum; equal payouts allocate residual quanta in joining order. Fractional collection and FIFO debt service preserve Collector change. Result-v7/runner-v4 distinguish pending filings and active cases; archived whole-FCTY evidence is unchanged.
+- Redesigned the README with a minimal adaptive wordmark, a clear route to the participant rules, visible research status, grouped documentation links and a compact simulator entrypoint. Preserved the evidence boundaries, open contracts and separate authorization for human validation or runtime work.
 
 ## 0.1.0 — 2026-11-08
 

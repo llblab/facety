@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="200" viewBox="0 0 1200 200" role="img" aria-labelledby="title">
+  <title id="title">Facety</title>
+  <style>
+    text { fill: #183e36; }
+    @media (prefers-color-scheme: dark) {
+      text { fill: #f0efe3; }
+    }
+  </style>
+  <text x="600" y="142" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="132" letter-spacing="-4">Facety</text>
+</svg>
