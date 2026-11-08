@@ -258,7 +258,7 @@ Preserve the prior records, other legitimate cases and holds, and other legitima
 
 For example, debt A of seven followed by debt B of seven and repayment of five leaves A at two and B at seven. Reversing A cancels only its remaining two; B stays at seven and the five already burned in repayment stay burned.
 
-Admission, evidence and authentication details, formal records linking the prior case, affected sources and debt/repayment history, appeal financial scope and stake allocation, authorized execution and refunds of previously transferred money still need rules. There is no Treasury or invented fund for refunds. Key recovery must preserve the same subject; a particular social key-recovery voting threshold is not yet a default rule.
+Admission, evidence and authentication details, formal authority for records linking the prior case, affected sources and debt/repayment history, appeal financial scope and stake allocation, authorized execution and refunds of previously transferred money still need rules. There is no Treasury or invented fund for refunds. Key recovery must preserve the same subject; a particular social key-recovery voting threshold is not yet a default rule. How a later appeal corrects history already continued through key recovery still needs definition; it cannot make both the retired account and its successor usable recipients of the same restored responsibility.
 
 ## 13. Changing parameters and the external economy
 

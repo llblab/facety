@@ -40,9 +40,9 @@ Three layers stay distinct:
 >
 > The [evidence-core study](studies/2026-11-08-evidence-core/README.md) completed 38 Rust runs. Attack containment survived within the tested scenarios; independent evidence, timely qualified help and effective correction remain unverified human dependencies. The study recommends resolving them before production implementation or a human pilot.
 
-The Rust research model implements maturity-based XP, responsibility and integrity, supported Council paths, staked disputes, Council voting rounds, 24-hour pending openings, author cancellation and case-specific restoration with FIFO debt. FCTY accounting uses twelve decimal places.
+The Rust research model implements maturity-based XP, responsibility and integrity, supported Council paths, staked disputes, Council voting rounds, 24-hour pending openings, author cancellation and case-specific restoration with FIFO debt. An explicit appeal fixture now connects requests and prior opening transactions to Council review and exact restoration. FCTY accounting uses twelve decimal places.
 
-The [simulator contract](docs/simulator.en.md) defines that implemented subset and its assumptions. Earlier results retain their original builds and arithmetic; they do not validate later mechanics. The full transaction-level appeal route, production execution, completed key-recovery migration and actual human capacity remain open.
+The [simulator contract](docs/simulator.en.md#appeal-fixture-contract) defines that implemented subset and its assumptions. Earlier results retain their original builds and arithmetic; they do not validate later mechanics. Appeal admission/authentication, financial scope and active cancellation, production execution, completed key-recovery migration and actual human capacity remain open. A blocked restoration retains the Council's reversal authorization without partially restoring assets or XP.
 
 A proposed [operational defense contract](docs/operational-defense.en.md) and an [unused manual-validation kit](studies/2026-11-08-operational-defense/README.md) are ready for owner review. They supply no committed people or observations. Further research, recruitment, a rehearsal, runtime or a pilot requires a separate assignment.
 
@@ -66,6 +66,8 @@ The [documentation index](docs/README.md) connects the full collection of specif
 ```sh
 cd simulator
 cargo test --release
+cargo fmt --check
+cargo clippy
 ```
 
 The checks cover protocol transitions, independent graph references, accounting invariants and documentation integrity.

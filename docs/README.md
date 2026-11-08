@@ -7,7 +7,7 @@ This index owns project navigation. The protocol is independently readable; it d
 - [Rules of the Game](rules-of-the-game.en.md): first consolidated participant-facing reading of selected defaults, without decision identifiers, research history or simulator settings. The protocol remains the authority for meaning; this reader is maintained with it.
 - [Facety protocol](facety.protocol.en.md): living manifesto/specification: the rules in force and OPEN contracts, without provenance.
 - [Decision log](decisions.en.md): dated owner decisions, their status and what they superseded; research and development decisions (§47–§50).
-- [Simulator contract](simulator.en.md): the Rust simulator's implemented rules, levers, assumptions, deviations and statistical validation.
+- [Simulator contract](simulator.en.md): the Rust simulator's implemented rules, [appeal fixture lifecycle](simulator.en.md#appeal-fixture-contract), levers, assumptions, deviations and statistical validation.
 - [Operational defense and human validation readiness](operational-defense.en.md): owner decision and proposed end-to-end practice, evidence/motivation/capacity boundaries, separate recovery states and the [prepared manual kit](../studies/2026-11-08-operational-defense/README.md). No people or performance commitments are supplied; Q25 stays open.
 - [Insight register](insights.en.md): every owner decision and finding with its evidence level and source.
 - [Integrated research](research.en.md): D76 [evidence frontier](research.en.md#minimum-evidence-frontier-d76), [longitudinal depth](research.en.md#longitudinal-population-depth-d76), D49 [resilience–growth brief](research.en.md#resilience-growth-frontier-d49), R1–R7 root map; [interaction designs](research-interactions.en.md) appendix.

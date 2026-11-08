@@ -146,7 +146,7 @@ fn opt_usize(opts: &HashMap<String, String>, key: &str) -> Result<Option<usize>,
     opts.get(key).map(|v| v.parse().map_err(|_| format!("{key}: invalid value {v:?}"))).transpose()
 }
 
-fn opt_num(opts: &HashMap<String, String>, key: &str) -> Result<Option<f64>, String> {
+fn opt_num<T: std::str::FromStr>(opts: &HashMap<String, String>, key: &str) -> Result<Option<T>, String> {
     opts.get(key).map(|v| v.parse().map_err(|_| format!("{key}: invalid value {v:?}"))).transpose()
 }
 
@@ -176,6 +176,10 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     let target: usize = num(&opts, "--target-honest", 1000)?;
     if seeds < 1 {
         return Err("--seeds must be at least 1".into());
+    }
+    let first: usize = num(&opts, "--first-seed", 1)?;
+    if first.checked_add(seeds - 1).is_none() {
+        return Err("--first-seed and --seeds exceed the seed-number representation".into());
     }
     if threads < 1 {
         return Err("--threads must be at least 1".into());
@@ -240,7 +244,7 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     base.world.council_seats_per_thousand = opt_usize(&opts, "--council-per-thousand")?;
     base.world.max_difficulty = opt_usize(&opts, "--max-d")?;
     base.world.k = num(&opts, "--k", base.world.k)?;
-    base.world.k_step = opt_usize(&opts, "--k-step")?.map(|v| v as u32);
+    base.world.k_step = opt_num(&opts, "--k-step")?;
     base.world.k_xp_per_level = num(&opts, "--k-xp-per-level", base.world.k_xp_per_level)?;
     base.honest.careless_share = num(&opts, "--careless", base.honest.careless_share)?;
     base.honest.corrupt_share = num(&opts, "--corrupt", 0.0)?;
@@ -293,14 +297,26 @@ fn plan(args: &[String]) -> Result<Plan, String> {
     let mut probe = base.clone();
     probe.attackers = attackers;
     probe.attack_start_day = 0;
-    probe.days = horizon;
+    probe.days = horizon.checked_add(base.days).ok_or("--horizon exceeds the simulator day representation after the growth prefix")?;
     probe.stop_at_honest = 0;
     probe.detection_start_day = 0;
     probe.validate()?;
+    let shock_day: i64 = num(&opts, "--shock-day", 100)?;
+    let shock_days: i64 = num(&opts, "--shock-days", 0)?;
+    let shock_x: f64 = num(&opts, "--shock-fpr-x", 10.0)?;
+    if shock_day < 0 || shock_days < 0 {
+        return Err("--shock-day and --shock-days must be non-negative".into());
+    }
+    if !shock_x.is_finite() || shock_x < 0.0 {
+        return Err("--shock-fpr-x must be finite and non-negative".into());
+    }
+    if shock_day.checked_add(shock_days).and_then(|day| day.checked_add(base.days)).is_none() {
+        return Err("--shock-day and --shock-days exceed the simulator day representation after the growth prefix".into());
+    }
     Ok(Plan {
         base,
         seeds,
-        first: num(&opts, "--first-seed", 1)?,
+        first,
         attackers,
         horizon,
         threads,
@@ -308,9 +324,9 @@ fn plan(args: &[String]) -> Result<Plan, String> {
         prefix_only: flags.contains("--prefix-only"),
         overwrite: flags.contains("--overwrite"),
         svg_dir: opts.get("--svg").cloned(),
-        shock_day: num(&opts, "--shock-day", 100)?,
-        shock_days: num(&opts, "--shock-days", 0)?,
-        shock_x: num(&opts, "--shock-fpr-x", 10.0)?,
+        shock_day,
+        shock_days,
+        shock_x,
     })
 }
 
@@ -381,11 +397,14 @@ fn main() {
                         let (from, to) = (prefix_days + plan.shock_day, prefix_days + plan.shock_day + plan.shock_days);
                         let normal = sim.cfg.detection.false_positive;
                         let burst = (normal * plan.shock_x).min(1.0);
-                        while sim.step_day() {
+                        loop {
                             if sim.day == from {
                                 sim.begin_phase("shock", |c| c.detection.false_positive = burst).expect("valid shock");
                             } else if sim.day == to {
                                 sim.begin_phase("recovery", |c| c.detection.false_positive = normal).expect("valid recovery");
+                            }
+                            if !sim.step_day() {
+                                break;
                             }
                         }
                     } else {
@@ -439,7 +458,7 @@ fn main() {
                 let f = |x: Option<f64>| x.map_or("null".into(), |v| format!("{v:.5}"));
                 let g = |x: Option<i64>| x.map_or("null".into(), |v| v.to_string());
                 let d = &sim.det;
-                let line = format!(
+                let mut line = format!(
                     "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"casesSettled\":{},\"caseDaysMean\":{},\"maxPositions\":{},\"deadlineExtensions\":{},\"councilEntries\":{},\"refusedFunds\":{},\"holdDaysHonest\":{},\"holdDaysAttackers\":{},\"stakeLostHonest\":{},\"stakeLostAttackers\":{},\"debtHonest\":{},\"debtAttackers\":{},\"xpHalved\":{},\"councilTurnover\":{},\"integrityLost\":{},\"integrityRecovering\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
                     json::string(&sim.cfg.seed),
                     json::string(&sim.config_digest()),
@@ -488,6 +507,9 @@ fn main() {
                     sim.censored.map_or("null".to_string(), json::string),
                     elapsed
                 );
+                // Standalone summaries retain the same engine and randomness identity as saved full results.
+                line.pop();
+                line.push_str(&format!(",\"engine\":{},\"randomnessPolicy\":{}}}", json::string(facety_sim::runner::ENGINE), json::string(facety_sim::rng::RANDOMNESS_POLICY)));
                 // Printed as soon as the seed finishes (stdout is line-buffered), so long runs report progress; order is by completion.
                 println!("{line}");
             });

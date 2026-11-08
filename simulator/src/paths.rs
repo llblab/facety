@@ -48,6 +48,9 @@ pub fn layered_support(g: &Graph, seeds: &[u32], threshold: u32, max_level: u8, 
 
 /// Independent soundness check of a level map: every level is justified by `threshold` strictly lower mutual neighbors.
 pub fn verify_layered_support(g: &Graph, level: &[u8], seeds: &[u32], threshold: u32, max_level: u8, blocked: &[bool]) -> bool {
+    if level.len() != g.len() || blocked.len() != g.len() || seeds.iter().any(|&s| s as usize >= g.len()) {
+        return false;
+    }
     let seed_set: HashSet<u32> = seeds.iter().copied().collect();
     for (id, &value) in level.iter().enumerate() {
         if value == NO_LEVEL {
@@ -85,13 +88,13 @@ fn usable(mask: &[bool], blocked: &[bool], source: u32, v: u32) -> bool {
 /// Checks a family: simple paths along existing edges from `s`, each ending at a different usable terminal, sharing no vertex
 /// other than `s`, with no blocked intermediate, at most `max_nodes` nodes each, at least `k` paths.
 pub fn verify_family(g: &Graph, paths: &[Vec<u32>], s: u32, mask: &[bool], k: usize, max_nodes: usize, blocked: &[bool]) -> bool {
-    if paths.len() < k {
+    if paths.len() < k || s as usize >= g.len() || mask.len() != g.len() || blocked.len() != g.len() {
         return false;
     }
     let mut vertices = HashSet::new();
     let mut routes = HashSet::new();
     for p in paths {
-        if p.len() < 2 || p.len() > max_nodes || p[0] != s || !routes.insert(p.clone()) {
+        if p.len() < 2 || p.len() > max_nodes || p[0] != s || p.iter().any(|&v| v as usize >= g.len()) || !routes.insert(p.clone()) {
             return false;
         }
         let end = *p.last().unwrap();
@@ -541,6 +544,7 @@ impl PathFinder {
     fn distances(&mut self, g: &Graph, blocked: &[bool], cache_key: u64, terminals: &[u32], limit: usize) -> Rc<Vec<u8>> {
         if self.cache_key != cache_key {
             self.dist_cache.clear();
+            self.src_cache = None;
             self.cache_key = cache_key;
         }
         if let Some(d) = self.dist_cache.get(&limit) {
@@ -772,6 +776,47 @@ mod tests {
             assert_eq!(flow, best, "flow count disagrees on trial {trial}");
         }
         assert!(feasible > 400 && checks - feasible > 400, "test must see both outcomes: {feasible}/{checks}");
+    }
+
+    #[test]
+    fn certificate_verifiers_reject_out_of_range_nodes_and_malformed_maps() {
+        let mut graph = Graph::with_nodes(3);
+        graph.add_mutual(0, 1);
+        graph.add_mutual(1, 2);
+        let mask = [false, false, true];
+        let blocked = [false; 3];
+        let paths = vec![vec![0, 1, 2]];
+        assert!(verify_family(&graph, &paths, 0, &mask, 1, 3, &blocked));
+        for malformed in [vec![0, 3, 2], vec![0, 1, 3], vec![u32::MAX, 1, 2]] {
+            assert!(!verify_family(&graph, &[malformed], 0, &mask, 1, 3, &blocked));
+        }
+        assert!(!verify_family(&graph, &[vec![3, 2]], 3, &mask, 1, 3, &blocked));
+        assert!(!verify_family(&graph, &paths, 0, &mask[..2], 1, 3, &blocked));
+        assert!(!verify_family(&graph, &paths, 0, &mask, 1, 3, &blocked[..2]));
+        let levels = [0, 1, 2];
+        assert!(verify_layered_support(&graph, &levels, &[0], 1, 2, &blocked));
+        assert!(!verify_layered_support(&graph, &levels[..2], &[0], 1, 2, &blocked));
+        assert!(!verify_layered_support(&graph, &[0, 1, 2, 3], &[0], 1, 3, &blocked));
+        assert!(!verify_layered_support(&graph, &levels, &[0], 1, 2, &blocked[..2]));
+        assert!(!verify_layered_support(&graph, &levels, &[3], 1, 2, &blocked));
+    }
+
+    #[test]
+    fn source_distance_cache_expires_when_the_blocked_snapshot_changes() {
+        let mut graph = Graph::with_nodes(6);
+        for (from, to) in [(0, 1), (1, 2), (2, 5), (0, 3), (3, 4), (4, 5)] {
+            graph.add_edge(from, to);
+        }
+        let mask = [false, false, false, false, false, true];
+        let before = [false, false, false, true, false, false];
+        let after = [false, true, false, false, false, false];
+        let mut finder = PathFinder::new();
+        assert_eq!(finder.bounded(&graph, &before, &mask, &[5], 1, 0, 1, 4, 1_000), Search::Found(vec![vec![0, 1, 2, 5]]));
+        let reused = finder.bounded(&graph, &after, &mask, &[5], 2, 0, 1, 4, 1_000);
+        let fresh = PathFinder::new().bounded(&graph, &after, &mask, &[5], 2, 0, 1, 4, 1_000);
+        assert_eq!(reused, fresh, "the same graph with a new blocked snapshot must not reuse old source distances");
+        let Search::Found(paths) = reused else { panic!("the newly unblocked route is available") };
+        assert!(verify_family(&graph, &paths, 0, &mask, 1, 4, &after));
     }
 
     #[test]

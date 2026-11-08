@@ -208,6 +208,18 @@ pub struct CouncilRound<W> {
     pub outcome: CouncilOutcome,
 }
 
+/// The shared equal-ballot rule for ordinary Council intervention and a new appeal referendum.
+pub(crate) fn council_outcome<W>(ballots: &[Ballot<W>]) -> CouncilOutcome {
+    for (choice, outcome) in
+        [(CouncilVote::Confirm, CouncilOutcome::Confirm), (CouncilVote::Oppose, CouncilOutcome::Oppose), (CouncilVote::Defer, CouncilOutcome::Defer)]
+    {
+        if ballots.iter().filter(|b| b.choice == choice).count() > ballots.len() / 2 {
+            return outcome;
+        }
+    }
+    CouncilOutcome::AutomaticDefer
+}
+
 #[derive(Clone, Debug)]
 pub struct Ladder<W> {
     pub opened_at: i64,
@@ -375,24 +387,13 @@ impl<W: Copy + PartialEq> Ladder<W> {
         true
     }
 
-    fn outcome(ballots: &[Ballot<W>]) -> CouncilOutcome {
-        for (choice, outcome) in
-            [(CouncilVote::Confirm, CouncilOutcome::Confirm), (CouncilVote::Oppose, CouncilOutcome::Oppose), (CouncilVote::Defer, CouncilOutcome::Defer)]
-        {
-            if ballots.iter().filter(|b| b.choice == choice).count() > ballots.len() / 2 {
-                return outcome;
-            }
-        }
-        CouncilOutcome::AutomaticDefer
-    }
-
     /// Recognize exactly one round at its cutoff. Deferral adds seven days to that cutoff, never to processing time.
     pub fn close_round(&mut self, expected_round: u32, now: i64) -> Option<CouncilRound<W>> {
         if self.council_round() != Some(expected_round) || now < self.deadline() {
             return None;
         }
         let before = self.deadline();
-        let outcome = Self::outcome(&self.ballots);
+        let outcome = council_outcome(&self.ballots);
         let after = if matches!(outcome, CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer) {
             before.checked_add(7 * DAY_HOURS).expect("Council deadline exceeds i64 time representation")
         } else {
@@ -471,7 +472,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
             return Err("Council records without Council entry".into());
         }
         for (i, round) in self.rounds.iter().enumerate() {
-            let outcome = Self::outcome(&round.ballots);
+            let outcome = council_outcome(&round.ballots);
             let defers = matches!(outcome, CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer);
             let after = if defers { deadline.checked_add(7 * DAY_HOURS).ok_or("Council deadline overflow")? } else { deadline };
             if final_result

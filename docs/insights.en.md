@@ -457,6 +457,12 @@ A2–A7 retain protocol-design arguments from the owner's review discussion on 2
 
 **Analysis hypothesis A1 (not a calibrated economic finding or owner-selected monetary rule):** higher FCTY value may increase fake-identity incentives while human attention/collection capacity need not scale automatically. The response of sanctions, investigator compensation, fabrication technology, useful services and Treasury D policy needs a separate conditional model. A guaranteed inverse price/security relation, guaranteed application value, and a policy that sanctions must scale with price do not follow. The Bitcoin analogy is explanatory, not empirical validation of Facety.
 
+## Appeal lifecycle and correctness audit
+
+**Diagnostic implementation evidence, not human validation.** The [appeal fixture tests](../simulator/tests/appeal.rs) connect an affected-person request to the prior recorded opening, greater-XP or explicitly trusted collective initiation, pending maturity, fresh Council rounds and exact case-specific restoration. Concurrent reversal execution restores once; confirmation does not reapply already reversed losses. The [model contract](simulator.en.md#appeal-fixture-contract) states the supplied admission/authority and omitted financial effects. Completed key recovery preserves a recognized reversal with blocked execution rather than reviving its consumed source or guessing successor credit. Active appeal cancellation still needs the appeal financial contract. Remaining work lives in [Q25-C](../BACKLOG.md#operational-follow-up-boundary).
+
+**Confirmed by regression within the model.** A path-search cache keyed to the graph alone retained distances through an obsolete blocked-account snapshot and could reject a valid newly unblocked route; [path tests](../simulator/src/paths.rs) now compare reused and fresh searches. Other audit regressions cover immutable phase mechanics/provenance, finite penalty inputs, solvency during fee-free link repair, day-zero shocks and overflow-free seed/time parameters. These repairs distinguish runner-v5 from prior outputs; archived evidence and its original conclusions are preserved, not revalidated by current tests.
+
 ## Method lessons
 
 - Random scripted runs cannot model incentives. Use strategy menus, payoff facts and equilibrium or deviation analysis ([games](games.en.md)).

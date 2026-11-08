@@ -13,6 +13,9 @@ fn prefix_only_prints_one_json_line_per_seed_with_the_snapshot_day() {
     let lines: Vec<&str> = text.lines().collect();
     assert_eq!(lines.len(), 2);
     for line in &lines {
+        facety_sim::json::validate(line).unwrap();
+        assert!(line.contains(&format!("\"engine\":{}", facety_sim::json::string(facety_sim::runner::ENGINE))));
+        assert!(line.contains(&format!("\"randomnessPolicy\":{}", facety_sim::json::string(facety_sim::rng::RANDOMNESS_POLICY))));
         assert!(line.starts_with("{\"seed\":\"grown-") && line.ends_with('}'), "{line}");
         assert!(line.contains("\"censored\":\"stopAtHonest\""), "the prefix must stop at the target: {line}");
     }
@@ -25,6 +28,7 @@ fn a_short_attack_run_reports_shares_and_keeps_the_books() {
     assert!(out.status.success(), "{}", String::from_utf8_lossy(&out.stderr));
     let text = String::from_utf8(out.stdout).unwrap();
     assert!(text.contains("\"attackerShare\":0.") || text.contains("\"attackerShare\":null"), "{text}");
+    assert!(text.contains(&format!("\"randomnessPolicy\":{}", facety_sim::json::string(facety_sim::rng::RANDOMNESS_POLICY))));
 }
 
 #[test]
@@ -61,7 +65,26 @@ fn invalid_arguments_are_refused_with_a_diagnostic_and_a_nonzero_exit() {
     refused(&["grown", "--target-honest", "50"]);
     refused(&["grown", "--patience", "-3"]);
     refused(&["grown", "--careless", "2"]);
+    refused(&["grown", "--k-step", "4294967297"]);
+    refused(&["grown", "--shock-day", "-1"]);
+    refused(&["grown", "--shock-days", "-1"]);
+    refused(&["grown", "--shock-fpr-x", "-1"]);
+    refused(&["grown", "--shock-fpr-x", "NaN"]);
+    refused(&["grown", "--shock-fpr-x", "inf"]);
+    refused(&["grown", "--shock-day", "9223372036854775807", "--shock-days", "1"]);
+    refused(&["grown", "--horizon", "9223372036854775807"]);
+    refused(&["grown", "--defense-days", "9223372036854775807"]);
+    let last_seed = usize::MAX.to_string();
+    refused(&["grown", "--first-seed", &last_seed, "--seeds", "2"]);
     refused(&["frobnicate"]);
+}
+
+#[test]
+fn the_largest_seed_number_is_valid_when_the_range_does_not_overflow() {
+    let last_seed = usize::MAX.to_string();
+    let out = run(&["grown", "--first-seed", &last_seed, "--seeds", "1", "--threads", "1", "--target-honest", "100", "--prefix-only"]);
+    assert!(out.status.success(), "{}", String::from_utf8_lossy(&out.stderr));
+    assert!(String::from_utf8_lossy(&out.stdout).contains(&format!("\"seed\":\"grown-{last_seed}\"")));
 }
 
 fn temp_dir(name: &str) -> std::path::PathBuf {
@@ -121,6 +144,42 @@ fn saved_results_are_valid_complete_reproducible_and_never_overwritten_silently(
     for d in [a, b, c] {
         let _ = std::fs::remove_dir_all(d);
     }
+}
+
+#[test]
+fn a_day_zero_shock_applies_before_the_first_attack_day_and_recovers_on_schedule() {
+    let dir = temp_dir("day-zero-shock");
+    let out = run(&[
+        "grown",
+        "--seeds",
+        "1",
+        "--threads",
+        "1",
+        "--target-honest",
+        "100",
+        "--attackers",
+        "1",
+        "--horizon",
+        "3",
+        "--shock-day",
+        "0",
+        "--shock-days",
+        "1",
+        "--shock-fpr-x",
+        "2",
+        "--out",
+        dir.to_str().unwrap(),
+    ]);
+    assert!(out.status.success(), "{}", String::from_utf8_lossy(&out.stderr));
+    let saved = std::fs::read_to_string(&files(&dir)[0]).unwrap();
+    let phases: Vec<_> = saved.split("\"name\":").skip(1).collect();
+    assert_eq!(phases.len(), 3);
+    assert!(phases[0].starts_with("\"attack\",\"startDay\":1,"));
+    assert!(phases[1].starts_with("\"shock\",\"startDay\":1,"));
+    assert!(phases[1].contains("\"falsePositive\":0.006,"));
+    assert!(phases[2].starts_with("\"recovery\",\"startDay\":2,"));
+    assert!(phases[2].contains("\"falsePositive\":0.003,"));
+    let _ = std::fs::remove_dir_all(dir);
 }
 
 #[test]

@@ -16,6 +16,10 @@ use crate::paths::{layered_support, verify_family, PathFinder, Search, NO_LEVEL}
 use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 
+#[path = "appeal.rs"]
+mod appeal;
+pub use appeal::{AppealExecution, AppealInitiator, AppealRecord, AppealRequest, AppealStage, AppealVote, APPEAL_FIXTURE_POLICY};
+
 pub const DAY: i64 = 24;
 /// Model assumptions while production authentication, ballot revision and same-hour membership ordering remain open.
 pub const COUNCIL_EXECUTION_POLICY: &str = "trusted-ids/first-ballot/whole-hour-maturity-before-round/daily-entry-cache/v1";
@@ -49,7 +53,7 @@ impl SearchOrder {
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Config {
     /// Owned-slot ceiling K (own open valences plus invitation units).
     pub k: u32,
@@ -311,6 +315,7 @@ pub struct OpeningRecord {
     pub recorded_at: i64,
     pub matures_at: i64,
     pub author_xp_at_recording: i32,
+    pub accused_xp_at_recording: i32,
     /// Established current mutual guarantors at recording, not historical identity-case XP recipients.
     pub guarantors: Vec<Id>,
     pub activated_at: Option<i64>,
@@ -401,12 +406,16 @@ pub struct DisputeStats {
 }
 
 /// What settling a case did. `holds` lists every restricted account with the hours it was restricted.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct CaseOutcome {
+    pub settled_at: i64,
+    /// Supplied trusted proof/evaluator override, distinct from the ladder's own result.
+    pub forced_winner: Option<Side>,
     pub winner: Side,
     pub accuser: Id,
     pub accused: Id,
     pub positions: u32,
+    pub position_history: Vec<chekharda::Position<Id>>,
     pub holds: Vec<(Id, i64)>,
     pub losers: Vec<Id>,
     /// Net actually collected value moved per account (liquid or mature Emitter backing; never uncollected debt).
@@ -459,6 +468,9 @@ pub struct World {
     case_openings: Vec<Option<OpeningRecord>>,
     case_cancellations: Vec<Option<CancellationOutcome>>,
     case_effects: Vec<Option<CaseEffects>>,
+    case_outcomes: Vec<Option<CaseOutcome>>,
+    appeal_requests: Vec<AppealRequest>,
+    appeals: Vec<AppealRecord>,
     /// Independent causes coexist: removing one case cannot erase another case or a separately authorized revocation.
     xp_revocations: FastMap<u32, Vec<Option<u32>>>,
     identity_cases: FastMap<Id, Vec<u32>>,
@@ -517,6 +529,9 @@ impl World {
             case_openings: Vec::new(),
             case_cancellations: Vec::new(),
             case_effects: Vec::new(),
+            case_outcomes: Vec::new(),
+            appeal_requests: Vec::new(),
+            appeals: Vec::new(),
             xp_revocations: FastMap::default(),
             identity_cases: FastMap::default(),
             independent_invalid: Vec::new(),
@@ -798,7 +813,17 @@ impl World {
         loop {
             let opening = self.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Pending && o.matures_at <= hour).map(|o| o.matures_at).min();
             let council = self.cases.iter().flatten().filter(|c| c.ladder.is_due(hour)).map(|c| c.ladder.deadline()).min();
-            let Some(at) = opening.into_iter().chain(council).min() else { break };
+            let appeals = self
+                .appeals
+                .iter()
+                .filter_map(|a| match a.stage {
+                    AppealStage::Pending => Some(a.matures_at),
+                    AppealStage::Active => a.deadline(),
+                    _ => None,
+                })
+                .filter(|&at| at <= hour)
+                .min();
+            let Some(at) = opening.into_iter().chain(council).chain(appeals).min() else { break };
             self.refresh_snapshot(at);
             for id in 0..self.cases.len() {
                 if let Some(o) = self.case_openings[id].as_ref().filter(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
@@ -823,6 +848,7 @@ impl World {
                     c.electorates.push(CouncilElectorate { number, started_at: at, members: self.council.clone() });
                 }
             }
+            self.process_appeal_events(at);
         }
         self.refresh_snapshot(hour);
     }
@@ -1288,8 +1314,8 @@ impl World {
         Ok(id)
     }
 
-    /// Free withdrawal (D110): the withdrawer's open valence closes, any matched pair ends, and the withdrawer's side of the
-    /// pair loses the guarantor XP earned from the other's acts.
+    /// Free withdrawal (D110): the withdrawer's open valence closes and any matched pair ends.
+    /// Previously credited units remain attached to unrefuted historical acts (D166).
     pub fn withdraw_valence(&mut self, owner: Id, valence: u32) -> Result<(), Reject> {
         let (open, v_owner, counterpart, rels) = {
             let v = &self.valences[valence as usize];
@@ -1640,6 +1666,7 @@ impl World {
         self.case_openings.push(None);
         self.case_cancellations.push(None);
         self.case_effects.push(None);
+        self.case_outcomes.push(None);
         self.activate_case(case, challenger, accused, self.subjects[challenger as usize].xp);
         Ok(case)
     }
@@ -1667,6 +1694,7 @@ impl World {
             recorded_at: self.now,
             matures_at,
             author_xp_at_recording,
+            accused_xp_at_recording: self.xp(accused),
             guarantors: self.mutual_partners(author),
             activated_at: None,
             stage: OpeningStage::Pending,
@@ -1676,6 +1704,7 @@ impl World {
         self.case_openings.push(Some(opening));
         self.case_cancellations.push(None);
         self.case_effects.push(None);
+        self.case_outcomes.push(None);
         self.stats.openings_recorded += 1;
         Ok(case)
     }
@@ -1718,6 +1747,10 @@ impl World {
 
     pub fn case_cancellation(&self, case: u32) -> Option<&CancellationOutcome> {
         self.case_cancellations.get(case as usize).and_then(Option::as_ref)
+    }
+
+    pub fn case_outcome(&self, case: u32) -> Option<&CaseOutcome> {
+        self.case_outcomes.get(case as usize).and_then(Option::as_ref)
     }
 
     /// Cancel this author's own pending opening or still-open active dispute, including Council deferrals.
@@ -2082,18 +2115,23 @@ impl World {
             source_acts: Vec::new(),
             penalized_subjects: losers.clone(),
         });
-        Ok(CaseOutcome {
+        let outcome = CaseOutcome {
+            settled_at: self.now,
+            forced_winner: forced,
             winner: settlement.winner,
             accuser: positions[0].who,
             accused: c.accused,
             positions: positions.len() as u32,
+            position_history: positions.clone(),
             holds,
             losers,
             net,
             debts,
             council_rounds: c.ladder.rounds().to_vec(),
             council_electorates: c.electorates,
-        })
+        };
+        self.case_outcomes[case as usize] = Some(outcome.clone());
+        Ok(outcome)
     }
 
     /// Apply a settled identity verdict with its case provenance; no evaluator labels or appeal powers enter World.
@@ -2137,6 +2175,9 @@ impl World {
 
     /// Attribute a separately authorized role-specific penalty to its settled case, including the runner's optional inviter penalty.
     pub fn apply_case_xp_penalty(&mut self, case: u32, subject: Id, fraction: f64) -> Result<i32, Reject> {
+        if !fraction.is_finite() || !(0.0..=1.0).contains(&fraction) {
+            return Err(Reject("XP penalty fraction must be finite and between zero and one"));
+        }
         let effects = self.case_effects.get_mut(case as usize).and_then(Option::as_mut).ok_or(Reject("no settled case effects"))?;
         if effects.reversed || subject as usize >= self.subjects.len() {
             return Err(Reject("no active case penalty target"));
@@ -2233,6 +2274,7 @@ impl World {
     }
 
     fn apply_xp_penalty(&mut self, id: Id, fraction: f64, case: Option<u32>) -> i32 {
+        assert!(fraction.is_finite() && (0.0..=1.0).contains(&fraction), "XP penalty fraction must be finite and between zero and one");
         let s = &mut self.subjects[id as usize];
         let flat_cut = if self.cfg.integrity { 0 } else { (f64::from(s.xp.max(0)) * fraction).floor() as i32 };
         s.integrity_adjustments.push(IntegrityAdjustment {
@@ -2353,6 +2395,8 @@ impl World {
         }
         self.require_free(a)?;
         self.require_free(b)?;
+        self.require_solvent(a)?;
+        self.require_solvent(b)?;
         if self.graph.has_edge(a, b) || self.graph.has_edge(b, a) || self.open_val.contains_key(&(a, b)) || self.open_val.contains_key(&(b, a)) {
             return Err(Reject("a link or an open valence already exists"));
         }
@@ -2577,7 +2621,9 @@ impl World {
 
     pub fn audit(&self) -> Result<(), String> {
         self.audit_integrity()?;
+        self.audit_appeals()?;
         if self.case_effects.len() != self.cases.len()
+            || self.case_outcomes.len() != self.cases.len()
             || self.case_openings.len() != self.cases.len()
             || self.case_cancellations.len() != self.cases.len()
             || self.independent_invalid.len() != self.subjects.len()
@@ -2590,6 +2636,7 @@ impl World {
             if opening.author as usize >= self.subjects.len()
                 || opening.accused as usize >= self.subjects.len()
                 || opening.author == opening.accused
+                || opening.author_xp_at_recording <= opening.accused_xp_at_recording
                 || opening.recorded_at > self.now
                 || opening.recorded_at.checked_add(MATURITY_HOURS) != Some(opening.matures_at)
                 || distinct.len() != opening.guarantors.len()
@@ -2738,6 +2785,13 @@ impl World {
         let mut holds = vec![0u32; n];
         let mut path_holds = vec![0u32; n];
         let mut frozen = vec![0u32; n];
+        for appeal in self.appeals.iter().filter(|a| a.activated_at.is_some() && !a.released) {
+            frozen[appeal.accused as usize] += 1;
+            for &(id, _, path) in &appeal.holds {
+                holds[id as usize] += 1;
+                path_holds[id as usize] += u32::from(path && self.cfg.exclude_disputed);
+            }
+        }
         for c in self.cases.iter().flatten() {
             c.ladder.audit()?;
             if c.backed.len() != c.ladder.positions().len() {
@@ -2789,6 +2843,18 @@ impl World {
             return Err("Emitter stake custody does not match open cases".into());
         }
         for (case, effects) in self.case_effects.iter().enumerate().filter_map(|(case, e)| e.as_ref().map(|e| (case as u32, e))) {
+            let Some(outcome) = self.case_outcome(case) else { return Err(format!("case {case} has no retained verdict")) };
+            if outcome.accused != effects.accused
+                || outcome.winner != effects.winner
+                || outcome.settled_at > self.now
+                || self.cases[case as usize].is_some()
+                || self.case_cancellation(case).is_some()
+                || outcome.position_history.first().is_none_or(|p| p.who != outcome.accuser)
+                || outcome.positions as usize != outcome.position_history.len()
+                || self.case_opening(case).is_some_and(|o| o.stage != OpeningStage::Final || o.author != outcome.accuser || o.matures_at > outcome.settled_at)
+            {
+                return Err(format!("case {case} verdict differs from its retained effects or opening"));
+            }
             if effects.source_acts.windows(2).any(|pair| pair[0] >= pair[1]) {
                 return Err(format!("case {case} has unordered or duplicated receipt references"));
             }
@@ -2798,6 +2864,9 @@ impl World {
             {
                 return Err(format!("case {case} has missing identity or receipt effects"));
             }
+        }
+        if self.case_outcomes.iter().zip(&self.case_effects).any(|(outcome, effects)| outcome.is_some() != effects.is_some()) {
+            return Err("retained verdicts differ from settled effects".into());
         }
         let created: Amount = self.subjects.iter().flat_map(|s| &s.debt_tranches).map(|d| d.amount).sum();
         let repaid: Amount = self.subjects.iter().flat_map(|s| &s.debt_tranches).map(|d| d.repaid).sum();

@@ -13,7 +13,7 @@ use crate::world::{Config as WorldConfig, Id, Reject, World, DAY};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
 
-pub const ENGINE: &str = "facety-sim/runner-v4";
+pub const ENGINE: &str = "facety-sim/runner-v5";
 /// Version of the saved result layout.
 pub const SCHEMA: &str = "facety-sim/result-v7";
 pub const COUNCIL_VOTING_POLICY: &str = "first-daily-review-per-round/binary-belief-v1";
@@ -307,6 +307,9 @@ impl RunConfig {
         }
         // The dispute clock (D162): the first window is seven days, so proving reality takes at least the shortest window of three days.
         at_least("detection.defense_days", d.defense_days, 3)?;
+        if self.days.checked_add(d.defense_days).and_then(|days| days.checked_mul(DAY)).is_none() {
+            return Err("days plus detection.defense_days exceeds the simulator hour representation".into());
+        }
         at_least("detection.examiner_looks", d.examiner_looks as i64, 1)?;
         prob("detection.repeat_correlation", d.repeat_correlation)?;
         at_least("detection.pattern_min_invitees", d.pattern_min_invitees as i64, 1)?;
@@ -646,11 +649,18 @@ impl Sim {
     }
 
     /// Change the configuration at the current day and record the change as a named phase of the experiment (the growing phase and the
-    /// attack phase keep distinct, saved configurations).
+    /// attack phase keep distinct, saved configurations). Seed, genesis and World mechanics are fixed at construction.
     pub fn begin_phase(&mut self, name: &str, change: impl FnOnce(&mut RunConfig)) -> Result<(), String> {
         let mut next = self.cfg.clone();
         change(&mut next);
         next.validate()?;
+        if next.seed != self.cfg.seed
+            || next.honest_genesis != self.cfg.honest_genesis
+            || next.genesis_chords != self.cfg.genesis_chords
+            || next.world != self.cfg.world
+        {
+            return Err("a phase cannot change the seed, genesis or World mechanics; build a new simulation instead".into());
+        }
         self.cfg = next;
         self.censored = None;
         self.phases.push((name.to_string(), self.day, self.cfg.to_json()));
@@ -1122,7 +1132,7 @@ impl Sim {
         let attackers_all = self.attackers.clone();
         let honest_all = self.honest.clone();
         // Patient operators only build honest links and reputation until the patience ends.
-        let waiting = self.day < self.cfg.attack_start_day + self.cfg.attacker_patience_days;
+        let waiting = self.day - self.cfg.attack_start_day < self.cfg.attacker_patience_days;
         for id in ids {
             let mut rng = self.stream(CH_ATTACK, u64::from(id));
             let rights = self.world.eligible_emissions(id, self.cfg.world.spend_hours);
@@ -2658,6 +2668,48 @@ mod tests {
     }
 
     #[test]
+    fn the_run_horizon_and_defense_delay_must_fit_the_hour_clock_together() {
+        let mut config = RunConfig { days: i64::MAX / DAY - 7, ..RunConfig::default() };
+        assert!(config.validate().is_ok(), "the last representable complete day is allowed");
+        config.detection.defense_days = 8;
+        assert!(config.validate().unwrap_err().contains("hour representation"));
+        config.days = 1;
+        config.detection.defense_days = i64::MAX;
+        assert!(config.validate().unwrap_err().contains("hour representation"));
+        config.days = i64::MAX;
+        config.detection.defense_days = 7;
+        assert!(config.validate().unwrap_err().contains("hour representation"));
+    }
+
+    #[test]
+    fn phases_refuse_construction_changes_atomically_and_continue_the_original_run() {
+        let mut sim = Sim::new(RunConfig { honest_genesis: 6, attackers: 0, attack_start_day: 100, days: 8, ..RunConfig::default() });
+        sim.step_day();
+        let mut reference = sim.clone();
+        let before = sim.to_json();
+        for change in [
+            (|c: &mut RunConfig| c.seed = "different-seed".into()) as fn(&mut RunConfig),
+            |c: &mut RunConfig| c.honest_genesis += 1,
+            |c: &mut RunConfig| c.genesis_chords += 1,
+            |c: &mut RunConfig| c.world.base_stake = Some(14),
+            |c: &mut RunConfig| c.world.layered = false,
+        ] {
+            let error = sim
+                .begin_phase("unsupported", |c| {
+                    c.detection.false_positive = 0.1;
+                    change(c);
+                })
+                .unwrap_err();
+            assert!(error.contains("build a new simulation"), "{error}");
+            assert_eq!(sim.to_json(), before, "a refused phase changes neither execution nor provenance");
+        }
+        sim.run();
+        reference.run();
+        assert_eq!(sim.to_json(), reference.to_json(), "refused phase changes cannot alter later outcomes");
+        sim.world.audit().unwrap();
+    }
+
+    #[test]
     fn saved_results_are_valid_json_complete_deterministic_and_distinguishable() {
         let base = RunConfig {
             seed: "q\"uote\\ \n\u{e9}".into(),
@@ -2750,6 +2802,25 @@ mod tests {
         assert!(saved.contains("\"phases\":[{\"name\":\"attack\"") && saved.contains("\"attackers\":3"));
         assert!(grown.begin_phase("bad", |c| c.detection.review = 7.0).is_err(), "an invalid phase is refused and changes nothing");
         assert_eq!(grown.cfg.detection.review, RunConfig::default().detection.review);
+    }
+
+    #[test]
+    fn patience_longer_than_the_clock_never_wraps_into_immediate_fake_invitations() {
+        let mut sim = Sim::new(RunConfig {
+            seed: "patience".into(),
+            honest_genesis: 30,
+            attack_start_day: 30,
+            attacker_patience_days: i64::MAX,
+            days: 90,
+            attackers: 4,
+            strategy: Strategy::HonestFirst,
+            max_subjects: 3000,
+            ..RunConfig::default()
+        });
+        sim.run();
+        assert!(sim.admitted[1] > 0, "operators must have entered the network");
+        assert_eq!(sim.invitations[1], 0, "no operator can finish this declared waiting period within the horizon");
+        sim.world.audit().unwrap();
     }
 
     #[test]
