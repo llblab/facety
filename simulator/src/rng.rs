@@ -1,9 +1,11 @@
-//! Decision-keyed randomness (policy `facety-sim-rng/v2`): every decision draws from its own stream, keyed by
-//! (root seed, channel, actor, day), so unrelated decisions never share a stream offset.
+//! Decision-keyed randomness (policy `facety-sim-rng/v3`): every decision draws from its own stream, keyed by
+//! (root seed, channel, actor, period), so unrelated decisions never share a stream offset.
+//! The period is a day except for Council ballots, which use a round and a composite case/member actor.
 //! Generator: splitmix64 seeding into xoshiro256**. Not compatible with the retired Node generator.
 
-/// V2 adds channel 22 for optional persistent target errors; channels 1-21 retain the v1 layout.
-pub const RANDOMNESS_POLICY: &str = "facety-sim-rng/v2:splitmix64-xoshiro256starstar:keyed(seed,channel,actor,day)";
+/// V3 rekeys Council ballots per case, member and round; other channels retain v2's layout.
+pub const RANDOMNESS_POLICY: &str =
+    "facety-sim-rng/v3:splitmix64-xoshiro256starstar:keyed(seed,channel,actor,period):council(case<<32|member,round);others(actor,day)";
 
 fn splitmix(state: &mut u64) -> u64 {
     *state = state.wrapping_add(0x9E37_79B9_7F4A_7C15);

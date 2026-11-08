@@ -4,7 +4,7 @@
 //!
 //! Evaluator labels (`Cohort`, `Kind`) are read only by the observation functions that model noisy looks and verdict accuracy;
 //! the protocol world never sees them. Behavior rates are scenario assumptions, not calibrated human behavior.
-use crate::chekharda::Side;
+use crate::chekharda::{CouncilVote, Side};
 use crate::json;
 use crate::paths::{layered_support, NO_LEVEL};
 use crate::rng::{hash_seed, Rng};
@@ -12,9 +12,10 @@ use crate::world::{Config as WorldConfig, Id, Reject, World, DAY};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
 
-pub const ENGINE: &str = "facety-sim/runner-v1";
+pub const ENGINE: &str = "facety-sim/runner-v2";
 /// Version of the saved result layout.
-pub const SCHEMA: &str = "facety-sim/result-v4";
+pub const SCHEMA: &str = "facety-sim/result-v5";
+pub const COUNCIL_VOTING_POLICY: &str = "first-daily-review-per-round/binary-belief-v1";
 
 const CH_GENESIS: u64 = 1;
 const CH_ENTRY: u64 = 2;
@@ -327,7 +328,10 @@ impl RunConfig {
         );
         // Keep behavior extensions explicit in the saved configuration and its digest.
         format!(
-            "{{\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
+            "{{\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
+            json::string(COUNCIL_VOTING_POLICY),
+            json::string(crate::world::COUNCIL_EXECUTION_POLICY),
+            json::string(crate::rng::RANDOMNESS_POLICY),
             json::number(d.repeat_correlation),
             d.persistent_errors,
             w.halving_spares_council,
@@ -474,6 +478,7 @@ struct CaseRec {
     defended: bool,
     challenger_xp: i32,
     target_xp: i32,
+    offered_round: Option<u32>,
 }
 
 /// Dispute counters split by cohort (index 0 honest, 1 attacker side); amounts in whole FCTY, durations in hours.
@@ -1388,6 +1393,7 @@ impl Sim {
             defended,
             challenger_xp: self.world.xp(challenger),
             target_xp: self.world.xp(target),
+            offered_round: None,
         });
         self.det.cases_opened += 1;
         if can_defend {
@@ -1521,19 +1527,26 @@ impl Sim {
         }
     }
 
-    /// At the deadline every Council member of an entered dispute votes with the declared turnout, by its own belief (D66, D111).
-    fn cast_ballots(&mut self, rec: &CaseRec) {
+    /// Once per round, on its first daily review before cutoff, offer every snapshot member the declared turnout/belief decision.
+    /// This policy supplies no behavioral probability of choosing deferral; the World API supports all three choices.
+    fn cast_ballots(&mut self, rec: &mut CaseRec) {
+        let Some(electorate) = self.world.case_council_round(rec.case).cloned() else { return };
+        if rec.offered_round == Some(electorate.number) || self.world.case_deadline(rec.case).is_none_or(|d| self.world.now() >= d) {
+            return;
+        }
         let positions = self.world.case_positions(rec.case);
         let Some(entrant) = positions.iter().find(|p| p.kind == crate::chekharda::Kind::Council) else { return };
         let entrant_side = entrant.side;
-        let mut rng = Rng::keyed(self.seed, CH_COUNCIL, rec.id, 0);
-        let members: Vec<Id> = self.world.council().to_vec();
-        for m in members {
-            if !self.world.accepted(m) || !rng.chance(self.cfg.detection.council_turnout) {
+        rec.offered_round = Some(electorate.number);
+        for m in electorate.members {
+            let actor = (u64::from(rec.case) << 32) | u64::from(m);
+            let mut rng = Rng::keyed(self.seed, CH_COUNCIL, actor, u64::from(electorate.number));
+            if !rng.chance(self.cfg.detection.council_turnout) {
                 continue;
             }
             if let Some(side) = self.preferred_side(&mut rng, m, rec.target) {
-                self.world.council_ballot(rec.case, m, side == entrant_side);
+                let choice = if side == entrant_side { CouncilVote::Confirm } else { CouncilVote::Oppose };
+                self.world.council_ballot(rec.case, m, electorate.number, choice);
             }
         }
     }
@@ -1622,13 +1635,13 @@ impl Sim {
         // for the accused). A false verdict invalidates and voids the chain.
         self.ladder_moves();
         let cases = std::mem::take(&mut self.open_cases);
-        for rec in cases {
+        for mut rec in cases {
+            self.cast_ballots(&mut rec);
             let proof_done = !rec.defended || self.world.now() - rec.opened_at >= det.defense_days * DAY;
             if !self.world.case_final(rec.case) || !proof_done {
                 self.open_cases.push(rec);
                 continue;
             }
-            self.cast_ballots(&rec);
             let outcome = self.world.settle_case(rec.case, rec.defended.then_some(Side::Accused)).expect("final cases settle");
             self.record_outcome(&outcome);
             targeted.remove(&rec.target);
@@ -1939,6 +1952,15 @@ impl Sim {
         let _ = write!(s, "\"detection\":{{\"casesOpened\":{},\"accusations\":{},\"casesOnGenuine\":{},\"falseInvalidated\":{},\"genuineInvalidated\":{},\"vetoedFalse\":{},\"vetoedGenuine\":{},\"casesDismissed\":{},\"linksLeft\":{},\"patternsFound\":{},\"escalations\":{},\"sponsorRefusals\":{},\"followUpCases\":{},\"honestInviterCascades\":{},\"honestInviterAcquitted\":{},\"colludersAcquitted\":{},\"appealsRestored\":{},\"linksRestored\":{},\"doubleLedger\":{{\"unwitting\":{:?},\"colluding\":{:?}}},\"liquidBurned\":{},\"xpPenalized\":{},\"holdersInvalidated\":{},\"defended\":{},\"casesRefused\":{},\"casesRefusedXp\":{}}},",
             d.cases_opened, d.accusations, d.cases_on_genuine, d.false_invalidated, d.genuine_invalidated, d.vetoed_false, d.vetoed_genuine, d.cases_dismissed, d.links_left, d.patterns_found, d.escalations, d.sponsor_refusals, d.follow_up_cases, d.honest_inviter_cascades, d.honest_inviter_acquitted, d.colluders_acquitted, d.appeals_restored, d.links_restored, d.ledger[0], d.ledger[1], d.liquid_burned, d.xp_penalized, d.holders_invalidated, d.defended, d.cases_refused, d.cases_refused_xp);
         let (st, l) = (&self.world.stats, &self.ladder);
+        let _ = write!(
+            s,
+            "\"councilRounds\":{{\"votingPolicy\":{},\"executionPolicy\":{},\"recognized\":{},\"majorityDeferrals\":{},\"automaticDeferrals\":{}}},",
+            json::string(COUNCIL_VOTING_POLICY),
+            json::string(crate::world::COUNCIL_EXECUTION_POLICY),
+            st.council_rounds,
+            st.majority_deferrals,
+            st.automatic_deferrals
+        );
         let _ = write!(s, "\"disputes\":{{\"opened\":{},\"joined\":{},\"refusedClosed\":{},\"refusedXp\":{},\"refusedFunds\":{},\"councilEntries\":{},\"ballots\":{},\"extensions\":{},\"settled\":{},\"moot\":{},\"accuserWon\":{},\"accusedWon\":{},\"maxPositions\":{},\"durationHours\":{},\"holdHours\":{},\"staked\":{},\"forfeited\":{},\"stakeBurned\":{},\"sanctionCollected\":{},\"sanctionBurned\":{},\"debtCreated\":{},\"xpHalved\":{},\"councilTurnover\":{},\"integrityLost\":{},\"integrityRecovering\":{},\"integrityRestored\":{},\"holdHoursByCohort\":{:?},\"netByCohort\":{:?},\"lostByCohort\":{:?},\"debtByCohort\":{:?},\"depth\":{:?},\"entriesByCohort\":{:?}}},",
             st.opened, st.joined, st.refused_closed, st.refused_xp, st.refused_funds, st.council_entries, st.ballots, st.extensions, st.settled, st.moot, st.accuser_won, st.accused_won, st.max_positions, st.duration_hours, st.hold_hours, st.staked, st.forfeited, st.stake_burned, st.sanction_collected, st.sanction_burned, st.debt_created, st.xp_halved, st.council_turnover, self.world.integrity_counts().0, self.world.integrity_counts().1, self.world.integrity_counts().2, l.hold_hours, l.net, l.lost, l.debt, l.depth, l.entries);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerLiquid\":{},\"attackerUnspent\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
@@ -2344,6 +2366,50 @@ mod tests {
     }
 
     #[test]
+    fn a_zero_turnout_council_round_stays_open_and_the_runner_votes_fresh_before_the_next_cutoff() {
+        let mut sim = grown_honest("Council-rounds");
+        sim.cfg.detection.defense_success = 0.0;
+        sim.cfg.detection.council_turnout = 0.0;
+        sim.cfg.detection.accuracy = 1.0;
+        let (challenger, target) = find_pair(&sim, |a, b| a > b).unwrap();
+        assert!(sim.open_case(challenger, target, false));
+        let case = sim.open_cases[0].case;
+        let member = sim.world.council().iter().copied().find(|&m| m != challenger && m != target).unwrap();
+        sim.world.council_join(case, member).unwrap();
+        let cutoff = sim.world.case_deadline(case).unwrap();
+        sim.detect();
+        assert_eq!(sim.world.stats.ballots, 0);
+        sim.cfg.detection.council_turnout = 1.0;
+        sim.detect();
+        assert_eq!(sim.world.stats.ballots, 0, "one offered turnout decision per round, without daily retries");
+        sim.world.tick(cutoff);
+        sim.detect();
+        assert_eq!(sim.world.stats.automatic_deferrals, 1);
+        assert_eq!(sim.world.stats.settled, 0);
+        assert_eq!(sim.open_cases.len(), 1);
+        assert!(sim.world.held(target));
+        let electorate = sim.world.case_council_round(case).unwrap();
+        assert_eq!(electorate.number, 1);
+        let ballots = sim.world.stats.ballots;
+        assert_eq!(ballots, electorate.members.len() as u64, "fresh snapshot members get this round's decision");
+        sim.detect();
+        assert_eq!(sim.world.stats.ballots, ballots, "a repeated daily review cannot vote twice");
+        assert!(!sim.world.case_final(case), "even a unanimous early vote waits for the new deadline");
+        sim.world.tick(cutoff + 7 * DAY);
+        sim.detect();
+        assert!(sim.open_cases.is_empty());
+        assert_eq!(sim.world.stats.settled, 1);
+        assert_eq!(sim.world.stats.council_rounds, 2);
+        assert!(sim.world.accepted(target) && !sim.world.held(target));
+        let saved = sim.to_json();
+        json::validate(&saved).unwrap();
+        assert!(saved.contains("\"automaticDeferrals\":1"));
+        assert!(saved.contains(COUNCIL_VOTING_POLICY));
+        assert!(saved.contains(crate::rng::RANDOMNESS_POLICY));
+        sim.world.audit().unwrap();
+    }
+
+    #[test]
     fn disabled_disputes_refuse_even_a_qualified_challenger() {
         let mut sim = grown_honest("gate-disabled");
         let higher = find_pair(&sim, |a, b| a > b).unwrap();
@@ -2521,6 +2587,11 @@ mod tests {
             "repeatCorrelation",
             "persistentErrors",
             "halvingSparesCouncil",
+            "councilVotingPolicy",
+            "councilExecutionPolicy",
+            "councilRounds",
+            "majorityDeferrals",
+            "automaticDeferrals",
         ] {
             assert!(text.contains(&format!("\"{key}\":")), "missing {key}");
         }

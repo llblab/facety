@@ -88,7 +88,7 @@ Source S303-T; origin O303-M; parent S303-R. The notice was generated from a sta
 
 ### R404-DECISION
 
-Source S404-D; origin O404-CASE. The supplied prior record finalized the allegation's side at day 7 with no opposing ordinary position and no Council entry. It is not a record of a merits decision by this session's reviewers. The stated balances, chain cut and invalidation are supplied fixture input, not a facilitator's new operation.
+Source S404-D; origin O404-CASE. The prior opening transaction is `TX404-OPEN`, owned by T02 and recorded at day 0. The supplied prior record finalized the allegation's side at day 7 with no opposing ordinary position and no Council entry. It is not a record of a merits decision by this session's reviewers. The stated balances, chain cut and invalidation are supplied fixture input, not a facilitator's new operation.
 
 ### R404-PRESENCE
 
@@ -100,7 +100,7 @@ Source S404-R; origin O404-REGISTER. The original suspicion used a cache miss. T
 
 ### R404-REMEDY
 
-The selected protocol permits appeal and repair for an honestly mistaken identity verdict, but this kit supplies no completed appeal-admission, appellate decision-maker, evidence-sufficiency or authorized reinstatement execution contract. It supplies no new fee, deadline, quorum, XP bypass or facilitator discretion for one. A remedy request may be recorded. If the next action requires one of those missing rules, status is BLOCKED. The original decision is not reversed by this reply.
+T01 may request reconsideration and seek a willing qualified initiator. An eligible participant with strictly greater effective XP than T02 may perform an open-dispute transaction targeting T02's prior opening `TX404-OPEN`; alternatively, the Council may initiate collectively without that XP gate. T02 is now the accused in the appeal. An accepted opening starts the new Council vote and its first seven-day round, with a fresh Council membership snapshot. The choices are confirm the prior verdict; reverse it and authorize restoration; or defer seven days. This is not a new ordinary XP ladder, and a Council member has no unilateral verdict power. T01's request and this reply alone open nothing, start no clock and reverse no verdict; deferral likewise does not reverse it. The prior closed history remains. Admission/evidence/authentication details, canonical prior-transaction/case/appeal linkage, financial scope/stake allocation, authorized execution and exact restoration/refund/prior-asset effects remain unresolved. Record the request and any proposed opening separately; if the next action needs a missing rule, status is BLOCKED. No new fee, limit or facilitator discretion is supplied.
 
 ### R404-SCOPE
 
@@ -121,6 +121,6 @@ Starting with debt 4 and coefficient 0.5, own acts created on days 14-17 mature 
 | R301 | Index 0 exists; the excerpt lost it. | The reference allegation is contradicted. | A guaranteed volunteer response or settlement of unspecified liabilities. |
 | R302 | Index 3 does not exist in the supplied manifest. | The specific reference allegation is supported. | A finding that T02 is fabricated or every act is invalid. |
 | R303 | Index 1 exists; the notice used an incomplete excerpt. | The reference allegation is contradicted. | Automatically overturning the current last ordinary side, casting a Council vote or applying a cutoff extension before its rule applies. |
-| R404 | T01 exists and is unique; the supplied prior allegation was mistaken. The final prior result is imposed input. | The reconsideration request has relevant new information; actual remedy authority remains missing. | Counting this as an observed reviewer error or a successful reinstatement. |
+| R404 | T01 exists and is unique; the supplied prior allegation was mistaken. The final prior result is imposed input. | The request has relevant new information; qualified opening and Council vote are the selected route, while admission/execution and exact effects remain incomplete. | Counting this as an observed reviewer error or a successful reinstatement. |
 
 Do not grade uncertainty as misconduct. A reviewer may rationally record insufficient evidence when a relevant reply was unavailable or unread. Reveal which source requests would have supplied which facts, while keeping observed information exposure and the key separate. The prefiling and final lock records remain immutable historical observations; annotate corrections instead of overwriting them.

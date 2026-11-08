@@ -4,6 +4,11 @@
 
 Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log-and-supersession-ledger), evidence in the [study index](docs/README.md), and open work in [BACKLOG](BACKLOG.md). The [previous milestone ledger](https://github.com/llblab/facety/blob/a4fc5cc3ad4b839f26788e1cde111e0f99ca0de5/CHANGELOG.md) and [earlier per-change history](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md) preserve detailed outcomes and provenance.
 
+## Unreleased
+
+- Implemented three-choice Council rounds in Rust: deadline-only recognition, fresh electorate and ballots after each seven-day deferral, replay protection and continuing custody/holds. Added ladder/World/runner regressions, explicit execution/voting assumptions, result-v5 and randomness v3. Frozen research evidence is unchanged.
+- Selected Council appeals with three choices: confirm the prior verdict, reverse and authorize restoration, or defer seven days. A greater-XP participant or the Council opens a challenge to the prior accuser's opening transaction, starting a new seven-day round. Updated the operational contract and unused kit; exact remedies, financial scope and execution remain open.
+
 ## 0.1.0 — 2026-11-08
 
 - Established an English-only protocol with separate decision history and a coherent participant-facing Rules of the Game. Consolidated selected participation, emission, guarantee, dispute and recovery defaults while keeping unfinished contracts explicit.

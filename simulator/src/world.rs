@@ -4,11 +4,11 @@
 //!
 //! Deviations from the retired Node model (declared, for the statistical baseline):
 //! - the Council, the active count / difficulty D, the layered-support levels and the distance pruning are refreshed
-//!   once per simulated day by `tick`, not on every call;
+//!   on daily ticks and due Council cutoffs, not on every call;
 //! - Council ties break by account index (older first), not by id string;
 //! - legacy policy options (immediate or spend-triggered XP, guarantee fees, vouching, limits) do not exist; ordinary XP is the D42
 //!   maturity credit (`settle`).
-use crate::chekharda::{self, Kind as PositionKind, Ladder, Refusal, Side};
+use crate::chekharda::{self, CouncilOutcome, CouncilRound, CouncilVote, Kind as PositionKind, Ladder, Refusal, Side};
 use crate::graph::Graph;
 use crate::hash::FastMap;
 use crate::paths::{layered_support, verify_family, PathFinder, Search, NO_LEVEL};
@@ -16,6 +16,8 @@ use std::collections::{HashMap, HashSet};
 use std::sync::Arc;
 
 pub const DAY: i64 = 24;
+/// Model assumptions while production authentication, ballot revision and same-hour membership ordering remain open.
+pub const COUNCIL_EXECUTION_POLICY: &str = "trusted-ids/first-ballot/whole-hour-maturity-before-round/daily-entry-cache/v1";
 /// D42: a valid, uncancelled Self-ID matures, and its ordinary XP is earned, exactly this many hours after creation.
 pub const MATURITY_HOURS: i64 = 24;
 /// The integrity coefficient is kept in millionths: 1,000,000 is 1 (integer arithmetic keeps results reproducible).
@@ -247,12 +249,21 @@ pub struct Probe {
 #[derive(Clone, Debug)]
 struct Case {
     ladder: Ladder<Id>,
+    electorates: Vec<CouncilElectorate>,
     accused: Id,
     /// Per position (index = ordinal - 1): the part of its stake that is actually blocked in custody (D166: what exists is blocked, the
     /// rest of a lost stake becomes debt).
     backed: Vec<Backing>,
     /// `(account, hour the restriction began, whether it also excludes the account from paths)`.
     holds: Vec<(Id, i64, bool)>,
+}
+
+/// The Council membership fixed at the start of one voting round, retained with its result for review.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CouncilElectorate {
+    pub number: u32,
+    pub started_at: i64,
+    pub members: Vec<Id>,
 }
 
 #[derive(Clone, Debug, Default)]
@@ -283,6 +294,9 @@ pub struct DisputeStats {
     pub suspended_acts: u64,
     pub council_entries: u64,
     pub ballots: u64,
+    pub council_rounds: u64,
+    pub majority_deferrals: u64,
+    pub automatic_deferrals: u64,
     /// Positions that moved the deadline later (an entry whose own window ended after the deadline in force).
     pub extensions: u64,
     pub settled: u64,
@@ -317,6 +331,8 @@ pub struct CaseOutcome {
     pub net: Vec<(Id, i64)>,
     /// New debt per account (the uncollectible part of a sanction).
     pub debts: Vec<(Id, i64)>,
+    pub council_rounds: Vec<CouncilRound<Id>>,
+    pub council_electorates: Vec<CouncilElectorate>,
 }
 
 #[derive(Clone)]
@@ -659,6 +675,27 @@ impl World {
     /// Advance to `hour` and refresh the daily snapshot (activity, difficulty, Council, support levels, distances).
     pub fn tick(&mut self, hour: i64) {
         assert!(hour >= self.now, "time cannot move backwards");
+        // Process each cutoff chronologically, even when the caller jumps across several rounds. Maturity precedes the fresh snapshot.
+        while let Some(cutoff) = self.cases.iter().flatten().filter(|c| c.ladder.is_due(hour)).map(|c| c.ladder.deadline()).min() {
+            self.refresh_snapshot(cutoff);
+            for c in self.cases.iter_mut().flatten().filter(|c| c.ladder.is_due(cutoff)) {
+                let number = c.ladder.council_round().expect("due Council round");
+                let result = c.ladder.close_round(number, cutoff).expect("due round closes once");
+                self.stats.council_rounds += 1;
+                match result.outcome {
+                    CouncilOutcome::Defer => self.stats.majority_deferrals += 1,
+                    CouncilOutcome::AutomaticDefer => self.stats.automatic_deferrals += 1,
+                    _ => {}
+                }
+                if let Some(number) = c.ladder.council_round() {
+                    c.electorates.push(CouncilElectorate { number, started_at: cutoff, members: self.council.clone() });
+                }
+            }
+        }
+        self.refresh_snapshot(hour);
+    }
+
+    fn refresh_snapshot(&mut self, hour: i64) {
         self.now = hour;
         // Every Self-ID that matured up to `hour` earns its XP before any decision of this moment reads it (D42).
         self.settle();
@@ -1441,7 +1478,7 @@ impl World {
         let backed = self.reserve_stake(challenger, stake);
         self.stats.refused_funds += u64::from(backed.total() < stake);
         let ladder = Ladder::open(challenger, self.subjects[challenger as usize].xp, self.now, self.cfg.base_stake.unwrap_or(0));
-        let mut case = Case { ladder, accused, backed: vec![backed], holds: Vec::new() };
+        let mut case = Case { ladder, electorates: Vec::new(), accused, backed: vec![backed], holds: Vec::new() };
         self.stats.staked += u64::from(stake);
         self.stats.opened += 1;
         self.stats.max_positions = self.stats.max_positions.max(1);
@@ -1475,6 +1512,15 @@ impl World {
     /// Provenance of a case's deadline: every position with its window, proposal and the deadline before and after it.
     pub fn case_positions(&self, case: u32) -> Vec<chekharda::Position<Id>> {
         self.case_ref(case).map_or_else(|_| Vec::new(), |c| c.ladder.positions().to_vec())
+    }
+    /// The current voting round and its frozen electorate; final Council decisions have no active round.
+    pub fn case_council_round(&self, case: u32) -> Option<&CouncilElectorate> {
+        let c = self.case_ref(case).ok()?;
+        let number = c.ladder.council_round()?;
+        c.electorates.iter().find(|e| e.number == number)
+    }
+    pub fn case_council_rounds(&self, case: u32) -> &[CouncilRound<Id>] {
+        self.case_ref(case).map_or(&[], |c| c.ladder.rounds())
     }
     pub fn case_accused(&self, case: u32) -> Option<Id> {
         self.case_ref(case).ok().map(|c| c.accused)
@@ -1510,6 +1556,12 @@ impl World {
             return Err(self.refuse(r));
         }
         let ordinal = self.admit(case, member, PositionKind::Council, 0, 0, Backing::default())?;
+        let c = self.cases[case as usize].as_mut().expect("admitted case");
+        c.electorates.push(CouncilElectorate {
+            number: c.ladder.council_round().expect("Council entry starts a round"),
+            started_at: self.now,
+            members: self.council.clone(),
+        });
         self.stats.council_entries += 1;
         Ok(ordinal)
     }
@@ -1548,12 +1600,12 @@ impl World {
     }
 
     /// A Council ballot (D66, D111): recorded for the vote only; it never changes the ordinal or the deadline.
-    pub fn council_ballot(&mut self, case: u32, member: Id, for_entrant: bool) -> bool {
-        if !self.council_mask.get(member as usize).copied().unwrap_or(false) || !self.accepted(member) {
+    pub fn council_ballot(&mut self, case: u32, member: Id, expected_round: u32, choice: CouncilVote) -> bool {
+        let Some(c) = self.cases.get_mut(case as usize).and_then(Option::as_mut) else { return false };
+        if !c.electorates.last().is_some_and(|e| e.number == expected_round && e.members.contains(&member)) {
             return false;
         }
-        let Some(c) = self.cases.get_mut(case as usize).and_then(Option::as_mut) else { return false };
-        let ok = c.ladder.ballot(member, for_entrant);
+        let ok = c.ladder.ballot(member, expected_round, choice, self.now);
         if ok {
             self.stats.ballots += 1;
         }
@@ -1625,7 +1677,7 @@ impl World {
             return Err(Reject("the dispute is not final yet"));
         }
         let c = self.cases[case as usize].take().expect("final implies open");
-        let mut settlement = c.ladder.settle();
+        let mut settlement = c.ladder.settle().expect("final Council decision or ordinary cutoff");
         if let Some(side) = forced {
             if side != settlement.winner {
                 // Recompute the settlement for the forced side with the same ladder.
@@ -1711,6 +1763,8 @@ impl World {
             losers,
             net,
             debts,
+            council_rounds: c.ladder.rounds().to_vec(),
+            council_electorates: c.electorates,
         })
     }
 
@@ -1958,6 +2012,29 @@ impl World {
         let mut path_holds = vec![0u32; n];
         let mut frozen = vec![0u32; n];
         for c in self.cases.iter().flatten() {
+            c.ladder.audit()?;
+            if c.backed.len() != c.ladder.positions().len() {
+                return Err("case custody has no matching position".into());
+            }
+            let periods = c.ladder.rounds().len() + usize::from(c.ladder.council_round().is_some());
+            if c.electorates.len() != periods {
+                return Err("Council round has no matching electorate".into());
+            }
+            for (i, electorate) in c.electorates.iter().enumerate() {
+                let start = if i == 0 { c.ladder.positions().last().expect("Council position").joined_at } else { c.ladder.rounds()[i - 1].recognized_at };
+                let distinct: HashSet<Id> = electorate.members.iter().copied().collect();
+                if electorate.number as usize != i
+                    || electorate.started_at != start
+                    || distinct.len() != electorate.members.len()
+                    || electorate.members.iter().any(|&m| m as usize >= n)
+                {
+                    return Err("invalid Council electorate snapshot".into());
+                }
+                let ballots = c.ladder.rounds().get(i).map_or_else(|| c.ladder.active_ballots(), |r| r.ballots.as_slice());
+                if ballots.iter().any(|b| !distinct.contains(&b.who)) {
+                    return Err("Council ballot outside its round electorate".into());
+                }
+            }
             frozen[c.accused as usize] += 1;
             for (p, b) in c.ladder.positions().iter().zip(&c.backed) {
                 reserved[p.who as usize] += b.liquid;
@@ -3104,7 +3181,7 @@ mod tests {
         let member = w.council().iter().copied().find(|&m| m != accused && m != challenger && m != defender).unwrap();
         w.council_join(case, member).unwrap();
         for m in w.council().to_vec() {
-            w.council_ballot(case, m, true);
+            w.council_ballot(case, m, 0, CouncilVote::Confirm);
         }
         w.tick(w.case_deadline(case).unwrap());
         let coef = w.coefficient(member);
@@ -3152,7 +3229,7 @@ mod tests {
         let outsider = (0..12).find(|i| !council.contains(i)).map(|i| i as Id);
         if let Some(o) = outsider {
             assert_eq!(w.council_join(case, o), Err(Reject("not a Council member")));
-            assert!(!w.council_ballot(case, o, true));
+            assert!(!w.council_ballot(case, o, 0, CouncilVote::Confirm));
         }
         let entrant = council.iter().copied().find(|&m| m != accused && m != challenger && m != defender).unwrap();
         let deadline_before = w.case_deadline(case).unwrap();
@@ -3166,7 +3243,7 @@ mod tests {
         assert_eq!(deadline_after, deadline_before.max(start + 24 + 5 * 24));
         let positions = w.stats.max_positions;
         for &m in council.iter().take(3) {
-            w.council_ballot(case, m, false);
+            w.council_ballot(case, m, 0, CouncilVote::Oppose);
         }
         assert_eq!(w.case_deadline(case), Some(deadline_after), "ballots do not move the deadline");
         assert_eq!(w.stats.max_positions, positions);
@@ -3175,6 +3252,86 @@ mod tests {
         let out = w.settle_case(case, None).unwrap();
         assert_eq!(out.winner, Side::Accused);
         w.audit().unwrap();
+    }
+
+    #[test]
+    fn council_deferrals_preserve_custody_and_restrictions_until_a_final_round() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        let member = w.council().iter().copied().find(|&m| m != accused && m != challenger).unwrap();
+        w.council_join(case, member).unwrap();
+        let cutoff = w.case_deadline(case).unwrap();
+        let before = (w.supply(), w.liquid(challenger), w.subjects[challenger as usize].reserved, w.coefficient(challenger));
+        assert!(before.2 > 0, "real stake custody is reserved");
+        assert!(w.council_ballot(case, member, 0, CouncilVote::Defer));
+        w.tick(cutoff - 1);
+        assert_eq!(w.case_deadline(case), Some(cutoff));
+        assert!(w.settle_case(case, Some(Side::Accused)).is_err(), "outside proof cannot bypass an unresolved Council round");
+        w.tick(cutoff);
+        assert_eq!(w.case_deadline(case), Some(cutoff + 7 * DAY));
+        assert_eq!(w.case_council_round(case).unwrap().number, 1);
+        assert!(!w.council_ballot(case, member, 0, CouncilVote::Defer), "old ballot cannot extend the fresh round");
+        assert_eq!((w.supply(), w.liquid(challenger), w.subjects[challenger as usize].reserved, w.coefficient(challenger)), before);
+        assert!(w.held(challenger) && w.held(accused) && w.held(member));
+        assert!(w.create_self_id(accused).is_err());
+        assert!(w.join_case(case, accused).is_err(), "deferral never reopens ordinary entry");
+        w.tick(cutoff);
+        assert_eq!(w.stats.majority_deferrals, 1, "reprocessing a cutoff cannot add another extension");
+        w.tick(cutoff + 7 * DAY);
+        assert_eq!(w.case_deadline(case), Some(cutoff + 14 * DAY));
+        assert_eq!(w.stats.automatic_deferrals, 1, "the earlier majority was not carried forward");
+        assert_eq!(w.stats.settled, 0);
+        assert_eq!(w.stats.xp_halved, 0);
+        assert!(w.settle_case(case, None).is_err());
+        let final_member = w.case_council_round(case).unwrap().members[0];
+        assert!(w.council_ballot(case, final_member, 2, CouncilVote::Confirm));
+        w.tick(cutoff + 14 * DAY);
+        assert!(w.case_final(case));
+        assert!(!w.council_ballot(case, final_member, 2, CouncilVote::Oppose), "cutoff ballots are too late");
+        let out = w.settle_case(case, None).unwrap();
+        assert_eq!(out.winner, Side::Accused);
+        assert_eq!(out.council_rounds.iter().map(|r| r.ballots.len()).collect::<Vec<_>>(), vec![1, 0, 1]);
+        assert_eq!(out.council_electorates.len(), 3);
+        assert!(!w.held(challenger) && !w.held(accused) && !w.held(member));
+        assert_eq!(w.stats.council_rounds, 3);
+        assert!(w.settle_case(case, None).is_err());
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn council_electorates_are_frozen_per_round_and_jumped_cutoffs_match_chronological_processing() {
+        let mut w = rich_world();
+        let (accused, challenger, _) = xp_ladder(&w);
+        let case = w.begin_case(&[challenger, accused]).unwrap();
+        let member = w.council().iter().copied().find(|&m| m != accused && m != challenger).unwrap();
+        w.council_join(case, member).unwrap();
+        let initial = w.case_council_round(case).unwrap().clone();
+        let cutoff = w.case_deadline(case).unwrap();
+        w.penalize_xp(member, 1.0);
+        w.tick(w.now() + 1);
+        assert!(!w.council().contains(&member));
+        let newcomer = *w.council().iter().find(|m| !initial.members.contains(m)).unwrap();
+        assert!(!w.council_ballot(case, newcomer, 0, CouncilVote::Confirm));
+        assert!(w.council_ballot(case, member, 0, CouncilVote::Defer), "old member keeps this round's vote");
+        assert_eq!(w.case_council_round(case), Some(&initial));
+        w.tick(cutoff);
+        assert_eq!(w.case_council_round(case).unwrap().members, w.council());
+        assert!(!w.council_ballot(case, member, 1, CouncilVote::Confirm));
+        let mut batch = w.clone();
+        let endpoint = cutoff + 22 * DAY;
+        while w.now() < endpoint {
+            w.tick((w.now() + DAY).min(endpoint));
+        }
+        batch.tick(endpoint);
+        assert_eq!(w.case_council_rounds(case), batch.case_council_rounds(case));
+        assert_eq!(w.case_ref(case).unwrap().electorates, batch.case_ref(case).unwrap().electorates);
+        assert_eq!(w.case_deadline(case), batch.case_deadline(case));
+        assert_eq!(w.stats.automatic_deferrals, 3);
+        assert_eq!(batch.stats.automatic_deferrals, 3);
+        assert!(batch.held(challenger) && batch.held(accused));
+        w.audit().unwrap();
+        batch.audit().unwrap();
     }
 
     #[test]

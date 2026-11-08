@@ -160,7 +160,7 @@ deadline(1) = joined(1) + 7 days
 deadline(n) = max(deadline(n - 1), joined(n) + window(n))
 ```
 
-A majority choosing deferral adds seven days to the current latest shared deadline. An entered Council referendum also defers automatically at its cutoff if no option has a simple majority. Both forms may repeat. The effective deadline is the maximum position-window end plus seven days for each recorded deferral. Each deferred round/result or cutoff period applies once, creates no new position and cannot be replayed for another extension.
+At the current shared deadline, a majority choosing deferral adds seven days to it. An entered Council referendum also defers automatically at that cutoff if no option has a simple majority. Both forms may repeat. The effective deadline is the maximum position-window end plus seven days for each recorded deferral. Each round applies once, creates no new position and cannot be replayed for another extension. Deferral starts a fresh round with a new Council membership snapshot and no carried-over ballots.
 
 A position can preserve or extend the deadline, never shorten it. Entries on days zero, six and eleven give deadlines on days seven, twelve and sixteen. Rapid entries cannot shorten the original seven days, and the three-day floor does not cap total case duration.
 
@@ -198,7 +198,7 @@ Below 100 active participants there are three equal-vote seats, initially filled
 | 5 | 10001 |
 | 6 | 100001 |
 
-From 100 active participants, membership is limited by the active verified population and eligible candidates. Below that boundary, founding members maintain the three seats until enough accounts are active. Activity uses the preceding 28 days. Precise ranking qualification, vacancies, boundary changes and case-specific membership snapshots still need their execution rules.
+From 100 active participants, membership is limited by the active verified population and eligible candidates. Below that boundary, founding members maintain the three seats until enough accounts are active. Activity uses the preceding 28 days. Each voting round takes a fresh membership snapshot at its start. Precise ranking qualification, vacancies and ordering membership changes at a round's start still need their execution rules.
 
 Every Council member has one vote, regardless of XP. A member may initiate intervention in any ongoing case before its cutoff, taking the side opposite the last ordinary participant. Opening the referendum immediately creates one terminal collective position, without the ordinary XP gate or stake. Ordinary escalation stops at that entry.
 
@@ -206,13 +206,13 @@ The Council position receives the window of its ordinal on the same shared clock
 
 Every member has three default ballot choices: confirm the entering member, oppose it in favor of the last ordinary side, or defer the decision by seven days. A simple majority of ballots cast adopts a choice, without quorum or recusal. Confirmation backs the Council position. Opposition makes the Council count as absent for settlement: the last ordinary side wins, and stakes settle as if the Council had not entered. The entry and clock remain in the record.
 
-With no quorum, one cast ballot can constitute that majority when the period's result is validly recognized. A ballot record is separate from recognition and application of the collective result; this is not a requirement for a second voter or minimum turnout.
+The first round starts when the Council referendum opens. Each round's electorate is the Council membership snapshot taken at its start. Members may vote during the round, but its result is recognized only at the current shared deadline using all timely ballots. An early partial majority neither settles nor defers the case. With no quorum, one timely ballot can constitute a majority if it is the only ballot cast by the deadline; no second voter or minimum turnout is required.
 
 A deferral majority adds seven days to the **current latest shared deadline**, not seven days from the decision time. At the cutoff of an entered Council referendum, if no choice has a simple majority, deferral is automatic. A two/two/two split or no ballots therefore adds seven days rather than awarding either side a win. The case stays open, with participation restrictions and custody continuing; deferral alone settles nothing and halves no coefficient.
 
-The Council remains terminal and ordinary escalation does not resume. Deferrals may repeat without a selected maximum. Each distinct deferred round/result or cutoff period adds seven days once: a majority deferral and automatic cutoff cannot both extend the same result. Replaying old votes or checking the same cutoff repeatedly supplies no new extension. The exact production records for rounds, members and authenticated ballots still need definition. Notice or a waiting queue without Council entry is no extension, and additional calendar time promises no further review work.
+The Council remains terminal and ordinary escalation does not resume. Deferrals may repeat without a selected maximum. Each deferred round adds seven days once: a majority deferral and automatic cutoff cannot both extend it. At that cutoff a new round starts with a fresh Council membership snapshot and no ballots from the previous round. Replaying old votes or checking the same cutoff repeatedly supplies no new extension. For example, a deferral ballot on day eight in a round ending on day twelve waits for all timely ballots to be evaluated on day twelve; if that result defers, the next round runs from day twelve to day nineteen. Authentication, ballot revision, same-time membership ordering and authorized execution still need their production rules. Notice or a waiting queue without Council entry is no extension, and additional calendar time promises no further review work.
 
-A dispute between Council members proceeds directly to the collective referendum rather than ordinary escalation. The parties retain their votes; the same three choices, majority rule and repeatable deferral clock, including automatic no-majority cutoff deferral, apply. Its exact admission, round/member snapshots, ballot authentication and settlement representation still need definition.
+A dispute between Council members proceeds directly to the collective referendum rather than ordinary escalation. The parties retain their votes within the round's electorate; the same three choices, deadline-only recognition, round-start membership snapshot, fresh ballots and repeatable deferral clock apply. Its exact admission, ballot authentication and revision, same-time membership ordering and settlement representation still need definition.
 
 The Council is not obliged to handle every dispute. Published notice, a right to vote and an available seat are different from actual review work. Neither a majority nor a high-XP position guarantees a true judgment. There is no higher infinite ladder of councils that guarantees a correction of collective failure.
 
@@ -236,6 +236,12 @@ Supporting a side, losing a vote or being acquainted with a wrongdoer is not by 
 
 Loss of current support is also different from a false-identity verdict. A person can return through ordinary mutual guarantees without obtaining a new invitation. If the returning person has no eligible own FCTY, the guarantor establishing the relationship pays that person's valence. Identity, original inviter, earned history, XP and debt are preserved. Rewarded acts still need current support and the qualifying Council path.
 
+An affected person may request reconsideration of a closed case as erroneous. The Council decides that appeal by a new vote, rather than another ordinary XP ladder. Its ballot has exactly three choices: confirm the prior verdict; reverse it and authorize restoration; or defer the decision by seven days. Neither a request nor deferral reverses the decision.
+
+The appeal targets the prior accuser's concrete transaction that opened the original dispute. The prior accuser is now the accused in the appeal. An eligible participant with strictly more effective XP than that transaction's owner can open the appeal by an open-dispute transaction. Alternatively, the Council can initiate through its collective authority without the ordinary XP gate; this gives no member a unilateral verdict. The affected person's request alone opens nothing and starts no clock; the requester may seek a qualified willing initiator. The accepted opening starts the new Council vote and its first seven-day round with a fresh Council membership snapshot. The prior closed case's history and clock are preserved.
+
+Admission, evidence and authentication details, the formal link to the prior case, financial scope and stake allocation, exact restoration and prior-asset effects and authorized execution still need rules. Authorization of restoration does not itself specify a refund or recreate previously transferred or burned assets.
+
 An admitted appeal, restored links, solvency and integrity repair are separate steps. No automatic refund of burned money, restoration of revoked units or catch-up emission for a restricted interval is promised. Key recovery must preserve the same subject; a particular social key-recovery voting threshold is not yet a default rule.
 
 ## 13. Changing parameters and the external economy
@@ -257,6 +263,6 @@ The common rules above do not yet form a complete executable specification. The 
 - Authorization records: one numerical XP-to-capacity schedule, duplicate and pending-record handling, invitation acceptance/expiration, and ordinary versus invitation relationship closure.
 - Adjudication: admissible claims and evidence, duties of care, correction and appeal procedures, repeat-claim identity, historical-chain coverage, suffix counting and overlapping liability.
 - Economic execution: stake precision/rounding, collection priorities, allocation of a losing top stake and any Council proceeds, reserved rights later revoked, debt/appeal effects and treatment of abandoned accounts.
-- Concurrent operations and governance: exact ordering at boundaries, maturity of already committed disputed acts, participant rosters and guarantee termination during cases, round/member snapshots, ballot authentication and recognition of each distinct majority-adopted or automatic cutoff deferral, and authorization/activation of parameter changes and pauses.
+- Concurrent operations and governance: exact ordering at boundaries, maturity of already committed disputed acts, participant rosters and guarantee termination during cases, same-time membership ordering at round starts, ballot authentication and revision, replay-safe execution of each deadline result, and authorization/activation of parameter changes and pauses.
 
 These gaps must be resolved without changing already selected rights by implication. Human willingness, evidence quality, review capacity and market demand remain conditions of operation, not guarantees created by this rulebook.

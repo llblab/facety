@@ -32,11 +32,11 @@ The minute-2 admitted branch is recorded separately as SUPPLIED. It never fills 
 
 Apply `window(n) = max(3, 8-n)` days and `deadline = max(previous, joined + window)`. An observation, reply, private recommendation or ballot is not a new position. A case still open when the exercise stops is PENDING. The exercise lock does not close it under the protocol.
 
-Record Council choices separately: entering position, last ordinary position, or seven-day deferral. A recognized deferral adds seven days to the current latest deadline. At an entered Council period's cutoff, no option majority (including zero ballots) automatically adds seven days. Apply one extension per decision/period, not both a majority and automatic extension for the same period or another extension on replay. Later periods may defer again. There is no new position/stake or automatic settlement, and no inferred new reviewer availability. A request or a partial split before cutoff is not the automatic event. Without Council entry, ordinary finality still applies.
+Record Council choices separately: entering position, last ordinary position, or seven-day deferral. Take a fresh Council membership snapshot at each round's start. Recognize all timely ballots only at the current shared deadline; an early partial majority or split is not a result. A deferral majority or no option majority (including zero ballots) adds seven days once. Start the next round at that cutoff with a fresh membership snapshot and no carried ballots. Apply one extension per round, not both a majority and automatic extension or another extension on replay. Later rounds may defer again. There is no new position/stake or automatic settlement, and no inferred new reviewer availability. Without Council entry, ordinary finality still applies.
 
-| Council round / decision reference | Confirm / oppose / defer ballots | Recognized outcome / majority or automatic-cutoff cause | Extension applied before? | Deadline before / after | New voluntary work actually accepted | Case status at observation stop |
-| --- | --- | --- | --- | --- | --- | --- |
-| | | | | | | |
+| Council round / start / membership snapshot | Timely confirm / oppose / defer ballots | Deadline recognition / outcome / majority or automatic cause | Extension applied before? | Deadline before / after | Next round start / fresh snapshot / no carried ballots | New voluntary work actually accepted | Case status at observation stop |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| | | | | | | | |
 
 ## Paper funds and responsibility
 

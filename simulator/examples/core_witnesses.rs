@@ -1,6 +1,6 @@
 //! Finite deterministic transition witnesses for the evidence-core closure.
 //! These are scripted, uncalibrated scenarios, not human behavior or attack probabilities.
-use facety_sim::chekharda::Side;
+use facety_sim::chekharda::{CouncilVote, Side};
 use facety_sim::json;
 use facety_sim::world::{CaseOutcome, Config, Id, World, COEF_ONE, DAY};
 use std::collections::HashSet;
@@ -300,7 +300,7 @@ fn chain(rapid: bool, council_day: Option<i64>, unbacked: bool) {
         let member = w.council().iter().copied().find(|&id| id != accused && !coalition.contains(&id)).expect("an available Council member");
         w.council_join(case, member).unwrap();
         for id in w.council().to_vec() {
-            w.council_ballot(case, id, true);
+            w.council_ballot(case, id, 0, CouncilVote::Confirm);
         }
     }
     let positions = w.case_positions(case);
@@ -386,7 +386,7 @@ fn council_queue() {
     let member = w.council().iter().copied().find(|id| !w.held(*id)).unwrap();
     w.council_join(served_case, member).unwrap();
     for id in w.council().to_vec() {
-        w.council_ballot(served_case, id, true);
+        w.council_ballot(served_case, id, 0, CouncilVote::Confirm);
     }
     let mut deadlines: Vec<_> = cases.iter().map(|(case, accused)| (w.case_deadline(*case).unwrap(), *case, *accused)).collect();
     deadlines.sort_unstable();

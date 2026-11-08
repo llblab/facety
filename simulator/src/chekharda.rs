@@ -6,13 +6,14 @@
 //! - Position `n` (the first challenger is `n = 1`) gets its own window `max(3 days, (8 - n) days)`, which starts when that position
 //!   is admitted, not at the previous deadline: windows 7, 6, 5, 4, 3, 3, ... days.
 //! - `deadline(1) = joined(1) + 7 days`; `deadline(n) = max(deadline(n - 1), joined(n) + window(n))`. A new valid position preserves or
-//!   extends the deadline and can never shorten it; the deadline equals the maximum end point of all position windows.
+//!   extends the deadline and can never shorten it; position windows supply the initial shared deadline.
 //! - Only a newly admitted position counts. A refused attempt, a duplicate, a notification, evidence, an observation or a Council ballot
 //!   changes neither the ordinal nor the deadline.
 //! - The Council enters once, collectively, as the terminal position on the same clock (D69, D161): one position, no extra Council window,
 //!   and ballots never add positions.
-//! - Boundary (D167): the deadline is a cutoff, nothing is added to it: anyone eligible can join until it and the dispute is final from
-//!   it. Entries at the same hour are applied in the order
+//! - The deadline is a cutoff for ordinary entry. An entered Council recognizes its three-choice vote only at that cutoff (D171).
+//!   A majority for deferral, or no majority, adds seven days to the current deadline and starts a fresh, empty round. Council
+//!   confirmation or opposition ends the case; deferral keeps the Council terminal and supplies no winner. Entries at the same hour are applied in the order
 //!   they are submitted, and each must satisfy the XP and alternation conditions against the entry before it.
 //! - Stakes (D159): `stake(k) = ceil(base * 1.2^(k-1))` whole FCTY (declared rounding of the compound growth); every winner takes the
 //!   stake of the position directly below it and gets its own back; a loser forfeits to the position directly above it; the lowest
@@ -159,12 +160,38 @@ impl<W> Position<W> {
     }
 }
 
-/// A recorded Council ballot: recorded for the vote, with no effect on the ordinals or the timer.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CouncilVote {
+    Confirm,
+    Oppose,
+    Defer,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CouncilOutcome {
+    Confirm,
+    Oppose,
+    Defer,
+    AutomaticDefer,
+}
+
+/// A ballot record alone changes neither the ordinal nor the deadline. World authenticates its round's electorate.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Ballot<W> {
     pub who: W,
-    /// `true` for the first Council member who joined (the side the Council entry took), `false` for the opposing side.
-    pub for_entrant: bool,
+    pub choice: CouncilVote,
+    pub cast_at: i64,
+}
+
+/// One recognized result, retaining the ballots and logical cutoff even if processing happened later.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CouncilRound<W> {
+    pub number: u32,
+    pub deadline_before: i64,
+    pub deadline_after: i64,
+    pub recognized_at: i64,
+    pub ballots: Vec<Ballot<W>>,
+    pub outcome: CouncilOutcome,
 }
 
 #[derive(Clone, Debug)]
@@ -173,6 +200,7 @@ pub struct Ladder<W> {
     pub base_stake: u32,
     positions: Vec<Position<W>>,
     ballots: Vec<Ballot<W>>,
+    rounds: Vec<CouncilRound<W>>,
 }
 
 /// What a closed dispute settles: who wins, and every transfer of stake in whole FCTY.
@@ -210,14 +238,20 @@ impl<W: Copy + PartialEq> Ladder<W> {
             xp,
             stake: stake(1, base_stake),
         };
-        Ladder { opened_at: now, base_stake, positions: vec![first], ballots: Vec::new() }
+        Ladder { opened_at: now, base_stake, positions: vec![first], ballots: Vec::new(), rounds: Vec::new() }
     }
 
     pub fn positions(&self) -> &[Position<W>] {
         &self.positions
     }
     pub fn ballots(&self) -> &[Ballot<W>] {
+        self.active_ballots()
+    }
+    pub fn active_ballots(&self) -> &[Ballot<W>] {
         &self.ballots
+    }
+    pub fn rounds(&self) -> &[CouncilRound<W>] {
+        &self.rounds
     }
     pub fn len(&self) -> u32 {
         self.positions.len() as u32
@@ -225,13 +259,17 @@ impl<W: Copy + PartialEq> Ladder<W> {
     pub fn is_empty(&self) -> bool {
         self.positions.is_empty()
     }
-    /// The current shared deadline: the maximum end point of all position windows.
+    /// The current shared deadline, including every recognized Council deferral.
     pub fn deadline(&self) -> i64 {
+        self.rounds.last().map_or_else(|| self.position_deadline(), |r| r.deadline_after)
+    }
+    /// The maximum end point of position windows, excluding Council deferrals.
+    pub fn position_deadline(&self) -> i64 {
         self.positions.last().expect("a ladder has a first position").after
     }
-    /// The position whose window ends at the current deadline (the earliest such position), for provenance.
+    /// The earliest position supplying the position-window maximum, excluding Council deferrals.
     pub fn deadline_source(&self) -> u32 {
-        let d = self.deadline();
+        let d = self.position_deadline();
         self.positions.iter().find(|p| p.proposed == d).map(|p| p.n).expect("the deadline is some position's end point")
     }
     /// The ordinal the next entrant would take.
@@ -249,9 +287,21 @@ impl<W: Copy + PartialEq> Ladder<W> {
     pub fn xp_to_beat(&self) -> i32 {
         self.positions.iter().rev().find(|p| p.kind == Kind::Participant).map_or(0, |p| p.xp)
     }
-    /// Whether the dispute is final at `now`: the deadline is the cutoff.
+    /// An ordinary cutoff is final; an entered Council also requires a recognized final result.
     pub fn is_final(&self, now: i64) -> bool {
-        now >= self.deadline()
+        now >= self.deadline() && (!self.council_entered() || self.winner().is_some())
+    }
+    /// Whether an unresolved Council round needs cutoff recognition; ordinary ladders use `is_final` directly.
+    pub fn is_due(&self, now: i64) -> bool {
+        now >= self.deadline() && self.council_round().is_some()
+    }
+    /// Active round numbering starts at zero; a final result has no active round.
+    pub fn council_round(&self) -> Option<u32> {
+        if !self.council_entered() || self.rounds.last().is_some_and(|r| matches!(r.outcome, CouncilOutcome::Confirm | CouncilOutcome::Oppose)) {
+            None
+        } else {
+            Some(u32::try_from(self.rounds.len()).expect("Council round number exceeds u32"))
+        }
     }
     pub fn stake_of_next(&self) -> Option<u32> {
         checked_stake(self.next_ordinal(), self.base_stake)
@@ -301,37 +351,141 @@ impl<W: Copy + PartialEq> Ladder<W> {
         Ok(self.positions.last().expect("just pushed"))
     }
 
-    /// Record a Council ballot. A ballot is not an entry: it cannot alter the ordinals or the deadline. Only after the Council entered,
-    /// one ballot per member.
-    pub fn ballot(&mut self, who: W, for_entrant: bool) -> bool {
-        if !self.council_entered() || self.ballots.iter().any(|b| b.who == who) {
+    /// Record one timely ballot per member in the expected active round; electorate authentication belongs to World.
+    pub fn ballot(&mut self, who: W, expected_round: u32, choice: CouncilVote, now: i64) -> bool {
+        let starts_at = self.rounds.last().map_or_else(|| self.positions.last().unwrap().joined_at, |r| r.recognized_at);
+        if self.council_round() != Some(expected_round) || now < starts_at || now >= self.deadline() || self.ballots.iter().any(|b| b.who == who) {
             return false;
         }
-        self.ballots.push(Ballot { who, for_entrant });
+        self.ballots.push(Ballot { who, choice, cast_at: now });
         true
     }
 
-    /// The side that wins at the deadline: the side of the last unopposed ordinary position, or, once the Council entered, the side the
-    /// majority of the Council ballots chose (D111, D167: a simple majority, no quorum, no recusal). If the majority does not confirm the
-    /// entering member (a majority against, a tie in a simulated even vote, or no ballots), the Council is taken as not having taken part and
-    /// the side of the last ordinary participant wins.
-    pub fn winner(&self) -> Side {
+    fn outcome(ballots: &[Ballot<W>]) -> CouncilOutcome {
+        for (choice, outcome) in
+            [(CouncilVote::Confirm, CouncilOutcome::Confirm), (CouncilVote::Oppose, CouncilOutcome::Oppose), (CouncilVote::Defer, CouncilOutcome::Defer)]
+        {
+            if ballots.iter().filter(|b| b.choice == choice).count() > ballots.len() / 2 {
+                return outcome;
+            }
+        }
+        CouncilOutcome::AutomaticDefer
+    }
+
+    /// Recognize exactly one round at its cutoff. Deferral adds seven days to that cutoff, never to processing time.
+    pub fn close_round(&mut self, expected_round: u32, now: i64) -> Option<CouncilRound<W>> {
+        if self.council_round() != Some(expected_round) || now < self.deadline() {
+            return None;
+        }
+        let before = self.deadline();
+        let outcome = Self::outcome(&self.ballots);
+        let after = if matches!(outcome, CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer) {
+            before.checked_add(7 * DAY_HOURS).expect("Council deadline exceeds i64 time representation")
+        } else {
+            before
+        };
+        let round = CouncilRound {
+            number: expected_round,
+            deadline_before: before,
+            deadline_after: after,
+            recognized_at: before,
+            ballots: std::mem::take(&mut self.ballots),
+            outcome,
+        };
+        self.rounds.push(round.clone());
+        Some(round)
+    }
+
+    /// An ordinary ladder's provisional winning side, or the entered Council's recognized final side.
+    pub fn winner(&self) -> Option<Side> {
         let top = self.positions.last().expect("a ladder has a first position");
         if top.kind != Kind::Council {
-            return top.side;
+            return Some(top.side);
         }
-        let for_entrant = self.ballots.iter().filter(|b| b.for_entrant).count();
-        let against = self.ballots.len() - for_entrant;
-        if for_entrant > against {
-            top.side
-        } else {
-            top.side.other()
+        match self.rounds.last().map(|r| r.outcome) {
+            Some(CouncilOutcome::Confirm) => Some(top.side),
+            Some(CouncilOutcome::Oppose) => Some(top.side.other()),
+            _ => None,
         }
     }
 
-    /// Settle the dispute (call at or after the deadline) for the side the ladder itself decides.
-    pub fn settle(&self) -> Settlement {
-        self.settle_for(self.winner())
+    /// Plan settlement for a decided side. World must additionally gate actual settlement with `is_final(now)`.
+    pub fn settle(&self) -> Option<Settlement> {
+        self.winner().map(|side| self.settle_for(side))
+    }
+
+    /// Check internal position, deadline, round and ballot provenance without authenticating the electorate.
+    pub fn audit(&self) -> Result<(), String> {
+        let mut before = None;
+        let mut previous_xp = None;
+        let mut council = false;
+        for (i, p) in self.positions.iter().enumerate() {
+            let n = u32::try_from(i + 1).map_err(|_| "position number overflow")?;
+            if council
+                || p.n != n
+                || p.side != Side::of(n)
+                || p.window != window_hours(n)
+                || p.joined_at.checked_add(p.window) != Some(p.proposed)
+                || p.before != before
+                || p.after != before.map_or(p.proposed, |b: i64| b.max(p.proposed))
+                || self.positions[..i].iter().any(|earlier| earlier.who == p.who)
+                || (i == 0 && (p.kind != Kind::Participant || p.joined_at != self.opened_at))
+                || before.is_some_and(|cutoff| p.joined_at >= cutoff)
+            {
+                return Err(format!("invalid position {n} provenance"));
+            }
+            match p.kind {
+                Kind::Participant => {
+                    if previous_xp.is_some_and(|xp| p.xp <= xp) || checked_stake(n, self.base_stake) != Some(p.stake) {
+                        return Err(format!("invalid position {n} XP or stake"));
+                    }
+                    previous_xp = Some(p.xp);
+                }
+                Kind::Council => {
+                    if p.xp != 0 || p.stake != 0 {
+                        return Err("Council position has XP or stake".into());
+                    }
+                    council = true;
+                }
+            }
+            before = Some(p.after);
+        }
+        let mut deadline = before.ok_or("missing first position")?;
+        let mut round_start = self.positions.last().unwrap().joined_at;
+        let mut final_result = false;
+        if !council && (!self.rounds.is_empty() || !self.ballots.is_empty()) {
+            return Err("Council records without Council entry".into());
+        }
+        for (i, round) in self.rounds.iter().enumerate() {
+            let outcome = Self::outcome(&round.ballots);
+            let defers = matches!(outcome, CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer);
+            let after = if defers { deadline.checked_add(7 * DAY_HOURS).ok_or("Council deadline overflow")? } else { deadline };
+            if final_result
+                || usize::try_from(round.number).ok() != Some(i)
+                || round.deadline_before != deadline
+                || round.recognized_at != deadline
+                || round.deadline_after != after
+                || round.outcome != outcome
+                || Self::duplicate_ballots(&round.ballots)
+                || round.ballots.iter().any(|b| b.cast_at < round_start || b.cast_at >= deadline)
+            {
+                return Err(format!("invalid Council round {i} provenance"));
+            }
+            deadline = after;
+            round_start = round.recognized_at;
+            final_result = !defers;
+        }
+        if Self::duplicate_ballots(&self.ballots)
+            || (final_result && !self.ballots.is_empty())
+            || self.ballots.iter().any(|b| b.cast_at < round_start || b.cast_at >= deadline)
+        {
+            return Err("invalid active Council ballots".into());
+        }
+        Ok(())
+    }
+
+    fn duplicate_ballots(ballots: &[Ballot<W>]) -> bool {
+        ballots.iter().enumerate().any(|(i, b)| ballots[..i].iter().any(|previous| previous.who == b.who))
     }
 
     /// Settle for a given winning side (a decision taken outside the ladder, such as an accused's accepted proof of reality).
@@ -516,7 +670,7 @@ mod tests {
         assert_eq!(l.admit(1, Kind::Participant, 99, H), Err(Refusal::AlreadyParticipant), "a duplicate submission");
         assert_eq!(l.admit(9, Kind::Participant, 99, 7 * H), Err(Refusal::Closed), "at the deadline hour the dispute is final");
         assert_eq!(l.admit(9, Kind::Participant, 99, 8 * H), Err(Refusal::Closed));
-        assert!(!l.ballot(5, true), "no ballot before the Council entered");
+        assert!(!l.ballot(5, 0, CouncilVote::Confirm, H), "no ballot before the Council entered");
         assert_eq!((l.len(), l.deadline(), l.positions().to_vec()), before);
         // One hour before the deadline the entry is still admitted.
         l.admit(9, Kind::Participant, 99, 7 * H - 1).unwrap();
@@ -552,27 +706,133 @@ mod tests {
         let deadline = l.deadline();
         assert_eq!(l.admit(78, Kind::Council, 0, 7 * H), Err(Refusal::CouncilEntered), "terminal: no second Council entry");
         assert_eq!(l.admit(5, Kind::Participant, 99, 7 * H), Err(Refusal::CouncilEntered), "and no ordinary entrant after it");
-        for (member, vote) in [(77, true), (80, false), (81, false), (82, true)] {
-            assert!(l.ballot(member, vote));
+        for (member, vote) in [(77, CouncilVote::Confirm), (80, CouncilVote::Oppose), (81, CouncilVote::Oppose), (82, CouncilVote::Confirm)] {
+            assert!(l.ballot(member, 0, vote, 7 * H));
         }
-        assert!(!l.ballot(80, true), "one ballot per member");
+        assert!(!l.ballot(80, 0, CouncilVote::Confirm, 7 * H), "one ballot per member");
         assert_eq!((l.len(), l.deadline()), (3, deadline), "ballots change neither the ordinal nor the timer");
     }
 
     #[test]
-    fn a_council_majority_decides_and_a_council_that_does_not_confirm_its_member_counts_as_absent() {
+    fn council_majorities_are_recognized_only_at_cutoff_with_no_quorum() {
+        for (vote, outcome, winner) in
+            [(CouncilVote::Confirm, CouncilOutcome::Confirm, Side::Accuser), (CouncilVote::Oppose, CouncilOutcome::Oppose, Side::Accused)]
+        {
+            let mut l = council_fixture();
+            let cutoff = l.deadline();
+            assert!(l.ballot(7, 0, vote, cutoff - 1));
+            assert_eq!(l.winner(), None);
+            assert_eq!(l.settle(), None);
+            assert_eq!(l.close_round(0, cutoff - 1), None);
+            assert!(!l.is_final(cutoff));
+            assert!(l.is_due(cutoff));
+            let result = l.close_round(0, cutoff + 10).unwrap();
+            assert_eq!((result.outcome, result.recognized_at, result.deadline_before, result.deadline_after), (outcome, cutoff, cutoff, cutoff));
+            assert_eq!(l.winner(), Some(winner), "one cast vote is a simple majority without quorum");
+            assert!(l.is_final(cutoff));
+            assert!(!l.is_due(cutoff));
+            assert_eq!(l.council_round(), None);
+            assert_eq!(l.settle().unwrap().winner, winner);
+            assert_eq!(l.close_round(0, cutoff), None);
+            assert!(!l.ballot(8, 0, vote, cutoff - 1));
+            l.audit().unwrap();
+        }
+    }
+
+    fn council_fixture() -> Ladder<u32> {
         let mut l = Ladder::open(1, 10, 0, BASE_STAKE);
         l.admit(2, Kind::Participant, 20, H).unwrap();
         l.admit(7, Kind::Council, 0, 2 * H).unwrap();
-        assert_eq!(l.winner(), Side::Accused, "no ballots: the Council did not take part, the last ordinary participant wins");
-        l.ballot(7, true);
-        l.ballot(8, false);
-        assert_eq!(l.winner(), Side::Accused, "no majority for the entering member: as if the Council had not taken part");
-        l.ballot(9, true);
-        assert_eq!(l.winner(), Side::Accuser, "a majority confirms the entering member");
-        l.ballot(10, false);
-        l.ballot(11, false);
-        assert_eq!(l.winner(), Side::Accused, "a majority against returns the dispute to the last ordinary participant");
+        l
+    }
+
+    #[test]
+    fn deferrals_repeat_on_fresh_rounds_and_replays_cannot_extend_twice() {
+        let mut l = council_fixture();
+        let original = l.deadline();
+        let positions = l.positions().to_vec();
+        assert_eq!(l.council_round(), Some(0));
+        assert!(!l.ballot(7, 1, CouncilVote::Defer, original - 1));
+        assert!(!l.ballot(7, 0, CouncilVote::Defer, H), "not before Council entry");
+        assert!(l.ballot(7, 0, CouncilVote::Defer, original - 1));
+        assert!(!l.ballot(8, 0, CouncilVote::Confirm, original));
+        assert!(!l.ballot(8, 0, CouncilVote::Confirm, original + 1));
+        let first = l.close_round(0, original + H).unwrap();
+        assert_eq!((first.outcome, first.deadline_after), (CouncilOutcome::Defer, original + 7 * H));
+        assert_eq!(first.ballots, vec![Ballot { who: 7, choice: CouncilVote::Defer, cast_at: original - 1 }]);
+        assert_eq!(l.close_round(0, original + 20 * H), None);
+        assert_eq!(l.council_round(), Some(1));
+        assert!(l.active_ballots().is_empty());
+        assert!(!l.ballot(7, 0, CouncilVote::Defer, original));
+        assert!(l.ballot(7, 1, CouncilVote::Defer, original), "a new round permits the same member anew");
+        let second = l.close_round(1, original + 7 * H).unwrap();
+        assert_eq!((second.outcome, second.deadline_after), (CouncilOutcome::Defer, original + 14 * H));
+        assert_eq!(l.position_deadline(), original);
+        assert_eq!(l.deadline_source(), 1);
+        assert_eq!(l.positions(), positions);
+        assert_eq!(l.winner(), None);
+        assert_eq!(l.settle(), None);
+        assert!(!l.is_final(original + 14 * H));
+        assert_eq!(l.admit(9, Kind::Participant, 100, original + H), Err(Refusal::CouncilEntered));
+        let third = l.close_round(2, original + 100 * H).unwrap();
+        assert_eq!((third.outcome, third.recognized_at, third.deadline_after), (CouncilOutcome::AutomaticDefer, original + 14 * H, original + 21 * H));
+        assert_eq!(l.rounds().len(), 3);
+        assert_eq!(l.council_round(), Some(3));
+        assert!(l.ballot(7, 3, CouncilVote::Confirm, original + 14 * H));
+        assert_eq!(l.close_round(3, original + 21 * H).unwrap().outcome, CouncilOutcome::Confirm, "old deferral votes never carry forward");
+        assert_eq!(l.winner(), Some(Side::Accuser));
+        assert!(l.is_final(original + 21 * H));
+        l.audit().unwrap();
+    }
+
+    #[test]
+    fn empty_and_split_rounds_automatically_defer_once() {
+        for votes in [
+            vec![],
+            vec![CouncilVote::Confirm, CouncilVote::Oppose],
+            vec![CouncilVote::Confirm, CouncilVote::Oppose, CouncilVote::Defer],
+            vec![CouncilVote::Confirm, CouncilVote::Confirm, CouncilVote::Oppose, CouncilVote::Defer],
+        ] {
+            let mut l = council_fixture();
+            let cutoff = l.deadline();
+            for (i, vote) in votes.into_iter().enumerate() {
+                assert!(l.ballot(10 + i as u32, 0, vote, cutoff - 1));
+            }
+            let result = l.close_round(0, cutoff).unwrap();
+            assert_eq!(result.outcome, CouncilOutcome::AutomaticDefer);
+            assert_eq!(l.deadline(), cutoff + 7 * H);
+            assert_eq!(l.close_round(0, cutoff), None);
+            assert_eq!(l.close_round(1, cutoff), None);
+            assert!(!l.is_due(cutoff));
+            l.audit().unwrap();
+        }
+    }
+
+    #[test]
+    fn ordinary_cutoff_needs_no_council_recognition_and_audit_detects_corruption() {
+        let mut l = Ladder::open(1, 10, 0, BASE_STAKE);
+        assert!(!l.is_final(l.deadline() - 1));
+        assert!(l.is_final(l.deadline()));
+        assert!(!l.is_due(l.deadline()));
+        assert_eq!(l.winner(), Some(Side::Accuser));
+        assert_eq!(l.close_round(0, l.deadline()), None);
+        l.audit().unwrap();
+        l.positions[0].after += 1;
+        assert!(l.audit().is_err());
+        let mut c = council_fixture();
+        c.close_round(0, c.deadline()).unwrap();
+        c.rounds[0].deadline_after += 1;
+        assert!(c.audit().is_err());
+        let mut c = council_fixture();
+        c.ballot(7, 0, CouncilVote::Confirm, 2 * H);
+        c.close_round(0, c.deadline()).unwrap();
+        c.rounds[0].ballots.push(Ballot { who: 7, choice: CouncilVote::Oppose, cast_at: 2 * H });
+        assert!(c.audit().is_err());
+        let mut c = council_fixture();
+        c.ballot(7, 0, CouncilVote::Defer, 2 * H);
+        c.close_round(0, c.deadline()).unwrap();
+        c.rounds[0].ballots[0].cast_at = c.rounds[0].deadline_before;
+        assert!(c.audit().is_err(), "a ballot exactly at cutoff is not timely");
     }
 
     #[test]
@@ -581,7 +841,7 @@ mod tests {
         let mut l = Ladder::open(1, 1, 0, 10);
         l.admit(2, Kind::Participant, 2, H).unwrap();
         l.admit(3, Kind::Participant, 3, 2 * H).unwrap();
-        let s = l.settle();
+        let s = l.settle().unwrap();
         assert_eq!((s.winner, s.winners.clone(), s.losers.clone()), (Side::Accuser, vec![1, 3], vec![2]));
         assert_eq!(s.forfeits, vec![(2, 3, 12)], "the loser at 2 forfeits its stake of 12 to position 3");
         assert!(s.sanction_to_first && s.accused_lost);
@@ -589,7 +849,7 @@ mod tests {
         // The defender's side wins with two positions: the accuser's stake goes to the first defender.
         let mut m = Ladder::open(1, 1, 0, 10);
         m.admit(2, Kind::Participant, 2, H).unwrap();
-        let s = m.settle();
+        let s = m.settle().unwrap();
         assert_eq!((s.winner, s.winners.clone(), s.losers.clone()), (Side::Accused, vec![2], vec![1]));
         assert_eq!(s.forfeits, vec![(1, 2, 10)]);
         assert!(!s.sanction_to_first && !s.accused_lost);
@@ -597,9 +857,10 @@ mod tests {
         let mut c = Ladder::open(1, 1, 0, 10);
         c.admit(2, Kind::Participant, 2, H).unwrap();
         c.admit(9, Kind::Council, 0, 2 * H).unwrap();
-        c.ballot(10, false);
-        c.ballot(11, false);
-        let s = c.settle();
+        c.ballot(10, 0, CouncilVote::Oppose, 2 * H);
+        c.ballot(11, 0, CouncilVote::Oppose, 2 * H);
+        c.close_round(0, c.deadline()).unwrap();
+        let s = c.settle().unwrap();
         assert_eq!((s.winner, s.winners.clone(), s.losers.clone()), (Side::Accused, vec![2], vec![1, 3]));
         assert_eq!(s.forfeits, vec![(1, 2, 10)], "the accuser forfeits to the first defender; the Council entrant staked nothing");
         assert!(s.burns.is_empty());
@@ -608,9 +869,10 @@ mod tests {
         d.admit(2, Kind::Participant, 2, H).unwrap();
         d.admit(3, Kind::Participant, 3, 2 * H).unwrap();
         d.admit(9, Kind::Council, 0, 3 * H).unwrap();
-        d.ballot(10, false);
-        d.ballot(11, false);
-        let s = d.settle();
+        d.ballot(10, 0, CouncilVote::Oppose, 3 * H);
+        d.ballot(11, 0, CouncilVote::Oppose, 3 * H);
+        d.close_round(0, d.deadline()).unwrap();
+        let s = d.settle().unwrap();
         // The Council entrant took position 4 (the defender side); a vote against it hands the win to the accuser side (1, 3).
         assert_eq!((s.winner, s.winners.clone()), (Side::Accuser, vec![1, 3]));
         assert_eq!(s.forfeits, vec![(2, 3, 12)]);
@@ -623,8 +885,9 @@ mod tests {
         let mut l = Ladder::open(1, 1, 0, 10);
         l.admit(2, Kind::Participant, 2, H).unwrap();
         l.admit(9, Kind::Council, 0, 2 * H).unwrap();
-        l.ballot(9, true);
-        let s = l.settle();
+        l.ballot(9, 0, CouncilVote::Confirm, 2 * H);
+        l.close_round(0, l.deadline()).unwrap();
+        let s = l.settle().unwrap();
         assert_eq!(s.winner, Side::Accuser);
         assert!(s.forfeits.is_empty());
         assert_eq!(s.burns, vec![(2, 12)]);

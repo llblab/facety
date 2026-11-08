@@ -20,7 +20,8 @@ No session has been run. These are empty forms, not collected data. Copy a form 
 | Willing / refused / not asked / stopped | |
 | Action status: REQUESTED, SUPPLIED, ADMITTED within stated fixture assumptions, BLOCKED, REFUSED, PENDING or CONDITIONAL | |
 | Deadline before / deadline after / before cutoff | |
-| Council round / confirm-oppose-defer counts / recognized decision ID | |
+| Council round / round start / membership snapshot / timely confirm-oppose-defer counts | |
+| Deadline-only recognition / decision ID / next round start / fresh snapshot / no carried ballots | |
 | Seven-day extension cause: majority or automatic-cutoff / applied once / previous count / actual new work accepted | |
 | Nominal stake / backing reserved / own principal returned | |
 | Prize actually collectible / collected burn / allocation authority | |
