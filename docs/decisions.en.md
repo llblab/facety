@@ -468,6 +468,8 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 **D186 — [OWNER clarification, voluntary public Self-ID and responsibility], 2026-11-08.** Self-ID acts are undertaken by people who choose public, accountable participation: they identify themselves openly, accept responsibility for their signed claims and voluntarily dedicate their authored Self-ID records to the public domain. Clarifies the participation meaning in the reader and protocol §14. Preserves the separate first-publisher rights assertion for shared media and the existing open legal/consent mechanism; introduces no new admission gate, publication license or evidence standard. Supersedes no selected economic or identity rule. Evidence level: owner-selected commitment, not observed behavior or an implemented legal mechanism.
 
+**D187 — [OWNER naming clarification, FCTY expansion], 2026-11-08.** The token ticker FCTY expands to FaCT You, retaining that capitalization and word spacing. Complements D172's ticker selection; supersedes no asset, monetary or identity rule. Current participant rules, protocol and README carry the expansion; historical evidence and compatible serialized identifiers retain their original bytes.
+
 ### Earlier supersessions
 
 | Earlier description | Status |

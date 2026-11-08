@@ -16,7 +16,7 @@ The subject's identity acts, invitations, guarantees, dispute positions and auth
 
 ## 2. Money and responsibility
 
-FCTY is transferable money once it has entered an ordinary balance. XP is personal, non-transferable procedural authority. Buying FCTY does not buy XP or the right to create invitations from someone else's emission.
+FCTY stands for **FaCT You**. It is transferable money once it has entered an ordinary balance. XP is personal, non-transferable procedural authority. Buying FCTY does not buy XP or the right to create invitations from someone else's emission.
 
 FCTY has twelve decimal places. Its smallest quantum is 10^-12 FCTY, and monetary amounts are integer counts of that quantum.
 

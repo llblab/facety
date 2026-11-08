@@ -32,7 +32,7 @@ Three layers stay distinct:
 
 - **Identity** — claims about real, unique people, open to challenge. Guarantees and paths do not certify personhood.
 - **Responsibility** — personal XP and integrity from specified acts and consequences. They establish neither usefulness nor truth.
-- **Emission** — FCTY distribution under the protocol. Monetary holdings do not confer procedural authority.
+- **Emission** — FCTY (FaCT You) distribution under the protocol. Monetary holdings do not confer procedural authority.
 
 ## Where the project stands
 

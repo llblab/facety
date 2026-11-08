@@ -261,7 +261,7 @@ This is not biometric identification by the runtime. The software deterministica
 
 ## 8. Atmo supports a human network, not merely a token price
 
-DEOS supplies economic execution. Atmo is a network that uses DEOS. Facety is an application and a human-trust layer within Atmo. FCTY is the Facety fungible token. XP is its independent measure of procedural authority.
+DEOS supplies economic execution. Atmo is a network that uses DEOS. Facety is an application and a human-trust layer within Atmo. FCTY, expanded as **FaCT You**, is the Facety fungible token (D187). XP is its independent measure of procedural authority.
 
 **[SELECTED] (D184, D185) Monetary precision.** FCTY has **twelve decimal places**; its smallest quantum is **10^-12 FCTY**. Monetary amounts and allocations use integer counts of that quantum. Each computed stake is rounded upward once from its exact final nominal value, as specified in §26.5.
 
@@ -357,7 +357,7 @@ For investigation, distinguish continued participation, willingness to inspect/r
 | **TMCTOL** | Token Minting Curve and Treasury-Owned Liquidity. | Facety identity rules or its XP. |
 | **Atmo Network** | Concrete DEOS instance, DOT-oriented reserve policy, Buckets, Treasuries, instance governance, and support for applications. | Individual Facety identity judgments. |
 | **Facety** | Subjects, artifacts, Self-ID, invitations, guarantees, XP, disputes, liability, identity graph. | Direct discretionary access to Atmo capital. |
-| **FCTY** | Fungible economic asset used by the Facety economy. | Human identity or XP authority. |
+| **FCTY** | FaCT You, the fungible economic asset used by the Facety economy. | Human identity or XP authority. |
 | **XP** | Earned, non-transferable procedural authority and recorded identity work. | A transferable monetary claim. |
 
 Facety is not required to run as a separate blockchain. The target is the Atmo runtime based on Substrate/Polkadot SDK and DEOS mechanisms. **DEOS Actors** here means bounded runtime execution infrastructure, not the human participants whose identity claims Facety records.

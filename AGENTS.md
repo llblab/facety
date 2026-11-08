@@ -59,7 +59,7 @@ Rust research simulator in [`simulator/`](simulator): standard library only, `ca
 
 ## Engineering
 
-- The monetary token ticker is **FCTY**. The former ticker FACY is retained only in naming history, immutable pre-rename evidence and compatible serialized/historical API identifiers; do not rewrite saved evidence or break its schema for an editorial rename.
+- The monetary token ticker is **FCTY**, expanded as **FaCT You** with that capitalization and spacing. The former ticker FACY is retained only in naming history, immutable pre-rename evidence and compatible serialized/historical API identifiers; do not rewrite saved evidence or break its schema for an editorial rename.
 
 - Research runners and evidence generation use Rust. Do not add or use Python helpers for project work, and do not revive Node.js as a research runner; the Node simulator stays retired.
 
