@@ -8,11 +8,10 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 ## Dispute safety reconciliation
 
-**Current assignment: actualize the dispute review, then dry the affected contracts without changing selected behavior.** Canonical questions live in [Q26](DECISIONS_NEEDED.md#q26-dispute-safety-and-arithmetic-review) and the co-presence evidence question in [Q19](DECISIONS_NEEDED.md#q19--second-accounts-and-the-unwitting-inviter-d127). D159 already selects last-unopposed-side finality; D182-D183 still exempt cancellation from additional XP penalties; D171 still permits unlimited deferrals. Review recommendations do not replace these selections.
+**Human-gated; local preparation is complete.** The [sanction matrix](docs/facety.protocol.en.md#242-sanction-and-settlement-matrix) separates selected flows from OPEN cells. Arithmetic/provenance and capped replay are covered by the [model contract](docs/simulator.en.md#deviations-and-assumptions). D159's ordinary default, D182-D183's cancellation exemption and D171's unlimited deferrals remain unchanged; no further loop iteration can select their replacements.
 
-- [ ] **Sanction ownership checkpoint (gated-but-preparable):** consolidate a case-type/party/amount/destination/XP/roster matrix into the protocol's existing sanction section, with explicit OPEN cells rather than inferred combined fines; keep the reader aligned. Check every populated cell against the selected rule and model boundary, then run documentation integrity tests.
-
-**Stop condition:** the remaining sanction checkpoint is validated and no supported simplification remains in the affected closure. Changes to cancellation penalties, ordinary default or restriction duration need the explicit Q26 choices; co-presence recognition needs Q19's evidence contract. No session, pilot, new numerical cap/quorum, or broad benchmark is authorized.
+- [ ] **Resolve the accusation/defense contract (human-gated):** answer [Q26](DECISIONS_NEEDED.md#q26-dispute-safety-and-arithmetic-review) on active cancellation penalties/shortfall/no-recipient allocation, identity-case default and any restriction bound with its expiry effect, and exact coefficient precision. Then integrate only the explicit choices into rules, tests and provenance; no inferred cap, quorum or combined fine.
+- [ ] **Bind the co-presence evidence contract (human-gated):** answer [Q19](DECISIONS_NEEDED.md#q19--second-accounts-and-the-unwitting-inviter-d127) on authenticity, freshness, signer-to-person binding, recognition authority and fabricated meetings before relying on the unwitting-inviter exception as a validated defense. No session, pilot or new empirical programme is authorized.
 
 ## Operational follow-up boundary
 

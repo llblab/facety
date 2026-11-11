@@ -2021,7 +2021,7 @@ impl World {
     /// (the proof of reality of a genuine accused, D136); otherwise the last unopposed side wins, or the Council's equal-vote majority once
     /// it entered. Every winner takes its stake back and the stake of the position directly below it; every loser forfeits to the position
     /// directly above it (the stake of a losing top position is burned); losing participants lose half their XP; when the accused lost, the
-    /// base stake is charged to the accused (paid to the accuser) and to each guarantor of the accused at opening (burned), the uncollectible
+    /// base stake is charged to the accused (paid to the accuser) and to each actual historical XP-receiving guarantor (burned), the uncollectible
     /// part becoming debt. Refused before the deadline.
     pub fn settle_case(&mut self, case: u32, forced: Option<Side>) -> Result<CaseOutcome, Reject> {
         if !self.case_final(case) {
