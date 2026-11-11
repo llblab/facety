@@ -2,7 +2,7 @@
 //! authorization are supplied fixtures; no test purports to settle the open appeal financial contract.
 use facety_sim::amount::Amount;
 use facety_sim::chekharda::{CouncilOutcome, Side};
-use facety_sim::world::{AppealExecution, AppealInitiator, AppealStage, AppealVote, Config, World, COEF_ONE, DAY};
+use facety_sim::world::{AppealExecution, AppealInitiator, AppealStage, AppealVote, Config, TransactionTarget, World, COEF_ONE, DAY};
 
 fn world() -> World {
     let mut pairs = Vec::new();
@@ -44,7 +44,7 @@ fn closed_wrongful_case() -> (World, u32) {
 
 fn opening(w: &mut World, prior: u32, initiator: AppealInitiator) -> u32 {
     let request = w.request_appeal(prior, 5).unwrap();
-    let appeal = w.record_appeal_opening_fixture(request, initiator).unwrap();
+    let appeal = w.record_transaction_appeal_fixture(request, TransactionTarget::Opening(prior), initiator).unwrap();
     w.audit().unwrap();
     appeal
 }
@@ -131,6 +131,48 @@ fn appeal_admission_checks_canonical_transaction_and_qualification_atomically() 
     w.settle_case(fixture, None).unwrap();
     let fixture_request = w.request_appeal(fixture, 10).unwrap();
     assert!(w.record_appeal_opening_fixture(fixture_request, AppealInitiator::TrustedCollectiveCouncil).unwrap_err().0.contains("no recorded opening"));
+    w.audit().unwrap();
+}
+
+#[test]
+fn typed_appeal_targets_reject_aliases_and_unrelated_openings_before_mutation() {
+    let (mut w, prior) = closed_wrongful_case();
+    let inv = w.create_invitation(0, w.eligible_emission(0).unwrap()).unwrap();
+    let unrelated = w.record_case_opening(&[0, 10]).unwrap();
+    let request = w.request_appeal(prior, 5).unwrap();
+    assert_eq!(inv, prior, "a real invitation deliberately aliases the prior opening ID");
+    assert!(w.transaction_provenance(TransactionTarget::SelfId(prior)).is_ok());
+    assert!(w.transaction_provenance(TransactionTarget::Invitation(prior)).is_ok());
+    assert!(w.transaction_provenance(TransactionTarget::Opening(unrelated)).is_ok());
+    let before = w.clone();
+    for target in
+        [TransactionTarget::SelfId(prior), TransactionTarget::Invitation(prior), TransactionTarget::Opening(unrelated), TransactionTarget::Opening(u32::MAX)]
+    {
+        let error = w.record_transaction_appeal_fixture(request, target, AppealInitiator::TrustedCollectiveCouncil).unwrap_err();
+        assert!(error.0.contains("requested prior opening transaction"));
+        assert!(w.appeal(0).is_none());
+        assert_eq!(w.appeal_request(request), before.appeal_request(request));
+        assert!(w.appeal_request(request + 1).is_none());
+        assert_eq!(w.case_opening(unrelated), before.case_opening(unrelated));
+        assert_eq!(w.case_outcome(prior), before.case_outcome(prior));
+        assert_eq!(format!("{:?}", w.stats), format!("{:?}", before.stats));
+        assert_eq!(
+            (w.now(), w.minted(), w.burned(), w.vault(), w.pending_openings()),
+            (before.now(), before.minted(), before.burned(), before.vault(), before.pending_openings())
+        );
+        for id in 0..w.len() as u32 {
+            assert_eq!((w.xp(id), w.coefficient(id), w.responsibility_units(id)), (before.xp(id), before.coefficient(id), before.responsibility_units(id)));
+            assert_eq!((w.liquid(id), w.spendable(id), w.debt(id)), (before.liquid(id), before.spendable(id), before.debt(id)));
+            assert_eq!((w.accepted(id), w.held(id), w.path_blocked(id)), (before.accepted(id), before.held(id), before.path_blocked(id)));
+        }
+        w.audit().unwrap();
+    }
+    let typed = w.record_transaction_appeal_fixture(request, TransactionTarget::Opening(prior), AppealInitiator::TrustedCollectiveCouncil).unwrap();
+    let mut implicit = before;
+    let legacy = implicit.record_appeal_opening_fixture(request, AppealInitiator::TrustedCollectiveCouncil).unwrap();
+    assert_eq!((typed, legacy), (0, 0), "refused targets allocate no appeal ID");
+    assert_eq!(w.appeal(typed), implicit.appeal(legacy), "the compatibility entrypoint uses the same typed transition");
+    assert_eq!(w.appeal(typed).unwrap().target(), TransactionTarget::Opening(prior));
     w.audit().unwrap();
 }
 

@@ -78,6 +78,11 @@ pub struct AppealRecord {
 }
 
 impl AppealRecord {
+    /// D176 targets the prior opening, never a numerically equal Self-ID, invitation or identity ID.
+    pub fn target(&self) -> TransactionTarget {
+        TransactionTarget::Opening(self.prior_case)
+    }
+
     pub fn deadline(&self) -> Option<i64> {
         self.rounds.last().map(|r| r.deadline_after).or_else(|| self.activated_at.map(|at| at + 7 * DAY_HOURS))
     }
@@ -236,14 +241,23 @@ impl World {
     /// Core-only admitted fixture: the caller supplies evidence admission and, for collective initiation,
     /// collective authority. No individual consul grants that authority. Appeal financial scope is not executed.
     pub fn record_appeal_opening_fixture(&mut self, request: u32, initiator: AppealInitiator) -> Result<u32, Reject> {
-        let request_record = self.appeal_request(request).ok_or(Reject("no such appeal request"))?;
-        let prior_case = request_record.prior_case;
-        let prior = self.case_opening(prior_case).ok_or(Reject("prior case has no recorded opening transaction"))?;
+        let prior_case = self.appeal_request(request).ok_or(Reject("no such appeal request"))?.prior_case;
+        self.record_transaction_appeal_fixture(request, TransactionTarget::Opening(prior_case), initiator)
+    }
+
+    /// Explicit typed-target form of the same admitted fixture; namespace/link mismatches reject before any effects.
+    pub fn record_transaction_appeal_fixture(&mut self, request: u32, target: TransactionTarget, initiator: AppealInitiator) -> Result<u32, Reject> {
+        let prior_case = self.appeal_request(request).ok_or(Reject("no such appeal request"))?.prior_case;
+        if target != TransactionTarget::Opening(prior_case) {
+            return Err(Reject("appeal must target the requested prior opening transaction"));
+        }
+        let provenance = self.transaction_provenance(target).map_err(|_| Reject("prior case has no recorded opening transaction"))?;
+        let accused = provenance.author;
+        let prior = self.case_opening(prior_case).expect("resolved opening provenance");
         let effects = self.case_effects[prior_case as usize].as_ref().ok_or(Reject("prior case is not settled"))?;
         if prior.stage != OpeningStage::Final || effects.reversed {
             return Err(Reject("prior opening has no unreversed final verdict"));
         }
-        let accused = prior.author;
         let (author_xp_at_recording, guarantors) = match initiator {
             AppealInitiator::Participant(author) => {
                 if author as usize >= self.subjects.len() {

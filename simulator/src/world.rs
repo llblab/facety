@@ -35,6 +35,34 @@ pub const COEF_ONE: u32 = 1_000_000;
 pub const COEF_STEP: u32 = 1_000;
 pub type Id = u32;
 
+/// Namespaces are distinct even when their local numeric IDs coincide.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum TransactionTarget {
+    SelfId(u32),
+    Invitation(u32),
+    /// A recorded ordinary-case opening, keyed by case ID; an already-active fixture alone is not a transaction.
+    Opening(u32),
+}
+
+/// An actual source receipt, including suspended empty receipts and retained revoked recipients.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct XpReceipt<'a> {
+    pub credited_at: i64,
+    pub recipients: &'a [Id],
+    pub revoked: bool,
+}
+
+/// Borrowed recorded facts, not an admitted allegation or a qualified liable-party set.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct TransactionProvenance<'a> {
+    pub target: TransactionTarget,
+    pub author: Id,
+    pub recorded_at: i64,
+    pub guarantors: &'a [Id],
+    pub funding_source: Option<TransactionTarget>,
+    pub xp_receipt: Option<XpReceipt<'a>>,
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Reject(pub &'static str);
 
@@ -680,6 +708,26 @@ impl World {
     pub fn act_guarantors(&self, act: u32) -> &[Id] {
         &self.acts[act as usize].guarantors
     }
+    /// Resolve only the named transaction namespace; missing records never fall back to an identity or another kind.
+    pub fn transaction_provenance(&self, target: TransactionTarget) -> Result<TransactionProvenance<'_>, Reject> {
+        let (author, recorded_at, guarantors, funding_source, xp_receipt) = match target {
+            TransactionTarget::SelfId(id) => {
+                let act = self.acts.get(id as usize).ok_or(Reject("no such Self-ID transaction"))?;
+                let receipt = act.credit.as_ref().map(|c| XpReceipt { credited_at: c.at, recipients: c.recipients.as_ref(), revoked: c.revoked });
+                (act.subject, act.recorded_at, act.guarantors.as_ref(), None, receipt)
+            }
+            TransactionTarget::Invitation(id) => {
+                let inv = self.invitations.get(id as usize).ok_or(Reject("no such invitation transaction"))?;
+                (inv.creator, inv.created_at, inv.guarantors.as_slice(), Some(TransactionTarget::SelfId(inv.funding_act)), None)
+            }
+            TransactionTarget::Opening(id) => {
+                let opening = self.case_opening(id).ok_or(Reject("no recorded opening transaction"))?;
+                (opening.author, opening.recorded_at, opening.guarantors.as_slice(), None, None)
+            }
+        };
+        Ok(TransactionProvenance { target, author, recorded_at, guarantors, funding_source, xp_receipt })
+    }
+
     /// K referendum lever: lowering K never cuts existing valences or links.
     pub fn set_k(&mut self, k: u32) {
         assert!(k >= 1);
@@ -3234,6 +3282,52 @@ mod tests {
     }
 
     #[test]
+    fn typed_transaction_provenance_separates_namespaces_and_actual_receipts() {
+        let mut w = world(8);
+        let source = w.create_self_id(0).unwrap();
+        assert_eq!(source, 0);
+        let pending = w.transaction_provenance(TransactionTarget::SelfId(source)).unwrap();
+        assert_eq!((pending.author, pending.recorded_at, pending.xp_receipt), (0, 0, None));
+        let funding = w.create_self_id(3).unwrap();
+        for id in [1, 2, 4, 5, 6, 7] {
+            w.create_self_id(id).unwrap();
+        }
+        w.tick(DAY);
+        w.create_self_id(0).unwrap();
+        w.tick(2 * DAY);
+        let inv = w.create_invitation(3, funding).unwrap();
+        let opening = w.record_case_opening(&[1, 4]).unwrap();
+        assert_eq!((inv, opening), (source, source), "numeric IDs deliberately alias across all three namespaces");
+        let source_record = w.transaction_provenance(TransactionTarget::SelfId(source)).unwrap();
+        let invitation_record = w.transaction_provenance(TransactionTarget::Invitation(inv)).unwrap();
+        let opening_record = w.transaction_provenance(TransactionTarget::Opening(opening)).unwrap();
+        assert_eq!((source_record.author, invitation_record.author, opening_record.author), (0, 3, 1));
+        assert_eq!(source_record.target, TransactionTarget::SelfId(source));
+        let receipt = source_record.xp_receipt.unwrap();
+        assert_eq!((receipt.credited_at, receipt.revoked), (DAY, false));
+        assert_eq!(receipt.recipients, [&[0], source_record.guarantors].concat());
+        assert_eq!(invitation_record.funding_source, Some(TransactionTarget::SelfId(funding)));
+        assert_eq!(w.transaction_provenance(invitation_record.funding_source.unwrap()).unwrap().author, 3);
+        assert!(invitation_record.xp_receipt.is_none() && opening_record.xp_receipt.is_none());
+        assert_eq!(opening_record.guarantors, w.case_opening(opening).unwrap().guarantors);
+        let receipt_recipients = receipt.recipients.to_vec();
+        assert!(w.revoke_source_xp(source));
+        let revoked = w.transaction_provenance(TransactionTarget::SelfId(source)).unwrap().xp_receipt.unwrap();
+        assert!(revoked.revoked);
+        assert_eq!(revoked.recipients, receipt_recipients, "revocation retains actual issuance provenance");
+        let cancelled = w.create_self_id(6).unwrap();
+        w.cancel_self_id(6, cancelled).unwrap();
+        assert!(w.transaction_provenance(TransactionTarget::SelfId(cancelled)).unwrap().xp_receipt.is_none());
+        let fixture = w.begin_case(&[2, 7]).unwrap();
+        assert!(w.transaction_provenance(TransactionTarget::SelfId(fixture)).is_ok());
+        assert_eq!(w.transaction_provenance(TransactionTarget::Opening(fixture)), Err(Reject("no recorded opening transaction")));
+        for target in [TransactionTarget::SelfId(u32::MAX), TransactionTarget::Invitation(u32::MAX), TransactionTarget::Opening(u32::MAX)] {
+            assert!(w.transaction_provenance(target).is_err());
+        }
+        w.audit().unwrap();
+    }
+
+    #[test]
     fn audit_rejects_invalid_invitation_funding_and_roster_provenance() {
         let mut w = world(8);
         rights(&mut w, &(0..8).collect::<Vec<_>>());
@@ -4274,6 +4368,9 @@ mod tests {
             w.tick(w.now() + 24);
             assert_eq!((0..w.len() as Id).map(|i| w.responsibility_units(i)).collect::<Vec<_>>(), before, "no new units for anyone during debt");
             assert_eq!(w.coefficient(challenger), coef + COEF_STEP, "own maturity still repairs integrity");
+            let receipt = w.transaction_provenance(TransactionTarget::SelfId(act)).unwrap().xp_receipt.unwrap();
+            assert!(receipt.recipients.is_empty() && !receipt.revoked, "a suspended actual receipt is not missing or reconstructed from guarantors");
+            assert_eq!(receipt.credited_at, w.now());
             assert!(guarantors.len() <= 12);
             suspended += 1;
             assert!(suspended <= 7, "seven units repay a debt of seven");
