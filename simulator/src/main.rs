@@ -458,8 +458,8 @@ fn main() {
                 let f = |x: Option<f64>| x.map_or("null".into(), |v| format!("{v:.5}"));
                 let g = |x: Option<i64>| x.map_or("null".into(), |v| v.to_string());
                 let d = &sim.det;
-                let mut line = format!(
-                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"casesSettled\":{},\"caseDaysMean\":{},\"maxPositions\":{},\"deadlineExtensions\":{},\"councilEntries\":{},\"refusedFunds\":{},\"holdDaysHonest\":{},\"holdDaysAttackers\":{},\"stakeLostHonest\":{},\"stakeLostAttackers\":{},\"debtHonest\":{},\"debtAttackers\":{},\"xpHalved\":{},\"councilTurnover\":{},\"integrityLost\":{},\"integrityRecovering\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1}}}",
+                let line = format!(
+                    "{{\"seed\":{},\"configDigest\":{},\"prefixDays\":{},\"prefixHonest\":{},\"honest\":{},\"attackers\":{},\"attackerShare\":{},\"dirtyShare\":{},\"daysTo33pct\":{},\"daysTo50pct\":{},\"supply\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerHeld\":{},\"accusations\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"casesOnGenuine\":{},\"genuineInvalidated\":{},\"falseInvalidated\":{},\"linksLeft\":{},\"casesRefusedXp\":{},\"casesSettled\":{},\"caseDaysMean\":{},\"maxPositions\":{},\"deadlineExtensions\":{},\"councilEntries\":{},\"refusedFunds\":{},\"holdDaysHonest\":{},\"holdDaysAttackers\":{},\"stakeLostHonest\":{},\"stakeLostAttackers\":{},\"debtHonest\":{},\"debtAttackers\":{},\"xpHalved\":{},\"councilTurnover\":{},\"integrityLost\":{},\"integrityRecovering\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{},\"censored\":{},\"seconds\":{:.1},\"engine\":{},\"randomnessPolicy\":{},\"integrityPolicy\":{},\"integrity\":{}}}",
                     json::string(&sim.cfg.seed),
                     json::string(&sim.config_digest()),
                     prefix_days,
@@ -505,17 +505,12 @@ fn main() {
                     sim.world.path_searches_exhausted(),
                     sim.world.path_search_steps(),
                     sim.censored.map_or("null".to_string(), json::string),
-                    elapsed
-                );
-                // Standalone summaries retain the same engine, randomness and integrity precision identity as saved full results.
-                line.pop();
-                line.push_str(&format!(
-                    ",\"engine\":{},\"randomnessPolicy\":{},\"integrityPolicy\":{},\"integrity\":{}}}",
+                    elapsed,
                     json::string(facety_sim::runner::ENGINE),
                     json::string(facety_sim::rng::RANDOMNESS_POLICY),
                     json::string(facety_sim::world::INTEGRITY_POLICY),
                     sim.world.cfg.integrity
-                ));
+                );
                 // Printed as soon as the seed finishes (stdout is line-buffered), so long runs report progress; order is by completion.
                 println!("{line}");
             });
