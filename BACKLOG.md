@@ -10,10 +10,9 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **Current assignment: actualize the dispute review, then dry the affected contracts without changing selected behavior.** Canonical questions live in [Q26](DECISIONS_NEEDED.md#q26-dispute-safety-and-arithmetic-review) and the co-presence evidence question in [Q19](DECISIONS_NEEDED.md#q19--second-accounts-and-the-unwitting-inviter-d127). D159 already selects last-unopposed-side finality; D182-D183 still exempt cancellation from additional XP penalties; D171 still permits unlimited deferrals. Review recommendations do not replace these selections.
 
-- [ ] **Arithmetic/provenance checkpoint (local-actionable):** expose the existing millionth-coefficient rounding convention in result provenance, pin its precision boundary and the capped chronological replay counterexample with deterministic Rust tests, and retain exact stake-ceiling/reference coverage. No new coefficient or sanction rule, research sweep or saved-evidence rewrite. Validate with focused tests and `cargo test --release`.
 - [ ] **Sanction ownership checkpoint (gated-but-preparable):** consolidate a case-type/party/amount/destination/XP/roster matrix into the protocol's existing sanction section, with explicit OPEN cells rather than inferred combined fines; keep the reader aligned. Check every populated cell against the selected rule and model boundary, then run documentation integrity tests.
 
-**Stop condition:** the two local checkpoints are validated and no supported simplification remains in their closure. Changes to cancellation penalties, ordinary default or restriction duration need the explicit Q26 choices; co-presence recognition needs Q19's evidence contract. No session, pilot, new numerical cap/quorum, or broad benchmark is authorized.
+**Stop condition:** the remaining sanction checkpoint is validated and no supported simplification remains in the affected closure. Changes to cancellation penalties, ordinary default or restriction duration need the explicit Q26 choices; co-presence recognition needs Q19's evidence contract. No session, pilot, new numerical cap/quorum, or broad benchmark is authorized.
 
 ## Operational follow-up boundary
 

@@ -333,7 +333,8 @@ impl RunConfig {
         );
         // Keep behavior extensions explicit in the saved configuration and its digest.
         format!(
-            "{{\"moneyPolicy\":\"integer-quanta/12-decimals/final-stake-ceiling/v1\",\"caseAdmissionPolicy\":{},\"appealExecutionPolicy\":{},\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
+            "{{\"moneyPolicy\":\"integer-quanta/12-decimals/final-stake-ceiling/v1\",\"integrityPolicy\":{},\"caseAdmissionPolicy\":{},\"appealExecutionPolicy\":{},\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},{}",
+            json::string(crate::world::INTEGRITY_POLICY),
             json::string(crate::world::CASE_ADMISSION_POLICY),
             json::string(APPEAL_EXECUTION_POLICY),
             json::string(COUNCIL_VOTING_POLICY),
@@ -2759,6 +2760,7 @@ mod tests {
             "appealExecutionPolicy",
             "caseAdmissionPolicy",
             "moneyPolicy",
+            "integrityPolicy",
             "openingTransactions",
             "pendingOpenings",
             "restoration",
@@ -2769,6 +2771,7 @@ mod tests {
         ] {
             assert!(text.contains(&format!("\"{key}\":")), "missing {key}");
         }
+        assert!(text.contains(&format!("\"integrityPolicy\":{}", json::string(crate::world::INTEGRITY_POLICY))));
         // A different setting with the same seed has a different digest; the same settings the same digest.
         let mut other = base.clone();
         other.detection.false_positive = 0.5;
@@ -2778,6 +2781,7 @@ mod tests {
         assert_eq!(a.config_digest(), b.config_digest());
         for mutate in [
             (|c: &mut RunConfig| c.world.halving_spares_council = true) as fn(&mut RunConfig),
+            |c: &mut RunConfig| c.world.integrity = false,
             |c: &mut RunConfig| c.detection.repeat_correlation = 0.5,
             |c: &mut RunConfig| c.detection.persistent_errors = true,
         ] {

@@ -507,9 +507,15 @@ fn main() {
                     sim.censored.map_or("null".to_string(), json::string),
                     elapsed
                 );
-                // Standalone summaries retain the same engine and randomness identity as saved full results.
+                // Standalone summaries retain the same engine, randomness and integrity precision identity as saved full results.
                 line.pop();
-                line.push_str(&format!(",\"engine\":{},\"randomnessPolicy\":{}}}", json::string(facety_sim::runner::ENGINE), json::string(facety_sim::rng::RANDOMNESS_POLICY)));
+                line.push_str(&format!(
+                    ",\"engine\":{},\"randomnessPolicy\":{},\"integrityPolicy\":{},\"integrity\":{}}}",
+                    json::string(facety_sim::runner::ENGINE),
+                    json::string(facety_sim::rng::RANDOMNESS_POLICY),
+                    json::string(facety_sim::world::INTEGRITY_POLICY),
+                    sim.world.cfg.integrity
+                ));
                 // Printed as soon as the seed finishes (stdout is line-buffered), so long runs report progress; order is by completion.
                 println!("{line}");
             });

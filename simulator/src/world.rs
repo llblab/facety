@@ -27,7 +27,9 @@ pub const COUNCIL_EXECUTION_POLICY: &str = "trusted-ids/first-ballot/whole-hour-
 pub const CASE_ADMISSION_POLICY: &str = "trusted-ids/recording-xp-and-mutual-roster/24h-activation/author-cancellation/v2";
 /// D42: a valid, uncancelled Self-ID matures, and its ordinary XP is earned, exactly this many hours after creation.
 pub const MATURITY_HOURS: i64 = 24;
-/// The integrity coefficient is kept in millionths: 1,000,000 is 1 (integer arithmetic keeps results reproducible).
+/// Model coefficient precision and penalty rounding, distinct from D165's final-XP floor.
+pub const INTEGRITY_POLICY: &str = "millionths/penalty-f64-floor/own-maturity-1000/cap-one/v1";
+/// The model stores integrity in millionths; repeated halving can lose precision.
 pub const COEF_ONE: u32 = 1_000_000;
 /// Each matured Self-ID of the account itself restores this much integrity (1/1000, D165 variant).
 pub const COEF_STEP: u32 = 1_000;
@@ -2273,6 +2275,10 @@ impl World {
         self.apply_xp_penalty(id, fraction, Some(case))
     }
 
+    fn penalized_coefficient(coef: u32, fraction: f64) -> u32 {
+        (f64::from(coef) * (1.0 - fraction)).floor() as u32
+    }
+
     fn apply_xp_penalty(&mut self, id: Id, fraction: f64, case: Option<u32>) -> i32 {
         assert!(fraction.is_finite() && (0.0..=1.0).contains(&fraction), "XP penalty fraction must be finite and between zero and one");
         let s = &mut self.subjects[id as usize];
@@ -2286,7 +2292,7 @@ impl World {
         if self.cfg.integrity {
             // The integrity variant: the coefficient is cut, the credits stay; the XP removed is the visible drop (rounded down).
             let before = s.xp;
-            s.coef = (f64::from(s.coef) * (1.0 - fraction)).floor() as u32;
+            s.coef = Self::penalized_coefficient(s.coef, fraction);
             s.low_coef = s.low_coef.min(s.coef);
             self.refresh_xp(id);
             return before - self.subjects[id as usize].xp;
@@ -2310,7 +2316,7 @@ impl World {
             maturities = adjustment.at_maturities;
             if !adjustment.reversed {
                 coef = match adjustment.kind {
-                    IntegrityAdjustmentKind::Penalty { fraction, .. } => (f64::from(coef) * (1.0 - fraction)).floor() as u32,
+                    IntegrityAdjustmentKind::Penalty { fraction, .. } => Self::penalized_coefficient(coef, fraction),
                     IntegrityAdjustmentKind::InheritedCap(cap) => coef.min(cap),
                 };
             }
@@ -3564,7 +3570,7 @@ mod tests {
         assert!(!w.act_guarantors(act).contains(&carol));
     }
 
-    /// XP as the owner defined it (D165): live credits times the integrity coefficient, rounded down.
+    /// Effective XP from live credits and the model's stored coefficient, rounded down.
     fn derived(w: &World, id: Id) -> i32 {
         let s = &w.subjects[id as usize];
         (i64::from(s.raw) * i64::from(s.coef) / i64::from(COEF_ONE)) as i32
@@ -3604,25 +3610,45 @@ mod tests {
     }
 
     #[test]
-    fn case_integrity_restoration_replays_maturities_and_is_inert_on_repeat() {
+    fn integrity_millionth_rounding_diverges_from_exact_halving_at_seven_losses() {
         let mut w = live_world();
-        w.penalize_xp(0, 0.2);
-        assert_eq!(w.coefficient(0), 800_000);
-        w.penalize_xp_for_case(0, 0.5, 71);
-        assert_eq!(w.coefficient(0), 400_000);
-        for _ in 0..20 {
+        while w.subjects[0].raw < 128 {
             w.create_self_id(0).unwrap();
             w.tick(w.now() + DAY);
         }
-        assert_eq!(w.coefficient(0), 420_000);
+        assert_eq!(w.subjects[0].raw, 128);
+        for losses in 1..=7 {
+            w.penalize_xp_for_case(0, 0.5, losses);
+            assert_eq!(w.coefficient(0), COEF_ONE / (1 << losses));
+            assert_eq!(World::replay_integrity(&w.subjects[0]), Some(w.coefficient(0)));
+            if losses < 7 {
+                assert_eq!(w.xp(0), 128 / (1 << losses));
+            }
+        }
+        assert_eq!(w.coefficient(0), 7_812, "the exact coefficient would be 1/128, or 7,812.5 millionths");
+        assert_eq!(w.xp(0), 0, "exact rational halving would leave one XP from 128 live units");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn case_integrity_restoration_replays_capped_maturities_and_preserves_later_losses() {
+        let mut w = live_world();
+        w.penalize_xp_for_case(0, 0.5, 71);
+        assert_eq!(w.coefficient(0), 500_000);
+        for _ in 0..300 {
+            w.create_self_id(0).unwrap();
+            w.tick(w.now() + DAY);
+        }
+        assert_eq!(w.coefficient(0), 800_000);
+        w.penalize_xp(0, 0.5);
+        assert_eq!(w.coefficient(0), 400_000);
         let units = w.subjects[0].raw;
         assert_eq!(w.restore_case_xp_penalties(71), 1);
-        assert_eq!(w.coefficient(0), 820_000, "the generic 0.8 coefficient retains twenty own maturities without the reversed loss");
+        assert_eq!(w.coefficient(0), 500_000, "without the first loss, repairs cap at one before the retained halving; doubling 0.4 to 0.8 is wrong");
         assert_eq!(w.subjects[0].raw, units, "restoring integrity creates no responsibility units");
         assert_eq!(w.subjects[0].low_coef, 400_000, "the historical minimum remains recorded");
         assert_eq!(w.restore_case_xp_penalties(71), 0);
-        assert_eq!(w.coefficient(0), 820_000);
-        w.audit_integrity().unwrap();
+        assert_eq!(w.coefficient(0), 500_000);
         w.audit().unwrap();
     }
 

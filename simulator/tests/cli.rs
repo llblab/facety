@@ -16,6 +16,8 @@ fn prefix_only_prints_one_json_line_per_seed_with_the_snapshot_day() {
         facety_sim::json::validate(line).unwrap();
         assert!(line.contains(&format!("\"engine\":{}", facety_sim::json::string(facety_sim::runner::ENGINE))));
         assert!(line.contains(&format!("\"randomnessPolicy\":{}", facety_sim::json::string(facety_sim::rng::RANDOMNESS_POLICY))));
+        assert!(line.contains(&format!("\"integrityPolicy\":{}", facety_sim::json::string(facety_sim::world::INTEGRITY_POLICY))));
+        assert!(line.contains("\"integrity\":true"));
         assert!(line.starts_with("{\"seed\":\"grown-") && line.ends_with('}'), "{line}");
         assert!(line.contains("\"censored\":\"stopAtHonest\""), "the prefix must stop at the target: {line}");
     }
@@ -29,6 +31,12 @@ fn a_short_attack_run_reports_shares_and_keeps_the_books() {
     let text = String::from_utf8(out.stdout).unwrap();
     assert!(text.contains("\"attackerShare\":0.") || text.contains("\"attackerShare\":null"), "{text}");
     assert!(text.contains(&format!("\"randomnessPolicy\":{}", facety_sim::json::string(facety_sim::rng::RANDOMNESS_POLICY))));
+    let ablation = run(&["grown", "--seeds", "1", "--target-honest", "100", "--prefix-only", "--no-integrity"]);
+    assert!(ablation.status.success());
+    let ablation = String::from_utf8(ablation.stdout).unwrap();
+    facety_sim::json::validate(ablation.trim()).unwrap();
+    assert!(ablation.contains("\"integrity\":false"));
+    assert!(ablation.contains(&format!("\"integrityPolicy\":{}", facety_sim::json::string(facety_sim::world::INTEGRITY_POLICY))));
 }
 
 #[test]
@@ -117,7 +125,20 @@ fn saved_results_are_valid_complete_reproducible_and_never_overwritten_silently(
     assert_eq!(saved.len(), 2);
     let text = std::fs::read_to_string(&saved[0]).unwrap();
     facety_sim::json::validate(&text).expect("saved file is valid JSON");
-    for key in ["meta", "commit", "elapsedSeconds", "argv", "result", "schema", "randomness", "effectiveConfig", "phases", "completedDays", "censored"] {
+    for key in [
+        "meta",
+        "commit",
+        "elapsedSeconds",
+        "argv",
+        "result",
+        "schema",
+        "randomness",
+        "integrityPolicy",
+        "effectiveConfig",
+        "phases",
+        "completedDays",
+        "censored",
+    ] {
         assert!(text.contains(&format!("\"{key}\":")), "saved file lacks {key}");
     }
     assert!(text.contains("\"phases\":[{\"name\":\"attack\""), "the attack phase keeps its own configuration");
