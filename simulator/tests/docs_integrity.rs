@@ -150,8 +150,67 @@ fn the_repository_contains_no_cyrillic_text() {
     assert!(offenders.is_empty(), "Cyrillic text in: {offenders:?}");
 }
 
-/// Every `--flag` that the current documents mention in a code span exists in the command line of the simulator, so the README and the
-/// contract cannot describe options that were removed or renamed.
+fn unknown_documented_flags(body: &str, known: &HashSet<String>) -> Vec<String> {
+    let mut unknown = Vec::new();
+    for span in body.split('`').skip(1).step_by(2) {
+        for command in span.split(['\n', ';', '&', '|']) {
+            let words: Vec<_> = command.split(|c: char| c.is_whitespace() || c == ',' || c == '(' || c == ')').filter(|s| !s.is_empty()).collect();
+            let cargo_command = if words.first() == Some(&"cargo") { words.get(1).copied() } else { None };
+            let separator = words.iter().position(|&word| word == "--").unwrap_or(words.len());
+            for (index, word) in words.iter().enumerate() {
+                if let Some(flag) = word.strip_prefix("--") {
+                    let name: String = flag.chars().take_while(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || *c == '-').collect();
+                    // Cargo exemptions end at argument forwarding or a shell command boundary.
+                    let cargo_flag = index < separator
+                        && match cargo_command {
+                            Some("fmt") => name == "check",
+                            Some("clippy" | "test") => matches!(name.as_str(), "release" | "all-targets"),
+                            Some("run") => name == "release",
+                            _ => false,
+                        };
+                    if !name.is_empty() && !cargo_flag && !known.contains(&format!("--{name}")) {
+                        unknown.push(format!("--{name}"));
+                    }
+                }
+            }
+        }
+    }
+    unknown
+}
+
+#[test]
+fn documented_flags_keep_cargo_options_in_their_command_context() {
+    let known = HashSet::from(["--seeds".to_string(), "--horizon".to_string()]);
+    for body in [
+        "`cargo fmt --check`",
+        "`cargo clippy --release --all-targets -- -D warnings`",
+        "`cargo test --release --all-targets`",
+        "`cargo run --release -- grown --seeds 2 --horizon 30`",
+        "```sh\ncargo fmt --check\ncargo clippy --release --all-targets -- -D warnings\ncargo test --release\n```",
+        "`--seeds 2`, `--horizon=30`",
+    ] {
+        assert!(unknown_documented_flags(body, &known).is_empty(), "valid flags rejected: {body}");
+    }
+    for (body, expected) in [
+        ("`--all-targets`", "--all-targets"),
+        ("`--release`", "--release"),
+        ("`--check`", "--check"),
+        ("`facety grown --all-targets`", "--all-targets"),
+        ("`cargoish clippy --all-targets`", "--all-targets"),
+        ("`cargo fmt --all-targets`", "--all-targets"),
+        ("`cargo clippy --removed-flag`", "--removed-flag"),
+        ("`cargo clippy -- --all-targets`", "--all-targets"),
+        ("`cargo run --release -- grown --all-targets`", "--all-targets"),
+        ("`cargo clippy --all-targets && facety grown --all-targets`", "--all-targets"),
+        ("`cargo test --release; facety grown --release`", "--release"),
+        ("`cargo fmt --check | facety grown --check`", "--check"),
+        ("```sh\ncargo clippy --all-targets\nfacety grown --all-targets\n```", "--all-targets"),
+    ] {
+        assert_eq!(unknown_documented_flags(body, &known), [expected], "unknown flag escaped: {body}");
+    }
+}
+
+/// Simulator flags must exist; documented Cargo options are recognized only in Cargo command context.
 #[test]
 fn documented_command_line_flags_exist() {
     let source = std::fs::read_to_string(repo_root().join("simulator/src/main.rs")).expect("main.rs");
@@ -165,17 +224,7 @@ fn documented_command_line_flags_exist() {
     let mut unknown = Vec::new();
     for f in ["README.md", "docs/simulator.en.md", "BACKLOG.md", "AGENTS.md"] {
         let body = std::fs::read_to_string(repo_root().join(f)).expect("document");
-        for span in body.split('`').skip(1).step_by(2) {
-            for word in span.split(|c: char| c.is_whitespace() || c == ',' || c == '(' || c == ')' || c == ';') {
-                if let Some(flag) = word.strip_prefix("--") {
-                    let name: String = flag.chars().take_while(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || *c == '-').collect();
-                    let cargo_flag = matches!(name.as_str(), "release" | "check");
-                    if !name.is_empty() && !cargo_flag && !known.contains(&format!("--{name}")) {
-                        unknown.push(format!("{f}: --{name}"));
-                    }
-                }
-            }
-        }
+        unknown.extend(unknown_documented_flags(&body, &known).into_iter().map(|flag| format!("{f}: {flag}")));
     }
     assert!(unknown.is_empty(), "documented flags that the simulator does not accept: {unknown:?}");
 }

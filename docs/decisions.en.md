@@ -470,6 +470,10 @@ Source: the owner's A–T synthesis in the research/development mandate; this is
 
 **D187 — [OWNER naming clarification, FCTY expansion], 2026-11-08.** The token ticker FCTY expands to FaCT You, retaining that capitalization and word spacing. Complements D172's ticker selection; supersedes no asset, monetary or identity rule. Current participant rules, protocol and README carry the expansion; historical evidence and compatible serialized identifiers retain their original bytes.
 
+### Conditional-mainnet preparation
+
+**D188 — [OWNER development/research scope; conditional mainnet, not launch approval], 2026-11-12.** No human rehearsal or pilot precedes mainnet development. The simulator's role shifts to executable-spec closure, future-launch measurability and bounded comparisons of candidate rules under explicitly unmeasured human assumptions. D168 remains REVISE; neither this direction nor synthetic results establish human properties, turn the verdict into PROCEED or authorize deployment. Launch without human evidence requires a separate explicit owner risk decision. The owner subsequently confirmed the A0-first execution plan for contract-ready implementation; kernel extraction needs a separate checkpoint, instrumentation precedes pallet code, and every new research run needs a committed question/arms/reserved-seeds/budget/stop/kill contract with no post-result matrix expansion. OPEN rules require proposals and explicit choices; corrupt-examiner attacks/red teams need owner behavior and budget first. Extends D170's preparation-only assignment and retires a rehearsal as a pre-development gate, not Q25's evidence gaps or any selected rule. The canonical work is in [BACKLOG](../BACKLOG.md#conditional-mainnet-preparation); the unused kit and frozen evidence stay unchanged. No deployment, session, recruitment, personal data or new dependency is authorized.
+
 ### Earlier supersessions
 
 | Earlier description | Status |

@@ -2,6 +2,8 @@
 
 The simulator is one Rust crate, [`simulator/`](../simulator), standard library only (D130). It replaced the Node.js simulator; that implementation, its tests and its raw results are preserved only at the git tag `legacy-node`. This page owns what is implemented, the declared deviations from the [protocol](facety.protocol.en.md), every simulation assumption, and how the baseline was validated. Protocol meaning lives in the protocol; decisions in the [decision log](decisions.en.md); findings in the [insight register](insights.en.md); open work in [BACKLOG](../BACKLOG.md).
 
+**Role under conditional-mainnet preparation (D188):** close the executable selected subset, make a possible future launch measurable, and supply registered conditional decision surfaces without claiming human calibration. No rehearsal or pilot precedes mainnet development under this direction. D168 remains REVISE; neither model outcomes nor this contract authorize deployment or accept launch risk without human evidence. OPEN admission, financial, migration, ordering and privacy contracts still require owner choices. The [canonical plan](../BACKLOG.md#conditional-mainnet-preparation) owns confirmation and work order; no new mechanics, kernel extraction or research result is claimed here.
+
 **Council rounds (D171/D173):** the existing Rust ladder and World support confirmation, opposition and seven-day deferral, with simple majority of cast ballots and no quorum or recusal. Results are recognized only at the current cutoff. No majority, including zero ballots, automatically defers; either deferral adds seven days to the current latest deadline once. Every new round freezes a fresh Council snapshot and starts without old ballots. Round-qualified ballots/results reject replay; deferral preserves terminal entry, custody and holds, without settlement or halving. Tests check these transitions, not human availability or a production executor. D168's frozen binary-vote runs remain earlier-build evidence; no new research panel, session, runtime or pilot is implied.
 
 **Appeal core and restoration boundary (D174-D178/D181):** World implements a verifiable core fixture lifecycle: affected-person request, linkage to the prior accuser's recorded opening, qualified participant or explicitly trusted collective initiation, 24-hour pending period, fresh Council review, repeatable seven-day rounds, recognized confirmation/reversal and separate restoration execution. Restoration returns status and original revoked receipts, replays integrity and cancels only unpaid attributable FIFO debt. Independent causes, other holds, prior burns and transfers remain. Completed key-recovery migration retains reversal authorization but blocks restoration atomically. Admission/evidence, collective authentication, appeal finances and production execution remain OPEN. The opt-in population `--appeal` still supplies conditional approved reversals; it does not drive this new fixture route. Older status-only appeal results do not validate it.
@@ -29,7 +31,7 @@ The simulator is one Rust crate, [`simulator/`](../simulator), standard library 
 ```text
 cargo fmt --check
 cargo test --release                     # unit tests, parity tests, documentation integrity
-cargo clippy
+cargo clippy --release --all-targets -- -D warnings
 cargo run --release -- grown --seeds 4 --attackers 10 --horizon 60     # baseline rules
 ```
 

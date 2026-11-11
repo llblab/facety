@@ -44,7 +44,7 @@ The Rust research model implements maturity-based XP, responsibility and integri
 
 The [simulator contract](docs/simulator.en.md#appeal-fixture-contract) defines that implemented subset and its assumptions. Earlier results retain their original builds and arithmetic; they do not validate later mechanics. Appeal admission/authentication, financial scope and active cancellation, production execution, completed key-recovery migration and actual human capacity remain open. A blocked restoration retains the Council's reversal authorization without partially restoring assets or XP.
 
-A proposed [operational defense contract](docs/operational-defense.en.md) and an [unused manual-validation kit](studies/2026-11-08-operational-defense/README.md) are ready for owner review. They supply no committed people or observations. Further research, recruitment, a rehearsal, runtime or a pilot requires a separate assignment.
+The owner has commissioned [conditional-mainnet preparation](BACKLOG.md#conditional-mainnet-preparation): executable-spec closure, reference-kernel verification, launch measurement and bounded registered rule comparisons. The owner confirmed the execution plan for contract-ready implementation; kernel extraction retains a separate owner checkpoint. No rehearsal or pilot precedes mainnet development under this direction. The proposed [operational defense contract](docs/operational-defense.en.md) and [manual kit](studies/2026-11-08-operational-defense/README.md) remain unused and supply no human evidence. D168 REVISE stands; development is not deployment permission or acceptance of launch risk without human evidence.
 
 ## Find your way
 
@@ -52,7 +52,7 @@ A proposed [operational defense contract](docs/operational-defense.en.md) and an
 | --- | --- |
 | **Understand participation** | [Rules of the Game](docs/rules-of-the-game.en.md) · [Protocol](docs/facety.protocol.en.md) |
 | **Assess the evidence** | [Findings](docs/insights.en.md#consolidated-findings) · [Final study](studies/2026-11-08-evidence-core/README.md) |
-| **Plan human validation** | [Operational contract](docs/operational-defense.en.md) · [Manual kit](studies/2026-11-08-operational-defense/README.md) |
+| **Inspect human-evidence gaps** | [Operational contract](docs/operational-defense.en.md) · [Manual kit](studies/2026-11-08-operational-defense/README.md) |
 | **Inspect the model** | [Simulator contract](docs/simulator.en.md) · [Rust source](simulator/src) |
 | **Trace a decision** | [Decision log](docs/decisions.en.md) · [Changelog](CHANGELOG.md) |
 | **See what remains open** | [Backlog](BACKLOG.md) · [Questions and assumptions](DECISIONS_NEEDED.md) |
