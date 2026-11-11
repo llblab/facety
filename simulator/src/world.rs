@@ -269,10 +269,14 @@ pub enum InvStatus {
     Cancelled,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Invitation {
     pub creator: Id,
     pub created_at: i64,
+    /// Own mature Self-ID consumed at issuance; its XP receipts remain a separate source history.
+    pub funding_act: u32,
+    /// Accepted mutual partners at issuance, not the funding act's roster or an adjudicated liable set.
+    pub guarantors: Vec<Id>,
     pub status: InvStatus,
     pub target: Option<Id>,
     rels: Vec<u32>,
@@ -1487,9 +1491,18 @@ impl World {
         if !self.invitation_paths_ok(creator, d) {
             return Err(Reject("insufficient Council paths"));
         }
+        let guarantors = self.mutual_partners(creator);
         self.dispose(act, ActStatus::Consumed);
         self.inv_units[creator as usize] += 1;
-        self.invitations.push(Invitation { creator, created_at: self.now, status: InvStatus::Pending, target: None, rels: Vec::new() });
+        self.invitations.push(Invitation {
+            creator,
+            created_at: self.now,
+            funding_act: act,
+            guarantors,
+            status: InvStatus::Pending,
+            target: None,
+            rels: Vec::new(),
+        });
         Ok((self.invitations.len() - 1) as u32)
     }
 
@@ -2779,10 +2792,24 @@ impl World {
             }
         }
         let mut units = vec![0u32; n];
-        for v in self.invitations.iter().filter(|v| matches!(v.status, InvStatus::Pending | InvStatus::Active)) {
-            units[v.creator as usize] += 1;
-            if let Some(t) = v.target {
-                units[t as usize] += 1;
+        let mut invitation_sources = HashSet::new();
+        for (id, v) in self.invitations.iter().enumerate() {
+            let Some(source) = self.acts.get(v.funding_act as usize) else { return Err(format!("invitation {id} has no funding source")) };
+            if source.subject != v.creator
+                || source.status != ActStatus::Consumed
+                || source.recorded_at.checked_add(MATURITY_HOURS).is_none_or(|at| at > v.created_at)
+                || !invitation_sources.insert(v.funding_act)
+            {
+                return Err(format!("invitation {id} has invalid or reused funding provenance"));
+            }
+            if v.guarantors.iter().any(|&g| g == v.creator || g as usize >= n) || v.guarantors.windows(2).any(|pair| pair[0] >= pair[1]) {
+                return Err(format!("invitation {id} has an invalid historical guarantor roster"));
+            }
+            if matches!(v.status, InvStatus::Pending | InvStatus::Active) {
+                units[v.creator as usize] += 1;
+                if let Some(t) = v.target {
+                    units[t as usize] += 1;
+                }
             }
         }
         // Dispute custody and restrictions: the reserved stakes, the holds and the path exclusions are exactly those of the open cases.
@@ -3149,6 +3176,82 @@ mod tests {
         assert_eq!(w.used_slots_of(new), 0);
         assert!(w.accepted(new) && !w.graph().has_edge(1, new));
         w.audit().unwrap();
+    }
+
+    #[test]
+    fn invitation_provenance_survives_roster_changes_veto_and_link_termination() {
+        let mut base = world(8);
+        rights(&mut base, &(0..8).collect::<Vec<_>>());
+        let old_right = base.eligible_emission(0).unwrap();
+        let funding = base.create_self_id(0).unwrap();
+        let source_roster = base.act_guarantors(funding).to_vec();
+        base.tick(base.now() + DAY);
+        base.open_valence(0, 3, old_right).unwrap();
+        base.open_valence(3, 0, base.eligible_emission(3).unwrap()).unwrap();
+        let departing = base.open_val[&(1, 0)];
+        base.withdraw_valence(1, departing).unwrap();
+        let issuance_roster = base.mutual_partners(0);
+        assert!(source_roster.contains(&1) && !source_roster.contains(&3));
+        assert!(!issuance_roster.contains(&1) && issuance_roster.contains(&3));
+        for veto in [true, false] {
+            let mut w = base.clone();
+            let before = w.clone();
+            let foreign = w.eligible_emission(7).unwrap();
+            assert_eq!(w.create_invitation(0, foreign), Err(Reject("invitation requires own mature Emitter right")));
+            assert_eq!(w.invitations, before.invitations);
+            assert_eq!((w.minted(), w.burned(), w.vault(), w.used_slots_of(0)), (before.minted(), before.burned(), before.vault(), before.used_slots_of(0)));
+            assert_eq!(w.acts[funding as usize].status, before.acts[funding as usize].status);
+            let xp_before: Vec<_> = (0..w.len() as Id).map(|id| (w.xp(id), w.coefficient(id))).collect();
+            let inv = w.create_invitation(0, funding).unwrap();
+            let record = w.invitation(inv).clone();
+            assert_eq!((record.funding_act, record.created_at, record.status), (funding, w.now(), InvStatus::Pending));
+            assert_eq!(record.guarantors, issuance_roster);
+            assert_eq!((0..w.len() as Id).map(|id| (w.xp(id), w.coefficient(id))).collect::<Vec<_>>(), xp_before, "issuance adds no XP or penalty");
+            let later_departure = w.open_val[&(2, 0)];
+            w.withdraw_valence(2, later_departure).unwrap();
+            if veto {
+                w.cancel_invitation(3, inv).unwrap();
+                assert_eq!(w.invitation(inv).status, InvStatus::Cancelled);
+            } else {
+                w.tick(w.now() + DAY);
+                let entrant = w.accept_invitation(inv).unwrap();
+                assert!(w.mutual_partners(0).contains(&entrant));
+                assert!(!w.invitation(inv).guarantors.contains(&entrant));
+                assert_eq!(w.invitation(inv).status, InvStatus::Active);
+                w.end_invitation_link(0, inv).unwrap();
+                assert_eq!(w.invitation(inv).status, InvStatus::Closed);
+            }
+            let retained = w.invitation(inv);
+            assert_eq!((retained.creator, retained.created_at, retained.funding_act), (record.creator, record.created_at, funding));
+            assert_eq!(retained.guarantors, issuance_roster);
+            assert!(retained.guarantors.contains(&2), "a later departure never rewrites the issuance roster");
+            assert_eq!(w.act_guarantors(funding), source_roster);
+            let credit = w.acts[funding as usize].credit.as_ref().unwrap();
+            assert!(!credit.revoked);
+            assert_eq!(credit.recipients.as_ref(), [&[0], source_roster.as_slice()].concat());
+            w.audit().unwrap();
+        }
+    }
+
+    #[test]
+    fn audit_rejects_invalid_invitation_funding_and_roster_provenance() {
+        let mut w = world(8);
+        rights(&mut w, &(0..8).collect::<Vec<_>>());
+        let inv = w.create_invitation(0, w.eligible_emission(0).unwrap()).unwrap();
+        w.audit().unwrap();
+        // Deliberately corrupt retained records to test the audit, not execute protocol transitions.
+        let mut foreign = w.clone();
+        foreign.invitations[inv as usize].funding_act = w.eligible_emission(7).unwrap();
+        assert!(foreign.audit().unwrap_err().contains("funding provenance"));
+        let mut reused = w.clone();
+        reused.invitations.push(w.invitation(inv).clone());
+        assert!(reused.audit().unwrap_err().contains("funding provenance"));
+        let mut reordered = w.clone();
+        reordered.invitations[inv as usize].guarantors.swap(0, 1);
+        assert!(reordered.audit().unwrap_err().contains("historical guarantor roster"));
+        let mut self_guaranteed = w.clone();
+        self_guaranteed.invitations[inv as usize].guarantors.push(0);
+        assert!(self_guaranteed.audit().unwrap_err().contains("historical guarantor roster"));
     }
 
     #[test]
