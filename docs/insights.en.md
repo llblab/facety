@@ -463,6 +463,12 @@ A2–A7 retain protocol-design arguments from the owner's review discussion on 2
 
 **Confirmed by regression within the model.** A path-search cache keyed to the graph alone retained distances through an obsolete blocked-account snapshot and could reject a valid newly unblocked route; [path tests](../simulator/src/paths.rs) now compare reused and fresh searches. Other audit regressions cover immutable phase mechanics/provenance, finite penalty inputs, solvency during fee-free link repair, day-zero shocks and overflow-free seed/time parameters. These repairs distinguish runner-v5 from prior outputs; archived evidence and its original conclusions are preserved, not revalidated by current tests.
 
+## Dispute safety review
+
+**Diagnostic rule/code inspection, not measured attack success or a new selection.** The [selected rules](facety.protocol.en.md#25-right-to-challenge) and [World cancellation tests](../simulator/src/world.rs) distinguish ordinary default victory, cancellation without an integrity penalty, and unlimited entered-Council holds even with zero ballots. Rust's cancellation shortfall debt/no-recipient burn are model conventions, not a universal consequence of D179. Authentication alone cannot bound the selected restriction horizon; abandoned debt is not realized attacker cost. [Q26](../DECISIONS_NEEDED.md#q26-dispute-safety-and-arithmetic-review) owns the choices and exploratory authority, support, capacity and monetary risks; Q19 owns co-presence evidence. Neither signatures nor a scenario's accumulated holdings establish physical personhood or a fiat-price limit.
+
+**Diagnostic arithmetic boundary.** [Stake arithmetic](../simulator/src/chekharda.rs) already handles large intermediate powers exactly with an independent decimal reference. [Integrity](../simulator/src/world.rs) instead floors coefficients to millionths, distinct from the selected final-XP floor. Seven halvings store 0.007812 rather than exact 0.0078125. Capped chronological replay, not algebraic undo, remains required. Deterministic conformance checks do not establish economic resilience.
+
 ## Method lessons
 
 - Random scripted runs cannot model incentives. Use strategy menus, payoff facts and equilibrium or deviation analysis ([games](games.en.md)).
