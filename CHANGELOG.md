@@ -2,7 +2,7 @@
 
 > Each release keeps at most 8 outcome records of at most 512 characters.
 
-Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log-and-supersession-ledger), evidence in the [study index](docs/README.md), and open work in [BACKLOG](BACKLOG.md). The [previous milestone ledger](https://github.com/llblab/facety/blob/c2841f43845634b877a07c38bc5db919462a4469/CHANGELOG.md) and [earlier per-change history](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md) preserve detailed outcomes and provenance.
+Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log-and-supersession-ledger), evidence in the [study index](docs/README.md), and open work in [BACKLOG](BACKLOG.md). The [previous milestone ledger](https://github.com/llblab/facety/blob/98ae3213dab8566c6360a8962c1e6c2c0339aada/CHANGELOG.md) and [earlier per-change history](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md) preserve detailed outcomes and provenance.
 
 ## Unreleased
 
@@ -13,7 +13,7 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 - Clarified Self-ID as voluntary public participation by people who accept responsibility for their signed claims and dedicate their authored Self-ID records to the public domain. Integrated the meaning into the participant rules and protocol, preserving the separate shared-media rights assertion and open legal/consent mechanism. Added FCTY's expansion, FaCT You, to current documentation.
 - Fixed path-cache, certificate, phase-provenance, repair-solvency, penalty, shock and overflow defects (runner-v5); folded appeal delivery into its lifecycle record. Reconciled Q26 risks and the case/party/amount/destination/XP/roster matrix. Added integrityPolicy, precision/replay regressions and one rounding owner; paired outcomes match modulo provenance. Removed duplicate settlement/clock prose and JSON wrapping passes, preserving serialized bytes and digests. Archived evidence unchanged.
 - Advanced owner-confirmed conditional preparation (D188), without launch/kernel permission. Added Cargo-aware docs guards and typed transaction/funding/roster/receipt provenance; appeals reject unlinked targets before effects. Selected D189-D191's activation-frozen non-author N pricing, split monetary flows, distinct vetoes and author-first correction/informed responsibility. Transaction settlement and self-disputes remain unimplemented; frozen evidence, schemas and D168 REVISE are unchanged.
-- Consolidated context after D191: separated active conditional preparation from frozen-study verdicts and scoped N summaries to non-author cases. Folded completed backlog checklists and D155's older recommendation into evidence references with immutable pre-pass snapshots; retired the duplicate insight work queue and stale answered-question claims. Preserved historical criteria, negative findings and open contracts. Selected meanings, Rust behavior and saved evidence are unchanged.
+- Consolidated active/frozen context; archived closed backlog/D155 history, retired duplicate tasks and scoped N to non-author cases. Fixed unknown Self-ID cancellation IDs to return Reject before effects instead of panicking; regression covers one-past-end and u32::MAX with preserved money/XP/slot and a valid-operation control. Prepared Q25-B1's recoverable-source collection/cut alternatives; no candidate selected or transaction settlement implemented. Saved evidence and REVISE are unchanged.
 
 ## 0.1.0 — 2026-11-08
 

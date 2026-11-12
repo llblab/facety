@@ -1278,7 +1278,7 @@ impl World {
     /// precedence rule itself is OPEN, so the smallest reading is taken: refused).
     pub fn cancel_self_id(&mut self, actor: Id, act: u32) -> Result<(), Reject> {
         self.require_account(actor)?;
-        let a = &self.acts[act as usize];
+        let a = self.acts.get(act as usize).ok_or(Reject("no such Self-ID transaction"))?;
         let (subject, recorded_at, status) = (a.subject, a.recorded_at, a.status);
         if status != ActStatus::Unspent {
             return Err(Reject("only an unspent Self-ID can be cancelled"));
@@ -3617,6 +3617,23 @@ mod tests {
         w.end_case(held);
         assert_eq!((xps(&w), w.vault(), w.burned(), w.liquid(0)), (xp, vault, burned, liquid));
         assert_eq!(w.eligible_emission(0), Some(act), "the entitlement is still unspent");
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn unknown_self_id_cancellation_refuses_before_mutation() {
+        let mut w = live_world();
+        let act = w.create_self_id(0).unwrap();
+        let before = (w.vault(), w.burned(), w.supply(), xps(&w), w.unspent_rights(0), w.acts[act as usize].status, w.subjects[0].last_reward, w.acts.len());
+        for missing in [w.acts.len() as u32, u32::MAX] {
+            assert_eq!(w.cancel_self_id(0, missing), Err(Reject("no such Self-ID transaction")));
+            assert_eq!(
+                (w.vault(), w.burned(), w.supply(), xps(&w), w.unspent_rights(0), w.acts[act as usize].status, w.subjects[0].last_reward, w.acts.len()),
+                before
+            );
+            w.audit().unwrap();
+        }
+        w.cancel_self_id(0, act).unwrap();
         w.audit().unwrap();
     }
 
