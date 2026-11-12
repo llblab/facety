@@ -36,15 +36,15 @@ Three layers stay distinct:
 
 ## Where the project stands
 
-> **Research closed. Revise the operational assumptions.**
+**Conditional-mainnet preparation is active; deployment is not authorized.** The owner-confirmed [plan](BACKLOG.md#conditional-mainnet-preparation) covers executable-spec closure, reference-kernel verification, launch measurement and bounded registered rule comparisons. Only contract-ready implementation is authorized; kernel extraction retains a separate owner checkpoint. No rehearsal or pilot is a prerequisite to development or authorized by this direction.
+
+> **Frozen evidence-core verdict: REVISE operational assumptions.**
 >
-> The [evidence-core study](studies/2026-11-08-evidence-core/README.md) completed 38 Rust runs. Attack containment survived within the tested scenarios; independent evidence, timely qualified help and effective correction remain unverified human dependencies. The study recommends resolving them before production implementation or a human pilot.
+> The [study](studies/2026-11-08-evidence-core/README.md) completed 38 Rust runs. Attack containment survived within the tested scenarios; independent evidence, timely qualified help and effective correction remain unverified human dependencies. Development permission neither changes that verdict nor accepts launch risk without human evidence.
 
-The Rust research model implements maturity-based XP, responsibility and integrity, supported Council paths, staked disputes, Council voting rounds, 24-hour pending openings, author cancellation and case-specific restoration with FIFO debt. An explicit appeal fixture now connects requests and prior opening transactions to Council review and exact restoration. FCTY accounting uses twelve decimal places.
+The Rust model implements maturity XP/integrity, supported Council paths, exact twelve-decimal FCTY, staked identity disputes, Council rounds, pending openings, ordinary-case withdrawal and core-only linked appeal/restoration with FIFO debt. The [model contract](docs/simulator.en.md#implemented-rules) owns coverage and assumptions. Typed transaction provenance is implemented; N-priced non-author Self-ID settlement, opening-guarantor veto and author-first self-dispute are not. Production admission/authentication, appeal finances, recovery migration and other named contracts remain open. Tests and earlier-build results do not validate these missing transitions or human behavior.
 
-The [simulator contract](docs/simulator.en.md#appeal-fixture-contract) defines that implemented subset and its assumptions. Earlier results retain their original builds and arithmetic; they do not validate later mechanics. Appeal admission/authentication, financial scope and active cancellation, production execution, completed key-recovery migration and actual human capacity remain open. A blocked restoration retains the Council's reversal authorization without partially restoring assets or XP. Self-ID chain-correction pricing is selected, with its count frozen at uncancelled 24-hour opening activation, but is not implemented. Distinct opening-guarantor veto and author-first self-dispute before another participant disputes the same transaction are also selected, not unlimited late unilateral cancellation. Their remaining priority, admission and source-funding contracts remain open; no refunds or verdict rollback are implied.
-
-The owner has commissioned [conditional-mainnet preparation](BACKLOG.md#conditional-mainnet-preparation): executable-spec closure, reference-kernel verification, launch measurement and bounded registered rule comparisons. The owner confirmed the execution plan for contract-ready implementation; kernel extraction retains a separate owner checkpoint. No rehearsal or pilot precedes mainnet development under this direction. The proposed [operational defense contract](docs/operational-defense.en.md) and [manual kit](studies/2026-11-08-operational-defense/README.md) remain unused and supply no human evidence. D168 REVISE stands; development is not deployment permission or acceptance of launch risk without human evidence.
+The [operational proposal](docs/operational-defense.en.md) and [manual kit](studies/2026-11-08-operational-defense/README.md) remain unused references, not staffing, human observations or permission for a session/pilot.
 
 ## Find your way
 
@@ -65,15 +65,17 @@ The [documentation index](docs/README.md) connects the full collection of specif
 
 ```sh
 cd simulator
-cargo test --release
 cargo fmt --check
-cargo clippy
+cargo clippy --release --all-targets -- -D warnings
+cargo test --release
 ```
 
 The checks cover protocol transitions, independent graph references, accounting invariants and documentation integrity.
 
 <details>
 <summary><strong>Run a research scenario</strong></summary>
+
+Command shape only, not a registered research packet. Before a new run, commit its question, exact configurations, fresh reserved seeds, resource budget, horizons and stop/kill rules; use fresh output directories. Plan approval alone authorizes no empirical run.
 
 From `simulator/`:
 

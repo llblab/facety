@@ -2,7 +2,7 @@
 
 **Historical evidence:** these results and the D155 readiness recommendation belong to their original builds. The [final evidence-core report](../2026-11-08-evidence-core/README.md) supersedes that next-stage recommendation with REVISE operational assumptions (D168), preserving the earlier evidence. Selected mechanics have since changed; these tables do not validate current HEAD. Grow Loop stopped.
 
-**Evidence level: diagnostic, with one reserved-seed confirmation (K5).** Criteria and budgets were written in [BACKLOG](../../BACKLOG.md#core-closure-programme-opened-2026-11-06-finite) before the runs; the adversary of K5 was frozen and committed before the confirmation series. The Rust simulator has no registration tooling, so even the confirmation is a diagnostic result in the sense of [AGENTS](../../AGENTS.md). Tables below are means over the stated seeds; every row is one configuration; detection is on in every run (no no-detection arm exists here).
+**Evidence level: diagnostic, with one reserved-seed confirmation (K5).** Criteria and budgets were written in [the archived BACKLOG contract](https://github.com/llblab/facety/blob/c2841f43845634b877a07c38bc5db919462a4469/BACKLOG.md#core-closure-programme-opened-2026-11-06-finite) before the runs; the adversary of K5 was frozen and committed before the confirmation series. The Rust simulator has no registration tooling, so even the confirmation is a diagnostic result in the sense of [AGENTS](../../AGENTS.md). Tables below are means over the stated seeds; every row is one configuration; detection is on in every run (no no-detection arm exists here).
 
 ## Question
 
