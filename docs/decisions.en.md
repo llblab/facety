@@ -508,6 +508,12 @@ It selects no production admission, authentication or collective authority, no g
 
 Implementation: `World::record_self_id_case_fixture`, `cancel_self_id_case_opening`, `settle_self_id_case_fixture`, `restore_self_id_case_effects` in the `world` child module `self_id_case.rs`, with the activation-frozen count in the shared scheduler and a case-bound journal. This is an engineering authorization of a test subset, not a protocol decision; it changes no economics, production right or evidence standard, and D168 REVISE stands.
 
+### Procedural authority and XP superlinearity accepted by design
+
+**D194 — [OWNER design rationale, no rule change], 2026-11-17.** Accept the superlinearity of XP in social position as intentional: procedural authority legitimately concentrates in long-standing active participants whose humanity is established by lived, verified history rather than by capital. XP accumulation is human-legible and predictable — bounded by real daily activity and real guarantees, never transferable, purchasable or capital-accelerated, with no hidden compounding — so a council of such elders is a predictable consequence of the rules, comparable to a lifetime, not a capture surprise. The selected mechanics already collateralize this power: D34 event-time liability, D189's inclusive N and D166's retained liability make accumulated standing continuously re-staked, so the most powerful participants are the most sanctionable; Council seats rank active accounts first, carry one equal vote regardless of XP (D111), and collective terminal entry (D161), ordinary challenge and appeal remain open under their selected gates. This resolves the normative tension noted in insight A2 as accepted by design; it selects no new rule, threshold, term limit or empirical claim, and D62's conditional questions, the frozen-evidence standard and D168 REVISE stand. Transparency must still deliver actual checking: the vigilance premise of F4 is unchanged.
+
+The owner also positions the rule set as close to final formation and freeze, so complexity growth is a bounded one-time cost rather than a continuing tax. This is a trajectory position, not a new gate: the existing baseline phase (D140/D141) already orders pre-freeze interaction closure (the Q26 package and the sanction matrix's OPEN cells) before broad benchmarks, and frozen rules allocate the learning cost to entrants under D191's participation responsibility.
+
 ### Earlier supersessions
 
 | Earlier description | Status |

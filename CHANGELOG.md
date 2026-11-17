@@ -15,6 +15,7 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 
 - Executed the first independent Self-ID fixture under D193's trusted subset: typed target, pending 24 hours, activation-frozen N, isolated D192 collection-then-cut with 1/1/0/0 accounting and separate guarantor burns, a case journal, replay and case-specific reversal, with named refusals before mutation. Added a separately written certificate verifier, bounded event-log verification (which exposed and fixed unknown-ID panics), and two labeled integrity-precision candidates with Q26 probe evidence.
 - Completed the mandated mechanical World decomposition (`emission.rs`/`links.rs`/`dispute.rs` children, pure code moves verified line-for-line and by a second byte-identical equivalence panel pass), hardened the Self-ID fixture (non-upheld replay refusal, full journal audit invariants), recorded the defender-induced permanent-hold duration witness for Q26 (insight S8), and persisted the unknown-ID panic fix as a named regression.
+- Recorded the owner's design rationale accepting XP superlinearity and elder procedural authority as by-design collateralized power, with the rule set positioned as near final formation and freeze (D194, insight A9); no rule, schema or evidence change.
 
 ## 0.1.0 — 2026-11-08
 
