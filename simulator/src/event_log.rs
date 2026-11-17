@@ -368,6 +368,11 @@ fn invariants(w: &World) {
     let liquid: Amount = (0..w.len() as Id).map(|id| w.liquid(id)).sum();
     assert_eq!(w.supply(), liquid + Amount::coins(w.vault() as u64), "supply differs from vault plus liquid");
     assert!(w.stats.self_id_source_burned.is_zero(), "the isolated settlement must never burn the transferred backing");
+    // D196: a deferred maturity is a pending act, never a credited, cancelled or consumed one; its case always owns a hold.
+    for &act in w.deferred_maturities() {
+        assert_eq!(w.acts_status(act), ActStatus::Unspent, "a deferred maturity must still be pending");
+        assert!(w.maturity_hold(act).is_some(), "a deferred maturity is always held by a case");
+    }
     // Exclusive custody: no right backs two open positions, and reserved liquid never exceeds the balance.
     let mut rights: Vec<u32> = w.reserved_rights.iter().copied().collect();
     rights.sort_unstable();
@@ -482,6 +487,12 @@ fn prologue() -> Vec<Event> {
         Event::Tick(7),
         Event::SettleSelfIdCase(1, true),
         Event::RestoreCase(1),
+        // Case 2 exercises suspended maturity (D196): an account's still-pending Self-ID is held by an immediate case, its
+        // own maturity passes without credit, and the authorized release credits it exactly once.
+        Event::SelfId(4),
+        Event::BeginCase(0, 4),
+        Event::Tick(2),
+        Event::EndCase(2),
     ]
 }
 
@@ -521,6 +532,9 @@ fn deterministic_event_logs_preserve_conservation_custody_fifo_xp_and_atomic_ref
         assert_eq!(deep.unpaid_accused, deep.accused_charge - deep.accused_collected, "the shortfall is this case's debt (seed {seed})");
         assert!(deep.reversed, "the deep-scope case is reversed without duplicating value");
         assert_eq!(w.stats.self_id_unpaid, deep.unpaid_accused, "only the deep case's shortfall counts as unpaid (seed {seed})");
+        assert!(w.stats.maturities_deferred >= 1, "the prologue suspends a pending maturity (seed {seed})");
+        assert!(w.stats.maturities_released >= 1, "the prologue releases it exactly once (seed {seed})");
+        assert!(w.maturity_holds().is_empty(), "the prologue leaves no leaked hold (seed {seed})");
         for _ in 0..EVENTS {
             let event = draw(&mut rng, &w);
             if step(&mut w, &mut log, event) {

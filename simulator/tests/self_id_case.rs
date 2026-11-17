@@ -2,7 +2,7 @@
 //! qualification and the upheld merits are supplied externally. These are deterministic software checks of the
 //! declared isolated subset, not production admission, human validation or general transaction settlement.
 use facety_sim::amount::Amount;
-use facety_sim::world::{Config, Id, SelfIdCaseStage, TransactionTarget, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, World, COEF_ONE};
+use facety_sim::world::{Config, Id, SelfIdCaseStage, TransactionTarget, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, World, COEF_ONE, COEF_STEP};
 
 const ACCUSER: Id = 0;
 const ACCUSED: Id = 5;
@@ -212,7 +212,8 @@ fn frozen_n_above_one_settles_with_actual_collection_and_recorded_debt() {
     let units_before: Vec<i32> = (0..N as Id).map(|id| w.responsibility_units(id)).collect();
     let burned = w.burned();
     let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
-    assert_eq!(w.responsibility_units(ACCUSED), units_before[ACCUSED as usize] - 2, "only the filing-frozen suffix is cut");
+    // Both frozen-suffix receipts are cut; the act recorded after the filing is outside the scope and matures at release.
+    assert_eq!(w.responsibility_units(ACCUSED), units_before[ACCUSED as usize] - 2 + 1, "only the filing-frozen suffix is cut");
     assert_eq!(w.unspent_rights(ACCUSED), 1, "the later act keeps its own entitlement, outside this case");
 
     // D189: the accused owes N; only actual collection from the frozen affected scope pays the first accuser.
@@ -227,11 +228,13 @@ fn frozen_n_above_one_settles_with_actual_collection_and_recorded_debt() {
     for g in ROSTER {
         assert_eq!((w.liquid(g), w.debt(g)), (Amount::ZERO, Amount::ONE), "independent backing burns, the rest is debt");
     }
-    // Both affected receipts are cut, so both units leave the author and each creation-time guarantor.
+    // Both frozen-suffix receipts are cut, and the act recorded after the filing matures at release, so the net change is
+    // minus two plus one for the author and for each creation-time guarantor of that later act.
     for id in [ACCUSED, ROSTER[0]] {
-        assert_eq!(w.responsibility_units(id), units_before[id as usize] - 2);
+        assert_eq!(w.responsibility_units(id), units_before[id as usize] - 2 + 1);
     }
-    assert_eq!(w.coefficient(ACCUSED), COEF_ONE / 2);
+    assert_eq!(settlement.coefficient_after, COEF_ONE / 2, "the journal records this case's own penalty");
+    assert_eq!(w.coefficient(ACCUSED), COEF_ONE / 2 + COEF_STEP, "the released out-of-scope maturity repairs integrity");
     assert!(w.accepted(ACCUSED), "the identity stays; only this case's effects apply");
     let outcome = w.case_outcome(case).unwrap();
     assert_eq!(outcome.debts, vec![(ROSTER[0], Amount::ONE), (ROSTER[1], Amount::ONE), (ROSTER[2], Amount::ONE), (ROSTER[3], Amount::ONE)]);

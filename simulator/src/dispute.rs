@@ -181,6 +181,7 @@ impl World {
         let c = self.cases[case as usize].take().expect("checked active case");
         let positions = c.ladder.positions().to_vec();
         let holds = self.release_case(&c);
+        self.release_maturity_hold(case);
         let collected = self.collect_backing(author, &c.backed[0]);
         let debt_created = positions[0].stake - collected;
         self.record_debt(author, debt_created, case);
@@ -223,6 +224,8 @@ impl World {
         };
         self.stats.author_cancelled += 1;
         self.case_cancellations[case as usize] = Some(outcome.clone());
+        // A withdrawal is an authorized terminal result: eligible suspended maturities are credited once, here.
+        self.process_deferred_maturities();
         Ok(outcome)
     }
 
@@ -242,6 +245,7 @@ impl World {
         self.hold_for(challenger, path_challenger);
         self.hold_for(accused, path_accused);
         self.frozen[accused as usize] += 1;
+        self.establish_maturity_hold(case_id, accused, self.now);
         self.cases[case_id as usize] = Some(case);
     }
 
@@ -394,6 +398,8 @@ impl World {
         }
         let Some(c) = self.cases.get_mut(case as usize).and_then(Option::take) else { return };
         self.release_case(&c);
+        self.release_maturity_hold(case);
+        self.process_deferred_maturities();
         self.stats.moot += 1;
         if let Some(opening) = self.case_openings[case as usize].as_mut() {
             opening.stage = OpeningStage::Moot;
@@ -459,6 +465,7 @@ impl World {
         let positions: Vec<chekharda::Position<Id>> = c.ladder.positions().to_vec();
         let who_at = |n: u32| positions[n as usize - 1].who;
         let holds = self.release_case(&c);
+        self.release_maturity_hold(case);
         let mut net: Vec<(Id, SignedAmount)> = Vec::new();
         let mut debts: Vec<(Id, Amount)> = Vec::new();
         // D166: a lost stake pays what was blocked; the unblocked part is debt of the loser (a negative emission balance, repaid from later
@@ -552,6 +559,12 @@ impl World {
             council_electorates: c.electorates,
         };
         self.case_outcomes[case as usize] = Some(outcome.clone());
+        // An adverse identity verdict authorizes a chain correction that the caller applies next (trusted execution). Its
+        // deferred maturities stay pending so an invalidated source can never be credited first; every other outcome releases
+        // the eligible maturities at this release event.
+        if !settlement.accused_lost {
+            self.process_deferred_maturities();
+        }
         Ok(outcome)
     }
 
@@ -575,6 +588,7 @@ impl World {
         let chain = self.subjects[accused as usize].acts.clone();
         let mut sources = Vec::new();
         for act_id in chain {
+            self.forget_deferred_maturity(act_id);
             let act = &mut self.acts[act_id as usize];
             if act.status == ActStatus::Unspent {
                 act.status = ActStatus::Cancelled;
@@ -594,6 +608,8 @@ impl World {
         while subject.first_unspent < subject.acts.len() && self.acts[subject.acts[subject.first_unspent] as usize].status != ActStatus::Unspent {
             subject.first_unspent += 1;
         }
+        // The authorized historical correction ran first, so the remaining valid deferred maturities may now be credited once.
+        self.process_deferred_maturities();
         Ok(())
     }
 
@@ -857,6 +873,7 @@ impl World {
         }
         let chain = self.subjects[id as usize].acts.clone();
         for act_id in chain {
+            self.forget_deferred_maturity(act_id);
             let act = &mut self.acts[act_id as usize];
             if act.status == ActStatus::Unspent {
                 act.status = ActStatus::Cancelled;

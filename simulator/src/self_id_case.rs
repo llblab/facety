@@ -101,15 +101,20 @@ pub struct SelfIdSettlement {
     pub accused_charge: Amount,
     pub accused_collected: Amount,
     pub accuser_award: Amount,
-    /// Always zero in this subset: the transferred backing is not burned again.
+    /// Always zero: the transferred backing is not burned again.
     pub source_burned: Amount,
-    /// Always zero in this subset: actual collection covers the whole frozen charge.
+    /// Backing of the invalidated unmatured affected acts, removed because it never became an entitlement.
+    pub invalidated_burned: Amount,
+    /// Charge that no actual collection covered; recorded as this case's FIFO debt.
     pub unpaid_accused: Amount,
     /// Nominal charge of the original-guarantor roster (`N` each).
     pub guarantor_charge: Amount,
     pub guarantor_burned: Amount,
     /// The frozen affected suffix, oldest first: the acts this case corrected.
     pub affected: Vec<u32>,
+    /// Affected acts that had not matured yet and were invalidated instead of being credited later; their backing never
+    /// became an entitlement, so it is removed at settlement rather than transferred.
+    pub invalidated: Vec<u32>,
     /// Every source receipt this case revoked, with its credit time and actual recipients.
     pub revoked_receipts: Vec<SelfIdRevokedReceipt>,
     pub coefficient_before: u32,
@@ -291,6 +296,8 @@ impl World {
         self.hold_for(record.author, author_path);
         self.hold_for(record.accused, accused_path);
         self.frozen[record.accused as usize] += 1;
+        // D196: the accused's not-yet-processed maturities are suspended for the whole active case.
+        self.establish_maturity_hold(case, record.accused, at);
         self.cases[case as usize] = Some(held);
         let record = self.self_id_cases[case as usize].as_mut().expect("pending record");
         record.stage = SelfIdCaseStage::Activated;
@@ -400,8 +407,20 @@ impl World {
             }
         }
         let sources: Vec<u32> = receipts.iter().map(|r| r.act).collect();
-        // 3. Apply the selected losing-author coefficient consequence under the declared arithmetic.
+        // 2b. An affected act that has not been credited yet must never be credited: the correction invalidates its source, so its
+        //     unmatured backing is removed at settlement instead of becoming an entitlement and a deferred reward later.
+        let mut invalidated = Vec::new();
+        for &act in &plan.affected {
+            if self.acts[act as usize].credit.is_none() && self.acts[act as usize].status == ActStatus::Unspent {
+                self.dispose(act, ActStatus::Cancelled);
+                invalidated.push(act);
+            }
+        }
+        let invalidated_burned = Amount::coins(invalidated.len() as u64);
+        // 3. Apply the selected losing-author coefficient consequence under the declared arithmetic. The journal records the
+        //    coefficient immediately after this case's own penalty; later release credits repair integrity on their own terms.
         self.penalize_xp_for_case(plan.accused, 0.5, case);
+        let coefficient_after = self.subjects[plan.accused as usize].coef;
         // 4. Charge each original creation-time guarantor its frozen share and burn the actual collection.
         let mut guarantor_burned = Amount::ZERO;
         let mut debts = Vec::new();
@@ -428,6 +447,9 @@ impl World {
         }
         // 5. Release the accuser's own backing and this case's restrictions; every other case keeps its own.
         let holds = self.release_case(&held);
+        // The correction already ran, so only the accused's remaining valid maturities may be credited, exactly once.
+        self.release_maturity_hold(case);
+        self.process_deferred_maturities();
         // 6. Journal the completed effects under this case.
         self.case_effects[case as usize] = Some(CaseEffects {
             kind: CaseKind::SelfIdTransaction,
@@ -461,18 +483,20 @@ impl World {
             accused: plan.accused,
             frozen: plan.frozen,
             affected: plan.affected,
+            invalidated,
             source_guarantors: plan.source_guarantors.clone(),
             charged_guarantors: plan.source_guarantors,
             accused_charge: plan.accused_charge,
             accused_collected: collected,
             accuser_award: collected,
             source_burned: Amount::ZERO,
+            invalidated_burned,
             unpaid_accused,
             guarantor_charge,
             guarantor_burned,
             revoked_receipts: receipts,
             coefficient_before: plan.coefficient_before,
-            coefficient_after: self.subjects[plan.accused as usize].coef,
+            coefficient_after,
             settled_at: self.now,
             reversed: false,
         };
@@ -484,6 +508,7 @@ impl World {
         self.stats.self_id_unpaid += settlement.unpaid_accused;
         self.stats.self_id_guarantor_burned += settlement.guarantor_burned;
         self.stats.self_id_source_burned += settlement.source_burned;
+        self.stats.self_id_invalidated_burned += settlement.invalidated_burned;
         Ok(settlement)
     }
 
@@ -605,6 +630,13 @@ impl World {
                         || settlement.charged_guarantors != settlement.source_guarantors
                         || settlement.guarantor_charge != Amount::coins(u64::from(frozen.n).saturating_mul(settlement.source_guarantors.len() as u64))
                         || settlement.guarantor_burned > settlement.guarantor_charge
+                        || settlement.invalidated_burned != Amount::coins(settlement.invalidated.len() as u64)
+                        || settlement.invalidated.windows(2).any(|w| w[0] >= w[1])
+                        || settlement.invalidated.iter().any(|act| {
+                            !settlement.affected.contains(act)
+                                || self.acts[*act as usize].status != ActStatus::Cancelled
+                                || self.acts[*act as usize].credit.is_some()
+                        })
                         || settlement.settled_at != outcome.settled_at
                         || settlement.coefficient_before > COEF_ONE
                         || settlement.coefficient_after != grid_penalty(settlement.coefficient_before, 0.5)

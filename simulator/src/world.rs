@@ -222,6 +222,15 @@ struct DebtTranche {
     cancelled: Amount,
 }
 
+/// A case-linked hold on the accused participant's Self-ID maturities (D196). Acts whose maturity timestamp is at or
+/// after `from` are held; acts that already matured strictly before the activation keep their credit.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct MaturityHold {
+    pub case: u32,
+    pub subject: Id,
+    pub from: i64,
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CaseKind {
     /// An adjudicated identity case with its selected base and receipt roster.
@@ -481,6 +490,16 @@ pub struct DisputeStats {
     pub self_id_guarantor_burned: Amount,
     /// Accused charge that no affected backing covered; recorded as this case's FIFO debt, never as collected money.
     pub self_id_unpaid: Amount,
+    /// Maturity holds established for an accused participant (D196).
+    pub maturity_holds: u64,
+    /// Maturities deferred by a hold instead of being credited at their own timestamp.
+    pub maturities_deferred: u64,
+    /// Deferred maturities processed exactly once when their last hold ended.
+    pub maturities_released: u64,
+    /// Suspended Self-IDs cancelled inside the extended window; they never earn XP or a usable entitlement.
+    pub maturities_cancelled: u64,
+    /// Unmatured affected acts invalidated by an upheld Self-ID correction, whose backing never became an entitlement.
+    pub self_id_invalidated_burned: Amount,
     /// Council seats that changed hands, summed over the daily refreshes (members that left; the size changes are not counted).
     pub council_turnover: u64,
 }
@@ -551,6 +570,13 @@ pub struct World {
     case_outcomes: Vec<Option<CaseOutcome>>,
     self_id_cases: Vec<Option<SelfIdCaseRecord>>,
     self_id_settlements: Vec<Option<SelfIdSettlement>>,
+    /// Active case-linked Self-ID maturity holds, sorted by `(subject, case)` for determinism.
+    maturity_holds: Vec<MaturityHold>,
+    /// Acts whose maturity timestamp has passed while a hold applied; sorted ascending, each processed exactly once.
+    deferred_maturities: Vec<u32>,
+    /// Transient scheduling set: owners whose case activates at `maturity_pending_at`, holding their same-timestamp maturities.
+    maturity_pending: Vec<(u32, Id)>,
+    maturity_pending_at: i64,
     appeal_requests: Vec<AppealRequest>,
     appeals: Vec<AppealRecord>,
     /// Independent causes coexist: removing one case cannot erase another case or a separately authorized revocation.
@@ -614,6 +640,10 @@ impl World {
             case_outcomes: Vec::new(),
             self_id_cases: Vec::new(),
             self_id_settlements: Vec::new(),
+            maturity_holds: Vec::new(),
+            deferred_maturities: Vec::new(),
+            maturity_pending: Vec::new(),
+            maturity_pending_at: i64::MIN,
             appeal_requests: Vec::new(),
             appeals: Vec::new(),
             xp_revocations: FastMap::default(),
@@ -836,7 +866,10 @@ impl World {
             .copied()
             .filter(|&a| {
                 let act = &self.acts[a as usize];
-                act.status == ActStatus::Unspent && self.now - act.recorded_at >= min_age && !self.reserved_rights.contains(&a)
+                act.status == ActStatus::Unspent
+                    && self.now - act.recorded_at >= min_age
+                    && !self.reserved_rights.contains(&a)
+                    && !self.maturity_pending_credit(a)
             })
             .collect()
     }
@@ -887,7 +920,10 @@ impl World {
         let s = &self.subjects[id as usize];
         s.acts[s.first_unspent..].iter().copied().find(|&a| {
             let act = &self.acts[a as usize];
-            act.status == ActStatus::Unspent && self.now - act.recorded_at >= self.cfg.spend_hours && !self.reserved_rights.contains(&a)
+            act.status == ActStatus::Unspent
+                && self.now - act.recorded_at >= self.cfg.spend_hours
+                && !self.reserved_rights.contains(&a)
+                && !self.maturity_pending_credit(a)
         })
     }
 
@@ -930,6 +966,21 @@ impl World {
             let self_id =
                 self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at <= hour).map(|r| r.matures_at).min();
             let Some(at) = opening.into_iter().chain(council).chain(appeals).chain(self_id).min() else { break };
+            // D196: a case activating at `at` suspends its accused's maturities that are not yet processed, including the ones
+            // scheduled for exactly `at`. Announce them before the maturity phase so activation precedes their credit.
+            self.maturity_pending_at = at;
+            self.maturity_pending = (0..self.cases.len())
+                .filter_map(|id| {
+                    let accused = if self.case_openings[id].as_ref().is_some_and(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
+                        self.case_openings[id].as_ref().map(|o| o.accused)?
+                    } else if self.self_id_cases[id].as_ref().is_some_and(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at) {
+                        self.self_id_cases[id].as_ref().map(|r| r.accused)?
+                    } else {
+                        return None;
+                    };
+                    Some((id as u32, accused))
+                })
+                .collect();
             self.refresh_snapshot(at);
             for id in 0..self.cases.len() {
                 if let Some(o) = self.case_openings[id].as_ref().filter(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
@@ -959,6 +1010,8 @@ impl World {
                 }
             }
             self.process_appeal_events(at);
+            self.maturity_pending.clear();
+            self.maturity_pending_at = i64::MIN;
         }
         self.refresh_snapshot(hour);
     }
@@ -1112,6 +1165,46 @@ impl World {
     }
 
     /// The integrity coefficient of an account in millionths (`COEF_ONE` when the variant is off or nothing was lost).
+    /// Whether this act's maturity is still suspended or awaiting its release processing. Such an act is not a mature
+    /// entitlement yet: it cannot be spent, converted, used as collateral or used to repay debt.
+    fn maturity_pending_credit(&self, act: u32) -> bool {
+        self.maturity_held(act) || self.deferred_maturities.binary_search(&act).is_ok()
+    }
+
+    /// The act's recorded creation hour (its maturity is this plus `MATURITY_HOURS`).
+    pub fn act_recorded_at(&self, act: u32) -> i64 {
+        self.acts.get(act as usize).map_or(0, |a| a.recorded_at)
+    }
+
+    /// The act's current lifecycle status.
+    pub fn acts_status(&self, act: u32) -> ActStatus {
+        self.acts.get(act as usize).map_or(ActStatus::Cancelled, |a| a.status)
+    }
+
+    /// The account's own matured Self-IDs that earned the integrity repair (D165).
+    pub fn own_maturities(&self, id: Id) -> u64 {
+        self.subjects.get(id as usize).map_or(0, |s| s.own_maturities)
+    }
+
+    /// The case whose active hold currently suspends this act's maturity. A cancelled act is no longer a pending maturity.
+    pub fn maturity_hold(&self, act: u32) -> Option<u32> {
+        let a = self.acts.get(act as usize)?;
+        if a.status == ActStatus::Cancelled {
+            return None;
+        }
+        self.maturity_holds.iter().find(|h| h.subject == a.subject && a.recorded_at + MATURITY_HOURS >= h.from).map(|h| h.case)
+    }
+
+    /// Maturities deferred by a hold, in the order they were passed over.
+    pub fn deferred_maturities(&self) -> &[u32] {
+        &self.deferred_maturities
+    }
+
+    /// Active case-linked maturity holds, sorted by `(subject, case)`.
+    pub fn maturity_holds(&self) -> &[MaturityHold] {
+        &self.maturity_holds
+    }
+
     pub fn coefficient(&self, id: Id) -> u32 {
         self.subjects[id as usize].coef
     }
@@ -1459,6 +1552,25 @@ impl World {
         if unspent != self.vault {
             return Err(format!("vault {} != unspent rights {}", self.vault, unspent));
         }
+        // D196: one class of hold per open case, keyed to that case's accused, and deferred maturities that are still pending.
+        let open = self.cases.iter().filter(|c| c.is_some()).count();
+        if self.maturity_holds.len() != open
+            || self.maturity_holds.windows(2).any(|w| (w[0].subject, w[0].case) >= (w[1].subject, w[1].case))
+            || self.maturity_holds.iter().enumerate().any(|(i, h)| {
+                self.maturity_holds[..i].iter().any(|other| other.case == h.case)
+                    || self.cases.get(h.case as usize).and_then(Option::as_ref).is_none_or(|c| c.accused != h.subject || h.from > self.now)
+            })
+        {
+            return Err("Self-ID maturity holds do not match the open cases".into());
+        }
+        if self.deferred_maturities.windows(2).any(|w| w[0] >= w[1])
+            || self
+                .deferred_maturities
+                .iter()
+                .any(|&act| self.acts.get(act as usize).is_none_or(|a| a.recorded_at + MATURITY_HOURS > self.now || a.credit.is_some()))
+        {
+            return Err("deferred Self-ID maturities are not unique pending maturities".into());
+        }
         let liquid: Amount = self.subjects.iter().map(|s| s.liquid).sum();
         let converted = Amount::coins(self.acts.iter().filter(|a| a.status == ActStatus::Converted).count() as u64);
         if liquid + self.liquid_destroyed != converted {
@@ -1500,7 +1612,9 @@ impl World {
                     }
                 }
                 (Some(_), false) => return Err(format!("act {idx} earned XP before maturity")),
-                (None, true) if act.status != ActStatus::Cancelled => return Err(format!("matured act {idx} has no credit")),
+                (None, true) if act.status != ActStatus::Cancelled && self.deferred_maturities.binary_search(&(idx as u32)).is_err() => {
+                    return Err(format!("matured act {idx} has no credit"))
+                }
                 _ => {}
             }
             let causes = self.xp_revocations.get(&(idx as u32));
@@ -3235,8 +3349,10 @@ mod tests {
         w.audit().unwrap();
     }
 
+    /// D196 supersedes the earlier "credit during the case" premise: a receipt maturing inside an active case is suspended,
+    /// so it creates no liability, and after an adverse verdict its source is invalidated instead of being credited.
     #[test]
-    fn liability_includes_receipts_matured_during_the_case_and_the_losing_owner_is_halved_once() {
+    fn suspended_receipts_create_no_case_liability_and_never_credit_after_an_adverse_verdict() {
         let mut w = rich_world();
         let (accused, _, _) = xp_ladder(&w);
         let g = (0..12).find(|&g| g != accused && !w.liable_guarantors(accused).contains(&g)).unwrap();
@@ -3250,14 +3366,20 @@ mod tests {
         let challenger = (0..12).filter(|&i| i != accused && i != g && w.xp(i) > w.xp(accused)).max_by_key(|&i| w.xp(i)).unwrap();
         let case = w.begin_case(&[challenger, accused]).unwrap();
         w.tick(w.case_deadline(case).unwrap());
-        assert!(w.liable_guarantors(accused).contains(&g));
+        // The receipt maturing during the case is suspended rather than credited, so it creates no liability yet.
+        assert!(!w.liable_guarantors(accused).contains(&g), "a suspended maturity is not an earned receipt");
         let before = signed(w.liquid(g) + Amount::coins(w.unspent_rights(g) as u64)) - signed(w.debt(g));
         let coefficient = w.coefficient(accused);
         let out = w.settle_case(case, None).unwrap();
         let after = signed(w.liquid(g) + Amount::coins(w.unspent_rights(g) as u64)) - signed(w.debt(g));
-        assert_eq!(before - after, signed(Amount::coins(7)), "the newly credited guarantor is liable");
+        assert_eq!(before, after, "an unearned receipt creates no guarantor charge");
         assert_eq!(w.coefficient(accused), coefficient / 2);
         assert_eq!(out.losers.iter().filter(|&&i| i == accused).count(), 1);
+        // The authorized correction runs before the release, so the invalidated chain never receives the deferred reward.
+        let units = w.responsibility_units(g);
+        w.apply_case_identity_verdict(case).unwrap();
+        assert_eq!(w.responsibility_units(g), units, "an invalidated source never credits its guarantor");
+        assert!(w.unspent_rights(accused) == 0, "the whole invalidated chain is cancelled");
         w.audit().unwrap();
     }
 
