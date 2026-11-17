@@ -154,6 +154,9 @@ fn replay_returns_the_journal_and_case_specific_reversal_restores_only_this_case
     // Replay: the retained journal is returned and no second payment, burn, penalty or removal happens.
     assert_eq!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap(), settlement);
     assert_eq!((projection(&w), ledger(&w), w.stats.self_id_settled), after);
+    // A non-upheld merits premise refuses even on replay: the journal records an upheld result.
+    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::NotUpheldSupplied).is_err());
+    assert_eq!((projection(&w), ledger(&w), w.stats.self_id_settled), after);
 
     let units = (0..N as Id).map(|id| w.responsibility_units(id)).collect::<Vec<_>>();
     assert_ne!(units, units_before, "the settlement revoked the challenged source's receipts");
@@ -213,6 +216,41 @@ fn unavailable_target_backing_refuses_without_guarantor_burns() {
     assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_err());
     assert_eq!((projection(&w), ledger(&w), w.stats.self_id_settled), before);
     assert!(w.self_id_settlement(case).is_none());
+    // The spent target also leaves the activated case without an exit: holds and custody continue (Q26 duration is open).
+    assert_no_exit(&mut w, case);
+    w.audit().unwrap();
+}
+
+/// Every ordinary exit refuses for the fixture kind, so an activated case with failed premises keeps its restrictions.
+fn assert_no_exit(w: &mut World, case: u32) {
+    assert!(w.settle_case(case, None).is_err());
+    assert!(w.cancel_case_opening(case, ACCUSER).is_err());
+    assert!(w.cancel_self_id_case_opening(case, ACCUSER).is_err());
+    w.end_case(case);
+    assert!(w.held(ACCUSER) && w.held(ACCUSED), "the restrictions continue with no selected expiry");
+    assert!(w.self_id_settlement(case).is_none());
+}
+
+/// Diagnostic witness for Q26's restriction-duration choice: one ordinary extra Self-ID by the accused during the
+/// pending interval freezes N above one, and the activated case then has no settlement and no exit inside the subset.
+/// This records a lifecycle consequence of the selected rules; it is not an exploit proof or a permission to add one.
+#[test]
+fn defender_induced_pending_drift_leaves_an_activated_case_without_an_exit() {
+    let (mut w, target) = prepared();
+    let case = record(&mut w, target);
+    let later = w.create_self_id(ACCUSED).unwrap();
+    assert_ne!(later, target, "the drift act is an ordinary Self-ID, not a special operation");
+    activate(&mut w, case);
+    assert_eq!(w.self_id_case(case).unwrap().frozen.unwrap().n, 2);
+    assert_eq!(w.spendable(ACCUSER), Amount::ZERO, "the accuser's first stake stays in custody");
+    w.tick(w.case_deadline(case).unwrap());
+    let before = (projection(&w), ledger(&w));
+    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_err());
+    assert_eq!((projection(&w), ledger(&w)), before);
+    assert_no_exit(&mut w, case);
+    w.tick(w.now() + 30 * 24);
+    assert!(w.held(ACCUSER) && w.held(ACCUSED), "no expiry is selected: the holds survive an arbitrary horizon");
+    assert_eq!(w.spendable(ACCUSER), Amount::ZERO);
     w.audit().unwrap();
 }
 

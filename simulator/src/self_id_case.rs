@@ -350,14 +350,15 @@ impl World {
     }
 
     /// Execute the one authorized isolated settlement path after a complete preflight, or refuse atomically.
-    /// A repeated call returns the retained journal without a second payment, burn, penalty or receipt removal.
+    /// A repeated call with the upheld premise returns the retained journal without a second payment, burn, penalty or
+    /// receipt removal; a non-upheld merits premise refuses even on replay, because the journal records an upheld result.
     pub fn settle_self_id_case_fixture(&mut self, case: u32, merits: TrustedMerits) -> Result<SelfIdSettlement, Reject> {
+        if merits != TrustedMerits::UpheldSupplied {
+            return Err(Reject("only an upheld supplied merits result is executable in this fixture"));
+        }
         let record = self.self_id_case(case).ok_or(Reject("no such Self-ID transaction case"))?.clone();
         if record.stage == SelfIdCaseStage::Final {
             return self.self_id_settlement(case).cloned().ok_or(Reject("the final Self-ID case has no settlement journal"));
-        }
-        if merits != TrustedMerits::UpheldSupplied {
-            return Err(Reject("only an upheld supplied merits result is executable in this fixture"));
         }
         let pre = self.self_id_settlement_preflight(case)?;
         let held = self.cases[case as usize].take().expect("preflight found an active Self-ID case");
@@ -549,12 +550,18 @@ impl World {
                     if settlement.case != id
                         || settlement.target != record.target
                         || settlement.frozen != record.frozen.expect("final case has a frozen count")
+                        || settlement.accused_charge != Amount::ONE
                         || settlement.accused_collected != Amount::ONE
                         || settlement.accuser_award != Amount::ONE
                         || !settlement.source_burned.is_zero()
                         || !settlement.unpaid_accused.is_zero()
-                        || settlement.charged_guarantors.len() != settlement.source_guarantors.len()
+                        || settlement.charged_guarantors != settlement.source_guarantors
+                        || settlement.guarantor_charge != Amount::coins(settlement.source_guarantors.len() as u64)
                         || settlement.guarantor_burned != settlement.guarantor_charge
+                        || settlement.settled_at != outcome.settled_at
+                        || settlement.revoked_receipt != self.acts[record.target as usize].credit.as_ref().map(|c| (c.at, c.recipients.to_vec()))
+                        || settlement.coefficient_before > COEF_ONE
+                        || settlement.coefficient_after != grid_penalty(settlement.coefficient_before, 0.5)
                         || settlement.reversed != effects.reversed
                     {
                         return Err(format!("Self-ID case {id} violates the isolated D192 accounting"));
@@ -565,10 +572,16 @@ impl World {
         let recorded = self.self_id_cases.iter().flatten().count() as u64;
         let activated = self.self_id_cases.iter().flatten().filter(|r| r.activated_at.is_some()).count() as u64;
         let cancelled = self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Cancelled).count() as u64;
-        if (recorded, activated, cancelled)
-            != (self.stats.self_id_openings_recorded, self.stats.self_id_openings_activated, self.stats.self_id_openings_cancelled)
+        let settled = self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Final).count() as u64;
+        if (recorded, activated, cancelled, settled)
+            != (self.stats.self_id_openings_recorded, self.stats.self_id_openings_activated, self.stats.self_id_openings_cancelled, self.stats.self_id_settled)
         {
             return Err("Self-ID case records differ from lifecycle counters".into());
+        }
+        let awarded: Amount = self.self_id_settlements.iter().flatten().map(|s| s.accuser_award).sum();
+        let guarantor_burned: Amount = self.self_id_settlements.iter().flatten().map(|s| s.guarantor_burned).sum();
+        if awarded != self.stats.self_id_awarded || guarantor_burned != self.stats.self_id_guarantor_burned {
+            return Err("Self-ID settlement journals differ from the monetary counters".into());
         }
         Ok(())
     }
