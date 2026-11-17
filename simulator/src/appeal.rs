@@ -215,6 +215,9 @@ impl World {
     /// Trusted IDs stand in for the still-open production request authentication contract.
     pub fn request_appeal(&mut self, prior_case: u32, affected: Id) -> Result<u32, Reject> {
         let effects = self.case_effects.get(prior_case as usize).and_then(Option::as_ref).ok_or(Reject("appeal requires a settled case"))?;
+        if effects.kind != CaseKind::Identity {
+            return Err(Reject("Self-ID transaction cases have no admitted appeal contract"));
+        }
         if affected as usize >= self.subjects.len() || effects.reversed {
             return Err(Reject("no unreversed case for this requester"));
         }

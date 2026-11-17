@@ -19,6 +19,14 @@ use std::sync::Arc;
 #[path = "appeal.rs"]
 mod appeal;
 pub use appeal::{AppealExecution, AppealInitiator, AppealRecord, AppealRequest, AppealStage, AppealVote, APPEAL_FIXTURE_POLICY};
+#[cfg(test)]
+#[path = "event_log.rs"]
+mod event_log;
+#[path = "self_id_case.rs"]
+mod self_id_case;
+pub use self_id_case::{
+    FrozenCount, SelfIdCaseRecord, SelfIdCaseStage, SelfIdSettlement, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, SELF_ID_CASE_POLICY,
+};
 
 pub const DAY: i64 = 24;
 /// Model assumptions while production authentication, ballot revision and same-hour membership ordering remain open.
@@ -31,6 +39,17 @@ pub const MATURITY_HOURS: i64 = 24;
 pub const INTEGRITY_POLICY: &str = "millionths/penalty-f64-floor/own-maturity-1000/cap-one/v1";
 /// The model stores integrity in millionths; repeated halving can lose precision.
 pub const COEF_ONE: u32 = 1_000_000;
+
+/// One millionths-grid penalty step: `floor(coef * (1 - fraction))` (the declared model convention, Q26 open).
+pub(crate) fn grid_penalty(coef: u32, fraction: f64) -> u32 {
+    (f64::from(coef) * (1.0 - fraction)).floor() as u32
+}
+
+/// One millionths-grid repair step: `count` own maturities add 1/1000 each, capped at one (the declared convention).
+pub(crate) fn grid_repair(coef: u32, count: u64) -> u32 {
+    let steps = count.min(u64::from(COEF_ONE / COEF_STEP));
+    (u64::from(coef) + steps * u64::from(COEF_STEP)).min(u64::from(COEF_ONE)) as u32
+}
 /// Each matured Self-ID of the account itself restores this much integrity (1/1000, D165 variant).
 pub const COEF_STEP: u32 = 1_000;
 pub type Id = u32;
@@ -196,8 +215,17 @@ struct DebtTranche {
     cancelled: Amount,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum CaseKind {
+    /// An adjudicated identity case with its selected base and receipt roster.
+    Identity,
+    /// One independent Self-ID transaction case, settled only inside the trusted D192 subset.
+    SelfIdTransaction,
+}
+
 #[derive(Clone, Debug)]
 struct CaseEffects {
+    kind: CaseKind,
     accused: Id,
     winner: Side,
     reversed: bool,
@@ -435,6 +463,15 @@ pub struct DisputeStats {
     pub statuses_restored: u64,
     pub units_restored: u64,
     pub xp_halved: u64,
+    /// The trusted independent Self-ID transaction fixture: its own lifecycle and money, never identity-case counters.
+    pub self_id_openings_recorded: u64,
+    pub self_id_openings_activated: u64,
+    pub self_id_openings_cancelled: u64,
+    pub self_id_settled: u64,
+    pub self_id_awarded: Amount,
+    /// Always zero inside the isolated subset; a non-zero value would contradict D192.
+    pub self_id_source_burned: Amount,
+    pub self_id_guarantor_burned: Amount,
     /// Council seats that changed hands, summed over the daily refreshes (members that left; the size changes are not counted).
     pub council_turnover: u64,
 }
@@ -503,6 +540,8 @@ pub struct World {
     case_cancellations: Vec<Option<CancellationOutcome>>,
     case_effects: Vec<Option<CaseEffects>>,
     case_outcomes: Vec<Option<CaseOutcome>>,
+    self_id_cases: Vec<Option<SelfIdCaseRecord>>,
+    self_id_settlements: Vec<Option<SelfIdSettlement>>,
     appeal_requests: Vec<AppealRequest>,
     appeals: Vec<AppealRecord>,
     /// Independent causes coexist: removing one case cannot erase another case or a separately authorized revocation.
@@ -564,6 +603,8 @@ impl World {
             case_cancellations: Vec::new(),
             case_effects: Vec::new(),
             case_outcomes: Vec::new(),
+            self_id_cases: Vec::new(),
+            self_id_settlements: Vec::new(),
             appeal_requests: Vec::new(),
             appeals: Vec::new(),
             xp_revocations: FastMap::default(),
@@ -877,7 +918,9 @@ impl World {
                 })
                 .filter(|&at| at <= hour)
                 .min();
-            let Some(at) = opening.into_iter().chain(council).chain(appeals).min() else { break };
+            let self_id =
+                self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at <= hour).map(|r| r.matures_at).min();
+            let Some(at) = opening.into_iter().chain(council).chain(appeals).chain(self_id).min() else { break };
             self.refresh_snapshot(at);
             for id in 0..self.cases.len() {
                 if let Some(o) = self.case_openings[id].as_ref().filter(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
@@ -887,6 +930,10 @@ impl World {
                     o.stage = OpeningStage::Activated;
                     o.activated_at = Some(at);
                     self.stats.openings_activated += 1;
+                    continue;
+                }
+                if self.self_id_cases[id].as_ref().is_some_and(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at) {
+                    self.activate_self_id_case(id as u32, at);
                     continue;
                 }
                 let Some(c) = self.cases[id].as_mut().filter(|c| c.ladder.is_due(at)) else { continue };
@@ -1215,6 +1262,9 @@ impl World {
     }
 
     fn require_account(&self, id: Id) -> Result<(), Reject> {
+        if id as usize >= self.subjects.len() {
+            return Err(Reject("no such account"));
+        }
         if !self.accepted(id) {
             Err(Reject("subject identity is not accepted"))
         } else if self.subjects[id as usize].lost_key {
@@ -1264,7 +1314,7 @@ impl World {
         if self.frozen[who as usize] > 0 {
             return Err(Reject("unspent rights are frozen while the account is accused"));
         }
-        let a = &self.acts[act as usize];
+        let a = self.acts.get(act as usize).ok_or(Reject("no such Self-ID transaction"))?;
         if a.subject != who || self.now - a.recorded_at < self.cfg.spend_hours || a.status != ActStatus::Unspent || self.reserved_rights.contains(&act) {
             return Err(Reject("conversion requires own mature emission"));
         }
@@ -1303,7 +1353,7 @@ impl World {
     }
 
     fn require_mature_own(&self, who: Id, act: u32, hours: i64, what: &'static str) -> Result<(), Reject> {
-        let a = &self.acts[act as usize];
+        let a = self.acts.get(act as usize).ok_or(Reject("no such Self-ID transaction"))?;
         if a.status != ActStatus::Unspent || self.reserved_rights.contains(&act) {
             return Err(Reject("emission is spent or disputed"));
         }
@@ -1372,7 +1422,7 @@ impl World {
     /// Previously credited units remain attached to unrefuted historical acts (D166).
     pub fn withdraw_valence(&mut self, owner: Id, valence: u32) -> Result<(), Reject> {
         let (open, v_owner, counterpart, rels) = {
-            let v = &self.valences[valence as usize];
+            let v = self.valences.get(valence as usize).ok_or(Reject("no such valence"))?;
             (v.open, v.owner, v.counterpart, v.rels.clone())
         };
         if !open || v_owner != owner {
@@ -1466,6 +1516,9 @@ impl World {
     /// Research probe: answer the invitation path question for `creator` by the named method on the current snapshot, without changing the
     /// world. Used to compare methods on identical graph snapshots.
     pub fn probe_invitation_paths(&mut self, creator: Id, method: PathMethod) -> Probe {
+        if creator as usize >= self.subjects.len() {
+            return Probe { accepted: false, steps: 0, exhausted: false, certificate_valid: None, resolved_by: "unknown account" };
+        }
         let d = self.required_guarantors();
         let Some(max_nodes) = self.cfg.max_nodes else {
             let ok = self.finder.disjoint_count(&self.graph, &self.blocked, &self.council_mask, creator, d) >= d;
@@ -1557,7 +1610,7 @@ impl World {
     /// Admit the invited account after the freeze. The new account and the creator guarantee each other.
     pub fn accept_invitation(&mut self, inv: u32) -> Result<Id, Reject> {
         let (creator, created_at, status) = {
-            let i = &self.invitations[inv as usize];
+            let i = self.invitations.get(inv as usize).ok_or(Reject("no such invitation"))?;
             (i.creator, i.created_at, i.status)
         };
         if status != InvStatus::Pending {
@@ -1581,7 +1634,7 @@ impl World {
     pub fn cancel_invitation(&mut self, guarantor: Id, inv: u32) -> Result<(), Reject> {
         self.require_account(guarantor)?;
         let (creator, created_at, status) = {
-            let i = &self.invitations[inv as usize];
+            let i = self.invitations.get(inv as usize).ok_or(Reject("no such invitation"))?;
             (i.creator, i.created_at, i.status)
         };
         if status != InvStatus::Pending || self.now - created_at >= self.cfg.freeze_hours {
@@ -1598,7 +1651,7 @@ impl World {
     /// Free termination of an active invitation link by either side (D110).
     pub fn end_invitation_link(&mut self, actor: Id, inv: u32) -> Result<(), Reject> {
         let (creator, target, status, rels) = {
-            let i = &self.invitations[inv as usize];
+            let i = self.invitations.get(inv as usize).ok_or(Reject("no such invitation"))?;
             (i.creator, i.target, i.status, i.rels.clone())
         };
         if status != InvStatus::Active || (actor != creator && Some(actor) != target) {
@@ -1730,6 +1783,8 @@ impl World {
         self.case_cancellations.push(None);
         self.case_effects.push(None);
         self.case_outcomes.push(None);
+        self.self_id_cases.push(None);
+        self.self_id_settlements.push(None);
         self.activate_case(case, challenger, accused, self.subjects[challenger as usize].xp);
         Ok(case)
     }
@@ -1768,6 +1823,8 @@ impl World {
         self.case_cancellations.push(None);
         self.case_effects.push(None);
         self.case_outcomes.push(None);
+        self.self_id_cases.push(None);
+        self.self_id_settlements.push(None);
         self.stats.openings_recorded += 1;
         Ok(case)
     }
@@ -1817,7 +1874,16 @@ impl World {
     }
 
     /// Cancel this author's own pending opening or still-open active dispute, including Council deferrals.
+    /// Ordinary-case operations do not act on the independent Self-ID transaction fixture, which owns its own lifecycle.
+    fn require_ordinary_case(&self, case: u32) -> Result<(), Reject> {
+        if self.self_id_cases.get(case as usize).is_some_and(Option::is_some) {
+            return Err(Reject("Self-ID transaction cases use their own fixture lifecycle"));
+        }
+        Ok(())
+    }
+
     pub fn cancel_case_opening(&mut self, case: u32, author: Id) -> Result<CancellationOutcome, Reject> {
+        self.require_ordinary_case(case)?;
         if self.case_opening(case).is_some_and(|o| o.stage == OpeningStage::Pending) {
             self.cancel_pending_opening(case, author)?;
             return Ok(self.case_cancellation(case).expect("just cancelled pending opening").clone());
@@ -1932,6 +1998,7 @@ impl World {
     /// and reserves liquid and mature Emitter backing. Returns the ordinal. Only an admitted position changes the ordinal, the deadline,
     /// the custody and the restrictions; a refusal changes nothing.
     pub fn join_case(&mut self, case: u32, who: Id) -> Result<u32, Reject> {
+        self.require_ordinary_case(case)?;
         self.require_account(who)?;
         let xp = self.subjects[who as usize].xp;
         let (check, ordinal) = {
@@ -1949,6 +2016,7 @@ impl World {
 
     /// Collective Council entry (D161): any Council member, no XP condition and no stake, one terminal position on the shared clock.
     pub fn council_join(&mut self, case: u32, member: Id) -> Result<u32, Reject> {
+        self.require_ordinary_case(case)?;
         self.require_account(member)?;
         if !self.council_mask.get(member as usize).copied().unwrap_or(false) {
             return Err(Reject("not a Council member"));
@@ -2035,12 +2103,14 @@ impl World {
     /// End a case without a verdict (mooted: the accused was dealt with elsewhere, or the process ended it): custody is released, nothing
     /// is paid or charged and no XP changes.
     pub fn end_case(&mut self, case: u32) {
-        if let Some(c) = self.cases[case as usize].take() {
-            self.release_case(&c);
-            self.stats.moot += 1;
-            if let Some(opening) = self.case_openings[case as usize].as_mut() {
-                opening.stage = OpeningStage::Moot;
-            }
+        if self.require_ordinary_case(case).is_err() {
+            return;
+        }
+        let Some(c) = self.cases.get_mut(case as usize).and_then(Option::take) else { return };
+        self.release_case(&c);
+        self.stats.moot += 1;
+        if let Some(opening) = self.case_openings[case as usize].as_mut() {
+            opening.stage = OpeningStage::Moot;
         }
     }
 
@@ -2085,6 +2155,7 @@ impl World {
     /// base stake is charged to the accused (paid to the accuser) and to each actual historical XP-receiving guarantor (burned), the uncollectible
     /// part becoming debt. Refused before the deadline.
     pub fn settle_case(&mut self, case: u32, forced: Option<Side>) -> Result<CaseOutcome, Reject> {
+        self.require_ordinary_case(case)?;
         if !self.case_final(case) {
             return Err(Reject("the dispute is not final yet"));
         }
@@ -2171,6 +2242,7 @@ impl World {
             self.stats.accused_won += 1;
         }
         self.case_effects[case as usize] = Some(CaseEffects {
+            kind: CaseKind::Identity,
             accused: c.accused,
             winner: settlement.winner,
             reversed: false,
@@ -2206,6 +2278,9 @@ impl World {
     /// Execute the same authorized verdict for an explicitly supplied related account, such as D127's duplicate holder.
     pub fn apply_case_identity_verdict_to(&mut self, case: u32, accused: Id) -> Result<(), Reject> {
         let effects = self.case_effects.get(case as usize).and_then(Option::as_ref).ok_or(Reject("no settled case effects"))?;
+        if effects.kind != CaseKind::Identity {
+            return Err(Reject("identity verdicts do not apply to a Self-ID transaction case"));
+        }
         if effects.reversed || effects.winner != Side::Accuser || effects.identity_subjects.contains(&accused) || accused as usize >= self.subjects.len() {
             return Err(Reject("no unapplied adverse identity verdict"));
         }
@@ -2242,6 +2317,9 @@ impl World {
             return Err(Reject("XP penalty fraction must be finite and between zero and one"));
         }
         let effects = self.case_effects.get_mut(case as usize).and_then(Option::as_mut).ok_or(Reject("no settled case effects"))?;
+        if effects.kind != CaseKind::Identity {
+            return Err(Reject("role-specific identity penalties do not apply to a Self-ID transaction case"));
+        }
         if effects.reversed || subject as usize >= self.subjects.len() {
             return Err(Reject("no active case penalty target"));
         }
@@ -2310,6 +2388,9 @@ impl World {
     }
 
     pub fn invalidate_identity(&mut self, id: Id) {
+        if id as usize >= self.subjects.len() {
+            return;
+        }
         self.independent_invalid[id as usize] = true;
         self.subjects[id as usize].status = Status::False;
     }
@@ -2317,6 +2398,9 @@ impl World {
     /// D151 appeal: a wrongly invalidated person who proves reality is an account again. Credit revoked with the cut chain stays revoked,
     /// and links that others left are not restored. A retired lost-key account (D135) is never reinstated. Returns whether anything changed.
     pub fn reinstate_identity(&mut self, id: Id) -> bool {
+        if id as usize >= self.subjects.len() {
+            return false;
+        }
         let s = &mut self.subjects[id as usize];
         if s.status == Status::False && !s.lost_key && self.identity_cases.get(&id).is_none_or(|cases| cases.is_empty()) {
             self.independent_invalid[id as usize] = false;
@@ -2329,6 +2413,9 @@ impl World {
     /// D34/D55 (trusted execution, not adjudication): the account loses `fraction` of its current XP, recorded as an authorized adjustment.
     /// Deviation: the snapshot of the losing act is not kept; the penalty applies to the XP the account holds now. Returns the XP removed.
     pub fn penalize_xp(&mut self, id: Id, fraction: f64) -> i32 {
+        if id as usize >= self.subjects.len() || !fraction.is_finite() || !(0.0..=1.0).contains(&fraction) {
+            return 0;
+        }
         self.apply_xp_penalty(id, fraction, None)
     }
 
@@ -2337,7 +2424,7 @@ impl World {
     }
 
     fn penalized_coefficient(coef: u32, fraction: f64) -> u32 {
-        (f64::from(coef) * (1.0 - fraction)).floor() as u32
+        grid_penalty(coef, fraction)
     }
 
     fn apply_xp_penalty(&mut self, id: Id, fraction: f64, case: Option<u32>) -> i32 {
@@ -2364,16 +2451,12 @@ impl World {
     }
 
     fn replay_integrity(s: &Subject) -> Option<u32> {
-        fn repair(coef: u32, count: u64) -> u32 {
-            let steps = count.min(u64::from(COEF_ONE / COEF_STEP));
-            (u64::from(coef) + steps * u64::from(COEF_STEP)).min(u64::from(COEF_ONE)) as u32
-        }
         let (mut coef, mut maturities) = (COEF_ONE, 0);
         for adjustment in &s.integrity_adjustments {
             if adjustment.at_maturities < maturities || adjustment.at_maturities > s.own_maturities {
                 return None;
             }
-            coef = repair(coef, adjustment.at_maturities - maturities);
+            coef = grid_repair(coef, adjustment.at_maturities - maturities);
             maturities = adjustment.at_maturities;
             if !adjustment.reversed {
                 coef = match adjustment.kind {
@@ -2382,7 +2465,7 @@ impl World {
                 };
             }
         }
-        Some(repair(coef, s.own_maturities - maturities))
+        Some(grid_repair(coef, s.own_maturities - maturities))
     }
 
     /// Remove this case's penalty events once. The balance-halving ablation returns recorded cuts without repricing later cuts.
@@ -2446,6 +2529,9 @@ impl World {
     /// D151 recovery: the liquid FCTY of an invalidated account is burned (FCTY already transferred out cannot be un-minted, D53; here
     /// nothing is transferable, so all liquid FCTY of the account is burned). Returns the amount burned.
     pub fn burn_liquid(&mut self, id: Id) -> Amount {
+        if id as usize >= self.subjects.len() {
+            return Amount::ZERO;
+        }
         let burned = self.spendable(id);
         self.subjects[id as usize].liquid -= burned;
         self.destroy_liquid(burned);
@@ -2480,6 +2566,9 @@ impl World {
 
     /// Cut the whole Self-ID chain: unspent rights burn without XP; XP credited by the cut acts is revoked.
     pub fn void_chain(&mut self, id: Id) {
+        if id as usize >= self.subjects.len() {
+            return;
+        }
         let chain = self.subjects[id as usize].acts.clone();
         for act_id in chain {
             let act = &mut self.acts[act_id as usize];
@@ -2689,6 +2778,7 @@ impl World {
     pub fn audit(&self) -> Result<(), String> {
         self.audit_integrity()?;
         self.audit_appeals()?;
+        self.audit_self_id_cases()?;
         if self.case_effects.len() != self.cases.len()
             || self.case_outcomes.len() != self.cases.len()
             || self.case_openings.len() != self.cases.len()
