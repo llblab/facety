@@ -31,7 +31,8 @@ mod links;
 #[path = "self_id_case.rs"]
 mod self_id_case;
 pub use self_id_case::{
-    FrozenCount, SelfIdCaseRecord, SelfIdCaseStage, SelfIdSettlement, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, SELF_ID_CASE_POLICY,
+    FrozenCount, SelfIdCaseRecord, SelfIdCaseStage, SelfIdEffectPlan, SelfIdRevokedReceipt, SelfIdSettlement, TrustedAdmissionPremises, TrustedMerits,
+    TrustedPremise, SELF_ID_CASE_POLICY,
 };
 
 pub const DAY: i64 = 24;
@@ -478,6 +479,8 @@ pub struct DisputeStats {
     /// Always zero inside the isolated subset; a non-zero value would contradict D192.
     pub self_id_source_burned: Amount,
     pub self_id_guarantor_burned: Amount,
+    /// Accused charge that no affected backing covered; recorded as this case's FIFO debt, never as collected money.
+    pub self_id_unpaid: Amount,
     /// Council seats that changed hands, summed over the daily refreshes (members that left; the size changes are not counted).
     pub council_turnover: u64,
 }

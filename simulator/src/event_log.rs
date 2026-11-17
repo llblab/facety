@@ -458,12 +458,30 @@ fn prologue() -> Vec<Event> {
         Event::Convert(4),
         Event::SelfId(5),
         Event::Tick(1),
+        Event::SelfId(5),
         // Case 0: one ordinary accuser, frozen N = 1, the ordinary cutoff, an upheld supplied merits result.
         Event::RecordSelfIdCase(5, 4),
         Event::Tick(1),
         Event::Tick(7),
         Event::SettleSelfIdCase(0, true),
         Event::RestoreCase(0),
+        // Case 1 exercises the filing-frozen deep scope: account 2 already holds a second Self-ID when the accusation is
+        // recorded, so filing freezes N = 2 (D195). The target right is converted to collected value inside the pendency
+        // and the third act is outside the frozen scope, so settlement collects actual backing and records the rest as
+        // its own debt. Then case-specific reversal.
+        Event::SelfId(2),
+        Event::SelfId(5),
+        Event::Tick(1),
+        Event::SelfId(2),
+        Event::RecordSelfIdCase(5, 8),
+        // Two ordinary disposition changes inside the pendency: the target right becomes collected value and the third
+        // act (outside the frozen scope) is freely cancelled, so its backing is burned rather than available.
+        Event::Convert(2),
+        Event::CancelSelfId(2, 10),
+        Event::Tick(1),
+        Event::Tick(7),
+        Event::SettleSelfIdCase(1, true),
+        Event::RestoreCase(1),
     ]
 }
 
@@ -495,8 +513,14 @@ fn deterministic_event_logs_preserve_conservation_custody_fifo_xp_and_atomic_ref
         for event in prologue() {
             step(&mut w, &mut log, event);
         }
-        assert_eq!(w.stats.self_id_settled, 1, "the prologue must execute one isolated settlement (seed {seed})");
+        assert_eq!(w.stats.self_id_settled, 2, "the prologue must execute the isolated and the drifted settlement (seed {seed})");
         assert!(w.self_id_settlement(0).is_some_and(|s| s.reversed), "the prologue must exercise case-specific restoration");
+        let deep = w.self_id_settlement(1).expect("the deep-scope case settled");
+        assert_eq!((deep.frozen.violating, deep.frozen.endpoint, deep.frozen.n), (2, 3, 2), "filing froze the deep scope (seed {seed})");
+        assert!(deep.accused_collected < deep.accused_charge, "a converted target right leaves a recorded shortfall (seed {seed})");
+        assert_eq!(deep.unpaid_accused, deep.accused_charge - deep.accused_collected, "the shortfall is this case's debt (seed {seed})");
+        assert!(deep.reversed, "the deep-scope case is reversed without duplicating value");
+        assert_eq!(w.stats.self_id_unpaid, deep.unpaid_accused, "only the deep case's shortfall counts as unpaid (seed {seed})");
         for _ in 0..EVENTS {
             let event = draw(&mut rng, &w);
             if step(&mut w, &mut log, event) {

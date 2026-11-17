@@ -413,7 +413,7 @@ impl World {
         collected
     }
 
-    fn record_debt(&mut self, id: Id, amount: Amount, case: u32) {
+    pub(super) fn record_debt(&mut self, id: Id, amount: Amount, case: u32) {
         if !amount.is_zero() {
             let subject = &mut self.subjects[id as usize];
             subject.debt_tranches.push(DebtTranche { case, amount, remaining: amount, repaid: Amount::ZERO, cancelled: Amount::ZERO });

@@ -137,14 +137,20 @@ fn strategic_filing_delay_probe_separates_nominal_count_from_actual_recovery() {
             )
             .unwrap();
         let at = w.self_id_case(case).unwrap().matures_at;
-        w.tick(at);
+        // D195: the frozen count is already the filing-time snapshot, before activation.
         let frozen = w.self_id_case(case).unwrap().frozen.unwrap();
         let nominal = Amount::coins(u64::from(frozen.n));
         let collectible = w.liquid(0) + Amount::coins(w.unspent_rights(0) as u64);
+        // A Self-ID added during the 24-hour pendency (no hold exists yet) cannot increase this case's exposure.
+        w.create_self_id(0).unwrap();
+        assert_eq!(w.self_id_case(case).unwrap().frozen, Some(frozen), "the pendency cannot raise the frozen count");
+        w.tick(at);
+        assert_eq!(w.self_id_case(case).unwrap().frozen, Some(frozen), "activation cannot reprice the filing snapshot");
         w.tick(w.case_deadline(case).unwrap());
-        let executable = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_ok();
-        assert_eq!(executable, frozen.n == 1, "only the isolated one-act suffix is executable in this fixture");
-        (frozen.n, nominal, collectible, executable)
+        let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+        assert_eq!(settlement.frozen, frozen);
+        assert_eq!(settlement.accused_charge, nominal, "the charge is the filing-time N, never the grown chain");
+        (frozen.n, nominal, collectible, true)
     }
     let early = frozen_for(0);
     let late = frozen_for(5);
@@ -156,7 +162,7 @@ fn strategic_filing_delay_probe_separates_nominal_count_from_actual_recovery() {
     // The accused's own emission also grows with its chain, but that is potential backing, not realized recovery.
     assert_eq!(early.2, Amount::ONE);
     assert!(late.2 > early.2);
-    // Within the approved subset only N = 1 executes, so a larger nominal claim recovers no more today.
-    assert!(early.3 && !late.3);
-    println!("under D192's isolated witness the executable recovery is the target's 1 FCTY; a larger N is nominal plus debt");
+    // Both filings execute, under the filing-time count, from actual collection only.
+    assert!(early.3 && late.3);
+    println!("a larger filing-time N is executable, but it collects only what the accused actually holds; the rest is debt");
 }

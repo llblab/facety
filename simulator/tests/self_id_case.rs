@@ -92,7 +92,12 @@ fn isolated_d192_settlement_executes_the_selected_effects_end_to_end() {
     assert_eq!(opening.source_guarantors, ROSTER);
     assert_eq!(opening.matures_at, opening.recorded_at + 24);
     assert!(!w.held(ACCUSER) && !w.held(ACCUSED), "a pending opening restricts nobody");
-    assert_eq!(opening.frozen, None);
+    assert_eq!(
+        opening.frozen,
+        Some(facety_sim::world::FrozenCount { violating: 1, endpoint: 1, n: 1 }),
+        "the disputed scope is frozen at recording, before any restriction exists"
+    );
+    assert_eq!(opening.accused_chain_at_recording, 1);
 
     activate(&mut w, case);
     let frozen = w.self_id_case(case).unwrap().frozen.unwrap();
@@ -132,6 +137,9 @@ fn isolated_d192_settlement_executes_the_selected_effects_end_to_end() {
     let receipt = w.transaction_provenance(TransactionTarget::SelfId(target)).unwrap().xp_receipt.unwrap();
     assert!(receipt.revoked, "the source cut is keyed to this case");
     assert_eq!(receipt.recipients, &[ACCUSED, 3, 4, 6, 7]);
+    assert_eq!(settlement.affected, vec![target], "the frozen affected scope of a terminal one-act suffix");
+    assert_eq!(settlement.revoked_receipts.len(), 1);
+    assert_eq!((settlement.revoked_receipts[0].act, settlement.revoked_receipts[0].recipients.len()), (target, 5));
     let outcome = w.case_outcome(case).unwrap();
     assert_eq!((outcome.winner, outcome.forced_winner), (facety_sim::chekharda::Side::Accuser, Some(facety_sim::chekharda::Side::Accuser)));
     assert_eq!(outcome.positions, 1);
@@ -180,30 +188,62 @@ fn replay_returns_the_journal_and_case_specific_reversal_restores_only_this_case
 }
 
 #[test]
-fn frozen_n_above_one_is_a_supported_lifecycle_with_an_unsupported_settlement() {
+fn frozen_n_above_one_settles_with_actual_collection_and_recorded_debt() {
     let (mut w, target) = prepared();
+    // A filing against a deep chain freezes N above one at recording, however long the pendency lasts.
+    let deeper = w.create_self_id(ACCUSED).unwrap();
+    let standing = w.create_self_id(ACCUSER).unwrap();
+    assert!(deeper != target && standing != target);
+    w.tick(w.now() + 24);
     let case = record(&mut w, target);
-    // A Self-ID recorded during the pending interval extends the affected suffix through the activation snapshot.
     let later = w.create_self_id(ACCUSED).unwrap();
-    assert_ne!(later, target);
     activate(&mut w, case);
     let frozen = w.self_id_case(case).unwrap().frozen.unwrap();
-    assert_eq!((frozen.violating, frozen.endpoint, frozen.n), (1, 2, 2));
-    w.tick(w.case_deadline(case).unwrap());
-    let before = (projection(&w), ledger(&w));
-    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_err());
-    assert_eq!((projection(&w), ledger(&w)), before, "an unsupported settlement mutates nothing");
-    assert!(w.self_id_settlement(case).is_none());
-    assert!(w.case_outcome(case).is_none());
-    assert_eq!(w.stats.self_id_settled, 0);
+    assert_eq!((frozen.violating, frozen.endpoint, frozen.n), (1, 2, 2), "filing fixed the endpoint; the pending drift is outside it");
+    assert_ne!(later, deeper);
+    let deadline = w.case_deadline(case).unwrap();
+    w.tick(deadline);
+
+    // The plan is readable before any effect and names the frozen scope, the charge and what is collectible now.
+    let plan = w.self_id_case_plan(case).unwrap();
+    assert_eq!((plan.affected.clone(), plan.accused_charge, plan.accused_collectible), (vec![target, deeper], Amount::coins(2), Amount::coins(2)));
+    assert_eq!(plan.accused_unpaid, Amount::ZERO);
+
+    let units_before: Vec<i32> = (0..N as Id).map(|id| w.responsibility_units(id)).collect();
+    let burned = w.burned();
+    let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+    assert_eq!(w.responsibility_units(ACCUSED), units_before[ACCUSED as usize] - 2, "only the filing-frozen suffix is cut");
+    assert_eq!(w.unspent_rights(ACCUSED), 1, "the later act keeps its own entitlement, outside this case");
+
+    // D189: the accused owes N; only actual collection from the frozen affected scope pays the first accuser.
+    assert_eq!((settlement.accused_charge, settlement.accused_collected, settlement.accuser_award), (Amount::coins(2), Amount::coins(2), Amount::coins(2)));
+    assert_eq!(settlement.unpaid_accused, Amount::ZERO);
+    assert_eq!((settlement.source_burned, settlement.affected.clone()), (Amount::ZERO, vec![target, deeper]));
+    assert_eq!(w.liquid(ACCUSER), Amount::coins(2), "the transmitted backing, not the accuser's own stake");
+    assert_eq!((w.liquid(ACCUSED), w.debt(ACCUSED)), (Amount::ZERO, Amount::ZERO));
+    // Each original creation-time guarantor owes its own N: 1 liquid is burned and the rest is its own debt.
+    assert_eq!((settlement.guarantor_charge, settlement.guarantor_burned), (Amount::coins(8), Amount::coins(4)));
+    assert_eq!(w.burned(), burned + Amount::coins(4));
+    for g in ROSTER {
+        assert_eq!((w.liquid(g), w.debt(g)), (Amount::ZERO, Amount::ONE), "independent backing burns, the rest is debt");
+    }
+    // Both affected receipts are cut, so both units leave the author and each creation-time guarantor.
+    for id in [ACCUSED, ROSTER[0]] {
+        assert_eq!(w.responsibility_units(id), units_before[id as usize] - 2);
+    }
+    assert_eq!(w.coefficient(ACCUSED), COEF_ONE / 2);
+    assert!(w.accepted(ACCUSED), "the identity stays; only this case's effects apply");
+    let outcome = w.case_outcome(case).unwrap();
+    assert_eq!(outcome.debts, vec![(ROSTER[0], Amount::ONE), (ROSTER[1], Amount::ONE), (ROSTER[2], Amount::ONE), (ROSTER[3], Amount::ONE)]);
+    assert!(!w.held(ACCUSER) && !w.held(ACCUSED), "the case reaches its authorized result and releases only its own holds");
     w.audit().unwrap();
 }
 
 #[test]
-fn unavailable_target_backing_refuses_without_guarantor_burns() {
+fn spent_target_backing_yields_no_invented_award_and_a_recorded_debt() {
     let (mut w, target) = prepared();
     let case = record(&mut w, target);
-    // The accused spends the sole target right during the pending interval: zero accused collection, funded guarantors.
+    // The accused spends the sole target right during the pending interval: the case must still reach an authorized result.
     w.convert_to_collector(ACCUSED, target).unwrap();
     w.burn_liquid(ACCUSED);
     assert_eq!(w.liquid(ACCUSED), Amount::ZERO);
@@ -212,86 +252,92 @@ fn unavailable_target_backing_refuses_without_guarantor_burns() {
     }
     activate(&mut w, case);
     w.tick(w.case_deadline(case).unwrap());
-    let before = (projection(&w), ledger(&w), w.stats.self_id_settled);
-    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_err());
-    assert_eq!((projection(&w), ledger(&w), w.stats.self_id_settled), before);
-    assert!(w.self_id_settlement(case).is_none());
-    // The spent target also leaves the activated case without an exit: holds and custody continue (Q26 duration is open).
-    assert_no_exit(&mut w, case);
-    w.audit().unwrap();
-}
-
-/// Every ordinary exit refuses for the fixture kind, so an activated case with failed premises keeps its restrictions.
-fn assert_no_exit(w: &mut World, case: u32) {
-    assert!(w.settle_case(case, None).is_err());
-    assert!(w.cancel_case_opening(case, ACCUSER).is_err());
-    assert!(w.cancel_self_id_case_opening(case, ACCUSER).is_err());
-    w.end_case(case);
-    assert!(w.held(ACCUSER) && w.held(ACCUSED), "the restrictions continue with no selected expiry");
-    assert!(w.self_id_settlement(case).is_none());
-}
-
-/// Diagnostic witness for Q26's restriction-duration choice: one ordinary extra Self-ID by the accused during the
-/// pending interval freezes N above one, and the activated case then has no settlement and no exit inside the subset.
-/// This records a lifecycle consequence of the selected rules; it is not an exploit proof or a permission to add one.
-#[test]
-fn defender_induced_pending_drift_leaves_an_activated_case_without_an_exit() {
-    let (mut w, target) = prepared();
-    let case = record(&mut w, target);
-    let later = w.create_self_id(ACCUSED).unwrap();
-    assert_ne!(later, target, "the drift act is an ordinary Self-ID, not a special operation");
-    activate(&mut w, case);
-    assert_eq!(w.self_id_case(case).unwrap().frozen.unwrap().n, 2);
-    assert_eq!(w.spendable(ACCUSER), Amount::ZERO, "the accuser's first stake stays in custody");
-    w.tick(w.case_deadline(case).unwrap());
-    let before = (projection(&w), ledger(&w));
-    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_err());
-    assert_eq!((projection(&w), ledger(&w)), before);
-    assert_no_exit(&mut w, case);
-    w.tick(w.now() + 30 * 24);
-    assert!(w.held(ACCUSER) && w.held(ACCUSED), "no expiry is selected: the holds survive an arbitrary horizon");
-    assert_eq!(w.spendable(ACCUSER), Amount::ZERO);
+    let burned = w.burned();
+    let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+    // Unavailable affected value is not recovered from anyone else (transferred-value recovery stays OPEN).
+    assert_eq!((settlement.accused_collected, settlement.accuser_award, settlement.unpaid_accused), (Amount::ZERO, Amount::ZERO, Amount::ONE));
+    assert_eq!(w.liquid(ACCUSER), Amount::ZERO, "no invented backing for the accuser");
+    assert_eq!(w.debt(ACCUSED), Amount::ONE, "the uncollected charge is this case's FIFO debt, not a burn");
+    // The guarantor charges are independent of the accused's collection and still burn actual backing.
+    assert_eq!((settlement.guarantor_burned, w.burned()), (Amount::coins(4), burned + Amount::coins(4)));
+    assert_eq!(w.stats.self_id_unpaid, Amount::ONE);
     w.audit().unwrap();
 }
 
 #[test]
-fn incomplete_guarantor_backing_refuses_atomically() {
+fn incomplete_guarantor_backing_records_that_guarantor_debt() {
     let (mut w, target) = prepared();
     let case = record(&mut w, target);
     let stripped = ROSTER[0];
     w.burn_liquid(stripped);
     activate(&mut w, case);
     w.tick(w.case_deadline(case).unwrap());
-    let before = (projection(&w), ledger(&w));
-    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_err());
-    assert_eq!((projection(&w), ledger(&w)), before);
+    let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+    assert_eq!(settlement.guarantor_burned, Amount::coins(3), "only the funded guarantors' actual collection burns");
+    assert_eq!(w.debt(stripped), Amount::ONE, "the unfunded guarantor owes its own charge as debt");
+    assert_eq!(w.debt(ROSTER[1]), Amount::ZERO);
+    assert_eq!(settlement.accused_collected, Amount::ONE, "an unfunded guarantor cannot block or top up the award");
     w.audit().unwrap();
 }
 
 #[test]
-fn overlapping_open_case_refuses_atomically() {
+fn overlapping_open_case_keeps_its_own_custody_through_this_settlement() {
     let (mut w, target) = prepared();
     let case = record(&mut w, target);
     let other = w.begin_case(&[ACCUSER, ACCUSED]).unwrap();
     activate(&mut w, case);
     w.tick(w.case_deadline(case).unwrap());
-    let before = (projection(&w), ledger(&w));
-    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_err());
-    assert_eq!((projection(&w), ledger(&w)), before);
-    w.audit().unwrap();
+    assert!(w.held(ACCUSER) && w.held(ACCUSED));
+    let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+    assert_eq!(settlement.accused_collected, Amount::ONE, "the frozen scope right is not the other case's custody");
+    assert!(w.held(ACCUSER) && w.held(ACCUSED), "the other case keeps its own restrictions");
+    assert!(w.case_outcome(other).is_none(), "no penalty, settlement or restoration of the other case");
     w.end_case(other);
-    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_ok(), "the held target again rejects the unsafe transition");
+    assert!(!w.held(ACCUSER) && !w.held(ACCUSED), "only the other case's own holds end");
+    assert_eq!(w.coefficient(ACCUSED), COEF_ONE / 2, "ending the other case does not undo this case's penalty");
+    w.audit().unwrap();
 }
 
 #[test]
-fn key_recovery_interaction_refuses_atomically() {
+fn a_reserved_affected_right_is_not_collected_and_leaves_fifo_debt() {
+    let (mut w, target) = prepared();
+    let case = record(&mut w, target);
+    // Another open case reserves the accused's only mature backing. Exclusive custody forbids collecting it here.
+    let blocker = w.begin_case(&[ACCUSED, 4]).unwrap();
+    assert!(w.convert_to_collector(ACCUSED, target).is_err(), "the other case's custody makes the right unusable");
+    activate(&mut w, case);
+    w.tick(w.case_deadline(case).unwrap());
+    let plan = w.self_id_case_plan(case).unwrap();
+    assert_eq!((plan.accused_collectible, plan.accused_unpaid), (Amount::ZERO, Amount::ONE));
+    let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+    assert_eq!((settlement.accused_collected, settlement.unpaid_accused), (Amount::ZERO, Amount::ONE));
+    assert_eq!(w.debt(ACCUSED), Amount::ONE, "the reserved value is this case's debt, never another case's asset");
+    assert!(w.held(ACCUSED), "the independent case keeps its own restriction");
+    w.end_case(blocker);
+
+    // The same frozen decision on an unreserved scope collects the right instead: only the actual path differs.
+    let (mut w2, target2) = prepared();
+    let case2 = record(&mut w2, target2);
+    activate(&mut w2, case2);
+    w2.tick(w2.case_deadline(case2).unwrap());
+    let clean = w2.settle_self_id_case_fixture(case2, TrustedMerits::UpheldSupplied).unwrap();
+    assert_eq!((clean.accused_collected, clean.unpaid_accused), (Amount::ONE, Amount::ZERO));
+    w.audit().unwrap();
+}
+
+#[test]
+fn key_recovery_interaction_stays_a_named_open_contract_boundary() {
     let (mut w, target) = prepared();
     let case = record(&mut w, target);
     w.lose_key(ACCUSED).unwrap();
     activate(&mut w, case);
     w.tick(w.case_deadline(case).unwrap());
     let before = (projection(&w), ledger(&w));
-    assert!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).is_err());
+    assert!(w.self_id_case_plan(case).is_err(), "a completed key recovery moves receipts under Q25-C1");
+    assert_eq!(
+        w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied),
+        Err(facety_sim::world::Reject("a completed key recovery interacts with this case"))
+    );
     assert_eq!((projection(&w), ledger(&w)), before);
     w.audit().unwrap();
 }
@@ -370,6 +416,109 @@ fn pending_cancellation_is_free_and_unsupported_vetoes_refuse() {
     w.audit().unwrap();
 }
 
+/// The original lifecycle-gap witness: ordinary permitted actions between recording and activation used to strand the
+/// case. Under the frozen-scope contract the same trace reaches an authorized settlement and nothing is invented.
+#[test]
+fn defender_induced_pending_drift_reaches_an_authorized_settlement() {
+    let (mut w, target) = prepared();
+    let case = record(&mut w, target);
+    let later = w.create_self_id(ACCUSED).unwrap();
+    assert_ne!(later, target, "the drift act is an ordinary Self-ID, not a special operation");
+    // A second ordinary disposition change inside the pending interval: the target right becomes collected value.
+    w.convert_to_collector(ACCUSED, target).unwrap();
+    activate(&mut w, case);
+    // D195: the pending drift and the disposition change cannot touch this case's frozen exposure.
+    assert_eq!(w.self_id_case(case).unwrap().frozen.unwrap().n, 1, "the endpoint was frozen at filing");
+    w.tick(w.case_deadline(case).unwrap());
+    let plan = w.self_id_case_plan(case).unwrap();
+    assert_eq!((plan.accused_charge, plan.accused_collectible, plan.accused_unpaid), (Amount::ONE, Amount::ONE, Amount::ZERO));
+    let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+    // The converted target right is now collected value, so the selected soft backing still pays the accuser.
+    assert_eq!((settlement.accused_collected, settlement.accuser_award, settlement.unpaid_accused), (Amount::ONE, Amount::ONE, Amount::ZERO));
+    assert_eq!(w.debt(ACCUSED), Amount::ZERO, "the disposition change is collected, not turned into debt");
+    assert_eq!(w.unspent_rights(ACCUSED), 1, "the drift act is outside this case's exposure");
+    assert!(!w.held(ACCUSER) && !w.held(ACCUSED), "the case is no longer an implementation dead end");
+    assert_eq!(w.spendable(ACCUSER), w.liquid(ACCUSER), "the accuser's own stake is released");
+    // The case reaches its authorized result once, and no ordinary-case exit silently substitutes for it.
+    assert_eq!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap(), settlement);
+    assert!(w.settle_case(case, None).is_err());
+    assert!(w.cancel_case_opening(case, ACCUSER).is_err());
+    assert!(w.cancel_self_id_case_opening(case, ACCUSER).is_err());
+    w.audit().unwrap();
+}
+
+/// A later Self-ID that depends on an invalidated predecessor needs its own filing; this case never grows to cover it.
+#[test]
+fn a_later_act_needs_its_own_case_and_never_reopens_this_exposure() {
+    let (mut w, target) = prepared();
+    let case = record(&mut w, target);
+    let later = w.create_self_id(ACCUSED).unwrap();
+    activate(&mut w, case);
+    w.tick(w.case_deadline(case).unwrap());
+    let first = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+    assert_eq!(first.frozen.n, 1, "the filing froze a one-act suffix");
+    let units = w.responsibility_units(ACCUSED);
+    let debt = w.debt(ACCUSED);
+
+    // The later act keeps its own receipt and entitlement; correcting it is a separate accusation with its own scope.
+    assert!(w.transaction_provenance(TransactionTarget::SelfId(later)).unwrap().xp_receipt.is_some());
+    assert!(!w.transaction_provenance(TransactionTarget::SelfId(later)).unwrap().xp_receipt.unwrap().revoked);
+    assert_eq!(w.self_id_case(case).unwrap().frozen.unwrap().n, 1, "no retroactive growth");
+    assert_eq!((w.responsibility_units(ACCUSED), w.debt(ACCUSED)), (units, debt), "this case's money and units never change later");
+    assert_eq!(w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap(), first, "replay keeps the frozen scope");
+
+    // The later act is corrected only by its own filing: its own snapshot, charge and roster, and it leaves the first case untouched.
+    let second = record(&mut w, later);
+    assert_eq!(w.self_id_case(second).unwrap().frozen.unwrap(), facety_sim::world::FrozenCount { violating: 2, endpoint: 2, n: 1 });
+    activate(&mut w, second);
+    w.tick(w.case_deadline(second).unwrap());
+    let follow = w.settle_self_id_case_fixture(second, TrustedMerits::UpheldSupplied).unwrap();
+    assert_eq!((follow.accused_charge, follow.accused_collected), (Amount::ONE, Amount::ONE), "the later act has its own exposure");
+    assert_eq!(w.self_id_settlement(case).unwrap(), &first, "the earlier case's journal never changes");
+    assert_eq!(w.self_id_case(case).unwrap().frozen.unwrap().n, 1);
+    w.audit().unwrap();
+}
+
+#[test]
+fn frozen_count_and_journal_do_not_drift_with_batched_time() {
+    fn settle(stepwise: bool) -> (facety_sim::world::FrozenCount, facety_sim::world::SelfIdSettlement) {
+        let (mut w, target) = prepared();
+        let case = record(&mut w, target);
+        w.create_self_id(ACCUSED).unwrap();
+        activate(&mut w, case);
+        let deadline = w.case_deadline(case).unwrap();
+        if stepwise {
+            let mut at = w.now();
+            while at + 24 < deadline {
+                at += 24;
+                w.tick(at);
+            }
+        }
+        w.tick(deadline);
+        let frozen = w.self_id_case(case).unwrap().frozen.unwrap();
+        let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+        w.audit().unwrap();
+        (frozen, settlement)
+    }
+    assert_eq!(settle(false), settle(true), "batched and stepwise time reach the same frozen count and journal");
+}
+
+#[test]
+fn recording_refuses_a_role_conflict_before_any_restriction_exists() {
+    let (mut w, target) = prepared();
+    // A creation-time guarantor of the challenged Self-ID cannot open the case that would charge itself.
+    let opener = ROSTER[0];
+    assert!(w.xp(opener) > w.xp(ACCUSED), "the ordinary XP gate is the only other obstacle");
+    let before = (projection(&w), ledger(&w));
+    assert_eq!(
+        w.record_self_id_case_fixture(opener, TransactionTarget::SelfId(target), supplied()),
+        Err(facety_sim::world::Reject("the opener cannot be a creation-time guarantor of the challenged Self-ID"))
+    );
+    assert_eq!((projection(&w), ledger(&w)), before);
+    assert_eq!(w.self_id_cases(), 0, "the refused case owns no record, hold or custody");
+    w.audit().unwrap();
+}
+
 #[test]
 fn settlement_before_the_cutoff_refuses_atomically() {
     let (mut w, target) = prepared();
@@ -400,6 +549,18 @@ fn departed_original_guarantors_are_charged_not_the_current_roster() {
         assert_eq!(w.liquid(g), Amount::ZERO, "the departed guarantor stays liable for the act it guaranteed");
     }
     w.audit().unwrap();
+}
+
+#[test]
+fn the_fixture_policy_identifiers_name_the_implemented_semantics() {
+    // The contract page names these exact strings; a silent rename would otherwise let documentation drift from code.
+    assert_eq!(facety_sim::world::SELF_ID_CASE_POLICY, "trusted-core-only/typed-self-id-target/filing-frozen-n/soft-backing-settlement/v2");
+    let (w, target) = prepared();
+    let mut w = w;
+    let case = record(&mut w, target);
+    let doc = include_str!("../../docs/simulator.en.md");
+    assert!(doc.contains(facety_sim::world::SELF_ID_CASE_POLICY), "the model contract must name the implemented fixture policy");
+    assert_eq!(w.self_id_case(case).unwrap().frozen.unwrap().endpoint, 1);
 }
 
 #[test]
