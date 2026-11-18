@@ -28,55 +28,66 @@ impl World {
         true
     }
 
-    /// Materialize the ordinary XP of every Self-ID that matured at or before `now` (D42). The logical credit time is
-    /// `recorded_at + MATURITY_HOURS`; the recipients are the author and the creation-time guarantor snapshot (D54), never the current
-    /// graph. Cancelled acts (free early cancellation) earn nothing. Spending, withdrawal or burning the entitlement is not an input.
-    /// Time moves only through `tick`, which settles first, so every decision reads exactly the XP that a credit at the maturity
-    /// timestamp would have produced; settling a batch is the chronological processing of its acts.
+    /// Credit ordinary maturities at their scheduled time, using the author and creation-time guarantor snapshot.
+    /// Cancellation prevents credit; subsequent disposition of a matured right does not affect its receipt.
     ///
     /// A maturity under an active case-linked hold (D196) is deferred instead of credited: it leaves the cursor without earning
     /// XP, integrity repair or debt service, and is processed exactly once when its last hold ends. A suspended act therefore
     /// never blocks the later maturities of unaffected accounts.
     pub(super) fn settle(&mut self) {
-        self.settle_until(None);
-    }
-
-    /// Settle everything maturing before `limit` (exclusive). The scheduler uses this to withhold the maturities of a
-    /// timestamp at which a case activates, so activation establishes the hold before those maturities are processed.
-    pub(super) fn settle_until(&mut self, limit: Option<i64>) {
         while self.settled < self.acts.len() {
             let act_id = self.settled as u32;
             let recorded_at = self.acts[self.settled].recorded_at;
             let maturity = recorded_at + MATURITY_HOURS;
-            match limit {
-                Some(limit) if maturity >= limit => break,
-                None if maturity > self.now => break,
-                _ => {}
+            if maturity > self.now {
+                break;
             }
             self.settled += 1;
-            // A cancelled act owns no maturity to suspend: only a live act can be deferred.
-            if self.acts[act_id as usize].status != ActStatus::Cancelled && self.maturity_held(act_id) {
-                self.deferred_maturities.push(act_id);
-                self.stats.maturities_deferred += 1;
+            let act = &self.acts[act_id as usize];
+            if !act.pending_maturity() {
                 continue;
             }
-            self.mature(act_id);
+            if self.maturity_held(act_id) {
+                self.defer_maturity(act_id);
+            } else if maturity == self.now && self.activation_candidates.contains(&act.subject) {
+                self.boundary_maturities.push(act_id);
+            } else {
+                self.mature(act_id, maturity);
+            }
         }
     }
 
-    /// Credit one matured act exactly once, with its own mature-time consequences.
-    fn mature(&mut self, act_id: u32) {
-        let status = self.acts[act_id as usize].status;
-        if status == ActStatus::Cancelled {
-            return;
+    fn defer_maturity(&mut self, act: u32) {
+        self.deferred_maturities.push(act);
+        self.stats.maturities_deferred += 1;
+    }
+
+    pub(super) fn complete_activation_boundary(&mut self) {
+        self.activation_candidates.clear();
+        let deferred_before = self.deferred_maturities.len();
+        for act in std::mem::take(&mut self.boundary_maturities) {
+            if self.maturity_held(act) {
+                self.defer_maturity(act);
+            } else {
+                // An unfunded opening never suspended this act.
+                self.mature(act, self.now);
+            }
         }
+        if self.deferred_maturities.len() != deferred_before {
+            self.deferred_maturities.sort_unstable();
+        }
+    }
+
+    /// Credit one matured act exactly once, at its scheduled time or the actual release event.
+    fn mature(&mut self, act_id: u32, at: i64) {
+        let status = self.acts[act_id as usize].status;
+        debug_assert!(self.acts[act_id as usize].pending_maturity(), "only live, uncredited acts mature");
         if !self.subjects[self.acts[act_id as usize].subject as usize].debt.is_zero() {
             self.stats.suspended_acts += 1;
             // D167: while the author's emission balance is negative nobody earns XP for its acts (a suspended, empty credit).
-            let at = self.acts[act_id as usize].recorded_at + MATURITY_HOURS;
             self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: Arc::from(Vec::new()) });
         } else {
-            self.credit(act_id);
+            self.credit(act_id, at);
         }
         // D165 restores integrity for a valid own maturity even when D167 suspends its new responsibility units.
         let subject = self.acts[act_id as usize].subject;
@@ -92,18 +103,13 @@ impl World {
         }
     }
 
-    /// Whether this act's maturity is currently suspended: a case-linked hold covers its maturity timestamp, or the scheduler
-    /// withheld it because its owner's case activates at exactly that timestamp.
     pub(super) fn maturity_held(&self, act_id: u32) -> bool {
-        let a = &self.acts[act_id as usize];
-        let maturity = a.recorded_at + MATURITY_HOURS;
-        self.maturity_holds.iter().any(|h| h.subject == a.subject && maturity >= h.from)
-            || (maturity == self.maturity_pending_at && self.maturity_pending.iter().any(|&(_, subject)| subject == a.subject))
+        self.maturity_hold(act_id).is_some()
     }
 
     /// Establish the accused's maturity hold for one case (D196). Acts that matured strictly before `at` keep their credit;
     /// every later maturity of this subject, including one scheduled exactly at `at`, is suspended until the last hold ends.
-    pub(super) fn establish_maturity_hold(&mut self, case: u32, subject: Id, at: i64) {
+    pub(super) fn establish_maturity_hold(&mut self, case: DisputeId, subject: Id, at: i64) {
         if self.maturity_holds.iter().any(|h| h.case == case) {
             return;
         }
@@ -114,7 +120,7 @@ impl World {
 
     /// Drop one case's hold cause. The caller decides when the deferred maturities may be processed, because an authorized
     /// historical correction must run before an invalidated source could be credited.
-    pub(super) fn release_maturity_hold(&mut self, case: u32) {
+    pub(super) fn release_maturity_hold(&mut self, case: DisputeId) {
         self.maturity_holds.retain(|h| h.case != case);
     }
 
@@ -133,13 +139,10 @@ impl World {
         }
         let deferred = std::mem::take(&mut self.deferred_maturities);
         for act in deferred {
-            if self.acts[act as usize].status != ActStatus::Cancelled && self.maturity_held(act) {
+            if self.maturity_held(act) {
                 self.deferred_maturities.push(act);
-                continue;
-            }
-            let status = self.acts[act as usize].status;
-            self.mature(act);
-            if status != ActStatus::Cancelled {
+            } else {
+                self.mature(act, self.now);
                 self.stats.maturities_released += 1;
             }
         }
@@ -178,14 +181,13 @@ impl World {
         }
     }
 
-    fn credit(&mut self, act_id: u32) {
-        let (subject, at, recipients) = {
+    fn credit(&mut self, act_id: u32, at: i64) {
+        let (subject, recipients) = {
             let act = &self.acts[act_id as usize];
-            debug_assert!(act.credit.is_none(), "an act is credited at most once");
             let mut r = Vec::with_capacity(1 + act.guarantors.len());
             r.push(act.subject);
             r.extend(act.guarantors.iter().copied());
-            (act.subject, act.recorded_at + MATURITY_HOURS, r)
+            (act.subject, r)
         };
         for &recipient in &recipients {
             self.bump(recipient, 1);
@@ -199,6 +201,17 @@ impl World {
             }
         };
         self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: shared });
+    }
+
+    /// Void still-unspent backing. If a legacy configuration already disposed the asset before maturity,
+    /// suppress its unissued credit without rewriting the asset history or minting a replacement right.
+    pub(super) fn void_source_backing(&mut self, act: u32) {
+        if self.acts[act as usize].status == ActStatus::Unspent {
+            self.dispose(act, ActStatus::Cancelled);
+        } else if self.acts[act as usize].pending_maturity() {
+            self.acts[act as usize].invalidated_before_credit = true;
+            self.forget_deferred_maturity(act);
+        }
     }
 
     pub(super) fn dispose(&mut self, act_id: u32, status: ActStatus) {
@@ -244,7 +257,7 @@ impl World {
             }
         };
         let id = self.acts.len() as u32;
-        self.acts.push(Act { subject: who, recorded_at: self.now, guarantors, status: ActStatus::Unspent, credit: None });
+        self.acts.push(Act { subject: who, recorded_at: self.now, guarantors, status: ActStatus::Unspent, invalidated_before_credit: false, credit: None });
         let s = &mut self.subjects[who as usize];
         s.acts.push(id);
         s.last_reward = Some(self.now);
@@ -259,7 +272,7 @@ impl World {
             return Err(Reject("unspent rights are frozen while the account is accused"));
         }
         let a = self.acts.get(act as usize).ok_or(Reject("no such Self-ID transaction"))?;
-        if a.subject != who || self.now - a.recorded_at < self.cfg.spend_hours || a.status != ActStatus::Unspent || self.reserved_rights.contains(&act) {
+        if a.subject != who || a.credit.is_none() || self.now - a.recorded_at < self.cfg.spend_hours || a.status != ActStatus::Unspent {
             return Err(Reject("conversion requires own mature emission"));
         }
         self.dispose(act, ActStatus::Converted);
@@ -268,8 +281,7 @@ impl World {
 
     /// D42/D79 free early cancellation of an unspent Self-ID inside its initial 24 hours, by its author or by a guarantor of its creation-time
     /// snapshot. The emission right and its backing are destroyed and no ordinary XP is ever earned; the rolling 24-hour slot of the
-    /// recording stays used (`last_reward` is not reset). A disputed author cannot cancel (the dispute freeze takes precedence; the
-    /// precedence rule itself is OPEN, so the smallest reading is taken: refused).
+    /// recording stays used (`last_reward` is not reset). A D196 suspension extends this window, subject to recorded obligations.
     pub fn cancel_self_id(&mut self, actor: Id, act: u32) -> Result<(), Reject> {
         self.require_account(actor)?;
         let a = self.acts.get(act as usize).ok_or(Reject("no such Self-ID transaction"))?;
@@ -290,10 +302,7 @@ impl World {
         }
         // Financial precedence is not OPEN here: cancellation must not become an escape from an established case obligation.
         if suspended {
-            if self.reserved_rights.contains(&act) {
-                return Err(Reject("the suspended Self-ID backing is reserved by another case"));
-            }
-            if self.self_id_cases.iter().flatten().any(|r| r.target == act) {
+            if self.self_id_cases.iter().flatten().any(|r| r.target == act && matches!(r.stage, SelfIdCaseStage::Pending | SelfIdCaseStage::Activated)) {
                 return Err(Reject("the suspended Self-ID is the target of a recorded case"));
             }
             if self.case_effects.iter().flatten().any(|e| e.source_acts.binary_search(&act).is_ok()) {
@@ -319,7 +328,7 @@ impl World {
 
     pub(super) fn require_mature_own(&self, who: Id, act: u32, hours: i64, what: &'static str) -> Result<(), Reject> {
         let a = self.acts.get(act as usize).ok_or(Reject("no such Self-ID transaction"))?;
-        if a.status != ActStatus::Unspent || self.reserved_rights.contains(&act) {
+        if a.status != ActStatus::Unspent {
             return Err(Reject("emission is spent or disputed"));
         }
         if a.subject != who || self.now - a.recorded_at < hours {

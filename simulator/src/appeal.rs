@@ -4,7 +4,7 @@
 use super::*;
 use crate::chekharda::{council_outcome, Ballot, CouncilOutcome, CouncilRound, CouncilVote, DAY_HOURS};
 
-pub const APPEAL_FIXTURE_POLICY: &str = "trusted-core-only/canonical-opening/recording-xp/24h/council-rounds/no-financial-execution/v1";
+pub const APPEAL_FIXTURE_POLICY: &str = "trusted-core-only/canonical-opening/recording-xp/24h/council-rounds/no-financial-execution/v2";
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct AppealRequest {
@@ -68,6 +68,7 @@ pub struct AppealRecord {
     pub guarantors: Vec<Id>,
     pub activated_at: Option<i64>,
     pub cancelled_at: Option<i64>,
+    pub cancelled_by: Option<Id>,
     pub stage: AppealStage,
     pub electorates: Vec<CouncilElectorate>,
     pub rounds: Vec<CouncilRound<Id>>,
@@ -143,6 +144,7 @@ impl AppealRecord {
         let activated = !matches!(self.stage, AppealStage::Pending | AppealStage::Cancelled);
         if activated != self.activated_at.is_some()
             || (self.stage == AppealStage::Cancelled) != self.cancelled_at.is_some()
+            || (self.stage == AppealStage::Cancelled) != self.cancelled_by.is_some()
             || self.cancelled_at.is_some_and(|at| at < self.recorded_at || at >= self.matures_at)
         {
             return Err("invalid appeal lifecycle".into());
@@ -163,7 +165,7 @@ impl AppealRecord {
         if self.electorates.len() != self.rounds.len() + usize::from(active)
             || (!active && !self.active_ballots.is_empty())
             || (active && (self.released || self.execution.is_some()))
-            || (!active && self.released != self.execution.is_some())
+            || (!active && self.released != self.execution.as_ref().is_some_and(|e| !matches!(e, AppealExecution::Blocked(_))))
         {
             return Err("appeal review/execution provenance differs".into());
         }
@@ -256,6 +258,7 @@ impl World {
         }
         let provenance = self.transaction_provenance(target).map_err(|_| Reject("prior case has no recorded opening transaction"))?;
         let accused = provenance.author;
+        self.require_dispute_slot(accused)?;
         let prior = self.case_opening(prior_case).expect("resolved opening provenance");
         let effects = self.case_effects[prior_case as usize].as_ref().ok_or(Reject("prior case is not settled"))?;
         if prior.stage != OpeningStage::Final || effects.reversed {
@@ -292,6 +295,7 @@ impl World {
             guarantors,
             activated_at: None,
             cancelled_at: None,
+            cancelled_by: None,
             stage: AppealStage::Pending,
             electorates: Vec::new(),
             rounds: Vec::new(),
@@ -300,6 +304,7 @@ impl World {
             holds: Vec::new(),
             released: false,
         });
+        self.occupy_dispute_slot(accused, DisputeId::Appeal(id));
         Ok(id)
     }
 
@@ -307,24 +312,21 @@ impl World {
         self.appeals.get(appeal as usize)
     }
 
-    /// Free author cancellation before activation. Active cancellation needs the open appeal stake contract.
-    pub fn cancel_appeal_opening(&mut self, appeal: u32, author: Id) -> Result<(), Reject> {
-        let now = self.now;
-        let record = self.appeals.get_mut(appeal as usize).ok_or(Reject("no such appeal"))?;
-        if record.initiator != AppealInitiator::Participant(author) {
-            return Err(Reject("not the appeal opening author"));
-        }
-        if record.stage == AppealStage::Cancelled {
-            return Ok(());
-        }
-        if record.stage == AppealStage::Active {
-            return Err(Reject("active appeal cancellation needs its financial scope contract"));
-        }
-        if record.stage != AppealStage::Pending || now >= record.matures_at {
+    pub fn cancel_appeal_opening(&mut self, appeal: u32, actor: Id) -> Result<(), Reject> {
+        let record = self.appeal(appeal).ok_or(Reject("no such appeal"))?;
+        let AppealInitiator::Participant(author) = record.initiator else {
+            return Err(Reject("collective opening cancellation requires collective authority"));
+        };
+        if record.stage != AppealStage::Pending || self.now >= record.matures_at {
             return Err(Reject("appeal is not pending before maturity"));
         }
+        self.require_opening_canceller(actor, author, &record.guarantors)?;
+        let accused = record.accused;
+        let record = &mut self.appeals[appeal as usize];
         record.stage = AppealStage::Cancelled;
-        record.cancelled_at = Some(now);
+        record.cancelled_at = Some(self.now);
+        record.cancelled_by = Some(actor);
+        self.free_dispute_slot(accused, DisputeId::Appeal(appeal));
         Ok(())
     }
 
@@ -332,13 +334,12 @@ impl World {
         self.appeals.get_mut(appeal as usize).is_some_and(|a| a.ballot(member, expected_round, choice, self.now))
     }
 
-    pub(super) fn process_appeal_events(&mut self, at: i64) {
+    pub(super) fn activate_due_appeals(&mut self, at: i64) {
         for id in 0..self.appeals.len() {
             if self.appeals[id].stage == AppealStage::Pending && self.appeals[id].matures_at == at {
                 let record = &mut self.appeals[id];
                 record.stage = AppealStage::Active;
                 record.activated_at = Some(at);
-                record.electorates.push(CouncilElectorate { number: 0, started_at: at, members: self.council.clone() });
                 record.holds.push((record.accused, at, true));
                 if let AppealInitiator::Participant(author) = record.initiator {
                     record.holds.push((author, at, !self.cfg.exclude_targets_only));
@@ -349,8 +350,17 @@ impl World {
                     self.hold_for(subject, path);
                 }
                 self.frozen[accused as usize] += 1;
-            } else if self.appeals[id].stage == AppealStage::Active && self.appeals[id].deadline() == Some(at) {
-                self.appeals[id].close_round(at, self.council.clone());
+                self.establish_maturity_hold(DisputeId::Appeal(id as u32), accused, at);
+            }
+        }
+    }
+
+    pub(super) fn process_appeal_rounds(&mut self, at: i64) {
+        for record in self.appeals.iter_mut().filter(|a| a.stage == AppealStage::Active) {
+            if record.activated_at == Some(at) && record.electorates.is_empty() {
+                record.electorates.push(CouncilElectorate { number: 0, started_at: at, members: self.council.clone() });
+            } else if record.deadline() == Some(at) {
+                record.close_round(at, self.council.clone());
             }
         }
     }
@@ -375,7 +385,8 @@ impl World {
                 Err(reason) => AppealExecution::Blocked(reason),
             }
         };
-        if !self.appeals[appeal as usize].released {
+        self.appeals[appeal as usize].execution = Some(result.clone());
+        if !matches!(result, AppealExecution::Blocked(_)) {
             let record = &mut self.appeals[appeal as usize];
             record.released = true;
             let accused = record.accused;
@@ -384,8 +395,10 @@ impl World {
                 self.release_hold(subject, path);
             }
             self.frozen[accused as usize] -= 1;
+            self.release_maturity_hold(DisputeId::Appeal(appeal));
+            self.process_deferred_maturities();
+            self.free_dispute_slot(accused, DisputeId::Appeal(appeal));
         }
-        self.appeals[appeal as usize].execution = Some(result.clone());
         Ok(result)
     }
 
@@ -419,6 +432,7 @@ impl World {
                     if author as usize >= self.subjects.len()
                         || author == appeal.accused
                         || appeal.author_xp_at_recording.is_none_or(|xp| xp <= appeal.accused_xp_at_recording)
+                        || appeal.cancelled_by.is_some_and(|actor| actor != author && !appeal.guarantors.contains(&actor))
                         || appeal.guarantors.contains(&author)
                         || appeal.guarantors.iter().any(|&g| g as usize >= self.subjects.len())
                         || appeal.guarantors.iter().copied().collect::<HashSet<_>>().len() != appeal.guarantors.len()
@@ -428,7 +442,7 @@ impl World {
                     vec![(appeal.accused, appeal.matures_at, true), (author, appeal.matures_at, !self.cfg.exclude_targets_only)]
                 }
                 AppealInitiator::TrustedCollectiveCouncil => {
-                    if appeal.author_xp_at_recording.is_some() || !appeal.guarantors.is_empty() {
+                    if appeal.author_xp_at_recording.is_some() || !appeal.guarantors.is_empty() || appeal.cancelled_by.is_some() {
                         return Err("collective appeal has an ordinary author".into());
                     }
                     vec![(appeal.accused, appeal.matures_at, true)]
@@ -453,7 +467,7 @@ mod tests {
 
     fn recorded_case() -> (World, u32) {
         let pairs: Vec<_> = (0..12).flat_map(|id| [1, 2].map(move |offset| (id, (id + offset) % 12))).collect();
-        let mut w = World::new(Config::default(), 12, &pairs);
+        let mut w = World::new(Config { halve_losers: false, ..Config::default() }, 12, &pairs);
         w.create_self_id(5).unwrap();
         for _ in 0..4 {
             for id in 0..3 {
@@ -464,13 +478,15 @@ mod tests {
         let case = w.record_case_opening(&[0, 5]).unwrap();
         w.tick(w.now() + DAY);
         w.tick(w.case_deadline(case).unwrap());
-        w.settle_case(case, None).unwrap();
+        w.settle_case(case, Some(Side::Accused)).unwrap();
         (w, case)
     }
 
     #[test]
     fn reversal_authority_survives_a_completed_key_migration_without_partial_restoration() {
         let (mut w, case) = recorded_case();
+        w.cfg.halve_losers = true;
+        w.apply_case_xp_penalty(case, 5, 0.5).unwrap();
         w.lose_key(5).unwrap();
         w.create_self_id(3).unwrap();
         w.tick(w.now() + DAY);
@@ -499,6 +515,8 @@ mod tests {
         assert_eq!(w.resolve_appeal(appeal), Ok(expected.clone()));
         assert_eq!((format!("{:?}", w.subjects), format!("{:?}", w.acts), format!("{:?}", w.case_effects), w.burned(), w.stats.restorations), state);
         assert_eq!(w.appeal(appeal).unwrap().stage, AppealStage::ReversalAuthorized);
+        assert!(w.held(0), "a blocked reversal does not close the appeal");
+        assert!(w.record_appeal_opening_fixture(request, AppealInitiator::TrustedCollectiveCouncil).is_err());
         assert_eq!(w.resolve_appeal(appeal), Ok(expected));
         assert!(!w.accepted(5));
         assert!(!w.reinstate_identity(5));
@@ -519,17 +537,21 @@ mod tests {
     }
 
     #[test]
-    fn fully_paid_affected_roles_can_request_without_debt_penalties_or_identity_execution() {
+    fn fully_paid_affected_roles_can_request_without_debt_or_penalties() {
         let (mut w, _) = recorded_case();
         w.cfg.base_stake = Some(7);
         w.cfg.halve_losers = false;
         for _ in 0..7 {
+            w.create_self_id(2).unwrap();
             w.create_self_id(3).unwrap();
             w.create_self_id(4).unwrap();
             w.tick(w.now() + DAY);
         }
         w.create_self_id(5).unwrap();
         w.tick(w.now() + DAY);
+        for right in w.eligible_emissions(2, DAY) {
+            w.convert_to_collector(2, right).unwrap();
+        }
         let case = w.record_case_opening(&[2, 5]).unwrap();
         w.tick(w.now() + DAY);
         w.tick(w.case_deadline(case).unwrap());
@@ -537,7 +559,7 @@ mod tests {
         assert!(original.net.iter().any(|&(id, delta)| id == 3 && delta.atoms() < 0));
         assert!(w.debt(3).is_zero());
         assert!(w.case_effects[case as usize].as_ref().unwrap().penalized_subjects.is_empty());
-        assert!(w.case_effects[case as usize].as_ref().unwrap().source_acts.is_empty());
+        assert!(!w.case_effects[case as usize].as_ref().unwrap().source_acts.is_empty());
         w.request_appeal(case, 3).unwrap();
         assert_eq!(w.case_outcome(case), Some(&original));
         w.audit().unwrap();
@@ -545,6 +567,8 @@ mod tests {
         let (mut w, _) = recorded_case();
         w.cfg.base_stake = Some(1);
         w.cfg.halve_losers = false;
+        let right = w.eligible_emission(0).unwrap();
+        w.convert_to_collector(0, right).unwrap();
         let case = w.record_case_opening(&[0, 5]).unwrap();
         w.tick(w.now() + DAY);
         w.tick(w.case_deadline(case).unwrap());
@@ -573,7 +597,7 @@ mod tests {
         bad.appeals[appeal as usize].stage = AppealStage::ReversalAuthorized;
         assert!(bad.audit().is_err());
         let mut bad = w.clone();
-        bad.case_outcomes[case as usize].as_mut().unwrap().winner = Side::Accused;
+        bad.case_outcomes[case as usize].as_mut().unwrap().winner = Side::Accuser;
         assert!(bad.audit().is_err());
         let member = w.appeal(appeal).unwrap().active_round().unwrap().members[0];
         w.appeal_ballot(appeal, member, 0, AppealVote::ConfirmPriorVerdict);

@@ -4,9 +4,10 @@
 //! touching other participants. These are deterministic transition checks of the declared model behaviour: maturity,
 //! integrity repair, debt service, cancellation, release and correction ordering. They are not human or production evidence.
 use facety_sim::amount::Amount;
-use facety_sim::chekharda::Side;
+use facety_sim::chekharda::{CouncilVote, Side};
 use facety_sim::world::{
-    ActStatus, Config, DisputeStats, Id, TransactionTarget, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, World, COEF_ONE, DAY, MATURITY_HOURS,
+    ActStatus, Config, DisputeId, DisputeStats, Id, TransactionTarget, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, World, COEF_ONE, DAY,
+    MATURITY_HOURS,
 };
 
 const ACCUSED: Id = 5;
@@ -29,7 +30,7 @@ fn ring(n: usize) -> Vec<(Id, Id)> {
 }
 
 fn world() -> World {
-    World::new(Config { base_stake: Some(7), ..Config::default() }, N, &ring(N))
+    World::new(Config { base_stake: Some(2), ..Config::default() }, N, &ring(N))
 }
 
 /// Hour 48: the accused has one matured Self-ID and one still pending, the challenger stands above it in XP, and the
@@ -48,6 +49,9 @@ fn prepared() -> (World, u32) {
     }
     w.create_self_id(CHALLENGER).unwrap();
     w.tick(48);
+    for right in w.eligible_emissions(CHALLENGER, DAY) {
+        w.convert_to_collector(CHALLENGER, right).unwrap();
+    }
     assert!(w.xp(CHALLENGER) > w.xp(ACCUSED));
     let pending = w.create_self_id(ACCUSED).unwrap();
     assert_eq!(w.act_guarantors(pending), ROSTER);
@@ -62,6 +66,11 @@ fn projection(w: &World) -> Vec<AccountState> {
 
 fn stats(w: &World) -> &DisputeStats {
     &w.stats
+}
+
+fn defend(w: &mut World, case: u32) {
+    w.tick(w.now().max(w.case_deadline(case).unwrap()));
+    w.settle_case(case, Some(Side::Accused)).unwrap();
 }
 
 #[test]
@@ -92,7 +101,7 @@ fn maturity_exactly_at_activation_is_suspended_before_credit() {
     w.tick(maturity);
     assert!(w.held(ACCUSED), "the case activated at this timestamp");
     assert_eq!(w.responsibility_units(ACCUSED), units, "activation precedes the credit of the same-timestamp maturity");
-    assert_eq!(w.maturity_hold(pending), Some(case), "the pending act is held by this case");
+    assert_eq!(w.maturity_hold(pending), Some(DisputeId::Case(case)), "the pending act is held by this case");
     assert_eq!(w.acts_status(pending), ActStatus::Unspent, "suspension is not cancellation");
     assert!(w.unspent_rights(ACCUSED) >= 1, "the entitlement is neither spent nor destroyed");
     w.audit().unwrap();
@@ -110,7 +119,7 @@ fn maturity_after_activation_is_deferred_without_xp_or_debt_service() {
     assert_eq!(w.unspent_rights(ACCUSED), rights, "and it does not become a spent or repaid entitlement");
     assert_eq!(w.debt(ACCUSED), debt);
     assert_eq!(w.own_maturities(ACCUSED), 1, "no integrity repair is taken from a suspended maturity");
-    assert!(w.maturity_hold(pending) == Some(case));
+    assert!(w.maturity_hold(pending) == Some(DisputeId::Case(case)));
     w.audit().unwrap();
 }
 
@@ -129,7 +138,7 @@ fn author_and_creation_guarantor_may_cancel_a_suspended_act_after_its_deadline()
     assert_eq!(stats(&w).maturities_cancelled, 1);
     // A stranger still has no authority, and the freeze does not extend anyone else's.
     assert!(w.cancel_self_id(CHALLENGER, pending).is_err());
-    w.end_case(case);
+    defend(&mut w, case);
     w.audit().unwrap();
 }
 
@@ -140,7 +149,7 @@ fn cancellation_during_the_freeze_never_credits_later() {
     let units = w.responsibility_units(ACCUSED);
     w.tick(w.now() + 2 * DAY);
     w.cancel_self_id(ACCUSED, pending).unwrap();
-    w.end_case(case);
+    defend(&mut w, case);
     assert_eq!(w.responsibility_units(ACCUSED), units, "a cancelled suspended act never earns XP");
     assert_eq!(w.acts_status(pending), ActStatus::Cancelled);
     assert_eq!(stats(&w).maturities_released, 0, "nothing valid was left to release");
@@ -148,28 +157,42 @@ fn cancellation_during_the_freeze_never_credits_later() {
 }
 
 #[test]
-fn withdrawal_or_acquittal_matures_the_suspended_act_once_at_release() {
-    for withdraw in [true, false] {
-        let (mut w, pending) = prepared();
-        let case = w.begin_case(&[CHALLENGER, ACCUSED]).unwrap();
-        let units = w.responsibility_units(ACCUSED);
-        if withdraw {
-            // A withdrawal is only available while the case is still open, so it happens before the deadline.
-            w.tick(w.now() + 2 * DAY);
-            assert_eq!(w.responsibility_units(ACCUSED), units, "still suspended");
-            w.cancel_case_opening(case, CHALLENGER).unwrap();
-        } else {
-            w.tick(w.case_deadline(case).unwrap());
-            assert_eq!(w.responsibility_units(ACCUSED), units, "still suspended");
-            w.settle_case(case, Some(Side::Accused)).unwrap();
-        }
-        assert_eq!(w.responsibility_units(ACCUSED), units + 1, "the deferred maturity is credited once at release");
-        assert_eq!(w.own_maturities(ACCUSED), 2, "integrity repair happens at the release event, not retroactively");
-        assert_eq!(w.coefficient(ACCUSED), COEF_ONE);
-        assert!(w.maturity_hold(pending).is_none());
-        assert_eq!(stats(&w).maturities_released, 1);
-        w.audit().unwrap();
-    }
+fn extended_dispute_credits_at_actual_release_and_preserves_the_original_schedule() {
+    let (mut w, pending) = prepared();
+    let bystander = w.create_self_id(2).unwrap();
+    let scheduled = w.act_recorded_at(pending) + MATURITY_HOURS;
+    let case = w.record_case_opening(&[CHALLENGER, ACCUSED]).unwrap();
+    let units = w.responsibility_units(ACCUSED);
+    w.tick(scheduled);
+    let entrant = w.council().iter().copied().find(|&m| m != ACCUSED && m != CHALLENGER).unwrap();
+    assert_eq!(w.council_join(case, entrant), Ok(2));
+    assert!(w.council_ballot(case, entrant, 0, CouncilVote::Defer));
+    w.tick(w.case_deadline(case).unwrap());
+    w.tick(w.case_deadline(case).unwrap()); // Automatic deferral with no ballot.
+    assert_eq!(stats(&w).maturities_released, 0);
+    assert_eq!(w.responsibility_units(ACCUSED), units);
+    assert!(w.transaction_provenance(TransactionTarget::SelfId(pending)).unwrap().xp_receipt.is_none());
+    let other = w.transaction_provenance(TransactionTarget::SelfId(bystander)).unwrap();
+    assert_eq!(other.xp_receipt.unwrap().credited_at, scheduled, "unaffected credit keeps its original time");
+    let round = w.case_council_round(case).unwrap();
+    assert!(w.council_ballot(case, round.members[0], round.number, CouncilVote::Confirm));
+    let cutoff = w.case_deadline(case).unwrap();
+    w.tick(cutoff);
+    assert!(w.maturity_hold(pending).is_some(), "recognition alone does not apply the close effects");
+    w.tick(cutoff + 1);
+    w.settle_case(case, None).unwrap();
+    let record = w.transaction_provenance(TransactionTarget::SelfId(pending)).unwrap();
+    assert_eq!(record.recorded_at + MATURITY_HOURS, scheduled);
+    assert_eq!(record.xp_receipt.unwrap().credited_at, cutoff + 1);
+    assert_eq!(w.responsibility_units(ACCUSED), units + 1);
+    assert_eq!(w.own_maturities(ACCUSED), 2);
+    assert_eq!(stats(&w).maturities_released, 1);
+    assert!(w.maturity_hold(pending).is_none());
+    assert!(w.settle_case(case, None).is_err());
+    w.tick(cutoff + DAY);
+    assert_eq!(w.responsibility_units(ACCUSED), units + 1);
+    assert_eq!(stats(&w).maturities_released, 1);
+    w.audit().unwrap();
 }
 
 #[test]
@@ -184,8 +207,7 @@ fn an_upheld_violation_invalidates_the_suspended_acts_and_keeps_unaffected_ones(
     w.tick(w.case_deadline(case).unwrap());
     let outcome = w.settle_case(case, None).unwrap();
     assert_eq!(outcome.winner, Side::Accuser);
-    assert_eq!(w.responsibility_units(ACCUSED), units, "the adverse settlement itself credits nothing");
-    w.apply_case_identity_verdict(case).unwrap();
+    assert!(w.apply_case_identity_verdict_to(case, ACCUSED).is_err(), "the actual accused was already corrected");
     assert_eq!(w.acts_status(pending), ActStatus::Cancelled, "the suspended act never receives its deferred reward");
     assert!(w.responsibility_units(ACCUSED) <= units, "the invalidated chain loses its receipts and gains none");
     assert!(w.transaction_provenance(TransactionTarget::SelfId(pending)).unwrap().xp_receipt.is_none(), "the suspended act never receives a receipt");
@@ -197,22 +219,57 @@ fn an_upheld_violation_invalidates_the_suspended_acts_and_keeps_unaffected_ones(
 }
 
 #[test]
-fn overlapping_cases_release_only_after_the_last_applicable_hold() {
+fn an_already_disposed_source_still_loses_its_unissued_credit_at_an_adverse_verdict() {
+    for typed in [false, true] {
+        let (mut w, pending) = prepared();
+        // The legacy spend-age lever can dispose of an act independently of its credit schedule.
+        w.cfg.spend_hours = 0;
+        assert!(w.convert_to_collector(ACCUSED, pending).is_err(), "only an actual maturity permits withdrawal");
+        w.open_valence(ACCUSED, 2, pending).unwrap();
+        let case = if typed {
+            let premises = TrustedAdmissionPremises { admission: TrustedPremise::Supplied, historical_duty: TrustedPremise::Supplied };
+            w.record_self_id_case_fixture(CHALLENGER, TransactionTarget::SelfId(pending), premises).unwrap()
+        } else {
+            w.record_case_opening(&[CHALLENGER, ACCUSED]).unwrap()
+        };
+        w.tick(w.now() + DAY);
+        assert_eq!(w.maturity_hold(pending), Some(DisputeId::Case(case)));
+        w.tick(w.case_deadline(case).unwrap());
+        if typed {
+            let outcome = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();
+            assert_eq!(outcome.invalidated, vec![pending]);
+            assert_eq!(outcome.invalidated_burned, Amount::ZERO);
+            assert!(w.restore_case_effects(case).is_err(), "ordinary restoration cannot bypass the typed journal");
+            w.restore_self_id_case_effects(case).unwrap();
+        } else {
+            w.settle_case(case, None).unwrap();
+            w.restore_case_effects(case).unwrap();
+        }
+        w.tick(w.now() + DAY);
+        assert_eq!(w.acts_status(pending), ActStatus::Consumed, "the asset's disposition is retained");
+        assert!(w.transaction_provenance(TransactionTarget::SelfId(pending)).unwrap().xp_receipt.is_none());
+        assert_eq!(w.stats.maturities_released, 0, "neither invalidation nor reversal issues the missing credit");
+        w.audit().unwrap();
+    }
+}
+
+#[test]
+fn a_participant_in_another_case_keeps_that_hold_but_is_no_longer_a_suspended_accused() {
     let (mut w, pending) = prepared();
+    let mature = w.eligible_emission(ACCUSED).unwrap();
+    w.convert_to_collector(ACCUSED, mature).unwrap();
     let first = w.begin_case(&[CHALLENGER, ACCUSED]).unwrap();
-    let units = w.responsibility_units(ACCUSED);
     w.tick(w.now() + DAY);
-    let second = w.begin_case(&[CHALLENGER, ACCUSED]).unwrap();
-    assert_eq!(w.maturity_hold(pending), Some(first), "the earliest hold is reported first");
-    w.tick(w.case_deadline(first).unwrap());
-    assert_eq!(w.responsibility_units(ACCUSED), units, "two holds suspend the same maturity");
-    w.settle_case(first, Some(Side::Accused)).unwrap();
-    assert_eq!(w.responsibility_units(ACCUSED), units, "the second case still holds it");
-    assert_eq!(w.maturity_hold(pending), Some(second));
-    w.tick(w.case_deadline(second).unwrap());
-    w.settle_case(second, Some(Side::Accused)).unwrap();
-    assert_eq!(w.responsibility_units(ACCUSED), units + 1, "the last hold releases it exactly once");
+    assert!(w.begin_case(&[CHALLENGER, ACCUSED]).is_err());
+    w.cfg.base_stake = Some(1);
+    let second = w.begin_case(&[ACCUSED, 2]).unwrap();
+    let units = w.responsibility_units(ACCUSED);
+    defend(&mut w, first);
+    assert_eq!(w.responsibility_units(ACCUSED), units + 1);
     assert!(w.maturity_hold(pending).is_none());
+    assert!(w.held(ACCUSED), "the other case's participant restriction is independent");
+    defend(&mut w, second);
+    assert!(!w.held(ACCUSED));
     w.audit().unwrap();
 }
 
@@ -226,8 +283,8 @@ fn other_participants_mature_normally_during_the_hold() {
     w.tick(w.now() + 2 * DAY);
     assert_eq!(w.responsibility_units(bystander), units + 1, "an unrelated account is unaffected");
     assert!(w.maturity_hold(their_act).is_none());
-    assert_eq!(w.maturity_hold(pending), Some(case));
-    w.end_case(case);
+    assert_eq!(w.maturity_hold(pending), Some(DisputeId::Case(case)));
+    defend(&mut w, case);
     w.audit().unwrap();
 }
 
@@ -249,7 +306,7 @@ fn a_large_time_jump_equals_stepwise_processing() {
         let state = projection(&w);
         let deferred = stats(&w).maturities_deferred;
         let released = stats(&w).maturities_released;
-        w.cancel_case_opening(case, CHALLENGER).unwrap();
+        defend(&mut w, case);
         assert_eq!(w.acts_status(pending), ActStatus::Unspent);
         w.audit().unwrap();
         (state, deferred, released, w.responsibility_units(ACCUSED) as i64)
@@ -272,7 +329,6 @@ fn settlement_release_and_reversal_replay_never_duplicates_value() {
     assert!(w.settle_case(case, Some(Side::Accused)).is_err());
     assert_eq!((projection(&w), w.burned(), w.vault(), w.supply()), after_settle);
     // The released maturity is not re-processed by any later release or tick.
-    w.end_case(case);
     w.tick(w.now() + 3 * DAY);
     assert_eq!(w.responsibility_units(ACCUSED), units, "no duplicate XP after release");
     assert_eq!((w.burned(), w.vault(), w.supply()), (after_settle.1, after_settle.2, after_settle.3));
@@ -293,7 +349,7 @@ fn the_filing_frozen_scope_and_charges_survive_every_maturity_transition() {
     let at = w.self_id_case(case).unwrap().matures_at;
     w.tick(at);
     assert_eq!(w.self_id_case(case).unwrap().frozen, Some(frozen), "activation cannot reprice the filing snapshot");
-    assert_eq!(w.maturity_hold(pending), Some(case), "the in-scope pending act is suspended with the case");
+    assert_eq!(w.maturity_hold(pending), Some(DisputeId::Case(case)), "the in-scope pending act is suspended with the case");
     w.tick(w.case_deadline(case).unwrap());
     let plan = w.self_id_case_plan(case).unwrap();
     assert_eq!((plan.frozen, plan.accused_charge), (frozen, Amount::coins(2)), "no maturity transition reprices the charge");
@@ -319,7 +375,7 @@ fn an_unmatured_affected_source_is_invalidated_rather_than_credited_at_release()
     let case = w.record_self_id_case_fixture(CHALLENGER, TransactionTarget::SelfId(target), premises).unwrap();
     assert!(w.now() < w.act_recorded_at(target) + MATURITY_HOURS, "the challenged act has not matured yet");
     w.tick(w.self_id_case(case).unwrap().matures_at);
-    assert_eq!(w.maturity_hold(target), Some(case));
+    assert_eq!(w.maturity_hold(target), Some(DisputeId::Case(case)));
     w.tick(w.case_deadline(case).unwrap());
     let units = w.responsibility_units(ACCUSED);
     let settlement = w.settle_self_id_case_fixture(case, TrustedMerits::UpheldSupplied).unwrap();

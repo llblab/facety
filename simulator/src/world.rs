@@ -37,9 +37,9 @@ pub use self_id_case::{
 
 pub const DAY: i64 = 24;
 /// Model assumptions while production authentication, ballot revision and same-hour membership ordering remain open.
-pub const COUNCIL_EXECUTION_POLICY: &str = "trusted-ids/first-ballot/whole-hour-maturity-before-round/daily-entry-cache/v1";
+pub const COUNCIL_EXECUTION_POLICY: &str = "trusted-ids/first-ballot/activation-aware-maturity-before-round/daily-entry-cache/v2";
 /// Recording-time eligibility and roster, later activation, and trusted author cancellation; appeal adjudication remains separate.
-pub const CASE_ADMISSION_POLICY: &str = "trusted-ids/recording-xp-and-mutual-roster/24h-activation/author-cancellation/v2";
+pub const CASE_ADMISSION_POLICY: &str = "trusted-ids/recording-roster/single-accused/liquid-funded-at-24h/v4";
 /// D42: a valid, uncancelled Self-ID matures, and its ordinary XP is earned, exactly this many hours after creation.
 pub const MATURITY_HOURS: i64 = 24;
 /// Model coefficient precision and penalty rounding, distinct from D165's final-XP floor.
@@ -226,9 +226,22 @@ struct DebtTranche {
 /// after `from` are held; acts that already matured strictly before the activation keep their credit.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MaturityHold {
-    pub case: u32,
+    pub case: DisputeId,
     pub subject: Id,
     pub from: i64,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub enum DisputeId {
+    Case(u32),
+    Appeal(u32),
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct UnfundedOpening {
+    pub at: i64,
+    pub required: Amount,
+    pub eligible: Amount,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -266,7 +279,15 @@ struct Act {
     recorded_at: i64,
     guarantors: Arc<[Id]>,
     status: ActStatus,
+    /// A source cut can precede credit without changing an already-disposed asset's history.
+    invalidated_before_credit: bool,
     credit: Option<Credit>,
+}
+
+impl Act {
+    fn pending_maturity(&self) -> bool {
+        self.credit.is_none() && self.status != ActStatus::Cancelled && !self.invalidated_before_credit
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -382,7 +403,7 @@ pub enum OpeningStage {
     Activated,
     Cancelled,
     Final,
-    Moot,
+    Unfunded(UnfundedOpening),
 }
 
 /// The recorded opening transaction, distinct from the active dispute and any Self-ID receipt.
@@ -409,7 +430,7 @@ struct Case {
     accused: Id,
     /// Per position (index = ordinal - 1): the part of its stake that is actually blocked in custody (D166: what exists is blocked, the
     /// rest of a lost stake becomes debt).
-    backed: Vec<Backing>,
+    backed: Vec<Amount>,
     /// `(account, hour the restriction began, whether it also excludes the account from paths)`.
     holds: Vec<(Id, i64, bool)>,
 }
@@ -422,32 +443,20 @@ pub struct CouncilElectorate {
     pub members: Vec<Id>,
 }
 
-#[derive(Clone, Debug, Default)]
-struct Backing {
-    liquid: Amount,
-    rights: Vec<u32>,
-    limit: Amount,
-}
-
-impl Backing {
-    fn total(&self) -> Amount {
-        (self.liquid + Amount::coins(self.rights.len() as u64)).min(self.limit)
-    }
-}
-
 /// Counters of the dispute economics, for results. Money is exact to 12 decimal places; durations are hours.
 #[derive(Clone, Debug, Default)]
 pub struct DisputeStats {
     pub openings_recorded: u64,
     pub openings_activated: u64,
     pub openings_cancelled: u64,
+    pub openings_unfunded: u64,
     pub opened: u64,
     /// Positions admitted after the first (the first is the opening).
     pub joined: u64,
     /// Entries refused, by the ladder or by funds.
     pub refused_closed: u64,
     pub refused_xp: u64,
-    /// Entries whose liquid and mature Emitter backing was short (D166 allows entry; a loss creates debt).
+    /// Later positions admitted with soft backing despite a shortfall (D166).
     pub refused_funds: u64,
     /// FCTY of lost stakes that could not be collected and became debt, and debt later repaid from matured emission.
     pub debt_repaid: Amount,
@@ -460,8 +469,6 @@ pub struct DisputeStats {
     /// Positions that moved the deadline later (an entry whose own window ended after the deadline in force).
     pub extensions: u64,
     pub settled: u64,
-    pub author_cancelled: u64,
-    pub moot: u64,
     pub accuser_won: u64,
     pub accused_won: u64,
     pub max_positions: u32,
@@ -483,6 +490,7 @@ pub struct DisputeStats {
     pub self_id_openings_recorded: u64,
     pub self_id_openings_activated: u64,
     pub self_id_openings_cancelled: u64,
+    pub self_id_openings_unfunded: u64,
     pub self_id_settled: u64,
     pub self_id_awarded: Amount,
     /// Always zero inside the isolated subset; a non-zero value would contradict D192.
@@ -525,24 +533,14 @@ pub struct CaseOutcome {
     pub council_electorates: Vec<CouncilElectorate>,
 }
 
-/// Author cancellation is a distinct terminal event, with no winning side or merits penalties.
+/// Free pending cancellation, with no custody or merits effects.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct CancellationOutcome {
     pub case: u32,
     pub author: Id,
     pub accused: Id,
+    pub cancelled_by: Id,
     pub cancelled_at: i64,
-    pub activated: bool,
-    pub positions: Vec<chekharda::Position<Id>>,
-    pub holds: Vec<(Id, i64)>,
-    pub collected: Amount,
-    pub debt_created: Amount,
-    pub payouts: Vec<(Id, Amount)>,
-    pub burned: Amount,
-    pub net: Vec<(Id, SignedAmount)>,
-    pub council_rounds: Vec<CouncilRound<Id>>,
-    pub council_electorates: Vec<CouncilElectorate>,
-    pub active_ballots: Vec<chekharda::Ballot<Id>>,
 }
 
 #[derive(Clone)]
@@ -563,6 +561,7 @@ pub struct World {
     path_hold: Vec<u32>,
     /// Open cases in which the account is the accused: its unspent rights are frozen (protocol §17.4) until the last of them ends.
     frozen: Vec<u32>,
+    dispute_slots: FastMap<Id, DisputeId>,
     cases: Vec<Option<Case>>,
     case_openings: Vec<Option<OpeningRecord>>,
     case_cancellations: Vec<Option<CancellationOutcome>>,
@@ -574,16 +573,15 @@ pub struct World {
     maturity_holds: Vec<MaturityHold>,
     /// Acts whose maturity timestamp has passed while a hold applied; sorted ascending, each processed exactly once.
     deferred_maturities: Vec<u32>,
-    /// Transient scheduling set: owners whose case activates at `maturity_pending_at`, holding their same-timestamp maturities.
-    maturity_pending: Vec<(u32, Id)>,
-    maturity_pending_at: i64,
+    /// Temporary set of subjects whose opening reaches the activation boundary in the current event.
+    activation_candidates: HashSet<Id>,
+    boundary_maturities: Vec<u32>,
     appeal_requests: Vec<AppealRequest>,
     appeals: Vec<AppealRecord>,
     /// Independent causes coexist: removing one case cannot erase another case or a separately authorized revocation.
     xp_revocations: FastMap<u32, Vec<Option<u32>>>,
     identity_cases: FastMap<Id, Vec<u32>>,
     independent_invalid: Vec<bool>,
-    reserved_rights: HashSet<u32>,
     /// Liquid FCTY destroyed by disputes (burned stakes and sanction charges, D151 recovery); `sum(liquid) + liquid_destroyed` equals the
     /// converted entitlements.
     liquid_destroyed: Amount,
@@ -633,6 +631,7 @@ impl World {
             hold: Vec::new(),
             path_hold: Vec::new(),
             frozen: Vec::new(),
+            dispute_slots: FastMap::default(),
             cases: Vec::new(),
             case_openings: Vec::new(),
             case_cancellations: Vec::new(),
@@ -642,14 +641,13 @@ impl World {
             self_id_settlements: Vec::new(),
             maturity_holds: Vec::new(),
             deferred_maturities: Vec::new(),
-            maturity_pending: Vec::new(),
-            maturity_pending_at: i64::MIN,
+            activation_candidates: HashSet::new(),
+            boundary_maturities: Vec::new(),
             appeal_requests: Vec::new(),
             appeals: Vec::new(),
             xp_revocations: FastMap::default(),
             identity_cases: FastMap::default(),
             independent_invalid: Vec::new(),
-            reserved_rights: HashSet::new(),
             liquid_destroyed: Amount::ZERO,
             stats: DisputeStats::default(),
             settled: 0,
@@ -866,10 +864,7 @@ impl World {
             .copied()
             .filter(|&a| {
                 let act = &self.acts[a as usize];
-                act.status == ActStatus::Unspent
-                    && self.now - act.recorded_at >= min_age
-                    && !self.reserved_rights.contains(&a)
-                    && !self.maturity_pending_credit(a)
+                act.status == ActStatus::Unspent && self.now - act.recorded_at >= min_age && !self.maturity_pending_credit(a)
             })
             .collect()
     }
@@ -920,10 +915,7 @@ impl World {
         let s = &self.subjects[id as usize];
         s.acts[s.first_unspent..].iter().copied().find(|&a| {
             let act = &self.acts[a as usize];
-            act.status == ActStatus::Unspent
-                && self.now - act.recorded_at >= self.cfg.spend_hours
-                && !self.reserved_rights.contains(&a)
-                && !self.maturity_pending_credit(a)
+            act.status == ActStatus::Unspent && self.now - act.recorded_at >= self.cfg.spend_hours && !self.maturity_pending_credit(a)
         })
     }
 
@@ -949,7 +941,7 @@ impl World {
     /// Advance to `hour` and refresh the daily snapshot (activity, difficulty, Council, support levels, distances).
     pub fn tick(&mut self, hour: i64) {
         assert!(hour >= self.now, "time cannot move backwards");
-        // Self-ID maturity precedes each event time; simultaneous opening activations and Council results follow case ID order.
+        // Whole-hour batches finish funding and maturity before taking the electorate for new rounds.
         loop {
             let opening = self.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Pending && o.matures_at <= hour).map(|o| o.matures_at).min();
             let council = self.cases.iter().flatten().filter(|c| c.ladder.is_due(hour)).map(|c| c.ladder.deadline()).min();
@@ -966,37 +958,31 @@ impl World {
             let self_id =
                 self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at <= hour).map(|r| r.matures_at).min();
             let Some(at) = opening.into_iter().chain(council).chain(appeals).chain(self_id).min() else { break };
-            // D196: a case activating at `at` suspends its accused's maturities that are not yet processed, including the ones
-            // scheduled for exactly `at`. Announce them before the maturity phase so activation precedes their credit.
-            self.maturity_pending_at = at;
-            self.maturity_pending = (0..self.cases.len())
-                .filter_map(|id| {
-                    let accused = if self.case_openings[id].as_ref().is_some_and(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
-                        self.case_openings[id].as_ref().map(|o| o.accused)?
-                    } else if self.self_id_cases[id].as_ref().is_some_and(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at) {
-                        self.self_id_cases[id].as_ref().map(|r| r.accused)?
-                    } else {
-                        return None;
-                    };
-                    Some((id as u32, accused))
-                })
-                .collect();
-            self.refresh_snapshot(at);
+            // Credit unaffected maturities first. A due accused's same-hour maturities remain unavailable while
+            // this batch decides which filings activate, so they cannot fund a competing activation in the batch.
+            self.activation_candidates.extend(
+                self.case_openings
+                    .iter()
+                    .flatten()
+                    .filter(|o| o.stage == OpeningStage::Pending && o.matures_at == at)
+                    .map(|o| o.accused)
+                    .chain(self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at).map(|r| r.accused))
+                    .chain(self.appeals.iter().filter(|a| a.stage == AppealStage::Pending && a.matures_at == at).map(|a| a.accused)),
+            );
+            self.now = at;
+            self.settle();
             for id in 0..self.cases.len() {
-                if let Some(o) = self.case_openings[id].as_ref().filter(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
-                    let (author, accused, xp) = (o.author, o.accused, o.author_xp_at_recording);
-                    self.activate_case(id as u32, author, accused, xp);
-                    let o = self.case_openings[id].as_mut().expect("recorded opening");
-                    o.stage = OpeningStage::Activated;
-                    o.activated_at = Some(at);
-                    self.stats.openings_activated += 1;
-                    continue;
-                }
-                if self.self_id_cases[id].as_ref().is_some_and(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at) {
+                if self.case_openings[id].as_ref().is_some_and(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
+                    self.activate_recorded_case(id as u32);
+                } else if self.self_id_cases[id].as_ref().is_some_and(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at) {
                     self.activate_self_id_case(id as u32, at);
-                    continue;
                 }
-                let Some(c) = self.cases[id].as_mut().filter(|c| c.ladder.is_due(at)) else { continue };
+            }
+            self.activate_due_appeals(at);
+            self.complete_activation_boundary();
+            self.refresh_snapshot(at);
+            for c in &mut self.cases {
+                let Some(c) = c.as_mut().filter(|c| c.ladder.is_due(at)) else { continue };
                 let number = c.ladder.council_round().expect("due Council round");
                 let result = c.ladder.close_round(number, at).expect("due round closes once");
                 self.stats.council_rounds += 1;
@@ -1009,16 +995,14 @@ impl World {
                     c.electorates.push(CouncilElectorate { number, started_at: at, members: self.council.clone() });
                 }
             }
-            self.process_appeal_events(at);
-            self.maturity_pending.clear();
-            self.maturity_pending_at = i64::MIN;
+            self.process_appeal_rounds(at);
         }
         self.refresh_snapshot(hour);
     }
 
     fn refresh_snapshot(&mut self, hour: i64) {
         self.now = hour;
-        // Every Self-ID that matured up to `hour` earns its XP before any decision of this moment reads it (D42).
+        // Process any remaining scheduled maturities before deriving the membership and support snapshot.
         self.settle();
         let n = self.subjects.len();
         self.active_count = (0..n as Id).filter(|&i| self.is_active(i)).count();
@@ -1168,7 +1152,7 @@ impl World {
     /// Whether this act's maturity is still suspended or awaiting its release processing. Such an act is not a mature
     /// entitlement yet: it cannot be spent, converted, used as collateral or used to repay debt.
     fn maturity_pending_credit(&self, act: u32) -> bool {
-        self.maturity_held(act) || self.deferred_maturities.binary_search(&act).is_ok()
+        self.maturity_held(act) || self.deferred_maturities.binary_search(&act).is_ok() || self.boundary_maturities.binary_search(&act).is_ok()
     }
 
     /// The act's recorded creation hour (its maturity is this plus `MATURITY_HOURS`).
@@ -1187,12 +1171,12 @@ impl World {
     }
 
     /// The case whose active hold currently suspends this act's maturity. A cancelled act is no longer a pending maturity.
-    pub fn maturity_hold(&self, act: u32) -> Option<u32> {
+    pub fn maturity_hold(&self, act: u32) -> Option<DisputeId> {
         let a = self.acts.get(act as usize)?;
-        if a.status == ActStatus::Cancelled {
+        if !a.pending_maturity() {
             return None;
         }
-        self.maturity_holds.iter().find(|h| h.subject == a.subject && a.recorded_at + MATURITY_HOURS >= h.from).map(|h| h.case)
+        self.maturity_holds.iter().find(|h| h.subject == a.subject).map(|h| h.case)
     }
 
     /// Maturities deferred by a hold, in the order they were passed over.
@@ -1370,100 +1354,32 @@ impl World {
 
     // ---- invariants ------------------------------------------------------------------------------------------------
 
-    fn audit_cancellations(&self) -> Result<(), String> {
-        let mut attributed_debt = vec![Amount::ZERO; self.cases.len()];
-        for (subject, account) in self.subjects.iter().enumerate() {
-            for debt in &account.debt_tranches {
-                if let Some(cancellation) = self.case_cancellation(debt.case) {
-                    if !cancellation.activated || cancellation.author as usize != subject {
-                        return Err("cancellation debt has no matching author".into());
-                    }
-                    attributed_debt[debt.case as usize] += debt.amount;
-                }
-            }
-        }
-        let mut active = 0;
-        for (case, cancellation) in self.case_cancellations.iter().enumerate().filter_map(|(case, c)| c.as_ref().map(|c| (case, c))) {
-            if cancellation.case as usize != case
-                || cancellation.author as usize >= self.subjects.len()
-                || cancellation.accused as usize >= self.subjects.len()
-                || cancellation.cancelled_at > self.now
-                || self.cases[case].is_some()
-                || self.case_effects[case].is_some()
-                || cancellation.debt_created != attributed_debt[case]
-            {
-                return Err(format!("case {case} has invalid cancellation provenance"));
-            }
-            if !cancellation.activated {
-                if !cancellation.positions.is_empty()
-                    || !cancellation.holds.is_empty()
-                    || !cancellation.collected.is_zero()
-                    || !cancellation.debt_created.is_zero()
-                    || !cancellation.payouts.is_empty()
-                    || !cancellation.burned.is_zero()
-                    || !cancellation.net.is_empty()
-                    || !cancellation.council_rounds.is_empty()
-                    || !cancellation.council_electorates.is_empty()
-                    || !cancellation.active_ballots.is_empty()
-                {
-                    return Err(format!("pending cancellation {case} has active effects"));
-                }
-                continue;
-            }
-            active += 1;
-            let Some(first) = cancellation.positions.first() else { return Err(format!("active cancellation {case} has no positions")) };
-            let deadline = cancellation.council_rounds.last().map_or_else(|| cancellation.positions.last().unwrap().after, |r| r.deadline_after);
-            if first.who != cancellation.author
-                || first.kind != PositionKind::Participant
-                || first.n != 1
-                || first.side != Side::Accuser
-                || first.stake != cancellation.collected + cancellation.debt_created
-                || first.joined_at > cancellation.cancelled_at
-                || cancellation.cancelled_at >= deadline
-                || cancellation.council_rounds.iter().any(|r| !matches!(r.outcome, CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer))
-            {
-                return Err(format!("active cancellation {case} has invalid stake or clock provenance"));
-            }
-            if cancellation.positions.last().is_some_and(|p| p.kind == PositionKind::Council) {
-                let Some(electorate) = cancellation.council_electorates.last() else { return Err("cancelled Council case has no electorate".into()) };
-                let start = cancellation.council_rounds.last().map_or_else(|| cancellation.positions.last().unwrap().joined_at, |r| r.recognized_at);
-                let distinct: HashSet<Id> = cancellation.active_ballots.iter().map(|b| b.who).collect();
-                if cancellation.council_electorates.len() != cancellation.council_rounds.len() + 1
-                    || electorate.number as usize != cancellation.council_rounds.len()
-                    || electorate.started_at != start
-                    || distinct.len() != cancellation.active_ballots.len()
-                    || cancellation
-                        .active_ballots
-                        .iter()
-                        .any(|b| !electorate.members.contains(&b.who) || b.cast_at < start || b.cast_at >= deadline || b.cast_at > cancellation.cancelled_at)
-                {
-                    return Err("cancelled Council case has invalid unfinished ballots".into());
-                }
-            } else if !cancellation.council_rounds.is_empty() || !cancellation.council_electorates.is_empty() || !cancellation.active_ballots.is_empty() {
-                return Err("cancelled ordinary case has Council records".into());
-            }
-            let defenders: Vec<Id> =
-                cancellation.positions.iter().filter(|p| p.kind == PositionKind::Participant && p.side == Side::Accused).map(|p| p.who).collect();
-            let Some(outflow) = SignedAmount::negative(cancellation.collected) else { return Err("cancellation exceeds signed accounting".into()) };
-            let mut net = vec![(cancellation.author, outflow)];
-            let mut payouts = Vec::new();
-            let burned = if let Some((share, remainder)) = cancellation.collected.split_evenly(defenders.len()) {
-                for (index, defender) in defenders.into_iter().enumerate() {
-                    let paid = share + Amount::from_atoms(u128::from(index < remainder));
-                    payouts.push((defender, paid));
-                    let Some(inflow) = SignedAmount::from_amount(paid) else { return Err("cancellation share exceeds signed accounting".into()) };
-                    net.push((defender, inflow));
-                }
-                Amount::ZERO
+    fn audit_dispute_slots(&self) -> Result<(), String> {
+        let mut expected = FastMap::default();
+        let mut add = |accused, id| {
+            if expected.insert(accused, id).is_some() {
+                Err("multiple unresolved disputes for one accused subject".to_string())
             } else {
-                cancellation.collected
-            };
-            if cancellation.payouts != payouts || cancellation.burned != burned || cancellation.net != net {
-                return Err(format!("cancellation {case} has invalid equal-share accounting"));
+                Ok(())
+            }
+        };
+        for id in 0..self.cases.len() {
+            let accused = self.cases[id]
+                .as_ref()
+                .map(|c| c.accused)
+                .or_else(|| self.case_openings[id].as_ref().filter(|o| o.stage == OpeningStage::Pending).map(|o| o.accused))
+                .or_else(|| self.self_id_cases[id].as_ref().filter(|o| o.stage == SelfIdCaseStage::Pending).map(|o| o.accused));
+            if let Some(accused) = accused {
+                add(accused, DisputeId::Case(id as u32))?;
             }
         }
-        if active != self.stats.author_cancelled {
-            return Err("active cancellation history differs from its counter".into());
+        for (id, appeal) in self.appeals.iter().enumerate() {
+            if appeal.stage != AppealStage::Cancelled && !appeal.released {
+                add(appeal.accused, DisputeId::Appeal(id as u32))?;
+            }
+        }
+        if expected != self.dispute_slots {
+            return Err("dispute slots differ from unresolved openings and cases".into());
         }
         Ok(())
     }
@@ -1480,7 +1396,7 @@ impl World {
         {
             return Err("case effects or independent status history has no matching owner".into());
         }
-        self.audit_cancellations()?;
+        self.audit_dispute_slots()?;
         for (id, opening) in self.case_openings.iter().enumerate().filter_map(|(id, opening)| opening.as_ref().map(|opening| (id, opening))) {
             let distinct: HashSet<Id> = opening.guarantors.iter().copied().collect();
             if opening.author as usize >= self.subjects.len()
@@ -1496,11 +1412,16 @@ impl World {
                 return Err(format!("opening {id} has invalid recording provenance"));
             }
             match opening.stage {
-                OpeningStage::Pending => {
+                OpeningStage::Pending | OpeningStage::Unfunded(_) => {
+                    let invalid_time = match opening.stage {
+                        OpeningStage::Unfunded(f) => f.at != opening.matures_at || f.at > self.now || f.eligible >= f.required,
+                        _ => opening.matures_at <= self.now,
+                    };
                     if opening.activated_at.is_some()
                         || self.cases[id].is_some()
                         || self.case_effects[id].is_some()
-                        || (opening.stage == OpeningStage::Pending && opening.matures_at <= self.now)
+                        || self.case_cancellations[id].is_some()
+                        || invalid_time
                     {
                         return Err(format!("opening {id} has invalid pending or cancelled state"));
                     }
@@ -1509,11 +1430,14 @@ impl World {
                     let Some(cancellation) = self.case_cancellations[id].as_ref() else { return Err(format!("opening {id} has no cancellation journal")) };
                     if self.cases[id].is_some()
                         || self.case_effects[id].is_some()
+                        || cancellation.case as usize != id
                         || cancellation.author != opening.author
                         || cancellation.accused != opening.accused
-                        || cancellation.activated != opening.activated_at.is_some()
-                        || opening.activated_at.is_some_and(|at| at != opening.matures_at || at > cancellation.cancelled_at)
-                        || (opening.activated_at.is_none() && cancellation.cancelled_at >= opening.matures_at)
+                        || (cancellation.cancelled_by != opening.author && !opening.guarantors.contains(&cancellation.cancelled_by))
+                        || opening.activated_at.is_some()
+                        || cancellation.cancelled_at < opening.recorded_at
+                        || cancellation.cancelled_at >= opening.matures_at
+                        || cancellation.cancelled_at > self.now
                     {
                         return Err(format!("opening {id} has invalid cancellation provenance"));
                     }
@@ -1531,11 +1455,11 @@ impl World {
                         return Err(format!("opening {id} has invalid activation provenance"));
                     }
                 }
-                OpeningStage::Final | OpeningStage::Moot => {
+                OpeningStage::Final => {
                     if opening.activated_at != Some(opening.matures_at)
                         || opening.matures_at > self.now
                         || self.cases[id].is_some()
-                        || (opening.stage == OpeningStage::Final) != self.case_effects[id].is_some()
+                        || self.case_effects[id].is_none()
                     {
                         return Err(format!("opening {id} has invalid final or moot state"));
                     }
@@ -1544,8 +1468,11 @@ impl World {
         }
         let recorded = self.case_openings.iter().flatten().count() as u64;
         let activated = self.case_openings.iter().flatten().filter(|o| o.activated_at.is_some()).count() as u64;
-        let cancelled = self.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Cancelled && o.activated_at.is_none()).count() as u64;
-        if (recorded, activated, cancelled) != (self.stats.openings_recorded, self.stats.openings_activated, self.stats.openings_cancelled) {
+        let cancelled = self.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Cancelled).count() as u64;
+        let unfunded = self.case_openings.iter().flatten().filter(|o| matches!(o.stage, OpeningStage::Unfunded(_))).count() as u64;
+        if (recorded, activated, cancelled, unfunded)
+            != (self.stats.openings_recorded, self.stats.openings_activated, self.stats.openings_cancelled, self.stats.openings_unfunded)
+        {
             return Err("opening records differ from lifecycle counters".into());
         }
         let unspent = self.acts.iter().filter(|a| a.status == ActStatus::Unspent).count() as i64;
@@ -1553,21 +1480,26 @@ impl World {
             return Err(format!("vault {} != unspent rights {}", self.vault, unspent));
         }
         // D196: one class of hold per open case, keyed to that case's accused, and deferred maturities that are still pending.
-        let open = self.cases.iter().filter(|c| c.is_some()).count();
+        let open = self.cases.iter().filter(|c| c.is_some()).count() + self.appeals.iter().filter(|a| a.activated_at.is_some() && !a.released).count();
         if self.maturity_holds.len() != open
             || self.maturity_holds.windows(2).any(|w| (w[0].subject, w[0].case) >= (w[1].subject, w[1].case))
             || self.maturity_holds.iter().enumerate().any(|(i, h)| {
                 self.maturity_holds[..i].iter().any(|other| other.case == h.case)
-                    || self.cases.get(h.case as usize).and_then(Option::as_ref).is_none_or(|c| c.accused != h.subject || h.from > self.now)
+                    || h.from > self.now
+                    || match h.case {
+                        DisputeId::Case(id) => self.case_ref(id).ok().is_none_or(|c| c.accused != h.subject || c.ladder.opened_at != h.from),
+                        DisputeId::Appeal(id) => self.appeal(id).is_none_or(|a| a.accused != h.subject || a.activated_at != Some(h.from) || a.released),
+                    }
             })
         {
             return Err("Self-ID maturity holds do not match the open cases".into());
         }
-        if self.deferred_maturities.windows(2).any(|w| w[0] >= w[1])
-            || self
-                .deferred_maturities
-                .iter()
-                .any(|&act| self.acts.get(act as usize).is_none_or(|a| a.recorded_at + MATURITY_HOURS > self.now || a.credit.is_some()))
+        if !self.activation_candidates.is_empty()
+            || !self.boundary_maturities.is_empty()
+            || self.deferred_maturities.windows(2).any(|w| w[0] >= w[1])
+            || self.deferred_maturities.iter().any(|&act| {
+                self.acts.get(act as usize).is_none_or(|a| a.recorded_at + MATURITY_HOURS > self.now || !a.pending_maturity() || !self.maturity_held(act))
+            })
         {
             return Err("deferred Self-ID maturities are not unique pending maturities".into());
         }
@@ -1596,23 +1528,28 @@ impl World {
         }
         let mut xp = vec![0i32; n];
         let mut ever = vec![0i32; n];
+        let mut delayed_credits = 0;
         for (idx, act) in self.acts.iter().enumerate() {
-            // D42: an act is credited exactly when it matured and was not cancelled before; the credit stamp is the maturity time and
-            // the recipients are the author and the creation-time snapshot, whatever happened to the entitlement later.
-            let matured = act.recorded_at + MATURITY_HOURS <= self.now;
+            let scheduled = act.recorded_at + MATURITY_HOURS;
+            let matured = scheduled <= self.now;
             if matured != (idx < self.settled) {
                 return Err(format!("act {idx} maturity does not match the settlement cursor"));
             }
+            if act.invalidated_before_credit && (act.credit.is_some() || !matches!(act.status, ActStatus::Consumed | ActStatus::Converted)) {
+                return Err(format!("act {idx} has inconsistent pre-credit invalidation"));
+            }
             match (&act.credit, matured) {
                 (Some(c), true) => {
-                    if c.at != act.recorded_at + MATURITY_HOURS
+                    delayed_credits += u64::from(c.at > scheduled);
+                    if c.at < scheduled
+                        || c.at > self.now
                         || (!c.recipients.is_empty() && (c.recipients[0] != act.subject || c.recipients[1..] != *act.guarantors))
                     {
                         return Err(format!("act {idx} credit is not the maturity credit of its snapshot"));
                     }
                 }
                 (Some(_), false) => return Err(format!("act {idx} earned XP before maturity")),
-                (None, true) if act.status != ActStatus::Cancelled && self.deferred_maturities.binary_search(&(idx as u32)).is_err() => {
+                (None, true) if act.pending_maturity() && self.deferred_maturities.binary_search(&(idx as u32)).is_err() => {
                     return Err(format!("matured act {idx} has no credit"))
                 }
                 _ => {}
@@ -1643,13 +1580,16 @@ impl World {
                 }
             }
         }
+        if delayed_credits != self.stats.maturities_released {
+            return Err("late credit receipts differ from the maturity release count".into());
+        }
         let mut units = vec![0u32; n];
         let mut invitation_sources = HashSet::new();
         for (id, v) in self.invitations.iter().enumerate() {
             let Some(source) = self.acts.get(v.funding_act as usize) else { return Err(format!("invitation {id} has no funding source")) };
             if source.subject != v.creator
                 || source.status != ActStatus::Consumed
-                || source.recorded_at.checked_add(MATURITY_HOURS).is_none_or(|at| at > v.created_at)
+                || source.credit.as_ref().is_none_or(|c| c.at > v.created_at)
                 || !invitation_sources.insert(v.funding_act)
             {
                 return Err(format!("invitation {id} has invalid or reused funding provenance"));
@@ -1666,7 +1606,6 @@ impl World {
         }
         // Dispute custody and restrictions: the reserved stakes, the holds and the path exclusions are exactly those of the open cases.
         let mut reserved = vec![Amount::ZERO; n];
-        let mut reserved_rights = HashSet::new();
         let mut holds = vec![0u32; n];
         let mut path_holds = vec![0u32; n];
         let mut frozen = vec![0u32; n];
@@ -1679,7 +1618,7 @@ impl World {
         }
         for c in self.cases.iter().flatten() {
             c.ladder.audit()?;
-            if c.backed.len() != c.ladder.positions().len() {
+            if c.backed.len() != c.ladder.positions().len() || c.backed[0] != c.ladder.positions()[0].stake {
                 return Err("case custody has no matching position".into());
             }
             let periods = c.ladder.rounds().len() + usize::from(c.ladder.council_round().is_some());
@@ -1703,12 +1642,10 @@ impl World {
             }
             frozen[c.accused as usize] += 1;
             for (p, b) in c.ladder.positions().iter().zip(&c.backed) {
-                reserved[p.who as usize] += b.liquid;
-                for &a in &b.rights {
-                    if !reserved_rights.insert(a) || self.acts[a as usize].subject != p.who || self.acts[a as usize].recorded_at + MATURITY_HOURS > self.now {
-                        return Err("invalid or duplicated Emitter stake custody".into());
-                    }
+                if *b > p.stake {
+                    return Err("liquid custody exceeds the position's nominal stake".into());
                 }
+                reserved[p.who as usize] += *b;
             }
             for &(id, _, path) in &c.holds {
                 holds[id as usize] += 1;
@@ -1724,17 +1661,15 @@ impl World {
                 last = p.after;
             }
         }
-        if reserved_rights != self.reserved_rights {
-            return Err("Emitter stake custody does not match open cases".into());
-        }
         for (case, effects) in self.case_effects.iter().enumerate().filter_map(|(case, e)| e.as_ref().map(|e| (case as u32, e))) {
             let Some(outcome) = self.case_outcome(case) else { return Err(format!("case {case} has no retained verdict")) };
             if outcome.accused != effects.accused
                 || outcome.winner != effects.winner
                 || outcome.settled_at > self.now
+                || (effects.kind == CaseKind::Identity && effects.winner == Side::Accuser && !effects.identity_subjects.contains(&effects.accused))
+                || outcome.position_history.first().is_none_or(|p| p.who != outcome.accuser)
                 || self.cases[case as usize].is_some()
                 || self.case_cancellation(case).is_some()
-                || outcome.position_history.first().is_none_or(|p| p.who != outcome.accuser)
                 || outcome.positions as usize != outcome.position_history.len()
                 || self.case_opening(case).is_some_and(|o| o.stage != OpeningStage::Final || o.author != outcome.accuser || o.matures_at > outcome.settled_at)
             {
@@ -1784,7 +1719,7 @@ impl World {
                     d.amount != d.remaining + d.repaid + d.cancelled
                         || match self.case_effects.get(d.case as usize).and_then(Option::as_ref) {
                             Some(effects) => effects.reversed && !d.remaining.is_zero(),
-                            None => !self.case_cancellation(d.case).is_some_and(|c| c.activated && c.author as usize == i),
+                            None => true,
                         }
                 })
             {
@@ -1989,7 +1924,7 @@ mod tests {
         w.open_valence(0, 3, w.eligible_emission(0).unwrap()).unwrap();
         let case = w.begin_case(&[0, 1]).unwrap();
         assert_eq!(w.open_valence(3, 0, w.eligible_emission(3).unwrap()), Err(Reject("open-dispute activity restriction")));
-        w.end_case(case);
+        defend(&mut w, case);
         w.open_valence(3, 0, w.eligible_emission(3).unwrap()).unwrap();
         assert!(w.graph().is_mutual(0, 3));
     }
@@ -2005,7 +1940,7 @@ mod tests {
         assert_eq!(w.create_invitation(12, w.eligible_emission(12).unwrap()), Err(Reject("insufficient eligible guarantors")));
         let case = w.begin_case(&[1, 2]).unwrap();
         assert_eq!(w.create_invitation(1, w.eligible_emission(1).unwrap()), Err(Reject("open-dispute activity restriction")));
-        w.end_case(case);
+        defend(&mut w, case);
         assert_eq!((w.burned(), w.vault()), (burned, vault), "refusals leave no trace");
         // Issuance burns one own right and holds a unit at the creator.
         let inv = w.create_invitation(1, w.eligible_emission(1).unwrap()).unwrap();
@@ -2288,7 +2223,7 @@ mod tests {
         let case = w.begin_case(&[3, 4]).unwrap();
         assert_eq!(w.create_self_id(3), Err(Reject("open-dispute activity restriction")));
         assert!(w.path_blocked(3) && w.path_blocked(4), "D131: accounts in a dispute are not path intermediaries");
-        w.end_case(case);
+        defend(&mut w, case);
         assert!(!w.path_blocked(3) && !w.path_blocked(4));
         w.void_chain(3);
         assert_eq!(w.xp(3), 0);
@@ -2306,7 +2241,7 @@ mod tests {
         assert_eq!(w.create_self_id(3), Err(Reject("open-dispute activity restriction")), "both parties keep the D77 hold");
         assert!(!w.path_blocked(3), "the challenger stays usable on paths");
         assert!(w.path_blocked(4), "the accused is excluded");
-        w.end_case(case);
+        defend(&mut w, case);
         assert!(!w.path_blocked(3) && !w.path_blocked(4));
         w.audit().unwrap();
     }
@@ -2418,8 +2353,8 @@ mod tests {
         assert!(w.create_invitation(0, w.eligible_emission(3).unwrap()).is_err());
         let held = w.begin_case(&[0, 1]).unwrap();
         assert!(w.open_valence(0, 4, act).is_err(), "disputed");
-        w.end_case(held);
         assert_eq!((xps(&w), w.vault(), w.burned(), w.liquid(0)), (xp, vault, burned, liquid));
+        defend(&mut w, held);
         assert_eq!(w.eligible_emission(0), Some(act), "the entitlement is still unspent");
         w.audit().unwrap();
     }
@@ -2454,7 +2389,7 @@ mod tests {
         assert!(w.convert_to_collector(0, u32::MAX).is_err());
         assert!(w.open_valence(0, 1, u32::MAX).is_err());
         assert!(w.create_invitation(0, u32::MAX).is_err());
-        w.end_case(u32::MAX);
+        assert!(w.settle_case(u32::MAX, None).is_err());
         let probe = w.probe_invitation_paths(u32::MAX, PathMethod::Exact);
         assert!(!probe.accepted && !probe.exhausted);
         assert_eq!(w.penalize_xp(u32::MAX, 0.5), 0);
@@ -2933,34 +2868,43 @@ mod tests {
         assert_eq!(w.case_positions(case)[0].xp, opening.author_xp_at_recording, "activation does not revalidate the recording-time gate");
         assert_eq!(w.case_positions(case)[0].who, author);
         assert!(w.held(author));
-        w.end_case(case);
-        assert_eq!(w.case_opening(case).unwrap().stage, OpeningStage::Moot);
+        defend(&mut w, case);
+        assert_eq!(w.case_opening(case).unwrap().stage, OpeningStage::Final);
         assert!(w.cancel_pending_opening(case, author).is_err());
         w.audit().unwrap();
     }
 
     #[test]
-    fn pending_opening_cancellation_is_owner_only_atomic_and_releases_nothing_else() {
+    fn pending_opening_cancellation_uses_author_roster_atomically_and_releases_nothing_else() {
         let mut w = rich_world();
-        let (accused, author, _) = xp_ladder(&w);
-        let fixture = w.begin_case(&[author, accused]).unwrap();
+        let (accused, author, other) = xp_ladder(&w);
+        let fixture = w.begin_case(&[author, other]).unwrap();
         assert!(w.case_opening(fixture).is_none(), "already-active fixtures have no invented recording time");
         let case = w.record_case_opening(&[author, accused]).unwrap();
         let opening = w.case_opening(case).unwrap().clone();
-        let before = (w.hold.clone(), w.frozen.clone(), w.reserved_rights.clone(), w.spendable(author), w.supply(), w.xp(author), w.stats.staked);
-        assert!(w.cancel_pending_opening(case, accused).is_err());
+        let before = (w.hold.clone(), w.frozen.clone(), w.subjects[author as usize].reserved, w.spendable(author), w.supply(), w.xp(author), w.stats.staked);
+        let outsider = (0..w.len() as Id).find(|&id| id != author && !opening.guarantors.contains(&id)).unwrap();
+        assert!(w.cancel_pending_opening(case, outsider).is_err());
         assert!(w.cancel_pending_opening(u32::MAX, author).is_err());
         assert!(w.cancel_pending_opening(fixture, author).is_err());
         assert_eq!(w.case_opening(case), Some(&opening));
         w.tick(opening.matures_at - 1);
-        w.cancel_pending_opening(case, author).unwrap();
+        let guarantor = opening.guarantors[0];
+        let valence = w.open_valence_of(guarantor, author).unwrap();
+        w.withdraw_valence(guarantor, valence).unwrap();
+        assert!(!w.mutual_partners(author).contains(&guarantor));
+        w.cancel_pending_opening(case, guarantor).unwrap();
+        assert_eq!(w.case_cancellation(case).unwrap().cancelled_by, guarantor);
         assert_eq!(w.case_opening(case).unwrap().stage, OpeningStage::Cancelled);
-        assert_eq!((w.hold.clone(), w.frozen.clone(), w.reserved_rights.clone(), w.spendable(author), w.supply(), w.xp(author), w.stats.staked), before);
+        assert_eq!(
+            (w.hold.clone(), w.frozen.clone(), w.subjects[author as usize].reserved, w.spendable(author), w.supply(), w.xp(author), w.stats.staked),
+            before
+        );
         assert!(w.cancel_pending_opening(case, author).is_err());
         w.tick(opening.matures_at + 10 * DAY);
         assert_eq!(w.case_deadline(case), None);
-        assert!(w.held(author) && w.held(accused));
-        assert_eq!((w.stats.openings_recorded, w.stats.openings_activated, w.stats.openings_cancelled, w.stats.moot), (1, 0, 1, 0));
+        assert!(w.held(author) && w.held(other) && !w.held(accused));
+        assert_eq!((w.stats.openings_recorded, w.stats.openings_activated, w.stats.openings_cancelled), (1, 0, 1));
         assert_eq!(w.pending_openings(), 0);
         w.audit().unwrap();
     }
@@ -2981,39 +2925,78 @@ mod tests {
     }
 
     #[test]
-    fn opening_activations_use_matured_collateral_and_stable_case_id_order() {
+    fn releasing_a_legacy_maturity_cause_keeps_other_causes_and_future_due_times() {
+        let mut w = rich_world();
+        let late = w.create_self_id(0).unwrap();
+        let future = w.create_self_id(1).unwrap();
+        let due = w.now() + DAY;
+        let (old, other, independent) = (DisputeId::Case(0), DisputeId::Case(1), DisputeId::Appeal(0));
+        for (case, subject) in [(old, 0), (other, 0), (independent, 1)] {
+            w.establish_maturity_hold(case, subject, w.now());
+        }
+        w.tick(due - 1);
+        w.release_maturity_hold(independent);
+        w.process_deferred_maturities();
+        assert!(w.acts[future as usize].credit.is_none(), "release never credits a future maturity early");
+        w.tick(due);
+        assert_eq!(w.acts[future as usize].credit.as_ref().unwrap().at, due);
+        w.release_maturity_hold(old);
+        w.process_deferred_maturities();
+        assert_eq!(w.maturity_hold(late), Some(other));
+        assert!(w.acts[late as usize].credit.is_none());
+        w.tick(due + 1);
+        w.release_maturity_hold(other);
+        w.process_deferred_maturities();
+        assert_eq!(w.acts[late as usize].credit.as_ref().unwrap().at, due + 1);
+        w.audit().unwrap();
+    }
+
+    #[test]
+    fn only_withdrawn_fcty_funds_openings_and_simultaneous_cases_cannot_reuse_it() {
         let mut w = rich_world();
         let (accused, author, _) = xp_ladder(&w);
         w.burn_liquid(author);
-        let backing = w.create_self_id(author).unwrap();
+        for _ in 0..7 {
+            w.create_self_id(author).unwrap();
+            w.tick(w.now() + DAY);
+        }
+        let other = (0..12).find(|&id| id != accused && id != author && w.xp(id) < w.xp(author)).unwrap();
+        let due = w.create_self_id(other).unwrap();
         let a = w.record_case_opening(&[author, accused]).unwrap();
-        let b = w.record_case_opening(&[author, accused]).unwrap();
+        let b = w.record_case_opening(&[author, other]).unwrap();
         let at = w.case_opening(a).unwrap().matures_at;
-        let mut stepped = w.clone();
-        while stepped.now() < at {
-            stepped.tick(stepped.now() + 1);
+        let rights = w.eligible_emissions(author, DAY);
+        assert_eq!(rights.len(), 7);
+        let mut unwithdrawn = w.clone();
+        unwithdrawn.tick(at);
+        let unfunded = OpeningStage::Unfunded(UnfundedOpening { at, required: Amount::coins(7), eligible: Amount::ZERO });
+        assert_eq!(unwithdrawn.case_opening(a).unwrap().stage, unfunded);
+        assert_eq!(unwithdrawn.eligible_emissions(author, DAY), rights);
+        unwithdrawn.audit().unwrap();
+
+        w.tick(at - 1);
+        for right in rights {
+            w.convert_to_collector(author, right).unwrap();
         }
         w.tick(at);
-        assert_eq!((a, b, w.cases.len()), (0, 1, 2), "activation never allocates another ID");
-        assert!(w.acts[backing as usize].credit.is_some(), "Self-ID maturity runs before activation at the same hour");
-        assert_eq!(w.case_ref(a).unwrap().backed[0].rights, vec![backing]);
-        assert_eq!(w.case_ref(b).unwrap().backed[0].total(), Amount::ZERO);
-        assert_eq!(w.case_ref(a).unwrap().backed[0].rights, stepped.case_ref(a).unwrap().backed[0].rights);
-        assert_eq!(w.case_opening(a), stepped.case_opening(a));
-        assert_eq!(w.hold, stepped.hold);
-        assert_eq!((w.stats.openings_activated, w.stats.opened), (2, 2));
+        assert_eq!(w.case_ref(a).unwrap().backed[0], Amount::coins(7));
+        assert_eq!(w.case_opening(b).unwrap().stage, unfunded, "earlier case ID reserved all the liquid");
+        assert!(w.case_deadline(b).is_none() && !w.held(other));
+        assert_eq!(w.acts[due as usize].credit.as_ref().unwrap().at, at);
+        assert_eq!(w.stats.maturities_deferred, 0);
+        assert_eq!(w.debt(author), Amount::ZERO);
         w.tick(at);
-        assert_eq!(w.stats.openings_activated, 2, "replaying the maturity hour cannot activate twice");
+        assert_eq!((w.stats.openings_activated, w.stats.openings_unfunded), (1, 1));
         w.audit().unwrap();
-        stepped.audit().unwrap();
     }
 
     #[test]
     fn opening_activation_and_council_cutoffs_share_the_chronological_scheduler() {
         let mut w = rich_world();
         let (accused, author, _) = xp_ladder(&w);
-        let council_case = w.begin_case(&[author, accused]).unwrap();
-        let member = w.council().iter().copied().find(|&id| id != author && id != accused).unwrap();
+        let other = (0..12).find(|&id| id != accused && id != author).unwrap();
+        let council_case = w.begin_case(&[author, other]).unwrap();
+        let member = w.council().iter().copied().find(|&id| id != author && id != other).unwrap();
         w.council_join(council_case, member).unwrap();
         assert!(w.council_ballot(council_case, member, 0, CouncilVote::Defer));
         let cutoff = w.case_deadline(council_case).unwrap();
@@ -3135,65 +3118,54 @@ mod tests {
     }
 
     #[test]
-    fn a_lost_unbacked_stake_becomes_debt_that_later_emission_repays() {
+    fn a_lost_unbacked_later_stake_becomes_debt_that_emission_repays() {
         let mut w = rich_world();
-        let (accused, challenger, _) = xp_ladder(&w);
-        let start = w.now();
-        w.burn_liquid(challenger);
+        let (accused, challenger, defender) = xp_ladder(&w);
+        w.burn_liquid(defender);
         let case = w.begin_case(&[challenger, accused]).unwrap();
+        assert_eq!(w.join_case(case, defender), Ok(2));
         assert_eq!(w.stats.refused_funds, 1);
-        w.tick(start + 7 * 24);
-        let supply = w.supply();
-        // The accused proves reality: the lone accuser loses a stake of 7 that was never blocked, so all of it is debt.
-        w.settle_case(case, Some(Side::Accused)).unwrap();
-        assert_eq!(w.debt(challenger), Amount::coins(7));
-        assert_eq!(w.supply(), supply, "nothing was destroyed: the stake had no backing");
-        // Each matured entitlement of the indebted account is burned against the debt before it can be spent.
-        let rights_before = w.unspent_rights(challenger);
-        w.tick(w.now() + 24);
-        w.create_self_id(challenger).ok();
-        for _ in 0..8 {
-            w.tick(w.now() + 24);
-            let _ = w.create_self_id(challenger);
-        }
-        assert!(w.debt(challenger) < Amount::coins(7), "emission repaid part of the debt");
-        assert!(w.stats.debt_repaid > Amount::ZERO);
-        let _ = rights_before;
+        w.tick(w.case_deadline(case).unwrap());
+        w.settle_case(case, Some(Side::Accuser)).unwrap();
+        let debt = w.debt(defender);
+        assert!(debt >= chekharda::stake(2, 7));
+        let act = w.create_self_id(defender).unwrap();
+        w.tick(w.now() + DAY);
+        assert_eq!(w.debt(defender), debt - Amount::ONE);
+        assert_eq!(w.stats.debt_repaid, Amount::ONE);
+        assert!(w.acts[act as usize].credit.as_ref().unwrap().recipients.is_empty());
         w.audit().unwrap();
     }
 
     #[test]
-    fn overlapping_cases_keep_each_restriction_until_the_last_one_closes() {
+    fn cases_against_different_subjects_keep_each_restriction_until_its_owner_closes() {
         let mut w = rich_world();
         let (accused, c1, c2) = xp_ladder(&w);
         let a = w.begin_case(&[c1, accused]).unwrap();
-        let b = w.begin_case(&[c2, accused]).unwrap();
+        assert!(w.begin_case(&[c2, accused]).is_err());
+        let b = w.begin_case(&[accused, c2]).unwrap();
         assert!(w.path_blocked(accused));
-        w.end_case(a);
-        assert!(w.held(accused) && w.path_blocked(accused), "the second case still restricts the accused");
-        assert!(!w.held(c1) && w.held(c2));
+        defend(&mut w, a);
+        assert!(w.held(accused) && w.held(c2), "the second case still restricts its participants");
+        assert!(!w.path_blocked(accused) && !w.held(c1));
         w.audit().unwrap();
-        w.end_case(b);
-        assert!(!w.held(accused) && !w.held(c2), "released only when the last case ends");
+        defend(&mut w, b);
+        assert!(!w.held(accused) && !w.held(c2));
         assert_eq!((w.spendable(c1), w.spendable(c2)), (w.liquid(c1), w.liquid(c2)), "custody released");
         w.audit().unwrap();
     }
 
     #[test]
-    fn the_accused_cannot_withdraw_unspent_rights_until_the_last_case_ends() {
+    fn the_accused_cannot_withdraw_unspent_rights_until_the_case_ends() {
         let mut w = rich_world();
-        let (accused, c1, c2) = xp_ladder(&w);
+        let (accused, c1, _) = xp_ladder(&w);
         // A fresh matured right on the accused.
         let own = w.create_self_id(accused);
         w.tick(w.now() + 24);
         let right = own.ok().and_then(|_| w.eligible_emission(accused)).expect("a matured right");
         let a = w.begin_case(&[c1, accused]).unwrap();
-        let b = w.begin_case(&[c2, accused]).unwrap();
         assert_eq!(w.convert_to_collector(accused, right), Err(Reject("unspent rights are frozen while the account is accused")));
-        w.end_case(a);
-        assert!(w.convert_to_collector(accused, right).is_err(), "still frozen by the second case");
-        w.audit().unwrap();
-        w.end_case(b);
+        defend(&mut w, a);
         w.convert_to_collector(accused, right).unwrap();
         w.audit().unwrap();
     }
@@ -3201,16 +3173,18 @@ mod tests {
     #[test]
     fn a_negative_emission_balance_blocks_invitations_and_guarantees_and_suspends_xp_until_repaid() {
         let mut w = rich_world();
-        let (accused, challenger, _) = xp_ladder(&w);
-        // The held mature right backs one unit of the stake; six units remain unbacked.
+        let (accused, opener, challenger) = xp_ladder(&w);
+        // The later defender's mature right backs only one unit of its stake.
         let right = w.create_self_id(challenger).unwrap();
         w.tick(w.now() + 24);
         let start = w.now();
         w.burn_liquid(challenger);
-        let case = w.begin_case(&[challenger, accused]).unwrap();
+        let case = w.begin_case(&[opener, accused]).unwrap();
+        w.join_case(case, challenger).unwrap();
         w.tick(start + 7 * 24);
-        w.settle_case(case, Some(Side::Accused)).unwrap();
-        assert_eq!(w.debt(challenger), Amount::coins(6));
+        w.settle_case(case, Some(Side::Accuser)).unwrap();
+        let debt = w.debt(challenger);
+        assert!(debt >= chekharda::stake(2, 7) - Amount::ONE);
         assert_eq!(w.create_invitation(challenger, right), Err(Reject("negative emission balance blocks invitations and guarantees")));
         assert_eq!(w.open_valence(challenger, 11, right), Err(Reject("negative emission balance blocks invitations and guarantees")));
         // Acts that mature while the balance is negative earn nobody XP; each is burned against the debt.
@@ -3228,9 +3202,9 @@ mod tests {
             assert_eq!(receipt.credited_at, w.now());
             assert!(guarantors.len() <= 12);
             suspended += 1;
-            assert!(suspended <= 7, "seven units repay a debt of seven");
+            assert!(suspended <= debt.atoms().div_ceil(crate::amount::SCALE));
         }
-        assert_eq!(suspended, 6);
+        assert_eq!(suspended, debt.atoms().div_ceil(crate::amount::SCALE));
         // Back in the black: the next act earns XP again and invitations are possible again.
         let act = w.create_self_id(challenger).unwrap();
         let before = w.xp(challenger);
@@ -3244,7 +3218,7 @@ mod tests {
     #[test]
     fn the_liable_roster_of_an_identity_case_is_everyone_who_earned_xp_for_its_acts_even_after_leaving() {
         let mut w = rich_world();
-        let (accused, challenger, _) = xp_ladder(&w);
+        let (accused, _, _) = xp_ladder(&w);
         let current = w.eligible_guarantors(accused);
         assert!(!current.is_empty());
         // One guarantor leaves; it still earned XP for past acts and so stays liable.
@@ -3259,67 +3233,61 @@ mod tests {
         }
         let roster = w.liable_guarantors(accused);
         assert!(roster.len() >= current.len() - 1);
-        let case = w.begin_case(&[challenger, accused]).unwrap();
-        w.end_case(case);
         w.audit().unwrap();
     }
 
     #[test]
-    fn emitter_custody_is_exclusive_releases_in_kind_and_a_forfeit_collects_without_rewriting_xp() {
+    fn liquid_custody_is_exclusive_and_forfeiture_does_not_rewrite_xp() {
         let mut w = rich_world();
         let (accused, challenger, defender) = xp_ladder(&w);
         w.burn_liquid(challenger);
-        for _ in 0..3 {
+        for _ in 0..7 {
             w.create_self_id(challenger).unwrap();
             w.tick(w.now() + DAY);
         }
-        let rights = w.eligible_emissions(challenger, DAY);
         let units = w.responsibility_units(challenger);
+        for right in w.eligible_emissions(challenger, DAY) {
+            w.convert_to_collector(challenger, right).unwrap();
+        }
         let a = w.begin_case(&[challenger, accused]).unwrap();
-        assert!(w.eligible_emissions(challenger, DAY).is_empty());
-        assert!(w.convert_to_collector(challenger, rights[0]).is_err());
-        let b = w.begin_case(&[challenger, defender]).unwrap();
-        assert_eq!(w.case_ref(b).unwrap().backed[0].total(), Amount::ZERO, "no collateral reuse");
-        w.end_case(b);
-        w.end_case(a);
-        assert_eq!(w.eligible_emissions(challenger, DAY), rights, "moot custody returns Emitter rights without withdrawing");
-        assert_eq!(w.liquid(challenger), Amount::ZERO);
-        let a = w.begin_case(&[challenger, accused]).unwrap();
+        assert_eq!(w.burn_liquid(challenger), Amount::ZERO, "an authorized burn can only use unreserved liquid");
+        assert_eq!(w.begin_case(&[challenger, defender]), Err(Reject("opening stake is not fully backed")));
         w.tick(w.case_deadline(a).unwrap());
         w.settle_case(a, Some(Side::Accused)).unwrap();
-        assert_eq!((w.debt(challenger), w.unspent_rights(challenger)), (Amount::coins(4), 0));
-        assert_eq!(w.responsibility_units(challenger), units, "economic collection does not rewrite XP provenance");
-        assert_eq!(w.stats.stake_burned, Amount::coins(3));
+        assert_eq!(w.debt(challenger), Amount::ZERO);
+        assert_eq!(w.responsibility_units(challenger), units, "forfeiture does not rewrite XP provenance");
+        assert_eq!(w.stats.stake_burned, Amount::coins(7));
         w.audit().unwrap();
     }
 
     #[test]
-    fn sanctions_collect_frozen_emitter_rights_and_revoked_collateral_cannot_pay_twice() {
+    fn a_source_cut_cannot_erase_a_separate_cases_liquid_stake() {
         let mut w = rich_world();
         let (accused, challenger, defender) = xp_ladder(&w);
+        let other = (0..12).find(|&id| ![accused, challenger, defender].contains(&id)).unwrap();
         w.burn_liquid(accused);
         w.create_self_id(accused).unwrap();
         w.tick(w.now() + DAY);
         let a = w.begin_case(&[challenger, accused]).unwrap();
-        let units = w.responsibility_units(accused);
+        let b = w.begin_case(&[accused, other]);
+        assert!(b.is_err(), "the accused's mature Emitter right cannot fund a stake");
+        let b = w.begin_case(&[defender, other]).unwrap();
+        // D127's related-account correction is supplied as trusted execution, as in the runner.
         w.tick(w.case_deadline(a).unwrap());
         let paid = w.stats.sanction_collected;
         w.settle_case(a, None).unwrap();
-        assert_eq!(w.stats.sanction_collected - paid, Amount::ONE);
+        assert_eq!(w.stats.sanction_collected - paid, Amount::ONE, "a merits sanction still collects the accused's frozen mature right");
         assert_eq!(w.debt(accused), Amount::coins(6));
-        assert_eq!(w.responsibility_units(accused), units);
+        w.apply_case_identity_verdict_to(a, defender).unwrap();
+        assert!(!w.accepted(defender));
         w.burn_liquid(defender);
-        w.create_self_id(defender).unwrap();
-        w.tick(w.now() + DAY);
-        let b = w.begin_case(&[defender, challenger]).unwrap();
-        assert_eq!(w.case_ref(b).unwrap().backed[0].total(), Amount::ONE);
-        w.void_chain(defender);
+        assert_eq!(w.liquid(defender), Amount::coins(7), "source cuts and burns cannot touch the other case's liquid stake");
         w.audit().unwrap();
-        let supply = w.supply();
-        w.tick(w.case_deadline(b).unwrap());
+        let before = w.stats.stake_burned;
+        let debt = w.debt(defender);
         w.settle_case(b, Some(Side::Accused)).unwrap();
-        assert_eq!(w.debt(defender), Amount::coins(7));
-        assert_eq!(w.supply(), supply, "revoked Emitter collateral has already burned; settlement creates debt only");
+        assert_eq!(w.stats.stake_burned - before, Amount::coins(7));
+        assert_eq!(w.debt(defender), debt);
         w.audit().unwrap();
     }
 
@@ -3332,9 +3300,7 @@ mod tests {
         assert!(w.liable_guarantors(accused).contains(&old));
         let case = w.begin_case(&[challenger, accused]).unwrap();
         assert!(w.liable_guarantors(accused).contains(&old));
-        w.end_case(case);
         w.reinstate_identity(old);
-        let case = w.begin_case(&[challenger, accused]).unwrap();
         w.join_case(case, defender).unwrap();
         let member = w.council().iter().copied().find(|&m| m != accused && m != challenger && m != defender).unwrap();
         w.council_join(case, member).unwrap();
@@ -3377,7 +3343,7 @@ mod tests {
         assert_eq!(out.losers.iter().filter(|&&i| i == accused).count(), 1);
         // The authorized correction runs before the release, so the invalidated chain never receives the deferred reward.
         let units = w.responsibility_units(g);
-        w.apply_case_identity_verdict(case).unwrap();
+        assert!(w.apply_case_identity_verdict_to(case, accused).is_err(), "already applied within settlement");
         assert_eq!(w.responsibility_units(g), units, "an invalidated source never credits its guarantor");
         assert!(w.unspent_rights(accused) == 0, "the whole invalidated chain is cancelled");
         w.audit().unwrap();
@@ -3511,13 +3477,14 @@ mod tests {
         assert!(w.revoke_source_xp(source));
         let expected: Vec<i32> = (0..w.len() as Id).map(|id| w.responsibility_units(id)).collect();
         let a = w.begin_case(&[challenger, accused]).unwrap();
-        let b = w.begin_case(&[challenger, accused]).unwrap();
+        let others: Vec<Id> = (0..w.len() as Id).filter(|&i| ![challenger, accused, separately_penalized].contains(&i)).collect();
+        let b = w.begin_case(&[challenger, others[0]]).unwrap();
+        let ongoing = w.begin_case(&[accused, others[1]]).unwrap();
         w.tick(w.case_deadline(a).unwrap());
         w.settle_case(a, None).unwrap();
         w.settle_case(b, None).unwrap();
-        let ongoing = w.begin_case(&[challenger, accused]).unwrap();
-        w.apply_case_identity_verdict(a).unwrap();
-        w.apply_case_identity_verdict(b).unwrap();
+        w.apply_case_identity_verdict_to(b, accused).unwrap();
+        w.apply_case_xp_penalty(b, accused, 0.5).unwrap();
         w.apply_case_xp_penalty(a, separately_penalized, 0.5).unwrap();
         let mut independently_invalid = w.clone();
         independently_invalid.invalidate_identity(accused);
@@ -3546,7 +3513,7 @@ mod tests {
         assert!(!independently_invalid.accepted(accused));
         w.audit().unwrap();
         independently_invalid.audit().unwrap();
-        w.end_case(ongoing);
+        defend(&mut w, ongoing);
         w.audit().unwrap();
     }
 
@@ -3559,7 +3526,6 @@ mod tests {
         let case = w.begin_case(&[challenger, accused]).unwrap();
         w.tick(w.case_deadline(case).unwrap());
         w.settle_case(case, None).unwrap();
-        w.apply_case_identity_verdict(case).unwrap();
         w.apply_case_identity_verdict_to(case, related).unwrap();
         assert!(w.apply_case_identity_verdict_to(case, related).is_err());
         let mut independent = w.clone();
@@ -3578,34 +3544,40 @@ mod tests {
     #[test]
     fn case_debt_cancellation_follows_fifo_and_preserves_paid_burns_and_other_debt() {
         let mut w = rich_world();
-        let (accused, challenger, _) = xp_ladder(&w);
+        let (accused, opener, challenger) = xp_ladder(&w);
         w.burn_liquid(challenger);
-        let a = w.begin_case(&[challenger, accused]).unwrap();
-        let b = w.begin_case(&[challenger, accused]).unwrap();
+        let other = (0..12).find(|&id| id != opener && id != challenger && id != accused).unwrap();
+        let a = w.begin_case(&[opener, accused]).unwrap();
+        w.join_case(a, challenger).unwrap();
+        let b = w.begin_case(&[opener, other]).unwrap();
+        w.join_case(b, challenger).unwrap();
         w.tick(w.case_deadline(a).unwrap());
-        w.settle_case(a, Some(Side::Accused)).unwrap();
-        w.settle_case(b, Some(Side::Accused)).unwrap();
-        assert_eq!(w.debt(challenger), Amount::coins(14));
+        w.settle_case(a, Some(Side::Accuser)).unwrap();
+        let first = w.debt(challenger);
+        w.settle_case(b, Some(Side::Accuser)).unwrap();
+        let second = w.debt(challenger) - first;
+        assert!(first >= chekharda::stake(2, 7) && second >= chekharda::stake(2, 7));
         let burned = w.burned;
         let mut suspended = Vec::new();
         for _ in 0..5 {
             suspended.push(w.create_self_id(challenger).unwrap());
             w.tick(w.now() + DAY);
         }
-        assert_eq!(w.subjects[challenger as usize].debt_tranches.iter().map(|d| d.remaining).collect::<Vec<_>>(), vec![Amount::coins(2), Amount::coins(7)]);
+        let tranches = &w.subjects[challenger as usize].debt_tranches;
+        assert_eq!(tranches[0].remaining, tranches[0].amount - Amount::coins(5));
+        assert!(tranches[1..].iter().all(|d| d.remaining == d.amount));
         let units = w.responsibility_units(challenger);
         let outcome = w.restore_case_effects(a).unwrap();
-        assert_eq!(outcome.debt_cancelled, Amount::coins(2));
-        assert_eq!(w.debt(challenger), Amount::coins(7));
+        assert!(outcome.debt_cancelled >= first - Amount::coins(5));
+        assert_eq!(w.debt(challenger), second);
         assert_eq!(w.debt_repaid(challenger), Amount::coins(5));
         assert_eq!(w.burned, burned + Amount::coins(5));
-        assert_eq!(w.stats.debt_created, Amount::coins(14));
-        assert_eq!(w.stats.debt_cancelled, Amount::coins(2));
+        assert_eq!(w.stats.debt_cancelled, outcome.debt_cancelled);
         assert_eq!(w.coefficient(challenger), COEF_ONE / 2 + 5 * COEF_STEP);
         assert_eq!(w.responsibility_units(challenger), units, "debt-suspended receipts are never backfilled");
         assert!(suspended.iter().all(|&a| w.acts[a as usize].credit.as_ref().unwrap().recipients.is_empty()));
         assert!(w.restore_case_effects(a).is_err());
-        assert_eq!(w.debt(challenger), Amount::coins(7));
+        assert_eq!(w.debt(challenger), second);
         w.audit().unwrap();
     }
 
@@ -3617,11 +3589,10 @@ mod tests {
         let valence = w.valences.iter().position(|v| v.open && v.owner == guarantor && v.counterpart == accused).unwrap() as u32;
         w.withdraw_valence(guarantor, valence).unwrap();
         let before = (w.responsibility_units(accused), w.responsibility_units(guarantor));
+        let young = w.create_self_id(accused).unwrap();
         let case = w.begin_case(&[challenger, accused]).unwrap();
         w.tick(w.case_deadline(case).unwrap());
         w.settle_case(case, None).unwrap();
-        let young = w.create_self_id(accused).unwrap();
-        w.apply_case_identity_verdict(case).unwrap();
         assert!(w.acts[young as usize].credit.is_none());
         let burned = w.burned;
         w.restore_case_effects(case).unwrap();
@@ -3793,7 +3764,7 @@ mod recovery_tests {
         assert!(w.xp(0) > w.xp(5));
         let case = w.begin_case(&[0, 5]).unwrap();
         w.tick(w.case_deadline(case).unwrap());
-        w.settle_case(case, Some(Side::Accuser)).unwrap();
+        w.settle_case(case, Some(Side::Accused)).unwrap();
         w.lose_key(5).unwrap();
         let new = successor(&mut w, 5, 3);
         vouch(&mut w, new, 4);
@@ -3995,6 +3966,12 @@ mod recovery_tests {
 }
 
 #[cfg(test)]
+fn defend(w: &mut World, case: u32) {
+    w.tick(w.now().max(w.case_deadline(case).unwrap()));
+    w.settle_case(case, Some(Side::Accused)).unwrap();
+}
+
+#[cfg(test)]
 mod cancellation_tests {
     use super::*;
 
@@ -4044,162 +4021,111 @@ mod cancellation_tests {
     }
 
     #[test]
-    fn author_cancellation_splits_actual_stake_by_joining_order_and_preserves_other_holds() {
+    fn active_opening_is_irrevocable_and_occupies_the_slot_through_deferrals_and_verdict() {
         let (mut w, ids) = graded_world();
-        let (author, accused) = (ids[1], ids[0]);
-        let case = activate(&mut w, author, accused);
-        for &id in &ids[2..7] {
-            w.join_case(case, id).unwrap();
-        }
-        let other = w.begin_case(&[author, accused]).unwrap();
-        let other_reserved = w.case_ref(other).unwrap().backed[0].liquid;
-        let liquid: Vec<Amount> = (0..12).map(|id| w.liquid(id)).collect();
-        let responsibility: Vec<(i32, u32)> = (0..12).map(|id| (w.responsibility_units(id), w.coefficient(id))).collect();
-        let supply = w.supply();
-        let out = w.cancel_case_opening(case, author).unwrap();
-        assert_eq!(out.collected, Amount::coins(7));
-        assert_eq!(out.debt_created, Amount::ZERO);
-        assert_eq!(
-            out.payouts,
-            vec![
-                (ids[2], Amount::from_atoms(2_333_333_333_334)),
-                (ids[4], Amount::from_atoms(2_333_333_333_333)),
-                (ids[6], Amount::from_atoms(2_333_333_333_333))
-            ]
-        );
-        assert_eq!(out.payouts.iter().map(|p| p.1).sum::<Amount>(), out.collected);
-        assert_eq!(out.burned, Amount::ZERO);
-        for id in 0..12 {
-            let payout = out.payouts.iter().find(|p| p.0 == id).map_or(Amount::ZERO, |p| p.1);
-            let expected = if id == author { liquid[id as usize] - Amount::coins(7) } else { liquid[id as usize] + payout };
-            assert_eq!(w.liquid(id), expected, "other participants keep their own stake");
-        }
-        assert_eq!((0..12).map(|id| (w.responsibility_units(id), w.coefficient(id))).collect::<Vec<_>>(), responsibility);
-        assert_eq!(w.supply(), supply);
-        assert_eq!(w.subjects[author as usize].reserved, other_reserved);
-        assert!(w.held(author) && w.held(accused));
-        assert!(!w.held(ids[2]));
-        assert_eq!((w.stats.author_cancelled, w.stats.settled, w.stats.xp_halved), (1, 0, 0));
-        assert_eq!(w.case_opening(case).unwrap().stage, OpeningStage::Cancelled);
-        assert!(w.case_opening(case).unwrap().activated_at.is_some());
-        assert_eq!(w.case_cancellation(case), Some(&out));
-        assert!(w.cancel_case_opening(case, author).is_err());
-        assert!(w.apply_case_identity_verdict(case).is_err());
-        assert!(w.restore_case_effects(case).is_err());
-        w.audit().unwrap();
-    }
-
-    #[test]
-    fn author_cancellation_is_free_while_pending_and_rejected_for_wrong_author_or_final_case() {
-        let (mut w, ids) = graded_world();
-        let (author, accused) = (ids[1], ids[0]);
+        let (author, accused, defender, rival) = (ids[1], ids[0], ids[2], ids[3]);
         let pending = w.record_case_opening(&[author, accused]).unwrap();
-        let before = (w.liquid(author), w.supply(), w.stats.staked, w.stats.opened);
-        assert!(w.cancel_case_opening(pending, accused).is_err());
-        assert!(w.cancel_case_opening(u32::MAX, author).is_err());
-        let out = w.cancel_case_opening(pending, author).unwrap();
-        assert!(!out.activated && out.collected.is_zero() && out.debt_created.is_zero());
-        assert_eq!((w.liquid(author), w.supply(), w.stats.staked, w.stats.opened), before);
-        assert_eq!((w.stats.openings_cancelled, w.stats.author_cancelled), (1, 0));
+        let at = w.case_opening(pending).unwrap().matures_at;
+        assert!(w.record_case_opening(&[rival, accused]).is_err());
+        w.tick(at - 1);
+        let canceled = w.cancel_case_opening(pending, author).unwrap();
+        assert_eq!((canceled.cancelled_at, canceled.cancelled_by), (at - 1, author));
         let case = activate(&mut w, author, accused);
-        let before = (w.liquid(author), w.subjects[author as usize].reserved, w.hold.clone());
-        assert!(w.cancel_case_opening(case, accused).is_err());
-        assert_eq!((w.liquid(author), w.subjects[author as usize].reserved, w.hold.clone()), before);
-        w.tick(w.case_deadline(case).unwrap());
-        assert!(w.cancel_case_opening(case, author).is_err());
-        assert!(w.held(author));
-        w.settle_case(case, Some(Side::Accused)).unwrap();
-        assert!(w.cancel_case_opening(case, author).is_err());
-        w.audit().unwrap();
-    }
-
-    #[test]
-    fn author_cancellation_during_council_deferral_excludes_council_and_keeps_unfinished_ballots() {
-        let (mut w, ids) = graded_world();
-        let (author, accused, defender) = (ids[1], ids[0], ids[2]);
-        let case = activate(&mut w, author, accused);
+        let check_refusals = |w: &mut World| {
+            let before = (w.cases.len(), w.case_deadline(case), w.case_positions(case), w.hold.clone(), w.spendable(author), w.supply(), w.debt(author));
+            assert!(w.cancel_case_opening(case, author).is_err());
+            assert!(w.record_case_opening(&[rival, accused]).is_err());
+            assert_eq!((w.cases.len(), w.case_deadline(case), w.case_positions(case), w.hold.clone(), w.spendable(author), w.supply(), w.debt(author)), before);
+        };
+        check_refusals(&mut w);
         w.join_case(case, defender).unwrap();
-        let member = w.council().iter().copied().find(|&id| id != author && id != defender && id != accused).unwrap();
-        w.council_join(case, member).unwrap();
-        let mut final_case = w.clone();
-        final_case.council_ballot(case, member, 0, CouncilVote::Confirm);
-        final_case.tick(final_case.case_deadline(case).unwrap());
-        assert!(final_case.cancel_case_opening(case, author).is_err(), "a recognized Council final result cannot be cancelled");
-        w.council_ballot(case, member, 0, CouncilVote::Defer);
+        check_refusals(&mut w);
+        let council = w.council().iter().copied().find(|id| ![author, accused, defender].contains(id)).unwrap();
+        w.council_join(case, council).unwrap();
+        check_refusals(&mut w);
+        assert!(w.council_ballot(case, council, 0, CouncilVote::Defer));
         w.tick(w.case_deadline(case).unwrap());
-        let current = w.case_council_round(case).unwrap().clone();
-        assert!(w.council_ballot(case, current.members[0], current.number, CouncilVote::Confirm));
-        let out = w.cancel_case_opening(case, author).unwrap();
-        assert_eq!(out.payouts, vec![(defender, Amount::coins(7))]);
-        assert_eq!(out.council_rounds.len(), 1);
-        assert_eq!(out.active_ballots.len(), 1);
-        assert_eq!(out.active_ballots[0].who, current.members[0]);
-        assert!(!w.held(member));
-        w.audit().unwrap();
-        w.case_cancellations[case as usize].as_mut().unwrap().active_ballots[0].cast_at = out.cancelled_at + 1;
-        assert!(w.audit().is_err(), "unfinished ballots cannot appear after the cancellation");
-    }
-
-    #[test]
-    fn author_cancellation_uses_only_actual_backing_and_burns_it_without_ordinary_defenders() {
-        let (mut w, ids) = graded_world();
-        let (author, accused) = (ids[1], ids[0]);
-        w.burn_liquid(author);
-        w.create_self_id(author).unwrap();
-        let case = activate(&mut w, author, accused);
-        let mut defended = w.clone();
-        defended.join_case(case, ids[2]).unwrap();
-        let distributed = defended.cancel_case_opening(case, author).unwrap();
-        assert_eq!(distributed.payouts, vec![(ids[2], Amount::ONE)], "only the one actually backed coin funds the payout");
-        assert_eq!((distributed.debt_created, distributed.burned), (Amount::coins(6), Amount::ZERO));
-        defended.audit().unwrap();
-        let before = (w.burned, w.supply(), w.coefficient(author));
-        let out = w.cancel_case_opening(case, author).unwrap();
-        assert_eq!((out.collected, out.debt_created, out.burned), (Amount::ONE, Amount::coins(6), Amount::ONE));
-        assert!(out.payouts.is_empty());
-        assert_eq!(w.debt(author), Amount::coins(6));
-        assert_eq!(w.burned, before.0 + Amount::ONE);
-        assert_eq!(w.supply(), before.1 - Amount::ONE);
-        assert_eq!(w.coefficient(author), before.2);
-        assert!(w.case_effects[case as usize].is_none());
+        check_refusals(&mut w);
+        w.tick(w.case_deadline(case).unwrap()); // No ballots: automatic deferral.
+        check_refusals(&mut w);
+        let round = w.case_council_round(case).unwrap();
+        assert!(w.council_ballot(case, round.members[0], round.number, CouncilVote::Oppose));
+        w.tick(w.case_deadline(case).unwrap());
+        check_refusals(&mut w); // Recognized verdict, effects not yet applied.
+        w.settle_case(case, None).unwrap();
+        assert!(!w.held(accused) && !w.held(author));
+        assert!(w.record_case_opening(&[rival, accused]).is_ok());
+        assert!(w.settle_case(case, None).is_err());
         w.audit().unwrap();
     }
 
     #[test]
-    fn defending_council_position_receives_no_cancelled_author_stake() {
-        let (mut w, ids) = graded_world();
-        let (author, accused) = (ids[1], ids[0]);
-        let case = activate(&mut w, author, accused);
-        let member = w.council().iter().copied().find(|&id| id != author && id != accused).unwrap();
-        assert_eq!(w.council_join(case, member).unwrap(), 2);
-        let liquid = w.liquid(member);
-        let out = w.cancel_case_opening(case, author).unwrap();
-        assert!(out.payouts.is_empty());
-        assert_eq!(out.burned, Amount::coins(7));
-        assert_eq!(w.liquid(member), liquid);
-        w.audit().unwrap();
+    fn defense_verdict_pays_each_ordinary_position_above_a_loser_but_never_the_council_or_accused() {
+        for council_defends in [false, true] {
+            let (mut w, ids) = graded_world();
+            let (accused, author, first_defender, next_accuser) = (ids[0], ids[1], ids[2], ids[3]);
+            let case = activate(&mut w, author, accused);
+            w.join_case(case, first_defender).unwrap();
+            w.join_case(case, next_accuser).unwrap();
+            let last = if council_defends {
+                let member = w.council().iter().copied().find(|id| !ids[..4].contains(id)).unwrap();
+                w.council_join(case, member).unwrap();
+                assert!(w.council_ballot(case, member, 0, CouncilVote::Confirm));
+                member
+            } else {
+                w.join_case(case, ids[4]).unwrap();
+                ids[4]
+            };
+            let before = (w.liquid(accused), w.liquid(first_defender), w.liquid(last), w.stats.stake_burned, w.coefficient(author));
+            w.tick(w.case_deadline(case).unwrap());
+            let out = w.settle_case(case, None).unwrap();
+            assert_eq!((out.winner, out.positions), (Side::Accused, 4));
+            assert_eq!(w.liquid(accused), before.0, "no separate compensation to the accused");
+            assert_eq!(w.liquid(first_defender) - before.1, chekharda::stake(1, 7));
+            let later_stake = chekharda::stake(3, 7);
+            if council_defends {
+                assert_eq!(w.liquid(last), before.2);
+                assert_eq!(w.stats.stake_burned - before.3, later_stake);
+            } else {
+                assert_eq!(w.liquid(last) - before.2, later_stake);
+                assert_eq!(w.stats.stake_burned, before.3);
+            }
+            assert_eq!(w.coefficient(author), before.4 / 2);
+            assert!(w.settle_case(case, None).is_err());
+            w.audit().unwrap();
+        }
     }
 
     #[test]
-    fn partial_collection_of_a_last_emission_preserves_exact_collector_change() {
-        let mut w = active_world(9, false);
-        w.create_self_id(0).unwrap();
+    fn a_later_position_reserves_only_liquid_and_never_materializes_emitter_rights() {
+        let mut w = active_world(9, true);
+        let right = w.create_self_id(0).unwrap();
         w.tick(w.now() + DAY);
+        // Leave one mature right and 8 liquid FCTY, less than the 8.4 FCTY nominal stake.
+        w.burn_liquid(0);
+        for _ in 0..8 {
+            w.create_self_id(0).unwrap();
+            w.tick(w.now() + DAY);
+        }
+        for act in w.eligible_emissions(0, DAY).into_iter().filter(|&act| act != right) {
+            w.convert_to_collector(0, act).unwrap();
+        }
         let case = w.begin_case(&[5, 6]).unwrap();
         w.join_case(case, 0).unwrap();
-        assert_eq!(w.case_ref(case).unwrap().backed[1].rights.len(), 9);
+        assert_eq!(w.case_ref(case).unwrap().backed[1], Amount::coins(8));
+        assert_eq!(w.eligible_emission(0), Some(right));
         let original_units = w.responsibility_units(0);
         w.tick(w.case_deadline(case).unwrap());
         w.settle_case(case, Some(Side::Accuser)).unwrap();
-        assert_eq!(w.liquid(0), Amount::from_atoms(600_000_000_000));
-        assert_eq!(w.debt(0), Amount::ZERO);
-        assert_eq!(w.responsibility_units(0), original_units, "collection never revokes source receipts");
+        assert_eq!(w.debt(0), Amount::from_atoms(400_000_000_000));
+        assert_eq!(w.acts_status(right), ActStatus::Unspent);
+        assert_eq!(w.responsibility_units(0), original_units);
         w.audit().unwrap();
     }
 
     #[test]
     fn sub_coin_debt_repayment_burns_only_the_debt_and_retains_change_without_backfill() {
-        let mut w = active_world(8, false);
+        let mut w = active_world(8, true);
         w.create_self_id(1).unwrap();
         w.tick(w.now() + DAY);
         let case = w.begin_case(&[5, 6]).unwrap();

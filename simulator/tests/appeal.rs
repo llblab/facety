@@ -2,7 +2,7 @@
 //! authorization are supplied fixtures; no test purports to settle the open appeal financial contract.
 use facety_sim::amount::Amount;
 use facety_sim::chekharda::{CouncilOutcome, Side};
-use facety_sim::world::{AppealExecution, AppealInitiator, AppealStage, AppealVote, Config, TransactionTarget, World, COEF_ONE, DAY};
+use facety_sim::world::{AppealExecution, AppealInitiator, AppealStage, AppealVote, Config, DisputeId, TransactionTarget, World, COEF_ONE, DAY};
 
 fn world() -> World {
     let mut pairs = Vec::new();
@@ -25,18 +25,22 @@ fn closed_wrongful_case() -> (World, u32) {
     }
     w.create_self_id(5).unwrap();
     w.tick(DAY);
-    for _ in 0..4 {
+    for _ in 0..6 {
         for id in 0..5 {
             w.create_self_id(id).unwrap();
         }
         w.tick(w.now() + DAY);
+    }
+    for id in [0, 1] {
+        for right in w.eligible_emissions(id, DAY) {
+            w.convert_to_collector(id, right).unwrap();
+        }
     }
     assert!(w.xp(0) > w.xp(5));
     let prior = w.record_case_opening(&[0, 5]).unwrap();
     w.tick(w.now() + DAY);
     w.tick(w.case_deadline(prior).unwrap());
     assert_eq!(w.settle_case(prior, None).unwrap().winner, Side::Accuser);
-    w.apply_case_identity_verdict(prior).unwrap();
     assert!(!w.accepted(5));
     w.audit().unwrap();
     (w, prior)
@@ -66,7 +70,7 @@ fn wrongful_sanction_request_pending_vote_and_precise_restoration_end_to_end() {
     let burned = w.burned();
     let units = w.responsibility_units(5);
     let prior_history = w.case_outcome(prior).unwrap().clone();
-    let other = w.begin_case(&[9, 2]).unwrap();
+    let other = w.begin_case(&[1, 2]).unwrap();
     let appeal = opening(&mut w, prior, AppealInitiator::Participant(2));
     let recorded = w.now();
     assert_eq!(w.appeal(appeal).unwrap().stage, AppealStage::Pending);
@@ -99,7 +103,7 @@ fn wrongful_sanction_request_pending_vote_and_precise_restoration_end_to_end() {
     assert_eq!(w.coefficient(5), COEF_ONE);
     assert!(w.accepted(5));
     assert_eq!(w.case_outcome(prior).unwrap(), &prior_history, "reversal preserves the original decision and accounting history");
-    assert!(w.held(2) && w.held(9), "the unrelated case owns its own holds");
+    assert!(w.held(2) && w.held(1), "the unrelated case owns its own holds");
     assert!(!w.held(0) && !w.held(5));
     assert_eq!((w.minted(), w.supply(), w.burned()), (minted, supply, burned), "no restored assets or catch-up issuance");
     assert!(w.create_self_id(2).is_err(), "other holds still bar activity");
@@ -107,7 +111,7 @@ fn wrongful_sanction_request_pending_vote_and_precise_restoration_end_to_end() {
     assert_eq!(w.resolve_appeal(appeal).unwrap(), executed);
     assert_eq!((w.stats.restorations, w.stats.units_restored, w.stats.debt_cancelled), stats);
     assert!(w.cancel_case_opening(prior, 0).is_err());
-    w.end_case(other);
+    w.settle_case(other, Some(Side::Accused)).unwrap();
     w.tick(w.now());
     let new_act = w.create_self_id(5).unwrap();
     assert!(!w.act_guarantors(new_act).is_empty());
@@ -126,7 +130,7 @@ fn appeal_admission_checks_canonical_transaction_and_qualification_atomically() 
         assert!(w.appeal(0).is_none());
     }
     assert_eq!(w.record_appeal_opening_fixture(request, AppealInitiator::TrustedCollectiveCouncil).unwrap(), 0);
-    let fixture = w.begin_case(&[8, 10]).unwrap();
+    let fixture = w.begin_case(&[1, 10]).unwrap();
     w.tick(w.case_deadline(fixture).unwrap());
     w.settle_case(fixture, None).unwrap();
     let fixture_request = w.request_appeal(fixture, 10).unwrap();
@@ -137,6 +141,8 @@ fn appeal_admission_checks_canonical_transaction_and_qualification_atomically() 
 #[test]
 fn typed_appeal_targets_reject_aliases_and_unrelated_openings_before_mutation() {
     let (mut w, prior) = closed_wrongful_case();
+    w.create_self_id(0).unwrap();
+    w.tick(w.now() + DAY);
     let inv = w.create_invitation(0, w.eligible_emission(0).unwrap()).unwrap();
     let unrelated = w.record_case_opening(&[0, 10]).unwrap();
     let request = w.request_appeal(prior, 5).unwrap();
@@ -177,13 +183,15 @@ fn typed_appeal_targets_reject_aliases_and_unrelated_openings_before_mutation() 
 }
 
 #[test]
-fn pre_maturity_cancellation_is_free_and_active_financial_scope_is_explicitly_blocked() {
+fn pending_guarantor_cancellation_is_free_and_active_withdrawal_refuses() {
     let (mut w, prior) = closed_wrongful_case();
     let cancelled = opening(&mut w, prior, AppealInitiator::Participant(2));
     let state = (w.supply(), w.stats.staked, w.stats.debt_created);
-    assert!(w.cancel_appeal_opening(cancelled, 1).is_err());
-    w.cancel_appeal_opening(cancelled, 2).unwrap();
-    w.cancel_appeal_opening(cancelled, 2).unwrap();
+    let guarantor = w.appeal(cancelled).unwrap().guarantors[0];
+    assert!(w.cancel_appeal_opening(cancelled, 11).is_err());
+    w.cancel_appeal_opening(cancelled, guarantor).unwrap();
+    assert_eq!(w.appeal(cancelled).unwrap().cancelled_by, Some(guarantor));
+    assert!(w.cancel_appeal_opening(cancelled, 2).is_err());
     w.tick(w.now() + DAY);
     assert_eq!(w.appeal(cancelled).unwrap().stage, AppealStage::Cancelled);
     assert_eq!((w.supply(), w.stats.staked, w.stats.debt_created), state);
@@ -191,7 +199,7 @@ fn pre_maturity_cancellation_is_free_and_active_financial_scope_is_explicitly_bl
     let active = opening(&mut w, prior, AppealInitiator::Participant(2));
     w.tick(w.now() + DAY);
     let record = w.appeal(active).unwrap().clone();
-    assert!(w.cancel_appeal_opening(active, 2).unwrap_err().0.contains("financial scope"));
+    assert!(w.cancel_appeal_opening(active, 2).is_err());
     assert_eq!(w.appeal(active).unwrap(), &record);
     vote_and_close(&mut w, active, AppealVote::ConfirmPriorVerdict);
     assert!(w.cancel_appeal_opening(active, 2).is_err());
@@ -235,21 +243,39 @@ fn round_snapshots_cutoffs_and_ballot_replays_preserve_all_timely_choices() {
 }
 
 #[test]
-fn concurrent_reversals_restore_once_and_later_confirmation_does_not_reapply_loss() {
+fn appeal_occupies_the_prior_openers_slot_and_releases_maturity_only_after_execution() {
     let (mut w, prior) = closed_wrongful_case();
-    let appeals: Vec<_> = (0..3).map(|_| opening(&mut w, prior, AppealInitiator::TrustedCollectiveCouncil)).collect();
+    let act = w.create_self_id(0).unwrap();
+    let request = w.request_appeal(prior, 5).unwrap();
+    let initiator = AppealInitiator::TrustedCollectiveCouncil;
+    let ordinary = w.record_case_opening(&[2, 0]).unwrap();
+    assert!(w.record_appeal_opening_fixture(request, initiator).is_err(), "both target the prior opener");
+    w.cancel_case_opening(ordinary, 2).unwrap();
+    let appeal = w.record_appeal_opening_fixture(request, initiator).unwrap();
+    let refuse_duplicates = |w: &mut World| {
+        let before = w.appeal(appeal).unwrap().clone();
+        assert!(w.record_case_opening(&[2, 0]).is_err());
+        assert!(w.record_appeal_opening_fixture(request, initiator).is_err());
+        assert!(w.appeal(appeal + 1).is_none());
+        assert_eq!(w.appeal(appeal), Some(&before));
+    };
+    refuse_duplicates(&mut w);
     w.tick(w.now() + DAY);
-    for (index, &appeal) in appeals.iter().enumerate() {
-        let member = w.appeal(appeal).unwrap().active_round().unwrap().members[0];
-        assert!(w.appeal_ballot(appeal, member, 0, if index == 2 { AppealVote::ConfirmPriorVerdict } else { AppealVote::ReverseAndRestore }));
-    }
-    w.tick(w.appeal(appeals[0]).unwrap().deadline().unwrap());
-    assert!(matches!(w.resolve_appeal(appeals[0]), Ok(AppealExecution::Restored(_))));
-    let state = (w.responsibility_units(5), w.coefficient(5), w.stats.restorations, w.supply());
-    assert_eq!(w.resolve_appeal(appeals[1]), Ok(AppealExecution::AlreadyRestored));
-    assert_eq!(w.resolve_appeal(appeals[2]), Ok(AppealExecution::Confirmed));
-    assert_eq!((w.responsibility_units(5), w.coefficient(5), w.stats.restorations, w.supply()), state);
+    refuse_duplicates(&mut w);
+    assert_eq!(w.maturity_hold(act), Some(DisputeId::Appeal(appeal)));
+    vote_and_close(&mut w, appeal, AppealVote::Defer);
+    refuse_duplicates(&mut w);
+    vote_and_close(&mut w, appeal, AppealVote::ReverseAndRestore);
+    refuse_duplicates(&mut w);
+    assert!(w.transaction_provenance(TransactionTarget::SelfId(act)).unwrap().xp_receipt.is_none());
+    assert!(matches!(w.resolve_appeal(appeal), Ok(AppealExecution::Restored(_))));
+    assert_eq!(w.transaction_provenance(TransactionTarget::SelfId(act)).unwrap().xp_receipt.unwrap().credited_at, w.now());
+    let state = (w.responsibility_units(5), w.coefficient(5), w.stats.restorations, w.supply(), w.stats.maturities_released);
+    assert!(matches!(w.resolve_appeal(appeal), Ok(AppealExecution::Restored(_))));
+    assert_eq!((w.responsibility_units(5), w.coefficient(5), w.stats.restorations, w.supply(), w.stats.maturities_released), state);
     assert!(w.accepted(5));
+    // Slot is free; replay of the already reversed prior case is still a separate historical restriction.
+    assert!(w.record_appeal_opening_fixture(request, initiator).unwrap_err().0.contains("unreversed"));
     w.audit().unwrap();
 }
 

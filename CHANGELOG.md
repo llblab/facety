@@ -4,6 +4,13 @@
 
 Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log-and-supersession-ledger), evidence in the [study index](docs/README.md), and open work in [BACKLOG](BACKLOG.md). The [previous milestone ledger](https://github.com/llblab/facety/blob/a535f6ca3e23056011d48a3bb7e6b5c51865bdf9/CHANGELOG.md) and [earlier per-change history](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md) preserve detailed outcomes and provenance.
 
+## Unreleased
+
+- D197: accepted filings share one unresolved slot per accused subject across ordinary cases, trusted Self-ID corrections and linked appeals. Pending cancellation is free for the author or the trusted opening-roster guarantor. Ordinary and Self-ID openings activate only with full exclusive liquid backing; unfunded filings close without active effects.
+- Removed active withdrawal and moot closure. Defense wins settle by ladder position, with no extra compensation; later stakes keep soft backing and Council/no-recipient rules. D198 limits every stake to ordinary Collector FCTY. Mature Emitter rights are not pledged or automatically converted; merits collection can still reach them under the applicable remedy.
+- Completed D196 credit provenance: apply verdict effects before releasing valid due Self-IDs, stamp their actual credit time, and release the subject slot last. A blocked appeal reversal retains its slot and holds. Replay and independent hold causes are covered by deterministic checks.
+- Advanced to `facety-sim/runner-v8` and `facety-sim/result-v8` with updated execution policies and a separate unfunded-opening counter. Randomness v3 and frozen evidence are unchanged.
+
 ## 0.3.0 — 2026-11-17
 
 - Suspended the maturity of the accused participant's not-yet-processed Self-IDs for the duration of an active dispute (D196): no XP to author or creation-time guarantors, no spendable entitlement, no collateral use, no debt repayment through maturity and no integrity repair, while the record, chain position, roster and rolling creation slot stay unchanged and the act is not cancelled by its own deadline.

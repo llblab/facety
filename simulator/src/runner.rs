@@ -13,9 +13,9 @@ use crate::world::{Config as WorldConfig, Id, Reject, World, DAY};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
 
-pub const ENGINE: &str = "facety-sim/runner-v6";
+pub const ENGINE: &str = "facety-sim/runner-v8";
 /// Version of the saved result layout.
-pub const SCHEMA: &str = "facety-sim/result-v7";
+pub const SCHEMA: &str = "facety-sim/result-v8";
 pub const COUNCIL_VOTING_POLICY: &str = "first-daily-review-per-round/binary-belief-v1";
 pub const APPEAL_EXECUTION_POLICY: &str = "conditional-approved-case-reversal/earned-receipts/integrity-replay/fifo-debt/v1";
 
@@ -170,7 +170,7 @@ pub struct RunConfig {
     /// instead of spending it on the attack; a trade-off, since a converted right can no longer grow the cluster. 0 = never.
     pub attacker_cash_out: f64,
     /// Declared attack on the availability of the defense: expected number of false formal cases per operator account per day against
-    /// accepted honest accounts with less XP than the operator (the public XP gate); ordinary soft-backed stakes apply.
+    /// accepted honest accounts with less XP than the operator (the public XP gate); opening stakes must be funded at activation.
     pub attacker_accuse: f64,
     /// The false accusations pick the best-connected of 64 sampled eligible honest accounts instead of a random one.
     pub accuse_hubs: bool,
@@ -1265,7 +1265,7 @@ impl Sim {
     // ---- detection -------------------------------------------------------------------------------------------------
 
     /// Declared attack on the availability of the defense: operators file false formal cases through the ordinary procedure (the public
-    /// XP gate and soft-backed stake apply).
+    /// XP gate and funded activation apply).
     fn accuse(&mut self) {
         let rate = self.cfg.attacker_accuse;
         if rate <= 0.0 {
@@ -1375,7 +1375,7 @@ impl Sim {
         Ok(())
     }
 
-    /// Record a pending opening; maturity starts custody, restrictions and the dispute clock 24 hours later.
+    /// Record a pending opening; 24 hours later, full backing is required before custody, restrictions or the clock start.
     fn open_case(&mut self, challenger: Id, target: Id, follow_up: bool) -> bool {
         if let Err(reason) = self.case_gate(challenger, target) {
             self.det.cases_refused += 1;
@@ -1582,6 +1582,9 @@ impl Sim {
 
     fn detect(&mut self) {
         let det = self.cfg.detection.clone();
+        self.open_cases.retain(|r| {
+            !self.world.case_opening(r.case).is_some_and(|o| matches!(o.stage, crate::world::OpeningStage::Cancelled | crate::world::OpeningStage::Unfunded(_)))
+        });
         let mut targeted: HashSet<Id> = self.open_cases.iter().map(|c| c.target).collect();
         // Conditional accepted appeal, not admission or Council adjudication: execute only effects attributed to that original case.
         let now = self.world.now();
@@ -1654,19 +1657,13 @@ impl Sim {
         self.ladder_moves();
         let cases = std::mem::take(&mut self.open_cases);
         for mut rec in cases {
-            if self.world.case_opening(rec.case).is_some_and(|o| matches!(o.stage, crate::world::OpeningStage::Cancelled | crate::world::OpeningStage::Moot)) {
-                if let Some(outcome) = self.world.case_cancellation(rec.case).cloned() {
-                    self.record_resource_changes(&outcome.holds, &outcome.net, &[(outcome.author, outcome.debt_created)]);
-                }
-                targeted.remove(&rec.target);
-                continue;
-            }
             self.cast_ballots(&mut rec);
             let proof_done = !rec.defended || self.world.now() - rec.opened_at >= det.defense_days * DAY;
             if !self.world.case_final(rec.case) || !proof_done {
                 self.open_cases.push(rec);
                 continue;
             }
+            let was_accepted = self.world.accepted(rec.target);
             let outcome = self.world.settle_case(rec.case, rec.defended.then_some(Side::Accused)).expect("final cases settle");
             self.record_outcome(&outcome);
             targeted.remove(&rec.target);
@@ -1682,8 +1679,6 @@ impl Sim {
                 self.det.cases_dismissed += 1;
                 continue;
             }
-            let was_accepted = self.world.accepted(rec.target);
-            self.world.apply_case_identity_verdict(rec.case).expect("settled adverse identity verdict");
             if !was_accepted {
                 self.det.cases_dismissed += 1;
                 continue;
@@ -1984,8 +1979,8 @@ impl Sim {
         let (st, l) = (&self.world.stats, &self.ladder);
         let _ = write!(
             s,
-            "\"openingTransactions\":{{\"recorded\":{},\"activated\":{},\"cancelledBeforeMaturity\":{},\"authorCancelledActive\":{}}},",
-            st.openings_recorded, st.openings_activated, st.openings_cancelled, st.author_cancelled
+            "\"openingTransactions\":{{\"recorded\":{},\"activated\":{},\"cancelledBeforeMaturity\":{},\"unfundedAtMaturity\":{}}},",
+            st.openings_recorded, st.openings_activated, st.openings_cancelled, st.openings_unfunded
         );
         let _ = write!(
             s,
@@ -2006,8 +2001,8 @@ impl Sim {
             st.majority_deferrals,
             st.automatic_deferrals
         );
-        let _ = write!(s, "\"disputes\":{{\"opened\":{},\"joined\":{},\"refusedClosed\":{},\"refusedXp\":{},\"refusedFunds\":{},\"councilEntries\":{},\"ballots\":{},\"extensions\":{},\"settled\":{},\"moot\":{},\"accuserWon\":{},\"accusedWon\":{},\"maxPositions\":{},\"durationHours\":{},\"holdHours\":{},\"staked\":{},\"forfeited\":{},\"stakeBurned\":{},\"sanctionCollected\":{},\"sanctionBurned\":{},\"debtCreated\":{},\"xpHalved\":{},\"councilTurnover\":{},\"integrityLost\":{},\"integrityRecovering\":{},\"integrityRestored\":{},\"holdHoursByCohort\":{:?},\"netByCohort\":{:?},\"lostByCohort\":{:?},\"debtByCohort\":{:?},\"depth\":{:?},\"entriesByCohort\":{:?}}},",
-            st.opened, st.joined, st.refused_closed, st.refused_xp, st.refused_funds, st.council_entries, st.ballots, st.extensions, st.settled, st.moot, st.accuser_won, st.accused_won, st.max_positions, st.duration_hours, st.hold_hours, st.staked, st.forfeited, st.stake_burned, st.sanction_collected, st.sanction_burned, st.debt_created, st.xp_halved, st.council_turnover, self.world.integrity_counts().0, self.world.integrity_counts().1, self.world.integrity_counts().2, l.hold_hours, l.net, l.lost, l.debt, l.depth, l.entries);
+        let _ = write!(s, "\"disputes\":{{\"opened\":{},\"joined\":{},\"refusedClosed\":{},\"refusedXp\":{},\"refusedFunds\":{},\"councilEntries\":{},\"ballots\":{},\"extensions\":{},\"settled\":{},\"accuserWon\":{},\"accusedWon\":{},\"maxPositions\":{},\"durationHours\":{},\"holdHours\":{},\"staked\":{},\"forfeited\":{},\"stakeBurned\":{},\"sanctionCollected\":{},\"sanctionBurned\":{},\"debtCreated\":{},\"xpHalved\":{},\"councilTurnover\":{},\"integrityLost\":{},\"integrityRecovering\":{},\"integrityRestored\":{},\"holdHoursByCohort\":{:?},\"netByCohort\":{:?},\"lostByCohort\":{:?},\"debtByCohort\":{:?},\"depth\":{:?},\"entriesByCohort\":{:?}}},",
+            st.opened, st.joined, st.refused_closed, st.refused_xp, st.refused_funds, st.council_entries, st.ballots, st.extensions, st.settled, st.accuser_won, st.accused_won, st.max_positions, st.duration_hours, st.hold_hours, st.staked, st.forfeited, st.stake_burned, st.sanction_collected, st.sanction_burned, st.debt_created, st.xp_halved, st.council_turnover, self.world.integrity_counts().0, self.world.integrity_counts().1, self.world.integrity_counts().2, l.hold_hours, l.net, l.lost, l.debt, l.depth, l.entries);
         let _ = write!(s, "\"counts\":{{\"invitationsHonest\":{},\"invitationsAttackers\":{},\"admittedHonest\":{},\"admittedAttackers\":{},\"keyLosses\":{},\"recoveriesCompleted\":{},\"recoveryDaysSum\":{},\"recoveriesCapturable\":{},\"recoveriesInvited\":{},\"recoveriesStarted\":{},\"emissionHonest\":{},\"emissionAttackers\":{},\"attackerLiquid\":{},\"attackerUnspent\":{},\"valencesHonest\":{},\"valencesAttackers\":{},\"pairs\":{},\"pathSearchesExhausted\":{},\"pathSearchSteps\":{}}},",
             self.invitations[0], self.invitations[1], self.admitted[0], self.admitted[1], self.recovery[0], self.recovery[1], self.recovery[2], self.recovery[3], self.recovery[4], self.recovery[5], self.emitted[0], self.emitted[1], self.attackers.iter().map(|&a| self.world.liquid(a)).sum::<Amount>(), self.attackers.iter().map(|&a| self.world.unspent_rights(a) as i64).sum::<i64>(), self.valences_opened[0], self.valences_opened[1], self.pairs, self.world.path_searches_exhausted(), self.world.path_search_steps());
         s.push_str("\"history\":[");
@@ -2415,13 +2410,16 @@ mod tests {
     }
 
     #[test]
-    fn an_unfunded_challenger_can_open_a_case_and_the_unbacked_stake_is_counted() {
+    fn an_unfunded_opening_is_retired_before_detection_and_never_settles() {
         let mut sim = grown_honest("stake-unbacked");
         let (challenger, target) = find_pair(&sim, |a, b| a > b).unwrap();
+        for act in sim.world.eligible_emissions(challenger, DAY) {
+            sim.world.convert_to_collector(challenger, act).unwrap();
+        }
         sim.world.burn_liquid(challenger);
         assert_eq!(sim.case_gate(challenger, target), Ok(()));
         let funds = sim.world.stats.refused_funds;
-        assert!(sim.open_case(challenger, target, false), "D166: a missing stake is not a refusal");
+        assert!(sim.open_case(challenger, target, false), "funding is checked only at activation");
         let case = sim.open_cases[0].case;
         assert_eq!(sim.world.stats.refused_funds, funds, "pending filings reserve nothing");
         assert!(!sim.world.held(challenger) && !sim.world.held(target));
@@ -2436,16 +2434,13 @@ mod tests {
         assert!(cancelled.world.case_state(case).is_none(), "a cancelled filing never activates");
         cancelled.world.audit().unwrap();
         sim.world.tick(sim.world.case_opening(case).unwrap().matures_at);
-        assert_eq!(sim.world.stats.refused_funds, funds + 1);
-        assert!(sim.world.held(challenger) && sim.world.held(target) && sim.world.spendable(challenger).is_zero());
-        let cancellation = sim.world.cancel_case_opening(case, challenger).unwrap();
+        assert_eq!(sim.world.stats.refused_funds, funds);
+        assert!(!sim.world.held(challenger) && !sim.world.held(target));
         sim.detect();
-        assert!(sim.open_cases.is_empty());
-        assert_eq!((sim.world.stats.author_cancelled, sim.world.stats.settled), (1, 0), "cancellation is no merits decision");
-        assert_eq!(sim.ladder.debt.iter().copied().sum::<Amount>(), cancellation.debt_created);
-        let net = sim.ladder.net;
-        sim.detect();
-        assert_eq!(sim.ladder.net, net, "the cancellation resource journal is consumed once");
+        assert!(sim.open_cases.iter().all(|r| r.case != case));
+        assert_eq!((sim.world.stats.openings_unfunded, sim.world.stats.settled), (1, 0));
+        assert_eq!(sim.ladder.debt.iter().copied().sum::<Amount>(), Amount::ZERO);
+        assert!(sim.to_json().contains("\"unfundedAtMaturity\":1"));
         json::validate(&sim.to_json()).unwrap();
         sim.world.audit().unwrap();
     }
@@ -2467,8 +2462,8 @@ mod tests {
             sim.world.audit().unwrap();
             let st = sim.world.stats.clone();
             let active = sim.open_cases.iter().filter(|r| sim.world.case_state(r.case).is_some()).count() as u64;
-            assert_eq!(st.opened, st.settled + st.moot + st.author_cancelled + active, "every activated case is closed or still active");
-            assert_eq!(st.openings_recorded, st.openings_activated + st.openings_cancelled + sim.world.pending_openings() as u64);
+            assert_eq!(st.opened, st.settled + active, "every activated case is closed or still active");
+            assert_eq!(st.openings_recorded, st.openings_activated + st.openings_cancelled + st.openings_unfunded + sim.world.pending_openings() as u64);
             assert!(st.settled > 0, "the run must settle cases to be a test");
             (st.duration_hours as f64 / 24.0 / st.settled as f64, st.joined, st.max_positions)
         };

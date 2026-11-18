@@ -19,7 +19,7 @@ use crate::chekharda::stake;
 /// The declared conventions of this fixture, distinct from the identity-case and ordinary-stake policies. Version 2 fixes
 /// the endpoint and `N` at recording (D195, superseding D190's activation time for this case kind) and executes any frozen
 /// `N` through the model's existing soft-backing collection rather than a case-local collection scope.
-pub const SELF_ID_CASE_POLICY: &str = "trusted-core-only/typed-self-id-target/filing-frozen-n/soft-backing-settlement/v2";
+pub const SELF_ID_CASE_POLICY: &str = "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-funded-opening/v4";
 
 /// A premise the caller must supply explicitly. `Missing` is refused before any record allocation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -42,7 +42,7 @@ pub enum TrustedMerits {
     NotUpheldSupplied,
 }
 
-/// The inclusive chain count frozen once at uncancelled activation (D189/D190): 1-based personal positions.
+/// The inclusive chain count frozen at filing (D189/D195): 1-based personal positions.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct FrozenCount {
     pub violating: u32,
@@ -55,6 +55,7 @@ pub enum SelfIdCaseStage {
     Pending,
     Activated,
     Cancelled,
+    Unfunded(UnfundedOpening),
     Final,
 }
 
@@ -78,6 +79,7 @@ pub struct SelfIdCaseRecord {
     pub source_guarantors: Vec<Id>,
     pub activated_at: Option<i64>,
     pub cancelled_at: Option<i64>,
+    pub cancelled_by: Option<Id>,
     pub stage: SelfIdCaseStage,
     /// Fixed once at recording (D195); later Self-IDs, verdicts or deferrals cannot reprice it.
     pub frozen: Option<FrozenCount>,
@@ -144,7 +146,7 @@ pub struct SelfIdEffectPlan {
     pub affected: Vec<u32>,
     /// Frozen nominal charge of the accused (`N`).
     pub accused_charge: Amount,
-    /// Affected backing this case may collect right now: mature, unspent and not reserved by another case.
+    /// Value this case may collect now: spendable liquid and mature unspent own rights.
     pub accused_collectible: Amount,
     /// `accused_charge - accused_collectible`, recorded as this case's FIFO debt.
     pub accused_unpaid: Amount,
@@ -185,17 +187,18 @@ impl World {
         }
         self.require_account(accuser)?;
         self.require_account(accused)?;
+        self.require_dispute_slot(accused)?;
         if accuser == accused {
             return Err(Reject("the challenger cannot target its own Self-ID"));
         }
         if status == ActStatus::Cancelled {
             return Err(Reject("a cancelled Self-ID has no live transaction to correct"));
         }
-        if self.acts[act as usize].credit.as_ref().is_some_and(|c| c.revoked) || self.xp_revocations.contains_key(&act) {
+        if source.invalidated_before_credit || source.credit.as_ref().is_some_and(|c| c.revoked) || self.xp_revocations.contains_key(&act) {
             return Err(Reject("the challenged Self-ID was already corrected"));
         }
-        if self.self_id_cases.iter().flatten().any(|r| r.target == act) {
-            return Err(Reject("the Self-ID transaction already has a recorded case"));
+        if self.self_id_cases.iter().flatten().any(|r| r.target == act && r.stage == SelfIdCaseStage::Final) {
+            return Err(Reject("the Self-ID transaction already has a settled case"));
         }
         if self.xp(accuser) <= self.xp(accused) {
             return Err(Reject("XP is not above the challenged transaction owner"));
@@ -220,14 +223,9 @@ impl World {
         let violating = acts.iter().position(|&a| a == act).ok_or(Reject("the challenged Self-ID is not in the owner's chain"))? as u32 + 1;
         let endpoint = acts.len() as u32;
         let frozen = FrozenCount { violating, endpoint, n: endpoint - violating + 1 };
-        let matures_at = self.now.checked_add(MATURITY_HOURS).ok_or(Reject("opening maturity exceeds the simulator's time representation"))?;
-        let case = self.cases.len() as u32;
-        self.cases.push(None);
-        self.case_openings.push(None);
-        self.case_cancellations.push(None);
-        self.case_effects.push(None);
-        self.case_outcomes.push(None);
-        self.self_id_cases.push(Some(SelfIdCaseRecord {
+        let matures_at = self.opening_maturity_at()?;
+        let case = self.allocate_case();
+        self.self_id_cases[case as usize] = Some(SelfIdCaseRecord {
             case,
             target: act,
             author: accuser,
@@ -240,12 +238,13 @@ impl World {
             source_guarantors: guarantors.to_vec(),
             activated_at: None,
             cancelled_at: None,
+            cancelled_by: None,
             stage: SelfIdCaseStage::Pending,
             frozen: Some(frozen),
             accused_chain_at_recording: endpoint,
             premises,
-        }));
-        self.self_id_settlements.push(None);
+        });
+        self.occupy_dispute_slot(accused, DisputeId::Case(case));
         self.stats.self_id_openings_recorded += 1;
         Ok(case)
     }
@@ -262,24 +261,19 @@ impl World {
         self.self_id_cases.iter().flatten().count()
     }
 
-    /// Free author cancellation before the 24-hour activation. Unsupported opening-guarantor veto authority refuses
-    /// explicitly rather than inheriting the identity-case or Self-ID veto roster.
-    pub fn cancel_self_id_case_opening(&mut self, case: u32, author: Id) -> Result<(), Reject> {
-        let record = self.self_id_cases.get(case as usize).and_then(Option::as_ref).ok_or(Reject("no such Self-ID transaction case"))?;
-        let (recorded_author, stage, matures_at) = (record.author, record.stage, record.matures_at);
-        if stage != SelfIdCaseStage::Pending || self.now >= matures_at {
+    pub fn cancel_self_id_case_opening(&mut self, case: u32, actor: Id) -> Result<(), Reject> {
+        let record = self.self_id_case(case).ok_or(Reject("no such Self-ID transaction case"))?;
+        if record.stage != SelfIdCaseStage::Pending || self.now >= record.matures_at {
             return Err(Reject("not a pending Self-ID opening before its activation"));
         }
-        if author != recorded_author {
-            if self.acts.get(record.target as usize).is_some_and(|a| a.guarantors.contains(&author)) {
-                return Err(Reject("opening-guarantor veto authority is not contracted"));
-            }
-            return Err(Reject("not the author's pending Self-ID opening"));
-        }
+        self.require_opening_canceller(actor, record.author, &record.author_guarantors)?;
+        let accused = record.accused;
         let record = self.self_id_cases[case as usize].as_mut().expect("checked pending record");
         record.stage = SelfIdCaseStage::Cancelled;
         record.cancelled_at = Some(self.now);
+        record.cancelled_by = Some(actor);
         self.stats.self_id_openings_cancelled += 1;
+        self.free_dispute_slot(accused, DisputeId::Case(case));
         Ok(())
     }
 
@@ -288,7 +282,15 @@ impl World {
     pub(crate) fn activate_self_id_case(&mut self, case: u32, at: i64) {
         let record = self.self_id_cases[case as usize].as_ref().expect("pending Self-ID case").clone();
         let frozen = record.frozen.expect("recording fixed the disputed scope");
-        let backing = self.reserve_stake(record.author, stake(1, frozen.n));
+        let backing = match self.reserve_opening_stake(record.author, stake(1, frozen.n)) {
+            Ok(backing) => backing,
+            Err(shortfall) => {
+                self.self_id_cases[case as usize].as_mut().expect("pending record").stage = SelfIdCaseStage::Unfunded(shortfall);
+                self.stats.self_id_openings_unfunded += 1;
+                self.free_dispute_slot(record.accused, DisputeId::Case(case));
+                return;
+            }
+        };
         let ladder = Ladder::open(record.author, record.author_xp_at_recording, at, frozen.n);
         let mut held = Case { ladder, electorates: Vec::new(), accused: record.accused, backed: vec![backing], holds: Vec::new() };
         let (author_path, accused_path) = (self.path_held(&held, record.author), self.path_held(&held, record.accused));
@@ -297,7 +299,7 @@ impl World {
         self.hold_for(record.accused, accused_path);
         self.frozen[record.accused as usize] += 1;
         // D196: the accused's not-yet-processed maturities are suspended for the whole active case.
-        self.establish_maturity_hold(case, record.accused, at);
+        self.establish_maturity_hold(DisputeId::Case(case), record.accused, at);
         self.cases[case as usize] = Some(held);
         let record = self.self_id_cases[case as usize].as_mut().expect("pending record");
         record.stage = SelfIdCaseStage::Activated;
@@ -361,7 +363,7 @@ impl World {
         if touched.iter().copied().any(recovered) {
             return Err(Reject("a completed key recovery interacts with this case"));
         }
-        // Collection uses the existing selected soft-backing custody (D166): spendable liquid, then unreserved mature own
+        // Collection uses the existing selected soft-backing custody (D166): spendable liquid, then mature own
         // rights, and the remainder as this case's FIFO debt. No case-local asset priority is introduced.
         let charge = Amount::coins(u64::from(frozen.n));
         let afford = self.spendable(accused) + Amount::coins(self.eligible_emissions(accused, MATURITY_HOURS).len() as u64);
@@ -410,13 +412,16 @@ impl World {
         // 2b. An affected act that has not been credited yet must never be credited: the correction invalidates its source, so its
         //     unmatured backing is removed at settlement instead of becoming an entitlement and a deferred reward later.
         let mut invalidated = Vec::new();
+        let mut invalidated_burned = Amount::ZERO;
         for &act in &plan.affected {
-            if self.acts[act as usize].credit.is_none() && self.acts[act as usize].status == ActStatus::Unspent {
-                self.dispose(act, ActStatus::Cancelled);
+            if self.acts[act as usize].pending_maturity() {
+                self.void_source_backing(act);
+                if self.acts[act as usize].status == ActStatus::Cancelled {
+                    invalidated_burned += Amount::ONE;
+                }
                 invalidated.push(act);
             }
         }
-        let invalidated_burned = Amount::coins(invalidated.len() as u64);
         // 3. Apply the selected losing-author coefficient consequence under the declared arithmetic. The journal records the
         //    coefficient immediately after this case's own penalty; later release credits repair integrity on their own terms.
         self.penalize_xp_for_case(plan.accused, 0.5, case);
@@ -448,7 +453,7 @@ impl World {
         // 5. Release the accuser's own backing and this case's restrictions; every other case keeps its own.
         let holds = self.release_case(&held);
         // The correction already ran, so only the accused's remaining valid maturities may be credited, exactly once.
-        self.release_maturity_hold(case);
+        self.release_maturity_hold(DisputeId::Case(case));
         self.process_deferred_maturities();
         // 6. Journal the completed effects under this case.
         self.case_effects[case as usize] = Some(CaseEffects {
@@ -509,6 +514,7 @@ impl World {
         self.stats.self_id_guarantor_burned += settlement.guarantor_burned;
         self.stats.self_id_source_burned += settlement.source_burned;
         self.stats.self_id_invalidated_burned += settlement.invalidated_burned;
+        self.free_dispute_slot(plan.accused, DisputeId::Case(case));
         Ok(settlement)
     }
 
@@ -519,7 +525,7 @@ impl World {
         if effects.kind != CaseKind::SelfIdTransaction {
             return Err(Reject("not an independent Self-ID transaction case"));
         }
-        let restored = self.restore_case_effects(case)?;
+        let restored = self.restore_effects(case)?;
         let settlement = self.self_id_settlements[case as usize].as_mut().expect("settled Self-ID case journal");
         settlement.reversed = true;
         Ok(restored)
@@ -549,24 +555,31 @@ impl World {
             {
                 return Err(format!("Self-ID case {id} has invalid recording provenance"));
             }
-            if let Some(frozen) = record.frozen {
-                if frozen.violating == 0
-                    || frozen.endpoint < frozen.violating
-                    || frozen.endpoint > record.accused_chain_at_recording
-                    || record.accused_chain_at_recording > self.subjects[record.accused as usize].acts.len() as u32
-                    || frozen.n != frozen.endpoint - frozen.violating + 1
-                    || self.subjects[record.accused as usize].acts[(frozen.violating - 1) as usize] != record.target
-                {
-                    return Err(format!("Self-ID case {id} has an invalid frozen chain count"));
-                }
+            let Some(frozen) = record.frozen else { return Err(format!("Self-ID case {id} has no filing-frozen scope")) };
+            if frozen.violating == 0
+                || frozen.endpoint < frozen.violating
+                || frozen.endpoint != record.accused_chain_at_recording
+                || record.accused_chain_at_recording > self.subjects[record.accused as usize].acts.len() as u32
+                || frozen.n != frozen.endpoint - frozen.violating + 1
+                || self.subjects[record.accused as usize].acts[(frozen.violating - 1) as usize] != record.target
+            {
+                return Err(format!("Self-ID case {id} has an invalid frozen chain count"));
             }
             let effects = self.case_effects[id as usize].as_ref();
             let outcome = self.case_outcomes[id as usize].as_ref();
             let settlement = self.self_id_settlements[id as usize].as_ref();
             match record.stage {
-                SelfIdCaseStage::Pending => {
+                SelfIdCaseStage::Pending | SelfIdCaseStage::Unfunded(_) => {
+                    let invalid_time = match record.stage {
+                        SelfIdCaseStage::Unfunded(f) => {
+                            f.at != record.matures_at || f.at > self.now || f.eligible >= f.required || f.required != stake(1, frozen.n)
+                        }
+                        _ => record.matures_at <= self.now,
+                    };
                     if record.activated_at.is_some()
                         || record.cancelled_at.is_some()
+                        || record.cancelled_by.is_some()
+                        || invalid_time
                         || self.cases[id as usize].is_some()
                         || effects.is_some()
                         || settlement.is_some()
@@ -576,7 +589,8 @@ impl World {
                 }
                 SelfIdCaseStage::Cancelled => {
                     if record.activated_at.is_some()
-                        || record.cancelled_at.is_none_or(|at| at >= record.matures_at)
+                        || record.cancelled_at.is_none_or(|at| at < record.recorded_at || at >= record.matures_at || at > self.now)
+                        || record.cancelled_by.is_none_or(|actor| actor != record.author && !record.author_guarantors.contains(&actor))
                         || self.cases[id as usize].is_some()
                         || effects.is_some()
                         || settlement.is_some()
@@ -589,6 +603,7 @@ impl World {
                     if record.activated_at != Some(record.matures_at)
                         || record.matures_at > self.now
                         || record.cancelled_at.is_some()
+                        || record.cancelled_by.is_some()
                         || held.accused != record.accused
                         || held.ladder.opened_at != record.matures_at
                         || held.ladder.len() != 1
@@ -614,12 +629,12 @@ impl World {
                     {
                         return Err(format!("Self-ID case {id} has an invalid settlement"));
                     }
-                    let frozen = settlement.frozen;
                     let chain = &self.subjects[record.accused as usize].acts;
                     let suffix: Vec<u32> = chain[(frozen.violating - 1) as usize..frozen.endpoint as usize].to_vec();
                     let charge = Amount::coins(u64::from(frozen.n));
                     if settlement.case != id
                         || settlement.target != record.target
+                        || settlement.frozen != frozen
                         || settlement.affected != suffix
                         || effects.source_acts != settlement.revoked_receipts.iter().map(|r| r.act).collect::<Vec<u32>>()
                         || settlement.accused_charge != charge
@@ -630,12 +645,17 @@ impl World {
                         || settlement.charged_guarantors != settlement.source_guarantors
                         || settlement.guarantor_charge != Amount::coins(u64::from(frozen.n).saturating_mul(settlement.source_guarantors.len() as u64))
                         || settlement.guarantor_burned > settlement.guarantor_charge
-                        || settlement.invalidated_burned != Amount::coins(settlement.invalidated.len() as u64)
+                        || settlement.invalidated_burned
+                            != Amount::coins(
+                                settlement
+                                    .invalidated
+                                    .iter()
+                                    .filter(|&&act| self.acts.get(act as usize).is_some_and(|a| a.status == ActStatus::Cancelled))
+                                    .count() as u64,
+                            )
                         || settlement.invalidated.windows(2).any(|w| w[0] >= w[1])
                         || settlement.invalidated.iter().any(|act| {
-                            !settlement.affected.contains(act)
-                                || self.acts[*act as usize].status != ActStatus::Cancelled
-                                || self.acts[*act as usize].credit.is_some()
+                            !settlement.affected.contains(act) || self.acts[*act as usize].credit.is_some() || self.acts[*act as usize].pending_maturity()
                         })
                         || settlement.settled_at != outcome.settled_at
                         || settlement.coefficient_before > COEF_ONE
@@ -660,8 +680,15 @@ impl World {
         let activated = self.self_id_cases.iter().flatten().filter(|r| r.activated_at.is_some()).count() as u64;
         let cancelled = self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Cancelled).count() as u64;
         let settled = self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Final).count() as u64;
-        if (recorded, activated, cancelled, settled)
-            != (self.stats.self_id_openings_recorded, self.stats.self_id_openings_activated, self.stats.self_id_openings_cancelled, self.stats.self_id_settled)
+        let unfunded = self.self_id_cases.iter().flatten().filter(|r| matches!(r.stage, SelfIdCaseStage::Unfunded(_))).count() as u64;
+        if (recorded, activated, cancelled, unfunded, settled)
+            != (
+                self.stats.self_id_openings_recorded,
+                self.stats.self_id_openings_activated,
+                self.stats.self_id_openings_cancelled,
+                self.stats.self_id_openings_unfunded,
+                self.stats.self_id_settled,
+            )
         {
             return Err("Self-ID case records differ from lifecycle counters".into());
         }

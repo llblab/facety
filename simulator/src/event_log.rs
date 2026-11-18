@@ -9,7 +9,7 @@ use crate::chekharda::CouncilVote;
 
 /// Seeds, event count and world size are fixed before execution; the shrink budget bounds reduction work.
 const SEEDS: [u64; 3] = [11, 29, 47];
-const EVENTS: usize = 160;
+const EVENTS: usize = 240;
 const ACCOUNTS: usize = 6;
 const SHRINK_BUDGET: usize = 400;
 
@@ -46,7 +46,7 @@ enum Event {
     CouncilJoin(u32, Id),
     Ballot(u32, Id, u32, u8),
     SettleCase(u32, Option<u8>),
-    EndCase(u32),
+    CancelPending(u32, Id),
     RecordSelfIdCase(Id, u32),
     SettleSelfIdCase(u32, bool),
     RestoreCase(u32),
@@ -75,7 +75,7 @@ fn draw(rng: &mut Lcg, w: &World) -> Event {
         12 => Event::CouncilJoin(case, w.council.get(member as usize).copied().unwrap_or(member)),
         13 => Event::Ballot(case, w.council.get(member as usize).copied().unwrap_or(member), rng.below(3) as u32, rng.below(24) as u8),
         14 => Event::SettleCase(case, if rng.below(3) == 0 { Some(rng.below(2) as u8) } else { None }),
-        15 => Event::EndCase(case),
+        15 => Event::CancelPending(case, who),
         16 => Event::RecordSelfIdCase(who, act),
         17 => Event::SettleSelfIdCase(case, rng.below(2) == 0),
         _ => Event::RestoreCase(case),
@@ -130,10 +130,7 @@ fn apply(w: &mut World, event: &Event) -> Result<(), Reject> {
             };
             w.settle_case(case, side).map(|_| ())
         }
-        Event::EndCase(case) => {
-            w.end_case(case);
-            Ok(())
-        }
+        Event::CancelPending(case, actor) => w.cancel_pending_opening(case, actor),
         Event::RecordSelfIdCase(accuser, act) => w
             .record_self_id_case_fixture(
                 accuser,
@@ -185,12 +182,12 @@ struct CaseSnap {
     positions: Vec<chekharda::Position<Id>>,
     rounds: Vec<CouncilRound<Id>>,
     electorates: Vec<CouncilElectorate>,
-    backed: Vec<(Amount, Vec<u32>, Amount)>,
+    backed: Vec<Amount>,
     holds: Vec<(Id, i64, bool)>,
 }
 
-/// One recorded act and its receipt: `(subject, recorded_at, roster, status, receipt)`.
-type ActSnap = (Id, i64, Vec<Id>, ActStatus, Option<(i64, bool, Vec<Id>)>);
+/// One recorded act and its receipt: `(subject, recorded_at, roster, status, invalidated-before-credit, receipt)`.
+type ActSnap = (Id, i64, Vec<Id>, ActStatus, bool, Option<(i64, bool, Vec<Id>)>);
 
 /// One settled case's effect causes.
 type EffectSnap = (String, Id, Side, bool, Vec<Id>, Vec<u32>, Vec<Id>);
@@ -225,6 +222,9 @@ struct Snap {
     inv_units: Vec<u32>,
     cases: Vec<Option<CaseSnap>>,
     openings: Vec<Option<OpeningRecord>>,
+    slots: Vec<(Id, DisputeId)>,
+    maturity_holds: Vec<MaturityHold>,
+    deferred_maturities: Vec<u32>,
     cancellations: Vec<Option<CancellationOutcome>>,
     outcomes: Vec<Option<CaseOutcome>>,
     effects: Vec<Option<EffectSnap>>,
@@ -235,7 +235,6 @@ struct Snap {
     revocations: Vec<(u32, Vec<Option<u32>>)>,
     identity_cases: Vec<(Id, Vec<u32>)>,
     independent_invalid: Vec<bool>,
-    reserved_rights: Vec<u32>,
     recovery_log: Vec<(Id, Id, i32)>,
     previous_guarantors: Vec<(Id, Vec<Id>)>,
 }
@@ -248,8 +247,6 @@ impl World {
         revocations.sort();
         let mut identity_cases: Vec<(Id, Vec<u32>)> = self.identity_cases.iter().map(|(k, v)| (*k, v.clone())).collect();
         identity_cases.sort();
-        let mut reserved_rights: Vec<u32> = self.reserved_rights.iter().copied().collect();
-        reserved_rights.sort_unstable();
         let mut previous_guarantors: Vec<(Id, Vec<Id>)> = self.previous_guarantors.iter().map(|(k, v)| (*k, v.clone())).collect();
         previous_guarantors.sort();
         Snap {
@@ -306,7 +303,16 @@ impl World {
             acts: self
                 .acts
                 .iter()
-                .map(|a| (a.subject, a.recorded_at, a.guarantors.to_vec(), a.status, a.credit.as_ref().map(|c| (c.at, c.revoked, c.recipients.to_vec()))))
+                .map(|a| {
+                    (
+                        a.subject,
+                        a.recorded_at,
+                        a.guarantors.to_vec(),
+                        a.status,
+                        a.invalidated_before_credit,
+                        a.credit.as_ref().map(|c| (c.at, c.revoked, c.recipients.to_vec())),
+                    )
+                })
                 .collect(),
             graph: (self.graph.edge_count(), (0..self.graph.len() as Id).map(|v| self.graph.out(v).to_vec()).collect()),
             rels: self.rels.iter().map(|r| (r.guarantor, r.guaranteed, r.active)).collect(),
@@ -326,12 +332,19 @@ impl World {
                         positions: c.ladder.positions().to_vec(),
                         rounds: c.ladder.rounds().to_vec(),
                         electorates: c.electorates.clone(),
-                        backed: c.backed.iter().map(|b| (b.liquid, b.rights.clone(), b.limit)).collect(),
+                        backed: c.backed.clone(),
                         holds: c.holds.clone(),
                     })
                 })
                 .collect(),
             openings: self.case_openings.clone(),
+            slots: {
+                let mut slots: Vec<_> = self.dispute_slots.iter().map(|(&who, &case)| (who, case)).collect();
+                slots.sort_unstable();
+                slots
+            },
+            maturity_holds: self.maturity_holds.clone(),
+            deferred_maturities: self.deferred_maturities.clone(),
             cancellations: self.case_cancellations.clone(),
             outcomes: self.case_outcomes.clone(),
             effects: self
@@ -354,7 +367,6 @@ impl World {
             revocations,
             identity_cases,
             independent_invalid: self.independent_invalid.clone(),
-            reserved_rights,
             recovery_log: self.recovery_log.clone(),
             previous_guarantors,
         }
@@ -373,11 +385,7 @@ fn invariants(w: &World) {
         assert_eq!(w.acts_status(act), ActStatus::Unspent, "a deferred maturity must still be pending");
         assert!(w.maturity_hold(act).is_some(), "a deferred maturity is always held by a case");
     }
-    // Exclusive custody: no right backs two open positions, and reserved liquid never exceeds the balance.
-    let mut rights: Vec<u32> = w.reserved_rights.iter().copied().collect();
-    rights.sort_unstable();
-    rights.dedup();
-    assert_eq!(rights.len(), w.reserved_rights.len(), "an emission right backs two positions");
+    // Exclusive custody: the audit reconstructs reserved liquid from positions; it cannot exceed the balance.
     for id in 0..w.len() as Id {
         assert!(w.spendable(id) <= w.liquid(id), "custody exceeds the account's liquid balance");
     }
@@ -465,6 +473,7 @@ fn prologue() -> Vec<Event> {
         Event::Tick(1),
         Event::SelfId(5),
         // Case 0: one ordinary accuser, frozen N = 1, the ordinary cutoff, an upheld supplied merits result.
+        Event::Convert(5),
         Event::RecordSelfIdCase(5, 4),
         Event::Tick(1),
         Event::Tick(7),
@@ -478,6 +487,7 @@ fn prologue() -> Vec<Event> {
         Event::SelfId(5),
         Event::Tick(1),
         Event::SelfId(2),
+        Event::Convert(5),
         Event::RecordSelfIdCase(5, 8),
         // Two ordinary disposition changes inside the pendency: the target right becomes collected value and the third
         // act (outside the frozen scope) is freely cancelled, so its backing is burned rather than available.
@@ -489,10 +499,21 @@ fn prologue() -> Vec<Event> {
         Event::RestoreCase(1),
         // Case 2 exercises suspended maturity (D196): an account's still-pending Self-ID is held by an immediate case, its
         // own maturity passes without credit, and the authorized release credits it exactly once.
+        Event::SelfId(5),
+        Event::Tick(1),
+        Event::SelfId(5),
+        Event::Tick(1),
+        Event::SelfId(5),
+        Event::Tick(1),
         Event::SelfId(4),
-        Event::BeginCase(0, 4),
-        Event::Tick(2),
-        Event::EndCase(2),
+        Event::Convert(5),
+        Event::Convert(5),
+        Event::Convert(5),
+        Event::Convert(5),
+        Event::Convert(5),
+        Event::BeginCase(5, 4),
+        Event::Tick(7),
+        Event::SettleCase(2, Some(1)),
     ]
 }
 

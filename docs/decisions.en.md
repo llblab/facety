@@ -532,10 +532,23 @@ At the end of the last applicable case restriction, a suspended Self-ID whose or
 
 Consequences recorded as model conventions, not new protocol choices: the suspended maturity is deferred past the settlement cursor so unaffected maturities are not blocked, and a suspended act is treated as not yet a mature entitlement for custody and collateral purposes. An affected Self-ID inside a filing-frozen correction scope that has not matured is invalidated at settlement instead of being credited. D196 changes no D195 amounts or frozen scopes, no stake/debt/cancellation rule, no Council voting or deferral, no restriction duration and no admission/authentication contract. It changes population outcomes for a given seed, so the simulator engine identifier moves to `facety-sim/runner-v6`; the result schema, randomness policy, configuration digests and frozen D168 evidence are unchanged.
 
+### Funded and final dispute lifecycle
+
+**D197 — [OWNER selected rule], 2026-11-18.** An accepted filing immediately occupies its accused subject's sole unresolved dispute slot, including in linked appeals against the prior opener. Free author or authorized opener-guarantor cancellation is available only before 24 hours. Reserve the full first stake at activation or record non-activation without custody, restrictions, a case clock or debt. Active cases close only by verdict, including after any number of Council extensions.
+
+Settlement uses the existing position ladder, no extra compensation, the case's initial stake as its applicable charge basis, and unchanged merits-related integrity. The good-faith losing-accuser exception remains undecided. Apply funded case outcomes before releasing still-valid due Self-IDs once at actual credit time and freeing the slot. Future maturities retain their schedule; independent causes remain. A later filing has its own facts, preserving D195 filing-frozen `N` and the key-recovery boundary.
+
+Supersedes D182–D184's active withdrawal and equal-split settlement (not D184 monetary precision), restricts D166 soft stake backing to later positions, and completes D196 release-time journal semantics. Preserves D159/D179 ladder and no-recipient settlement, D171–D173 rounds, D177/D178 restoration and soft backing for applicable sanctions. Production veto authentication/membership, disposition of conflicting reservations under the then-modeled mixed backing (resolved by D198) and appeal finances remain open. The simulator's core-only appeal fixture executes no monetary effects.
+
+### Liquid-only stake custody
+
+**D198 — [OWNER selected clarification], 2026-11-18.** Dispute collateral is spendable ordinary Collector FCTY, whether bought or withdrawn after emission maturity. A mature right still on the emission balance is not collateral. This replaces the Emitter-right component of D166 stake custody for every position. D197's first stake remains fully funded at activation; later positions keep soft backing. Withdrawal is separate; an issuance-source cut cannot erase already withdrawn collateral. The clarification does not change invite/valence uses, case-specific merits collection, FIFO debt or open appeal finances.
+
 ### Earlier supersessions
 
 | Earlier description | Status |
 | --- | --- |
+| Active withdrawal, cancellation pools, soft opening stakes and concurrent cases against the same accused. | **D197:** verdict-only active closure; 100% opening funding at activation; one subject slot held from filing through effects. |
 | "A receipt maturing during an active case is credited." | **D196:** the accused's not-yet-matured Self-IDs are suspended instead, so a receipt maturing inside the case is not earned; it matures once at release, or never if the case invalidates it. |
 | D190 fixing the disputed endpoint and N at the uncancelled opening's 24-hour activation. | **D195:** the endpoint, `N` and every charge of a non-author Self-ID correction case are frozen at recording; the pendency delays only activation, holds, custody and the clock, and later Self-IDs never increase that case's exposure. |
 | Q25-A1's first Self-ID fixture was an unapproved proposal. | **D193:** the owner authorized that reviewed trusted-core boundary as an engineering test subset; production admission, authentication, collective authority and the other OPEN contracts are unchanged. |

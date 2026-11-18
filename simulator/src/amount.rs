@@ -47,14 +47,6 @@ impl Amount {
     pub fn times(self, count: u64) -> Self {
         self.checked_times(count).expect("FCTY amount multiplication exceeds u128 atoms")
     }
-    /// Floor share and remaining atoms. The caller owns the policy assigning the remainder to recipients.
-    pub fn split_evenly(self, count: usize) -> Option<(Self, usize)> {
-        if count == 0 {
-            return None;
-        }
-        let divisor = count as u128;
-        Some((Self(self.0 / divisor), (self.0 % divisor) as usize))
-    }
 }
 
 #[derive(Clone, Copy, Default, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -242,18 +234,6 @@ mod tests {
         assert_eq!(format!("{}", Amount::from_atoms(u128::MAX)), "340282366920938463463374607.431768211455");
         assert_eq!(format!("{:?}", [Amount::ZERO, Amount::ONE, Amount::from_atoms(1)]), "[0, 1, 0.000000000001]");
         assert_eq!(Amount::coins(u64::MAX).atoms(), u128::from(u64::MAX) * SCALE);
-    }
-
-    #[test]
-    fn equal_shares_conserve_atoms_and_leave_only_the_exact_remainder() {
-        let total = Amount::coins(7);
-        let (share, remainder) = total.split_evenly(3).unwrap();
-        assert_eq!(format!("{share}"), "2.333333333333");
-        assert_eq!(remainder, 1);
-        assert_eq!(share.times(3) + Amount::from_atoms(remainder as u128), total);
-        assert_eq!(total.split_evenly(0), None);
-        assert_eq!(Amount::from_atoms(2).split_evenly(3), Some((Amount::ZERO, 2)));
-        assert_eq!(Amount::ZERO.split_evenly(3), Some((Amount::ZERO, 0)));
     }
 
     #[test]

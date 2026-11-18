@@ -5,7 +5,7 @@
 //! debt, imposed restriction hours) so a nominal claim is never reported as a realized cost.
 use facety_sim::amount::Amount;
 use facety_sim::chekharda::Side;
-use facety_sim::world::{Config, Id, TransactionTarget, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, World, DAY};
+use facety_sim::world::{Config, Id, OpeningStage, TransactionTarget, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, UnfundedOpening, World, DAY};
 
 fn ring(n: usize) -> Vec<(Id, Id)> {
     let mut pairs = Vec::new();
@@ -59,38 +59,23 @@ fn accusation_pricing_probe_separates_rejected_pending_active_and_merits_loss() 
     assert_eq!((w.liquid(6), w.debt(6), w.supply()), before, "a pending withdrawal forfeits nothing");
     println!("pending filing then withdrawal: realized cost 0 FCTY, restrictions imposed 0 h, own restriction 0 h");
 
-    // ---------------- an active case, then author cancellation ----------------
-    // The accuser holds exactly its actual two coins; the nominal stake is 7 FCTY.
+    // An underfunded filing closes at the boundary without restricting or charging anyone.
     let mut w = world();
     build(&mut w, 0, 1, 0);
-    build(&mut w, 6, 2, 2); // the accuser, funded with exactly its two actual coins
-    build(&mut w, 3, 3, 0); // an ordinary defender above the accuser in XP, not a partner of the accuser
-    assert!(w.xp(6) > w.xp(0) && w.xp(3) > w.xp(6));
+    build(&mut w, 6, 2, 2);
     let case = w.record_case_opening(&[6, 0]).unwrap();
-    w.tick(w.case_opening(case).unwrap().matures_at);
-    w.join_case(case, 3).unwrap();
-    w.tick(w.now() + 2 * DAY);
-    let (accuser_restricted, accused_restricted) = (w.held(6), w.held(0));
-    let (liquid, defender_liquid, burned) = (w.liquid(6), w.liquid(3), w.burned());
-    let out = w.cancel_case_opening(case, 6).unwrap();
-    let realized = liquid - w.liquid(6);
-    println!(
-        "active case, then author cancellation: nominal stake 7 FCTY, actual collection {} FCTY, realized outflow {} FCTY, created debt {} FCTY, defender received {} FCTY, burned {} FCTY, own restriction {}, other-side restriction {}",
-        out.collected,
-        realized,
-        out.debt_created,
-        w.liquid(3) - defender_liquid,
-        w.burned() - burned,
-        accuser_restricted,
-        accused_restricted
-    );
-    assert_eq!(realized, out.collected, "only actually collected value leaves the author");
-    assert_eq!(out.debt_created, Amount::coins(7) - out.collected, "the nominal remainder is debt, not a realized loss");
-    assert!(accuser_restricted && accused_restricted, "the restriction is real on both sides while the case is open");
+    let at = w.case_opening(case).unwrap().matures_at;
+    let before = (w.spendable(6), w.debt(6), w.supply());
+    w.tick(at);
+    assert_eq!(w.case_opening(case).unwrap().stage, OpeningStage::Unfunded(UnfundedOpening { at, required: Amount::coins(7), eligible: Amount::coins(2) }));
+    assert_eq!((w.spendable(6), w.debt(6), w.supply()), before);
+    assert!(!w.held(0) && !w.held(6) && w.case_deadline(case).is_none());
+    assert!(w.record_case_opening(&[6, 0]).is_ok(), "the failed activation releases the slot");
+    w.audit().unwrap();
 
     // ---------------- a merits loss ----------------
     let mut w = world();
-    build(&mut w, 0, 2, 0);
+    build(&mut w, 0, 7, 7);
     build(&mut w, 2, 1, 1);
     assert!(w.xp(0) > w.xp(2));
     let case = w.record_case_opening(&[0, 2]).unwrap();
@@ -129,6 +114,9 @@ fn strategic_filing_delay_probe_separates_nominal_count_from_actual_recovery() {
             w.tick(w.now() + DAY);
         }
         assert!(w.xp(6) > w.xp(0), "the filing stays admissible at this filing day");
+        for right in w.eligible_emissions(6, DAY) {
+            w.convert_to_collector(6, right).unwrap();
+        }
         let case = w
             .record_self_id_case_fixture(
                 6,
