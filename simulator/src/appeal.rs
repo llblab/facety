@@ -251,6 +251,10 @@ impl World {
     }
 
     /// Explicit typed-target form of the same admitted fixture; namespace/link mismatches reject before any effects.
+    ///
+    /// Unlike the funded ordinary and Self-ID openings (D199), this trusted fixture occupies the prior opener's subject
+    /// slot without reserving collateral: appeal finances are OPEN, and the fixture neither invents a zero-cost production
+    /// appeal nor a mandatory appeal stake. The slot reservation rests on the externally supplied admission premise.
     pub fn record_transaction_appeal_fixture(&mut self, request: u32, target: TransactionTarget, initiator: AppealInitiator) -> Result<u32, Reject> {
         let prior_case = self.appeal_request(request).ok_or(Reject("no such appeal request"))?.prior_case;
         if target != TransactionTarget::Opening(prior_case) {

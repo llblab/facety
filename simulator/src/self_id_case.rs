@@ -16,10 +16,11 @@
 use super::*;
 use crate::chekharda::stake;
 
-/// The declared conventions of this fixture, distinct from the identity-case and ordinary-stake policies. Version 2 fixes
+/// The declared conventions of this fixture, distinct from the identity-case and ordinary-stake policies. Version 2 fixed
 /// the endpoint and `N` at recording (D195, superseding D190's activation time for this case kind) and executes any frozen
-/// `N` through the model's existing soft-backing collection rather than a case-local collection scope.
-pub const SELF_ID_CASE_POLICY: &str = "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-funded-opening/v4";
+/// `N` through the model's existing soft-backing collection rather than a case-local collection scope. Version 5 reserves
+/// the frozen-`N` first stake exclusively at recording (D199) and activates on that reservation without a funding check.
+pub const SELF_ID_CASE_POLICY: &str = "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-reserved-at-filing/v5";
 
 /// A premise the caller must supply explicitly. `Missing` is refused before any record allocation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -55,7 +56,6 @@ pub enum SelfIdCaseStage {
     Pending,
     Activated,
     Cancelled,
-    Unfunded(UnfundedOpening),
     Final,
 }
 
@@ -77,6 +77,9 @@ pub struct SelfIdCaseRecord {
     pub author_guarantors: Vec<Id>,
     /// The challenged Self-ID's immutable creation-time guarantors, not a current or union roster.
     pub source_guarantors: Vec<Id>,
+    /// The frozen-`N` first stake reserved exclusively from the author's Collector FCTY at recording (D199); activation
+    /// moves it unchanged into the first position's custody and pending cancellation returns it.
+    pub reserved_stake: Amount,
     pub activated_at: Option<i64>,
     pub cancelled_at: Option<i64>,
     pub cancelled_by: Option<Id>,
@@ -171,7 +174,8 @@ impl World {
         Ok(())
     }
 
-    /// Record a trusted-core Self-ID correction opening. Nothing is reserved, held or paid before activation.
+    /// Record a trusted-core Self-ID correction opening. The frozen-`N` first stake is reserved at recording (D199);
+    /// nothing is held, restricted or paid before activation.
     pub fn record_self_id_case_fixture(&mut self, accuser: Id, target: TransactionTarget, premises: TrustedAdmissionPremises) -> Result<u32, Reject> {
         self.require_self_id_fixture_settings()?;
         if premises.admission != TrustedPremise::Supplied || premises.historical_duty != TrustedPremise::Supplied {
@@ -224,6 +228,11 @@ impl World {
         let endpoint = acts.len() as u32;
         let frozen = FrozenCount { violating, endpoint, n: endpoint - violating + 1 };
         let matures_at = self.opening_maturity_at()?;
+        // D199: the frozen-`N` first stake is checked and reserved exclusively in this same transaction, after every other
+        // validation and before any allocation, so a refusal leaves no case ID, slot or custody behind.
+        let initial = stake(1, frozen.n);
+        self.require_opening_funds(accuser, initial)?;
+        let reserved_stake = self.reserve_opening_stake(accuser, initial);
         let case = self.allocate_case();
         self.self_id_cases[case as usize] = Some(SelfIdCaseRecord {
             case,
@@ -236,6 +245,7 @@ impl World {
             accused_xp_at_recording: self.xp(accused),
             author_guarantors: self.mutual_partners(accuser),
             source_guarantors: guarantors.to_vec(),
+            reserved_stake,
             activated_at: None,
             cancelled_at: None,
             cancelled_by: None,
@@ -267,32 +277,25 @@ impl World {
             return Err(Reject("not a pending Self-ID opening before its activation"));
         }
         self.require_opening_canceller(actor, record.author, &record.author_guarantors)?;
-        let accused = record.accused;
+        let (author, accused, reserved) = (record.author, record.accused, record.reserved_stake);
         let record = self.self_id_cases[case as usize].as_mut().expect("checked pending record");
         record.stage = SelfIdCaseStage::Cancelled;
         record.cancelled_at = Some(self.now);
         record.cancelled_by = Some(actor);
         self.stats.self_id_openings_cancelled += 1;
+        self.release_opening_stake(author, reserved);
         self.free_dispute_slot(accused, DisputeId::Case(case));
         Ok(())
     }
 
-    /// Activate in its existing slot: reserve the recording-frozen `N` FCTY first stake and begin the ordinary holds.
-    /// Recording fixed admission and the disputed scope; later XP, membership or Self-ID changes cannot reprice it.
+    /// Activate in its existing slot on the filing-time reservation of the recording-frozen `N` FCTY first stake (D199),
+    /// without a new funding decision, and begin the ordinary holds. Recording fixed admission, the disputed scope and
+    /// the collateral; later XP, membership, balance or Self-ID changes cannot reprice or unfund it.
     pub(crate) fn activate_self_id_case(&mut self, case: u32, at: i64) {
         let record = self.self_id_cases[case as usize].as_ref().expect("pending Self-ID case").clone();
         let frozen = record.frozen.expect("recording fixed the disputed scope");
-        let backing = match self.reserve_opening_stake(record.author, stake(1, frozen.n)) {
-            Ok(backing) => backing,
-            Err(shortfall) => {
-                self.self_id_cases[case as usize].as_mut().expect("pending record").stage = SelfIdCaseStage::Unfunded(shortfall);
-                self.stats.self_id_openings_unfunded += 1;
-                self.free_dispute_slot(record.accused, DisputeId::Case(case));
-                return;
-            }
-        };
         let ladder = Ladder::open(record.author, record.author_xp_at_recording, at, frozen.n);
-        let mut held = Case { ladder, electorates: Vec::new(), accused: record.accused, backed: vec![backing], holds: Vec::new() };
+        let mut held = Case { ladder, electorates: Vec::new(), accused: record.accused, backed: vec![record.reserved_stake], holds: Vec::new() };
         let (author_path, accused_path) = (self.path_held(&held, record.author), self.path_held(&held, record.accused));
         held.holds = vec![(record.author, at, author_path), (record.accused, at, accused_path)];
         self.hold_for(record.author, author_path);
@@ -562,6 +565,7 @@ impl World {
                 || record.accused_chain_at_recording > self.subjects[record.accused as usize].acts.len() as u32
                 || frozen.n != frozen.endpoint - frozen.violating + 1
                 || self.subjects[record.accused as usize].acts[(frozen.violating - 1) as usize] != record.target
+                || record.reserved_stake != stake(1, frozen.n)
             {
                 return Err(format!("Self-ID case {id} has an invalid frozen chain count"));
             }
@@ -569,17 +573,11 @@ impl World {
             let outcome = self.case_outcomes[id as usize].as_ref();
             let settlement = self.self_id_settlements[id as usize].as_ref();
             match record.stage {
-                SelfIdCaseStage::Pending | SelfIdCaseStage::Unfunded(_) => {
-                    let invalid_time = match record.stage {
-                        SelfIdCaseStage::Unfunded(f) => {
-                            f.at != record.matures_at || f.at > self.now || f.eligible >= f.required || f.required != stake(1, frozen.n)
-                        }
-                        _ => record.matures_at <= self.now,
-                    };
+                SelfIdCaseStage::Pending => {
                     if record.activated_at.is_some()
                         || record.cancelled_at.is_some()
                         || record.cancelled_by.is_some()
-                        || invalid_time
+                        || record.matures_at <= self.now
                         || self.cases[id as usize].is_some()
                         || effects.is_some()
                         || settlement.is_some()
@@ -607,6 +605,7 @@ impl World {
                         || held.accused != record.accused
                         || held.ladder.opened_at != record.matures_at
                         || held.ladder.len() != 1
+                        || held.backed[0] != record.reserved_stake
                         || effects.is_some()
                         || settlement.is_some()
                     {
@@ -680,15 +679,8 @@ impl World {
         let activated = self.self_id_cases.iter().flatten().filter(|r| r.activated_at.is_some()).count() as u64;
         let cancelled = self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Cancelled).count() as u64;
         let settled = self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Final).count() as u64;
-        let unfunded = self.self_id_cases.iter().flatten().filter(|r| matches!(r.stage, SelfIdCaseStage::Unfunded(_))).count() as u64;
-        if (recorded, activated, cancelled, unfunded, settled)
-            != (
-                self.stats.self_id_openings_recorded,
-                self.stats.self_id_openings_activated,
-                self.stats.self_id_openings_cancelled,
-                self.stats.self_id_openings_unfunded,
-                self.stats.self_id_settled,
-            )
+        if (recorded, activated, cancelled, settled)
+            != (self.stats.self_id_openings_recorded, self.stats.self_id_openings_activated, self.stats.self_id_openings_cancelled, self.stats.self_id_settled)
         {
             return Err("Self-ID case records differ from lifecycle counters".into());
         }

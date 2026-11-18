@@ -194,48 +194,75 @@ fn replay_returns_the_journal_and_case_specific_reversal_restores_only_this_case
 }
 
 #[test]
-fn frozen_n_must_be_fully_backed_and_a_later_filing_recalculates_its_own_scope() {
+fn frozen_n_is_reserved_at_filing_and_a_later_filing_recalculates_its_own_scope() {
     let (mut w, target) = prepared();
     let due = w.create_self_id(ACCUSED).unwrap();
+    // D199: zero and partial Collector backing are refused atomically, before any case ID, slot or custody exists.
+    let mut empty = w.clone();
+    empty.burn_liquid(ACCUSER);
+    let mut partial = empty.clone();
+    partial.create_self_id(ACCUSER).unwrap();
+    partial.tick(partial.now() + DAY);
+    let right = partial.eligible_emission(ACCUSER).unwrap();
+    partial.convert_to_collector(ACCUSER, right).unwrap();
+    assert_eq!(partial.spendable(ACCUSER), Amount::ONE, "one of the two FCTY the frozen N = 2 needs");
+    for refused in [&mut empty, &mut partial] {
+        let before = (projection(refused), ledger(refused));
+        let result = refused.record_self_id_case_fixture(ACCUSER, TransactionTarget::SelfId(target), supplied());
+        assert_eq!(result, Err(facety_sim::world::UNFUNDED_OPENING));
+        assert_eq!((projection(refused), ledger(refused)), before);
+        assert_eq!((refused.self_id_cases(), refused.stats.self_id_openings_recorded), (0, 0));
+        assert!(refused.maturity_hold(due).is_none());
+        refused.audit().unwrap();
+    }
+
     let opening = record(&mut w, target);
+    assert_eq!(opening, 0, "a successful filing takes the first case ID");
     let at = w.self_id_case(opening).unwrap().matures_at;
     assert_eq!(w.self_id_case(opening).unwrap().frozen.unwrap().n, 2);
-    assert!(w.record_case_opening(&[ACCUSER, ACCUSED]).is_err());
-    let mut backed = w.clone();
-    activate(&mut backed, opening); // Two liquid FCTY, exactly the frozen N.
-    assert_eq!(backed.spendable(ACCUSER), Amount::ZERO);
-    assert!(backed.record_case_opening(&[ACCUSER, ACCUSED]).is_err());
-    assert!(backed.cancel_self_id_case_opening(opening, ACCUSER).is_err());
-    backed.audit().unwrap();
+    assert_eq!(w.self_id_case(opening).unwrap().reserved_stake, Amount::coins(2), "the frozen N is reserved at filing");
+    assert_eq!((w.liquid(ACCUSER), w.spendable(ACCUSER)), (Amount::coins(2), Amount::ZERO));
+    assert!(w.record_case_opening(&[ACCUSER, ACCUSED]).is_err(), "the funded opening occupies the accused's slot");
+    let other = (1..N as Id).find(|&id| id != ACCUSED && w.xp(id) < w.xp(ACCUSER)).unwrap();
+    assert_eq!(w.record_case_opening(&[ACCUSER, other]), Err(facety_sim::world::UNFUNDED_OPENING), "reserved FCTY cannot back a second filing");
+    assert_eq!(w.burn_liquid(ACCUSER), Amount::ZERO, "reserved FCTY cannot be burned or spent meanwhile");
 
-    w.burn_liquid(ACCUSER);
-    w.create_self_id(ACCUSER).unwrap(); // Maturity alone at the boundary cannot supply liquid.
-    let before = (w.supply(), w.burned(), w.debt(ACCUSER), w.debt(ACCUSED), w.spendable(ACCUSER));
+    // Cancel inside the pendency in one branch; the other activates on the filing-time reservation.
+    let mut cancelled = w.clone();
+    w.create_self_id(ACCUSER).unwrap(); // Matures exactly at activation: unrelated to the funded collateral.
     w.tick(at);
-    assert_eq!(
-        w.self_id_case(opening).unwrap().stage,
-        SelfIdCaseStage::Unfunded(facety_sim::world::UnfundedOpening { at, required: Amount::coins(2), eligible: Amount::ZERO })
-    );
-    assert_eq!((w.supply(), w.burned(), w.debt(ACCUSER), w.debt(ACCUSED), w.spendable(ACCUSER)), before);
-    assert!(w.eligible_emission(ACCUSER).is_some(), "the mature right remains in the emission balance");
-    assert!(!w.held(ACCUSER) && !w.held(ACCUSED) && w.case_deadline(opening).is_none());
-    assert_eq!(w.transaction_provenance(TransactionTarget::SelfId(due)).unwrap().xp_receipt.unwrap().credited_at, at);
-    assert_eq!(w.stats.maturities_deferred, 0);
-
-    w.create_self_id(ACCUSED).unwrap();
-    for _ in 0..3 {
-        w.create_self_id(ACCUSER).unwrap();
-        w.tick(w.now() + DAY);
-    }
-    for right in w.eligible_emissions(ACCUSER, DAY) {
-        w.convert_to_collector(ACCUSER, right).unwrap();
-    }
-    let fresh = record(&mut w, target);
-    assert_ne!(fresh, opening);
-    assert_eq!(w.self_id_case(fresh).unwrap().frozen.unwrap().n, 3);
-    assert_eq!(w.self_id_case(opening).unwrap().frozen.unwrap().n, 2);
-    activate(&mut w, fresh);
+    assert_eq!(w.self_id_case(opening).unwrap().stage, SelfIdCaseStage::Activated);
+    assert_eq!(w.case_positions(opening)[0].stake, Amount::coins(2));
+    assert_eq!((w.liquid(ACCUSER), w.spendable(ACCUSER)), (Amount::coins(2), Amount::ZERO), "activation reuses the reservation, never charges twice");
+    assert!(w.eligible_emission(ACCUSER).is_some(), "the author's own new maturity stays a separate emission right");
+    assert!(w.cancel_self_id_case_opening(opening, ACCUSER).is_err());
+    // The accused's maturity at the activation hour is suspended and cannot become collateral or liquid.
+    assert!(w.maturity_hold(due).is_some());
+    assert!(w.convert_to_collector(ACCUSED, due).is_err());
+    assert_eq!(w.spendable(ACCUSED), Amount::ZERO);
+    assert_eq!(w.self_id_case(opening).unwrap().frozen.unwrap().n, 2, "activation cannot reprice the filing snapshot");
     w.audit().unwrap();
+
+    cancelled.cancel_self_id_case_opening(opening, ACCUSER).unwrap();
+    assert_eq!(cancelled.spendable(ACCUSER), Amount::coins(2), "pending cancellation returns the whole reservation");
+    assert!(cancelled.cancel_self_id_case_opening(opening, ACCUSER).is_err(), "a cancellation cannot be replayed");
+    assert_eq!(cancelled.spendable(ACCUSER), Amount::coins(2), "and releases nothing twice");
+    cancelled.tick(at);
+    assert_eq!(cancelled.transaction_provenance(TransactionTarget::SelfId(due)).unwrap().xp_receipt.unwrap().credited_at, at);
+    cancelled.create_self_id(ACCUSED).unwrap();
+    for _ in 0..3 {
+        cancelled.create_self_id(ACCUSER).unwrap();
+        cancelled.tick(cancelled.now() + DAY);
+    }
+    for right in cancelled.eligible_emissions(ACCUSER, DAY) {
+        cancelled.convert_to_collector(ACCUSER, right).unwrap();
+    }
+    let fresh = record(&mut cancelled, target);
+    assert_ne!(fresh, opening);
+    assert_eq!(cancelled.self_id_case(fresh).unwrap().frozen.unwrap().n, 3);
+    assert_eq!(cancelled.self_id_case(opening).unwrap().frozen.unwrap().n, 2);
+    activate(&mut cancelled, fresh);
+    cancelled.audit().unwrap();
 }
 
 #[test]
@@ -449,7 +476,9 @@ fn missing_premises_and_unupheld_merits_refuse() {
 #[test]
 fn pending_cancellation_uses_the_openers_roster_not_the_challenged_acts_roster() {
     let (mut w, target) = prepared();
+    let filed = (projection(&w), ledger(&w));
     let case = record(&mut w, target);
+    assert_eq!(w.spendable(ACCUSER), filed.0[ACCUSER as usize].1 - Amount::ONE, "the pending opening owns its frozen-N stake");
     let before = (projection(&w), ledger(&w));
     assert!(w.cancel_self_id_case_opening(case, ACCUSED).is_err());
     let opening = w.self_id_case(case).unwrap().clone();
@@ -461,7 +490,7 @@ fn pending_cancellation_uses_the_openers_roster_not_the_challenged_acts_roster()
     assert_eq!(w.self_id_case(case).unwrap().cancelled_by, Some(actor));
     assert_eq!(w.self_id_case(case).unwrap().stage, SelfIdCaseStage::Cancelled);
     assert_eq!((w.stats.self_id_openings_cancelled, w.stats.self_id_openings_activated), (1, 0));
-    assert_eq!((projection(&w), ledger(&w)), before, "a pending cancellation forfeits nothing");
+    assert_eq!((projection(&w), ledger(&w)), filed, "a pending cancellation forfeits nothing and returns the whole reservation");
     w.tick(w.now() + 48);
     assert_eq!(w.self_id_case(case).unwrap().stage, SelfIdCaseStage::Cancelled, "a cancelled opening never activates");
     assert!(!w.held(ACCUSER) && !w.held(ACCUSED));
@@ -608,7 +637,7 @@ fn departed_original_guarantors_are_charged_not_the_current_roster() {
 #[test]
 fn the_fixture_policy_identifiers_name_the_implemented_semantics() {
     // The contract page names these exact strings; a silent rename would otherwise let documentation drift from code.
-    assert_eq!(facety_sim::world::SELF_ID_CASE_POLICY, "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-funded-opening/v4");
+    assert_eq!(facety_sim::world::SELF_ID_CASE_POLICY, "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-reserved-at-filing/v5");
     let (w, target) = prepared();
     let mut w = w;
     let case = record(&mut w, target);

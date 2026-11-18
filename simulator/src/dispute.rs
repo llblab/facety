@@ -10,13 +10,28 @@ impl World {
         reserved
     }
 
-    pub(super) fn reserve_opening_stake(&mut self, who: Id, required: Amount) -> Result<Amount, UnfundedOpening> {
-        let eligible = self.spendable(who);
-        if eligible < required {
-            return Err(UnfundedOpening { at: self.now, required, eligible });
+    /// The funding check of an opening (D198/D199): the full initial stake must be spendable ordinary Collector FCTY now.
+    /// It mutates nothing, so every caller runs it after all other validation and before allocating anything.
+    pub(super) fn require_opening_funds(&self, who: Id, required: Amount) -> Result<(), Reject> {
+        if self.spendable(who) < required {
+            return Err(UNFUNDED_OPENING);
         }
+        Ok(())
+    }
+
+    /// Exclusive custody of a checked opening stake. Only a call that already passed `require_opening_funds` in the same
+    /// transaction may reserve, so the reservation cannot fail half-way through a filing.
+    pub(super) fn reserve_opening_stake(&mut self, who: Id, required: Amount) -> Amount {
+        assert!(self.spendable(who) >= required, "opening funds were checked in the same transaction");
         self.subjects[who as usize].reserved += required;
-        Ok(required)
+        required
+    }
+
+    /// Free pending cancellation returns the whole filing-time reservation, exactly once (the caller moves the stage first).
+    pub(super) fn release_opening_stake(&mut self, who: Id, reserved: Amount) {
+        let subject = &mut self.subjects[who as usize];
+        assert!(subject.reserved >= reserved, "a pending opening owns its reservation");
+        subject.reserved -= reserved;
     }
 
     pub(super) fn require_dispute_slot(&self, accused: Id) -> Result<(), Reject> {
@@ -42,7 +57,7 @@ impl World {
         Ok(())
     }
 
-    fn stake_at(&self, ordinal: u32) -> Amount {
+    pub(super) fn stake_at(&self, ordinal: u32) -> Amount {
         self.cfg.base_stake.map_or(Amount::ZERO, |base| chekharda::stake(ordinal, base))
     }
 
@@ -80,14 +95,17 @@ impl World {
         let (challenger, accused) = (subjects[0], subjects[1]);
         self.require_dispute_slot(accused)?;
         self.now.checked_add(chekharda::window_hours(1)).ok_or(Reject("opening deadline exceeds the simulator's time representation"))?;
-        let backing = self.reserve_opening_stake(challenger, self.stake_at(1)).map_err(|_| Reject("opening stake is not fully backed"))?;
+        self.require_opening_funds(challenger, self.stake_at(1))?;
+        let backing = self.reserve_opening_stake(challenger, self.stake_at(1));
         let case = self.allocate_case();
         self.occupy_dispute_slot(accused, DisputeId::Case(case));
         self.activate_case(case, challenger, accused, self.xp(challenger), backing);
         Ok(case)
     }
 
-    /// Record an accepted opening. XP eligibility and the event-time guarantor roster are frozen here, once.
+    /// Record an accepted opening as one atomic transaction (D199): validate, price the first stake, check spendable
+    /// Collector FCTY, then reserve it exclusively, record the pending opening with its frozen XP and guarantor roster,
+    /// and occupy the accused's slot. A refusal at any step allocates no case ID and changes no balance or slot.
     pub fn record_case_opening(&mut self, subjects: &[Id]) -> Result<u32, Reject> {
         if subjects.len() != 2 || subjects[0] == subjects[1] {
             return Err(Reject("participation requires distinct case subjects"));
@@ -105,6 +123,8 @@ impl World {
             return Err(Reject("XP is not above the challenged transaction owner"));
         }
         let matures_at = self.opening_maturity_at()?;
+        let stake = self.stake_at(1);
+        self.require_opening_funds(author, stake)?;
         let opening = OpeningRecord {
             author,
             accused,
@@ -113,6 +133,7 @@ impl World {
             author_xp_at_recording,
             accused_xp_at_recording: self.xp(accused),
             guarantors: self.mutual_partners(author),
+            reserved_stake: self.reserve_opening_stake(author, stake),
             activated_at: None,
             stage: OpeningStage::Pending,
         };
@@ -156,10 +177,11 @@ impl World {
             return Err(Reject("the opening is not pending before maturity"));
         }
         self.require_opening_canceller(actor, opening.author, &opening.guarantors)?;
-        let (author, accused) = (opening.author, opening.accused);
+        let (author, accused, reserved) = (opening.author, opening.accused, opening.reserved_stake);
         self.case_openings[case as usize].as_mut().expect("recorded opening").stage = OpeningStage::Cancelled;
         self.case_cancellations[case as usize] = Some(CancellationOutcome { case, author, accused, cancelled_by: actor, cancelled_at: self.now });
         self.stats.openings_cancelled += 1;
+        self.release_opening_stake(author, reserved);
         self.free_dispute_slot(accused, DisputeId::Case(case));
         Ok(())
     }
@@ -186,23 +208,16 @@ impl World {
         Ok(self.case_cancellation(case).expect("just cancelled pending opening").clone())
     }
 
+    /// Activation at 24 hours is deterministic (D199): the filing-time reservation becomes the first position's custody
+    /// unchanged. Funding is not rechecked or reserved again, whatever the author's free balance did meanwhile.
     pub(super) fn activate_recorded_case(&mut self, case: u32) {
         let opening = self.case_opening(case).expect("recorded opening");
-        let (author, accused, xp) = (opening.author, opening.accused, opening.author_xp_at_recording);
-        match self.reserve_opening_stake(author, self.stake_at(1)) {
-            Ok(backing) => {
-                self.activate_case(case, author, accused, xp, backing);
-                let opening = self.case_openings[case as usize].as_mut().expect("recorded opening");
-                opening.stage = OpeningStage::Activated;
-                opening.activated_at = Some(self.now);
-                self.stats.openings_activated += 1;
-            }
-            Err(shortfall) => {
-                self.case_openings[case as usize].as_mut().expect("recorded opening").stage = OpeningStage::Unfunded(shortfall);
-                self.stats.openings_unfunded += 1;
-                self.free_dispute_slot(accused, DisputeId::Case(case));
-            }
-        }
+        let (author, accused, xp, backing) = (opening.author, opening.accused, opening.author_xp_at_recording, opening.reserved_stake);
+        self.activate_case(case, author, accused, xp, backing);
+        let opening = self.case_openings[case as usize].as_mut().expect("recorded opening");
+        opening.stage = OpeningStage::Activated;
+        opening.activated_at = Some(self.now);
+        self.stats.openings_activated += 1;
     }
 
     fn activate_case(&mut self, case_id: u32, challenger: Id, accused: Id, admission_xp: i32, backed: Amount) {

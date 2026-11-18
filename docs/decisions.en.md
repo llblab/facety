@@ -540,14 +540,25 @@ Settlement uses the existing position ladder, no extra compensation, the case's 
 
 Supersedes D182–D184's active withdrawal and equal-split settlement (not D184 monetary precision), restricts D166 soft stake backing to later positions, and completes D196 release-time journal semantics. Preserves D159/D179 ladder and no-recipient settlement, D171–D173 rounds, D177/D178 restoration and soft backing for applicable sanctions. Production veto authentication/membership, disposition of conflicting reservations under the then-modeled mixed backing (resolved by D198) and appeal finances remain open. The simulator's core-only appeal fixture executes no monetary effects.
 
+**Status clarification:** D199 below moves the first-stake reservation from the 24-hour activation to the filing transaction. The single accused-subject slot, free pending cancellation, verdict-only active closure and settlement above are unchanged.
+
 ### Liquid-only stake custody
 
 **D198 — [OWNER selected clarification], 2026-11-18.** Dispute collateral is spendable ordinary Collector FCTY, whether bought or withdrawn after emission maturity. A mature right still on the emission balance is not collateral. This replaces the Emitter-right component of D166 stake custody for every position. D197's first stake remains fully funded at activation; later positions keep soft backing. Withdrawal is separate; an issuance-source cut cannot erase already withdrawn collateral. The clarification does not change invite/valence uses, case-specific merits collection, FIFO debt or open appeal finances.
+
+### Atomic dispute funding at filing
+
+**D199 — [OWNER selected correction], 2026-11-19.** No dispute may occupy an accused participant's slot unless its full initial stake is already reserved exclusively. Recording a monetary opening is one atomic transaction: validate the accused, challenger, XP eligibility, typed target and applicable admission rules; compute the case-specific initial stake; verify spendable Collector FCTY under D198; reserve the full stake exclusively; record the pending opening and its historical snapshots; occupy the slot. Any failure rejects the whole filing without a case identifier, slot, balance change or reservation; checking a balance without reserving it is insufficient. The reservation cannot be spent, transferred, withdrawn or pledged again.
+
+The 24-hour pendency is preserved: no restrictions, maturity suspension or response clock apply, and the author or an authorized recording-time guarantor may cancel for free, releasing the whole reservation and the slot once. At maturity activation consumes the existing reservation as the opening position's backing, without rechecking funding, reserving again or cancelling because the author's free balance changed; it keeps the recorded XP, guarantor roster and D195 filing-frozen scope/`N`. This applies to every opening with a selected monetary initial stake, ordinary identity cases and independent Self-ID transaction cases, each with its own formula. The appeal fixture, which has no selected financial contract, keeps its trusted boundary: it occupies its slot without collateral, and no zero-cost production appeal or mandatory appeal stake is inferred. Later ladder positions keep D197 soft backing and D198 Collector-only custody.
+
+Supersedes D197's activation-time funding and its non-activation outcome for an underfunded filing, and D198's statement that the first stake is funded at activation. Retains D197's single accused-subject slot, free pending cancellation, verdict-only closure and settlement, and changes no merits sanction, FIFO debt, Council round or case-specific restoration. The canonical order of other same-time transactions, opening-veto authentication and membership, and appeal finances remain open. The simulator's scheduler order is a declared model convention in the [model contract](simulator.en.md#implemented-rules).
 
 ### Earlier supersessions
 
 | Earlier description | Status |
 | --- | --- |
+| D197 reserving the first stake at the 24-hour activation and recording non-activation for an underfunded filing. | **D199:** the full first stake is reserved exclusively in the atomic filing transaction or the filing is refused; activation reuses that reservation without a funding decision; free pending cancellation returns it once. |
 | Active withdrawal, cancellation pools, soft opening stakes and concurrent cases against the same accused. | **D197:** verdict-only active closure; 100% opening funding at activation; one subject slot held from filing through effects. |
 | "A receipt maturing during an active case is credited." | **D196:** the accused's not-yet-matured Self-IDs are suspended instead, so a receipt maturing inside the case is not earned; it matures once at release, or never if the case invalidates it. |
 | D190 fixing the disputed endpoint and N at the uncancelled opening's 24-hour activation. | **D195:** the endpoint, `N` and every charge of a non-author Self-ID correction case are frozen at recording; the pendency delays only activation, holds, custody and the clock, and later Self-IDs never increase that case's exposure. |

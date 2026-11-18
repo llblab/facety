@@ -5,7 +5,7 @@
 //! debt, imposed restriction hours) so a nominal claim is never reported as a realized cost.
 use facety_sim::amount::Amount;
 use facety_sim::chekharda::Side;
-use facety_sim::world::{Config, Id, OpeningStage, TransactionTarget, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, UnfundedOpening, World, DAY};
+use facety_sim::world::{Config, Id, TransactionTarget, TrustedAdmissionPremises, TrustedMerits, TrustedPremise, World, DAY};
 
 fn ring(n: usize) -> Vec<(Id, Id)> {
     let mut pairs = Vec::new();
@@ -50,28 +50,26 @@ fn accusation_pricing_probe_separates_rejected_pending_active_and_merits_loss() 
     assert_eq!((w.liquid(6), w.debt(6), w.held(0), w.held(6)), (before.0, before.1, before.2, before.3));
     println!("rejected attempt: realized cost 0 FCTY, restrictions imposed 0 h, own restriction 0 h, XP-gate refusals {}", w.stats.refused_xp - before.4);
 
-    // ---------------- a pending filing and its free withdrawal ----------------
-    build(&mut w, 6, 1, 0); // now 2 XP > 1 XP, still without cross guarantee credit
+    // ---------------- an unfunded filing is refused atomically (D199) ----------------
+    build(&mut w, 6, 1, 2); // now 2 XP > 1 XP, but only 2 of the 7 FCTY stake as Collector FCTY
+    let before = (w.liquid(6), w.spendable(6), w.debt(6), w.supply(), w.held(0), w.held(6));
+    assert_eq!(w.record_case_opening(&[6, 0]), Err(facety_sim::world::UNFUNDED_OPENING), "partial backing cannot file");
+    assert_eq!((w.liquid(6), w.spendable(6), w.debt(6), w.supply(), w.held(0), w.held(6)), before);
+    assert!(w.case_opening(0).is_none() && w.pending_openings() == 0, "no case ID or slot was allocated");
+    println!("unfunded filing: refused, realized cost 0 FCTY, nothing reserved, no slot occupied");
+
+    // ---------------- a funded pending filing and its free withdrawal ----------------
+    build(&mut w, 6, 5, 5);
     let pending = w.record_case_opening(&[6, 0]).unwrap();
+    assert_eq!(pending, 0, "the refused attempt consumed no case ID");
     assert!(!w.held(0) && !w.held(6), "a pending filing restricts nobody");
+    assert_eq!(w.case_opening(pending).unwrap().reserved_stake, Amount::coins(7), "the full stake is reserved at filing");
     let before = (w.liquid(6), w.debt(6), w.supply());
+    let spendable = w.spendable(6);
     w.cancel_case_opening(pending, 6).unwrap();
     assert_eq!((w.liquid(6), w.debt(6), w.supply()), before, "a pending withdrawal forfeits nothing");
+    assert_eq!(w.spendable(6), spendable + Amount::coins(7), "and returns the whole reservation");
     println!("pending filing then withdrawal: realized cost 0 FCTY, restrictions imposed 0 h, own restriction 0 h");
-
-    // An underfunded filing closes at the boundary without restricting or charging anyone.
-    let mut w = world();
-    build(&mut w, 0, 1, 0);
-    build(&mut w, 6, 2, 2);
-    let case = w.record_case_opening(&[6, 0]).unwrap();
-    let at = w.case_opening(case).unwrap().matures_at;
-    let before = (w.spendable(6), w.debt(6), w.supply());
-    w.tick(at);
-    assert_eq!(w.case_opening(case).unwrap().stage, OpeningStage::Unfunded(UnfundedOpening { at, required: Amount::coins(7), eligible: Amount::coins(2) }));
-    assert_eq!((w.spendable(6), w.debt(6), w.supply()), before);
-    assert!(!w.held(0) && !w.held(6) && w.case_deadline(case).is_none());
-    assert!(w.record_case_opening(&[6, 0]).is_ok(), "the failed activation releases the slot");
-    w.audit().unwrap();
 
     // ---------------- a merits loss ----------------
     let mut w = world();
@@ -153,4 +151,66 @@ fn strategic_filing_delay_probe_separates_nominal_count_from_actual_recovery() {
     // Both filings execute, under the filing-time count, from actual collection only.
     assert!(early.3 && late.3);
     println!("a larger filing-time N is executable, but it collects only what the accused actually holds; the rest is debt");
+}
+
+/// D199 funded filing lifecycle across two independent authors. Same-hour ordering: the scheduler activates due
+/// openings at their maturity hour before any call made at that hour, so free cancellation ends at `matures_at - 1`
+/// and a filing in the maturity hour can use only free Collector FCTY.
+#[test]
+fn a_funded_filing_owns_its_stake_from_filing_through_activation_and_releases_it_once() {
+    use facety_sim::world::UNFUNDED_OPENING;
+    let mut w = world();
+    build(&mut w, 0, 1, 0);
+    build(&mut w, 3, 1, 0);
+    build(&mut w, 6, 9, 8);
+    build(&mut w, 9, 9, 8);
+    let a = w.record_case_opening(&[6, 0]).unwrap();
+    assert_eq!((w.liquid(6), w.spendable(6)), (Amount::coins(8), Amount::ONE), "the full stake is reserved at filing");
+    // A second challenger cannot take the accused's slot while the funded opening holds it.
+    let before = (w.spendable(9), w.pending_openings());
+    assert!(w.record_case_opening(&[9, 0]).is_err());
+    assert_eq!((w.spendable(9), w.pending_openings()), before);
+    // The reservation cannot back another filing, and an authorized burn reaches only the free coin.
+    assert_eq!(w.record_case_opening(&[6, 3]), Err(UNFUNDED_OPENING));
+    assert_eq!(w.burn_liquid(6), Amount::ONE);
+    assert_eq!((w.liquid(6), w.spendable(6)), (Amount::coins(7), Amount::ZERO));
+    // An unrelated funded opening by another author keeps its own custody.
+    let b = w.record_case_opening(&[9, 3]).unwrap();
+    let at = w.case_opening(a).unwrap().matures_at;
+    assert_eq!(w.case_opening(b).unwrap().matures_at, at, "both openings mature in the same hour");
+    assert_eq!(w.spendable(9), Amount::ONE);
+    w.audit().unwrap();
+
+    // The last pending hour still allows free cancellation; it releases exactly one reservation, once.
+    let mut early = w.clone();
+    early.tick(at - 1);
+    early.cancel_case_opening(b, 9).unwrap();
+    assert_eq!(early.spendable(9), Amount::coins(8));
+    assert!(early.cancel_case_opening(b, 9).is_err());
+    assert_eq!(early.spendable(9), Amount::coins(8), "a replayed cancellation releases nothing");
+    early.tick(at);
+    assert!(early.case_deadline(a).is_some() && early.case_deadline(b).is_none());
+    assert!(!early.held(3) && !early.held(9) && early.held(0) && early.held(6));
+    assert_eq!((early.liquid(6), early.spendable(6)), (Amount::coins(7), Amount::ZERO), "the other author's custody is untouched");
+    early.audit().unwrap();
+
+    // At the maturity hour both openings activate on their reservations before any call of that hour.
+    w.tick(at);
+    assert!(w.cancel_case_opening(a, 6).is_err(), "the opening has already activated at its maturity hour");
+    for (case, author, accused) in [(a, 6, 0), (b, 9, 3)] {
+        assert_eq!(w.case_positions(case)[0].stake, Amount::coins(7));
+        assert!(w.held(author) && w.held(accused));
+    }
+    assert_eq!((w.liquid(6), w.spendable(6)), (Amount::coins(7), Amount::ZERO), "activation never charges twice");
+    assert_eq!((w.liquid(9), w.spendable(9)), (Amount::coins(8), Amount::ONE));
+    assert_eq!(w.record_case_opening(&[9, 1]), Err(UNFUNDED_OPENING), "a same-hour filing sees only free Collector FCTY");
+    w.audit().unwrap();
+
+    let supply = w.supply();
+    w.tick(w.case_deadline(a).unwrap().max(w.case_deadline(b).unwrap()));
+    w.settle_case(a, None).unwrap();
+    w.settle_case(b, Some(Side::Accused)).unwrap();
+    assert!(w.supply() <= supply, "settlement moves or burns collected value, never creates it");
+    assert_eq!((w.spendable(6), w.spendable(9)), (w.liquid(6), w.liquid(9)), "verdicts release all custody");
+    w.audit().unwrap();
 }

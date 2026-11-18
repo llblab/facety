@@ -389,6 +389,16 @@ fn invariants(w: &World) {
     for id in 0..w.len() as Id {
         assert!(w.spendable(id) <= w.liquid(id), "custody exceeds the account's liquid balance");
     }
+    // D199: every pending funded opening owns exactly its full first stake, and the total reservation is exactly the
+    // pending openings plus the active positions' custody, never more and never counted twice across activation.
+    let pending: Amount = w.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Pending).map(|o| o.reserved_stake).sum::<Amount>()
+        + w.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending).map(|r| r.reserved_stake).sum::<Amount>();
+    let custody: Amount = w.cases.iter().flatten().flat_map(|c| c.backed.iter().copied()).sum();
+    let reserved: Amount = w.subjects.iter().map(|s| s.reserved).sum();
+    assert_eq!(reserved, pending + custody, "reservations differ from pending openings plus active custody");
+    for o in w.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Pending) {
+        assert_eq!(o.reserved_stake, w.stake_at(1), "a pending opening holds its full first stake");
+    }
 }
 
 fn ring(n: usize) -> Vec<(Id, Id)> {
@@ -514,6 +524,39 @@ fn prologue() -> Vec<Event> {
         Event::BeginCase(5, 4),
         Event::Tick(7),
         Event::SettleCase(2, Some(1)),
+        // D199: the funded filing lifecycle. Account 0 first files with too little Collector FCTY, which is refused
+        // atomically (no case ID, slot or custody). It then withdraws seven FCTY, files case 3 (full reservation),
+        // cancels it for free, replays the cancellation (refused, releasing nothing twice), files case 4 and
+        // activates it on the same reservation at 24 hours, and the verdict settles from that custody.
+        Event::PendingOpening(0, 3),
+        Event::SelfId(0),
+        Event::Tick(1),
+        Event::SelfId(0),
+        Event::Tick(1),
+        Event::SelfId(0),
+        Event::Tick(1),
+        Event::SelfId(0),
+        Event::Tick(1),
+        Event::SelfId(0),
+        Event::Tick(1),
+        Event::SelfId(0),
+        Event::Tick(1),
+        Event::SelfId(0),
+        Event::Tick(1),
+        Event::Convert(0),
+        Event::Convert(0),
+        Event::Convert(0),
+        Event::Convert(0),
+        Event::Convert(0),
+        Event::Convert(0),
+        Event::Convert(0),
+        Event::PendingOpening(0, 3),
+        Event::CancelCaseOpening(3, 0),
+        Event::CancelCaseOpening(3, 0),
+        Event::PendingOpening(0, 3),
+        Event::Tick(1),
+        Event::Tick(7),
+        Event::SettleCase(4, None),
     ]
 }
 
@@ -538,6 +581,14 @@ fn step(w: &mut World, log: &mut Vec<Event>, event: Event) -> bool {
 #[test]
 fn deterministic_event_logs_preserve_conservation_custody_fifo_xp_and_atomic_refusal() {
     let mut total = (0usize, 0usize);
+    // The prologue's first D199 filing passes every admission check and is refused only for missing Collector FCTY.
+    let first = prologue().iter().position(|e| matches!(e, Event::PendingOpening(0, 3))).expect("funded-filing segment");
+    let mut probe = fresh();
+    for event in &prologue()[..first] {
+        let _ = apply(&mut probe, event);
+    }
+    assert!(probe.xp(0) > probe.xp(3) && probe.dispute_slots.is_empty(), "the refused filing is otherwise admissible");
+    assert_eq!(probe.record_case_opening(&[0, 3]), Err(UNFUNDED_OPENING));
     for seed in SEEDS {
         let mut rng = Lcg(seed);
         let mut w = fresh();
@@ -556,6 +607,18 @@ fn deterministic_event_logs_preserve_conservation_custody_fifo_xp_and_atomic_ref
         assert!(w.stats.maturities_deferred >= 1, "the prologue suspends a pending maturity (seed {seed})");
         assert!(w.stats.maturities_released >= 1, "the prologue releases it exactly once (seed {seed})");
         assert!(w.maturity_holds().is_empty(), "the prologue leaves no leaked hold (seed {seed})");
+        // D199: the refused filing allocated nothing; the cancelled one released its reservation once; the activated
+        // one reused its reservation and settled.
+        assert_eq!(w.cases.len(), 5, "the unfunded filing consumed no case ID (seed {seed})");
+        assert_eq!(
+            (w.stats.openings_recorded, w.stats.openings_cancelled, w.stats.openings_activated, w.stats.settled),
+            (2, 1, 1, 2),
+            "the prologue records, cancels, activates and settles funded openings (seed {seed})"
+        );
+        assert_eq!(w.case_cancellation(3).map(|c| c.cancelled_by), Some(0));
+        assert_eq!(w.case_opening(4).map(|o| (o.stage, o.reserved_stake)), Some((OpeningStage::Final, Amount::coins(7))));
+        assert_eq!(w.case_outcome(4).map(|o| o.positions), Some(1));
+        assert_eq!(w.subjects[0].reserved, Amount::ZERO, "settlement released the activated reservation (seed {seed})");
         for _ in 0..EVENTS {
             let event = draw(&mut rng, &w);
             if step(&mut w, &mut log, event) {

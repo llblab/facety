@@ -35,22 +35,26 @@ impl World {
     /// XP, integrity repair or debt service, and is processed exactly once when its last hold ends. A suspended act therefore
     /// never blocks the later maturities of unaffected accounts.
     pub(super) fn settle(&mut self) {
+        self.settle_through(self.now);
+    }
+
+    /// `settle` limited to maturities at or before `last`; the scheduler credits those strictly before an activation hour
+    /// before the activation establishes its holds, so only maturities from that hour on can be suspended.
+    pub(super) fn settle_through(&mut self, last: i64) {
+        debug_assert!(last <= self.now, "maturities are never credited ahead of time");
         while self.settled < self.acts.len() {
             let act_id = self.settled as u32;
             let recorded_at = self.acts[self.settled].recorded_at;
             let maturity = recorded_at + MATURITY_HOURS;
-            if maturity > self.now {
+            if maturity > last {
                 break;
             }
             self.settled += 1;
-            let act = &self.acts[act_id as usize];
-            if !act.pending_maturity() {
+            if !self.acts[act_id as usize].pending_maturity() {
                 continue;
             }
             if self.maturity_held(act_id) {
                 self.defer_maturity(act_id);
-            } else if maturity == self.now && self.activation_candidates.contains(&act.subject) {
-                self.boundary_maturities.push(act_id);
             } else {
                 self.mature(act_id, maturity);
             }
@@ -60,22 +64,6 @@ impl World {
     fn defer_maturity(&mut self, act: u32) {
         self.deferred_maturities.push(act);
         self.stats.maturities_deferred += 1;
-    }
-
-    pub(super) fn complete_activation_boundary(&mut self) {
-        self.activation_candidates.clear();
-        let deferred_before = self.deferred_maturities.len();
-        for act in std::mem::take(&mut self.boundary_maturities) {
-            if self.maturity_held(act) {
-                self.defer_maturity(act);
-            } else {
-                // An unfunded opening never suspended this act.
-                self.mature(act, self.now);
-            }
-        }
-        if self.deferred_maturities.len() != deferred_before {
-            self.deferred_maturities.sort_unstable();
-        }
     }
 
     /// Credit one matured act exactly once, at its scheduled time or the actual release event.

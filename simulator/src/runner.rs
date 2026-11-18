@@ -9,13 +9,13 @@ use crate::chekharda::{CouncilVote, Side};
 use crate::json;
 use crate::paths::{layered_support, NO_LEVEL};
 use crate::rng::{hash_seed, Rng};
-use crate::world::{Config as WorldConfig, Id, Reject, World, DAY};
+use crate::world::{Config as WorldConfig, Id, Reject, World, DAY, UNFUNDED_OPENING};
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
 
-pub const ENGINE: &str = "facety-sim/runner-v8";
+pub const ENGINE: &str = "facety-sim/runner-v9";
 /// Version of the saved result layout.
-pub const SCHEMA: &str = "facety-sim/result-v8";
+pub const SCHEMA: &str = "facety-sim/result-v9";
 pub const COUNCIL_VOTING_POLICY: &str = "first-daily-review-per-round/binary-belief-v1";
 pub const APPEAL_EXECUTION_POLICY: &str = "conditional-approved-case-reversal/earned-receipts/integrity-replay/fifo-debt/v1";
 
@@ -533,6 +533,8 @@ pub struct DetectionCounters {
     /// Formal cases refused by the common procedure (XP gate, disabled disputes, invalid parties); no state changed for them.
     pub cases_refused: u64,
     pub cases_refused_xp: u64,
+    /// Filings refused atomically because the full first stake was not spendable Collector FCTY (D199); also in `cases_refused`.
+    pub cases_refused_unfunded: u64,
 }
 
 #[derive(Clone, Debug)]
@@ -1375,7 +1377,8 @@ impl Sim {
         Ok(())
     }
 
-    /// Record a pending opening; 24 hours later, full backing is required before custody, restrictions or the clock start.
+    /// Record a funded pending opening (D199): the full first stake is reserved at filing or the filing is refused; 24 hours
+    /// later the case activates on that reservation and restrictions and the clock start.
     fn open_case(&mut self, challenger: Id, target: Id, follow_up: bool) -> bool {
         if let Err(reason) = self.case_gate(challenger, target) {
             self.det.cases_refused += 1;
@@ -1384,9 +1387,15 @@ impl Sim {
             }
             return false;
         }
-        let Ok(case) = self.world.record_case_opening(&[challenger, target]) else {
-            self.det.cases_refused += 1;
-            return false;
+        let case = match self.world.record_case_opening(&[challenger, target]) {
+            Ok(case) => case,
+            Err(reason) => {
+                self.det.cases_refused += 1;
+                if reason == UNFUNDED_OPENING {
+                    self.det.cases_refused_unfunded += 1;
+                }
+                return false;
+            }
         };
         self.case_sequence += 1;
         let can_defend = matches!(self.kind[target as usize], Kind::Genuine | Kind::Operator);
@@ -1582,9 +1591,7 @@ impl Sim {
 
     fn detect(&mut self) {
         let det = self.cfg.detection.clone();
-        self.open_cases.retain(|r| {
-            !self.world.case_opening(r.case).is_some_and(|o| matches!(o.stage, crate::world::OpeningStage::Cancelled | crate::world::OpeningStage::Unfunded(_)))
-        });
+        self.open_cases.retain(|r| !self.world.case_opening(r.case).is_some_and(|o| o.stage == crate::world::OpeningStage::Cancelled));
         let mut targeted: HashSet<Id> = self.open_cases.iter().map(|c| c.target).collect();
         // Conditional accepted appeal, not admission or Council adjudication: execute only effects attributed to that original case.
         let now = self.world.now();
@@ -1979,8 +1986,8 @@ impl Sim {
         let (st, l) = (&self.world.stats, &self.ladder);
         let _ = write!(
             s,
-            "\"openingTransactions\":{{\"recorded\":{},\"activated\":{},\"cancelledBeforeMaturity\":{},\"unfundedAtMaturity\":{}}},",
-            st.openings_recorded, st.openings_activated, st.openings_cancelled, st.openings_unfunded
+            "\"openingTransactions\":{{\"recorded\":{},\"activated\":{},\"cancelledBeforeMaturity\":{},\"refusedUnfunded\":{}}},",
+            st.openings_recorded, st.openings_activated, st.openings_cancelled, self.det.cases_refused_unfunded
         );
         let _ = write!(
             s,
@@ -2410,39 +2417,44 @@ mod tests {
     }
 
     #[test]
-    fn an_unfunded_opening_is_retired_before_detection_and_never_settles() {
+    fn an_unfunded_filing_is_refused_without_a_record_and_a_funded_one_owns_its_stake() {
         let mut sim = grown_honest("stake-unbacked");
         let (challenger, target) = find_pair(&sim, |a, b| a > b).unwrap();
         for act in sim.world.eligible_emissions(challenger, DAY) {
             sim.world.convert_to_collector(challenger, act).unwrap();
         }
+        let mut funded = sim.clone();
         sim.world.burn_liquid(challenger);
         assert_eq!(sim.case_gate(challenger, target), Ok(()));
-        let funds = sim.world.stats.refused_funds;
-        assert!(sim.open_case(challenger, target, false), "funding is checked only at activation");
-        let case = sim.open_cases[0].case;
-        assert_eq!(sim.world.stats.refused_funds, funds, "pending filings reserve nothing");
+        let (refused, recorded) = (sim.det.cases_refused, sim.world.stats.openings_recorded);
+        assert!(!sim.open_case(challenger, target, false), "D199: funding is checked and reserved at filing");
+        assert!(sim.open_cases.is_empty() && sim.world.pending_openings() == 0);
+        assert_eq!((sim.det.cases_refused, sim.det.cases_refused_unfunded, sim.world.stats.openings_recorded), (refused + 1, 1, recorded));
         assert!(!sim.world.held(challenger) && !sim.world.held(target));
-        assert!(sim.world.case_deadline(case).is_none());
-        assert!(sim.to_json().contains("\"openCases\":0,\"pendingOpenings\":1"));
-        let mut cancelled = sim.clone();
+        assert!(sim.to_json().contains("\"refusedUnfunded\":1"));
+        json::validate(&sim.to_json()).unwrap();
+        sim.world.audit().unwrap();
+
+        let spendable = funded.world.spendable(challenger);
+        assert!(spendable >= Amount::coins(7), "the grown challenger can fund the selected base stake");
+        assert!(funded.open_case(challenger, target, false));
+        let case = funded.open_cases[0].case;
+        assert_eq!(funded.world.spendable(challenger), spendable - Amount::coins(7), "the pending filing owns its stake");
+        assert!(funded.to_json().contains("\"openCases\":0,\"pendingOpenings\":1"));
+        let mut cancelled = funded.clone();
         cancelled.world.cancel_case_opening(case, challenger).unwrap();
         cancelled.detect();
         assert!(cancelled.open_cases.is_empty(), "cancelled filings leave no runner record awaiting activation");
         assert_eq!((cancelled.world.stats.openings_cancelled, cancelled.world.stats.opened), (1, 0));
+        assert_eq!(cancelled.world.spendable(challenger), spendable, "cancellation returns the whole reservation");
         cancelled.world.tick(cancelled.world.now() + DAY);
         assert!(cancelled.world.case_state(case).is_none(), "a cancelled filing never activates");
         cancelled.world.audit().unwrap();
-        sim.world.tick(sim.world.case_opening(case).unwrap().matures_at);
-        assert_eq!(sim.world.stats.refused_funds, funds);
-        assert!(!sim.world.held(challenger) && !sim.world.held(target));
-        sim.detect();
-        assert!(sim.open_cases.iter().all(|r| r.case != case));
-        assert_eq!((sim.world.stats.openings_unfunded, sim.world.stats.settled), (1, 0));
-        assert_eq!(sim.ladder.debt.iter().copied().sum::<Amount>(), Amount::ZERO);
-        assert!(sim.to_json().contains("\"unfundedAtMaturity\":1"));
-        json::validate(&sim.to_json()).unwrap();
-        sim.world.audit().unwrap();
+        funded.world.burn_liquid(challenger);
+        funded.world.tick(funded.world.case_opening(case).unwrap().matures_at);
+        assert!(funded.world.held(challenger) && funded.world.held(target), "other balance changes cannot unfund the opening");
+        assert_eq!(funded.world.case_positions(case)[0].stake, Amount::coins(7));
+        funded.world.audit().unwrap();
     }
 
     /// Every case is settled by the ladder at its deadline: with nobody joining a case lasts exactly the first window of seven days, joining
@@ -2463,7 +2475,7 @@ mod tests {
             let st = sim.world.stats.clone();
             let active = sim.open_cases.iter().filter(|r| sim.world.case_state(r.case).is_some()).count() as u64;
             assert_eq!(st.opened, st.settled + active, "every activated case is closed or still active");
-            assert_eq!(st.openings_recorded, st.openings_activated + st.openings_cancelled + st.openings_unfunded + sim.world.pending_openings() as u64);
+            assert_eq!(st.openings_recorded, st.openings_activated + st.openings_cancelled + sim.world.pending_openings() as u64);
             assert!(st.settled > 0, "the run must settle cases to be a test");
             (st.duration_hours as f64 / 24.0 / st.settled as f64, st.joined, st.max_positions)
         };

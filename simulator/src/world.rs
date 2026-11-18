@@ -38,8 +38,9 @@ pub use self_id_case::{
 pub const DAY: i64 = 24;
 /// Model assumptions while production authentication, ballot revision and same-hour membership ordering remain open.
 pub const COUNCIL_EXECUTION_POLICY: &str = "trusted-ids/first-ballot/activation-aware-maturity-before-round/daily-entry-cache/v2";
-/// Recording-time eligibility and roster, later activation, and trusted author cancellation; appeal adjudication remains separate.
-pub const CASE_ADMISSION_POLICY: &str = "trusted-ids/recording-roster/single-accused/liquid-funded-at-24h/v4";
+/// Recording-time eligibility, roster and exclusive first-stake reservation (D199); 24-hour activation on that reservation;
+/// trusted free pending cancellation releasing it. Appeal adjudication remains separate.
+pub const CASE_ADMISSION_POLICY: &str = "trusted-ids/recording-roster/single-accused/liquid-reserved-at-filing/v5";
 /// D42: a valid, uncancelled Self-ID matures, and its ordinary XP is earned, exactly this many hours after creation.
 pub const MATURITY_HOURS: i64 = 24;
 /// Model coefficient precision and penalty rounding, distinct from D165's final-XP floor.
@@ -237,12 +238,8 @@ pub enum DisputeId {
     Appeal(u32),
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct UnfundedOpening {
-    pub at: i64,
-    pub required: Amount,
-    pub eligible: Amount,
-}
+/// The atomic filing refusal when the full initial stake is not spendable ordinary Collector FCTY (D198/D199).
+pub const UNFUNDED_OPENING: Reject = Reject("the full initial stake is not spendable Collector FCTY at filing");
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum CaseKind {
@@ -403,7 +400,6 @@ pub enum OpeningStage {
     Activated,
     Cancelled,
     Final,
-    Unfunded(UnfundedOpening),
 }
 
 /// The recorded opening transaction, distinct from the active dispute and any Self-ID receipt.
@@ -417,6 +413,9 @@ pub struct OpeningRecord {
     pub accused_xp_at_recording: i32,
     /// Established current mutual guarantors at recording, not historical identity-case XP recipients.
     pub guarantors: Vec<Id>,
+    /// The full first stake reserved exclusively from the author's Collector FCTY at recording (D199). Pending, it is
+    /// owned by this opening; activation moves it unchanged into the first position's custody; cancellation returns it.
+    pub reserved_stake: Amount,
     pub activated_at: Option<i64>,
     pub stage: OpeningStage,
 }
@@ -449,7 +448,6 @@ pub struct DisputeStats {
     pub openings_recorded: u64,
     pub openings_activated: u64,
     pub openings_cancelled: u64,
-    pub openings_unfunded: u64,
     pub opened: u64,
     /// Positions admitted after the first (the first is the opening).
     pub joined: u64,
@@ -490,7 +488,6 @@ pub struct DisputeStats {
     pub self_id_openings_recorded: u64,
     pub self_id_openings_activated: u64,
     pub self_id_openings_cancelled: u64,
-    pub self_id_openings_unfunded: u64,
     pub self_id_settled: u64,
     pub self_id_awarded: Amount,
     /// Always zero inside the isolated subset; a non-zero value would contradict D192.
@@ -573,9 +570,6 @@ pub struct World {
     maturity_holds: Vec<MaturityHold>,
     /// Acts whose maturity timestamp has passed while a hold applied; sorted ascending, each processed exactly once.
     deferred_maturities: Vec<u32>,
-    /// Temporary set of subjects whose opening reaches the activation boundary in the current event.
-    activation_candidates: HashSet<Id>,
-    boundary_maturities: Vec<u32>,
     appeal_requests: Vec<AppealRequest>,
     appeals: Vec<AppealRecord>,
     /// Independent causes coexist: removing one case cannot erase another case or a separately authorized revocation.
@@ -641,8 +635,6 @@ impl World {
             self_id_settlements: Vec::new(),
             maturity_holds: Vec::new(),
             deferred_maturities: Vec::new(),
-            activation_candidates: HashSet::new(),
-            boundary_maturities: Vec::new(),
             appeal_requests: Vec::new(),
             appeals: Vec::new(),
             xp_revocations: FastMap::default(),
@@ -941,7 +933,11 @@ impl World {
     /// Advance to `hour` and refresh the daily snapshot (activity, difficulty, Council, support levels, distances).
     pub fn tick(&mut self, hour: i64) {
         assert!(hour >= self.now, "time cannot move backwards");
-        // Whole-hour batches finish funding and maturity before taking the electorate for new rounds.
+        // One event batch, in a fixed order (D199): maturities strictly before its hour are credited; due openings
+        // activate on their filing-time reservations (no funding decision exists here); then that hour's Self-ID
+        // maturities are credited, so an accused's maturity at the activation hour is already suspended (D196); then
+        // Council cutoffs close and the electorate is taken for new rounds. Calls made at the same hour (filings,
+        // cancellations, conversions) run after the batch, in call order.
         loop {
             let opening = self.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Pending && o.matures_at <= hour).map(|o| o.matures_at).min();
             let council = self.cases.iter().flatten().filter(|c| c.ladder.is_due(hour)).map(|c| c.ladder.deadline()).min();
@@ -958,19 +954,8 @@ impl World {
             let self_id =
                 self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at <= hour).map(|r| r.matures_at).min();
             let Some(at) = opening.into_iter().chain(council).chain(appeals).chain(self_id).min() else { break };
-            // Credit unaffected maturities first. A due accused's same-hour maturities remain unavailable while
-            // this batch decides which filings activate, so they cannot fund a competing activation in the batch.
-            self.activation_candidates.extend(
-                self.case_openings
-                    .iter()
-                    .flatten()
-                    .filter(|o| o.stage == OpeningStage::Pending && o.matures_at == at)
-                    .map(|o| o.accused)
-                    .chain(self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at).map(|r| r.accused))
-                    .chain(self.appeals.iter().filter(|a| a.stage == AppealStage::Pending && a.matures_at == at).map(|a| a.accused)),
-            );
             self.now = at;
-            self.settle();
+            self.settle_through(at - 1);
             for id in 0..self.cases.len() {
                 if self.case_openings[id].as_ref().is_some_and(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
                     self.activate_recorded_case(id as u32);
@@ -979,7 +964,7 @@ impl World {
                 }
             }
             self.activate_due_appeals(at);
-            self.complete_activation_boundary();
+            self.settle();
             self.refresh_snapshot(at);
             for c in &mut self.cases {
                 let Some(c) = c.as_mut().filter(|c| c.ladder.is_due(at)) else { continue };
@@ -1152,7 +1137,7 @@ impl World {
     /// Whether this act's maturity is still suspended or awaiting its release processing. Such an act is not a mature
     /// entitlement yet: it cannot be spent, converted, used as collateral or used to repay debt.
     fn maturity_pending_credit(&self, act: u32) -> bool {
-        self.maturity_held(act) || self.deferred_maturities.binary_search(&act).is_ok() || self.boundary_maturities.binary_search(&act).is_ok()
+        self.maturity_held(act) || self.deferred_maturities.binary_search(&act).is_ok()
     }
 
     /// The act's recorded creation hour (its maturity is this plus `MATURITY_HOURS`).
@@ -1412,16 +1397,12 @@ impl World {
                 return Err(format!("opening {id} has invalid recording provenance"));
             }
             match opening.stage {
-                OpeningStage::Pending | OpeningStage::Unfunded(_) => {
-                    let invalid_time = match opening.stage {
-                        OpeningStage::Unfunded(f) => f.at != opening.matures_at || f.at > self.now || f.eligible >= f.required,
-                        _ => opening.matures_at <= self.now,
-                    };
+                OpeningStage::Pending => {
                     if opening.activated_at.is_some()
                         || self.cases[id].is_some()
                         || self.case_effects[id].is_some()
                         || self.case_cancellations[id].is_some()
-                        || invalid_time
+                        || opening.matures_at <= self.now
                     {
                         return Err(format!("opening {id} has invalid pending or cancelled state"));
                     }
@@ -1450,6 +1431,7 @@ impl World {
                         || case.accused != opening.accused
                         || case.ladder.positions()[0].who != opening.author
                         || case.ladder.positions()[0].xp != opening.author_xp_at_recording
+                        || case.backed[0] != opening.reserved_stake
                         || self.case_effects[id].is_some()
                     {
                         return Err(format!("opening {id} has invalid activation provenance"));
@@ -1469,10 +1451,7 @@ impl World {
         let recorded = self.case_openings.iter().flatten().count() as u64;
         let activated = self.case_openings.iter().flatten().filter(|o| o.activated_at.is_some()).count() as u64;
         let cancelled = self.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Cancelled).count() as u64;
-        let unfunded = self.case_openings.iter().flatten().filter(|o| matches!(o.stage, OpeningStage::Unfunded(_))).count() as u64;
-        if (recorded, activated, cancelled, unfunded)
-            != (self.stats.openings_recorded, self.stats.openings_activated, self.stats.openings_cancelled, self.stats.openings_unfunded)
-        {
+        if (recorded, activated, cancelled) != (self.stats.openings_recorded, self.stats.openings_activated, self.stats.openings_cancelled) {
             return Err("opening records differ from lifecycle counters".into());
         }
         let unspent = self.acts.iter().filter(|a| a.status == ActStatus::Unspent).count() as i64;
@@ -1494,9 +1473,7 @@ impl World {
         {
             return Err("Self-ID maturity holds do not match the open cases".into());
         }
-        if !self.activation_candidates.is_empty()
-            || !self.boundary_maturities.is_empty()
-            || self.deferred_maturities.windows(2).any(|w| w[0] >= w[1])
+        if self.deferred_maturities.windows(2).any(|w| w[0] >= w[1])
             || self.deferred_maturities.iter().any(|&act| {
                 self.acts.get(act as usize).is_none_or(|a| a.recorded_at + MATURITY_HOURS > self.now || !a.pending_maturity() || !self.maturity_held(act))
             })
@@ -1609,6 +1586,13 @@ impl World {
         let mut holds = vec![0u32; n];
         let mut path_holds = vec![0u32; n];
         let mut frozen = vec![0u32; n];
+        // D199: a pending funded opening owns its whole filing-time reservation; activation moves it into case custody.
+        for opening in self.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Pending) {
+            reserved[opening.author as usize] += opening.reserved_stake;
+        }
+        for record in self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending) {
+            reserved[record.author as usize] += record.reserved_stake;
+        }
         for appeal in self.appeals.iter().filter(|a| a.activated_at.is_some() && !a.released) {
             frozen[appeal.accused as usize] += 1;
             for &(id, _, path) in &appeal.holds {
@@ -2827,7 +2811,12 @@ mod tests {
         assert_eq!(w.pending_openings(), 1);
         assert_eq!(w.case_deadline(case), None);
         assert!(!w.held(author) && !w.held(accused));
-        assert_eq!((w.minted, w.supply(), w.xp(author), w.spendable(author), w.stats.staked, w.stats.opened), before);
+        assert_eq!((w.minted, w.supply(), w.xp(author), w.stats.staked, w.stats.opened), (before.0, before.1, before.2, before.4, before.5));
+        assert_eq!(
+            (opening.reserved_stake, w.spendable(author)),
+            (Amount::coins(7), before.3 - Amount::coins(7)),
+            "D199: the full stake is reserved at filing"
+        );
         assert!(w.join_case(case, author).is_err());
         assert!(w.settle_case(case, None).is_err());
         w.tick(recorded_at + DAY - 1);
@@ -2840,7 +2829,7 @@ mod tests {
         assert_eq!(w.case_deadline(case), Some(recorded_at + 8 * DAY));
         assert_eq!(w.case_positions(case)[0].joined_at, recorded_at + DAY);
         assert!(w.held(author) && w.held(accused));
-        assert_eq!(w.spendable(author), before.3 - Amount::coins(7));
+        assert_eq!(w.spendable(author), before.3 - Amount::coins(7), "activation reuses the filing-time reservation");
         assert_eq!((w.minted, w.supply(), w.xp(author)), (before.0, before.1, before.2), "opening maturity creates neither a Self-ID nor its credit");
         assert_eq!((w.stats.openings_recorded, w.stats.openings_activated, w.stats.opened), (1, 1, 1));
         assert!(w.cancel_pending_opening(case, author).is_err());
@@ -2880,9 +2869,10 @@ mod tests {
         let (accused, author, other) = xp_ladder(&w);
         let fixture = w.begin_case(&[author, other]).unwrap();
         assert!(w.case_opening(fixture).is_none(), "already-active fixtures have no invented recording time");
-        let case = w.record_case_opening(&[author, accused]).unwrap();
-        let opening = w.case_opening(case).unwrap().clone();
         let before = (w.hold.clone(), w.frozen.clone(), w.subjects[author as usize].reserved, w.spendable(author), w.supply(), w.xp(author), w.stats.staked);
+        let case = w.record_case_opening(&[author, accused]).unwrap();
+        assert_eq!(w.spendable(author), before.3 - Amount::coins(7), "the pending opening owns its reservation");
+        let opening = w.case_opening(case).unwrap().clone();
         let outsider = (0..w.len() as Id).find(|&id| id != author && !opening.guarantors.contains(&id)).unwrap();
         assert!(w.cancel_pending_opening(case, outsider).is_err());
         assert!(w.cancel_pending_opening(u32::MAX, author).is_err());
@@ -2900,7 +2890,8 @@ mod tests {
             (w.hold.clone(), w.frozen.clone(), w.subjects[author as usize].reserved, w.spendable(author), w.supply(), w.xp(author), w.stats.staked),
             before
         );
-        assert!(w.cancel_pending_opening(case, author).is_err());
+        assert!(w.cancel_pending_opening(case, author).is_err(), "a cancellation cannot be replayed");
+        assert_eq!(w.spendable(author), before.3, "and releases the reservation exactly once");
         w.tick(opening.matures_at + 10 * DAY);
         assert_eq!(w.case_deadline(case), None);
         assert!(w.held(author) && w.held(other) && !w.held(accused));
@@ -2952,7 +2943,7 @@ mod tests {
     }
 
     #[test]
-    fn only_withdrawn_fcty_funds_openings_and_simultaneous_cases_cannot_reuse_it() {
+    fn only_withdrawn_fcty_funds_a_filing_and_a_second_filing_cannot_reuse_its_reservation() {
         let mut w = rich_world();
         let (accused, author, _) = xp_ladder(&w);
         w.burn_liquid(author);
@@ -2962,31 +2953,30 @@ mod tests {
         }
         let other = (0..12).find(|&id| id != accused && id != author && w.xp(id) < w.xp(author)).unwrap();
         let due = w.create_self_id(other).unwrap();
-        let a = w.record_case_opening(&[author, accused]).unwrap();
-        let b = w.record_case_opening(&[author, other]).unwrap();
-        let at = w.case_opening(a).unwrap().matures_at;
         let rights = w.eligible_emissions(author, DAY);
         assert_eq!(rights.len(), 7);
-        let mut unwithdrawn = w.clone();
-        unwithdrawn.tick(at);
-        let unfunded = OpeningStage::Unfunded(UnfundedOpening { at, required: Amount::coins(7), eligible: Amount::ZERO });
-        assert_eq!(unwithdrawn.case_opening(a).unwrap().stage, unfunded);
-        assert_eq!(unwithdrawn.eligible_emissions(author, DAY), rights);
-        unwithdrawn.audit().unwrap();
-
-        w.tick(at - 1);
+        // D198/D199: mature Emitter rights are not collateral, so the filing is refused before any allocation.
+        let cases = w.cases.len();
+        assert_eq!(w.record_case_opening(&[author, accused]), Err(UNFUNDED_OPENING));
+        assert_eq!((w.cases.len(), w.subjects[author as usize].reserved, w.dispute_slots.len()), (cases, Amount::ZERO, 0));
+        assert_eq!(w.eligible_emissions(author, DAY), rights, "a refusal converts or pledges nothing");
         for right in rights {
             w.convert_to_collector(author, right).unwrap();
         }
+        let a = w.record_case_opening(&[author, accused]).unwrap();
+        assert_eq!(a as usize, cases, "the refused attempt consumed no case ID");
+        assert_eq!((w.liquid(author), w.spendable(author)), (Amount::coins(7), Amount::ZERO));
+        assert_eq!(w.record_case_opening(&[author, other]), Err(UNFUNDED_OPENING), "the reservation cannot back a second filing");
+        assert!(!w.dispute_slots.contains_key(&other));
+        let at = w.case_opening(a).unwrap().matures_at;
         w.tick(at);
         assert_eq!(w.case_ref(a).unwrap().backed[0], Amount::coins(7));
-        assert_eq!(w.case_opening(b).unwrap().stage, unfunded, "earlier case ID reserved all the liquid");
-        assert!(w.case_deadline(b).is_none() && !w.held(other));
-        assert_eq!(w.acts[due as usize].credit.as_ref().unwrap().at, at);
+        assert_eq!((w.liquid(author), w.spendable(author)), (Amount::coins(7), Amount::ZERO), "activation reserves nothing again");
+        assert_eq!(w.acts[due as usize].credit.as_ref().unwrap().at, at, "an unrelated account's maturity is credited on time");
         assert_eq!(w.stats.maturities_deferred, 0);
         assert_eq!(w.debt(author), Amount::ZERO);
         w.tick(at);
-        assert_eq!((w.stats.openings_activated, w.stats.openings_unfunded), (1, 1));
+        assert_eq!(w.stats.openings_activated, 1);
         w.audit().unwrap();
     }
 
@@ -3251,7 +3241,7 @@ mod tests {
         }
         let a = w.begin_case(&[challenger, accused]).unwrap();
         assert_eq!(w.burn_liquid(challenger), Amount::ZERO, "an authorized burn can only use unreserved liquid");
-        assert_eq!(w.begin_case(&[challenger, defender]), Err(Reject("opening stake is not fully backed")));
+        assert_eq!(w.begin_case(&[challenger, defender]), Err(UNFUNDED_OPENING));
         w.tick(w.case_deadline(a).unwrap());
         w.settle_case(a, Some(Side::Accused)).unwrap();
         assert_eq!(w.debt(challenger), Amount::ZERO);

@@ -248,10 +248,18 @@ fn appeal_occupies_the_prior_openers_slot_and_releases_maturity_only_after_execu
     let act = w.create_self_id(0).unwrap();
     let request = w.request_appeal(prior, 5).unwrap();
     let initiator = AppealInitiator::TrustedCollectiveCouncil;
+    for right in w.eligible_emissions(2, DAY) {
+        w.convert_to_collector(2, right).unwrap();
+    }
+    let spendable = w.spendable(2);
     let ordinary = w.record_case_opening(&[2, 0]).unwrap();
+    assert_eq!(w.spendable(2), spendable - Amount::coins(7), "the ordinary opening is funded at filing");
     assert!(w.record_appeal_opening_fixture(request, initiator).is_err(), "both target the prior opener");
     w.cancel_case_opening(ordinary, 2).unwrap();
+    assert_eq!(w.spendable(2), spendable);
+    // The trusted core appeal fixture has no selected financial contract: its slot is reserved without collateral.
     let appeal = w.record_appeal_opening_fixture(request, initiator).unwrap();
+    assert_eq!(w.spendable(2), spendable);
     let refuse_duplicates = |w: &mut World| {
         let before = w.appeal(appeal).unwrap().clone();
         assert!(w.record_case_opening(&[2, 0]).is_err());
