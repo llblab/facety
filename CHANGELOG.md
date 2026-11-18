@@ -4,6 +4,10 @@
 
 Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log-and-supersession-ledger), evidence in the [study index](docs/README.md), and open work in [BACKLOG](BACKLOG.md). The [previous milestone ledger](https://github.com/llblab/facety/blob/a535f6ca3e23056011d48a3bb7e6b5c51865bdf9/CHANGELOG.md) and [earlier per-change history](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/CHANGELOG.md) preserve detailed outcomes and provenance.
 
+## Unreleased
+
+- Recorded the owner's purpose rationale (D200, insight A10): Facety as a voluntary, decentralized public registry of people who have lived, with registry-office authority limited to reality and rule compliance and no moral verdict, and a chain-verifiable public archive funded by the identification economy. Opened Q30 for the living-to-lived transition, archive proofs and lasting voluntariness; no rule, schema or evidence change.
+
 ## 0.4.0 — 2026-11-19
 
 - D199: a monetary dispute filing is one atomic transaction that validates, prices, checks and exclusively reserves the full first stake from spendable Collector FCTY, records the pending opening and occupies the accused's slot, or is refused with no case ID, slot, balance change or custody. Pending cancellation releases the reservation once; activation at 24 hours reuses it without a funding check. Supersedes D197's activation-time funding and its `Unfunded` outcome.

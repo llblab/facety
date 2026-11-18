@@ -148,6 +148,14 @@ Genesis membership, verification/activity, initial XP/balances/own-emission fund
 
 For the inverted-baseline packet, the owner fixes an adverse background and names counterfactual axes, not new rules. A compact candidate is the current selected-rule reference (now funded at filing, D199) plus separately proposed counterfactuals for opening funding, confirm-before-case, repeat-event identity and halving; the final arm list is still unregistered. Any soft-opening counterfactual's contract, confirmer authority, repeat-event key/overlap and halving roles must be fixed first. D168 supplies the selected accusation pressure of three attempts per operator/day; it does not validate current round mechanics or provide a human rate. The remaining environment, attacker resources, horizon, build/configuration identity, fresh reserved seeds, per-run/aggregate budget, censoring, stop and kill rules must be committed before execution. V and bought-link price remain unpriced axes with no assigned honest-harm tolerance. One adverse environment cannot prove robustness over the entire unmeasured human range; an inconclusive surface is a valid deliverable, not permission to expand the matrix. Corrupt-examiner attacks and adversarial-search red teams remain uncommissioned until their owner-declared behavior/budget contracts exist.
 
+## Q30: registry continuity and archive
+
+**OPEN, recorded for later; no action in the current phase (D200).** If Facety is a registry of people who have lived, the record must outlive its participants and possibly its chain. Three questions are not yet bound, and none is assumed by the simulator or the protocol:
+
+- **From living to lived.** How a participant's record passes from a living subject to a person who lived, and what then happens to its guarantees, owned slots, pending acts, debts and dispute exposure. Key recovery (D135) is not this transition.
+- **Archive proofs beyond the chain.** The identification economy is expected to fund a public archive verifiable on the chain. To remain checkable after a particular chain stops, the archive should carry its own proofs (record hashes, block headers, inclusion paths); format, custody and funding are open.
+- **Lasting voluntariness.** Self-ID records are dedicated to the public domain by a voluntary act (D186). How that lasting dedication relates to a choice made at one point in a life, and what it does not permit, is open; no erasure or withdrawal right is selected or excluded here.
+
 ## Assumptions taken for D123/D124 (2026-11-05)
 
 - **Node count, not hops:** `L = 7` means at most 7 nodes, endpoints included (6 links), following the stated definition. If seven links (8 nodes) was meant, set `maxPathNodes: 8`.

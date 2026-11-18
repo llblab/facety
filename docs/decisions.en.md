@@ -554,6 +554,14 @@ The 24-hour pendency is preserved: no restrictions, maturity suspension or respo
 
 Supersedes D197's activation-time funding and its non-activation outcome for an underfunded filing, and D198's statement that the first stake is funded at activation. Retains D197's single accused-subject slot, free pending cancellation, verdict-only closure and settlement, and changes no merits sanction, FIFO debt, Council round or case-specific restoration. The canonical order of other same-time transactions, opening-veto authentication and membership, and appeal finances remain open. The simulator's scheduler order is a declared model convention in the [model contract](simulator.en.md#implemented-rules).
 
+### Purpose: a voluntary registry of people who lived
+
+**D200 — [OWNER design rationale, no rule change], 2026-11-19.** Facety's long-term purpose is a voluntary, decentralized public registry of people who have lived, comparable to a crowd-maintained knowledge graph but recording human existence. A centralized registry of who exists would concentrate power; Facety is a way to distribute it. The network combines a social network, a financial system and identity verification, and deliberately favors slow, lasting records (at most one rewarded Self-ID per day) over ephemeral content. Blockchain is preferred for durability while its economics function; the identification economy is expected to fund a public archive of the records, verifiable on the chain.
+
+Procedural authority is that of a decentralized registry office: participants with accumulated identity reputation decide only whether a subject is real and unique and whether acts follow the rules, never a moral verdict on the person (refines the context of D194). The D199 first stake is not a material barrier: opening a dispute without evidence makes no sense, a participant confident of a violation can raise `N` FCTY, and can approach a more experienced participant to share responsibility and reward (D46 sponsorship; any reward sharing is off-protocol). For an honest participant the rules are not hard: voluntary participation, responsibility and no moral assessment. The present volume of rule text is a stage; the rules are expected to consolidate into a more organic structure under the existing consolidation protocol.
+
+Human factors are deliberately set aside in the current phase (D188, D140). No rule, threshold, schema or evidence changes. Open, not selected: the transition of a record from a living participant to a person who lived, an archive format whose proofs remain checkable beyond a particular chain, and how a lasting public dedication (D186) relates to a choice made at one point in life ([Q30](../DECISIONS_NEEDED.md#q30-registry-continuity-and-archive)).
+
 ### Earlier supersessions
 
 | Earlier description | Status |

@@ -103,6 +103,14 @@ Facety does not make a photograph equivalent to proof of unique personhood. A me
 
 The objective is not a global moral score. Facety does **not** certify political views, wealth, social worth, or virtue. A guarantee concerns the identity claim and the responsibilities explicitly attached to it.
 
+### A voluntary registry of people who lived (D200)
+
+**[DIRECTION] (D200)** Facety's long-term purpose is a voluntary, decentralized public registry of people who have lived: a record of human existence maintained by the people in it, as a shared knowledge graph is maintained by its contributors. A centralized registry of who exists would concentrate power over that record; Facety distributes the work of recognizing real people among participants who carry responsibility for it. The network is a social network, a financial system and an identity institution at once, and its unit is a slow, accountable record rather than an ephemeral post: at most one rewarded Self-ID per day, kept as lasting history.
+
+Its procedural authority is narrow. Like a public registry office, it decides only whether a subject is a real, unique person and whether recorded acts follow the rules; it makes no moral judgment of the person. Authority over that question rests on accumulated identity reputation earned through lived, accountable history (§24). For an honest participant the rules reduce to voluntary participation, responsibility for one's own claims and guarantees, and no moral assessment; the dispute machinery concerns the few contested cases. A challenger who is confident in evidence of a violation can fund the first stake or seek a more experienced sponsor to share the responsibility and the outcome.
+
+The identification economy is intended to sustain a public archive of these records, verifiable against the chain, so that the registry is not bound to any single service. How a record passes from a living participant to a person who lived, how the archive carries proofs that remain checkable beyond the life of a particular chain, and how a lasting public dedication relates to a choice made at one point in a life remain open.
+
 ### Honest participation and incentive asymmetry (D50)
 
 Facety is designed to make honest participation substantially easier and more profitable than identity fraud.

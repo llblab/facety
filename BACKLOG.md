@@ -92,3 +92,5 @@ The table below is the frozen research baseline. Later Council deferral/round me
 ## Owner-gated protocol work (carried over, not active)
 
 A-D above own the newly commissioned selected-subset mechanics, verification and launch-measurement preparation. Their normative remainders, D33 verified independence, indexer optimization, media/legal contracts and actual human calibration remain gated or uncommissioned; no blanket migration is implied. Ordinary 24-hour source/snapshot maturity (D42/D163) and plain-XP network-referendum weight (D149) are settled, not owner questions. Historical details stay at the tag above.
+
+- [ ] **Registry continuity (D200, Q30) — not scheduled.** Propose, when the baseline phase allows, the living-to-lived record transition, an archive format whose proofs outlive a particular chain, and the relation of lasting public dedication (D186) to a choice made once; no simulator or protocol change until the owner selects. See [Q30](DECISIONS_NEEDED.md#q30-registry-continuity-and-archive).
