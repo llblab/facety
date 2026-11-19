@@ -31,7 +31,7 @@ The aim is to make honest participation easier and more rewarding than identity 
 Three layers stay distinct:
 
 - **Identity** — claims about real, unique people, open to challenge. Guarantees and paths do not certify personhood.
-- **Responsibility** — personal XP and integrity from specified acts and consequences. They establish neither usefulness nor truth.
+- **Responsibility** — units from Self-IDs and integrity from chronological losses and repair determine personal XP. They establish neither usefulness nor truth.
 - **Emission** — FCTY (FaCT You) distribution under the protocol. Monetary holdings do not confer procedural authority.
 
 ## Where the project stands
@@ -42,7 +42,7 @@ Three layers stay distinct:
 >
 > The [study](studies/2026-11-08-evidence-core/README.md) completed 38 Rust runs. Attack containment survived within the tested scenarios; independent evidence, timely qualified help and effective correction remain unverified human dependencies. Development permission neither changes that verdict nor accepts launch risk without human evidence.
 
-The Rust model implements maturity XP/integrity, supported Council paths, exact twelve-decimal FCTY, staked identity disputes, Council rounds, pending openings, ordinary-case withdrawal and core-only linked appeal/restoration with FIFO debt. The [model contract](docs/simulator.en.md#implemented-rules) owns coverage and assumptions. Typed transaction provenance is implemented; N-priced non-author Self-ID settlement, opening-guarantor veto and author-first self-dispute are not. Production admission/authentication, appeal finances, recovery migration and other named contracts remain open. Tests and earlier-build results do not validate these missing transitions or human behavior.
+The Rust model implements maturity credit and integrity, supported Council paths, exact twelve-decimal FCTY, funded filing, pending cancellation, verdict-only closure, Council rounds and linked appeal/restoration fixtures. The [model contract](docs/simulator.en.md#rule-conformance-mapping) distinguishes the covered subset from the selected rules. The Self-ID correction and opening-guarantor veto use trusted inputs; author-first self-dispute, addressed invitations with both slots counted at issuance, and production appeal authority and finances are not implemented. Tests and earlier results do not validate missing transitions or human behavior.
 
 The [operational proposal](docs/operational-defense.en.md) and [manual kit](studies/2026-11-08-operational-defense/README.md) remain unused references, not staffing, human observations or permission for a session/pilot.
 

@@ -215,8 +215,8 @@ impl World {
         )
     }
 
-    /// Create a special invitation to a pre-registered new account (D105-D107): the creator burns an own mature right,
-    /// holds one K slot until the link ends, and the 24h freeze starts.
+    /// Record an invitation without a target in this model. Burn the creator's mature right, count the creator's slot,
+    /// and start the freeze. Acceptance creates the recipient and counts its slot; the protocol requires both at issuance.
     pub fn create_invitation(&mut self, creator: Id, act: u32) -> Result<u32, Reject> {
         self.require_account(creator)?;
         self.require_free(creator)?;

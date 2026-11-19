@@ -4,9 +4,9 @@ This index owns project navigation. The protocol is independently readable; it d
 
 ## Core documents
 
-- [Rules of the Game](rules-of-the-game.en.md): first consolidated participant-facing reading of selected defaults, without decision identifiers, research history or simulator settings. The protocol remains the authority for meaning; this reader is maintained with it.
-- [Facety protocol](facety.protocol.en.md): living manifesto/specification: the rules in force and OPEN contracts, including [author-first self-correction](facety.protocol.en.md#205-correction-routes-and-early-reporting), [non-author Self-ID chain-correction pricing](facety.protocol.en.md#211-chain-cut-sanction) and the [sanction and settlement matrix](facety.protocol.en.md#242-sanction-and-settlement-matrix), without provenance.
-- [Decision log](decisions.en.md): dated owner decisions, their status and what they superseded; research and development decisions (§47–§50).
+- [Rules of the Game](rules-of-the-game.en.md): participant guide to the selected rules, without decision history or simulator settings. The protocol remains the authority for meaning; this reader is maintained with it.
+- [Facety protocol](facety.protocol.en.md): the current rules and open contracts, organized by rule family. See [filing](facety.protocol.en.md#filing), [settlement](facety.protocol.en.md#settlement), [correction](facety.protocol.en.md#correction-and-appeals) and [Atmo](facety.protocol.en.md#atmo).
+- [Decision log](decisions.en.md): archived decisions through D200, later decision records, and the retained research and development contracts.
 - [Simulator contract](simulator.en.md): the Rust simulator's implemented rules, [appeal fixture lifecycle](simulator.en.md#appeal-fixture-contract), levers, assumptions, deviations and statistical validation.
 - [Operational defense and human validation readiness](operational-defense.en.md): owner decision and proposed end-to-end practice, evidence/motivation/capacity boundaries, separate recovery states and the [prepared manual kit](../studies/2026-11-08-operational-defense/README.md). No people or performance commitments are supplied; Q25 stays open. D188 does not require this unused kit before development; the [conditional-mainnet plan](../BACKLOG.md#conditional-mainnet-preparation) owns the renewed scope, not deployment permission.
 - [Insight register](insights.en.md): every owner decision and finding with its evidence level and source.

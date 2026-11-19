@@ -42,11 +42,15 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 ## Dispute safety reconciliation
 
-**Human-gated review of remaining interactions.** D197 settles opening funding and verdict-only closure; Council deferrals remain repeatable without a cap. The [sanction matrix](docs/facety.protocol.en.md#242-sanction-and-settlement-matrix) separates current rules from open cells. Earlier active-withdrawal probes retain historical meaning only.
+**Human-gated review of remaining interactions.** The [filing rule](docs/facety.protocol.en.md#filing) requires full funding before recording; only execution of a verdict closes an active case. The [settlement rules](docs/facety.protocol.en.md#settlement) separate current amounts and recipients from open choices. Earlier active-withdrawal probes are historical.
 
 - [ ] **Resolve the good-faith losing-accuser question:** under [Q26](DECISIONS_NEEDED.md#q26-dispute-safety-and-arithmetic-review), bind any integrity exception; until selected, apply ordinary halving. Keep the prepared [integrity-precision choice](DECISIONS_NEEDED.md#q26-integrity-precision-candidate) separate.
 
 - [ ] **Bind the co-presence evidence contract (human-gated):** answer [Q19](DECISIONS_NEEDED.md#q19--second-accounts-and-the-unwitting-inviter-d127) on authenticity, freshness, signer-to-person binding, recognition authority and fabricated meetings before relying on the unwitting-inviter exception as a validated defense. No co-presence data collection, session, pilot or separate empirical programme is authorized.
+
+## Admission and remedies
+
+- [ ] **Close selected-rule coverage after contract approval.** Start from the [model gaps](docs/simulator.en.md#deviations-and-assumptions): addressed invitations with prepared recipients and both slots at issuance; XP capacity schedule and the payer on re-entry; signed Self-ID and evidence; canonical path/verification inputs; cluster remedies, direct peer Council cases, and the distinction between target custody and an accused account's maturities. Bind the applicable [questions](DECISIONS_NEEDED.md#q31-identity-admission-and-execution-contracts) before implementation. Verify atomic refusal and no repeat gate at invitation acceptance; verify case-specific custody and fee-free repair without releasing unrelated holds. Keep these separate from trusted fixture coverage and from the frozen baseline.
 
 ## Operational follow-up boundary
 

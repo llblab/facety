@@ -6,7 +6,7 @@
 
 ## Question
 
-[D50](../../docs/facety.protocol.en.md#honest-participation-and-incentive-asymmetry-d50) states that honest participation should be substantially easier and more profitable than identity fraud, with 10× asymmetry as a research target. This study asks the smallest falsifiable version: **in the declared model, does one unit of declared effort yield more protocol value when spent on genuine participation than when spent on fabricated or colluding identities?**
+[D50](https://github.com/llblab/facety/blob/393b1f508491e5357583d00981ec9b591c690c79/docs/facety.protocol.en.md#honest-participation-and-incentive-asymmetry-d50) states that honest participation should be substantially easier and more profitable than identity fraud, with 10× asymmetry as a research target. This study asks the smallest falsifiable version: **in the declared model, does one unit of declared effort yield more protocol value when spent on genuine participation than when spent on fabricated or colluding identities?**
 
 - **Weak D50 (falsifier):** honest yield per effort exceeds attacker yield per effort in every declared attack context. Failure in any context is a counterexample.
 - **Strong D50 (target):** the ratio reaches 10× in every declared context.

@@ -1,6 +1,6 @@
 # Council attention: finite threat fixtures (D64–D67)
 
-**2026-10-27 · base 2e1ecca · contract before test implementation.** The owner asks for Council-attention DDoS fixtures and a corrected Threat Model. This is a software/preparation slice, not a new experiment engine, scientific registration, attack success measurement or resumption of closed studies. [Protocol threat contract](../../docs/facety.protocol.en.md#402-council-attention-mobilization-and-false-positive-controls-d65); [canonical tasks](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#deferred-research-and-owner-gates). Master gates, selected rules and historical bytes remain intact.
+**2026-10-27 · base 2e1ecca · contract before test implementation.** The owner asks for Council-attention DDoS fixtures and a corrected Threat Model. This is a software/preparation slice, not a new experiment engine, scientific registration, attack success measurement or resumption of closed studies. [Protocol threat contract](https://github.com/llblab/facety/blob/393b1f508491e5357583d00981ec9b591c690c79/docs/facety.protocol.en.md#402-council-attention-mobilization-and-false-positive-controls-d65); [canonical tasks](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#deferred-research-and-owner-gates). Master gates, selected rules and historical bytes remain intact.
 
 ## Accepted finite contract
 

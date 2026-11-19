@@ -6,6 +6,7 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 
 ## Unreleased
 
+- Consolidated the protocol and participant guide by rule family. Updated the simulator mapping, recorded the invitation and remedy coverage gaps, and removed stale funding and withdrawal descriptions from current documents. Archived decision history and preserved historical study references. No executable behavior or frozen evidence changed.
 - Recorded the owner's purpose rationale (D200, insight A10): Facety as a voluntary, decentralized public registry of people who have lived, with registry-office authority limited to reality and rule compliance and no moral verdict, and a chain-verifiable public archive funded by the identification economy. Opened Q30 for the living-to-lived transition, archive proofs and lasting voluntariness; no rule, schema or evidence change.
 
 ## 0.4.0 — 2026-11-19

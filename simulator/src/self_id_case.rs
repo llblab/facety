@@ -174,8 +174,7 @@ impl World {
         Ok(())
     }
 
-    /// Record a trusted-core Self-ID correction opening. The frozen-`N` first stake is reserved at recording (D199);
-    /// nothing is held, restricted or paid before activation.
+    /// Reserve the first stake and take the accused's slot at filing. Apply activity and maturity holds at activation.
     pub fn record_self_id_case_fixture(&mut self, accuser: Id, target: TransactionTarget, premises: TrustedAdmissionPremises) -> Result<u32, Reject> {
         self.require_self_id_fixture_settings()?;
         if premises.admission != TrustedPremise::Supplied || premises.historical_duty != TrustedPremise::Supplied {
