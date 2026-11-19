@@ -6,6 +6,8 @@ The [protocol](facety.protocol.en.md) owns current meaning. This page records de
 
 The [decision log through D200](https://github.com/llblab/facety/blob/393b1f508491e5357583d00981ec9b591c690c79/docs/decisions.en.md#decision-log-and-supersession-ledger) and [protocol before consolidation](https://github.com/llblab/facety/blob/393b1f508491e5357583d00981ec9b591c690c79/docs/facety.protocol.en.md) are archived together at `393b1f5`. Use those versions to interpret numbered sections and superseded choices in historical studies. The [historical rule text](https://github.com/llblab/facety/blob/393b1f508491e5357583d00981ec9b591c690c79/docs/decisions.en.md#historical-rule-text-removed-from-the-protocol) is not an alternate specification.
 
+The clause-by-clause preservation check is archived in the consolidation commit. In a checkout with that history, read it with `git show 331c1766faaec44ccdbe5418e304bb3e3c3c3285:docs/consolidation-check.en.md`. It is an audit of the rewrite, not a maintained ledger.
+
 For subsequent decisions, record the ID, date, status, one-line paraphrase, what changed or was superseded, and a link to the owning section. Revise that section in place when meaning changes. Research decisions belong here and in their evidence or study pages, not in protocol rules.
 
 ## Research and development decisions
