@@ -95,6 +95,12 @@ impl World {
         self.maturity_hold(act_id).is_some()
     }
 
+    /// Activation freezes the accused's withdrawals and suspends their unprocessed maturities.
+    pub(super) fn suspend_accused(&mut self, case: DisputeId, accused: Id, at: i64) {
+        self.frozen[accused as usize] += 1;
+        self.establish_maturity_hold(case, accused, at);
+    }
+
     /// Establish the accused's maturity hold for one case (D196). Acts that matured strictly before `at` keep their credit;
     /// every later maturity of this subject, including one scheduled exactly at `at`, is suspended until the last hold ends.
     pub(super) fn establish_maturity_hold(&mut self, case: DisputeId, subject: Id, at: i64) {
@@ -106,12 +112,6 @@ impl World {
         self.stats.maturity_holds += 1;
     }
 
-    /// Drop one case's hold cause. The caller decides when the deferred maturities may be processed, because an authorized
-    /// historical correction must run before an invalidated source could be credited.
-    pub(super) fn release_maturity_hold(&mut self, case: DisputeId) {
-        self.maturity_holds.retain(|h| h.case != case);
-    }
-
     /// Drop a deferred entry once its act can no longer earn a maturity credit: it was cancelled, consumed or invalidated.
     pub(super) fn forget_deferred_maturity(&mut self, act: u32) {
         if self.deferred_maturities.binary_search(&act).is_ok() {
@@ -119,9 +119,10 @@ impl World {
         }
     }
 
-    /// Process every deferred maturity whose last hold has ended, exactly once, at the actual release event: normal
-    /// integrity repair and debt service apply, the original creation-time recipients are used, nothing is backdated.
-    pub(super) fn process_deferred_maturities(&mut self) {
+    /// After verdict effects, drop only this case's hold and credit eligible deferred maturities at the actual release
+    /// time. Other hold causes remain; credit keeps its original recipients and ordinary integrity repair and debt service.
+    pub(super) fn resume_maturities(&mut self, case: DisputeId) {
+        self.maturity_holds.retain(|h| h.case != case);
         if self.deferred_maturities.is_empty() {
             return;
         }

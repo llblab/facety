@@ -2926,18 +2926,15 @@ mod tests {
             w.establish_maturity_hold(case, subject, w.now());
         }
         w.tick(due - 1);
-        w.release_maturity_hold(independent);
-        w.process_deferred_maturities();
+        w.resume_maturities(independent);
         assert!(w.acts[future as usize].credit.is_none(), "release never credits a future maturity early");
         w.tick(due);
         assert_eq!(w.acts[future as usize].credit.as_ref().unwrap().at, due);
-        w.release_maturity_hold(old);
-        w.process_deferred_maturities();
+        w.resume_maturities(old);
         assert_eq!(w.maturity_hold(late), Some(other));
         assert!(w.acts[late as usize].credit.is_none());
         w.tick(due + 1);
-        w.release_maturity_hold(other);
-        w.process_deferred_maturities();
+        w.resume_maturities(other);
         assert_eq!(w.acts[late as usize].credit.as_ref().unwrap().at, due + 1);
         w.audit().unwrap();
     }

@@ -446,8 +446,7 @@ impl World {
         // 5. Release the accuser's own backing and this case's restrictions; every other case keeps its own.
         let holds = self.release_case(&held);
         // The correction already ran, so only the accused's remaining valid maturities may be credited, exactly once.
-        self.release_maturity_hold(DisputeId::Case(case));
-        self.process_deferred_maturities();
+        self.resume_maturities(DisputeId::Case(case));
         // 6. Journal the completed effects under this case.
         self.case_effects[case as usize] = Some(CaseEffects {
             kind: CaseKind::SelfIdTransaction,

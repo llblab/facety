@@ -353,8 +353,7 @@ impl World {
                 for (subject, _, path) in holds {
                     self.hold_for(subject, path);
                 }
-                self.frozen[accused as usize] += 1;
-                self.establish_maturity_hold(DisputeId::Appeal(id as u32), accused, at);
+                self.suspend_accused(DisputeId::Appeal(id as u32), accused, at);
             }
         }
     }
@@ -399,8 +398,7 @@ impl World {
                 self.release_hold(subject, path);
             }
             self.frozen[accused as usize] -= 1;
-            self.release_maturity_hold(DisputeId::Appeal(appeal));
-            self.process_deferred_maturities();
+            self.resume_maturities(DisputeId::Appeal(appeal));
             self.free_dispute_slot(accused, DisputeId::Appeal(appeal));
         }
         Ok(result)

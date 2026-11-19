@@ -223,8 +223,7 @@ impl World {
         for &(subject, _, path) in &holds {
             self.hold_for(subject, path);
         }
-        self.frozen[accused as usize] += 1;
-        self.establish_maturity_hold(DisputeId::Case(id), accused, at);
+        self.suspend_accused(DisputeId::Case(id), accused, at);
         self.cases[id as usize] = Some(Case { ladder, electorates: Vec::new(), accused, backed: vec![backed], holds });
     }
 
@@ -524,8 +523,7 @@ impl World {
         if settlement.accused_lost {
             self.apply_case_identity_verdict_to(case, c.accused).expect("a new adverse verdict authorizes its own identity correction");
         }
-        self.release_maturity_hold(DisputeId::Case(case));
-        self.process_deferred_maturities();
+        self.resume_maturities(DisputeId::Case(case));
         if let Some(opening) = self.case_openings[case as usize].as_mut() {
             opening.stage = OpeningStage::Final;
         }
