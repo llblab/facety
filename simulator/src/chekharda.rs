@@ -189,12 +189,37 @@ pub enum CouncilOutcome {
     AutomaticDefer,
 }
 
+impl CouncilOutcome {
+    pub(crate) fn defers(self) -> bool {
+        matches!(self, Self::Defer | Self::AutomaticDefer)
+    }
+
+    pub(crate) fn deadline_after(self, cutoff: i64) -> Option<i64> {
+        if self.defers() {
+            cutoff.checked_add(7 * DAY_HOURS)
+        } else {
+            Some(cutoff)
+        }
+    }
+}
+
 /// A ballot record alone changes neither the ordinal nor the deadline. World authenticates its round's electorate.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Ballot<W> {
     pub who: W,
     pub choice: CouncilVote,
     pub cast_at: i64,
+}
+
+impl<W: PartialEq> Ballot<W> {
+    /// After the caller checks the active round and applicable electorate, admit one ballot per voter in its window.
+    pub(crate) fn record(self, ballots: &mut Vec<Self>, window: std::ops::Range<i64>) -> bool {
+        if !window.contains(&self.cast_at) || ballots.iter().any(|b| b.who == self.who) {
+            return false;
+        }
+        ballots.push(self);
+        true
+    }
 }
 
 /// One recognized result, retaining the ballots and logical cutoff even if processing happened later.
@@ -206,6 +231,21 @@ pub struct CouncilRound<W> {
     pub recognized_at: i64,
     pub ballots: Vec<Ballot<W>>,
     pub outcome: CouncilOutcome,
+}
+
+impl<W> CouncilRound<W> {
+    /// The caller gates recognition; this records the logical cutoff and drains ballots only on success.
+    pub(crate) fn recognize(number: u32, cutoff: i64, ballots: &mut Vec<Ballot<W>>) -> Option<Self> {
+        let outcome = council_outcome(ballots);
+        Some(Self {
+            number,
+            deadline_before: cutoff,
+            deadline_after: outcome.deadline_after(cutoff)?,
+            recognized_at: cutoff,
+            ballots: std::mem::take(ballots),
+            outcome,
+        })
+    }
 }
 
 /// The shared equal-ballot rule for ordinary Council intervention and a new appeal referendum.
@@ -323,7 +363,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
     }
     /// Active round numbering starts at zero; a final result has no active round.
     pub fn council_round(&self) -> Option<u32> {
-        if !self.council_entered() || self.rounds.last().is_some_and(|r| matches!(r.outcome, CouncilOutcome::Confirm | CouncilOutcome::Oppose)) {
+        if !self.council_entered() || self.rounds.last().is_some_and(|r| !r.outcome.defers()) {
             None
         } else {
             Some(u32::try_from(self.rounds.len()).expect("Council round number exceeds u32"))
@@ -379,12 +419,12 @@ impl<W: Copy + PartialEq> Ladder<W> {
 
     /// Record one timely ballot per member in the expected active round; electorate authentication belongs to World.
     pub fn ballot(&mut self, who: W, expected_round: u32, choice: CouncilVote, now: i64) -> bool {
-        let starts_at = self.rounds.last().map_or_else(|| self.positions.last().unwrap().joined_at, |r| r.recognized_at);
-        if self.council_round() != Some(expected_round) || now < starts_at || now >= self.deadline() || self.ballots.iter().any(|b| b.who == who) {
+        if self.council_round() != Some(expected_round) {
             return false;
         }
-        self.ballots.push(Ballot { who, choice, cast_at: now });
-        true
+        let starts_at = self.rounds.last().map_or_else(|| self.positions.last().unwrap().joined_at, |r| r.recognized_at);
+        let window = starts_at..self.deadline();
+        Ballot { who, choice, cast_at: now }.record(&mut self.ballots, window)
     }
 
     /// Recognize exactly one round at its cutoff. Deferral adds seven days to that cutoff, never to processing time.
@@ -392,21 +432,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
         if self.council_round() != Some(expected_round) || now < self.deadline() {
             return None;
         }
-        let before = self.deadline();
-        let outcome = council_outcome(&self.ballots);
-        let after = if matches!(outcome, CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer) {
-            before.checked_add(7 * DAY_HOURS).expect("Council deadline exceeds i64 time representation")
-        } else {
-            before
-        };
-        let round = CouncilRound {
-            number: expected_round,
-            deadline_before: before,
-            deadline_after: after,
-            recognized_at: before,
-            ballots: std::mem::take(&mut self.ballots),
-            outcome,
-        };
+        let round = CouncilRound::recognize(expected_round, self.deadline(), &mut self.ballots).expect("Council deadline exceeds i64 time representation");
         self.rounds.push(round.clone());
         Some(round)
     }
@@ -473,8 +499,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
         }
         for (i, round) in self.rounds.iter().enumerate() {
             let outcome = council_outcome(&round.ballots);
-            let defers = matches!(outcome, CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer);
-            let after = if defers { deadline.checked_add(7 * DAY_HOURS).ok_or("Council deadline overflow")? } else { deadline };
+            let after = outcome.deadline_after(deadline).ok_or("Council deadline overflow")?;
             if final_result
                 || usize::try_from(round.number).ok() != Some(i)
                 || round.deadline_before != deadline
@@ -488,7 +513,7 @@ impl<W: Copy + PartialEq> Ladder<W> {
             }
             deadline = after;
             round_start = round.recognized_at;
-            final_result = !defers;
+            final_result = !outcome.defers();
         }
         if Self::duplicate_ballots(&self.ballots)
             || (final_result && !self.ballots.is_empty())

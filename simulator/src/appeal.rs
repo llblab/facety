@@ -94,41 +94,24 @@ impl AppealRecord {
 
     pub(crate) fn ballot(&mut self, member: Id, round: u32, choice: AppealVote, now: i64) -> bool {
         let Some(electorate) = self.active_round() else { return false };
-        if electorate.number != round
-            || !electorate.members.contains(&member)
-            || now < electorate.started_at
-            || now >= self.deadline().expect("active appeal deadline")
-            || self.active_ballots.iter().any(|b| b.who == member)
-        {
+        if electorate.number != round || !electorate.members.contains(&member) {
             return false;
         }
-        self.active_ballots.push(Ballot { who: member, choice: choice.council_vote(), cast_at: now });
-        true
+        let window = electorate.started_at..self.deadline().expect("active appeal deadline");
+        Ballot { who: member, choice: choice.council_vote(), cast_at: now }.record(&mut self.active_ballots, window)
     }
 
     pub(crate) fn close_round(&mut self, now: i64, members: Vec<Id>) {
         let deadline = self.deadline().expect("active appeal deadline");
         assert!(self.stage == AppealStage::Active && now == deadline);
-        let outcome = council_outcome(&self.active_ballots);
-        let next_deadline = match outcome {
-            CouncilOutcome::Confirm => {
-                self.stage = AppealStage::Confirmed;
-                deadline
-            }
-            CouncilOutcome::Oppose => {
-                self.stage = AppealStage::ReversalAuthorized;
-                deadline
-            }
-            CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer => deadline.checked_add(7 * DAY_HOURS).expect("appeal deadline exceeds i64"),
+        let number = self.electorates.last().expect("active electorate").number;
+        let round = CouncilRound::recognize(number, deadline, &mut self.active_ballots).expect("appeal deadline exceeds i64");
+        self.stage = match round.outcome {
+            CouncilOutcome::Confirm => AppealStage::Confirmed,
+            CouncilOutcome::Oppose => AppealStage::ReversalAuthorized,
+            CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer => AppealStage::Active,
         };
-        self.rounds.push(CouncilRound {
-            number: self.electorates.last().expect("active electorate").number,
-            deadline_before: deadline,
-            deadline_after: next_deadline,
-            recognized_at: deadline,
-            ballots: std::mem::take(&mut self.active_ballots),
-            outcome,
-        });
+        self.rounds.push(round);
         if self.stage == AppealStage::Active {
             self.electorates.push(CouncilElectorate { number: self.rounds.len().try_into().expect("appeal round exceeds u32"), started_at: now, members });
         }
@@ -182,14 +165,13 @@ impl AppealRecord {
                 return Err("invalid appeal ballots".into());
             }
             if let Some(round) = self.rounds.get(index) {
-                let deferred = matches!(round.outcome, CouncilOutcome::Defer | CouncilOutcome::AutomaticDefer);
-                let after = if deferred { deadline.checked_add(7 * DAY_HOURS).ok_or("appeal deadline overflow")? } else { deadline };
+                let after = round.outcome.deadline_after(deadline).ok_or("appeal deadline overflow")?;
                 if round.number as usize != index
                     || round.deadline_before != deadline
                     || round.recognized_at != deadline
                     || round.deadline_after != after
                     || round.outcome != council_outcome(ballots)
-                    || (!deferred && index + 1 != self.electorates.len())
+                    || (!round.outcome.defers() && index + 1 != self.electorates.len())
                 {
                     return Err("invalid appeal round result".into());
                 }

@@ -6,6 +6,7 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 
 ## Unreleased
 
+- Shared Council ballot timing, duplicate-vote checks and round recognition between ordinary disputes and appeals. Electorate checks, verdicts and remedies remain case-specific.
 - Centralized accused-side suspension and maturity release for ordinary, Self-ID and appeal cases. Settlement resumes eligible maturities after verdict effects without clearing another case's hold.
 - Unified first-stake reservation and active hold setup for ordinary and Self-ID cases inside World. Both paths retain their own admission, pricing, journals and counters; filing refusal and activation ordering are unchanged.
 - Removed six retired Node documentation redirects, the historical interaction catalogue and the unrun rehearsal kit. Linked directly to pinned history and kept operational evidence gaps and observation requirements in their current documents. No protocol, simulator or saved evidence changed.
