@@ -601,7 +601,8 @@ pub struct World {
     recovery_log: Vec<(Id, Id, i32)>,
     blocked: Vec<bool>,
     level: Vec<u8>,
-    dist_any: Vec<u8>,
+    // Self-ID reachability at a graph revision; snapshot, hold and status changes discard the cache.
+    self_paths: Option<(u64, Vec<bool>)>,
     epoch: u64,
     finder: PathFinder,
 }
@@ -658,7 +659,7 @@ impl World {
             recovery_log: Vec::new(),
             blocked: Vec::new(),
             level: Vec::new(),
-            dist_any: Vec::new(),
+            self_paths: None,
             epoch: 0,
             finder: PathFinder::new(),
         };
@@ -712,7 +713,6 @@ impl World {
         self.blocked.push(self.cfg.layered);
         self.council_mask.push(false);
         self.level.push(NO_LEVEL);
-        self.dist_any.push(NO_LEVEL);
         id
     }
 
@@ -733,6 +733,11 @@ impl World {
             out.push((self.rels.len() - 1) as u32);
         }
         out
+    }
+
+    fn set_status(&mut self, subject: Id, status: Status) {
+        self.subjects[subject as usize].status = status;
+        self.self_paths = None;
     }
 
     // ---- reads -----------------------------------------------------------------------------------------------------
@@ -1017,64 +1022,71 @@ impl World {
         for &m in &self.council {
             self.council_mask[m as usize] = true;
         }
-        // Accounts in an open dispute count as unusable for support levels and paths (D131).
-        let nonaccepted: Vec<bool> = (0..n as Id).map(|i| !self.accepted(i) || (self.cfg.exclude_disputed && self.path_hold[i as usize] > 0)).collect();
+        let excluded = self.path_exclusions();
+        self.level = self.path_levels(&excluded);
+        self.blocked = excluded.into_iter().zip(&self.level).map(|(excluded, &level)| excluded || (self.cfg.layered && level == NO_LEVEL)).collect();
+        self.self_paths = None;
+        self.epoch += 1;
+    }
+
+    fn path_exclusions(&self) -> Vec<bool> {
+        (0..self.len() as Id).map(|i| !self.accepted(i) || (self.cfg.exclude_disputed && self.path_hold[i as usize] > 0)).collect()
+    }
+
+    fn path_levels(&self, excluded: &[bool]) -> Vec<u8> {
         if self.cfg.layered {
             let max_level = (self.cfg.max_nodes.unwrap() - 2) as u8;
-            self.level = layered_support(&self.graph, &self.council, self.required_guarantors() as u32, max_level, &nonaccepted);
-            self.blocked = (0..n).map(|i| nonaccepted[i] || self.level[i] == NO_LEVEL).collect();
+            layered_support(&self.graph, &self.council, self.required_guarantors() as u32, max_level, excluded)
         } else {
-            self.level = vec![NO_LEVEL; n];
-            self.blocked = nonaccepted.clone();
+            vec![NO_LEVEL; self.len()]
         }
-        // The snapshot's `nonaccepted` also feeds the distance search: a held account can still be a path source, not a hop.
-        // Multi-source distances to the Council over allowed intermediates; sources need no level of their own.
-        let limit = self.cfg.max_nodes.map_or(u8::MAX - 1, |m| (m - 1) as u8);
-        self.dist_any = vec![NO_LEVEL; n];
-        let mut frontier: Vec<Id> = Vec::new();
-        for &m in &self.council {
-            self.dist_any[m as usize] = 0;
-            frontier.push(m);
+    }
+
+    /// A first-hop Council member ends a two-node path. Any other hop needs live transit and support; after
+    /// the first hop at most L-2 links remain. The earlier-reading ablation counts from the guarantor and
+    /// exempts it from layered support, but not when it is traversed as an intermediate.
+    fn self_gate(&mut self, guarantor: Id) -> bool {
+        let revision = self.graph.revision();
+        if self.self_paths.as_ref().is_none_or(|(cached, _)| *cached != revision) {
+            self.self_paths = Some((revision, self.reachable_self_id_guarantors()));
         }
-        let mut d = 0u8;
-        while !frontier.is_empty() && d < limit {
-            d += 1;
+        self.self_paths.as_ref().unwrap().1[guarantor as usize]
+    }
+
+    /// Use the scheduled Council and difficulty snapshot, but certify against current guarantees and exclusions.
+    /// A walk back through a non-member emitter implies a shorter path from another first hop. An emitter's own
+    /// seat and disputed terminals retain their declared model treatment pending the exact endpoint contracts.
+    fn reachable_self_id_guarantors(&self) -> Vec<bool> {
+        let excluded = self.path_exclusions();
+        let levels = self.path_levels(&excluded);
+        let strict = self.cfg.self_path_from_subject;
+        let limit = self.cfg.max_nodes.map_or(u8::MAX - 1, |m| (m - 1) as u8).saturating_sub(u8::from(strict));
+        let mut reached = vec![false; self.len()];
+        let mut frontier: Vec<Id> = self.council.iter().copied().filter(|&m| self.accepted(m)).collect();
+        for &m in &frontier {
+            reached[m as usize] = true;
+        }
+        for _ in 0..limit {
+            if frontier.is_empty() {
+                break;
+            }
             let mut next = Vec::new();
-            for &u in &frontier {
+            for u in frontier {
                 for &v in self.graph.inn(u) {
-                    if self.dist_any[v as usize] != NO_LEVEL || nonaccepted[v as usize] {
+                    let i = v as usize;
+                    let supported = !self.cfg.layered || levels[i] != NO_LEVEL;
+                    if reached[i] || excluded[i] || (strict && !supported) {
                         continue;
                     }
-                    self.dist_any[v as usize] = d;
-                    if !self.blocked[v as usize] {
+                    reached[i] = true;
+                    if supported {
                         next.push(v);
                     }
                 }
             }
             frontier = next;
         }
-        self.epoch += 1;
-    }
-
-    /// The emission path gate for one mutual guarantor `p` of the emitter (D84/D123/D124/D156): the path is
-    /// emitter -> p -> ... -> a Council member. A member-guarantor is already the two-node path's terminal, and
-    /// the selected rule exempts the issuer and the Council endpoint from support of their own (D124), so it is
-    /// accepted. Otherwise `p` is the first intermediate: it must be unblocked (accepted, supported under layering
-    /// and outside a dispute), and its remaining links to the nearest member must fit the node bound: at most
-    /// `max_nodes - 2` further links so the whole path stays within `max_nodes` nodes counting both ends.
-    /// The distance snapshot may route through the emitter itself; any such walk implies a strictly shorter simple
-    /// path through the traversed partner, so it never changes which emitters are admitted.
-    fn self_gate(&self, p: Id) -> bool {
-        if self.council_mask.get(p as usize).copied().unwrap_or(false) {
-            return true;
-        }
-        let from_guarantor = self.cfg.max_nodes.map_or(u8::MAX - 1, |m| (m - 1) as u8);
-        if self.cfg.self_path_from_subject && self.blocked.get(p as usize).copied().unwrap_or(true) {
-            return false;
-        }
-        let limit = if self.cfg.self_path_from_subject { from_guarantor.saturating_sub(1) } else { from_guarantor };
-        let d = self.dist_any.get(p as usize).copied().unwrap_or(NO_LEVEL);
-        d != NO_LEVEL && d <= limit
+        reached
     }
 
     // ---- XP and acts -----------------------------------------------------------------------------------------------
@@ -1301,7 +1313,7 @@ impl World {
             reversed: false,
         });
         self.bump(new, amount);
-        self.subjects[old as usize].status = Status::False;
+        self.set_status(old, Status::False);
         self.independent_invalid[old as usize] = true;
         Ok(())
     }
@@ -2146,7 +2158,7 @@ mod tests {
 
     #[test]
     fn the_depth_bound_and_layered_support_gate_who_can_invite() {
-        // Seven nodes: a chain of mutual links longer than the bound cannot certify, a shorter one can.
+        // Four nodes: a chain of mutual links longer than the bound cannot certify, a shorter one can.
         let mut pairs = ring(120);
         let mut prev = 119;
         for k in 120..128 {
@@ -2159,8 +2171,7 @@ mod tests {
         }
         w.tick(24);
         // Far members of the tail are more than four nodes from every Council member.
-        assert!(!w.self_gate(127) || w.dist_any[127] != NO_LEVEL);
-        assert!(w.dist_any[127] == NO_LEVEL || w.dist_any[127] > 3);
+        assert!(!w.self_gate(127));
         assert!(w.self_gate(2), "members near the Council certify");
     }
 

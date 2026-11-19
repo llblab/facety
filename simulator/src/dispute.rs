@@ -59,6 +59,7 @@ impl World {
         if path && self.cfg.exclude_disputed {
             self.path_hold[id as usize] += 1;
             self.blocked[id as usize] = true;
+            self.self_paths = None;
         }
     }
 
@@ -66,6 +67,7 @@ impl World {
         self.hold[id as usize] -= 1;
         if path && self.cfg.exclude_disputed {
             self.path_hold[id as usize] -= 1;
+            self.self_paths = None;
         }
         self.blocked[id as usize] = (self.cfg.exclude_disputed && self.path_hold[id as usize] > 0) || self.base_blocked(id);
     }
@@ -541,7 +543,7 @@ impl World {
             return Err(Reject("no unapplied adverse identity verdict"));
         }
         self.identity_cases.entry(accused).or_default().push(case);
-        self.subjects[accused as usize].status = Status::False;
+        self.set_status(accused, Status::False);
         let chain = self.subjects[accused as usize].acts.clone();
         let mut sources = Vec::new();
         for act_id in chain {
@@ -602,7 +604,7 @@ impl World {
             let causes = self.identity_cases.get_mut(&subject).expect("recorded identity cause");
             causes.retain(|&id| id != case);
             if causes.is_empty() && !self.independent_invalid[subject as usize] {
-                self.subjects[subject as usize].status = Status::Accepted;
+                self.set_status(subject, Status::Accepted);
                 restored.statuses_restored += 1;
                 restored.status_restored |= subject == effects.accused;
             }
@@ -644,7 +646,7 @@ impl World {
             return;
         }
         self.independent_invalid[id as usize] = true;
-        self.subjects[id as usize].status = Status::False;
+        self.set_status(id, Status::False);
     }
 
     /// D151 appeal: a wrongly invalidated person who proves reality is an account again. Credit revoked with the cut chain stays revoked,
@@ -656,7 +658,7 @@ impl World {
         let s = &mut self.subjects[id as usize];
         if s.status == Status::False && !s.lost_key && self.identity_cases.get(&id).is_none_or(|cases| cases.is_empty()) {
             self.independent_invalid[id as usize] = false;
-            s.status = Status::Accepted;
+            self.set_status(id, Status::Accepted);
             return true;
         }
         false

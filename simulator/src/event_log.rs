@@ -207,7 +207,6 @@ struct Snap {
     epoch: u64,
     level: Vec<u8>,
     blocked: Vec<bool>,
-    dist_any: Vec<u8>,
     subjects: Vec<SubjectSnap>,
     acts: Vec<ActSnap>,
     graph: (usize, Vec<Vec<u32>>),
@@ -261,7 +260,6 @@ impl World {
             epoch: self.epoch,
             level: self.level.clone(),
             blocked: self.blocked.clone(),
-            dist_any: self.dist_any.clone(),
             subjects: self
                 .subjects
                 .iter()

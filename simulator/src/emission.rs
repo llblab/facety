@@ -228,7 +228,7 @@ impl World {
                 return Err(Reject("rolling 24-hour reward limit"));
             }
         }
-        // D84: one established mutual guarantor that reaches a Council member within the path bound.
+        // One live mutual first hop on an emitter-rooted Council path (D156).
         let partners = self.mutual_partners(who);
         if partners.is_empty() {
             return Err(Reject("Self-ID requires an established mutual guarantor"));
