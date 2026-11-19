@@ -61,7 +61,7 @@ The prior 32-component witness remains raw p=0.03125 versus family comparison p=
 
 ## Compatibility and acceptance after selection
 
-Before any implementation, record the selected promise, family unit and α scope in `docs/evidence.en.md`. Keep raw component support/contradiction p-values and counts available; do not overwrite them with adjusted values or silently change the meaning of an existing list.
+Before any implementation, record the selected promise, family unit and α scope in the [Node evidence contract](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/evidence.en.md). Keep raw component support/contradiction p-values and counts available; do not overwrite them with adjusted values or silently change the meaning of an existing list.
 
 The selected rollout must expose the analysis method/version and raw versus aggregate quantities. Registration/content integrity and explicit implementation-drift permission remain mandatory. `allowImplementationChange` is not approval to reinterpret a historical design under a newly selected inference method. Historical artifacts stay immutable; any intentionally requested new-method reanalysis must identify both methods and remain a separate artifact, not an automatic confirmation replay or retroactive preregistration. Exact schema/CLI migration is an implementation contract to approve with the selected branch, not a field added by this packet.
 
@@ -70,7 +70,7 @@ A future implementation's acceptance controls are the nine partitions above, cla
 ## Evidence and stop
 
 - Original [review and attribution](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-evidence-debt-review/review-evidence.txt) and [synthetic witness](https://github.com/llblab/facety/blob/legacy-node/studies/2026-10-23-evidence-debt-review/witness.json).
-- Existing [statistical contract](https://github.com/llblab/facety/blob/legacy-node/docs/evidence.en.md#statistical-test), `testClaim`/`analyzeConfirmation`/`adjustStudy` in `src/evidence.mjs`, and `holm`/binomial tails in `src/statistics.mjs`.
+- Existing [statistical contract](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/evidence.en.md#statistical-test), `testClaim`/`analyzeConfirmation`/`adjustStudy` in `src/evidence.mjs`, and `holm`/binomial tails in `src/statistics.mjs`.
 - Fresh synthetic checks: `node studies/2026-10-23-e1-contract/controls.mjs`.
 - [Validation](https://github.com/llblab/facety/blob/8b77cd8319f8613269586d1ce665828410e9fd03/studies/2026-10-23-e1-contract/validation.json): executable/native-test inputs unchanged; prior 228-test/DAG evidence reused, not rerun. Fresh context/whitespace checks cover this packet.
 

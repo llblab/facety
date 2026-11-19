@@ -10,7 +10,7 @@ The [environment owner](https://github.com/llblab/facety/blob/legacy-node/src/id
 
 Every look still incurs paid inspection work; sharing never creates free notification or evidence. Daily trials, attention, optional verification, transaction/work gates, directed authority, strict expiry and effect ablation are unchanged. No future calendar, extra retry, budget refill, liability-derived vigilance, new sanction or selected protocol/default rule is introduced. `shared-target` is valid on 24/6/4-hour clocks but does not activate review activity or fix the default-daily eligibility gap. Full manifests add `invitationEvidence: shared-target-first-stage-v1`, independently composable with first-attended and D45 dispute markers. Output assumptions replace the independent-noise statement and sub-day evidence text names this counterfactual.
 
-The [model contract](https://github.com/llblab/facety/blob/legacy-node/docs/simulator.en.md#shared-target-evidence-counterfactual) owns assumptions; [experiment docs](https://github.com/llblab/facety/blob/legacy-node/docs/experiments.en.md#observation-and-defense-boundary) own API use. [Example](https://github.com/llblab/facety/blob/legacy-node/examples/shared-invitation-evidence.json) is illustrative, not research calibration.
+The [model contract](https://github.com/llblab/facety/blob/legacy-node/docs/simulator.en.md#shared-target-evidence-counterfactual) owns assumptions; [experiment docs](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/experiments.en.md#observation-and-defense-boundary) own API use. [Example](https://github.com/llblab/facety/blob/legacy-node/examples/shared-invitation-evidence.json) is illustrative, not research calibration.
 
 ## Software evidence
 

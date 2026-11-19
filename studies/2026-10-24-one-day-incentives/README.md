@@ -1,6 +1,6 @@
 # P23 one-day incentive fixture: software checkpoint
 
-Date: 2026-10-24. Owner: [the existing one-day port item](../../BACKLOG.md). Contract: [incentive direction](https://github.com/llblab/facety/blob/legacy-node/docs/incentives.en.md#one-day-counterpart-contract-p23). This directory retains implementation/compatibility validation and the source-bound **diagnostic** results below, not a mechanism confirmation or calibrated participation finding.
+Date: 2026-10-24. Owner: [the existing one-day port item](../../BACKLOG.md). Contract: [incentive direction](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/incentives.en.md#one-day-counterpart-contract-p23). This directory retains implementation/compatibility validation and the source-bound **diagnostic** results below, not a mechanism confirmation or calibrated participation finding.
 
 ## Implemented boundary
 

@@ -44,15 +44,13 @@ Three layers stay distinct:
 
 Use the [conformance map](docs/simulator.en.md#rule-conformance-mapping) to distinguish Rust coverage from protocol rules. The model checks funded filing, pending cancellation, suspended maturity, Council rounds and case-specific restoration. Self-ID and appeal fixtures receive trusted premises; author-first self-dispute, addressed invitation issuance with both slots, and production authority and appeal finances remain outside the modeled subset.
 
-The [operational proposal](docs/operational-defense.en.md) and [manual kit](studies/2026-11-08-operational-defense/README.md) remain unused references, not staffing, human observations or permission for a session/pilot.
-
 ## Find your way
 
 | Start here to… | Read |
 | --- | --- |
 | **Understand participation** | [Rules of the Game](docs/rules-of-the-game.en.md) · [Protocol](docs/facety.protocol.en.md) |
 | **Assess the evidence** | [Findings](docs/insights.en.md#consolidated-findings) · [Final study](studies/2026-11-08-evidence-core/README.md) |
-| **Inspect human-evidence gaps** | [Operational contract](docs/operational-defense.en.md) · [Manual kit](studies/2026-11-08-operational-defense/README.md) |
+| **Inspect human-evidence gaps** | [Operational proposal](docs/operational-defense.en.md) · [Open questions](DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) |
 | **Inspect the model** | [Simulator contract](docs/simulator.en.md) · [Rust source](simulator/src) |
 | **Trace a decision** | [Decision log](docs/decisions.en.md) · [Changelog](CHANGELOG.md) |
 | **See what remains open** | [Backlog](BACKLOG.md) · [Questions and assumptions](DECISIONS_NEEDED.md) |

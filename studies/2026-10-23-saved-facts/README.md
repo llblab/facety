@@ -16,7 +16,7 @@
 
 ## Measurement contract
 
-The [game contract](../../docs/games.en.md) distinguishes a missing observation, measured zero, zero equilibrium support and an explicitly disabled criterion. Budget means require all declared replicas and valid shares/counts; positive-support missing measurements propagate as unknown. Explicit `(Council seats, attacker seats) = (0, 0)` retains the existing empty-Council zero convention. Caps below 1 require measurements; cap 1 remains disabled without hiding null outputs.
+The [game contract](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/games.en.md) distinguishes a missing observation, measured zero, zero equilibrium support and an explicitly disabled criterion. Budget means require all declared replicas and valid shares/counts; positive-support missing measurements propagate as unknown. Explicit `(Council seats, attacker seats) = (0, 0)` retains the existing empty-Council zero convention. Caps below 1 require measurements; cap 1 remains disabled without hiding null outputs.
 
 At the assessment boundary, mandatory retention/wrongful metrics must be known and valid. Retention requires a positive finite utility baseline; this is a declared ratio, not affine-invariant welfare. Non-negative finite analyst limits are required, with share caps in [0,1]. A null-driven failure means insufficient evidence, not a measured violation. These are analysis checks, not new protocol law.
 

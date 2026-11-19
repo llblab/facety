@@ -1,6 +1,6 @@
 # Inspection game pilot (2026-10-22, exploratory)
 
-This is a first [strategy game](../../docs/games.en.md). It is **exploratory**: no hypothesis was registered, the valuation is illustrative and the dispute layer is a declared abstraction of OPEN procedures. Treat these results as a map of where to look, not as findings.
+This is a first [strategy game](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/games.en.md). It is **exploratory**: no hypothesis was registered, the valuation is illustrative and the dispute layer is a declared abstraction of OPEN procedures. Treat these results as a map of where to look, not as findings.
 
 Reproduce it with:
 

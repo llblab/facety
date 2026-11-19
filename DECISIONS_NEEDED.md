@@ -6,7 +6,7 @@ The [protocol](docs/facety.protocol.en.md) owns selected rules, the [simulator c
 
 What independent information, willing qualified response before cutoff, and admitted proof or appeal can people supply when a correct position earns little or nothing? A funded monetary opening does not ensure backing for later positions. Specify actual voluntary work, finite capacity and private valuations. An abandoned account need not have positive value; no supplied rate demonstrates willingness or service.
 
-The [evidence-core report](studies/2026-11-08-evidence-core/README.md) retains D168's REVISE verdict: an earlier soft-funded opening paid the winning defender zero; a one-case Council queue left two of three cases unserved and an innocent person losing; a same-source reread removed the modeled independent-look benefit. Sampled containment did not prevent degraded honest activity. These are conditional results, not evidence that those frequencies hold in use. The [operating proposal](docs/operational-defense.en.md) and [unused kit](studies/2026-11-08-operational-defense/README.md) supply no work commitments or observations.
+The [evidence-core report](studies/2026-11-08-evidence-core/README.md) retains D168's REVISE verdict: an earlier soft-funded opening paid the winning defender zero; a one-case Council queue left two of three cases unserved and an innocent person losing; a same-source reread removed the modeled independent-look benefit. Sampled containment did not prevent degraded honest activity. These are conditional results, not evidence that those frequencies hold in use. The [operating proposal](docs/operational-defense.en.md) supplies no work commitments. The prepared exercise was never run and produced no observations.
 
 ### Q25-A: claim, evidence and admission authority
 
@@ -42,7 +42,7 @@ Who can authenticate collective initiation, and how do a collective decision and
 
 ### Q25-D: actual voluntary work and permission for a session
 
-D188 does not require a rehearsal or pilot before development and authorizes neither. Before any separately commissioned session, who willingly takes the organizer, observer and participant tasks, and with what limits, consent, data access, storage and retention? A compressed fictional session could show steps people actually take, not seven-day availability, representative behavior, real economic motivation or an executable answer to Q25-A–C. No staffing, funds or personal data are committed.
+D188 does not require a rehearsal or pilot before development and authorizes neither. Any future study needs its own question, design and authorization. Who would willingly take the organizer, observer and participant tasks, and with what limits, consent, data access, storage, retention and publication terms? A compressed fictional session could show steps people actually take, not seven-day availability, representative behavior, real economic motivation or an executable answer to Q25-A–C. No staffing, funds or personal data are committed.
 
 ## Q26: dispute safety and arithmetic review
 

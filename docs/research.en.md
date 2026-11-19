@@ -221,7 +221,7 @@ Evaluate **uniqueness**, **contribution/reputation** and **distribution** separa
 
 **Owner-selected research mandate, not a new protocol mechanic.** [D39 research mandate](decisions.en.md#49-integrated-research-programme-d39) asks for root questions, detailed mechanism alternatives and their combinations to remain in one programme. Prioritization orders work; it does not eliminate untested branches. The immediate outcome to explain is sustained genuine participation through maintained guarantees and readiness to check/respond. Liability risk is a **working explanation** of withdrawal, not a measured preference, the sole cause of exit or a selected reward rule.
 
-This chapter owns design truth; the [single convergence item](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md#integrated-research-programme-d39) owns execution and next checkpoints. Existing backlog items keep their domain obligations and gates. The seven roots below organize the known scope, not all conceivable explanations; a newly material root must be named and related rather than silently excluded. No extra task ledger or second mechanism register is introduced.
+This chapter keeps the research questions and comparison method. [BACKLOG](../BACKLOG.md) owns commissioned work; the seven roots organize the known questions. Name and relate any new root that matters to a comparison.
 
 ### Root map
 
@@ -257,7 +257,7 @@ These are unregistered questions, not chosen mechanisms or experimental results.
 
 ### Interaction design inventory
 
-The [interaction-design appendix](research-interactions.en.md) owns the 21 root-pair contrasts, W1–W7 within-root interactions, inspected API/applicability boundaries and the first bounded P16 service-order discriminator. It is a child of this design chapter, not a second backlog or code-tied mechanism register. I1–I9 above remain the higher-order overlays. The split separates the shared causal/method chapter from detailed comparison cards; no direction or evidence is discarded.
+The [historical catalogue](https://github.com/llblab/facety/blob/58379af6a7224ab8721b56b68f6aeb361ba71840/docs/research-interactions.en.md) records pair and within-root comparisons for the retired simulator. It sets no requirements or work order for Rust. The [P16 study](../studies/2026-10-24-service-order/README.md) retains the exploratory service-order results; a change in one two-target relay does not establish population capacity. The root questions and comparison method remain here.
 
 ### Comparative method and convergence boundary
 

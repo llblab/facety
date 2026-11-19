@@ -8,20 +8,15 @@ This index owns project navigation. The protocol is independently readable; it d
 - [Facety protocol](facety.protocol.en.md): the current rules and open contracts, organized by rule family. See [filing](facety.protocol.en.md#filing), [settlement](facety.protocol.en.md#settlement), [correction](facety.protocol.en.md#correction-and-appeals) and [Atmo](facety.protocol.en.md#atmo).
 - [Decision log](decisions.en.md): archived decisions through D200, later decision records, and the retained research and development contracts.
 - [Simulator contract](simulator.en.md): the Rust simulator's [conformance map](simulator.en.md#rule-conformance-mapping), [appeal fixture lifecycle](simulator.en.md#appeal-fixture-contract), levers, assumptions, deviations and statistical validation.
-- [Operational defense and human validation readiness](operational-defense.en.md): owner decision and proposed end-to-end practice, evidence/motivation/capacity boundaries, separate recovery states and the [prepared manual kit](../studies/2026-11-08-operational-defense/README.md). No people or performance commitments are supplied; Q25 stays open. D188 does not require this unused kit before development; the [conditional-mainnet plan](../BACKLOG.md#conditional-mainnet-preparation) owns the renewed scope, not deployment permission.
+- [Operational defense](operational-defense.en.md): proposed practice, evidence and capacity limits, and what authorized recovery must restore.
 - [Insight register](insights.en.md): design reasoning and findings with evidence levels and sources.
-- [Integrated research](research.en.md): D76 [evidence frontier](research.en.md#minimum-evidence-frontier-d76), [longitudinal depth](research.en.md#longitudinal-population-depth-d76), D49 [resilience–growth brief](research.en.md#resilience-growth-frontier-d49), R1–R7 root map; [interaction designs](research-interactions.en.md) appendix.
+- [Integrated research](research.en.md): [evidence frontier](research.en.md#minimum-evidence-frontier-d76), [longitudinal depth](research.en.md#longitudinal-population-depth-d76), [resilience and growth](research.en.md#resilience-growth-frontier-d49), and the root questions.
 - [Witness-certified path gate/indexer (D61)](indexer.en.md): StateAccessor/witness/ref2 contracts, trust/privacy model and acceptance criteria.
-- [Mechanism register](https://github.com/llblab/facety/blob/legacy-node/docs/mechanisms.json): retired with the Node simulator (structured causal links and hypotheses; consolidated findings replace it).
 
-## Method references
+## Historical references
 
-- [Cohort experiments](experiments.en.md): activity, effort, ownership, observations, success criteria and uncertainty.
-- [Emergent behavior research](discovery.en.md): trajectories, landscapes and diagnostic candidates.
-- [Paired controls](controls.en.md): decision-keyed randomness, scheduled disturbances, return criteria.
-- [Confirmatory evidence](evidence.en.md): preregistration, ablation necessity, alternatives, reserved seeds, Holm study adjustment.
-- [Strategy games](games.en.md): strategy menus, one-step disputes, payoff facts, valuations and equilibria.
-- [Incentive direction](incentives.en.md): legacy v1 and one-day v2 fixtures and retained-fact analysis.
+- Node simulator: [experiments](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/experiments.en.md), [discovery](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/discovery.en.md), [controls](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/controls.en.md), [evidence](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/evidence.en.md), [games](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/games.en.md), [incentives](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/incentives.en.md), and the [mechanism register](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/mechanisms.json).
+- [Unrun rehearsal kit](https://github.com/llblab/facety/tree/58379af6a7224ab8721b56b68f6aeb361ba71840/studies/2026-11-08-operational-defense): synthetic materials only, not current rules or human evidence.
 
 ## Studies
 

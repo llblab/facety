@@ -1,6 +1,6 @@
 # Coalition Council study (2026-10-22)
 
-The first worked study using the [confirmatory evidence pipeline](../../docs/evidence.en.md). Every result below is conditional on the declared sybil-cone scenario, simulator policies, scripted strategies and 30-day horizon. Nothing here is a real-world attack estimate.
+The first worked study using the [confirmatory evidence pipeline](https://github.com/llblab/facety/blob/659ea60d16129eb6f4db4f9e774e3f2904efff74/docs/evidence.en.md). Every result below is conditional on the declared sybil-cone scenario, simulator policies, scripted strategies and 30-day horizon. Nothing here is a real-world attack estimate.
 
 This study ran before the Council default became active-only (`councilEligibility: "active"`, later the same day), so its Council counted every accepted subject. The registrations are bound to that implementation digest. Re-registering under the new default is a separate hypothesis.
 

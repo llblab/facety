@@ -1,6 +1,6 @@
 # Operational defense and human validation readiness
 
-Status: proposed operating practice and prepared exercise, not adopted protocol or observed human performance. No people have been recruited, no exercise has run, and no runtime, network, financial obligation or personal-data collection is authorized. The completed [evidence-core study](../studies/2026-11-08-evidence-core/README.md), its REVISE verdict and B4's killed claim remain intact. [Q25](../DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) remains open. The unused kit is a historical exercise snapshot, not current authority for opening funds, active withdrawal or payouts.
+This is proposed operating practice, not protocol or observed performance. The synthetic rehearsal was never run; no people were recruited or observed. The [evidence-core study](../studies/2026-11-08-evidence-core/README.md) retains REVISE and B4's killed claim. [Q25](../DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) remains open. No rehearsal or pilot is required before development, and neither is authorized.
 
 ## Decision for the owner
 
@@ -9,15 +9,6 @@ Recommend one minimal scheme: **a claim-specific case sheet, evidence with visib
 The case sheet records what is alleged, evidence and replies, the actual positions and deadline, requests and responses, collectible backing, and the authority for each consequence. It can be a paper sheet or ordinary shared document. Its keeper records actions; it cannot admit an otherwise inadmissible case, decide truth, pause time, allocate XP or grant an appeal. A sheet is not a new precondition for exercising an existing right. The accused can circulate a reply independently if an accuser or voluntary keeper will not cooperate.
 
 This makes the work inspectable without promising it will be supplied. The existing incentives include historical guarantor responsibility, protecting one's own network and relationships, reciprocity, reputation and interest in credible identities. They may motivate unpaid help; none books a person's time or guarantees a correct decision. A winning position against zero backing can receive zero additional FCTY.
-
-A separately authorized assignment could revisit the [prepared manual kit](../studies/2026-11-08-operational-defense/README.md) after reconciling it with the current rules, accepting its exercise-only assumptions and arranging consenting people. No rehearsal or pilot is a prerequisite for development. The proposed scale is eight adults and one 90-minute session; it is a logistics choice, not a statistically justified minimum. Concrete commitments would be needed from:
-
-- An organizer/facilitator to prepare and distribute separate packets, maintain the exercise clock and protect the hidden keys. This logistical person receives no adjudication powers.
-- An observer to record only agreed action/time data and preserve refusals, missingness and workload conflicts.
-- Volunteers to accept or decline particular readings, evidence requests, assistance and paper positions, with explicit availability and work limits. Merely attending is not a commitment to defend a case.
-- The owner to approve the later session's scope, data handling and exercise conventions, and to decide the narrow normative questions in Q25 before implementing the blocked transitions.
-
-Nobody has accepted these commitments. There is no funded defense budget, promised payment or access to Bucket D. All exercise balances are fictional. Preparing the kit establishes document readiness only; it does not establish correction capacity or close Q25.
 
 ## Authority and evidence boundaries
 
@@ -36,17 +27,17 @@ Use the [protocol's filing, clock and Council rules](facety.protocol.en.md#dispu
 
 Claim and evidence admission, authentication, ballot revision, same-time membership ordering and replay-safe execution stay open. Opening-specific and appeal finances and refunds are also open. [Q25](../DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) records the unanswered questions. A simulator's proof override or scripted appeal is not an operator power; frozen evidence does not validate later lifecycle rules.
 
-Human evidence absent: informative versus repeated observations, actual willingness and capacity at zero winnings, timely eligible participation, error and withdrawal, and usable recovery. The study's numerical observation/response rates are not promises about these quantities. No new simulation is necessary for this preparation task.
+Human evidence absent: informative versus repeated observations, actual willingness and capacity at zero winnings, timely eligible participation, error and withdrawal, and usable recovery. The study's numerical observation/response rates are not promises about these quantities.
 
 ## The case sheet and voluntary work offer
 
 P: Keep one identifiable claim and its reply together, with these fields. Preserve competing accounts of the evidence rather than letting the sheet keeper resolve them:
 
 - Case/transaction/subject references; allegation type: existence, duplicate identity, impersonation or a particular act; the specific proposition and disputed scope.
-- Each evidence item, source and acquisition method, timestamp, permitted access, dependence on earlier items, missing material and the claim it can address. Do not collect extra identity information simply to fill a field.
+- Each evidence item, source and acquisition method, when acquired, made available and actually read, permitted access, origin and dependence on earlier items, missing material and the claim it can address. Do not collect extra identity information simply to fill a field.
 - XP at the eligibility snapshot and its source; admitted positions, sides, entry times, proposed window ends and current cutoff; Council entry and actual authenticated ballots where applicable.
 - Nominal stake, actual blocked backing, collectible transfer/burn, unpaid obligation, any separately offered payment and its actual provider. Unknown amounts remain unknown. No actual provider means no funded payment.
-- Help requests, receipt/start/assessment/willingness/eligibility/action timestamps, explicit refusal or withdrawal, and unresolved requests. No response does not identify a motive.
+- Times of help requests, receipt, assessment, acceptance or refusal, eligibility checks and attempted or accepted actions. Record active work intervals across cases and flag withdrawals or unresolved requests. No response does not identify a motive.
 - Outcome by the selected procedure; reviewer factual assessment separately; authorized execution and remaining holds; each requested recovery change and whether it was authorized and performed.
 
 P: A volunteer's offer states the task accepted, relevant qualification, earliest start, latest availability, maximum effort across all accepted cases, what information is needed, and whether the offer includes possible formal entry. Read-only investigation can be useful without dispute standing. An offer can be limited to one task and withdrawn; record the actual coverage loss. It creates no guaranteed arrival, protocol office, extra vote or unapproved payment contract. Do not require sensitive personal reasons for refusal.
@@ -64,7 +55,7 @@ An admitted subject is falsely alleged to be fictitious. The challenger has enou
 | Accused's answer | R: answer and seek help; P: attach a claim-specific explanation and permitted evidence | Counter the alleged fictitious identity without claiming that presence settles uniqueness or all acts | H: preserve status, future emission, earned authority and relationships; actual defense time | Silence or an unpersuasive answer does not itself establish a false person. It may leave the opposing position unchallenged at cutoff |
 | Qualified assistance | R: a willing ordinary defender needs more XP than the last entrant; Council has its separate entry right | Current case state and evidence, latest XP requirement, backing, cutoff and existing commitments | H: guarantor exposure, reciprocity, reputation, network interest; actual time and willingness | Receipt, sympathy or a promise is not entry. Unqualified help can inform others but cannot supply a position. No automatic senior is created |
 | Actual entry and response | R: alternate sides, increasing XP and stakes; Council entry is terminal; P: record accepted action before cutoff | Exact opposing position, current gate, deadline before/after and source authority | Formal entry incurs stake/halving exposure and D77 opportunity cost; funds may be zero | Queue work, late action or refusal does not stop the clock. If nobody qualifies and acts, the selected last-side outcome can be wrong |
-| Decision | R: Each Council round uses its start-time membership snapshot and recognizes all timely ballots only at the current deadline; deferral majority or no option majority adds seven days and starts a new round without carried ballots | Procedural result or ongoing deferral versus each reviewer's evidence-based assessment | Actual review and ballot work; no minimum turnout; deferral supplies time, not workers | A majority opposing the entrant leaves the last ordinary side winning. A split or empty entered round defers, rather than counting as absent. High XP/majority is not factual certainty; the sheet keeper and factual key have no override |
+| Decision | R: Each Council round uses its start-time membership snapshot and recognizes all timely ballots only at the current deadline; deferral majority or no option majority adds seven days and starts a new round without carried ballots | Procedural result or ongoing deferral versus each reviewer's evidence-based assessment | Actual review and ballot work; no minimum turnout; deferral supplies time, not workers | A majority opposing the entrant leaves the last ordinary side winning. A split or empty entered round defers, rather than counting as absent. High XP or a majority is not factual certainty; the sheet keeper cannot override a procedural result |
 | Execution | R: apply only authorized role-specific losses, transfers, burns, source revocation and restrictions | Actual historical recipients/duties, custody and case scope, not current neighbors alone | An authorized executor and auditable records, not just a declared winner | O: unknown remedy/snapshot/monetary combination blocks that effect. Record a requested versus actually authorized consequence separately; do not invent a fine or seize third-party value |
 | Challenge to error and recovery | R: affected person requests; qualified participant or collective Council challenges prior opening; pending 24 hours, then maturity activates appeal/restrictions/Council vote/first seven days and fresh electorate; confirm/reverse-and-restore/defer choices | Actual material, willing qualified initiator, linked case/opening and event-time guarantors, phase records, evidence/authentication and remedy sought | H: continued participant/guarantor interest; actual appeal and rebuilding work | O: validation/execution and remaining finances. Prior accuser is now accused and cannot cancel the finalized case. No new ordinary ladder; request starts no clock, and request or deferral reverses nothing |
 
@@ -76,13 +67,13 @@ If no willing qualified defender or Council member enters before the cutoff, the
 
 ## The same path with a justified allegation
 
-Use the same notice, evidence, assessment, voluntary sponsorship, XP/stake, time and execution boundaries when an allegation is justified. Do not make the defender/accuser incentives or evidence channel infallible merely because the exercise designer knows the answer.
+Use the same notice, evidence, assessment, voluntary sponsorship, XP/stake, time and execution boundaries when an allegation is justified. Known facts in a synthetic example do not make the evidence or incentives reliable in use.
 
 For a defective Self-ID by a real unique participant, check the specified act and source snapshot. A fresh appearance may show that someone exists while leaving the act defect intact. If an author-initiated correction is appropriately admitted and upheld, it addresses that act; an upheld non-author challenge cuts the affected suffix rather than a valid earlier prefix. The author-only admission procedure and exact economic application are still open. Do not convert this into an identity-fabrication finding to reuse the simulator's identity-case sanction.
 
 For a duplicate-identity allegation, evidence must connect the two claims to the same actual person under the eventual admission/merits standard. A meeting establishes some presence, not uniqueness. The holder's responsibility, any inviter co-presence exception, historical duties and correct target must be evaluated separately. An acquittal exception requires the qualifying pre-invitation jointly signed artifact; a repeated assertion of acquaintance does not establish its authenticity.
 
-A genuine allegation can also fail to obtain timely service or lose by mistake. Raising attention by attacking a reputation is not a new offense, and a losing public position is not an independent violation. Every further accusation needs its own basis. The exercise's hidden truth is used only after decisions to evaluate the learning case; it never supplies a protocol verdict.
+A genuine allegation can also fail to obtain timely service or lose by mistake. Raising attention by attacking a reputation is not a new offense, and a losing public position is not an independent violation. Every further accusation needs its own basis. Facts supplied for evaluation do not supply a protocol verdict.
 
 ## What adds evidence
 
@@ -99,8 +90,6 @@ R: no mandatory second examiner, government-ID requirement or new truth oracle i
 | Public contradiction or external event | A separately attributable inconsistency with the precise claim | Which party is wrong without checking provenance; automatic guilt | Reposts, truncated context, shared origin or hostile fabrication; trace both sources and invite a relevant reply |
 | A different investigator | Independent reasoning or a new source if it actually obtains one | Independent facts from a second opinion alone | Shared evidence, training and incentives; record new items separately from changed interpretation |
 
-The manual kit uses only fictional text records and scripted evidence requests. A transcript representing a meeting is an exercise stimulus, not real proof of a person. No real face, government document, private contact history or sensitive allegation is needed. Evidence unavailable in the fixture is marked unavailable; the facilitator does not improvise an omniscient answer.
-
 ## Why someone might work for zero collectible winnings
 
 | Existing actor | Existing interest that may motivate work (H) | Work it can accept (P), subject to existing authority (R) | Cost and possible refusal |
@@ -113,7 +102,7 @@ The manual kit uses only fictional text records and scripted evidence requests. 
 
 P: Ask the prospective helper to choose what work it will actually accept when the collectible prize is zero, with an expiry and effort cap; record completion, refusal or nonresponse before asking why. Optional reason categories may include relationship, duty exposure, reciprocity, reputation, network interest, financial expectation, uncertainty or no time; a person can skip the reason. Do not translate these categories into invented FCTY prices or count stated goodwill as performed work.
 
-Keep three quantities separate: a nominal possible prize, an uncollected debt or promise, and funds actually available from a named willing payer. The recommendation assumes no side payment. If a later organizer proposes one, it needs an explicit payer, funds and terms; that would change the exercise's motivation context and must be recorded. Neither a new Treasury nor unapproved Bucket D spending fills the gap. Nonmonetary benefits can matter without proving an equilibrium or an endogenous honest advantage.
+Keep three quantities separate: a nominal possible prize, an uncollected debt or promise, and funds actually available from a named willing payer. The recommendation assumes no side payment. Any side payment needs an explicit payer, funds and terms; record it separately because it changes the incentive. Neither a new Treasury nor unapproved Bucket D spending fills the gap. Nonmonetary benefits can matter without proving an equilibrium or an endogenous honest advantage.
 
 ## Finite attention across cases
 
@@ -123,7 +112,7 @@ For simultaneous cases, display all cutoffs and the latest positions. A helper c
 
 No volunteer means zero accepted work, not a missing value filled with a default response rate. Unknown receipt remains unknown; an explicit decline is different. If one person accepts two incompatible tasks, record the conflict and actual delivered work rather than assuming two services. Council members retain equal votes and no recusal; disclosure of shared sources or a relationship is information, not a new vote ban.
 
-At an ordinary case cutoff, stop admitting late entries; once a Council position has entered, no further ordinary entry is permitted even during deferral. At the Council cutoff, apply the majority or automatic-deferral rule rather than prematurely declaring finality. After finalization, a late correct opinion is not an authorized reversal. Record which case went unserved or remained deferred and whether the bottleneck was information, willingness, time, XP, entry execution or an unresolved rule. The proposed exercise supplies accelerated fictional timestamps; it does not test real seven-day availability or the full Council's collective D77 participation mapping.
+At an ordinary case cutoff, stop admitting late entries; once a Council position has entered, no further ordinary entry is permitted even during deferral. At the Council cutoff, apply the majority or automatic-deferral rule rather than prematurely declaring finality. After finalization, a late correct opinion is not an authorized reversal. Record which case went unserved or remained deferred and whether the bottleneck was information, willingness, time, XP, entry execution or an unresolved rule.
 
 ### The Council's new deferral option
 
@@ -131,7 +120,7 @@ R: Apply the [round rules](facety.protocol.en.md#rounds). At cutoff, a majority 
 
 P: Record the electorate, timely ballots, cutoff result, extension cause and old and new deadlines. A deferral ballot on day 8 of a round ending on day 12 is evaluated with all timely ballots on day 12; if it defers, the next deadline is day 19. Seek fresh offers of work. Asking what review can now occur is a proposed transparency practice, not a condition of deferral.
 
-H: Extra time may permit a new source or qualified response, but repeated split/empty rounds can also keep an entered case open indefinitely, prolonging innocent participants' restrictions without producing work. The exercise records extensions, actual additional work accepted/delivered and PENDING cases beyond its observation separately. It does not stretch the session or call postponement a successful correction. O: ballot authentication and revision, same-time membership ordering and replay-safe execution still need contracts; they may not replace the selected deadline recognition, fresh-round ballots or automatic fallback, or add a silent limit. The older binary-vote study supplies neither empirical validation nor a completion bound for this rule.
+H: Extra time may permit a new source or qualified response, but repeated split/empty rounds can also keep an entered case open indefinitely, prolonging innocent participants' restrictions without producing work. Record extensions, extra work accepted and delivered, and cases still pending at the end of observation separately. Postponement is not successful correction. O: ballot authentication and revision, same-time membership ordering and replay-safe execution still need contracts; they may not replace the selected deadline recognition, fresh-round ballots or automatic fallback, or add a silent limit. The older binary-vote study supplies neither empirical validation nor a completion bound for this rule.
 
 ## Recovery is a state vector
 
@@ -139,7 +128,7 @@ Follow the [appeal rule](facety.protocol.en.md#appeal): distinguish request, adm
 
 | Component | Necessary check/action | What cannot be promised from a favorable opinion alone |
 | --- | --- | --- |
-| Identity status | An authorized admitted remedy must reinstate an invalidated subject | A pending request or factual key cannot make it accepted |
+| Identity status | An authorized admitted remedy must reinstate an invalidated subject | A pending request or favorable factual assessment cannot restore status |
 | Case restrictions | Identify every still-open case and the authority releasing its hold | Reversal of one case does not release another case's hold |
 | Links/support/path | Establish authorized restoration of wrongfully cut honest links or new ordinary mutual support; verify a current qualifying Council path | A real person may remain disconnected; restored status is not a path certificate |
 | Emission access | Check accepted status, remaining holds, current guarantee/path, original rolling slot and any applicable lock | No catch-up issuance or unconditional ability to emit after reinstatement |
@@ -149,21 +138,12 @@ Follow the [appeal rule](facety.protocol.en.md#appeal): distinguish request, adm
 
 An invalidated account cannot rely on future own issuance to clear debt or repair integrity until it has a usable admitted return path. A solvent account can still be barred by status or holds; high integrity can still yield little XP if few units survive. The [D168 recovery witness](../studies/2026-11-08-evidence-core/README.md#b-observed-collection-incentive-and-recovery-boundary) assumed a successful appeal: its dates are not an operational service promise.
 
-## Readiness decision and observations that would change it
+## Evidence needed
 
-The [manual kit](../studies/2026-11-08-operational-defense/README.md) is designed to observe actions under imperfect fictional evidence and finite voluntary labor. It contains role instructions, blind packets and restricted keys, exact request responses, a clock/branch procedure and blank logs. Its proposed parameters and distribution rules belong there; they are not network defaults. No result cells have been filled with claimed human observations.
+A future study needs a specific question, a design and separate authorization under [Q25-D](../DECISIONS_NEEDED.md#q25-d-actual-voluntary-work-and-permission-for-a-session). Agree on consent, access, storage, retention and publication before collecting anything; even aliased behavioral records can be personal data. A person can stop or decline work or recording without supplying sensitive reasons. No data collection is authorized here.
 
-Before any later session, the owner must separately authorize it, accept the declared material/data scope and appoint willing logistics roles. Real behavioral logs can be personal data even under aliases; this documentation task grants no collection permission. The organizer must obtain explicit consent and agreed storage/access/retention terms before collecting them. A participant can stop, decline a task or decline recording; this must not become an allegation about that person. Do not record faces, documents, audio/video or sensitive personal reasons. The prepared blank templates are not such a collection.
+- Test whether people distinguish a reread from new information and can explain which claim it changes. This does not calibrate error independence or prove uniqueness.
+- Measure who voluntarily does qualified work, when, within what shared capacity and with what collectible reward. A correct assessment without timely entry or a promise without delivered work does not demonstrate defense.
+- Record exactly where authorized recovery stops. Supplied openings, injected verdicts and conditional arithmetic are not observed admission, error or executed recovery. For blind assessment, count only actual blind decisions; distinguish missing and declined decisions.
 
-Predetermine these interpretations, without inventing a universal harm tolerance:
-
-- If readers can distinguish source repetition from new information and change a scoped judgment for an attributable reason, that supports usability of this packet/process under its stated conditions. It does not calibrate real-world independence or prove uniqueness.
-- If work is actually accepted and completed at a zero collectible prize, record who did what, actual time, eligibility and stated optional motive. That supports that bounded instance of voluntary effort; it does not establish real financial motivation, a seven-day promise or population coverage.
-- If a correct assessment fails to obtain timely qualified entry, identify the missing commitment or authority. More notice or a correct questionnaire response is insufficient. Do not average the unserved case out of a favorable headline.
-- If simultaneous tasks exhaust or conflict with individual offers, present total delivered work and missed outcomes at the shared capacity. Do not extrapolate independent per-case response probabilities.
-- If supplied mistaken judgment cannot reach authorized reinstatement and the necessary recovery components, retain the normative block even when everyone recognizes the error. An injected bad verdict is not a measured spontaneous error rate.
-- If the key was seen early, an action was required by the role, or a conditional recovery branch was supplied, flag that observation and exclude it from the corresponding blind/voluntary/actual-repair claim. Keep it as a labeled learning observation.
-
-A small enthusiastic group, toy FCTY, synthetic text evidence and compressed time provide a usability/operability rehearsal, not representative behavior, real monetary incentives or a personhood test. A real correctness/error denominator must be the declared blind decisions actually made; missing or declined decisions remain separate. Apparent success cannot settle the open normative questions or reverse D168.
-
-The proposal and unused kit establish document readiness only. [Q25](../DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) retains the open authority and human-evidence questions. No exercise, implementation or deployment is commissioned here.
+A compressed synthetic study cannot establish representative behavior, willingness at real stakes or seven-day availability. No result from the preparation answers Q25 or reverses D168.
