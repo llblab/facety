@@ -1,6 +1,6 @@
 # D50 falsifier: honest versus fraudulent yield per unit of effort (D108)
 
-**Status (2026-10-29):** design bound by [D109](../../docs/decisions.en.md#evidence-core-convergence-d76) (all [Q16](../../DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108) defaults accepted); one of four registered balance confirmations executed (weak, sybil-cone: supported); the other three were superseded by [D114](../../docs/decisions.en.md#evidence-core-convergence-d76), which makes dirty-FCTY share and attacker share over time the primary outcomes. No mechanism claim exists.
+**Status (2026-10-29):** design bound by [D109](../../docs/decisions.en.md#evidence-core-convergence-d76) (all [Q16](https://github.com/llblab/facety/blob/8a9d0f52739b03c35a4b769a628d46edeefa70e0/DECISIONS_NEEDED.md#q16--d50-falsifier-design-d108) defaults accepted); one of four registered balance confirmations executed (weak, sybil-cone: supported); the other three were superseded by [D114](../../docs/decisions.en.md#evidence-core-convergence-d76), which makes dirty-FCTY share and attacker share over time the primary outcomes. No mechanism claim exists.
 
 **Authority:** [D108](../../docs/decisions.en.md#evidence-core-convergence-d76) releases the master-programme order lock and the WP1/G1 method precondition for research runs. The evidence contract itself is unchanged: claims still need a committed registration before a reserved-seed confirmation, with presence, necessity and named alternatives where a mechanism is claimed.
 

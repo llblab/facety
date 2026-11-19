@@ -42,7 +42,7 @@ Three layers stay distinct:
 >
 > The [study](studies/2026-11-08-evidence-core/README.md) completed 38 Rust runs. Attack containment survived within the tested scenarios; independent evidence, timely qualified help and effective correction remain unverified human dependencies. Development permission neither changes that verdict nor accepts launch risk without human evidence.
 
-The Rust model implements maturity credit and integrity, supported Council paths, exact twelve-decimal FCTY, funded filing, pending cancellation, verdict-only closure, Council rounds and linked appeal/restoration fixtures. The [model contract](docs/simulator.en.md#rule-conformance-mapping) distinguishes the covered subset from the selected rules. The Self-ID correction and opening-guarantor veto use trusted inputs; author-first self-dispute, addressed invitations with both slots counted at issuance, and production appeal authority and finances are not implemented. Tests and earlier results do not validate missing transitions or human behavior.
+Use the [conformance map](docs/simulator.en.md#rule-conformance-mapping) to distinguish Rust coverage from protocol rules. The model checks funded filing, pending cancellation, suspended maturity, Council rounds and case-specific restoration. Self-ID and appeal fixtures receive trusted premises; author-first self-dispute, addressed invitation issuance with both slots, and production authority and appeal finances remain outside the modeled subset.
 
 The [operational proposal](docs/operational-defense.en.md) and [manual kit](studies/2026-11-08-operational-defense/README.md) remain unused references, not staffing, human observations or permission for a session/pilot.
 
@@ -86,7 +86,7 @@ cargo run --release -- grown \
   --horizon 60
 ```
 
-Each seed first grows an honest network to the target size, then runs the attack phase from that snapshot with detection enabled. The growth prefix runs without detection. Results are conditional on the declared scenario, policies, horizon and seeds.
+Each seed first grows an honest network to the target size, then runs the attack phase from that snapshot with detection enabled. The default CLI growth prefix runs without detection; `--detect-prefix` enables it during growth too. Results are conditional on the declared scenario, policies, horizon and seeds.
 
 Consult the [simulator contract](docs/simulator.en.md) for defaults, levers, deviations, resource requirements and validation. The former Node.js simulator is archived at the `legacy-node` git tag.
 

@@ -44,14 +44,14 @@ P: Keep one identifiable claim and its reply together, with these fields. Preser
 
 - Case/transaction/subject references; allegation type: existence, duplicate identity, impersonation or a particular act; the specific proposition and disputed scope.
 - Each evidence item, source and acquisition method, timestamp, permitted access, dependence on earlier items, missing material and the claim it can address. Do not collect extra identity information simply to fill a field.
-- Current effective XP and the source of the eligibility snapshot; admitted positions, sides, entry times, proposed window ends and current cutoff; Council entry and actual authenticated ballots where applicable.
+- XP at the eligibility snapshot and its source; admitted positions, sides, entry times, proposed window ends and current cutoff; Council entry and actual authenticated ballots where applicable.
 - Nominal stake, actual blocked backing, collectible transfer/burn, unpaid obligation, any separately offered payment and its actual provider. Unknown amounts remain unknown. No actual provider means no funded payment.
 - Help requests, receipt/start/assessment/willingness/eligibility/action timestamps, explicit refusal or withdrawal, and unresolved requests. No response does not identify a motive.
 - Outcome by the selected procedure; reviewer factual assessment separately; authorized execution and remaining holds; each requested recovery change and whether it was authorized and performed.
 
 P: A volunteer's offer states the task accepted, relevant qualification, earliest start, latest availability, maximum effort across all accepted cases, what information is needed, and whether the offer includes possible formal entry. Read-only investigation can be useful without dispute standing. An offer can be limited to one task and withdrawn; record the actual coverage loss. It creates no guaranteed arrival, protocol office, extra vote or unapproved payment contract. Do not require sensitive personal reasons for refusal.
 
-## End-to-end case: an innocent person accused with no funded opponent
+## End-to-end case: an innocent person accused
 
 An admitted subject is falsely alleged to be fictitious. The challenger has enough XP but initially lacks backing. That attempt stops at refusal. To examine the defense path, consider the same allegation if a qualified accuser files with the full 7 FCTY available. No defender or Council member has promised review. These are separate branches, not a successful outcome imposed on the case.
 
@@ -127,9 +127,9 @@ At an ordinary case cutoff, stop admitting late entries; once a Council position
 
 ### The Council's new deferral option
 
-R: The first Council round starts at referendum opening; every round takes a fresh Council membership snapshot at its start. Recognize its result only at the current shared deadline using all timely ballots. A deferral majority changes that deadline to `deadline_before + 7 days`; no option majority, including zero ballots, automatically makes the same extension. With no quorum, one timely ballot may constitute a majority if it is the only ballot by the deadline; an early partial majority is not a result. Either extension cause makes one extension for that round, not two; the same outcome cannot be replayed on every clock check. A deferral starts the next round at that cutoff with a fresh membership snapshot and no carried ballots. Later rounds may defer again. Ordinary entry remains terminal at the Council position; a deferral creates neither another entrant nor a new position's stake. Existing case restrictions and custody continue, with no settlement or losing-side penalty merely because of deferral. No total deferral cap has been selected.
+R: Apply the [round rules](facety.protocol.en.md#rounds). At cutoff, a majority for deferral or no majority adds seven days once and starts a fresh round. Existing holds and custody continue with no settlement, new position or loss of integrity. More time does not supply more work.
 
-P: Record each round's start, membership snapshot, timely ballots, deadline result, extension cause, deadline before/after and further evidence or work sought, if any. Clear the old ballots for a deferred round and record the next round's fresh membership snapshot separately. For example, a day-8 deferral ballot in a round ending on day 12 is evaluated with all timely ballots on day 12; if the round defers, the new deadline is day 19. Asking for an account of expected work is a proposed transparency practice, not an extra admissibility condition for deferral. Solicit fresh voluntary availability rather than copying the old offer into the added week. A request is not an adopted decision, and a partial split or majority before cutoff is not a recognized result.
+P: Record the electorate, timely ballots, cutoff result, extension cause and old and new deadlines. A deferral ballot on day 8 of a round ending on day 12 is evaluated with all timely ballots on day 12; if it defers, the next deadline is day 19. Seek fresh offers of work. Asking what review can now occur is a proposed transparency practice, not a condition of deferral.
 
 H: Extra time may permit a new source or qualified response, but repeated split/empty rounds can also keep an entered case open indefinitely, prolonging innocent participants' restrictions without producing work. The exercise records extensions, actual additional work accepted/delivered and PENDING cases beyond its observation separately. It does not stretch the session or call postponement a successful correction. O: ballot authentication and revision, same-time membership ordering and replay-safe execution still need contracts; they may not replace the selected deadline recognition, fresh-round ballots or automatic fallback, or add a silent limit. The older binary-vote study supplies neither empirical validation nor a completion bound for this rule.
 
@@ -147,7 +147,7 @@ Follow the [appeal rule](facety.protocol.en.md#appeal): distinguish request, adm
 | Responsibility units | Restore units this erroneous verdict revoked to the original recipients, preserving source records and other legitimate consequences | No backfill of units never earned during debt, duplicate credit or reversal of unrelated source revocations |
 | Integrity | Recalculate retained chronological history without this loss, retaining later valid own maturities, other losses and the cap of one | 0.8 halved to 0.4 then repaired by 20 own maturities to 0.42 becomes 0.82; no reset to one or erasure of legitimate losses |
 
-An invalidated account cannot rely on future own issuance to clear debt or repair integrity until it has a usable admitted return path. A solvent account can still be barred by status or holds; a high coefficient can still multiply few surviving units. The [D168 recovery witness](../studies/2026-11-08-evidence-core/README.md#b-observed-collection-incentive-and-recovery-boundary) assumed a successful appeal: its dates are not an operational service promise.
+An invalidated account cannot rely on future own issuance to clear debt or repair integrity until it has a usable admitted return path. A solvent account can still be barred by status or holds; high integrity can still yield little XP if few units survive. The [D168 recovery witness](../studies/2026-11-08-evidence-core/README.md#b-observed-collection-incentive-and-recovery-boundary) assumed a successful appeal: its dates are not an operational service promise.
 
 ## Readiness decision and observations that would change it
 
@@ -166,4 +166,4 @@ Predetermine these interpretations, without inventing a universal harm tolerance
 
 A small enthusiastic group, toy FCTY, synthetic text evidence and compressed time provide a usability/operability rehearsal, not representative behavior, real monetary incentives or a personhood test. A real correctness/error denominator must be the declared blind decisions actually made; missing or declined decisions remain separate. Apparent success cannot settle the open normative questions or reverse D168.
 
-The next implementation decision should consider those observations together with explicit answers to Q25's narrow normative questions and actual accepted operational commitments. This preparation ends with a reviewable proposal and unused kit. The bounded preparation Grow Loop stops here; the completed research loop, runtime and pilot remain stopped.
+The proposal and unused kit establish document readiness only. [Q25](../DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) retains the open authority and human-evidence questions. No exercise, implementation or deployment is commissioned here.

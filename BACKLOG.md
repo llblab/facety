@@ -2,25 +2,24 @@
 
 Scope: a reproducible research simulator for [the proposed protocol](docs/facety.protocol.en.md) (Rust, [`simulator/`](simulator)), not a production runtime or proof of personhood. This file alone owns open work. Meaning lives in the protocol, decisions in the [decision log](docs/decisions.en.md), findings in the [insight register](docs/insights.en.md#consolidated-findings), outcomes in [CHANGELOG](CHANGELOG.md), assumptions and owner questions in [DECISIONS_NEEDED](DECISIONS_NEEDED.md). The pre-consolidation backlog (full narrative, parked work packages) is at [`legacy-node`](https://github.com/llblab/facety/blob/legacy-node/BACKLOG.md).
 
-**Current status (2026-11-12): owner-confirmed conditional-mainnet preparation; executable-spec closure is next (D188).** The simulator's jobs are executable-spec closure, future-launch measurability and conditional rule-comparison surfaces, not validation of unmeasured human assumptions. No rehearsal or pilot precedes mainnet development under this direction; none is authorized. The [final evidence-core report](studies/2026-11-08-evidence-core/README.md) and all 38 runs retain D168's REVISE verdict. Development permission is not deployment permission, PROCEED or acceptance of launch risk without human evidence. The unused manual kit supplies no observations or staffing; Q25 remains unresolved.
+**Current phase: conditional-mainnet preparation (D188).** Close the executable subset, prepare launch measurement and compare registered alternatives. The [evidence-core verdict](studies/2026-11-08-evidence-core/README.md) remains REVISE; no rehearsal, pilot, deployment or acceptance of launch risk is authorized.
 
-**Phase: A → B → C → D → F1 with explicit gates.** The owner confirmed the contract-ready execution plan; only contract-ready implementation is authorized; no kernel extraction before its separate owner checkpoint; no pallet code before the instrumentation contract; no new research before its complete registration is committed. Normative OPEN cells require proposals and an owner choice, never default implementations. At most one focused owner question per checkpoint. No deployment, session, recruitment, personal data, new dependency or frozen-evidence rewrite. Existing Council rounds, appeal fixtures, exact money, FIFO debt and pending/cancellation behavior remain as declared in the [model contract](docs/simulator.en.md). The axis table below remains the frozen research baseline, not a launch configuration. B4 stays killed; Q20-Q24 remain answered.
+**Phase: A → B → C → D → F1 with explicit gates.** The owner confirmed the contract-ready execution plan; only contract-ready implementation is authorized; no kernel extraction before its separate owner checkpoint; no pallet code before the instrumentation contract; no new research before its complete registration is committed. Normative OPEN cells require proposals and an owner choice, never default implementations. At most one focused owner question per checkpoint. No deployment, session, recruitment, personal data, new dependency or frozen-evidence rewrite. The frozen baseline below is not a launch configuration.
 
 ## Conditional-mainnet preparation
 
 ### A — Executable-spec closure
 
-- [x] **A1 — Trusted Self-ID transaction fixture (D193/D195).** Typed target, filing-frozen `N`, authorized collection before cut, original guarantor charges, case journal/plan/replay and case-specific restoration. The [model contract](docs/simulator.en.md#self-id-transaction-fixture) owns exact refusals and coverage.
+The [Self-ID fixture](docs/simulator.en.md#self-id-transaction-fixture) and [dispute lifecycle](docs/simulator.en.md#rule-conformance-mapping) are delivered (A1 and A1b). Remaining work:
+
 - [ ] **A2 — Author-first correction and appeal finances.** Bind D191 priority (including cancelled earlier filings), funding and unavailable-source recovery. Keep D58/D59's one-act author remedy distinct from the non-author suffix and free pending-opening cancellation. Bind appeal stake/custody, opening-specific charges and transfer refunds under Q25-B/C; do not infer a zero-fee or identity-case proxy. Also specify repeat-enforcement identity for sequential cases and multi-role liabilities.
 - [ ] **A3 — Recovery migration and independent referendums.** Propose the completed-key-recovery × appeal migration and collective initiation/participant attribution beyond the entering member before implementing OPEN transitions. Preserve round-start electorates and selected votes; distinguish Council merits/appeals from XP-weighted network referendums. Encode unsupported interactions as pre-mutation refusals. Validate no retired-source revival, duplicate units, partial restoration or invented collective authority. Questions: Q25-B/C and Q27.
 
 ### B — Reference kernel and verification
 
-- [ ] **B1 — Owner kernel checkpoint (proposal first).** Propose a staged `core`/`alloc`, no-external-crate boundary, event/ordering policy, state encoding/fingerprint, storage/work bounds and simulator adapters. Separate existing model ordering from still-OPEN production ordering and exact coefficient precision. Obtain explicit approval before extraction (Q27/Q26).
+- [ ] **B1 — Owner kernel checkpoint (proposal first).** Propose a staged `core`/`alloc`, no-external-crate boundary, event/ordering policy, state encoding/fingerprint, storage/work bounds and simulator adapters. Separate existing model ordering from still-OPEN production ordering and integrity precision. Obtain explicit approval before extraction (Q27/Q26).
 - [ ] **B2 — Extract approved subset and differential replay.** Replay identical versioned event logs through current World and the extracted kernel; compare explicit full-state fingerprints and refusal atomicity after every event, not just endpoints. Preserve exact 10^-12 money and declared model policies. Tests remain std-only; no Substrate dependency or pallet is introduced.
-- [x] **B3 subset — Independent certificate verification and bounded event-log verification (commissioned early use).** **Delivered:** a second, separately written path-certificate verifier (`src/certificate.rs`) that restates the specification's predicates with its own data structures and a named failure per predicate, sharing no acceptance logic with `verify_family`; agreement on the same certificates, every successful exact-search family accepted by both, exact-versus-brute-force existence agreement on decidable small graphs, malformed variants (shared intermediate, reused endpoint, over-length, blocked intermediate, non-simple walk, wrong source, duplicate route, malformed identifiers), and `Exhausted` kept distinct from `Insufficient`. Also a deterministic bounded event-log generator (`src/event_log.rs`, fixed seeds 11/29/47, 240 events, 6 accounts, shrink budget 400) that after every event checks the structural audit, exact money conservation, exclusive custody, FIFO debt, XP reconstruction from receipts and a declared full-state projection, with rejected operations changing nothing but the declared diagnostic counters. **Defect found and fixed:** unknown invitation/valence/act/case IDs and out-of-range accounts panicked instead of refusing; those public entry points now return explicit refusals. `Exhausted` is reported, never treated as a refusal. This does not authorize B1 extraction or B2 replay. Evidence: `tests/certificate.rs`, `world::event_log`.
-
-- [x] **A1b — Dispute lifecycle (D196/D197/D198/D199).** One accused-subject slot across supported filings, atomic funded filing (full first-stake reservation or refusal, D199), trusted pending veto releasing the reservation once, activation on that reservation, verdict-only closure and actual release-time Self-ID receipts are verified in the [model contract](docs/simulator.en.md#suspended-self-id-maturity). The active-cancellation mechanism is retired.
+Independent path and event-log verification (B3 subset) is [delivered](docs/simulator.en.md#verification-surface); it does not authorize extraction.
 
 ### C — Launch measurement and governed interventions
 
@@ -38,11 +37,9 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 **Per-checkpoint acceptance:** code where contract-ready, deterministic transition/refusal tests, model-contract coverage/deviations and a milestone CHANGELOG entry; decisions only for actual owner choices. Every commit passes `cargo fmt --check`, `cargo clippy --release --all-targets -- -D warnings` and `cargo test --release` from `simulator/`. Every saved result retains seed, full configuration/policies and build identity in a fresh non-overwritten directory. No empirical run is authorized by plan approval alone.
 
-**Engineering notes (not open tasks).** The declared equivalence panel (three configurations × seeds 1–2, `result` payloads compared byte-for-byte) is recorded in the [model contract](docs/simulator.en.md#verification-surface) and passed for the D193 change set and again for the decomposition change set. The mechanical `world.rs` decomposition (CP6) is delivered: `emission.rs`, `links.rs` and `dispute.rs` child modules follow the established `appeal.rs` pattern, pure code moves plus necessary visibility adjustments, verified line-for-line against the pre-move file and by the panel; protocol-economic mutations remain World-owned. Recovery, the scheduler and the structural audit stay in `world.rs`; no semantic redesign was forced.
-
 ## Dispute safety reconciliation
 
-**Human-gated review of remaining interactions.** The [filing rule](docs/facety.protocol.en.md#filing) requires full funding before recording; only execution of a verdict closes an active case. The [settlement rules](docs/facety.protocol.en.md#settlement) separate current amounts and recipients from open choices. Earlier active-withdrawal probes are historical.
+Review the remaining choices; earlier active-withdrawal probes are [historical](docs/insights.en.md#q26-dispute-safety-probes).
 
 - [ ] **Resolve the good-faith losing-accuser question:** under [Q26](DECISIONS_NEEDED.md#q26-dispute-safety-and-arithmetic-review), bind any integrity exception; until selected, apply ordinary halving. Keep the prepared [integrity-precision choice](DECISIONS_NEEDED.md#q26-integrity-precision-candidate) separate.
 
@@ -50,13 +47,11 @@ Scope: a reproducible research simulator for [the proposed protocol](docs/facety
 
 ## Admission and remedies
 
-- [ ] **Close selected-rule coverage after contract approval.** Start from the [model gaps](docs/simulator.en.md#deviations-and-assumptions): addressed invitations with prepared recipients and both slots at issuance; XP capacity schedule and the payer on re-entry; signed Self-ID and evidence; canonical path/verification inputs; cluster remedies, direct peer Council cases, and the distinction between target custody and an accused account's maturities. Bind the applicable [questions](DECISIONS_NEEDED.md#q31-identity-admission-and-execution-contracts) before implementation. Verify atomic refusal and no repeat gate at invitation acceptance; verify case-specific custody and fee-free repair without releasing unrelated holds. Keep these separate from trusted fixture coverage and from the frozen baseline.
+- [ ] **Close selected-rule coverage after contract approval.** Start from the [model gaps](docs/simulator.en.md#deviations-and-assumptions): addressed invitations with prepared recipients and both slots at issuance; XP capacity schedule and the payer on re-entry; signed Self-ID and evidence; canonical path/verification inputs, including the Self-ID source support and path-bound discrepancies; cluster remedies, direct peer Council cases, and the distinction between target custody and an accused account's maturities. Bind the applicable [questions](DECISIONS_NEEDED.md#q31-identity-admission-and-execution-contracts) before implementation. Verify atomic refusal and no repeat gate at invitation acceptance; verify case-specific custody and fee-free repair without releasing unrelated holds. Keep these separate from trusted fixture coverage and from the frozen baseline.
 
-## Operational follow-up boundary
+## Frozen research baseline
 
-A1-A3 now own the selected-subset admission, attributable execution, appeal-finance and recovery work formerly listed here; [Q25-A/B/C](DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) remain their unanswered contracts. Stored opening-author guarantors never substitute for identity-case historical XP recipients. Q25-D's human evidence remains missing, but a rehearsal is no longer a prerequisite/task before mainnet development (D188). The [operational proposal](docs/operational-defense.en.md) and unused kit remain uncommissioned references, not an operating commitment or permission to collect data.
-
-The table below is the frozen research baseline. Later Council deferral/round mechanics are implemented separately; no older binary-vote run tests them. Historical panels stay closed; C/D need their own committed registrations before runs.
+These axes describe the pre-deferral research baseline, not current conformance. Use the [model contract](docs/simulator.en.md) for present settings and the [final study](studies/2026-11-08-evidence-core/README.md) for exact historical configurations. Sections C and D require fresh registrations.
 
 | Baseline axis | Value | Status |
 | --- | --- | --- |
@@ -77,24 +72,8 @@ The table below is the frozen research baseline. Later Council deferral/round me
 | Social recovery (D135) | key loss and recovery scenario (`--key-loss`, `--recovery-vouch`, `--recovery-delay`) | scenario done; works but slow and incomplete (study) |
 | Identification reputation (D137) | not modeled | parked: no selected rule, not part of the core |
 
-## Core closure programme (opened 2026-11-06, finite)
-
-**Closed, historical; not an execution queue.** K1-K7, their original criteria/budgets and the X1/X5 adversary freezes belong to the named pre-D168 builds. The [core-closure study](studies/2026-11-06-core-closure/README.md) owns the results; D168's [final report](studies/2026-11-08-evidence-core/README.md) supersedes the earlier readiness recommendation, not its evidence. The full [pre-consolidation contract and closure ledger](https://github.com/llblab/facety/blob/c2841f43845634b877a07c38bc5db919462a4469/BACKLOG.md#core-closure-programme-opened-2026-11-06-finite) preserves criteria, seed families and completed checklists.
-
-## Convergence follow-ups (opened 2026-11-07)
-
-**Closed by D168.** The [evidence-core report](studies/2026-11-08-evidence-core/README.md) owns the 38 runs and REVISE verdict. Q20-Q24 are answered; historical stress panels do not commission more runs. A1-A3 and C1/D1 above own the renewed transaction, correction and evidence-model work; actual human calibration remains unmeasured and no session is authorized.
-
-## Rust simulator
-
-**Delivered, not open work.** The [model contract](docs/simulator.en.md) owns implemented coverage, statistical validation and efficiency settings. Graphs, correctness/parity/scale checks, dropped registration tooling and outcome-preserving optimizations are recorded in the [pre-consolidation delivery ledger](https://github.com/llblab/facety/blob/c2841f43845634b877a07c38bc5db919462a4469/BACKLOG.md#rust-simulator). Its measurements and unused performance ideas are historical, not a standing optimization queue. D188 still requires committed research contracts before runs, not a new registration runner.
-
-## Topology defense
-
-**Closed diagnostic findings, not new sweeps.** The [grown-network study](studies/2026-10-30-grown-network/README.md) owns growth/detection limits, cluster remedies, co-presence and valuation evidence; the [core-closure study](studies/2026-11-06-core-closure/README.md) owns honest-regime and social-recovery results. Original counts, qualifications and retired directions remain in the [historical ledger](https://github.com/llblab/facety/blob/c2841f43845634b877a07c38bc5db919462a4469/BACKLOG.md#topology-defense). Current human-gated work is named above, not inferred from those earlier experiments.
+The [previous backlog](https://github.com/llblab/facety/blob/8a9d0f52739b03c35a4b769a628d46edeefa70e0/BACKLOG.md#core-closure-programme-opened-2026-11-06-finite) preserves completed work and pinned study references. Milestones live in [CHANGELOG](CHANGELOG.md).
 
 ## Owner-gated protocol work (carried over, not active)
-
-A-D above own the newly commissioned selected-subset mechanics, verification and launch-measurement preparation. Their normative remainders, D33 verified independence, indexer optimization, media/legal contracts and actual human calibration remain gated or uncommissioned; no blanket migration is implied. Ordinary 24-hour source/snapshot maturity (D42/D163) and plain-XP network-referendum weight (D149) are settled, not owner questions. Historical details stay at the tag above.
 
 - [ ] **Registry continuity (D200, Q30) — not scheduled.** Propose, when the baseline phase allows, the living-to-lived record transition, an archive format whose proofs outlive a particular chain, and the relation of lasting public dedication (D186) to a choice made once; no simulator or protocol change until the owner selects. See [Q30](DECISIONS_NEEDED.md#q30-registry-continuity-and-archive).
