@@ -420,6 +420,12 @@ pub struct OpeningRecord {
     pub stage: OpeningStage,
 }
 
+impl OpeningRecord {
+    fn pending_activation_at(&self) -> Option<i64> {
+        (self.stage == OpeningStage::Pending).then_some(self.matures_at)
+    }
+}
+
 /// An open dispute: the ladder of positions, the accused, and every account
 /// whose D77 activity hold it owns, with the hour the hold began.
 #[derive(Clone, Debug)]
@@ -939,27 +945,17 @@ impl World {
         // Council cutoffs close and the electorate is taken for new rounds. Calls made at the same hour (filings,
         // cancellations, conversions) run after the batch, in call order.
         loop {
-            let opening = self.case_openings.iter().flatten().filter(|o| o.stage == OpeningStage::Pending && o.matures_at <= hour).map(|o| o.matures_at).min();
-            let council = self.cases.iter().flatten().filter(|c| c.ladder.is_due(hour)).map(|c| c.ladder.deadline()).min();
-            let appeals = self
-                .appeals
-                .iter()
-                .filter_map(|a| match a.stage {
-                    AppealStage::Pending => Some(a.matures_at),
-                    AppealStage::Active => a.deadline(),
-                    _ => None,
-                })
-                .filter(|&at| at <= hour)
-                .min();
-            let self_id =
-                self.self_id_cases.iter().flatten().filter(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at <= hour).map(|r| r.matures_at).min();
-            let Some(at) = opening.into_iter().chain(council).chain(appeals).chain(self_id).min() else { break };
+            let openings = self.case_openings.iter().flatten().filter_map(OpeningRecord::pending_activation_at);
+            let self_id = self.self_id_cases.iter().flatten().filter_map(SelfIdCaseRecord::pending_activation_at);
+            let council = self.cases.iter().flatten().filter(|c| c.ladder.is_due(hour)).map(|c| c.ladder.deadline());
+            let appeals = self.appeals.iter().filter_map(AppealRecord::next_event_at);
+            let Some(at) = openings.chain(self_id).chain(council).chain(appeals).filter(|&at| at <= hour).min() else { break };
             self.now = at;
             self.settle_through(at - 1);
             for id in 0..self.cases.len() {
-                if self.case_openings[id].as_ref().is_some_and(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
+                if self.case_openings[id].as_ref().and_then(OpeningRecord::pending_activation_at) == Some(at) {
                     self.activate_recorded_case(id as u32);
-                } else if self.self_id_cases[id].as_ref().is_some_and(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at) {
+                } else if self.self_id_cases[id].as_ref().and_then(SelfIdCaseRecord::pending_activation_at) == Some(at) {
                     self.activate_self_id_case(id as u32);
                 }
             }

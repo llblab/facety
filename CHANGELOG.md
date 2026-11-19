@@ -6,6 +6,7 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 
 ## Unreleased
 
+- Derived pending activation time from each opening record for scheduling, activation and cancellation. Same-hour ordering, cutoff refusals and case records are unchanged.
 - Shared Council ballot timing, duplicate-vote checks and round recognition between ordinary disputes and appeals. Electorate checks, verdicts and remedies remain case-specific.
 - Centralized accused-side suspension and maturity release for ordinary, Self-ID and appeal cases. Settlement resumes eligible maturities after verdict effects without clearing another case's hold.
 - Unified first-stake reservation and active hold setup for ordinary and Self-ID cases inside World. Both paths retain their own admission, pricing, journals and counters; filing refusal and activation ordering are unchanged.

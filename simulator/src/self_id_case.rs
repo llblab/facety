@@ -91,6 +91,12 @@ pub struct SelfIdCaseRecord {
     pub premises: TrustedAdmissionPremises,
 }
 
+impl SelfIdCaseRecord {
+    pub(super) fn pending_activation_at(&self) -> Option<i64> {
+        (self.stage == SelfIdCaseStage::Pending).then_some(self.matures_at)
+    }
+}
+
 /// The completed isolated D192 settlement, retained as this case's journal.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct SelfIdSettlement {
@@ -270,7 +276,7 @@ impl World {
 
     pub fn cancel_self_id_case_opening(&mut self, case: u32, actor: Id) -> Result<(), Reject> {
         let record = self.self_id_case(case).ok_or(Reject("no such Self-ID transaction case"))?;
-        if record.stage != SelfIdCaseStage::Pending || self.now >= record.matures_at {
+        if record.pending_activation_at().is_none_or(|at| self.now >= at) {
             return Err(Reject("not a pending Self-ID opening before its activation"));
         }
         self.require_opening_canceller(actor, record.author, &record.author_guarantors)?;

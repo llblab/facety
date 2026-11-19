@@ -158,7 +158,7 @@ impl World {
 
     pub fn cancel_pending_opening(&mut self, case: u32, actor: Id) -> Result<(), Reject> {
         let opening = self.case_opening(case).ok_or(Reject("no recorded opening"))?;
-        if opening.stage != OpeningStage::Pending || self.now >= opening.matures_at {
+        if opening.pending_activation_at().is_none_or(|at| self.now >= at) {
             return Err(Reject("the opening is not pending before maturity"));
         }
         self.require_opening_canceller(actor, opening.author, &opening.guarantors)?;

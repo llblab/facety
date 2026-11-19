@@ -88,6 +88,18 @@ impl AppealRecord {
         self.rounds.last().map(|r| r.deadline_after).or_else(|| self.activated_at.map(|at| at + 7 * DAY_HOURS))
     }
 
+    fn pending_activation_at(&self) -> Option<i64> {
+        (self.stage == AppealStage::Pending).then_some(self.matures_at)
+    }
+
+    pub(super) fn next_event_at(&self) -> Option<i64> {
+        if self.stage == AppealStage::Active {
+            self.deadline()
+        } else {
+            self.pending_activation_at()
+        }
+    }
+
     pub fn active_round(&self) -> Option<&CouncilElectorate> {
         (self.stage == AppealStage::Active).then(|| self.electorates.last()).flatten()
     }
@@ -303,7 +315,7 @@ impl World {
         let AppealInitiator::Participant(author) = record.initiator else {
             return Err(Reject("collective opening cancellation requires collective authority"));
         };
-        if record.stage != AppealStage::Pending || self.now >= record.matures_at {
+        if record.pending_activation_at().is_none_or(|at| self.now >= at) {
             return Err(Reject("appeal is not pending before maturity"));
         }
         self.require_opening_canceller(actor, author, &record.guarantors)?;
@@ -322,7 +334,7 @@ impl World {
 
     pub(super) fn activate_due_appeals(&mut self, at: i64) {
         for id in 0..self.appeals.len() {
-            if self.appeals[id].stage == AppealStage::Pending && self.appeals[id].matures_at == at {
+            if self.appeals[id].pending_activation_at() == Some(at) {
                 let record = &mut self.appeals[id];
                 record.stage = AppealStage::Active;
                 record.activated_at = Some(at);
