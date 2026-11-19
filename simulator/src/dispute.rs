@@ -10,21 +10,13 @@ impl World {
         reserved
     }
 
-    /// The funding check of an opening (D198/D199): the full initial stake must be spendable ordinary Collector FCTY now.
-    /// It mutates nothing, so every caller runs it after all other validation and before allocating anything.
-    pub(super) fn require_opening_funds(&self, who: Id, required: Amount) -> Result<(), Reject> {
+    /// After other filing checks, reserve the full first stake from spendable Collector FCTY or refuse without mutation.
+    pub(super) fn reserve_opening_stake(&mut self, who: Id, required: Amount) -> Result<Amount, Reject> {
         if self.spendable(who) < required {
             return Err(UNFUNDED_OPENING);
         }
-        Ok(())
-    }
-
-    /// Exclusive custody of a checked opening stake. Only a call that already passed `require_opening_funds` in the same
-    /// transaction may reserve, so the reservation cannot fail half-way through a filing.
-    pub(super) fn reserve_opening_stake(&mut self, who: Id, required: Amount) -> Amount {
-        assert!(self.spendable(who) >= required, "opening funds were checked in the same transaction");
         self.subjects[who as usize].reserved += required;
-        required
+        Ok(required)
     }
 
     /// Free pending cancellation returns the whole filing-time reservation, exactly once (the caller moves the stage first).
@@ -78,11 +70,6 @@ impl World {
         self.blocked[id as usize] = (self.cfg.exclude_disputed && self.path_hold[id as usize] > 0) || self.base_blocked(id);
     }
 
-    /// Whether an account of a case is excluded from paths (D157: the accused; D131 earlier reading: the challenger as well).
-    pub(super) fn path_held(&self, case: &Case, id: Id) -> bool {
-        id == case.accused || (!self.cfg.exclude_targets_only && id == case.ladder.positions()[0].who)
-    }
-
     /// Supply an already-active dispute fixture without inventing an earlier raw opening transaction.
     /// Normal transaction recording uses `record_case_opening` and activates only after its 24-hour maturity.
     pub fn begin_case(&mut self, subjects: &[Id]) -> Result<u32, Reject> {
@@ -95,11 +82,10 @@ impl World {
         let (challenger, accused) = (subjects[0], subjects[1]);
         self.require_dispute_slot(accused)?;
         self.now.checked_add(chekharda::window_hours(1)).ok_or(Reject("opening deadline exceeds the simulator's time representation"))?;
-        self.require_opening_funds(challenger, self.stake_at(1))?;
-        let backing = self.reserve_opening_stake(challenger, self.stake_at(1));
+        let backing = self.reserve_opening_stake(challenger, self.stake_at(1))?;
         let case = self.allocate_case();
         self.occupy_dispute_slot(accused, DisputeId::Case(case));
-        self.activate_case(case, challenger, accused, self.xp(challenger), backing);
+        self.activate_ordinary_case(case, challenger, accused, self.xp(challenger), backing);
         Ok(case)
     }
 
@@ -123,8 +109,7 @@ impl World {
             return Err(Reject("XP is not above the challenged transaction owner"));
         }
         let matures_at = self.opening_maturity_at()?;
-        let stake = self.stake_at(1);
-        self.require_opening_funds(author, stake)?;
+        let reserved_stake = self.reserve_opening_stake(author, self.stake_at(1))?;
         let opening = OpeningRecord {
             author,
             accused,
@@ -133,7 +118,7 @@ impl World {
             author_xp_at_recording,
             accused_xp_at_recording: self.xp(accused),
             guarantors: self.mutual_partners(author),
-            reserved_stake: self.reserve_opening_stake(author, stake),
+            reserved_stake,
             activated_at: None,
             stage: OpeningStage::Pending,
         };
@@ -213,27 +198,34 @@ impl World {
     pub(super) fn activate_recorded_case(&mut self, case: u32) {
         let opening = self.case_opening(case).expect("recorded opening");
         let (author, accused, xp, backing) = (opening.author, opening.accused, opening.author_xp_at_recording, opening.reserved_stake);
-        self.activate_case(case, author, accused, xp, backing);
+        self.activate_ordinary_case(case, author, accused, xp, backing);
         let opening = self.case_openings[case as usize].as_mut().expect("recorded opening");
         opening.stage = OpeningStage::Activated;
         opening.activated_at = Some(self.now);
         self.stats.openings_activated += 1;
     }
 
-    fn activate_case(&mut self, case_id: u32, challenger: Id, accused: Id, admission_xp: i32, backed: Amount) {
+    fn activate_ordinary_case(&mut self, case_id: u32, challenger: Id, accused: Id, admission_xp: i32, backed: Amount) {
         let stake = self.stake_at(1);
         let ladder = Ladder::open(challenger, admission_xp, self.now, self.cfg.base_stake.unwrap_or(0));
-        let mut case = Case { ladder, electorates: Vec::new(), accused, backed: vec![backed], holds: Vec::new() };
         self.stats.staked += stake;
         self.stats.opened += 1;
         self.stats.max_positions = self.stats.max_positions.max(1);
-        let (path_challenger, path_accused) = (self.path_held(&case, challenger), self.path_held(&case, accused));
-        case.holds = vec![(challenger, self.now, path_challenger), (accused, self.now, path_accused)];
-        self.hold_for(challenger, path_challenger);
-        self.hold_for(accused, path_accused);
+        self.install_active_case(case_id, accused, ladder, backed);
+    }
+
+    /// Install a newly opened ladder using its existing reservation and the first position's activation time.
+    /// Ordinary and Self-ID cases share activity, path and maturity holds, but price and count their openings separately.
+    pub(super) fn install_active_case(&mut self, id: u32, accused: Id, ladder: Ladder<Id>, backed: Amount) {
+        let first = &ladder.positions()[0];
+        let at = first.joined_at;
+        let holds = vec![(first.who, at, !self.cfg.exclude_targets_only), (accused, at, true)];
+        for &(subject, _, path) in &holds {
+            self.hold_for(subject, path);
+        }
         self.frozen[accused as usize] += 1;
-        self.establish_maturity_hold(DisputeId::Case(case_id), accused, self.now);
-        self.cases[case_id as usize] = Some(case);
+        self.establish_maturity_hold(DisputeId::Case(id), accused, at);
+        self.cases[id as usize] = Some(Case { ladder, electorates: Vec::new(), accused, backed: vec![backed], holds });
     }
 
     pub(super) fn case_ref(&self, case: u32) -> Result<&Case, Reject> {

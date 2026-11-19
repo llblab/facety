@@ -960,7 +960,7 @@ impl World {
                 if self.case_openings[id].as_ref().is_some_and(|o| o.stage == OpeningStage::Pending && o.matures_at == at) {
                     self.activate_recorded_case(id as u32);
                 } else if self.self_id_cases[id].as_ref().is_some_and(|r| r.stage == SelfIdCaseStage::Pending && r.matures_at == at) {
-                    self.activate_self_id_case(id as u32, at);
+                    self.activate_self_id_case(id as u32);
                 }
             }
             self.activate_due_appeals(at);

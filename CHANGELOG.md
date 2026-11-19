@@ -6,6 +6,7 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 
 ## Unreleased
 
+- Unified first-stake reservation and active hold setup for ordinary and Self-ID cases inside World. Both paths retain their own admission, pricing, journals and counters; filing refusal and activation ordering are unchanged.
 - Removed six retired Node documentation redirects, the historical interaction catalogue and the unrun rehearsal kit. Linked directly to pinned history and kept operational evidence gaps and observation requirements in their current documents. No protocol, simulator or saved evidence changed.
 - Consolidated active documentation around one simulator conformance map. Clarified full Collector funding at filing versus later soft backing, and cancellation during eligible suspension. Reconciled Council, exit and co-presence descriptions, narrowed open questions, and recorded the Self-ID path-check discrepancies. Pinned superseded comparisons; code, schemas and saved results did not change.
 - Consolidated the protocol and participant guide by rule family. Updated the simulator mapping, recorded the invitation and remedy coverage gaps, and removed stale funding and withdrawal descriptions from current documents. Archived decision history and preserved historical study references. No executable behavior or frozen evidence changed.

@@ -229,9 +229,7 @@ impl World {
         let matures_at = self.opening_maturity_at()?;
         // D199: the frozen-`N` first stake is checked and reserved exclusively in this same transaction, after every other
         // validation and before any allocation, so a refusal leaves no case ID, slot or custody behind.
-        let initial = stake(1, frozen.n);
-        self.require_opening_funds(accuser, initial)?;
-        let reserved_stake = self.reserve_opening_stake(accuser, initial);
+        let reserved_stake = self.reserve_opening_stake(accuser, stake(1, frozen.n))?;
         let case = self.allocate_case();
         self.self_id_cases[case as usize] = Some(SelfIdCaseRecord {
             case,
@@ -290,19 +288,12 @@ impl World {
     /// Activate in its existing slot on the filing-time reservation of the recording-frozen `N` FCTY first stake (D199),
     /// without a new funding decision, and begin the ordinary holds. Recording fixed admission, the disputed scope and
     /// the collateral; later XP, membership, balance or Self-ID changes cannot reprice or unfund it.
-    pub(crate) fn activate_self_id_case(&mut self, case: u32, at: i64) {
-        let record = self.self_id_cases[case as usize].as_ref().expect("pending Self-ID case").clone();
+    pub(super) fn activate_self_id_case(&mut self, case: u32) {
+        let at = self.now;
+        let record = self.self_id_cases[case as usize].as_ref().expect("pending Self-ID case");
         let frozen = record.frozen.expect("recording fixed the disputed scope");
         let ladder = Ladder::open(record.author, record.author_xp_at_recording, at, frozen.n);
-        let mut held = Case { ladder, electorates: Vec::new(), accused: record.accused, backed: vec![record.reserved_stake], holds: Vec::new() };
-        let (author_path, accused_path) = (self.path_held(&held, record.author), self.path_held(&held, record.accused));
-        held.holds = vec![(record.author, at, author_path), (record.accused, at, accused_path)];
-        self.hold_for(record.author, author_path);
-        self.hold_for(record.accused, accused_path);
-        self.frozen[record.accused as usize] += 1;
-        // D196: the accused's not-yet-processed maturities are suspended for the whole active case.
-        self.establish_maturity_hold(DisputeId::Case(case), record.accused, at);
-        self.cases[case as usize] = Some(held);
+        self.install_active_case(case, record.accused, ladder, record.reserved_stake);
         let record = self.self_id_cases[case as usize].as_mut().expect("pending record");
         record.stage = SelfIdCaseStage::Activated;
         record.activated_at = Some(at);
