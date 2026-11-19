@@ -13,7 +13,7 @@ use crate::world::{Config as WorldConfig, Id, Reject, World, DAY, UNFUNDED_OPENI
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
 
-pub const ENGINE: &str = "facety-sim/runner-v9";
+pub const ENGINE: &str = "facety-sim/runner-v10";
 /// Version of the saved result layout.
 pub const SCHEMA: &str = "facety-sim/result-v9";
 pub const COUNCIL_VOTING_POLICY: &str = "first-daily-review-per-round/binary-belief-v1";

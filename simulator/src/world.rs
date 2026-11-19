@@ -599,7 +599,6 @@ pub struct World {
     previous_guarantors: HashMap<Id, Vec<Id>>,
     /// Single-use recovery: (successor, source, XP moved) for every completed recovery; a source appears at most once.
     recovery_log: Vec<(Id, Id, i32)>,
-    member_ok: Vec<bool>,
     blocked: Vec<bool>,
     level: Vec<u8>,
     dist_any: Vec<u8>,
@@ -657,7 +656,6 @@ impl World {
             council_mask: Vec::new(),
             previous_guarantors: HashMap::new(),
             recovery_log: Vec::new(),
-            member_ok: Vec::new(),
             blocked: Vec::new(),
             level: Vec::new(),
             dist_any: Vec::new(),
@@ -1055,45 +1053,20 @@ impl World {
             }
             frontier = next;
         }
-        // A Council member needs a path to another member; exact for the lookup sizes up to 101.
-        self.member_ok = self.council.iter().map(|&m| self.member_reaches_other(m, limit, &nonaccepted)).collect();
         self.epoch += 1;
     }
 
-    fn member_reaches_other(&self, m: Id, limit: u8, nonaccepted: &[bool]) -> bool {
-        if self.council.len() > 101 {
-            return true;
-        }
-        let n = self.subjects.len();
-        let mut dist = vec![NO_LEVEL; n];
-        dist[m as usize] = 0;
-        let mut frontier = vec![m];
-        let mut d = 0u8;
-        while !frontier.is_empty() && d < limit {
-            d += 1;
-            let mut next = Vec::new();
-            for &u in &frontier {
-                for &v in self.graph.out(u) {
-                    if dist[v as usize] != NO_LEVEL || nonaccepted[v as usize] {
-                        continue;
-                    }
-                    dist[v as usize] = d;
-                    if self.council.contains(&v) {
-                        return true;
-                    }
-                    if !self.blocked[v as usize] {
-                        next.push(v);
-                    }
-                }
-            }
-            frontier = next;
-        }
-        false
-    }
-
+    /// The emission path gate for one mutual guarantor `p` of the emitter (D84/D123/D124/D156): the path is
+    /// emitter -> p -> ... -> a Council member. A member-guarantor is already the two-node path's terminal, and
+    /// the selected rule exempts the issuer and the Council endpoint from support of their own (D124), so it is
+    /// accepted. Otherwise `p` is the first intermediate: it must be unblocked (accepted, supported under layering
+    /// and outside a dispute), and its remaining links to the nearest member must fit the node bound: at most
+    /// `max_nodes - 2` further links so the whole path stays within `max_nodes` nodes counting both ends.
+    /// The distance snapshot may route through the emitter itself; any such walk implies a strictly shorter simple
+    /// path through the traversed partner, so it never changes which emitters are admitted.
     fn self_gate(&self, p: Id) -> bool {
-        if let Some(at) = self.council.iter().position(|&m| m == p) {
-            return self.member_ok[at];
+        if self.council_mask.get(p as usize).copied().unwrap_or(false) {
+            return true;
         }
         let from_guarantor = self.cfg.max_nodes.map_or(u8::MAX - 1, |m| (m - 1) as u8);
         if self.cfg.self_path_from_subject && self.blocked.get(p as usize).copied().unwrap_or(true) {
