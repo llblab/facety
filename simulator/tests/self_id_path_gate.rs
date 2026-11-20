@@ -1,5 +1,5 @@
 //! The Self-ID emission path gate against the selected rule (D84/D123/D124/D156): one current path from the emitter
-//! to a Council member, at most `max_nodes` nodes counting both ends, intermediates (the guarantor first) accepted,
+//! to a different Council member, at most `max_nodes` nodes counting both ends, intermediates (the guarantor first) accepted,
 //! supported under layering and outside a dispute; the issuer and the Council terminal need no support of their own.
 //! Deterministic transition checks of the implemented gate, with the independent certificate and family verifiers
 //! as the expectation reference. These are not human or production evidence.
@@ -146,6 +146,39 @@ fn a_same_hour_status_change_rechecks_transit_without_changing_links_or_seats() 
     assert_eq!(w.council(), &[4, 5, 6]);
     assert_eq!(w.create_self_id(0), Ok(4), "refusal left the next act ID and the issuer's rolling slot untouched");
     w.audit().unwrap();
+}
+
+#[test]
+fn a_member_cannot_count_a_path_back_to_their_own_seat() {
+    for layered in [false, true] {
+        let mut w = World::new(Config { layered, ..Config::default() }, 4, &[(0, 3)]);
+        assert_eq!(w.council(), &[0, 1, 2]);
+        assert_eq!(w.mutual_partners(0), [3]);
+        assert_refused_without_emission(&mut w, "insufficient Council paths");
+        assert_eq!(w.create_self_id(3), Ok(0), "the same edge leads the nonmember to a distinct seat");
+        w.audit().unwrap();
+    }
+}
+
+#[test]
+fn a_member_can_reach_another_member_without_a_direct_guarantee() {
+    let pairs = [(0, 3), (3, 4), (4, 1)];
+    for max_nodes in [3, 4] {
+        let mut w = World::new(Config { layered: true, max_nodes: Some(max_nodes), ..Config::default() }, 5, &pairs);
+        assert_eq!(w.council(), &[0, 1, 2]);
+        assert_eq!(w.mutual_partners(0), [3]);
+        let paths = vec![vec![0, 3, 4, 1]];
+        let blocked: Vec<_> = (0..w.len() as u32).map(|i| w.path_blocked(i)).collect();
+        let certificate = Certificate { graph: w.graph(), paths: &paths, source: 0, council: w.council(), required: 1, max_nodes, blocked: &blocked };
+        if max_nodes == 3 {
+            assert_eq!(verify_certificate(&certificate), Err(CertificateError::PathTooLong));
+            assert_refused_without_emission(&mut w, "insufficient Council paths");
+        } else {
+            assert_eq!(verify_certificate(&certificate), Ok(()));
+            assert_eq!(w.create_self_id(0), Ok(0));
+            w.audit().unwrap();
+        }
+    }
 }
 
 /// A Council-member guarantor is the two-node path's terminal: the selected rule exempts the terminal from support

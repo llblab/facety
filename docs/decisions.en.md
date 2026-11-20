@@ -10,6 +10,10 @@ The clause-by-clause preservation check is archived in the consolidation commit.
 
 For subsequent decisions, record the ID, date, status, one-line paraphrase, what changed or was superseded, and a link to the owning section. Revise that section in place when meaning changes. Research decisions belong here and in their evidence or study pages, not in protocol rules.
 
+## Protocol decisions after consolidation
+
+**D201 — [SELECTED], 2026-11-20.** A Self-ID author who sits on the Council must still have a qualifying path to a different Council member. A direct mutual guarantee between the members is not required. This resolves the own-seat part of Q31: neither a zero-hop claim nor a route returning to the author qualifies. The other endpoint's dispute status remains a separate question. See [Paths](facety.protocol.en.md#paths).
+
 ## Research and development decisions
 
 These decisions govern how the proposal is investigated and maintained. They add no conditions to Self-ID, admission, monetary rights or Council authority.

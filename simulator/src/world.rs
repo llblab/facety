@@ -1045,24 +1045,33 @@ impl World {
     /// A first-hop Council member ends a two-node path. Any other hop needs live transit and support; after
     /// the first hop at most L-2 links remain. The earlier-reading ablation counts from the guarantor and
     /// exempts it from layered support, but not when it is traversed as an intermediate.
-    fn self_gate(&mut self, guarantor: Id) -> bool {
+    fn self_gate(&mut self, issuer: Id, partners: &[Id]) -> bool {
+        if partners.iter().any(|&p| self.council_mask[p as usize]) {
+            return true;
+        }
+        if self.council_mask[issuer as usize] {
+            let reached = self.reachable_self_id_guarantors(Some(issuer));
+            return partners.iter().any(|&p| reached[p as usize]);
+        }
         let revision = self.graph.revision();
         if self.self_paths.as_ref().is_none_or(|(cached, _)| *cached != revision) {
-            self.self_paths = Some((revision, self.reachable_self_id_guarantors()));
+            self.self_paths = Some((revision, self.reachable_self_id_guarantors(None)));
         }
-        self.self_paths.as_ref().unwrap().1[guarantor as usize]
+        let reached = &self.self_paths.as_ref().unwrap().1;
+        partners.iter().any(|&p| reached[p as usize])
     }
 
-    /// Use the scheduled Council and difficulty snapshot, but certify against current guarantees and exclusions.
-    /// A walk back through a non-member emitter implies a shorter path from another first hop. An emitter's own
-    /// seat and disputed terminals retain their declared model treatment pending the exact endpoint contracts.
-    fn reachable_self_id_guarantors(&self) -> Vec<bool> {
+    /// Use live guarantees and exclusions at the scheduled Council and difficulty snapshot. For a member issuer,
+    /// omit its seat and do not revisit it in the path, but leave the common layered support predicate intact.
+    /// For other issuers the shared reachability map is sufficient: a walk back through the issuer implies a
+    /// shorter path via another first hop. Disputed terminals keep their declared model treatment.
+    fn reachable_self_id_guarantors(&self, issuer: Option<Id>) -> Vec<bool> {
         let excluded = self.path_exclusions();
         let levels = self.path_levels(&excluded);
         let strict = self.cfg.self_path_from_subject;
         let limit = self.cfg.max_nodes.map_or(u8::MAX - 1, |m| (m - 1) as u8).saturating_sub(u8::from(strict));
         let mut reached = vec![false; self.len()];
-        let mut frontier: Vec<Id> = self.council.iter().copied().filter(|&m| self.accepted(m)).collect();
+        let mut frontier: Vec<Id> = self.council.iter().copied().filter(|&m| Some(m) != issuer && self.accepted(m)).collect();
         for &m in &frontier {
             reached[m as usize] = true;
         }
@@ -1075,7 +1084,7 @@ impl World {
                 for &v in self.graph.inn(u) {
                     let i = v as usize;
                     let supported = !self.cfg.layered || levels[i] != NO_LEVEL;
-                    if reached[i] || excluded[i] || (strict && !supported) {
+                    if Some(v) == issuer || reached[i] || excluded[i] || (strict && !supported) {
                         continue;
                     }
                     reached[i] = true;
@@ -2171,8 +2180,8 @@ mod tests {
         }
         w.tick(24);
         // Far members of the tail are more than four nodes from every Council member.
-        assert!(!w.self_gate(127));
-        assert!(w.self_gate(2), "members near the Council certify");
+        assert!(!w.self_gate(127, &w.mutual_partners(127)));
+        assert!(w.self_gate(2, &w.mutual_partners(2)), "members near the Council certify");
     }
 
     #[test]

@@ -233,7 +233,7 @@ impl World {
         if partners.is_empty() {
             return Err(Reject("Self-ID requires an established mutual guarantor"));
         }
-        if !partners.iter().any(|&p| self.self_gate(p)) {
+        if !self.self_gate(who, &partners) {
             return Err(Reject("insufficient Council paths"));
         }
         let guarantors = self.eligible_guarantors(who);
