@@ -2,9 +2,9 @@
 //! activity holds, and the Council-path gate (D84/D91/D104/D123/D124). Accepted rules are fixed here; configuration
 //! exists only for the research levers in `Config`.
 //!
-//! Deviations from the retired Node model (declared, for the statistical baseline):
-//! - the Council, the active count / difficulty D, the layered-support levels and the distance pruning are refreshed
-//!   on daily ticks and due Council cutoffs, not on every call;
+//! The simulator refreshes institutional Council and difficulty snapshots on ticks and due Council cutoffs.
+//! At Self-ID creation and invitation issuance the graph, accepted status, path exclusions and support are current,
+//! using the adopted Council and difficulty. Other model conventions:
 //! - Council ties break by account index (older first), not by id string;
 //! - legacy policy options (immediate or spend-triggered XP, guarantee fees, vouching, limits) do not exist; ordinary XP is the D42
 //!   maturity credit (`settle`).
@@ -108,6 +108,16 @@ impl SearchOrder {
     pub fn auto(_layered: bool) -> SearchOrder {
         SearchOrder::Degree
     }
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+struct PathRevision {
+    graph: u64,
+    difficulty: usize,
+    bound: Option<usize>,
+    layered: bool,
+    exclude_disputed: bool,
+    self_path_from_subject: bool,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -601,9 +611,10 @@ pub struct World {
     recovery_log: Vec<(Id, Id, i32)>,
     blocked: Vec<bool>,
     level: Vec<u8>,
-    // Self-ID reachability at a graph revision; snapshot, hold and status changes discard the cache.
-    self_paths: Option<(u64, Vec<bool>)>,
-    epoch: u64,
+    // Live support and distance pruning share a revision. Institutional snapshots, holds and status changes invalidate it.
+    path_revision: Option<PathRevision>,
+    path_epoch: u64,
+    self_paths: Option<Vec<bool>>,
     finder: PathFinder,
 }
 
@@ -659,8 +670,9 @@ impl World {
             recovery_log: Vec::new(),
             blocked: Vec::new(),
             level: Vec::new(),
+            path_revision: None,
+            path_epoch: 0,
             self_paths: None,
-            epoch: 0,
             finder: PathFinder::new(),
         };
         for _ in 0..n {
@@ -737,7 +749,7 @@ impl World {
 
     fn set_status(&mut self, subject: Id, status: Status) {
         self.subjects[subject as usize].status = status;
-        self.self_paths = None;
+        self.path_revision = None;
     }
 
     // ---- reads -----------------------------------------------------------------------------------------------------
@@ -852,7 +864,11 @@ impl World {
     }
     /// Whether the account is currently unusable as a path intermediate (not accepted, unsupported, or in a dispute).
     pub fn path_blocked(&self, id: Id) -> bool {
-        self.blocked[id as usize]
+        if self.path_revision == Some(self.current_path_revision()) {
+            return self.blocked[id as usize];
+        }
+        let excluded = self.path_exclusions();
+        excluded[id as usize] || (self.cfg.layered && self.path_levels(&excluded)[id as usize] == NO_LEVEL)
     }
     pub fn held(&self, id: Id) -> bool {
         self.hold[id as usize] > 0
@@ -1022,15 +1038,39 @@ impl World {
         for &m in &self.council {
             self.council_mask[m as usize] = true;
         }
+        self.path_revision = None;
+    }
+
+    fn current_path_revision(&self) -> PathRevision {
+        PathRevision {
+            graph: self.graph.revision(),
+            difficulty: self.required_guarantors(),
+            bound: self.cfg.max_nodes,
+            layered: self.cfg.layered,
+            exclude_disputed: self.cfg.exclude_disputed,
+            self_path_from_subject: self.cfg.self_path_from_subject,
+        }
+    }
+
+    fn refresh_live_paths(&mut self) {
+        let revision = self.current_path_revision();
+        if self.path_revision == Some(revision) {
+            return;
+        }
         let excluded = self.path_exclusions();
         self.level = self.path_levels(&excluded);
         self.blocked = excluded.into_iter().zip(&self.level).map(|(excluded, &level)| excluded || (self.cfg.layered && level == NO_LEVEL)).collect();
         self.self_paths = None;
-        self.epoch += 1;
+        self.path_revision = Some(revision);
+        self.path_epoch += 1;
+    }
+
+    fn path_excluded(&self, id: Id) -> bool {
+        !self.accepted(id) || (self.cfg.exclude_disputed && self.path_hold[id as usize] > 0)
     }
 
     fn path_exclusions(&self) -> Vec<bool> {
-        (0..self.len() as Id).map(|i| !self.accepted(i) || (self.cfg.exclude_disputed && self.path_hold[i as usize] > 0)).collect()
+        (0..self.len() as Id).map(|i| self.path_excluded(i)).collect()
     }
 
     fn path_levels(&self, excluded: &[bool]) -> Vec<u8> {
@@ -1046,32 +1086,33 @@ impl World {
     /// the first hop at most L-2 links remain. The earlier-reading ablation counts from the guarantor and
     /// exempts it from layered support, but not when it is traversed as an intermediate.
     fn self_gate(&mut self, issuer: Id, partners: &[Id]) -> bool {
-        if partners.iter().any(|&p| self.council_mask[p as usize]) {
+        if self.cfg.max_nodes.is_some_and(|n| n < 2) {
+            return false;
+        }
+        if partners.iter().any(|&p| p != issuer && self.council_mask[p as usize] && !self.path_excluded(p)) {
             return true;
         }
+        self.refresh_live_paths();
         if self.council_mask[issuer as usize] {
             let reached = self.reachable_self_id_guarantors(Some(issuer));
             return partners.iter().any(|&p| reached[p as usize]);
         }
-        let revision = self.graph.revision();
-        if self.self_paths.as_ref().is_none_or(|(cached, _)| *cached != revision) {
-            self.self_paths = Some((revision, self.reachable_self_id_guarantors(None)));
+        if self.self_paths.is_none() {
+            self.self_paths = Some(self.reachable_self_id_guarantors(None));
         }
-        let reached = &self.self_paths.as_ref().unwrap().1;
+        let reached = self.self_paths.as_ref().unwrap();
         partners.iter().any(|&p| reached[p as usize])
     }
 
     /// Use live guarantees and exclusions at the scheduled Council and difficulty snapshot. For a member issuer,
     /// omit its seat and do not revisit it in the path, but leave the common layered support predicate intact.
     /// For other issuers the shared reachability map is sufficient: a walk back through the issuer implies a
-    /// shorter path via another first hop. Disputed terminals keep their declared model treatment.
+    /// shorter path via another first hop. The same exclusions apply to terminals and intermediaries.
     fn reachable_self_id_guarantors(&self, issuer: Option<Id>) -> Vec<bool> {
-        let excluded = self.path_exclusions();
-        let levels = self.path_levels(&excluded);
         let strict = self.cfg.self_path_from_subject;
         let limit = self.cfg.max_nodes.map_or(u8::MAX - 1, |m| (m - 1) as u8).saturating_sub(u8::from(strict));
         let mut reached = vec![false; self.len()];
-        let mut frontier: Vec<Id> = self.council.iter().copied().filter(|&m| Some(m) != issuer && self.accepted(m)).collect();
+        let mut frontier: Vec<Id> = self.council.iter().copied().filter(|&m| Some(m) != issuer && !self.path_excluded(m)).collect();
         for &m in &frontier {
             reached[m as usize] = true;
         }
@@ -1083,8 +1124,8 @@ impl World {
             for u in frontier {
                 for &v in self.graph.inn(u) {
                     let i = v as usize;
-                    let supported = !self.cfg.layered || levels[i] != NO_LEVEL;
-                    if Some(v) == issuer || reached[i] || excluded[i] || (strict && !supported) {
+                    let supported = !self.cfg.layered || self.level[i] != NO_LEVEL;
+                    if Some(v) == issuer || reached[i] || self.path_excluded(v) || (strict && !supported) {
                         continue;
                     }
                     reached[i] = true;
@@ -1123,9 +1164,8 @@ impl World {
         (n, up, full)
     }
 
-    /// The integrity coefficient of an account in millionths (`COEF_ONE` when the variant is off or nothing was lost).
-    /// Whether this act's maturity is still suspended or awaiting its release processing. Such an act is not a mature
-    /// entitlement yet: it cannot be spent, converted, used as collateral or used to repay debt.
+    /// Whether this right's maturity is suspended or awaiting release. The right exists but is not yet available
+    /// for disposition or debt repayment.
     fn maturity_pending_credit(&self, act: u32) -> bool {
         self.maturity_held(act) || self.deferred_maturities.binary_search(&act).is_ok()
     }
@@ -1164,6 +1204,7 @@ impl World {
         &self.maturity_holds
     }
 
+    /// The subject's integrity in millionths.
     pub fn coefficient(&self, id: Id) -> u32 {
         self.subjects[id as usize].coef
     }
@@ -1199,12 +1240,6 @@ impl World {
     }
 
     // ---- disputes as activity holds, identity verdicts -------------------------------------------------------------
-
-    /// D77: every party of an open case is held (no Self-IDs, invitations or valences) until the case ends.
-    /// Whether an account is unusable as a path intermediate right now: not accepted, not layered-supported (when required), or in a dispute.
-    fn base_blocked(&self, id: Id) -> bool {
-        !self.accepted(id) || (self.cfg.layered && self.level[id as usize] == NO_LEVEL)
-    }
 
     /// D167 (D34 for an identity case): the guarantors liable for an account are exactly those who earned XP for its Self-ID acts, whether
     /// or not they still guarantee it. Acts whose credit is revoked or suspended contribute nobody.

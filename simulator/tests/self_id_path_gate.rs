@@ -1,9 +1,11 @@
 //! The Self-ID emission path gate against the selected rule (D84/D123/D124/D156): one current path from the emitter
 //! to a different Council member, at most `max_nodes` nodes counting both ends, intermediates (the guarantor first) accepted,
-//! supported under layering and outside a dispute; the issuer and the Council terminal need no support of their own.
+//! supported under layering and not actively accused. The issuer and terminal need no support of their own,
+//! but a terminal must be accepted and cannot be actively accused.
 //! Deterministic transition checks of the implemented gate, with the independent certificate and family verifiers
 //! as the expectation reference. These are not human or production evidence.
 use facety_sim::certificate::{verify_certificate, Certificate, CertificateError};
+use facety_sim::chekharda::Side;
 use facety_sim::paths::{verify_family, PathFinder, Search};
 use facety_sim::world::{Config, Reject, World};
 
@@ -212,4 +214,56 @@ fn a_member_guarantor_supplies_a_two_node_path() {
     assert!(verify_family(graph, &two, 0, &mask, 1, 7, &blocked), "the reference accepts the two-node family");
     verify_certificate(&Certificate { graph, paths: &two, source: 0, council: w.council(), required: 1, max_nodes: 7, blocked: &blocked })
         .expect("the certificate verifier accepts the two-node family");
+}
+
+#[test]
+fn an_accused_member_cannot_terminate_even_a_direct_path_but_can_keep_the_seat() {
+    for layered in [true, false] {
+        let mut w = World::new(Config { layered, ..Config::default() }, 7, &[(3, 0), (3, 4), (4, 1), (5, 0)]);
+        for member in [0, 1] {
+            w.begin_case(&[6, member]).unwrap();
+        }
+        let seat = w.council().to_vec();
+        assert_eq!(seat, [0, 1, 2]);
+        assert_eq!(w.create_self_id(3), Err(Reject("insufficient Council paths")), "both terminals are excluded");
+        w.tick(w.case_deadline(1).unwrap());
+        w.settle_case(1, Some(Side::Accused)).unwrap();
+        assert_eq!(w.create_self_id(3), Ok(0), "the three-node alternative now passes");
+        assert_eq!(w.create_self_id(5), Err(Reject("insufficient Council paths")), "the direct terminal is still accused");
+        w.settle_case(0, Some(Side::Accused)).unwrap();
+        w.begin_case(&[0, 6]).unwrap();
+        assert_eq!(w.council(), seat, "a path exclusion does not alter the institutional roster");
+        assert_eq!(w.create_self_id(5), Ok(1), "a member who is only a challenger may terminate the direct path");
+        w.audit().unwrap();
+    }
+}
+
+#[test]
+fn invitation_issuance_rechecks_support_even_when_both_routes_still_exist() {
+    let mut pairs = vec![(0, 1), (0, 2), (1, 3), (1, 4), (2, 3), (2, 4)];
+    pairs.extend((3..13).flat_map(|i| (i + 1..13).map(move |j| (i, j))));
+    let mut w = World::new(Config::default(), 13, &pairs);
+    for id in 0..13 {
+        w.create_self_id(id).unwrap();
+    }
+    w.cfg.layered = true;
+    w.tick(24);
+    assert_eq!(w.council(), [3, 4, 5]);
+    assert_eq!(w.required_guarantors(), 2);
+    let right = w.eligible_emission(0).unwrap();
+    let probe = w.probe_invitation_paths(0, facety_sim::world::PathMethod::Exact);
+    assert!(probe.accepted && probe.certificate_valid == Some(true));
+    assert_eq!(w.clone().create_invitation(0, right), Ok(0));
+    cut(&mut w, 1, 4);
+    assert!(w.graph().is_mutual(1, 3) && w.graph().is_mutual(2, 4));
+    let family = vec![vec![0, 1, 3], vec![0, 2, 4]];
+    let check = Certificate { graph: w.graph(), paths: &family, source: 0, council: w.council(), required: 2, max_nodes: 7, blocked: &[false; 13] };
+    assert_eq!(verify_certificate(&check), Ok(()), "only the layered support predicate changed the answer");
+    assert!(w.path_blocked(1));
+    let before = (w.used_slots_of(0), w.burned(), w.vault(), w.acts_status(right));
+    assert_eq!(w.create_invitation(0, right), Err(Reject("insufficient Council paths")));
+    assert_eq!((w.used_slots_of(0), w.burned(), w.vault(), w.acts_status(right)), before);
+    w.cfg.layered = false;
+    assert_eq!(w.create_invitation(0, right), Ok(0), "refusal did not allocate the first invitation ID");
+    w.audit().unwrap();
 }

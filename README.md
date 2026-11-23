@@ -24,7 +24,9 @@
 
 ## People, guarantees, consequences
 
-Facety connects repeated identity claims, mutual guarantees and responsibility for public acts. Participants put their own history behind the people they vouch for. Claims can be challenged, defended and corrected through a shared dispute process.
+Facety is a voluntary public registry of people who have lived. It helps people from different communities recognize one another, take responsibility for public claims and correct mistakes. The long-term aim is cooperation beyond personal acquaintance and local concentrations of power, without requiring cultural uniformity or judging anyone's worth.
+
+A connection matters when it helps people cooperate and makes responsibility clear. A path checks reachability, not independent human control or trust. Access to challenge and appeal matters more than node count alone. People can stop participating without erasing past records or obligations; public claims don't require publishing every part of their lives. Whether people will show up, recognize one another accurately or cooperate across groups remains an empirical question.
 
 The aim is to make honest participation easier and more rewarding than identity fraud, while limiting emission captured by fabricated identities. That is a design goal whose operational dependencies still need validation.
 

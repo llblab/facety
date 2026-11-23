@@ -204,9 +204,7 @@ struct Snap {
     active_count: usize,
     council: Vec<Id>,
     council_mask: Vec<bool>,
-    epoch: u64,
-    level: Vec<u8>,
-    blocked: Vec<bool>,
+    config: Config,
     subjects: Vec<SubjectSnap>,
     acts: Vec<ActSnap>,
     graph: (usize, Vec<Vec<u32>>),
@@ -238,8 +236,8 @@ struct Snap {
 }
 
 impl World {
-    /// The declared comparison projection. `stats` (declared diagnostic counters) and `finder` (efficiency caches,
-    /// D145) are excluded; every other field participates.
+    /// The comparison excludes diagnostic counters and derived path caches (finder scratch and distances,
+    /// support levels, blocked mask, path revisions and reachability).
     fn snapshot(&self) -> Snap {
         let mut revocations: Vec<(u32, Vec<Option<u32>>)> = self.xp_revocations.iter().map(|(k, v)| (*k, v.clone())).collect();
         revocations.sort();
@@ -257,9 +255,7 @@ impl World {
             active_count: self.active_count,
             council: self.council.clone(),
             council_mask: self.council_mask.clone(),
-            epoch: self.epoch,
-            level: self.level.clone(),
-            blocked: self.blocked.clone(),
+            config: self.cfg.clone(),
             subjects: self
                 .subjects
                 .iter()

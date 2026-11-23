@@ -83,8 +83,8 @@ impl World {
     // ---- invitations -----------------------------------------------------------------------------------------------
 
     /// H1: a certificate for the invitation question built from the layered-support levels. Every supported account has at least D mutual
-    /// neighbors of strictly lower level, so descending chains exist; the family is read off those chains and then verified against the live graph
-    /// (the levels are a daily snapshot), so an accepted answer is always a valid certificate. `Err(true)` is a proof of impossibility (fewer
+    /// neighbors of strictly lower level, so descending chains exist; the family is read off those chains and verified against the graph
+    /// at the same revision, so an accepted answer is a valid certificate. `Err(true)` is a proof of impossibility (fewer
     /// than D usable first hops), `Err(false)` means the construction did not settle the question.
     fn structural_family(&mut self, u: Id, d: usize) -> Result<Vec<Vec<Id>>, bool> {
         let Some(max_nodes) = self.cfg.max_nodes else { return Err(false) };
@@ -159,6 +159,7 @@ impl World {
         if creator as usize >= self.subjects.len() {
             return Probe { accepted: false, steps: 0, exhausted: false, certificate_valid: None, resolved_by: "unknown account" };
         }
+        self.refresh_live_paths();
         let d = self.required_guarantors();
         let Some(max_nodes) = self.cfg.max_nodes else {
             let ok = self.finder.disjoint_count(&self.graph, &self.blocked, &self.council_mask, creator, d) >= d;
@@ -179,7 +180,7 @@ impl World {
         let before = self.finder.use_relaxation;
         self.finder.use_relaxation = relaxed;
         let result =
-            self.finder.bounded(&self.graph, &self.blocked, &self.council_mask, &self.council, self.epoch, creator, d, max_nodes, self.cfg.search_budget);
+            self.finder.bounded(&self.graph, &self.blocked, &self.council_mask, &self.council, self.path_epoch, creator, d, max_nodes, self.cfg.search_budget);
         self.finder.use_relaxation = before;
         let exhausted = self.finder.exhausted_searches > exhausted0;
         let (accepted, valid) = match &result {
@@ -196,23 +197,24 @@ impl World {
         Probe { accepted, steps: self.finder.steps_total - steps0, exhausted, certificate_valid: valid, resolved_by }
     }
 
-    /// D104/D134: D internally vertex-disjoint current paths from the creator to D different Council members (any members that
-    /// sit in the Council at confirmation time), each path within the node bound.
-    fn invitation_paths_ok(&mut self, creator: Id, d: usize) -> bool {
-        // Efficiency (D145, no change of answers): with layered support the supported-account levels give a verified certificate, or a proof
-        // that too few first hops exist, for almost every question; the exact search runs only for the rest.
+    /// D current paths sharing only the issuer, within the node bound and to distinct eligible Council members.
+    fn require_invitation_paths(&mut self, creator: Id, d: usize) -> Result<(), Reject> {
+        self.refresh_live_paths();
+        let insufficient = Reject("insufficient Council paths");
         match self.structural_family(creator, d) {
-            Ok(_) => return true,
-            Err(true) => return false,
+            Ok(_) => return Ok(()),
+            Err(true) => return Err(insufficient),
             Err(false) => {}
         }
         let Some(max_nodes) = self.cfg.max_nodes else {
-            return self.finder.disjoint_count(&self.graph, &self.blocked, &self.council_mask, creator, d) >= d;
+            return if self.finder.disjoint_count(&self.graph, &self.blocked, &self.council_mask, creator, d) >= d { Ok(()) } else { Err(insufficient) };
         };
-        matches!(
-            self.finder.bounded(&self.graph, &self.blocked, &self.council_mask, &self.council, self.epoch, creator, d, max_nodes, self.cfg.search_budget),
-            Search::Found(_)
-        )
+        match self.finder.bounded(&self.graph, &self.blocked, &self.council_mask, &self.council, self.path_epoch, creator, d, max_nodes, self.cfg.search_budget)
+        {
+            Search::Found(_) => Ok(()),
+            Search::Insufficient => Err(insufficient),
+            Search::Exhausted => Err(Reject("Council path search exhausted")),
+        }
     }
 
     /// Record an invitation without a target in this model. Burn the creator's mature right, count the creator's slot,
@@ -229,9 +231,7 @@ impl World {
         if self.used_slots(creator) >= self.slot_ceiling(creator) {
             return Err(Reject("owned-slot ceiling reached"));
         }
-        if !self.invitation_paths_ok(creator, d) {
-            return Err(Reject("insufficient Council paths"));
-        }
+        self.require_invitation_paths(creator, d)?;
         let guarantors = self.mutual_partners(creator);
         self.dispose(act, ActStatus::Consumed);
         self.inv_units[creator as usize] += 1;

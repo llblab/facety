@@ -58,8 +58,7 @@ impl World {
         self.hold[id as usize] += 1;
         if path && self.cfg.exclude_disputed {
             self.path_hold[id as usize] += 1;
-            self.blocked[id as usize] = true;
-            self.self_paths = None;
+            self.path_revision = None;
         }
     }
 
@@ -67,9 +66,8 @@ impl World {
         self.hold[id as usize] -= 1;
         if path && self.cfg.exclude_disputed {
             self.path_hold[id as usize] -= 1;
-            self.self_paths = None;
+            self.path_revision = None;
         }
-        self.blocked[id as usize] = (self.cfg.exclude_disputed && self.path_hold[id as usize] > 0) || self.base_blocked(id);
     }
 
     /// Supply an already-active dispute fixture without inventing an earlier raw opening transaction.

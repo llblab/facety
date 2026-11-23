@@ -540,7 +540,7 @@ impl PathFinder {
         rc
     }
 
-    /// Distances to the nearest Council member over allowed intermediates (daily snapshot, shared by all issuers).
+    /// Distances to the nearest Council member over allowed intermediates, shared at one path revision.
     fn distances(&mut self, g: &Graph, blocked: &[bool], cache_key: u64, terminals: &[u32], limit: usize) -> Rc<Vec<u8>> {
         if self.cache_key != cache_key {
             self.dist_cache.clear();
@@ -580,8 +580,7 @@ impl PathFinder {
     /// Exact search for `k` internally vertex-disjoint paths of at most `max_nodes` nodes (endpoints included) from `s` to `k`
     /// different Council members (any members; the family is free to choose them). `terminals`/`mask` list the Council; the
     /// source may be a member (it is excluded) or blocked (only intermediates and terminals are filtered).
-    /// `cache_key` keys the shared distance cache: change it whenever the Council, the graph or the `blocked` set changes enough
-    /// to matter (the world passes a daily epoch, so edges added within the day are not seen by the distance pruning).
+    /// Change `cache_key` whenever the Council, graph or blocked set changes.
     #[allow(clippy::too_many_arguments)]
     pub fn bounded(
         &mut self,
