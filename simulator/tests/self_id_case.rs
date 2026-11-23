@@ -637,7 +637,10 @@ fn departed_original_guarantors_are_charged_not_the_current_roster() {
 #[test]
 fn the_fixture_policy_identifiers_name_the_implemented_semantics() {
     // The contract page names these exact strings; a silent rename would otherwise let documentation drift from code.
-    assert_eq!(facety_sim::world::SELF_ID_CASE_POLICY, "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-reserved-at-filing/v5");
+    assert_eq!(
+        facety_sim::world::SELF_ID_CASE_POLICY,
+        "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-reserved-at-filing/prior-correction-exclusion/v6"
+    );
     let (w, target) = prepared();
     let mut w = w;
     let case = record(&mut w, target);

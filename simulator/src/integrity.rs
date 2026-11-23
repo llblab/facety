@@ -111,7 +111,7 @@ impl ExactCoefficient {
     }
 }
 
-/// The exact candidate: replay a chronological event sequence and return the effective XP.
+/// The exact candidate: replay a chronological event sequence and return XP.
 pub fn exact_effective_xp(units: i32, steps: &[Step]) -> Result<i32, IntegrityLimit> {
     let mut coef = ExactCoefficient::ONE;
     let mut halvings = 0;
@@ -139,7 +139,7 @@ pub fn grid_effective_xp(units: i32, steps: &[Step]) -> i32 {
     ((i64::from(units) * i64::from(coef)) / i64::from(COEF_ONE)) as i32
 }
 
-/// Both candidates' effective XP for one sequence; divergence is reported, not resolved.
+/// Both candidates' XP for one sequence; divergence is reported, not resolved.
 pub fn compare(units: i32, steps: &[Step]) -> (i32, Result<i32, IntegrityLimit>) {
     (grid_effective_xp(units, steps), exact_effective_xp(units, steps))
 }

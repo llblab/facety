@@ -13,9 +13,9 @@ use crate::world::{Config as WorldConfig, Id, Reject, World, DAY, UNFUNDED_OPENI
 use std::collections::{HashMap, HashSet};
 use std::fmt::Write as _;
 
-pub const ENGINE: &str = "facety-sim/runner-v13";
+pub const ENGINE: &str = "facety-sim/runner-v14";
 /// Version of the saved result layout.
-pub const SCHEMA: &str = "facety-sim/result-v9";
+pub const SCHEMA: &str = "facety-sim/result-v10";
 pub const COUNCIL_VOTING_POLICY: &str = "first-daily-review-per-round/binary-belief-v1";
 pub const APPEAL_EXECUTION_POLICY: &str = "conditional-approved-case-reversal/earned-receipts/integrity-replay/fifo-debt/v1";
 
@@ -322,12 +322,12 @@ impl RunConfig {
         let h = &self.honest;
         let d = &self.detection;
         format!(
-            "{{\"moneyPolicy\":\"integer-quanta/12-decimals/final-stake-ceiling/v1\",\"integrityPolicy\":{},\"caseAdmissionPolicy\":{},\"appealExecutionPolicy\":{},\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},\
+            "{{\"moneyPolicy\":\"integer-quanta/12-decimals/final-stake-ceiling/v1\",\"integrityPolicy\":{},\"voluntaryCorrectionPolicy\":{},\"caseAdmissionPolicy\":{},\"appealExecutionPolicy\":{},\"councilVotingPolicy\":{},\"councilExecutionPolicy\":{},\"randomness\":{},\"repeatCorrelation\":{},\"persistentErrors\":{},\"halvingSparesCouncil\":{},\
 \"seed\":{},\"honestGenesis\":{},\"genesisChords\":{},\"attackStartDay\":{},\"days\":{},\"attackers\":{},\"maxSubjects\":{},\"strategy\":{},\"detectionStartDay\":{},\"attackerPatienceDays\":{},\"attackerCashOut\":{},\"attackerAccuse\":{},\"accuseHubs\":{},\"stopAtHonest\":{},\
 \"world\":{{\"k\":{},\"kStep\":{},\"kXpPerLevel\":{},\"freezeHours\":{},\"spendHours\":{},\"maxNodes\":{},\"layered\":{},\"searchBudget\":{},\"excludeDisputed\":{},\"excludeTargetsOnly\":{},\"selfPathFromSubject\":{},\"councilSeats\":{},\"maxDifficulty\":{},\"councilSeatsPerD\":{},\"councilSeatsPerThousand\":{},\"searchOrder\":{},\"baseStake\":{},\"halveLosers\":{},\"integrity\":{}}},\
 \"honest\":{{\"selfId\":{},\"invite\":{},\"befriend\":{},\"acceptNear\":{},\"acceptFar\":{},\"keepRights\":{},\"vetting\":{},\"vettingSensitivity\":{},\"vettingFalsePositive\":{},\"metInPerson\":{},\"doubleLife\":{},\"carelessShare\":{},\"carelessAcceptFar\":{},\"corruptShare\":{},\"keyLoss\":{},\"recoveryVouch\":{},\"recoveryDelayDays\":{},\"artifactRate\":{},\"collusion\":{}}},\
 \"detection\":{{\"review\":{},\"inspect\":{},\"sensitivity\":{},\"falsePositive\":{},\"accuracy\":{},\"leave\":{},\"publicLook\":{},\"patternMinInvitees\":{},\"patternClosure\":{},\"sponsorWillingness\":{},\"followUp\":{},\"subtreeCases\":{},\"confirm\":{},\"confirmPublic\":{},\"oddShare\":{},\"oddMultiplier\":{},\"appeal\":{},\"restoreLinks\":{},\"recoverLiquid\":{},\"xpPenalty\":{},\"acquitMet\":{},\"disputesFromActive\":{},\"defenseSuccess\":{},\"defenseDays\":{},\"joinRate\":{},\"councilRate\":{},\"councilTurnout\":{},\"attackerLadder\":{},\"examinerLooks\":{},\"watchers\":{}}}}}",
-            json::string(crate::world::INTEGRITY_POLICY), json::string(crate::world::CASE_ADMISSION_POLICY), json::string(APPEAL_EXECUTION_POLICY),
+            json::string(crate::world::INTEGRITY_POLICY), json::string(crate::world::CORRECTION_POLICY), json::string(crate::world::CASE_ADMISSION_POLICY), json::string(APPEAL_EXECUTION_POLICY),
             json::string(COUNCIL_VOTING_POLICY), json::string(crate::world::COUNCIL_EXECUTION_POLICY), json::string(crate::rng::RANDOMNESS_POLICY),
             json::number(d.repeat_correlation), d.persistent_errors, w.halving_spares_council,
             json::string(&self.seed), self.honest_genesis, self.genesis_chords, self.attack_start_day, self.days, self.attackers, self.max_subjects, json::string(&format!("{:?}", self.strategy)), self.detection_start_day, self.attacker_patience_days, json::number(self.attacker_cash_out), json::number(self.attacker_accuse), self.accuse_hubs, self.stop_at_honest,

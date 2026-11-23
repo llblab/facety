@@ -16,6 +16,8 @@ For subsequent decisions, record the ID, date, status, one-line paraphrase, what
 
 **D202 — [SELECTED], 2026-11-23.** Under the owner's delegated reference-stage closure, explain the institution's purpose as voluntary cooperation across communities, with distinct evidence for recognition, continuity, claims and performance. Keep registry authority limited to reality and compliance. Use live graph, status, exclusions and layered support at Self-ID and invitation issuance; exclude actively accused Self-ID terminals without removing seats or votes. See [Purpose and concepts](facety.protocol.en.md#purpose-and-concepts) and [Paths](facety.protocol.en.md#paths).
 
+**D203 — [SELECTED], 2026-11-23.** Under the owner's reference-stage clarifications, replace the earlier author-first merits route and one-FCTY correction proposal with direct, fully funded voluntary correction: one FCTY of source backing or replacement restitution plus a separate one-FCTY fee. Preserve earlier external proceedings. Remove only the target's valid observation, actual units and maturity repair. Preserve its historical position and later signatures and times; continuity does not require constant appearance or fill temporal gaps. See [Voluntary correction](facety.protocol.en.md#voluntary-correction).
+
 ## Research and development decisions
 
 These decisions govern how the proposal is investigated and maintained. They add no conditions to Self-ID, admission, monetary rights or Council authority.

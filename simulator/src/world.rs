@@ -13,12 +13,15 @@ use crate::chekharda::{self, CouncilOutcome, CouncilRound, CouncilVote, Kind as 
 use crate::graph::Graph;
 use crate::hash::FastMap;
 use crate::paths::{layered_support, verify_family, PathFinder, Search, NO_LEVEL};
-use std::collections::{HashMap, HashSet};
+use std::collections::{BTreeMap, HashMap, HashSet};
 use std::sync::Arc;
 
 #[path = "appeal.rs"]
 mod appeal;
 pub use appeal::{AppealExecution, AppealInitiator, AppealRecord, AppealRequest, AppealStage, AppealVote, APPEAL_FIXTURE_POLICY};
+#[path = "correction.rs"]
+mod correction;
+pub use correction::{CorrectionInput, SelfIdCorrection, SelfIdObservation, CORRECTION_NETWORK, CORRECTION_POLICY, CORRECTION_VERSION};
 #[path = "dispute.rs"]
 mod dispute;
 #[path = "emission.rs"]
@@ -217,8 +220,10 @@ pub enum ActStatus {
 /// snapshot). The recipient list is shared between acts of one account while it does not change (an efficiency layout, D145).
 #[derive(Clone, Debug)]
 struct Credit {
-    /// The logical credit time, `recorded_at + MATURITY_HOURS`, whenever the credit was materialized (D42).
+    /// Actual processing time, possibly later than the scheduled maturity under a hold.
     at: i64,
+    /// Processing order among this subject's maturities, including receipts with no units.
+    maturity_number: u64,
     revoked: bool,
     recipients: Arc<[Id]>,
 }
@@ -297,6 +302,13 @@ impl Act {
     }
 }
 
+#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+enum RevocationCause {
+    Independent,
+    Case(u32),
+    VoluntaryCorrection,
+}
+
 #[derive(Clone, Debug)]
 enum IntegrityAdjustmentKind {
     Penalty { fraction: f64, flat_cut: i32 },
@@ -314,7 +326,7 @@ struct IntegrityAdjustment {
 #[derive(Clone, Debug)]
 struct Subject {
     status: Status,
-    /// Effective XP: `raw` when the integrity variant is off, otherwise `floor(raw * coef)`. Always a cache of those two.
+    /// XP is cached from units and integrity; the legacy ablation uses `raw` directly.
     xp: i32,
     /// Live credits (receipts not revoked, plus restored, minus balance penalties when the variant is off).
     raw: i32,
@@ -517,9 +529,9 @@ pub struct DisputeStats {
     pub maturities_deferred: u64,
     /// Deferred maturities processed exactly once when their last hold ended.
     pub maturities_released: u64,
-    /// Suspended Self-IDs cancelled inside the extended window; they never earn XP or a usable entitlement.
+    /// Suspended Self-IDs cancelled in the extended window; they never earn units or make backing available.
     pub maturities_cancelled: u64,
-    /// Unmatured affected acts invalidated by an upheld Self-ID correction, whose backing never became an entitlement.
+    /// Affected acts invalidated by upheld correction before their backing became available.
     pub self_id_invalidated_burned: Amount,
     /// Council seats that changed hands, summed over the daily refreshes (members that left; the size changes are not counted).
     pub council_turnover: u64,
@@ -588,12 +600,13 @@ pub struct World {
     deferred_maturities: Vec<u32>,
     appeal_requests: Vec<AppealRequest>,
     appeals: Vec<AppealRecord>,
-    /// Independent causes coexist: removing one case cannot erase another case or a separately authorized revocation.
-    xp_revocations: FastMap<u32, Vec<Option<u32>>>,
+    corrections: BTreeMap<u32, SelfIdCorrection>,
+    /// Independent causes coexist: reversal cannot erase another case or a voluntary correction.
+    xp_revocations: FastMap<u32, Vec<RevocationCause>>,
     identity_cases: FastMap<Id, Vec<u32>>,
     independent_invalid: Vec<bool>,
     /// Liquid FCTY destroyed by disputes (burned stakes and sanction charges, D151 recovery); `sum(liquid) + liquid_destroyed` equals the
-    /// converted entitlements.
+    /// total backing converted to Collector.
     liquid_destroyed: Amount,
     pub stats: DisputeStats,
     /// Acts before this index are settled: matured and credited (or cancelled before maturity). Acts are recorded in time order, so the
@@ -654,6 +667,7 @@ impl World {
             deferred_maturities: Vec::new(),
             appeal_requests: Vec::new(),
             appeals: Vec::new(),
+            corrections: BTreeMap::new(),
             xp_revocations: FastMap::default(),
             identity_cases: FastMap::default(),
             independent_invalid: Vec::new(),
@@ -902,20 +916,7 @@ impl World {
     }
 
     pub fn is_active(&self, id: Id) -> bool {
-        let s = &self.subjects[id as usize];
-        if s.status != Status::Accepted {
-            return false;
-        }
-        for &a in s.acts.iter().rev() {
-            let act = &self.acts[a as usize];
-            if self.now - act.recorded_at >= 28 * DAY {
-                return false;
-            }
-            if act.status != ActStatus::Cancelled {
-                return true;
-            }
-        }
-        false
+        self.subjects.get(id as usize).is_some_and(|s| s.status == Status::Accepted) && self.has_valid_self_id_at(id, self.now)
     }
 
     /// Mutual guarantee partners that are accepted accounts, ascending by index.
@@ -955,7 +956,7 @@ impl World {
         }
     }
 
-    /// Advance to `hour` and refresh the daily snapshot (activity, difficulty, Council, support levels, distances).
+    /// Advance to `hour` and refresh the institutional snapshot. Path inputs are checked at use.
     pub fn tick(&mut self, hour: i64) {
         assert!(hour >= self.now, "time cannot move backwards");
         // One event batch, in a fixed order (D199): maturities strictly before its hour are credited; due openings
@@ -1407,6 +1408,7 @@ impl World {
             return Err("case effects or independent status history has no matching owner".into());
         }
         self.audit_dispute_slots()?;
+        self.audit_corrections()?;
         for (id, opening) in self.case_openings.iter().enumerate().filter_map(|(id, opening)| opening.as_ref().map(|opening| (id, opening))) {
             let distinct: HashSet<Id> = opening.guarantors.iter().copied().collect();
             if opening.author as usize >= self.subjects.len()
@@ -1561,13 +1563,16 @@ impl World {
                 return Err(format!("act {idx} revocation has no matching causes"));
             }
             if let Some(causes) = causes {
-                let distinct: HashSet<Option<u32>> = causes.iter().copied().collect();
+                let distinct: HashSet<_> = causes.iter().copied().collect();
                 if distinct.len() != causes.len()
-                    || causes.iter().flatten().any(|&case| {
-                        self.case_effects
+                    || causes.iter().any(|&cause| match cause {
+                        RevocationCause::Independent => false,
+                        RevocationCause::Case(case) => self
+                            .case_effects
                             .get(case as usize)
                             .and_then(Option::as_ref)
-                            .is_none_or(|e| e.reversed || e.source_acts.binary_search(&(idx as u32)).is_err())
+                            .is_none_or(|e| e.reversed || e.source_acts.binary_search(&(idx as u32)).is_err()),
+                        RevocationCause::VoluntaryCorrection => !self.corrections.contains_key(&(idx as u32)),
                     })
                 {
                     return Err(format!("act {idx} has invalid revocation causes"));
@@ -1689,7 +1694,7 @@ impl World {
             }
             if !effects.reversed
                 && (effects.identity_subjects.iter().any(|subject| !self.identity_cases.get(subject).is_some_and(|causes| causes.contains(&case)))
-                    || effects.source_acts.iter().any(|act| !self.xp_revocations.get(act).is_some_and(|causes| causes.contains(&Some(case)))))
+                    || effects.source_acts.iter().any(|act| !self.xp_revocations.get(act).is_some_and(|causes| causes.contains(&RevocationCause::Case(case)))))
             {
                 return Err(format!("case {case} has missing identity or receipt effects"));
             }
@@ -2286,7 +2291,7 @@ mod tests {
     }
 
     /// Twelve accounts on the ring, all active: every account recorded a Self-ID at hour 0 and the world stands at hour 24, so every
-    /// account holds one matured unspent entitlement and has earned its first credits.
+    /// account holds one mature unspent right and has earned its first units.
     fn live_world() -> World {
         let mut w = world(12);
         for i in 0..12 {
@@ -2304,7 +2309,7 @@ mod tests {
         let before = xps(&w);
         w.tick(47);
         assert_eq!(xps(&w), before, "no ordinary XP one hour before maturity");
-        assert_ne!(w.eligible_emission(0), Some(act), "and the entitlement is not spendable yet");
+        assert_ne!(w.eligible_emission(0), Some(act), "and the right is not spendable yet");
         w.tick(48);
         let mut expected = before.clone();
         expected[0] += 1;
@@ -2327,12 +2332,12 @@ mod tests {
         }
         w.tick(w.now() + 24 * 10);
         let at_rest = xps(&w)[..12].to_vec();
-        assert_eq!(at_rest, reference_xp(&w)[..12].to_vec(), "unused entitlements earned their XP at maturity, without any operation");
+        assert_eq!(at_rest, reference_xp(&w)[..12].to_vec(), "maturity earned units even though the rights were not spent");
         let n = w.len();
         let same = |w: &World| xps(w)[..n].to_vec();
         w.convert_to_collector(0, acts[0]).unwrap();
         assert_eq!(same(&w), at_rest, "withdrawal after maturity: no second credit");
-        assert_eq!(w.convert_to_collector(0, acts[0]), Err(Reject("conversion requires own mature emission")), "one entitlement is consumed once");
+        assert_eq!(w.convert_to_collector(0, acts[0]), Err(Reject("conversion requires own mature emission")), "one right can be disposed of only once");
         let inv = w.create_invitation(0, acts[1]).unwrap();
         assert_eq!(same(&w), at_rest, "invitation burn after maturity: no second credit");
         assert_eq!(w.create_invitation(0, acts[1]), Err(Reject("emission is spent or disputed")));
@@ -2363,7 +2368,7 @@ mod tests {
         assert!(w.open_valence(0, 4, act).is_err(), "disputed");
         assert_eq!((xps(&w), w.vault(), w.burned(), w.liquid(0)), (xp, vault, burned, liquid));
         defend(&mut w, held);
-        assert_eq!(w.eligible_emission(0), Some(act), "the entitlement is still unspent");
+        assert_eq!(w.eligible_emission(0), Some(act), "the right is still unspent");
         w.audit().unwrap();
     }
 
@@ -2457,7 +2462,7 @@ mod tests {
 
     #[test]
     fn retroactive_xp_exploit_a_new_relationship_never_acquires_xp_from_earlier_self_ids() {
-        // Alice (0) repeatedly makes Self-IDs and leaves ten matured entitlements on her Emitter account.
+        // Alice (0) repeatedly makes Self-IDs and leaves ten mature rights in Emitter.
         let mut w = live_world();
         let alice = 0;
         let mut acts = Vec::new();
@@ -2468,7 +2473,7 @@ mod tests {
         let recipients: Vec<Vec<Id>> = acts.iter().map(|&a| w.acts[a as usize].credit.as_ref().unwrap().recipients.to_vec()).collect();
         let earned = xps(&w);
         assert_eq!(earned, reference_xp(&w));
-        // Alice invites Bob, burning one matured entitlement; after the freeze Bob is admitted and the special mutual link is active.
+        // Alice invites Bob using one mature right; after the freeze Bob is admitted and the special mutual link is active.
         let inv = w.create_invitation(alice, acts[0]).unwrap();
         assert_eq!(xps(&w), earned, "creating the invitation reissues nothing");
         w.tick(w.now() + 24);
@@ -2477,7 +2482,7 @@ mod tests {
         w.tick(w.now() + 24);
         let after_link = xps(&w);
         assert_eq!(after_link[bob as usize], 0, "Bob receives no XP from Alice's historical Self-IDs");
-        // Alice withdraws every remaining matured entitlement.
+        // Alice withdraws the value of each remaining mature right.
         for &a in &acts[1..] {
             w.convert_to_collector(alice, a).unwrap();
         }
@@ -2514,7 +2519,7 @@ mod tests {
         let carol_act = w.create_self_id(carol).unwrap();
         w.tick(w.now() + 24);
         let before = xps(&w);
-        // Alice opens a valence toward Carol with a matured entitlement; nothing is mutual yet.
+        // Alice opens a valence toward Carol with a mature right; nothing is mutual yet.
         w.open_valence(alice, carol, acts[0]).unwrap();
         assert_eq!(xps(&w), before);
         w.tick(w.now() + 24);
@@ -2528,7 +2533,7 @@ mod tests {
         for &a in &acts[1..] {
             w.convert_to_collector(alice, a).unwrap();
         }
-        assert_eq!(xps(&w), at_link, "withdrawing the remaining entitlements credits nobody");
+        assert_eq!(xps(&w), at_link, "withdrawing the remaining backing credits no units");
         assert_eq!(xps(&w), reference_xp(&w));
         w.audit().unwrap();
     }
@@ -2565,7 +2570,7 @@ mod tests {
         assert!(!w.act_guarantors(act).contains(&carol));
     }
 
-    /// Effective XP from live credits and the model's stored coefficient, rounded down.
+    /// XP from units and the stored integrity, rounded down.
     fn derived(w: &World, id: Id) -> i32 {
         let s = &w.subjects[id as usize];
         (i64::from(s.raw) * i64::from(s.coef) / i64::from(COEF_ONE)) as i32
@@ -2615,7 +2620,7 @@ mod tests {
         for losses in 1..=7 {
             w.penalize_xp_for_case(0, 0.5, losses);
             assert_eq!(w.coefficient(0), COEF_ONE / (1 << losses));
-            assert_eq!(World::replay_integrity(&w.subjects[0]), Some(w.coefficient(0)));
+            assert_eq!(w.replay_integrity(0), Some(w.coefficient(0)));
             if losses < 7 {
                 assert_eq!(w.xp(0), 128 / (1 << losses));
             }
@@ -2779,13 +2784,13 @@ mod tests {
             }
             xps(&w)
         };
-        assert_eq!(build(1), build(100), "ticking hour by hour or once gives identical effective XP");
+        assert_eq!(build(1), build(100), "ticking hour by hour or once gives identical XP");
         assert_eq!(build(24), build(7));
     }
 
     // ---- Chekharda cases with stakes, custody and settlement (D158, D159, D161, D162) ------------------------------------
 
-    /// Twelve ring accounts after forty days of Self-IDs at different rates (so XP differs) with every matured entitlement converted to
+    /// Twelve ring accounts after forty days of Self-IDs at different rates (so XP differs) with every mature right converted to
     /// liquid FCTY; stakes are on (base 7). Returns the world standing at an exact day boundary.
     fn rich_world() -> World {
         let mut w = World::new(Config { base_stake: Some(7), ..Config::default() }, 12, &ring(12));
@@ -3220,7 +3225,7 @@ mod tests {
         let act = w.create_self_id(challenger).unwrap();
         let before = w.xp(challenger);
         w.tick(w.now() + 24);
-        assert!(w.xp(challenger) >= before, "new units and coefficient repair resume effective XP growth");
+        assert!(w.xp(challenger) >= before, "new units and integrity repair resume XP growth");
         let _ = act;
         assert!(w.create_invitation(challenger, w.eligible_emission(challenger).unwrap()).is_ok());
         w.audit().unwrap();

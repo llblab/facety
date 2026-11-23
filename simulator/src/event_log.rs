@@ -35,6 +35,7 @@ enum Event {
     SelfId(Id),
     Convert(Id),
     CancelSelfId(Id, u32),
+    CorrectSelfId(Id, u32, u64),
     OpenValence(Id, Id),
     WithdrawValence(Id, u32),
     Invite(Id),
@@ -59,7 +60,7 @@ fn draw(rng: &mut Lcg, w: &World) -> Event {
     let act = rng.below(w.acts.len().max(1)) as u32;
     let inv = rng.below(w.invitations.len().max(1)) as u32;
     let member = rng.below(w.council.len().max(1)) as Id;
-    match rng.below(19) {
+    match rng.below(20) {
         0 => Event::Tick(1 + rng.below(50) as u64),
         1 => Event::SelfId(who),
         2 => Event::Convert(who),
@@ -78,7 +79,8 @@ fn draw(rng: &mut Lcg, w: &World) -> Event {
         15 => Event::CancelPending(case, who),
         16 => Event::RecordSelfIdCase(who, act),
         17 => Event::SettleSelfIdCase(case, rng.below(2) == 0),
-        _ => Event::RestoreCase(case),
+        18 => Event::RestoreCase(case),
+        _ => Event::CorrectSelfId(who, act, rng.below(4) as u64),
     }
 }
 
@@ -95,6 +97,16 @@ fn apply(w: &mut World, event: &Event) -> Result<(), Reject> {
             None => Err(Reject("no eligible emission")),
         },
         Event::CancelSelfId(actor, act) => w.cancel_self_id(actor, act),
+        Event::CorrectSelfId(author, target, nonce) => w
+            .correct_own_self_id(CorrectionInput {
+                network: CORRECTION_NETWORK,
+                version: CORRECTION_VERSION,
+                author,
+                target,
+                nonce,
+                authority: TrustedPremise::Supplied,
+            })
+            .map(|_| ()),
         Event::OpenValence(owner, counterpart) => match w.eligible_emission(owner) {
             Some(act) => w.open_valence(owner, counterpart, act).map(|_| ()),
             None => Err(Reject("no eligible emission")),
@@ -187,14 +199,14 @@ struct CaseSnap {
 }
 
 /// One recorded act and its receipt: `(subject, recorded_at, roster, status, invalidated-before-credit, receipt)`.
-type ActSnap = (Id, i64, Vec<Id>, ActStatus, bool, Option<(i64, bool, Vec<Id>)>);
+type ActSnap = (Id, i64, Vec<Id>, ActStatus, bool, Option<(i64, u64, bool, Vec<Id>)>);
 
 /// One settled case's effect causes.
 type EffectSnap = (String, Id, Side, bool, Vec<Id>, Vec<u32>, Vec<Id>);
 
 /// The declared comparison projection: every protocol-semantic field of World.
 #[derive(Debug, PartialEq, Eq)]
-struct Snap {
+pub(super) struct Snap {
     now: i64,
     minted: i64,
     burned: Amount,
@@ -228,7 +240,8 @@ struct Snap {
     self_id_settlements: Vec<Option<SelfIdSettlement>>,
     appeal_requests: Vec<AppealRequest>,
     appeals: Vec<AppealRecord>,
-    revocations: Vec<(u32, Vec<Option<u32>>)>,
+    corrections: BTreeMap<u32, SelfIdCorrection>,
+    revocations: Vec<(u32, Vec<RevocationCause>)>,
     identity_cases: Vec<(Id, Vec<u32>)>,
     independent_invalid: Vec<bool>,
     recovery_log: Vec<(Id, Id, i32)>,
@@ -238,8 +251,8 @@ struct Snap {
 impl World {
     /// The comparison excludes diagnostic counters and derived path caches (finder scratch and distances,
     /// support levels, blocked mask, path revisions and reachability).
-    fn snapshot(&self) -> Snap {
-        let mut revocations: Vec<(u32, Vec<Option<u32>>)> = self.xp_revocations.iter().map(|(k, v)| (*k, v.clone())).collect();
+    pub(super) fn snapshot(&self) -> Snap {
+        let mut revocations: Vec<_> = self.xp_revocations.iter().map(|(k, v)| (*k, v.clone())).collect();
         revocations.sort();
         let mut identity_cases: Vec<(Id, Vec<u32>)> = self.identity_cases.iter().map(|(k, v)| (*k, v.clone())).collect();
         identity_cases.sort();
@@ -302,7 +315,7 @@ impl World {
                         a.guarantors.to_vec(),
                         a.status,
                         a.invalidated_before_credit,
-                        a.credit.as_ref().map(|c| (c.at, c.revoked, c.recipients.to_vec())),
+                        a.credit.as_ref().map(|c| (c.at, c.maturity_number, c.revoked, c.recipients.to_vec())),
                     )
                 })
                 .collect(),
@@ -356,6 +369,7 @@ impl World {
             self_id_settlements: self.self_id_settlements.clone(),
             appeal_requests: self.appeal_requests.clone(),
             appeals: self.appeals.clone(),
+            corrections: self.corrections.clone(),
             revocations,
             identity_cases,
             independent_invalid: self.independent_invalid.clone(),

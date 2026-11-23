@@ -548,7 +548,7 @@ impl World {
             self.void_source_backing(act_id);
             if self.acts[act_id as usize].credit.is_some() {
                 sources.push(act_id);
-                self.revoke_source_for(act_id, Some(case));
+                self.revoke_source_for(act_id, RevocationCause::Case(case));
             }
         }
         let effects = self.case_effects[case as usize].as_mut().expect("checked settled effects");
@@ -609,7 +609,7 @@ impl World {
         }
         for &act in &effects.source_acts {
             let causes = self.xp_revocations.get_mut(&act).expect("recorded source cause");
-            causes.retain(|&id| id != Some(case));
+            causes.retain(|&cause| cause != RevocationCause::Case(case));
             if causes.is_empty() {
                 self.xp_revocations.remove(&act);
                 let credit = self.acts[act as usize].credit.as_mut().expect("recorded receipt");
@@ -662,8 +662,8 @@ impl World {
         false
     }
 
-    /// D34/D55 (trusted execution, not adjudication): the account loses `fraction` of its current XP, recorded as an authorized adjustment.
-    /// Deviation: the snapshot of the losing act is not kept; the penalty applies to the XP the account holds now. Returns the XP removed.
+    /// Trusted adjustment, not adjudication. Reduce current integrity by `fraction`; the resulting XP change is a
+    /// consequence of the adjustment, not a removal of units. The balance-only ablation uses a recorded flat cut.
     pub fn penalize_xp(&mut self, id: Id, fraction: f64) -> i32 {
         if id as usize >= self.subjects.len() || !fraction.is_finite() || !(0.0..=1.0).contains(&fraction) {
             return 0;
@@ -690,7 +690,7 @@ impl World {
             reversed: false,
         });
         if self.cfg.integrity {
-            // The integrity variant: the coefficient is cut, the credits stay; the XP removed is the visible drop (rounded down).
+            // Loss changes integrity, not the credited units.
             let before = s.xp;
             s.coef = Self::penalized_coefficient(s.coef, fraction);
             s.low_coef = s.low_coef.min(s.coef);
@@ -702,13 +702,18 @@ impl World {
         flat_cut
     }
 
-    pub(super) fn replay_integrity(s: &Subject) -> Option<u32> {
+    pub(super) fn replay_integrity(&self, id: Id) -> Option<u32> {
+        let s = &self.subjects[id as usize];
+        let mut skipped: Vec<_> =
+            self.corrections.values().filter(|c| c.author == id).map(|c| self.acts[c.target as usize].credit.as_ref().unwrap().maturity_number).collect();
+        skipped.sort_unstable();
+        let repairs_at = |maturities| maturities - skipped.partition_point(|&number| number <= maturities) as u64;
         let (mut coef, mut maturities) = (COEF_ONE, 0);
         for adjustment in &s.integrity_adjustments {
             if adjustment.at_maturities < maturities || adjustment.at_maturities > s.own_maturities {
                 return None;
             }
-            coef = grid_repair(coef, adjustment.at_maturities - maturities);
+            coef = grid_repair(coef, repairs_at(adjustment.at_maturities) - repairs_at(maturities));
             maturities = adjustment.at_maturities;
             if !adjustment.reversed {
                 coef = match adjustment.kind {
@@ -717,7 +722,7 @@ impl World {
                 };
             }
         }
-        Some(grid_repair(coef, s.own_maturities - maturities))
+        Some(grid_repair(coef, repairs_at(s.own_maturities) - repairs_at(maturities)))
     }
 
     /// Remove this case's penalty events once. The balance-halving ablation returns recorded cuts without repricing later cuts.
@@ -737,7 +742,7 @@ impl World {
             }
             if count != 0 {
                 if self.cfg.integrity {
-                    s.coef = Self::replay_integrity(s).expect("ordered integrity history");
+                    self.subjects[id].coef = self.replay_integrity(id as Id).expect("ordered integrity history");
                 } else {
                     s.raw += flat_restored;
                     s.penalized_xp -= flat_restored;
@@ -751,9 +756,13 @@ impl World {
 
     pub(super) fn audit_integrity(&self) -> Result<(), String> {
         let mut maturities = vec![0u64; self.subjects.len()];
-        for act in &self.acts {
-            if act.credit.is_some() {
-                maturities[act.subject as usize] += 1;
+        for (act_id, act) in self.acts.iter().enumerate() {
+            if let Some(receipt) = &act.credit {
+                let count = &mut maturities[act.subject as usize];
+                *count += 1;
+                if receipt.maturity_number != *count {
+                    return Err(format!("Self-ID {act_id} has an invalid maturity number"));
+                }
             }
         }
         for (id, s) in self.subjects.iter().enumerate() {
@@ -770,7 +779,7 @@ impl World {
                     _ => {}
                 }
             }
-            let replay = Self::replay_integrity(s).ok_or_else(|| format!("unordered integrity history of {id}"))?;
+            let replay = self.replay_integrity(id as Id).ok_or_else(|| format!("unordered integrity history of {id}"))?;
             if (self.cfg.integrity && replay != s.coef) || (!self.cfg.integrity && flat_penalties != i64::from(s.penalized_xp)) {
                 return Err(format!("integrity history of {id} differs from cached state"));
             }

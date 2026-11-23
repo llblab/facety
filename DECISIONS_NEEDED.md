@@ -16,9 +16,9 @@ What canonical record and authorized procedure admit a specific existence, dupli
 
 D193 authorized explicit trusted premises for admission, historical duty and upheld merits, not a production procedure. See the [implemented fixture](docs/simulator.en.md#self-id-transaction-fixture) and the [original authorization and bounded alternatives](https://github.com/llblab/facety/blob/8a9d0f52739b03c35a4b769a628d46edeefa70e0/DECISIONS_NEEDED.md#q25-a1-first-self-id-fixture-trust-boundary). The other choices in Q25-A and Q25-B are not settled by those checks.
 
-#### Q25-A2: retrospective correction priority and funds
+#### Q25-A2: authentication of voluntary correction
 
-[Self-dispute](docs/facety.protocol.en.md#self-dispute) is author-first and concerns the same transaction. Which admitted event fixes priority: recording, activation or an earlier admission step? Order simultaneous claims and decide how rejected or cancelled earlier filings affect priority. Bind authorization, fees, funding, unavailable backing, dependent rights, prior debt repayments and repeat filings. Specify how to correct 1 FCTY when the source is converted, transferred, consumed or already burned; no second burn, implicit refund or power to erase another verdict follows.
+[Voluntary correction](docs/facety.protocol.en.md#voluntary-correction) fixes priority and requires two funded components. Remaining external questions are authenticating current author authority after key replacement and independently checking preserved signatures, original references and correction scope after export. Trusted simulator inputs do not settle those questions.
 
 ### Q25-B: attributable execution and economic scope
 
@@ -63,9 +63,9 @@ The [prior review](https://github.com/llblab/facety/blob/8a9d0f52739b03c35a4b769
 
 ## Q27: reference-kernel boundary and production ordering
 
-Choose a canonical production order, record encoding, numeric and storage limits, and execution bounds. The [model scheduler](docs/simulator.en.md#suspended-self-id-maturity) and first-ballot convention do not select production order. This checkpoint is not extraction permission.
+Choose a canonical production order, record encoding, numeric and storage limits, and execution bounds. The [model scheduler](docs/simulator.en.md#suspended-self-id-maturity) and first-ballot convention do not select production order. The selected reference order does not establish production order or final runtime weights.
 
-Two engineering approaches are available: a staged `core`/`alloc` transition subset behind a simulator adapter, or a larger World extraction. The staged boundary limits migration risk and supports event-by-event differential replay, but initially excludes more operations; the larger cut covers more interactions at greater coupling and verification cost. The proposal must name its event set, ordering version, fingerprint fields/encoding, state bounds and atomic rejection semantics before approval. A noncryptographic test fingerprint is not an authenticated ledger commitment; `no_std` compatibility alone proves no bounded runtime cost. Off-chain search and on-chain submitted-witness verification remain separate. No external crate or Substrate dependency is implied.
+Two engineering approaches are available: a staged `core`/`alloc` transition subset behind a simulator adapter, or a larger World extraction. The staged boundary limits migration risk and supports event-by-event differential replay, but initially excludes more operations; the larger cut covers more interactions at greater coupling and verification cost. The delegated reference extraction is authorized once a complete independent World replay baseline is frozen. The baseline must bind its event set, ordering version, full semantic-state encoding, bounds and atomic rejection semantics. A noncryptographic test fingerprint is not an authenticated ledger commitment; `no_std` compatibility alone proves no bounded runtime cost. Off-chain search and on-chain submitted-witness verification remain separate. No external crate or Substrate dependency is implied.
 
 Collective initiation and individual effect attribution also need the contracts in [Q25-C1](#q25-c1-recovery-migration-and-collective-authority).
 

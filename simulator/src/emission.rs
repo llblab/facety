@@ -7,15 +7,14 @@ impl World {
     /// Authorized source revocation (a separately authorized correction, never a side effect of consumption): the credit of one source
     /// Self-ID is withdrawn from every recipient, once. Other sources keep their credits; nothing is replayed. Returns whether it changed.
     pub fn revoke_source_xp(&mut self, act_id: u32) -> bool {
-        self.revoke_source_for(act_id, None)
+        self.revoke_source_for(act_id, RevocationCause::Independent)
     }
 
-    pub(super) fn revoke_source_for(&mut self, act_id: u32, case: Option<u32>) -> bool {
-        let act = &mut self.acts[act_id as usize];
-        let Some(credit) = act.credit.as_mut() else { return false };
+    pub(super) fn revoke_source_for(&mut self, act_id: u32, cause: RevocationCause) -> bool {
+        let Some(credit) = self.acts.get_mut(act_id as usize).and_then(|act| act.credit.as_mut()) else { return false };
         let causes = self.xp_revocations.entry(act_id).or_default();
-        if !causes.contains(&case) {
-            causes.push(case);
+        if !causes.contains(&cause) {
+            causes.push(cause);
         }
         if credit.revoked {
             return false;
@@ -70,22 +69,23 @@ impl World {
     fn mature(&mut self, act_id: u32, at: i64) {
         let status = self.acts[act_id as usize].status;
         debug_assert!(self.acts[act_id as usize].pending_maturity(), "only live, uncredited acts mature");
-        if !self.subjects[self.acts[act_id as usize].subject as usize].debt.is_zero() {
-            self.stats.suspended_acts += 1;
-            // D167: while the author's emission balance is negative nobody earns XP for its acts (a suspended, empty credit).
-            self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: Arc::from(Vec::new()) });
-        } else {
-            self.credit(act_id, at);
-        }
-        // D165 restores integrity for a valid own maturity even when D167 suspends its new responsibility units.
         let subject = self.acts[act_id as usize].subject;
-        self.subjects[subject as usize].own_maturities += 1;
+        let s = &mut self.subjects[subject as usize];
+        s.own_maturities += 1;
+        let maturity_number = s.own_maturities;
+        if !s.debt.is_zero() {
+            self.stats.suspended_acts += 1;
+            // Debt suppresses new units, but the act still has a maturity and repairs integrity.
+            self.acts[act_id as usize].credit = Some(Credit { at, maturity_number, revoked: false, recipients: Arc::from(Vec::new()) });
+        } else {
+            self.credit(act_id, at, maturity_number);
+        }
         if self.cfg.integrity {
             let c = &mut self.subjects[subject as usize].coef;
             *c = (*c + COEF_STEP).min(COEF_ONE);
             self.refresh_xp(subject);
         }
-        // D166/D4: a negative emission balance (debt) is repaid from the matured entitlement of the account, burned.
+        // Burn available backing from the matured right to repay debt.
         if status == ActStatus::Unspent && !self.subjects[self.acts[act_id as usize].subject as usize].debt.is_zero() {
             self.repay_debt_from(act_id);
         }
@@ -170,7 +170,7 @@ impl World {
         }
     }
 
-    fn credit(&mut self, act_id: u32, at: i64) {
+    fn credit(&mut self, act_id: u32, at: i64, maturity_number: u64) {
         let (subject, recipients) = {
             let act = &self.acts[act_id as usize];
             let mut r = Vec::with_capacity(1 + act.guarantors.len());
@@ -189,7 +189,7 @@ impl World {
                 fresh
             }
         };
-        self.acts[act_id as usize].credit = Some(Credit { at, revoked: false, recipients: shared });
+        self.acts[act_id as usize].credit = Some(Credit { at, maturity_number, revoked: false, recipients: shared });
     }
 
     /// Void still-unspent backing. If a legacy configuration already disposed the asset before maturity,

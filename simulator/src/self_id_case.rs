@@ -20,7 +20,7 @@ use crate::chekharda::stake;
 /// the endpoint and `N` at recording (D195, superseding D190's activation time for this case kind) and executes any frozen
 /// `N` through the model's existing soft-backing collection rather than a case-local collection scope. Version 5 reserves
 /// the frozen-`N` first stake exclusively at recording (D199) and activates on that reservation without a funding check.
-pub const SELF_ID_CASE_POLICY: &str = "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-reserved-at-filing/v5";
+pub const SELF_ID_CASE_POLICY: &str = "trusted-core-only/typed-self-id-target/filing-frozen-n/liquid-reserved-at-filing/prior-correction-exclusion/v6";
 
 /// A premise the caller must supply explicitly. `Missing` is refused before any record allocation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -88,6 +88,8 @@ pub struct SelfIdCaseRecord {
     pub frozen: Option<FrozenCount>,
     /// The accused's recorded Self-ID count at filing, proving the frozen endpoint was not extended later.
     pub accused_chain_at_recording: u32,
+    /// Historical suffix, excluding acts voluntarily corrected before filing; never recomputed at execution.
+    pub affected: Vec<u32>,
     pub premises: TrustedAdmissionPremises,
 }
 
@@ -114,7 +116,7 @@ pub struct SelfIdSettlement {
     pub accuser_award: Amount,
     /// Always zero: the transferred backing is not burned again.
     pub source_burned: Amount,
-    /// Backing of the invalidated unmatured affected acts, removed because it never became an entitlement.
+    /// Backing destroyed before the affected rights became available.
     pub invalidated_burned: Amount,
     /// Charge that no actual collection covered; recorded as this case's FIFO debt.
     pub unpaid_accused: Amount,
@@ -123,8 +125,7 @@ pub struct SelfIdSettlement {
     pub guarantor_burned: Amount,
     /// The frozen affected suffix, oldest first: the acts this case corrected.
     pub affected: Vec<u32>,
-    /// Affected acts that had not matured yet and were invalidated instead of being credited later; their backing never
-    /// became an entitlement, so it is removed at settlement rather than transferred.
+    /// Affected acts invalidated before maturity: destroy backing before it becomes available for collection or credit.
     pub invalidated: Vec<u32>,
     /// Every source receipt this case revoked, with its credit time and actual recipients.
     pub revoked_receipts: Vec<SelfIdRevokedReceipt>,
@@ -231,7 +232,8 @@ impl World {
         let acts = &self.subjects[accused as usize].acts;
         let violating = acts.iter().position(|&a| a == act).ok_or(Reject("the challenged Self-ID is not in the owner's chain"))? as u32 + 1;
         let endpoint = acts.len() as u32;
-        let frozen = FrozenCount { violating, endpoint, n: endpoint - violating + 1 };
+        let affected: Vec<_> = acts[(violating - 1) as usize..].iter().copied().filter(|a| !self.corrections.contains_key(a)).collect();
+        let frozen = FrozenCount { violating, endpoint, n: affected.len() as u32 };
         let matures_at = self.opening_maturity_at()?;
         // D199: the frozen-`N` first stake is checked and reserved exclusively in this same transaction, after every other
         // validation and before any allocation, so a refusal leaves no case ID, slot or custody behind.
@@ -255,6 +257,7 @@ impl World {
             stage: SelfIdCaseStage::Pending,
             frozen: Some(frozen),
             accused_chain_at_recording: endpoint,
+            affected,
             premises,
         });
         self.occupy_dispute_slot(accused, DisputeId::Case(case));
@@ -334,11 +337,11 @@ impl World {
             || frozen.endpoint < frozen.violating
             || frozen.endpoint as usize > chain.len()
             || chain[(frozen.violating - 1) as usize] != target
-            || frozen.n != frozen.endpoint - frozen.violating + 1
+            || frozen.n as usize != record.affected.len()
         {
             return Err(Reject("the frozen chain count does not match the accused's recorded chain"));
         }
-        let affected: Vec<u32> = chain[(frozen.violating - 1) as usize..frozen.endpoint as usize].to_vec();
+        let affected = record.affected.clone();
         let source_guarantors = record.source_guarantors.clone();
         let mut distinct = source_guarantors.clone();
         distinct.sort_unstable();
@@ -404,12 +407,11 @@ impl World {
         for &act in &plan.affected {
             if let Some(credit) = self.acts[act as usize].credit.as_ref() {
                 receipts.push(SelfIdRevokedReceipt { act, at: credit.at, recipients: credit.recipients.to_vec() });
-                self.revoke_source_for(act, Some(case));
+                self.revoke_source_for(act, RevocationCause::Case(case));
             }
         }
         let sources: Vec<u32> = receipts.iter().map(|r| r.act).collect();
-        // 2b. An affected act that has not been credited yet must never be credited: the correction invalidates its source, so its
-        //     unmatured backing is removed at settlement instead of becoming an entitlement and a deferred reward later.
+        // 2b. Void affected backing before it becomes available and prevent deferred credit.
         let mut invalidated = Vec::new();
         let mut invalidated_burned = Amount::ZERO;
         for &act in &plan.affected {
@@ -517,7 +519,7 @@ impl World {
     }
 
     /// Case-specific restoration of this fixture's authorized receipt and penalty effects. It does not recreate a
-    /// consumed entitlement, refund a transfer or burn, or claim an appeal admission contract.
+    /// consumed right, refund a transfer or burn, or claim an appeal admission contract.
     pub fn restore_self_id_case_effects(&mut self, case: u32) -> Result<RestorationOutcome, Reject> {
         let effects = self.case_effects.get(case as usize).and_then(Option::as_ref).ok_or(Reject("no settled case effects"))?;
         if effects.kind != CaseKind::SelfIdTransaction {
@@ -558,11 +560,24 @@ impl World {
                 || frozen.endpoint < frozen.violating
                 || frozen.endpoint != record.accused_chain_at_recording
                 || record.accused_chain_at_recording > self.subjects[record.accused as usize].acts.len() as u32
-                || frozen.n != frozen.endpoint - frozen.violating + 1
+                || frozen.n as usize != record.affected.len()
+                || record.affected.first() != Some(&record.target)
                 || self.subjects[record.accused as usize].acts[(frozen.violating - 1) as usize] != record.target
                 || record.reserved_stake != stake(1, frozen.n)
             {
                 return Err(format!("Self-ID case {id} has an invalid frozen chain count"));
+            }
+            let chain = &self.subjects[record.accused as usize].acts;
+            let suffix = &chain[(frozen.violating - 1) as usize..frozen.endpoint as usize];
+            if record.affected.windows(2).any(|w| w[0] >= w[1])
+                || record.affected.iter().any(|a| suffix.binary_search(a).is_err())
+                || suffix.iter().any(|a| match (record.affected.binary_search(a).is_ok(), self.corrections.get(a)) {
+                    (true, Some(_)) => record.stage != SelfIdCaseStage::Cancelled,
+                    (false, correction) => correction.is_none_or(|c| c.recorded_at > record.recorded_at),
+                    _ => false,
+                })
+            {
+                return Err(format!("Self-ID case {id} has invalid frozen affected acts"));
             }
             let effects = self.case_effects[id as usize].as_ref();
             let outcome = self.case_outcomes[id as usize].as_ref();
@@ -623,13 +638,11 @@ impl World {
                     {
                         return Err(format!("Self-ID case {id} has an invalid settlement"));
                     }
-                    let chain = &self.subjects[record.accused as usize].acts;
-                    let suffix: Vec<u32> = chain[(frozen.violating - 1) as usize..frozen.endpoint as usize].to_vec();
                     let charge = Amount::coins(u64::from(frozen.n));
                     if settlement.case != id
                         || settlement.target != record.target
                         || settlement.frozen != frozen
-                        || settlement.affected != suffix
+                        || settlement.affected != record.affected
                         || effects.source_acts != settlement.revoked_receipts.iter().map(|r| r.act).collect::<Vec<u32>>()
                         || settlement.accused_charge != charge
                         || settlement.accuser_award != settlement.accused_collected

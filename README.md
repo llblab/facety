@@ -26,6 +26,8 @@
 
 Facety is a voluntary public registry of people who have lived. It helps people from different communities recognize one another, take responsibility for public claims and correct mistakes. The long-term aim is cooperation beyond personal acquaintance and local concentrations of power, without requiring cultural uniformity or judging anyone's worth.
 
+Unlike a passport photograph, a Self-ID history can show changes in the same person over time. A correction leaves a gap, not a replacement picture or a rewritten signature.
+
 A connection matters when it helps people cooperate and makes responsibility clear. A path checks reachability, not independent human control or trust. Access to challenge and appeal matters more than node count alone. People can stop participating without erasing past records or obligations; public claims don't require publishing every part of their lives. Whether people will show up, recognize one another accurately or cooperate across groups remains an empirical question.
 
 The aim is to make honest participation easier and more rewarding than identity fraud, while limiting emission captured by fabricated identities. That is a design goal whose operational dependencies still need validation.
@@ -38,13 +40,13 @@ Three layers stay distinct:
 
 ## Where the project stands
 
-**Conditional-mainnet preparation is active; deployment is not authorized.** The owner-confirmed [plan](BACKLOG.md#conditional-mainnet-preparation) covers executable-spec closure, reference-kernel verification, launch measurement and bounded registered rule comparisons. Only contract-ready implementation is authorized; kernel extraction retains a separate owner checkpoint. No rehearsal or pilot is a prerequisite to development or authorized by this direction.
+**Conditional-mainnet preparation is active; deployment is not authorized.** The owner-confirmed [plan](BACKLOG.md#conditional-mainnet-preparation) covers executable-spec closure, reference-kernel verification, launch measurement and bounded registered rule comparisons. The delegated reference stage authorizes the bounded kernel only after an independent World replay baseline is frozen. No rehearsal or pilot is a prerequisite to development or authorized by this direction.
 
 > **Frozen evidence-core verdict: REVISE operational assumptions.**
 >
 > The [study](studies/2026-11-08-evidence-core/README.md) completed 38 Rust runs. Attack containment survived within the tested scenarios; independent evidence, timely qualified help and effective correction remain unverified human dependencies. Development permission neither changes that verdict nor accepts launch risk without human evidence.
 
-Use the [conformance map](docs/simulator.en.md#rule-conformance-mapping) to distinguish Rust coverage from protocol rules. The model checks funded filing, pending cancellation, suspended maturity, Council rounds and case-specific restoration. Self-ID and appeal fixtures receive trusted premises; author-first self-dispute, addressed invitation issuance with both slots, and production authority and appeal finances remain outside the modeled subset.
+Use the [conformance map](docs/simulator.en.md#rule-conformance-mapping) to distinguish Rust coverage from protocol rules. The model checks funded filing, pending cancellation, suspended maturity, Council rounds, case-specific restoration and direct two-FCTY correction of one matured Self-ID. Correction and case fixtures receive trusted authority premises. Addressed invitation issuance with both slots, production authentication and appeal finances remain outside the modeled subset.
 
 ## Find your way
 
