@@ -26,7 +26,7 @@ The fixed-101/current-link runtime is still **not D33/D34**. No suspension, risk
 node --test test/incentive-one-day.test.mjs
 node studies/2026-10-24-one-day-incentives/controls.mjs
 npm test
-bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root . --json
+bash "$HOME/.agents/skills/domain-dag/scripts/validate-domain-dag.sh" --root . --json
 ```
 
 `validation.json` records the context/whitespace/source-boundary checks as well. Tests and differential controls are author-coordinated software evidence. **No independent review is claimed**: the previously recorded P16 actor-workflow qualification remains unresolved and was not rerun, bypassed or repaired here.

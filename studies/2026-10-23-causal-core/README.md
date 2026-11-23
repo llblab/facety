@@ -92,8 +92,8 @@ node examples/causal-walkthroughs.mjs --json false-allegation-rejected
 node examples/causal-relay.mjs
 node studies/2026-10-23-causal-core/preservation.mjs
 node studies/2026-10-23-causal-core/run.mjs --check
-bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root .
-NO_COLOR=1 node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety
+bash "$HOME/.agents/skills/domain-dag/scripts/validate-domain-dag.sh" --root .
+NO_COLOR=1 node "$HOME/.agents/skills/abcd-context/scripts/validate-context.mjs" .
 git diff --check
 ```
 

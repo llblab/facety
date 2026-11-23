@@ -96,6 +96,10 @@ Consult the [simulator contract](docs/simulator.en.md) for defaults, levers, dev
 
 </details>
 
+## Cite a research snapshot
+
+Use [CITATION.cff](CITATION.cff) for software citation metadata. When using an archived release, cite its version DOI. For a specific result, also cite the [study report](docs/README.md#studies) and the executable version it records; a current source snapshot does not replace those historical builds.
+
 ## Working agreements
 
 Read [AGENTS.md](AGENTS.md) before changing the project. Repository documentation is in English. The protocol owns meaning, the simulator contract owns model assumptions, and [BACKLOG.md](BACKLOG.md) alone owns open work. Research results keep their evidence level and limitations.

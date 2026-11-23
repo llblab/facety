@@ -59,7 +59,7 @@ node studies/2026-10-23-accountability-audit/legacy-stakes.mjs
 node studies/2026-10-23-accountability-audit/stake-backing.mjs
 node studies/2026-10-23-accountability-audit/stake-compatibility.mjs
 node bin/facety.mjs run examples/dispute-stakes.json
-node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety
+node "$HOME/.agents/skills/abcd-context/scripts/validate-context.mjs" .
 ```
 
 This diagnostic audit is not a preregistered confirmation or a blanket correctness proof. Subsequent source changes intentionally change the implementation digest. No old result is silently relabeled as a result of new rules.

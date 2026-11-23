@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the archived version you used."
+title: "Facety: Accountable Human Identification Protocol and Research Simulator"
+type: software
+version: "0.5.0-research.1"
+license: Unlicense
+repository-code: "https://github.com/llblab/facety"
+authors:
+  - given-names: "Viacheslav"
+    family-names: "Shebuniaev"
+abstract: >-
+  Facety is a proposed human identification protocol and a Rust simulation
+  workbench. It asks how a voluntary network could attach responsibility to
+  social guarantees and contest duplicate or fabricated identities without a
+  central identity issuer. The design separates FCTY emission from responsibility
+  units earned at Self-ID maturity; Integrity adjusts earned units into XP for
+  procedural eligibility. The simulator exercises a documented subset, including
+  guarantee paths, emission accounting, dispute transitions, and correction
+  under trusted premises. Saved results are conditional on modeled behavior and
+  historical builds. The evidence-core study concluded REVISE: participation,
+  independent recognition accuracy, finite corrective capacity, and real-world
+  Sybil resistance remain unverified. This snapshot does not authorize deployment.
+keywords:
+  - human identification
+  - social guarantees
+  - distributed responsibility
+  - Sybil resistance
+  - research simulation

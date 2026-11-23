@@ -18,8 +18,8 @@ Old artifacts keep their original provenance. Consequently, `studies/2026-10-23-
 npm test
 node studies/2026-10-23-dead-code/preservation.mjs
 node studies/2026-10-23-causal-core/preservation.mjs
-bash /home/llb/.agents/skills/domain-dag/scripts/validate-domain-dag.sh --root .
-NO_COLOR=1 node /home/llb/.agents/skills/abcd-context/scripts/validate-context.mjs /home/llb/Repos/facety
+bash "$HOME/.agents/skills/domain-dag/scripts/validate-domain-dag.sh" --root .
+NO_COLOR=1 node "$HOME/.agents/skills/abcd-context/scripts/validate-context.mjs" .
 git diff --check
 ```
 
