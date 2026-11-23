@@ -2,6 +2,8 @@
 
 Facety develops a voluntary common institution for people from different communities to recognize one another, make attributable claims, accept defined responsibilities and correct mistakes. Its purpose is to extend cooperation beyond personal acquaintance and local concentrations of power. A durable public registry of people who have lived preserves continuity and history. Like a registry office, Facety decides whether a subject represents one real, unique person and whether recorded acts follow its rules. Planetary cooperation is an aspiration, not a demand for cultural uniformity or authority to judge anyone's worth.
 
+The design uses human-scale emission to support participation. Issuing to people rather than accounts requires a way to contest claims of unique identity. Mutual recognition supplies evidence; guarantees attach responsibility to a person's vouching for another. Rewards are meant to sustain participation and responsibility, not to certify truth. Disputes and appeals allow errors to be corrected; distributed governance is meant to keep shared rules answerable to participants rather than a permanent central authority.
+
 This specification states the rules in force and marks unresolved choices **Open**. An open choice is not permission to fill in an amount, authority or transition. The rules do not establish that a given implementation covers them or that the network is safe against fraud.
 
 ## Purpose and concepts

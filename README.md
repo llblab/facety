@@ -24,7 +24,9 @@
 
 ## People, guarantees, consequences
 
-Facety is a voluntary public registry of people who have lived. It helps people from different communities recognize one another, take responsibility for public claims and correct mistakes. The long-term aim is cooperation beyond personal acquaintance and local concentrations of power, without requiring cultural uniformity or judging anyone's worth.
+Facety began by asking whether economic incentives could grow the human social network itself. Basing issuance on individual people rather than computing power or institutional privilege raises an immediate question: how can the network tell a person from any number of accounts? Mutual identification, accountable guarantees and a way to correct claims follow from that problem. See the [project's origin and design logic](docs/insights.en.md#genesis-and-recursive-development).
+
+Facety is a voluntary public registry of people who have lived. It helps people from different communities recognize one another, take responsibility for public claims and correct mistakes. The long-term aim is meaningful cooperation beyond personal acquaintance and local concentrations of power, under shared rules and distributed authority. It does not require cultural uniformity, seek to replace governments or judge anyone's worth.
 
 Unlike a passport photograph, a Self-ID history can show changes in the same person over time. A correction leaves a gap, not a replacement picture or a rewritten signature.
 
