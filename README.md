@@ -20,6 +20,10 @@
   <a href="studies/2026-11-08-evidence-core/README.md">Operational assumptions under revision</a>
 </p>
 
+<p align="center">
+  <a href="https://doi.org/10.5281/zenodo.24454490"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.24454490.svg" alt="Research snapshot DOI: 10.5281/zenodo.24454490"></a>
+</p>
+
 ---
 
 ## People, guarantees, consequences
