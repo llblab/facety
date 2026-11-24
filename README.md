@@ -46,7 +46,7 @@ Three layers stay distinct:
 
 ## Where the project stands
 
-**Conditional-mainnet preparation is active; deployment is not authorized.** The owner-confirmed [plan](BACKLOG.md#conditional-mainnet-preparation) covers executable-spec closure, reference-kernel verification, launch measurement and bounded registered rule comparisons. The delegated reference stage authorizes the bounded kernel only after an independent World replay baseline is frozen. No rehearsal or pilot is a prerequisite to development or authorized by this direction.
+**Conditional-mainnet preparation is active; deployment is gated by the owner decision [D204](docs/decisions.en.md).** The owner-confirmed [plan](BACKLOG.md#conditional-mainnet-preparation) covers executable-spec closure, reference-kernel verification, launch measurement and bounded registered rule comparisons. D204 (2026-11-24) selects production as the only source of human evidence and explicitly accepts launch risk, gated on instrumentation before launch-facing code, consent/ethics, preregistered tripwires and pause controls with kill criteria, and the signed F1 risk-acceptance statement. No rehearsal or pilot precedes mainnet; personal-data collection stays unauthorized until those gates are met. The delegated reference stage authorizes the bounded kernel only after an independent World replay baseline is frozen.
 
 > **Frozen evidence-core verdict: REVISE operational assumptions.**
 >

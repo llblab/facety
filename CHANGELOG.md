@@ -6,6 +6,8 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 
 ## Unreleased
 
+- D204 (owner decision, 2026-11-24): production selected as the only source of human evidence; launch risk accepted explicitly. Deployment is gated on instrumentation before launch-facing code (C1/Q28), consent/ethics (D108), a preregistered observation plan with tripwires, pause controls and kill criteria (C2/Q29), and the F1 dossier with signed risk acceptance. D168 stays REVISE; no pilot or rehearsal precedes mainnet; personal data stays unauthorized until the gates are met.
+
 ## 0.5.0-research.1 — 2026-11-23
 
 - Prepared a citable source snapshot with CFF software metadata, the Unlicense, and version-specific study citations. Evidence-core remains REVISE: the archive contains compact summaries and witnesses, not full daily output or verified human evidence. The snapshot does not authorize deployment.

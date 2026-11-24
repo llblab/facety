@@ -42,6 +42,8 @@ Who can authenticate collective initiation, and how do a collective decision and
 
 ### Q25-D: actual voluntary work and permission for a session
 
+**Owner decision [D204](docs/decisions.en.md) (2026-11-24):** human evidence will be gathered only in production; no pre-launch session, recruitment or personal-data collection is planned or authorized. Production launch is gated on the C1 instrumentation contract, the Q28 privacy selection, D108 consent/ethics/licensing and the C2 tripwires, Q29 pause controls and kill criteria.
+
 D188 does not require a rehearsal or pilot before development and authorizes neither. Any future study needs its own question, design and authorization. Who would willingly take the organizer, observer and participant tasks, and with what limits, consent, data access, storage, retention and publication terms? A compressed fictional session could show steps people actually take, not seven-day availability, representative behavior, real economic motivation or an executable answer to Q25-A–C. No staffing, funds or personal data are committed.
 
 ## Q26: dispute safety and arithmetic review
