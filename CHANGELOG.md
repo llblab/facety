@@ -6,7 +6,8 @@ Decisions and dates live in the [decision log](docs/decisions.en.md#decision-log
 
 ## Unreleased
 
-- D204 (owner decision, 2026-11-24): production selected as the only source of human evidence; launch risk accepted explicitly. Deployment is gated on instrumentation before launch-facing code (C1/Q28), consent/ethics (D108), a preregistered observation plan with tripwires, pause controls and kill criteria (C2/Q29), and the F1 dossier with signed risk acceptance. D168 stays REVISE; no pilot or rehearsal precedes mainnet; personal data stays unauthorized until the gates are met.
+- D204 (owner decision, 2026-11-24): production selected as the only source of human evidence; the strategy of launching without prior human calibration is accepted, deployment is not. Deployment waits on production-verified instrumentation (C1/Q28), consent/ethics (D108), a preregistered observation plan with interventions and kill criteria (C2/Q29), the F1 signed residual-risk acceptance, and explicit authorization. D168 stays REVISE; no pilot precedes mainnet; personal data stays unauthorized.
+- Clarified the D204 boundary: strategy acceptance, F1 residual-risk acceptance for an identified production configuration and deployment authorization are separate acts; a synthetic instrumentation model is not production readiness; the genesis network is production, not a pilot; interventions preserve rights and remedies without selecting new thresholds or authorities; Facety's development stays deferred while DEOS, Atmo and Digifall mature. Documentation only.
 
 ## 0.5.0-research.1 — 2026-11-23
 

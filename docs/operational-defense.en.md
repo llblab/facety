@@ -1,6 +1,6 @@
 # Operational defense and human validation readiness
 
-This is proposed operating practice, not protocol or observed performance. The synthetic rehearsal was never run; no people were recruited or observed. The [evidence-core study](../studies/2026-11-08-evidence-core/README.md) retains REVISE and B4's killed claim. [Q25](../DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) remains open. No rehearsal or pilot is required before development, and neither is authorized.
+This is proposed operating practice, not protocol or observed performance. The synthetic rehearsal was never run; no people were recruited or observed. The [evidence-core study](../studies/2026-11-08-evidence-core/README.md) retains REVISE and B4's killed claim. [Q25](../DECISIONS_NEEDED.md#q25-operational-evidence-and-finite-defense-after-closure) remains open. No rehearsal or pilot is required before development, and neither is authorized. Under [D204](decisions.en.md) human evidence comes from production participation itself: a limited genesis network is production, not a pilot, and no session, recruitment or personal-data collection is authorized.
 
 ## Decision for the owner
 
